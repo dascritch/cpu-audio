@@ -1,10 +1,10 @@
-.interface {
+#interface {
     font-family : var(--cpu-font-family);
     font-size : var(--cpu-font-size);
     --cpu-timeline-height : 10px;
 }
 
-.interface, * {
+#interface, * {
     line-height : 1.2;
     border : none;
     padding : 0;
@@ -72,14 +72,14 @@ a:hover svg , a:focus svg {
     color : var(--cpu-error-color);
 }
 
-.pageerror {
+#pageerror {
     padding: 0px 4px;
     align-self: center;
 }
 
-.control,
-.actions,
-.back {
+#control,
+#actions,
+#back {
     flex : 0 0 var(--cpu-height);
     width : var(--cpu-height);
     max-height : var(--cpu-height);
@@ -92,22 +92,22 @@ a {
     cursor : pointer;
 }
 
-.loading, .play, .pause,
-.show-main .pageshare, .show-main .pageerror,
-.show-share .pagemain, .show-share .pageerror,
-.show-error .pagemain, .show-error .pageshare , .show-error .poster,
-.handheld-nav , .show-handheld-nav .titleline {
+.loading, #play, #pause,
+.show-main #pageshare, .show-main #pageerror,
+.show-share #pagemain, .show-share #pageerror,
+.show-error #pagemain, .show-error #pageshare , .show-error #poster,
+.handheld-nav , .show-handheld-nav #titleline {
     display : none;
 }
 
 .act-loading .loading,
-.act-play .play,
-.act-pause .pause {
+.act-play #play,
+.act-pause #pause {
     display : block;
 }
 
-.show-share .pageshare,
-.show-main .pagemain,
+.show-share #pageshare,
+.show-main #pagemain,
 .share {
     flex : 1 1 100%;
     display : flex;
@@ -153,7 +153,7 @@ a {
     100%    {opacity : 0.25;}
 }
 
-.poster {
+#poster {
     max-width : var(--cpu-height);
     min-width : var(--cpu-height);
     max-height : var(--cpu-height);
@@ -161,7 +161,7 @@ a {
     object-fit: contain;
 }
 
-.loading svg, .play svg, .pause svg, .actions svg {
+.loading svg, #play svg, #pause svg, #actions svg {
     vertical-align : middle;
     max-width : 100%;
     max-height : 100%;
@@ -169,28 +169,28 @@ a {
 .loading {
     background : var(--cpu-background) !important;
 }
-.titleline {
+#titleline {
     display : flex;
 }
-.about, .title {
+#about, #title {
     flex : 1 1 100%;
     position : relative;
 }
-.title a {
+#title a {
     display : block;
     text-overflow : ellipsis;
     max-height: 48px;
     overflow: hidden;
 }
-.canonical.untitled {
+#canonical.untitled {
     font-style : italic;
 }
-.elapse {
+#elapse {
     flex : 1 0 var(--cpu-elapse-width);
     text-align : right;
 }
 
-.time {
+#time {
     background : black;
     width : 100%;
     height : var(--cpu-timeline-height);
@@ -199,8 +199,8 @@ a {
     position : relative;
     cursor:none;
 }
-.loadingline,
-.elapsedline {
+#loadingline,
+#elapsedline {
     background : white;
     height : var(--cpu-timeline-height) ;
     display : block ;
@@ -209,17 +209,17 @@ a {
     border-radius : 4px;
     pointer-events : none;
 }
-.elapsedline {
+#elapsedline {
     z-index : 2;
 }
-.points {
+#points {
     display : block ;
     position : absolute;
     left : 0;
     width: 100%;
     opacity : 0;
 }
-.points svg {
+#points svg {
     fill : red;
     pointer-events : none;
     position: absolute;
@@ -228,7 +228,7 @@ a {
     height : 10px;
 }
 
-.act-loading .loadingline {
+.act-loading #loadingline {
     background : repeating-linear-gradient(135deg, #bbb 0, #999 5px, #999 10px, #ddd 15px, #ddd 20px, #bbb 25px);
     animation: loadingline 500ms linear infinite;
 }
@@ -250,7 +250,7 @@ a {
     text-align : center;
 }
 
-.hide-actions .actions {
+.hide-actions #actions {
     /* we won't display:none, as we need a padding on the right */
     visibility : hidden;
     pointer-events: none;
@@ -288,11 +288,11 @@ a {
     height : 32px;
 }
 
-.share .nativeshare {
+.share #nativeshare {
     display : none;
 }
 
-.hasnativeshare .share .nativeshare {
+.hasnativeshare .share #nativeshare {
     display : flex;
 }
 
@@ -300,20 +300,20 @@ a {
     display : none;
 }
 
-.twitter {
+#twitter {
     background : #4DB5F4
 }
-.facebook, .nativeshare {
+#facebook, #nativeshare {
     background : #5974CC
 }
-.email {
+#email {
     background : #CC0000
 }
-.link {
+#link {
     background : #77F
 }
 
-.popup {
+#popup {
     pointer-events : none;
     position: absolute;
     transform: translate(-25px, -19px);
@@ -333,7 +333,7 @@ a {
     webkit-user-select: none;
     user-select: none;
 } 
-.popup:before {
+#popup:before {
     pointer-events : none;
     content:"";
     position: absolute;
@@ -348,7 +348,7 @@ a {
     border-right: 4px solid transparent;
 } 
 
-.chapters, .playlist {
+#chapters, #playlist {
     display : flex;
     overflow : scoll;
     background : var(--cpu-background);
@@ -388,58 +388,58 @@ a {
     width : var(--cpu-height);
 }
 
-.mode-compact .poster,
-.mode-compact .title,
-.mode-compact .line,
-.mode-compact .actions,
-.mode-compact .chapters,
-.mode-button .poster,
-.mode-button .about,
-.mode-button .actions,
-.mode-button .chapters,
+.mode-compact #poster,
+.mode-compact #title,
+.mode-compact #line,
+.mode-compact #actions,
+.mode-compact #chapters,
+.mode-button #poster,
+.mode-button #about,
+.mode-button #actions,
+.mode-button #chapters,
 .mode-hidden,
-.hide-chapters .chapters {
+.hide-chapters #chapters {
     display : none;
 }
 
-.mode-compact.show-main .pagemain {
+.mode-compact.show-main #pagemain {
     flex : 0 0 auto;
 }
 
-@media (max-width: 640px) , @element .interface and (max-width: 640px) {
+@media (max-width: 640px) , @element #interface and (max-width: 640px) {
 
     .nosmall {
         display : none;
     }
-    .title a {
+    #title a {
         max-height : 16px;
     }
 
-    .elapse {
+    #elapse {
         max-height : 16px;
     }
 
-    .interface {
+    #interface {
         --cpu-timeline-height : 8px ;
     }
 }
-@media (max-width: 480px) , @element .interface and (max-width: 480px) {
+@media (max-width: 480px) , @element #interface and (max-width: 480px) {
     .mode-default .notiny {
         display : none;
     }
 
-    .mode-default .elapse {
+    .mode-default #elapse {
         flex : 1 0 var(--cpu-elapse-width);
     }
 }
-@media (max-width: 320px) , @element .interface and (max-width: 320px) {
-    .mode-default .elapse {
+@media (max-width: 320px) , @element #interface and (max-width: 320px) {
+    .mode-default #elapse {
         display : none;
     }
 }
 
 @media print {
-    .interface {
+    #interface {
         display : none;
     }
 }

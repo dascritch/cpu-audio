@@ -60,27 +60,27 @@ window.addEventListener('load', function() {
 
 	QUnit.test( "Press play to start", function( assert ) {
 		assert.ok(audiotag.paused, "Player is paused at start" );
-		controlertag.querySelector('.pause').click();
+		controlertag.querySelector('#pause').click();
 		assert.ok(! audiotag.paused, "Player plays after clicking on the play/pause button" );
 	});
 
 	QUnit.test( "Press play to start", function( assert ) {
 		assert.ok(audiotag.paused, "Player is paused at start" );
-		controlertag.querySelector('.pause').click();
+		controlertag.querySelector('#pause').click();
 		assert.ok(! audiotag.paused, "Player plays after clicking on the play/pause button" );
 	});
 
 	QUnit.test( "Press pause to stop", function( assert ) {
 		audiotag.play();
 		assert.ok(! audiotag.paused, "Player is playing" );
-		controlertag.querySelector('.play').click();
+		controlertag.querySelector('#play').click();
 		assert.ok(audiotag.paused, "Player paused" );
 	});
 
 	QUnit.test( "Click at the middle of the timeline ", function( assert ) {
 		let done = assert.async();
 		assert.expect(3);
-		let time_element = controlertag.querySelector('.time');
+		let time_element = controlertag.querySelector('#time');
 
 		function check_needle_moved(e) {
 			assert.ok(! audiotag.paused, 'Audio tag is playing');
@@ -108,7 +108,7 @@ window.addEventListener('load', function() {
 	});
 
 	let canonical = 'http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore';
-	let link_element = controlertag.querySelector('.elapse');
+	let link_element = controlertag.querySelector('#elapse');
 
 	/*
 I still have an issue on this test, as the tested code works correctly, and i'm mad about it !
@@ -172,7 +172,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let done = assert.async();
 		setTimeout(function() {
 			let component = playground.querySelector('#track_will_disapear');
-			let chapters = component.shadowRoot.querySelector('.chapters');
+			let chapters = component.shadowRoot.querySelector('#chapters');
 			chapters.innerHTML="<li>Hello</li><li>World</li>"
 			component.querySelector('track').remove();
 			setTimeout(function() {
@@ -193,7 +193,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 			component.setAttribute('title', 'world');
 
 			setTimeout(function() {
-				assert.equal(component.shadowRoot.querySelector('.canonical').innerText, 'world', 'Display title changed');
+				assert.equal(component.shadowRoot.querySelector('#canonical').innerText, 'world', 'Display title changed');
 				done();
 			}, 100);
 		}, 100);
@@ -210,7 +210,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 			component.querySelector('audio').dataset.title = 'world';
 
 			setTimeout(function() {
-				assert.equal(component.shadowRoot.querySelector('.canonical').innerText, 'world', 'Display title changed');
+				assert.equal(component.shadowRoot.querySelector('#canonical').innerText, 'world', 'Display title changed');
 				done();
 			}, 100);
 		}, 100);

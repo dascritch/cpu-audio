@@ -33,7 +33,7 @@ class CpuControllerElement extends HTMLElement {
         }
         this.CPU = new CPU_element_api(
             this,
-            this.shadowRoot.querySelector('.interface')
+            this.shadowRoot.querySelector(selector_interface)
         );
         if (!this.CPU.audiotag) {
             document.CPU.global_controller = this.CPU;

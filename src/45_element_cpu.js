@@ -328,12 +328,8 @@ let CPU_element_api = class {
 
         // the following mess is to simplify sub-element declaration and selection
         let controller = this;
-        querySelector_apply('*', function(element){
-            element.classList.forEach(function(this_class) {
-                if (controller.elements[this_class] === undefined) {
-                    controller.elements[this_class] = element;
-                }
-            });
+        querySelector_apply('[id]', function(element){
+            controller.elements[element.id] = element;
         }, this.element.shadowRoot);
 
         let cliquables = {
@@ -370,13 +366,13 @@ let CPU_element_api = class {
             'touchend'    : false,
             'touchcancel' : false,
         }
-        for(let event_name in do_events) {
+        for (let event_name in do_events) {
             timeline_element.addEventListener(
                 event_name,
                 do_events[event_name] ? trigger.hover : trigger.out, {passive: true});
         }
         // alternative ime navigation for handhelds
-            timeline_element.addEventListener('touchstart', trigger.touchstart, {passive: true});
+            timeline_element.addEventListener('touchstart', trigger.touchstart, {passive:true});
             timeline_element.addEventListener('touchend', trigger.touchcancel, {passive: true});
             timeline_element.addEventListener('contextmenu', this.show_handheld_nav );
             this.elements['inputtime'].addEventListener('input', trigger.input_time_change);
