@@ -178,6 +178,24 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		}, 100);
 	});
 
+	QUnit.test( "Canonical with an ID keeps the ID", function( assert ) {
+		playground.innerHTML = `<cpu-audio id="canonical_with_id" canonical="./canonical.html#id"><audio controls>
+									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+									<track />
+								</audio>
+							</cpu-audio>`;
+		let done = assert.async();
+		setTimeout(function() {
+			let component = playground.querySelector('#canonical_with_id');
+			component.querySelector('audio').play();
+			let elapsetag = component.shadowRoot.querySelector('#elapse');
+			setTimeout(function() {
+				assert.notEqual(-1, elapsetag.href.indexOf('canonical.html#id&t='), `Elapse tag href ${elapsetag.href}`);
+				done();
+			}, 100);
+		}, 100);
+	});
+
 	QUnit.test( "Dynamically change elements, as removing track", function( assert ) {
 		playground.innerHTML = `<cpu-audio id="track_will_disapear"><audio id="will_lose_track" controls>
 									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />

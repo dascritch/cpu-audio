@@ -40,9 +40,10 @@ let CPU_element_api = class {
     }
     update_time(event) {
         let timecode = convert.SecondsInTime(this.audiotag.currentTime);
-        let link_to = absolutize_url(this.audiotag.dataset.canonical)+'#';
-        // WHAAAT ? I should have done something wrong there
-        link_to += this.audiotag.id ? (this.audiotag.id+'&') : '';
+        let canonical = this.audiotag.dataset.canonical;
+        canonical = canonical === undefined ? '' : canonical;
+        let link_to = absolutize_url(canonical)+'#';
+        link_to += ((canonical.indexOf('#') === -1) ? this.audiotag.id : canonical.substr(canonical.indexOf('#')+1) )+'&';
         link_to += 't='+timecode;
 
         let elapse_element = this.elements['elapse'];
