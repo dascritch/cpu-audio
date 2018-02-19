@@ -39,7 +39,7 @@ let CPU_element_api = class {
         this.update_line('elapsed', end);
     }
     update_time(event) {
-        let timecode = convert.SecondsInTime(this.audiotag.currentTime);
+        let timecode = Math.floor(this.audiotag.currentTime);
         let canonical = this.audiotag.dataset.canonical;
         canonical = canonical === undefined ? '' : canonical;
         let link_to = absolutize_url(canonical)+'#';
@@ -175,7 +175,7 @@ let CPU_element_api = class {
                     + `#${this.audiotag.id}` 
                     + ( this.audiotag.currentTime === 0 
                             ? ''
-                            : `&t=${convert.SecondsInTime(this.audiotag.currentTime)}`
+                            : `&t=${Math.floor(this.audiotag.currentTime)}`
                         );
 
         let _url = encodeURI(absolutize_url(url));
@@ -274,7 +274,7 @@ let CPU_element_api = class {
                     let line = document.createElement('li');
                     line.id  = cue.id;
                     line.classList.add('cue');
-                    let cuepoint = convert.SecondsInTime(cue.startTime);
+                    let cuepoint = Math.floor(cue.startTime);
                     let cuetime = convert.SecondsInColonTime(cue.startTime);
                     line.innerHTML = 
                         `<a href="#${self.audiotag.id}&t=${cuepoint}" tabindex="0">`+
