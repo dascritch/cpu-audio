@@ -92,6 +92,24 @@ const trigger = {
         container.hide_throbber();
     },
 
+    preview_hover : function(event) {
+
+    },
+    preview_container_hover : function(event) {
+        let container = document.CPU.find_container(event.target);
+        let link_element = event.target.closest('li');
+        // TODO : 
+            // decode hash id, gets its container
+            // use dataset.cueId  , derive startTime and endTime
+            // use dataset.cueStartTime else try decode hash startTime
+            // use dataset.cueEndTime else try decode hash endTime
+
+        let start = link_element.dataset.cueStartTime;
+        let end = link_element.dataset.cueEndTime;
+
+        container.preview(start, end);
+    },
+
     throbble : function(event) {
         let at = 0;
         let container = document.CPU.find_container(event.target);

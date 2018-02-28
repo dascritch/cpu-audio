@@ -283,7 +283,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 			let component = playground.querySelector('#show_on_this').closest('cpu-audio');
 			component.CPU.preview(20,40);
 			component.CPU.preview();
-			
+
 			let preview = component.shadowRoot.querySelector('#preview')
 			assert.equal(document.CPU.previewed, null, 'Global API trace removed');
 			assert.equal(component.CPU.elements.interface.classList.contains('with-preview'), false, 'Highlight on timeline hidden');
@@ -298,7 +298,10 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 									< src="./tests-assets/blank.mp3" type="audio/mpeg" />
 								</audio>
 							</cpu-audio>
-							<a id="internal_link" href="#show_on_this&t=2"></a>`;
+							<a id="internal_link_with_start" href="#show_on_this&t=20">internal_link_with_start</a><br />
+							<a id="internal_link_with_start_and_end" href="#show_on_this&t=20,40">internal_link_with_start_and_end</a><br />
+							<a id="internal_link_with_chapter_id" href="#show_on_this&t=hello">internal_link_with_chapter_id</a><br />
+							`;
 		let done = assert.async();
 		setTimeout(function() {
 			let component = playground.querySelector('#show_on_this').closest('cpu-audio');

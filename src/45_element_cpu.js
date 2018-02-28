@@ -157,15 +157,10 @@ let CPU_element_api = class {
         }
 
         let element = this.elements['preview'];
-        console.log(element)
         element.style.left = `${100 * _timecode_start / this.audiotag.duration}%`;
         _timecode_end = _timecode_end === undefined ? this.audiotag.duration : _timecode_end;
         element.style.right = `${100-100 * _timecode_end / this.audiotag.duration}%`;
 
-    }
-
-    preview_chapter(event) {
-        console.log(event)
     }
 
     fetch_audiotag_dataset() {
@@ -307,6 +302,10 @@ let CPU_element_api = class {
                             `<span>${cuetime}</span>`+
                         `</a>`;
                     chapters_element.append(line);
+
+                    line.dataset.cueId = cue.id; 
+                    line.dataset.cueStartTime = cuepoint; 
+                    line.dataset.cueEndTime = Math.floor(cue.endTime);
                 }
             }
         }
@@ -406,6 +405,11 @@ let CPU_element_api = class {
         this.show_main();
         this.build_chapters();
 
-        this.elements['chapters'].addEventListener('hover', this.preview_chapter)
+        let chapters_element = this.elements['chapters'];
+
+        chapters_element.addEventListener('mouseover', trigger.preview_container_hover)
+        chapters_element.addEventListener('focusin', trigger.preview_container_hover)
+        chapters_element.addEventListener('mouseleave', this.preview_chapter)
+        chapters_element.addEventListener('focusout', trigger.preview_container_hover)
     }
 };
