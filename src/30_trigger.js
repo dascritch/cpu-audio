@@ -150,7 +150,7 @@ const trigger = {
         }
 
         trigger._remove_timecode_outofborders(audiotag.currentTime);
-        if (document.CPU.global_controller) {
+        if ((document.CPU.global_controller) && (!audiotag.isEqualNode(document.CPU.global_controller.audiotag))) {
             document.CPU.global_controller.attach_audiotag_to_controller(audiotag);
             document.CPU.global_controller.audiotag = audiotag;
             document.CPU.global_controller.show_main();
