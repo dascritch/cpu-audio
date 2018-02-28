@@ -144,15 +144,16 @@ let CPU_element_api = class {
     }
 
     preview(_timecode_start, _timecode_end) {
-        let mode = _timecode_start !== undefined;
+        let mode = !isNaN(_timecode_start);
+        console.log(mode , _timecode_start)
         let classlist = this.elements['interface'].classList;
         let classname = 'with-preview';
         if (mode) {
             classlist.add(classname);
             document.CPU.previewed = this.audiotag.id;
         } else {
-            document.CPU.previewed = null;
             classlist.remove(classname);
+            document.CPU.previewed = null;
             return ;
         }
 
@@ -356,6 +357,8 @@ let CPU_element_api = class {
             controller.elements[element.id] = element;
         }, this.element.shadowRoot);
 
+        let passive_ev = {passive: true};
+
         let cliquables = {
             'pause'     : trigger.play,
             'play'      : trigger.pause,
@@ -393,11 +396,11 @@ let CPU_element_api = class {
         for (let event_name in do_events) {
             timeline_element.addEventListener(
                 event_name,
-                do_events[event_name] ? trigger.hover : trigger.out, {passive: true});
+                do_events[event_name] ? trigger.hover : trigger.out, passive_ev);
         }
         // alternative ime navigation for handhelds
-            timeline_element.addEventListener('touchstart', trigger.touchstart, {passive:true});
-            timeline_element.addEventListener('touchend', trigger.touchcancel, {passive: true});
+            timeline_element.addEventListener('touchstart', trigger.touchstart, passive_ev);
+            timeline_element.addEventListener('touchend', trigger.touchcancel, passive_ev);
             timeline_element.addEventListener('contextmenu', this.show_handheld_nav );
             this.elements['inputtime'].addEventListener('input', trigger.input_time_change);
             this.elements['inputtime'].addEventListener('change', trigger.input_time_change);
@@ -407,9 +410,10 @@ let CPU_element_api = class {
 
         let chapters_element = this.elements['chapters'];
 
-        chapters_element.addEventListener('mouseover', trigger.preview_container_hover)
-        chapters_element.addEventListener('focusin', trigger.preview_container_hover)
-        chapters_element.addEventListener('mouseleave', this.preview_chapter)
-        chapters_element.addEventListener('focusout', trigger.preview_container_hover)
+        chapters_element.addEventListener('mouseover', trigger.preview_container_hover, passive_ev);
+        chapters_element.addEventListener('focusin', trigger.preview_container_hover, passive_ev);
+        let preview_bind = this.preview.bind(this);
+        chapters_element.addEventListener('mouseleave', preview_bind, passive_ev);
+        chapters_element.addEventListener('focusout', preview_bind, passive_ev);
     }
 };
