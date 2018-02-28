@@ -97,8 +97,6 @@ document.CPU = document.CPU ? document.CPU : {
             ].forEach( function(on){ 
                 audiotag.addEventListener(on, trigger.pause);
             });
-        } else {
-            audiotag.addEventListener('loadedmetadata', document.CPU.find_container(audiotag).build_chapters);
         }
   
         // ask ASAP metadata about media
@@ -188,10 +186,21 @@ document.CPU = document.CPU ? document.CPU : {
             || ( child.tagName === CpuControllerTagName)) {
             return child.CPU
         }
-        if (child.tagName === 'AUDIO') {
+        if (child.tagName === 'AUDIO'){
             return child.parentNode.CPU
         }
-        return this.find_interface(child).parentNode.host.CPU;
+        let closest_audio = child.closest('AUDIO');
+        if (closest_audio){
+            return closest_audio.parentNode.CPU
+        }
+        let _interface = document.CPU.find_interface(child);
+        /*
+        if (_interface === null) {
+            window.console.info({child:  child})
+            window.console.trace()
+            return null;
+        }*/
+        return _interface.parentNode.host.CPU;
     },
     seekElementAt : function (audiotag, seconds) {
 

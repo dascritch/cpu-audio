@@ -145,7 +145,6 @@ let CPU_element_api = class {
 
     preview(_timecode_start, _timecode_end) {
         let mode = !isNaN(_timecode_start);
-        console.log(mode , _timecode_start)
         let classlist = this.elements['interface'].classList;
         let classname = 'with-preview';
         if (mode) {
@@ -276,6 +275,10 @@ let CPU_element_api = class {
         if (event !== undefined) {
             // Chrome load <track> afterwards, so an event is needed, and we need to recatch our CPU api to this event
             self = document.CPU.find_container(event.target);
+            if (self === null) {
+                // not yet ready, should not occurs
+                window.console.error('Container CPU- not ready yet. WTF ?');
+            }
         }
 
         let chapters_element = self.elements['chapters'];
@@ -407,6 +410,13 @@ let CPU_element_api = class {
 
         this.show_main();
         this.build_chapters();
+        let this_build_chapters = this.build_chapters.bind(this);
+        // sometimes, we MAY have loose loading
+        this.audiotag.addEventListener('loadedmetadata', this_build_chapters, passive_ev);
+        let track_element = this.audiotag.querySelector('track[kind="chapters"]');
+        if (track_element) {
+            track_element.addEventListener('load', this_build_chapters, passive_ev);
+        }
 
         let chapters_element = this.elements['chapters'];
 
