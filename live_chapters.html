@@ -4,9 +4,9 @@
 <cpu-audio 
     title="First, Choose an URL for source"
     poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
-    twitter="@dascritch"
     >
     <audio controls id="sound" src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0093-CPU%2818-10-18%29.mp3">
+        <track kind="chapters" src="" default />
     </audio>
     <!-- {% include no_component_message.html %} -->
 </cpu-audio>
@@ -173,10 +173,10 @@ function check_for_actions(event) {
 
 
 function interpret_form(event) {
-
+    let data;
 
     function prepare_export_file(text) {
-        let data = new Blob([text], {type: 'text/plain'});
+        data = new Blob([text], {type: 'text/plain'});
         textFile = window.URL.createObjectURL(data);
         return textFile;
     }
@@ -249,7 +249,18 @@ function interpret_form(event) {
     document.getElementById('wiki_source').innerText = build_wiki_source();
     let vtt = build_vtt_source();
     document.getElementById('vtt_source').innerText = vtt;
-    document.getElementById('vtt_source_download').href = prepare_export_file(vtt);
+    let vtt_virtual_file = prepare_export_file(vtt);
+    document.getElementById('vtt_source_download').href = vtt_virtual_file;
+    // update tracklist in cpu-audio . To be done
+    let f = new FileReader();
+    f.addEventListener("load", function () {
+        document.querySelector('track').src = f.result;
+        document.querySelector('cpu-audio').CPU.build_chapters();
+    }, false);
+    f.readAsDataURL(data);
+    
+    
+
     document.location.hash = '#generated_html';
 }
 
