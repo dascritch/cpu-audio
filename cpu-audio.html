@@ -1,0 +1,1099 @@
+<!--
+Note. Fonctions retirées :
+- Playlist
+- i18n
+-->
+<template>
+    <style>
+
+.cpu-audio {
+	font-family : Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif !important;
+	font-size : 15px !important;
+}
+
+.cpu-audio, * {
+	line-height : 1.2 !important;
+	border : none !important;
+	padding : 0 !important;
+	margin : 0 !important;
+	transition : none !important;
+	moz-user-select: none;
+	ms-user-select: none;
+	webkit-user-select: none;
+	user-select: none;
+}
+
+.cpu-audio {
+	display : flex;
+	background : #555;
+	color : #ccc;
+	height : 64px;
+}
+
+.act-error {
+	color : #cc0;
+}
+
+a {
+	color : #aaf;
+	border : none !important;
+	text-decoration : none;
+}
+svg {
+  	fill : #ffffff;
+  	width:64px;
+	height : 64px;
+}
+a:hover {
+	color : #555;
+	background : #aaf;
+}
+a:hover svg {
+	fill : #555;
+}
+.loading, .play, .pause {
+	width : 0px;
+}
+
+.act-loading .loading,
+.act-play .play,
+.act-pause .pause,
+.actions,
+.back {
+	flex : 0 0 64px;
+	width : 64px;
+	max-height : 64px;
+	height : 100%;
+	text-align : center;
+	vertical-align : middle;
+}
+.actions,
+.back {
+	cursor : pointer;
+}
+
+.act-loading .loading circle:nth-child(1) {
+	  animation: pulse0 2s infinite;
+}
+
+.act-loading .loading circle:nth-child(2) {
+	  animation: pulse1 2s infinite;
+}
+
+.act-loading .loading circle:nth-child(3) {
+	  animation: pulse2 2s infinite;
+}
+
+@keyframes pulse0 {
+    0% {
+        opacity : 1;
+    }
+    50% {
+        opacity : 0;
+    }
+    100% {
+        opacity : 1;
+    }
+}
+
+@keyframes pulse1 {
+    0% {
+        opacity : 0.75;
+    }
+    12% {
+        opacity : 1;
+    }
+    62% {
+        opacity : 0;
+    }
+    100% {
+        opacity : 0.75;
+    }
+}
+
+@keyframes pulse2 {
+    0% {
+        opacity : 0.5;
+    }
+    25% {
+        opacity : 1;
+    }
+    75% {
+        opacity : 0;
+    }
+    100% {
+        opacity : 0.5;
+    }
+}
+
+@keyframes pulse3 {
+    0% {
+        opacity : 0.25;
+    }
+    37% {
+        opacity : 1;
+    }
+    87% {
+        opacity : 0;
+    }
+    100% {
+        opacity : 0.5;
+    }
+}
+
+.cover {
+	width : 64px;
+ }
+
+.poster {
+	width : 64px;
+	height : 64px;
+	object-fit: contain;
+}
+
+.loading svg, .play svg, .pause svg, .actions svg {
+	vertical-align : middle;
+	max-width : 100%;
+	max-height : 100%;
+}
+.titleline {
+	display : flex;
+}
+.about, .title {
+	flex : 1 1 100%;
+	position : relative;
+}
+.title a {
+    display : block;
+	text-overflow : ellipsis;
+	max-height: 48px;
+	overflow: hidden;
+
+}
+.elapse {
+	flex : 1 0 120px;
+	text-align : right;
+}
+.time {
+	background : black;
+	width : 100%;
+	height : 10px;
+	display : block;
+	border-radius : 4px;
+	position : relative;
+	cursor:none;
+}
+.loadingline,
+.elapsedline {
+	background : white;
+	height : 10px ;
+	display : block ;
+	position : absolute;
+	left : 0;
+	border-radius : 4px;
+	pointer-events : none;
+}
+
+.act-loading .loadingline {
+	animation: pulse3 2s infinite;
+}
+.pagemain, .pageshare, .share {
+	flex : 1 1 100%;
+	display : flex;
+	align-items: center;
+}
+.share {
+	text-align : center;
+}
+
+.share a {
+	height : 64px;
+}
+
+.share a, .share div {
+	flex : 1 0;
+	color : white;
+	text-decoration : none;
+	overflow : hidden;
+	text-overflow : clip;
+}
+.share svg {
+	vertical-align : middle;
+  		width:32px;
+		height : 32px;
+}
+.twitter {background : #4DB5F4}
+.facebook {background : #5974CC}
+.email {background : #CC0000}
+.link {background : #77F}
+
+@media screen and (max-width: 640px) {
+
+	.cpu-audio {
+		height : 32px;
+		font-size : 12px;
+	}
+
+  	.nosmall {
+		display : none;
+  	}
+	.act-loading .loading,
+	.act-play .play,
+	.act-pause .pause,
+	.actions {
+		flex : 0 0 32px;
+		height : 32px;
+		width : 32px;
+	}
+	svg {
+  		width:32px;
+		height : 32px;
+	}
+	.title a {
+		max-height : 16px;
+	}
+
+  	.elapse {
+  		flex : 1 0 80px;
+		max-height : 16px;
+  	}
+
+  	.share a {
+		height : 32px;
+	}
+}
+@media screen and (max-width: 319px) {
+	.elapse {
+		display : none;
+	}
+}
+
+@media print {
+	.cpu-audio {
+		display : none;
+	}
+}
+
+.popup {
+	position: absolute;
+	transform: translate(-25px, 20px);
+	z-index : 127;
+	min-width : 50px;
+	font-size : 11px;
+	text-align : center;
+	padding : 4px;
+	border-radius: 4px;
+	background : #ccc;
+	color : #555;
+	opacity : 0;
+	transition : opacity 1s;
+	pointer-events : none;
+	/* absolute pos, need to repeat it →  https://developer.mozilla.org/en-US/docs/Web/CSS/user-select */
+	moz-user-select: none;
+	ms-user-select: none;
+	webkit-user-select: none;
+	user-select: none;
+} 
+
+.popup:before {
+	content:"";
+	position: absolute;
+	left: 20px;
+	top: -16px;
+	height : 0;
+	width: 0;
+	border-bottom: 16px solid #ccc;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	pointer-events : none;
+} 
+
+
+    </style>
+
+<!--	'stop' : '<path d="M 6,6 6,26 26,26 26,6 z" />', -->
+
+
+
+<div class="cpu-audio">
+<img class="poster nosmall" src="{{poster}}" alt="" />
+<div class="pagemain">
+	<div class="loading"><svg viewBox="0 0 32 32">
+		<circle cx="6" cy="22" r="4" fill="#777777" /><circle cx="16" cy="22" r="4" fill="#777777" /><circle cx="26" cy="22" r="4" fill="#777777" />
+	</svg></div>
+	<a class="play"><svg viewBox="0 0 32 32">
+		<path d="M 6,6 12.667,6 12.667,26 6,26 z" /><path d="M 19.333,6 26,6 26,26 19.333,26 z" />
+	</svg></a>
+	<a class="pause"><svg viewBox="0 0 32 32">
+		<path d="M 6,6 6,26 26,16 z" />
+	</svg></a>
+	<div class="about">
+		<div class="titleline">
+			<div class="title"><a href="{{canonical}}" class="canonical" title="{{title}}">{{title}}</a></div>
+			<a class="elapse">…</a>
+		</div>
+		<div class="line">
+			<div class="time">
+				<div class="loadingline"></div>
+				<div class="elapsedline"></div>
+				<time class="popup">--:--</time>
+			</div>
+		</div>
+	</div>
+	<a class="actions">
+		<svg viewBox="0 0 32 32">
+			<circle cx="12" cy="10" r="4" /><circle cx="12" cy="22" r="4" /><circle cx="23" cy="16" r="4" /><polygon points="12,8 24,14 24,18 12,12"/><polygon points="12,20 24,14 24,18 12,24"/>
+		</svg>
+	</a>
+</div>
+<div class="pageshare">
+	<div class="share">
+		<a href="#" target="social" class="twitter nosmall" title="Partager sur Twitter">
+			<svg viewBox="0 0 32 32">
+				<path d="M 25.941,9.885 C 25.221,10.205 24.448,10.422 23.637,10.520 24.465,10.020 25.101,9.230 25.401,8.288 24.626,8.750 23.768,9.086 22.854,9.267 22.122,8.483 21.080,7.993 19.926,7.993 c -2.215,0 -4.011,1.806 -4.011,4.034 0,0.316 0.035,0.623 0.103,0.919 -3.333,-0.168 -6.288,-1.774 -8.267,-4.215 -0.345,0.596 -0.542,1.289 -0.542,2.028 0,1.399 0.708,2.634 1.784,3.358 -0.657,-0.020 -1.276,-0.202 -1.816,-0.504 -3.98e-4,0.016 -3.98e-4,0.033 -3.98e-4,0.050 0,1.954 1.382,3.585 3.217,3.955 -0.336,0.092 -0.690,0.141 -1.056,0.141 -0.258,0 -0.509,-0.025 -0.754,-0.072 0.510,1.602 1.991,2.769 3.746,2.801 -1.372,1.082 -3.102,1.726 -4.981,1.726 -0.323,0 -0.642,-0.019 -0.956,-0.056 1.775,1.144 3.883,1.812 6.148,1.812 7.377,0 11.411,-6.147 11.411,-11.478 0,-0.174 -0.004,-0.348 -0.011,-0.522 0.783,-0.569 1.463,-1.279 2.001,-2.088 z" />
+			</svg>
+			<span>Partager sur Twitter</span>
+		</a>
+		<a href="#" target="social" class="facebook nosmall" title="Partager sur Facebook">
+			<svg viewBox="0 0 32 32">
+				<path d="m 21.117,16.002 -3.728,0 0,10.027 -4.297,0 0,-10.027 -2.070,0 0,-3.280 2.070,0 0,-2.130 c 0,-2.894 1.248,-4.616 4.652,-4.616 l 3.922,0 0,3.549 -3.203,0 c -0.950,-0.001 -1.068,0.495 -1.068,1.421 l -0.005,1.775 4.297,0 -0.568,3.280 0,2.34e-4 z" />
+			</svg>
+			<span>Partager sur Facebook</span>
+		</a>
+		<a href="#" target="social" class="email" title="Partager par e-mail">
+			<svg viewBox="0 0 32 32">
+				<path d="m 8.030,8.998 15.920,0 c 0.284,0 0.559,0.053 0.812,0.155 l -8.773,9.025 -8.773,-9.026 c 0.253,-0.101 0.528,-0.155 0.812,-0.155 z m -1.990,12.284 0,-10.529 c 0,-0.036 0.002,-0.073 0.004,-0.109 l 5.835,6.003 -5.771,5.089 c -0.045,-0.146 -0.068,-0.298 -0.069,-0.453 z m 17.910,1.754 -15.920,0 c -0.175,0 -0.348,-0.020 -0.514,-0.060 l 5.662,-4.993 2.811,2.892 2.811,-2.892 5.662,4.993 c -0.165,0.039 -0.338,0.060 -0.514,0.060 z m 1.990,-1.754 c 0,0.155 -0.023,0.307 -0.068,0.453 l -5.771,-5.089 5.835,-6.003 c 0.002,0.036 0.004,0.073 0.004,0.109 z" />
+			</svg>
+			<span>Partager par e-mail</span>
+		</a>
+		<!--a href="{{playlister}}" target="onde_miroir_player" class="playlist" title="{{playlist}}">
+			<svg viewBox="0 0 32 32">
+				{{svg:play}}
+			</svg>
+			<span>{{playlist}}</span>
+		</a-->
+		<a href="#" target="social" class="link" title="Télécharger">
+			<svg viewBox="0 0 32 32">
+				<path d="M 6,6 26,6 16,26 z" /><rect x="6" y="22" width="20" height="4" />
+			</svg>
+			<span>Télécharger</span></a>
+		<a class="back" title="Annuler">Annuler</a>
+	</div>
+</div>
+</div>
+</template>
+
+<script>
+'use strict';
+
+/** @license
+	OndeMirroir Audio Tag, an extension to the hash system to address timecode into audio/video elements
+	Copyright (C) 2014-2017 Xavier "dascritch" Mouton-Dubosc
+	Previously TimecodeHash
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	--
+	project repository : https://github.com/dascritch/ondemiroir-audio-tag
+	blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore
+*/
+
+// WATCH OUT ! You should NOT use this script in a unsecure domain name
+if (document.domain !== '') {
+	document.domain = document.domain.replace(/^(.*\.)?(\w+\.\w+)$/,'$2');
+}
+
+if (!window.matchMedia("screen").matches) {
+	// I'm not in a screen context, as a braille surface
+	// Sorry, but your browser's native controls are surely more accessible
+// TODO replace this return ;) !!!
+//	return undefined;
+}
+
+
+(function(){
+
+
+var thisDoc =  (document._currentScript || document.currentScript).ownerDocument;
+var template, shadow_element;
+
+var cpu_i18n = {
+		'untitled' : '(sans titre)',
+		'cover' : 'pochette',
+		'more' : 'Partager',
+		'twitter' : 'Partager sur Twitter',
+		'facebook' : 'Partager sur Facebook',
+		'e-mail' : 'Partager par e-mail',
+		'playlist' : 'Écouter plus tard',
+		'download' : 'Télécharger',
+		'back' : 'Annuler',
+
+		'media_err_aborted' : 'Vous avez annulé la lecture.',
+		'media_err_network' : 'Une erreur réseau a causé l\'interruption du téléchargement.',
+		'media_err_decode' : 'La lecture du sonore a été annulée suite à des problèmes de corruption ou de fonctionnalités non supportés par votre navigateur.',
+		'media_err_src_not_supported' : 'Le sonore n\'a pu être chargé, soit à cause de sourcis sur le serveur, le réseau ou parce que le format n\'est pas supporté.',
+		'media_err_unknow' : 'Erreur due à une raison inconnue'
+};
+
+var _units = {
+	'd' : 86400,
+	'h' : 3600,
+	'm' : 60,
+	's' : 1
+};
+
+
+
+function onDebug(callback_fx) {
+	// this is needed for testing, as we now run in async tests
+	if (typeof callback_fx === 'function') {
+		callback_fx();
+	}
+}
+
+function querySelector_apply(selector, callback, subtree) {
+	subtree = subtree === undefined ? document : subtree;
+	// explication de cette construction : https://coderwall.com/p/jcmzxw
+	[].forEach.call(subtree.querySelectorAll(selector), callback);
+}
+
+const convert = {
+		TimeInSeconds : function(givenTime) {
+			var seconds = 0;
+			if (/^\d+$/.test(givenTime)) {
+				seconds = Number(givenTime);
+			} else {
+				seconds = (givenTime.indexOf(':') === -1) ? this.SubunitTimeInSeconds(givenTime) : this.ColonTimeInSeconds(givenTime) ;
+			}
+			return seconds;
+		},
+		SubunitTimeInSeconds : function(givenTime) {
+			var seconds = 0;
+			for(var key in _units) {
+				if ( (_units.hasOwnProperty(key)) && (givenTime.indexOf(key) !== -1) ) {
+					var atoms = givenTime.split(key);
+					seconds += Number(atoms[0].replace(/\D*/g,'' )) * _units[key];
+					givenTime = atoms[1];
+				}
+			}
+			return seconds;
+		},
+		ColonTimeInSeconds : function(givenTime) {
+			var seconds = 0;
+			var atoms = givenTime.split(':');
+			var convert = [1, 60, 3600, 86400];
+			for (var pos = 0 ; pos < atoms.length ; pos++ ) {
+				seconds += Number(atoms[pos]) * convert[((atoms.length-1) - pos)];
+			}
+			return seconds;
+		},
+		SecondsInTime : function(givenSeconds) {
+			var converted = '';
+			var inned = false;
+			for(var key in _units) {
+				if (_units.hasOwnProperty(key)) {
+					var multiply = _units[key];
+					if ((givenSeconds >= multiply) || (inned)) {
+						inned = true;
+						var digits = Math.floor(givenSeconds / multiply);
+						converted += digits + key;
+						givenSeconds -= digits * multiply;
+					}
+				}
+			}
+			if (converted === '') {
+				converted = '0s';
+			}
+			return converted;
+		},
+}
+
+function absolutize_url(url) {
+	var test_element = document.createElement('a');
+	test_element.href = url;
+	return test_element.href;
+}
+
+var self = {
+		selector_media : 'audio', // [controls]
+		selector_fallback : 'audio[data-ondeplayer]',
+		selector_container : '.cpu-audio',
+        dynamicallyAllocatedIdPrefix : 'OndeMiroirAudio-tag-',
+        dontHideAudioTag : false,
+        poster_fallback : '//dascritch.net/themes/DSN13/img/entete1.svg',
+        _elements : {},
+		playlister : false,
+		playlist_window : false,
+		is_in_playlist : false,
+		rebuild_eventname : 'ondemiroir.rebuild',
+		keymove : 5,
+		count_element : 0,
+		only_play_one_audiotag : true,
+		current_audiotag_playing : null,
+
+		seekElementAt : function(audiotag, seconds) {
+			if (self.audiotag.fastSeek !== undefined) {
+				self.audiotag.fastSeek(seconds);
+				// Firefox doesn't see fastSeek
+			} else {
+				try {
+					// but can set currentTime
+					self.audiotag.currentTime = seconds;
+				} catch(e) {
+					// exept sometimes, so you must use standard media fragment
+					self.audiotag.src = self.audiotag.currentSrc.split('#')[0] + '#t=' + seconds;
+				}
+			}
+			function update_id_container_loading(container_id) {
+				var container = document.getElementById(container_id);
+				self.update_line(self.audiotag, container, 'loading', seconds);
+				self.update_act_container('loading', container);
+			}
+			self.audiotag._ondemiroir.forEach(update_id_container_loading);
+		},
+		jumpIdAt : function(hash,timecode,callback_fx) {
+			function _isEvent(event) {
+				return event.preventDefault !== undefined;
+			}
+
+			function do_element_play(event) {
+				var tag = event.target;
+				tag.play();
+				if (_isEvent(event)) {
+					tag.removeEventListener('canplay', do_element_play, true);
+				}
+				onDebug(callback_fx);
+			}
+
+			function do_needle_move(event) {
+
+				if (_isEvent(event)) {
+					self.audiotag.removeEventListener('loadedmetadata', do_needle_move, true);
+				}
+
+				var secs = convert.TimeInSeconds(timecode);
+				self.seekElementAt(self.audiotag, secs);
+
+				if (self.audiotag.readyState >= audiotag.HAVE_FUTURE_DATA)  {
+					do_element_play({ target : self.audiotag });
+				} else {
+					self.audiotag.addEventListener('canplay', do_element_play, true);
+				}
+				self.update({target : self.audiotag});
+			}
+
+			self.audiotag = (hash !== '') ? document.getElementById(hash) : document.querySelector(this.selector_fallback);
+
+			if ((self.audiotag === undefined) || (self.audiotag === null) || (self.audiotag.currentTime === undefined)) {
+				return false;
+			}
+
+			if (self.audiotag.readyState < self.audiotag.HAVE_CURRENT_DATA ) {
+				self.audiotag.addEventListener('loadedmetadata', do_needle_move , true);
+				self.audiotag.load();
+			} else {
+				do_needle_move({});
+			}
+			self.update({target : self.audiotag});
+		},
+		hashOrder : function(hashcode,callback_fx){
+			var at_start = true;
+			if (typeof hashcode !== 'string') {
+				at_start = 'at_start' in hashcode;
+				hashcode = location.hash.substr(1);
+			}
+			var hash = '';
+			var timecode = '';
+			var segments = hashcode.split('&');
+			var autoplay = false;
+
+			for (var _id in segments) {
+				var parameter = segments[_id];
+				if (parameter.indexOf('=') === -1) {
+					// should reference to the ID of the element
+					hash = parameter;
+				} else {
+					// should be a key=value parameter
+					var atoms = parameter.split('=');
+					var p_key = atoms[0];
+					var p_value = atoms[1];
+					switch (p_key) {
+						case 't':
+							// is a time index
+							timecode = p_value;
+							// we make autoplay at requested timecode, simplier of the user
+							autoplay = true;
+							break;
+						case 'autoplay':
+							if (p_value='1') {
+								autoplay = true;
+							}
+							break;
+						case 'auto_play':
+							if (p_value='true') {
+								autoplay = true;
+							}
+							break;
+					}
+
+				}
+			}
+
+			if ((timecode === '') || ((at_start) && (!autoplay))) {
+				onDebug(callback_fx);
+				return false;
+			}
+			self.jumpIdAt(hash,timecode,callback_fx);
+			document.location.hash = '#'+hash;
+			return true;
+		},
+		update_act_container : function (act, container) {
+			self.container.classList.remove(
+				'act-loading',
+				'act-pause',
+				'act-play');
+			self.container.classList.add('act-'+act);
+		},
+		update_playbutton : function(event, audiotag, container) {
+
+			if (self.audiotag.readyState < self.audiotag.HAVE_CURRENT_DATA ) {
+				self.update_act_container('loading', container);
+				return;
+			}
+			if (!self.audiotag.paused) {
+				self.update_act_container('play', container);
+			} else {
+				self.update_act_container('pause', container);
+			}
+		},
+		update_line : function(audiotag, container, type, seconds) {
+			// type = 'elapsed', 'loading'
+			self._elements[type+'line'].style.width = self.audiotag.duration === 0 ? 0 : (String(100 *seconds / self.audiotag.duration)+'%');
+		},
+		update_time : function(event, audiotag, container) {
+			var link_to = absolutize_url(self.audiotag.dataset.canonical)+'#';
+			link_to += self.audiotag.id ? (self.audiotag.id+'&') : '';
+			var timecode = convert.SecondsInTime(self.audiotag.currentTime)
+			link_to += 't='+timecode;
+
+			var elapse_element = self._elements['elapse'];
+			elapse_element.href = link_to;
+
+			var total_duration = '…';
+			if (!isNaN(Math.round(self.audiotag.duration))){
+				total_duration = convert.SecondsInTime(Math.round(self.audiotag.duration));
+			} 
+			 
+			elapse_element.innerHTML = timecode + '<span class="'+self.container.classname+'-nosmall"> / ' + total_duration+'</span>';
+			self.update_line(self.audiotag, container, 'elapsed', self.audiotag.currentTime);
+		},
+		update_id_container_infos: function (container_id) {
+				var container = document.getElementById(container_id);
+				var event = this;
+				var audiotag = event.target;
+				if (audiotag.error === 'error') {
+					self.update_act_container('error', container);
+
+				   switch (audiotag.error.code) {
+						case audiotag.error.MEDIA_ERR_ABORTED:
+							alert(__.s('media_err_aborted'));
+							break;
+						case audiotag.error.MEDIA_ERR_NETWORK:
+							alert(__.s('media_err_network'));
+							break;
+						case audiotag.error.MEDIA_ERR_DECODE:
+							alert(__.s('media_err_decode'));
+							break;
+						case audiotag.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+							alert(__.s('media_err_src_not_supported'));
+							break;
+						default:
+							alert(__.s('media_err_unknow'));
+							break;
+				   	}
+					return;
+				}
+				self.update_playbutton(event, audiotag, container);
+				self.update_time(event, audiotag, container);
+		},
+		update : function(event) {
+			var audiotag = event.target;
+			self.audiotag._ondemiroir.forEach(self.update_id_container_infos, event);
+			if (!self.audiotag.paused) {
+				localStorage.setItem(self.audiotag.currentSrc, String(self.audiotag.currentTime));
+			}
+		},
+		find_container : function (child) {
+			if (child.closest) {
+				// DOMnode.closest is not yet available anywhere
+				return child.closest('.cpu-audio')
+			}
+			return (child.className === self.container.classname) ? child : self.find_container(child.parentNode);
+		},
+		show_thobber_at : function(container, seeked_time) {
+			if (self.audiotag.duration < 1) {
+				// do not try to show if no metadata
+				return;
+			}
+			var phylactere = self._elements['popup'];
+			var elapse_element = self._elements['line'];
+
+			/* 30 pixels out, the Part Of Gad in the CSS */
+			phylactere.style.opacity = 1;
+			phylactere.style.left = (100 * seeked_time / self.audiotag.duration ) +'%';
+			phylactere.innerHTML = convert.SecondsInTime(seeked_time);
+		},
+		hide_throbber : function(container) {
+			var phylactere = self._elements['popup'];
+			phylactere.style.opacity = 0;
+		},
+		hide_throbber_later : function(container) {
+			var phylactere = self._elements['popup'];
+			if (phylactere._hider) {
+				window.clearTimeout(phylactere._hider);
+			}
+			phylactere._hider = window.setTimeout(self.hide_throbber, 1000, container);
+
+		},
+
+		do_hover : function(event) {
+			var target_rect = event.target.getClientRects()[0];
+			var relLeft = target_rect.left;
+			var ratio = (event.clientX - relLeft) / event.target.clientWidth;
+			//var container = self.find_container(event.originalTarget);
+			var seeked_time = ratio * self.audiotag.duration;
+			self.show_thobber_at(self.container, seeked_time);
+		},
+		do_out : function(event) {
+			self.hide_throbber(self.container);
+		},
+
+		do_throbble : function(event) {
+			//var container = self.find_container(event.target);
+			var relLeft = event.target.getClientRects()[0].left;
+			var ratio = (event.clientX - relLeft) / event.target.clientWidth;
+			self.seekElementAt(self.audiotag, ratio * self.audiotag.duration)
+		},
+		do_pause : function(event, audiotag) {
+
+			self.audiotag.pause();
+			self.current_audiotag_playing = null;
+			localStorage.removeItem(self.audiotag.currentSrc);
+		},
+		do_play : function(event, audiotag) {
+			if (audiotag === undefined) {
+				audiotag = self.audiotag;
+			}
+			if ( (self.only_play_one_audiotag) && (self.current_audiotag_playing) ) {
+				self.do_pause(undefined, document.getElementById(self.current_audiotag_playing))
+			}
+			self.current_audiotag_playing = audiotag.id;
+			self.audiotag.play();
+		},
+		do_onkey : function(event) {
+			function seek_relative(seconds) {
+				var seek_for = self.audiotag.currentTime + seconds;
+				self.seekElementAt(self.audiotag, seek_for);
+				self.show_thobber_at(self.container, seek_for);
+				self.hide_throbber_later(self.container);
+			}
+
+			var container = template; //self.find_container(event.target);
+			switch(event.keyCode) {
+				// can't use enter : standard usage
+				case 27 : // esc
+					self.seekElementAt(self.audiotag, 0);
+					self.audiotag.pause();
+					break;
+				case 32 : // space
+					self.audiotag.paused ? self.audiotag.play() : self.audiotag.pause();
+					break;
+				case 35 : // end
+					self.seekElementAt(self.audiotag, self.audiotag.duration);
+					break;
+				case 36 : // home
+					self.seekElementAt(self.audiotag, 0);
+					break;
+				case 37 : // ←
+					seek_relative(- self.keymove);
+					break;
+				case 39 : // →
+					seek_relative(+ self.keymove);
+					break;
+			}
+		},
+
+		update_links : function(audiotag, container) {
+			function ahref(category, href) {
+				self._elements[category].href = href;
+			}
+			function remove_hash(canonical) {
+				var hash_at = canonical.indexOf('#');
+				return hash_at === -1 ? canonical : canonical.substr(0,hash_at);
+			}
+
+			var canonical = self.audiotag.dataset.canonical
+			var url = (canonical === undefined ? '' : (remove_hash(canonical)) )
+						+ '#' + self.audiotag.id 
+						+ (self.audiotag.currentTime === 0 ? '' : ('&t='+self.convertSecondsInTime(self.audiotag.currentTime)));
+
+			var _url = encodeURI(absolutize_url(url));
+			var _title = encodeURI(self.audiotag.title);
+			ahref('twitter', 'https://twitter.com/share?text='+_title+'&url='+_url+'&via=dascritch');
+			ahref('facebook', 'https://www.facebook.com/sharer.php?t='+_title+'&u='+_url);
+			ahref('email', 'mailto:?subject='+_title+'&body='+_url);
+			ahref('link', self.audiotag.currentSrc);
+			//ahref('playlist', self.playlister);
+		},
+		show_actions : function(event) {
+			var container = self.find_container(event.target);
+			self._elements['pagemain'].style.display  = 'none';
+			self._elements['pageshare'].style.display  = 'flex';
+			self.update_links(document.getElementById(container.dataset.ondeplayer), container)
+		},
+		show_main : function(event) {
+			var container = self.find_container(event.target);
+			self._elements['pagemain'].style.display = 'flex';
+			self._elements['pageshare'].style.display = 'none';
+		},
+        /*
+		push_in_playlist : function(params) {
+			// loosy, but sunday morning, we'll clean it later
+			if (! self.playlist_window.push_in_playlist) {
+				window.setTimeout(self.push_in_playlist, 500, params);
+				return;
+			}
+			self.playlist_window.push_in_playlist(params);
+		},
+		add_playlist : function(event) {
+			self.playlist_window = window.open(self.playlister+'#', 'onde_miroir_player');
+			var container = self.find_container(event.target);
+			self.push_in_playlist({
+				src 		: absolutize_url(self.audiotag.currentSrc),
+				title 		: self.audiotag.title,
+				cover 		: absolutize_url(self.element_attribute(self.audiotag, 'poster', self.poster_fallback)),
+				canonical	: absolutize_url(self.audiotag.dataset.canonical),
+			});
+			// make pause current, as launched in playlist
+			self.audiotag.pause();
+			event.preventDefault();
+		},
+        */
+		element_attribute : function(element, key, missing) {
+			return (element.attributes[key] === undefined) ? missing : element.attributes[key].value;
+		},
+		get_params_for_template : function(element) {
+			if (element.dataset.canonical === undefined) {
+				element.dataset.canonical = document.location.href;
+			}
+			var out = {
+				// keys are stringed, as we need them not being modified
+				'{{title}}'     	: self.container.title === '' ? ('<em>'+__.s('untitled')+'</em>') : self.container.title,
+				'{{canonical}}' 	: absolutize_url(element.dataset.canonical),
+				'{{poster}}' 		: absolutize_url(self.element_attribute(element,'poster', self.poster_fallback)),
+				'{{classname}}' 	: self.container.classname,
+				//'{{playlister}}'	: self.playlister
+			}
+
+			_elements.title.innerHTML = out['{{title}}']
+			return out;
+		},
+		rebuild : function(event) {
+			function rebuild_container_id(element_id) {
+				var container = document.getElementById(element_id);
+				if (container.dataset.ondeplayer === undefined) {
+					container.remove();
+					self.build_for_audiotag(self.audiotag);
+				} else {
+					container.innerHTML = '';
+					self.build_for_placeholder(container);
+				}
+			}
+			self.audiotag._ondemiroir.forEach(rebuild_container_id);
+		},
+		add_id_to_container : function(container) {
+			self.container.id = self.container.id !== ''? self.container.id : (self.container.idPrefix + String(self.count_element++));
+		},
+		add_id_to_audiotag : function(audiotag) {
+			if (self.audiotag.id === '') {
+				self.audiotag.id = self.dynamicallyAllocatedIdPrefix + String(self.count_element++);
+			}
+		},
+		add_related_controller : function(audiotag, container) {
+			self.add_id_to_container(self.container);
+			if (self.audiotag._ondemiroir.indexOf(self.container.id) > -1) {
+				return;
+			}
+			self.audiotag._ondemiroir.push(container.id);
+		},
+
+		build_controller : function( audiotag) {
+			self.container.dataset.ondeplayer = self.audiotag.id;
+			self.container.classList.add(self.container.classname);
+			self.container.tabIndex = 0 // see http://snook.ca/archives/accessibility_and_usability/elements_focusable_with_tabindex and http://www.456bereastreet.com/archive/201302/making_elements_keyboard_focusable_and_clickable/
+
+			// the following mess is to simplify sub element declaration and selection
+			self._elements = {};
+			querySelector_apply('*', function(element){
+				element.classList.forEach(function(this_class) {
+					if (self._elements[this_class] === undefined) {
+						self._elements[this_class] = element;
+					}
+				});
+			}, self.container);
+
+			self.add_related_controller(self.audiotag, self.container);
+			var cliquables = {
+				'pause'		: self.do_play,
+				'play'		: self.do_pause,
+				'time'		: self.do_throbble,
+				'actions'	: self.show_actions,
+				'back' 		: self.show_main,
+				'poster'	: self.show_main,
+				//'playlist'	: self.add_playlist
+			};
+			for (let that in cliquables) {
+				self._elements[that].addEventListener('click', cliquables[that]);
+			}
+			// key management
+			self.container.addEventListener('keydown', self.do_onkey);
+			// throbber management
+			var timeline_element = self._elements['time'];
+			var do_events = {
+				'mouseover' : true,
+				'mousemove' : true,
+				'mouseout'  : false,
+
+				'touchstart'  : true,
+				// 'touchmove'   : true,
+				'touchend'    : false,
+				'touchcancel' : false,
+			}
+			for( var event_name in do_events) {
+				timeline_element.addEventListener(event_name, do_events[event_name] ? self.do_hover : self.do_out);				
+			}
+
+			// throw simplified event
+			self.show_main({target : self.container.querySelector('a')});
+			self.update({target : audiotag});
+			return self.container;
+		},
+		find_placeholders : function() {
+			// NOTE : to use placeholders, you need to build a <div id data-ondeplayer="el-audio" >
+			// AND you audio element SHOULD have an ID. Really
+			var audiotag = document.getElementById(self.container.dataset.ondeplayer);
+			if (audiotag === null) {
+				return;
+			}
+			self.add_related_controller(audiotag, self.container);
+			self.build_controller(self.container, audiotag);
+		},
+		recall_stored_play : function(event) {
+			if (self.current_audiotag_playing !== null) {
+				return;
+			} 
+			var audiotag = event.target;
+			var lasttimecode = Number(localStorage.getItem(audiotag.currentSrc));
+			// TODO and no hashed time
+			if (lasttimecode > 0) {
+				self.seekElementAt(audiotag, lasttimecode);
+				self.do_play(undefined, audiotag);
+			}
+		},
+		build_for_audiotag : function(audiotag) {
+			if (audiotag._ondemiroir === undefined) {
+				audiotag._ondemiroir = []
+			}
+			self.add_id_to_audiotag(audiotag)
+
+			//var container = thisDoc.querySelector('.cpu-audio')
+			self.container.dataset.ondeplayer = audiotag.id;
+
+			// see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events for list of events
+			[
+				'ready', 'load', 'loadeddata', 'canplay', 'abort', 
+				// 'error', 'stalled', 'suspend', 'emptied',
+				'play', 'playing', 'pause', 'suspend', 'ended',
+				'durationchange',  'loadedmetadata', 'progress', 'timeupdate', 'waiting'
+			].forEach( function(on){ audiotag.addEventListener(on, self.update); } );
+			audiotag.addEventListener(self.rebuild_eventname, self.rebuild);
+
+			audiotag.addEventListener('loadedmetadata', self.recall_stored_play);
+			// those ↓ for PHRACKING SAFARI
+			audiotag.addEventListener('ready', self.recall_stored_play);
+			audiotag.addEventListener('canplay', self.recall_stored_play);
+
+			// ask ASAP metadata about media
+			// we have to set in HTML code preload="none" due to a very laggy behaviour in HTTP2
+			// https://stackoverflow.com/questions/14479413/chrome-ignoring-audio-preload-metadata
+			if (self.audiotag.preload === '') {
+				self.audiotag.preload = 'metadata';
+			}
+			audiotag.load();
+
+			self.update({target : audiotag})
+			self.recall_stored_play({target : audiotag})
+
+			if (self.dontHideAudioTag === false) {
+				audiotag.hidden = true;
+				// PHRACK SAFARI
+				audiotag.removeAttribute('controls');
+				audiotag.setAttribute('data-ondeplayer','');
+			}	
+		},
+		prevent_link_on_same_page : function(event) {
+			if (absolutize_url( document.location.href ) !== absolutize_url(event.target.href)) {
+				return ;
+			}
+			event.preventDefault();
+
+		},
+		element_prevent_link_on_same_page : function(element) {
+			element.addEventListener('click', self.prevent_link_on_same_page);
+		},
+		launch : function() {
+
+			//new CustomEvent(self.rebuild_eventname);
+			self.build_for_audiotag(self.audiotag);
+			self.find_placeholders(self.selector);
+			querySelector_apply('.canonical', self.element_prevent_link_on_same_page);
+
+			self.hashOrder({ at_start : true })
+
+			window.addEventListener( 'hashchange', self.hashOrder, false);
+		}
+	};
+
+class CpuAudioElement extends HTMLElement {
+
+  constructor() {
+    // Always call super first in constructor
+    super();
+    template =  thisDoc.querySelector('template');
+    shadow_element = this.attachShadow({mode: 'open'})//.appendChild(template.cloneNode(true));
+    shadow_element.innerHTML = thisDoc.querySelector('template').innerHTML;
+
+
+  }
+  connectedCallback() {
+
+    self.audiotag = this.querySelector('audio');
+		// TODO prévoir quand audiotag est une référence, et non pas inclus dans le tag
+    self.container = shadow_element.querySelector('.cpu-audio');
+    self.launch();
+  }
+  disconnectedCallback() {
+  }
+}
+window.customElements.define('cpu-audio', CpuAudioElement);
+
+
+})();
+</script>
