@@ -5,3 +5,8 @@ WebComponent version of CPU-Audio
 Basé sur https://github.com/webcomponents/webcomponentsjs
 
 Développé comme proof of concept dans une furie de code en matinée. D'où la perte de l'historique :
+
+
+Documentation :
+
+* https://engineering.mixpanel.com/2018/06/12/making-web-components-work/
