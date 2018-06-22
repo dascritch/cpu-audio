@@ -540,9 +540,17 @@ const trigger = {
 
 	throbble : function(event) {
 		//var container = self.find_container(event.target);
-		var relLeft = event.target.getClientRects()[0].left;
-		var ratio = (event.clientX - relLeft) / event.target.clientWidth;
-		self.seekElementAt(self.audiotag, ratio * self.audiotag.duration)
+		let at = 0;
+		if (event.at !== undefined) {
+			at = event.at;
+		} else {
+			// normal usage
+			let relLeft = event.target.getClientRects()[0].left;
+			let ratio = (event.clientX - relLeft) / event.target.clientWidth;
+			at = ratio * self.audiotag.duration;
+		}
+		self.seekElementAt(self.audiotag, at);
+		trigger.play(event);
 	},
 	pause : function(event, audiotag) {
 		self.audiotag.pause();
@@ -561,13 +569,13 @@ const trigger = {
 	},
 	key : function(event) {
 		function seek_relative(seconds) {
-			var seek_for = self.audiotag.currentTime + seconds;
-			self.seekElementAt(self.audiotag, seek_for);
-			self.show_thobber_at(self.container, seek_for);
+			event.at = self.audiotag.currentTime + seconds;
+			self.show_thobber_at(self.container, event.at);
+			trigger.throbble(event);
 			self.hide_throbber_later(self.container);
 		}
 
-		var container = template; //self.find_container(event.target);
+		let container = template; //self.find_container(event.target);
 		switch(event.keyCode) {
 			// can't use enter : standard usage
 			case 27 : // esc
@@ -1015,7 +1023,7 @@ var self = {
 			// TODO and no hashed time
 			if (lasttimecode > 0) {
 				self.seekElementAt(audiotag, lasttimecode);
-				action.play(undefined, audiotag);
+				trigger.play(undefined, audiotag);
 			}
 		},
 		build_for_audiotag : function(audiotag) {
