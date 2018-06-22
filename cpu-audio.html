@@ -51,13 +51,7 @@ a:hover {
 a:hover svg {
 	fill : #555;
 }
-.loading, .play, .pause {
-	width : 0px;
-}
-
-.act-loading .loading,
-.act-play .play,
-.act-pause .pause,
+.control,
 .actions,
 .back {
 	flex : 0 0 64px;
@@ -71,6 +65,17 @@ a:hover svg {
 .back {
 	cursor : pointer;
 }
+
+.loading, .play, .pause {
+	display : none;
+}
+
+.act-loading .loading,
+.act-play .play,
+.act-pause .pause {
+	display : block;
+}
+
 
 .act-loading .loading circle:nth-child(1) {
 	  animation: pulse0 2s infinite;
@@ -237,9 +242,7 @@ a:hover svg {
   	.nosmall {
 		display : none;
   	}
-	.act-loading .loading,
-	.act-play .play,
-	.act-pause .pause,
+  	.control,
 	.actions {
 		flex : 0 0 32px;
 		height : 32px;
@@ -317,15 +320,17 @@ a:hover svg {
 <div class="cpu-audio">
 <img class="poster nosmall" src="{{poster}}" alt="" />
 <div class="pagemain">
-	<div class="loading"><svg viewBox="0 0 32 32">
-		<circle cx="6" cy="22" r="4" fill="#777777" /><circle cx="16" cy="22" r="4" fill="#777777" /><circle cx="26" cy="22" r="4" fill="#777777" />
-	</svg></div>
-	<a class="play"><svg viewBox="0 0 32 32">
-		<path d="M 6,6 12.667,6 12.667,26 6,26 z" /><path d="M 19.333,6 26,6 26,26 19.333,26 z" />
-	</svg></a>
-	<a class="pause"><svg viewBox="0 0 32 32">
-		<path d="M 6,6 6,26 26,16 z" />
-	</svg></a>
+	<div class="control">
+		<div class="loading"><svg viewBox="0 0 32 32">
+			<circle cx="6" cy="22" r="4" fill="#777777" /><circle cx="16" cy="22" r="4" fill="#777777" /><circle cx="26" cy="22" r="4" fill="#777777" />
+		</svg></div>
+		<a class="play"><svg viewBox="0 0 32 32">
+			<path d="M 6,6 12.667,6 12.667,26 6,26 z" /><path d="M 19.333,6 26,6 26,26 19.333,26 z" />
+		</svg></a>
+		<a class="pause"><svg viewBox="0 0 32 32">
+			<path d="M 6,6 6,26 26,16 z" />
+		</svg></a>
+	</div>
 	<div class="about">
 		<div class="titleline">
 			<div class="title"><a href="{{canonical}}" class="canonical" title="{{title}}">{{title}}</a></div>
