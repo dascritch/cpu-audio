@@ -20,7 +20,6 @@ project repository : https://github.com/dascritch/ondemiroir-audio-tag
 blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore
 
 Note. Fonctions retirées :
-- Playlist
 - i18n
 -->
 <template>
@@ -395,12 +394,6 @@ a:hover svg {
 			</svg>
 			<span>Partager par e-mail</span>
 		</a>
-		<!--a href="{{playlister}}" target="onde_miroir_player" class="playlist" title="{{playlist}}">
-			<svg viewBox="0 0 32 32">
-				{{svg:play}}
-			</svg>
-			<span>{{playlist}}</span>
-		</a-->
 		<a href="#" target="social" class="link" title="Télécharger">
 			<svg viewBox="0 0 32 32">
 				<path d="M 6,6 26,6 16,26 z" /><rect x="6" y="22" width="20" height="4" />
@@ -441,7 +434,6 @@ var cpu_i18n = {
 		'twitter' : 'Partager sur Twitter',
 		'facebook' : 'Partager sur Facebook',
 		'e-mail' : 'Partager par e-mail',
-		'playlist' : 'Écouter plus tard',
 		'download' : 'Télécharger',
 		'back' : 'Annuler',
 
@@ -615,9 +607,6 @@ var self = {
         dontHideAudioTag : false,
         poster_fallback : '//dascritch.net/themes/DSN13/img/entete1.svg',
         _elements : {},
-		playlister : false,
-		playlist_window : false,
-		is_in_playlist : false,
 		rebuild_eventname : 'ondemiroir.rebuild',
 		keymove : 5,
 		count_element : 0,
@@ -869,7 +858,6 @@ var self = {
 			ahref('facebook', 'https://www.facebook.com/sharer.php?t='+_title+'&u='+_url);
 			ahref('email', 'mailto:?subject='+_title+'&body='+_url);
 			ahref('link', self.audiotag.currentSrc);
-			//ahref('playlist', self.playlister);
 		},
 		show_actions : function(event) {
 			var container = self.find_container(event.target);
@@ -882,29 +870,6 @@ var self = {
 			self._elements['pagemain'].style.display = 'flex';
 			self._elements['pageshare'].style.display = 'none';
 		},
-        /*
-		push_in_playlist : function(params) {
-			// loosy, but sunday morning, we'll clean it later
-			if (! self.playlist_window.push_in_playlist) {
-				window.setTimeout(self.push_in_playlist, 500, params);
-				return;
-			}
-			self.playlist_window.push_in_playlist(params);
-		},
-		add_playlist : function(event) {
-			self.playlist_window = window.open(self.playlister+'#', 'onde_miroir_player');
-			var container = self.find_container(event.target);
-			self.push_in_playlist({
-				src 		: absolutize_url(self.audiotag.currentSrc),
-				title 		: self.audiotag.title,
-				cover 		: absolutize_url(self.element_attribute(self.audiotag, 'poster', self.poster_fallback)),
-				canonical	: absolutize_url(self.audiotag.dataset.canonical),
-			});
-			// make pause current, as launched in playlist
-			self.audiotag.pause();
-			event.preventDefault();
-		},
-        */
 		element_attribute : function(element, key, missing) {
 			return (element.attributes[key] === undefined) ? missing : element.attributes[key].value;
 		},
@@ -976,7 +941,6 @@ var self = {
 				'actions'	: self.show_actions,
 				'back' 		: self.show_main,
 				'poster'	: self.show_main,
-				//'playlist'	: self.add_playlist
 			};
 			for (let that in cliquables) {
 				self._elements[that].addEventListener('click', cliquables[that]);
