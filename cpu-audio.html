@@ -475,54 +475,122 @@ function querySelector_apply(selector, callback, subtree) {
 }
 
 const convert = {
-		TimeInSeconds : function(givenTime) {
-			var seconds = 0;
-			if (/^\d+$/.test(givenTime)) {
-				seconds = Number(givenTime);
-			} else {
-				seconds = (givenTime.indexOf(':') === -1) ? this.SubunitTimeInSeconds(givenTime) : this.ColonTimeInSeconds(givenTime) ;
+	TimeInSeconds : function(givenTime) {
+		var seconds = 0;
+		if (/^\d+$/.test(givenTime)) {
+			seconds = Number(givenTime);
+		} else {
+			seconds = (givenTime.indexOf(':') === -1) ? this.SubunitTimeInSeconds(givenTime) : this.ColonTimeInSeconds(givenTime) ;
+		}
+		return seconds;
+	},
+	SubunitTimeInSeconds : function(givenTime) {
+		var seconds = 0;
+		for(var key in _units) {
+			if ( (_units.hasOwnProperty(key)) && (givenTime.indexOf(key) !== -1) ) {
+				var atoms = givenTime.split(key);
+				seconds += Number(atoms[0].replace(/\D*/g,'' )) * _units[key];
+				givenTime = atoms[1];
 			}
-			return seconds;
-		},
-		SubunitTimeInSeconds : function(givenTime) {
-			var seconds = 0;
-			for(var key in _units) {
-				if ( (_units.hasOwnProperty(key)) && (givenTime.indexOf(key) !== -1) ) {
-					var atoms = givenTime.split(key);
-					seconds += Number(atoms[0].replace(/\D*/g,'' )) * _units[key];
-					givenTime = atoms[1];
+		}
+		return seconds;
+	},
+	ColonTimeInSeconds : function(givenTime) {
+		var seconds = 0;
+		var atoms = givenTime.split(':');
+		var convert = [1, 60, 3600, 86400];
+		for (var pos = 0 ; pos < atoms.length ; pos++ ) {
+			seconds += Number(atoms[pos]) * convert[((atoms.length-1) - pos)];
+		}
+		return seconds;
+	},
+	SecondsInTime : function(givenSeconds) {
+		var converted = '';
+		var inned = false;
+		for(var key in _units) {
+			if (_units.hasOwnProperty(key)) {
+				var multiply = _units[key];
+				if ((givenSeconds >= multiply) || (inned)) {
+					inned = true;
+					var digits = Math.floor(givenSeconds / multiply);
+					converted += digits + key;
+					givenSeconds -= digits * multiply;
 				}
 			}
-			return seconds;
-		},
-		ColonTimeInSeconds : function(givenTime) {
-			var seconds = 0;
-			var atoms = givenTime.split(':');
-			var convert = [1, 60, 3600, 86400];
-			for (var pos = 0 ; pos < atoms.length ; pos++ ) {
-				seconds += Number(atoms[pos]) * convert[((atoms.length-1) - pos)];
-			}
-			return seconds;
-		},
-		SecondsInTime : function(givenSeconds) {
-			var converted = '';
-			var inned = false;
-			for(var key in _units) {
-				if (_units.hasOwnProperty(key)) {
-					var multiply = _units[key];
-					if ((givenSeconds >= multiply) || (inned)) {
-						inned = true;
-						var digits = Math.floor(givenSeconds / multiply);
-						converted += digits + key;
-						givenSeconds -= digits * multiply;
-					}
-				}
-			}
-			if (converted === '') {
-				converted = '0s';
-			}
-			return converted;
-		},
+		}
+		if (converted === '') {
+			converted = '0s';
+		}
+		return converted;
+	},
+}
+
+const trigger = {
+	hover : function(event) {
+		var target_rect = event.target.getClientRects()[0];
+		var relLeft = target_rect.left;
+		var ratio = (event.clientX - relLeft) / event.target.clientWidth;
+		//var container = self.find_container(event.originalTarget);
+		var seeked_time = ratio * self.audiotag.duration;
+		self.show_thobber_at(self.container, seeked_time);
+	},
+	out : function(event) {
+		self.hide_throbber(self.container);
+	},
+
+	throbble : function(event) {
+		//var container = self.find_container(event.target);
+		var relLeft = event.target.getClientRects()[0].left;
+		var ratio = (event.clientX - relLeft) / event.target.clientWidth;
+		self.seekElementAt(self.audiotag, ratio * self.audiotag.duration)
+	},
+	pause : function(event, audiotag) {
+		self.audiotag.pause();
+		self.current_audiotag_playing = null;
+		localStorage.removeItem(self.audiotag.currentSrc);
+	},
+	play : function(event, audiotag) {
+		if (audiotag === undefined) {
+			audiotag = self.audiotag;
+		}
+		if ( (self.only_play_one_audiotag) && (self.current_audiotag_playing) ) {
+			trigger.pause(undefined, document.getElementById(self.current_audiotag_playing))
+		}
+		self.current_audiotag_playing = audiotag.id;
+		self.audiotag.play();
+	},
+	key : function(event) {
+		function seek_relative(seconds) {
+			var seek_for = self.audiotag.currentTime + seconds;
+			self.seekElementAt(self.audiotag, seek_for);
+			self.show_thobber_at(self.container, seek_for);
+			self.hide_throbber_later(self.container);
+		}
+
+		var container = template; //self.find_container(event.target);
+		switch(event.keyCode) {
+			// can't use enter : standard usage
+			case 27 : // esc
+				self.seekElementAt(self.audiotag, 0);
+				self.audiotag.pause();
+				break;
+			case 32 : // space
+				self.audiotag.paused ? self.audiotag.play() : self.audiotag.pause();
+				break;
+			case 35 : // end
+				self.seekElementAt(self.audiotag, self.audiotag.duration);
+				break;
+			case 36 : // home
+				self.seekElementAt(self.audiotag, 0);
+				break;
+			case 37 : // ←
+				seek_relative(- self.keymove);
+				break;
+			case 39 : // →
+				seek_relative(+ self.keymove);
+				break;
+		}
+	},
 }
 
 function absolutize_url(url) {
@@ -773,73 +841,6 @@ var self = {
 
 		},
 
-		do_hover : function(event) {
-			var target_rect = event.target.getClientRects()[0];
-			var relLeft = target_rect.left;
-			var ratio = (event.clientX - relLeft) / event.target.clientWidth;
-			//var container = self.find_container(event.originalTarget);
-			var seeked_time = ratio * self.audiotag.duration;
-			self.show_thobber_at(self.container, seeked_time);
-		},
-		do_out : function(event) {
-			self.hide_throbber(self.container);
-		},
-
-		do_throbble : function(event) {
-			//var container = self.find_container(event.target);
-			var relLeft = event.target.getClientRects()[0].left;
-			var ratio = (event.clientX - relLeft) / event.target.clientWidth;
-			self.seekElementAt(self.audiotag, ratio * self.audiotag.duration)
-		},
-		do_pause : function(event, audiotag) {
-
-			self.audiotag.pause();
-			self.current_audiotag_playing = null;
-			localStorage.removeItem(self.audiotag.currentSrc);
-		},
-		do_play : function(event, audiotag) {
-			if (audiotag === undefined) {
-				audiotag = self.audiotag;
-			}
-			if ( (self.only_play_one_audiotag) && (self.current_audiotag_playing) ) {
-				self.do_pause(undefined, document.getElementById(self.current_audiotag_playing))
-			}
-			self.current_audiotag_playing = audiotag.id;
-			self.audiotag.play();
-		},
-		do_onkey : function(event) {
-			function seek_relative(seconds) {
-				var seek_for = self.audiotag.currentTime + seconds;
-				self.seekElementAt(self.audiotag, seek_for);
-				self.show_thobber_at(self.container, seek_for);
-				self.hide_throbber_later(self.container);
-			}
-
-			var container = template; //self.find_container(event.target);
-			switch(event.keyCode) {
-				// can't use enter : standard usage
-				case 27 : // esc
-					self.seekElementAt(self.audiotag, 0);
-					self.audiotag.pause();
-					break;
-				case 32 : // space
-					self.audiotag.paused ? self.audiotag.play() : self.audiotag.pause();
-					break;
-				case 35 : // end
-					self.seekElementAt(self.audiotag, self.audiotag.duration);
-					break;
-				case 36 : // home
-					self.seekElementAt(self.audiotag, 0);
-					break;
-				case 37 : // ←
-					seek_relative(- self.keymove);
-					break;
-				case 39 : // →
-					seek_relative(+ self.keymove);
-					break;
-			}
-		},
-
 		update_links : function(audiotag, container) {
 			function ahref(category, href) {
 				self._elements[category].href = href;
@@ -961,9 +962,9 @@ var self = {
 
 			self.add_related_controller(self.audiotag, self.container);
 			var cliquables = {
-				'pause'		: self.do_play,
-				'play'		: self.do_pause,
-				'time'		: self.do_throbble,
+				'pause'		: trigger.play,
+				'play'		: trigger.pause,
+				'time'		: trigger.throbble,
 				'actions'	: self.show_actions,
 				'back' 		: self.show_main,
 				'poster'	: self.show_main,
@@ -973,7 +974,7 @@ var self = {
 				self._elements[that].addEventListener('click', cliquables[that]);
 			}
 			// key management
-			self.container.addEventListener('keydown', self.do_onkey);
+			self.container.addEventListener('keydown', trigger.key);
 			// throbber management
 			var timeline_element = self._elements['time'];
 			var do_events = {
@@ -987,7 +988,7 @@ var self = {
 				'touchcancel' : false,
 			}
 			for( var event_name in do_events) {
-				timeline_element.addEventListener(event_name, do_events[event_name] ? self.do_hover : self.do_out);				
+				timeline_element.addEventListener(event_name, do_events[event_name] ? trigger.hover : trigger.out);				
 			}
 
 			// throw simplified event
@@ -1014,7 +1015,7 @@ var self = {
 			// TODO and no hashed time
 			if (lasttimecode > 0) {
 				self.seekElementAt(audiotag, lasttimecode);
-				self.do_play(undefined, audiotag);
+				action.play(undefined, audiotag);
 			}
 		},
 		build_for_audiotag : function(audiotag) {
