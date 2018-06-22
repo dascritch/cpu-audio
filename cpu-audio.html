@@ -313,27 +313,32 @@ a:hover svg {
 
     </style>
 
-<!--	'stop' : '<path d="M 6,6 6,26 26,26 26,6 z" />', -->
-
-
-
 <div class="cpu-audio">
-<img class="poster nosmall" src="{{poster}}" alt="" />
+<img class="poster nosmall" src="" alt="" />
 <div class="pagemain">
 	<div class="control">
-		<div class="loading"><svg viewBox="0 0 32 32">
-			<circle cx="6" cy="22" r="4" fill="#777777" /><circle cx="16" cy="22" r="4" fill="#777777" /><circle cx="26" cy="22" r="4" fill="#777777" />
-		</svg></div>
-		<a class="play"><svg viewBox="0 0 32 32">
-			<path d="M 6,6 12.667,6 12.667,26 6,26 z" /><path d="M 19.333,6 26,6 26,26 19.333,26 z" />
-		</svg></a>
-		<a class="pause"><svg viewBox="0 0 32 32">
-			<path d="M 6,6 6,26 26,16 z" />
-		</svg></a>
+		<div class="loading">
+			<svg viewBox="0 0 32 32">
+				<circle cx="6" cy="22" r="4" fill="#777777" />
+				<circle cx="16" cy="22" r="4" fill="#777777" />
+				<circle cx="26" cy="22" r="4" fill="#777777" />
+			</svg>
+		</div>
+		<a class="play">
+			<svg viewBox="0 0 32 32">
+				<path d="M 6,6 12.667,6 12.667,26 6,26 z" />
+				<path d="M 19.333,6 26,6 26,26 19.333,26 z" />
+			</svg>
+		</a>
+		<a class="pause">
+			<svg viewBox="0 0 32 32">
+				<path d="M 6,6 6,26 26,16 z" />
+			</svg>
+		</a>
 	</div>
 	<div class="about">
 		<div class="titleline">
-			<div class="title"><a href="{{canonical}}" class="canonical" title="{{title}}">{{title}}</a></div>
+			<div class="title"><a href="#" class="canonical"></a></div>
 			<a class="elapse">…</a>
 		</div>
 		<div class="line">
@@ -846,7 +851,7 @@ var self = {
 			var canonical = self.audiotag.dataset.canonical
 			var url = (canonical === undefined ? '' : (remove_hash(canonical)) )
 						+ '#' + self.audiotag.id 
-						+ (self.audiotag.currentTime === 0 ? '' : ('&t='+self.convertSecondsInTime(self.audiotag.currentTime)));
+						+ (self.audiotag.currentTime === 0 ? '' : ('&t='+convert.secondsInTime(self.audiotag.currentTime)));
 
 			var _url = encodeURI(absolutize_url(url));
 			var _title = encodeURI(self.audiotag.title);
@@ -893,22 +898,6 @@ var self = {
 		element_attribute : function(element, key, missing) {
 			return (element.attributes[key] === undefined) ? missing : element.attributes[key].value;
 		},
-		get_params_for_template : function(element) {
-			if (element.dataset.canonical === undefined) {
-				element.dataset.canonical = document.location.href;
-			}
-			var out = {
-				// keys are stringed, as we need them not being modified
-				'{{title}}'     	: self.container.title === '' ? ('<em>'+__.s('untitled')+'</em>') : self.container.title,
-				'{{canonical}}' 	: absolutize_url(element.dataset.canonical),
-				'{{poster}}' 		: absolutize_url(self.element_attribute(element,'poster', self.poster_fallback)),
-				'{{classname}}' 	: self.container.classname,
-				//'{{playlister}}'	: self.playlister
-			}
-
-			_elements.title.innerHTML = out['{{title}}']
-			return out;
-		},
 		rebuild : function(event) {
 			function rebuild_container_id(element_id) {
 				var container = document.getElementById(element_id);
@@ -938,7 +927,21 @@ var self = {
 			self.audiotag._ondemiroir.push(container.id);
 		},
 
-		build_controller : function( audiotag) {
+		complete_template : function() {
+			var canonical = self.audiotag.dataset.canonical;
+			if (canonical === undefined) {
+				canonical = document.location.href;
+			}
+			self._elements['canonical'].href = canonical;
+
+			var title = self.audiotag.dataset.title;
+			title = title === undefined ? cpu_i18n['untitled'] : title;
+			self._elements['canonical'].innerText = title; // ? title : self.no_title;
+			self._elements['canonical'].title = title;
+
+			self._elements['poster'].src = self.audiotag.dataset.poster;
+		},
+		build_controller : function(audiotag) {
 			self.container.dataset.ondeplayer = self.audiotag.id;
 			self.container.classList.add(self.container.classname);
 			self.container.tabIndex = 0 // see http://snook.ca/archives/accessibility_and_usability/elements_focusable_with_tabindex and http://www.456bereastreet.com/archive/201302/making_elements_keyboard_focusable_and_clickable/
@@ -952,6 +955,8 @@ var self = {
 					}
 				});
 			}, self.container);
+
+			self.complete_template();
 
 			self.add_related_controller(self.audiotag, self.container);
 			var cliquables = {
@@ -1077,27 +1082,29 @@ var self = {
 
 class CpuAudioElement extends HTMLElement {
 
-  constructor() {
-    // Always call super first in constructor
-    super();
-    template =  thisDoc.querySelector('template');
-    shadow_element = this.attachShadow({mode: 'open'})//.appendChild(template.cloneNode(true));
-    shadow_element.innerHTML = thisDoc.querySelector('template').innerHTML;
+	constructor() {
+		// Always call super first in constructor
+		super();
+		template =  thisDoc.querySelector('template');
+		shadow_element = this.attachShadow({mode: 'open'})//.appendChild(template.cloneNode(true));
+		shadow_element.innerHTML = thisDoc.querySelector('template').innerHTML;
+	}
 
+	connectedCallback() {
+		self.audiotag = this.querySelector('audio');
+			// TODO prévoir quand audiotag est une référence, et non pas inclus dans le tag
+		self.container = shadow_element.querySelector('.cpu-audio');
+		// copying personalized data to audio tag
+		for (var key of ['title', 'poster', 'canonical']) {
+			self.audiotag.dataset[key] = this.dataset[key];
+		}
+		self.launch();
+	}
 
-  }
-  connectedCallback() {
-
-    self.audiotag = this.querySelector('audio');
-		// TODO prévoir quand audiotag est une référence, et non pas inclus dans le tag
-    self.container = shadow_element.querySelector('.cpu-audio');
-    self.launch();
-  }
-  disconnectedCallback() {
-  }
+	disconnectedCallback() {
+	}
 }
 window.customElements.define('cpu-audio', CpuAudioElement);
-
 
 })();
 </script>
