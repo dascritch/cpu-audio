@@ -19,7 +19,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 project repository : https://github.com/dascritch/ondemiroir-audio-tag
 blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore
 
-Note. Fonctions retirées :
+Note.
+
+Bugs restants :
+- au rechargement, seul le premier player est pris en compte
+- sur Chrome, une erreur media n'est pas de suite remontée
+
+
+Fonctions retirées :
+- playlist
 - i18n
 -->
 
@@ -34,8 +42,13 @@ Note. Fonctions retirées :
 		--cpu-playing-background : #444;
 		--cpu-playing-color : #ddd;
 		--cpu-playing-link-color : #bbf;
+		--cpu-error-background : #a00 ;
+		--cpu-error-color : #ff7 ;
 		--cpu-popup-background : #aaa;
 		--cpu-popup-color : #333;
+
+		/** TODO */
+		--poster-fallback : '//dascritch.net/themes/DSN13/img/entete1.svg';
 	}
 </style>
 
@@ -97,6 +110,23 @@ a:hover svg {
 	color : var(--cpu-playing-link-color);
 }
 
+.act-play a:hover {
+	color : var(--cpu-playing-background);
+	background : var(--cpu-playing-link-color);
+}
+.act-play a:hover svg {
+	fill : var(--cpu-playing-background);
+}
+
+.act-error {
+	background : var(--cpu-error-background);
+	color : var(--cpu-error-color);
+}
+
+.act-error .elapse , .act-error .line {
+		display : none;
+	}
+
 .control,
 .actions,
 .back {
@@ -118,6 +148,7 @@ a:hover svg {
 }
 
 .act-loading .loading,
+.act-error .loading,
 .act-play .play,
 .act-pause .pause {
 	display : block;
@@ -254,7 +285,11 @@ a:hover svg {
 }
 
 .act-loading .loadingline {
-	animation: pulse3 2s infinite;
+	background : grey;
+	/*
+	background: repeating-linear-gradient(135deg, #bbb 0, #999 5px, #999 45px, #ddd 55px, #ddd 95px, #bbb 100px);
+    animation: progressIndeterminate 950ms linear infinite;
+    */
 }
 
 .share {
@@ -438,16 +473,9 @@ a:hover svg {
 </template>
 
 <script>
-'use strict';
-
-// WATCH OUT ! You should NOT use this script in a unsecure domain name
-if (document.domain !== '') {
-	document.domain = document.domain.replace(/^(.*\.)?(\w+\.\w+)$/,'$2');
-}
-
-
 (function(){
 
+'use strict';
 
 var thisDoc =  (document._currentScript || document.currentScript).ownerDocument;
 var template, shadow_element;
@@ -595,7 +623,7 @@ const trigger = {
 		}
 		CPU_Audio.jumpIdAt(hash,timecode,callback_fx);
 		// scroll to the audio element. Should be reworked
-		document.location.hash = `#${hash}`;
+		// window.location.hash = `#${hash}`;
 		return true;
 	},
 	hover : function(event) {
@@ -633,16 +661,20 @@ const trigger = {
 		}
 		audiotag.pause();
 		CPU_Audio.current_audiotag_playing = null;
-		localStorage.removeItem(audiotag.currentSrc);
+		window.localStorage.removeItem(audiotag.currentSrc);
 	},
 	play : function(event, audiotag) {
 		if (audiotag === undefined) {
 			audiotag = CPU_Audio.find_container(event.target).audiotag;
 		}
 		if ( (CPU_Audio.only_play_one_audiotag) && (CPU_Audio.current_audiotag_playing) ) {
-			CPU_Audio.current_audiotag_playing.pause()
+			trigger.pause(undefined, CPU_Audio.current_audiotag_playing);
 		}
+
 		CPU_Audio.current_audiotag_playing = audiotag;
+		if (CPU_Audio.global_controller) {
+			CPU_Audio.global_controller.attach_audiotag_to_controller(CPU_Audio.current_audiotag_playing);
+		}
 		audiotag.play();
 	},
 	key : function(event) {
@@ -659,10 +691,12 @@ const trigger = {
 			// can't use enter : standard usage
 			case 27 : // esc
 				CPU_Audio.seekElementAt(container.audiotag, 0);
-				container.audiotag.pause();
+				trigger.pause(undefined,container.audiotag);
 				break;
 			case 32 : // space
-				container.audiotag.paused ? container.audiotag.play() : container.audiotag.pause();
+				container.audiotag.paused ?
+					trigger.play(undefined,container.audiotag) :
+					trigger.pause(undefined,container.audiotag);
 				break;
 			case 35 : // end
 				CPU_Audio.seekElementAt(container.audiotag, container.audiotag.duration);
@@ -682,7 +716,7 @@ const trigger = {
 		let audiotag = event.target;
 		audiotag.CPU_update();
 		if (!audiotag.paused) {
-			localStorage.setItem(audiotag.currentSrc, String(audiotag.currentTime));
+			window.localStorage.setItem(audiotag.currentSrc, String(audiotag.currentTime));
 		}
 	},
 }
@@ -698,7 +732,7 @@ function not_screen_context() {
 }
 
 function prevent_link_on_same_page(event) {
-	if (absolutize_url(document.location.href) !== absolutize_url(event.target.href)) {
+	if (absolutize_url(window.location.href) !== absolutize_url(event.target.href)) {
 		return ;
 	}
 	event.preventDefault();
@@ -726,6 +760,35 @@ const CPU_Audio = {
 	dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
 	count_element : 0,
 
+	connect_audiotag(audiotag) {
+		// see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events for list of events
+		[
+			'ready', 'load', 'loadeddata', 'canplay', 'abort', 
+			'error', 'stalled', 'suspend', 'emptied',
+			'play', 'playing', 'pause', 'suspend', 'ended',
+			'durationchange',  'loadedmetadata', 'progress', 'timeupdate', 'waiting'
+		].forEach( function(on){ 
+			audiotag.addEventListener(on, trigger.update); 
+		});
+
+		audiotag.addEventListener('loadedmetadata', CPU_Audio.recall_stored_play);
+		// those ↓ for PHRACKING SAFARI
+		audiotag.addEventListener('ready', CPU_Audio.recall_stored_play);
+		audiotag.addEventListener('canplay', CPU_Audio.recall_stored_play);
+
+		// ask ASAP metadata about media
+		// we have to set in HTML code preload="none" due to a very laggy behaviour in HTTP2
+		// https://stackoverflow.com/questions/14479413/chrome-ignoring-audio-preload-metadata
+		if (audiotag.preload === '') {
+			audiotag.preload = 'metadata';
+		}
+		audiotag.load();
+		if (this.dontHideAudioTag === false) {
+			audiotag.hidden = true;
+			// PHRACK SAFARI
+			audiotag.removeAttribute('controls');
+		}
+	},
 
 	jumpIdAt : function(hash,timecode,callback_fx) {
 
@@ -749,7 +812,7 @@ const CPU_Audio = {
 
 		function do_element_play(event) {
 			var tag = event.target;
-			tag.play();
+			trigger.play(undefined,tag)
 			if (_isEvent(event)) {
 				tag.removeEventListener('canplay', do_element_play, true);
 			}
@@ -805,7 +868,7 @@ const CPU_Audio = {
 			return;
 		} 
 		let audiotag = event.target;
-		let lasttimecode = Number(localStorage.getItem(audiotag.currentSrc));
+		let lasttimecode = Number(window.localStorage.getItem(audiotag.currentSrc));
 		// TODO and no hashed time
 		if (lasttimecode > 0) {
 			CPU_Audio.seekElementAt(audiotag, lasttimecode);
@@ -819,14 +882,12 @@ const CPU_Audio = {
 
 HTMLAudioElement.prototype.CPU_controller = function() {
 	return this.closest(CPU_Audio.selector_container);
-	controller.update();
-	if (CPU_Audio.global_controller) {
-		CPU_Audio.global_controller.update();
-	}
 }
 
 HTMLAudioElement.prototype.CPU_update = function() {
-	this.CPU_controller().update();
+	if (this.CPU_controller().update) {
+		this.CPU_controller().update();
+	}
 	if (CPU_Audio.global_controller) {
 		CPU_Audio.global_controller.update();
 	}
@@ -834,10 +895,6 @@ HTMLAudioElement.prototype.CPU_update = function() {
 
 // Controller without assigned audio element, i.e. global page controller
 class CpuControllerElement extends HTMLElement {
-}
-
-// Controller with assigned audio element
-class CpuAudioElement extends CpuControllerElement {
 
 	constructor() {
 		// Always call super first in constructor
@@ -850,13 +907,9 @@ class CpuAudioElement extends CpuControllerElement {
 		}
 
 		// self variables
-
-		this.selector_fallback = 'audio[data-ondeplayer]';
-		
 		this.dontHideAudioTag = false;
 		this.poster_fallback = '//dascritch.net/themes/DSN13/img/entete1.svg';
 		this._elements = {};
-	
 		this.audiotag = null;
 
 		template =  thisDoc.querySelector('template');
@@ -868,70 +921,29 @@ class CpuAudioElement extends CpuControllerElement {
 		if (not_screen_context()) {
 			return ;
 		}
-
-		let audiotag = this.querySelector('audio');
-		this.audiotag = audiotag;
-			// TODO prévoir quand audiotag est une référence, et non pas inclus dans le tag
-
 		this.container = shadow_element.querySelector('.cpu-audio');
-		// copying personalized data to audio tag
-		for (var key of ['title', 'poster', 'canonical']) {
-			this.audiotag.dataset[key] = this.dataset[key];
-		}
-
-		// WAS build_for_audiotag
-		this.add_id_to_audiotag()
-		this.dataset.ondeplayer = this.audiotag.id;
-
 		this.build_controller();
-
-		// see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events for list of events
-		[
-			'ready', 'load', 'loadeddata', 'canplay', 'abort', 
-			// 'error', 'stalled', 'suspend', 'emptied',
-			'play', 'playing', 'pause', 'suspend', 'ended',
-			'durationchange',  'loadedmetadata', 'progress', 'timeupdate', 'waiting'
-		].forEach( function(on){ 
-			audiotag.addEventListener(on, trigger.update); 
-		});
-
-		this.audiotag.addEventListener('loadedmetadata', CPU_Audio.recall_stored_play);
-		// those ↓ for PHRACKING SAFARI
-		this.audiotag.addEventListener('ready', CPU_Audio.recall_stored_play);
-		this.audiotag.addEventListener('canplay', CPU_Audio.recall_stored_play);
-
-		// ask ASAP metadata about media
-		// we have to set in HTML code preload="none" due to a very laggy behaviour in HTTP2
-		// https://stackoverflow.com/questions/14479413/chrome-ignoring-audio-preload-metadata
-		if (this.audiotag.preload === '') {
-			this.audiotag.preload = 'metadata';
-		}
-		this.audiotag.load();
-
-		trigger.update({target : audiotag});
-		CPU_Audio.recall_stored_play({target : audiotag});
-
-		if (this.dontHideAudioTag === false) {
-			this.audiotag.hidden = true;
-			// PHRACK SAFARI
-			this.audiotag.removeAttribute('controls');
-			this.audiotag.setAttribute('data-ondeplayer', '');
-		}	
-
 		// TODO : Event should be set on controller , with checking event.originalTarget.classlist.has()
 		querySelector_apply('.canonical', element_prevent_link_on_same_page);
+
+		if (this.audiotag === null) {
+			CPU_Audio.global_controller = this;
+			this.audiotag = window.document.querySelector('cpu-audio audio');
+		}
+		this.attach_audiotag_to_controller(this.audiotag);
 
 	}
 
 	disconnectedCallback() {
 	}
 
-
 	update_act_container(act) {
 		this.container.classList.remove(
 			'act-loading',
 			'act-pause',
-			'act-play');
+			'act-play',
+			'act-error'
+			);
 		this.container.classList.add(`act-${act}`);
 	}
 
@@ -952,6 +964,15 @@ class CpuAudioElement extends CpuControllerElement {
 												: `${100*seconds / duration}%`;
 	}
 
+	update_buffered() {
+		let end = 0;
+		let buffered  = this.audiotag.buffered ;
+		let segment;
+		for (segment=0 ; segment++; segment < buffered.length) {
+			end = buffered.end(segment)
+		}
+		this.update_line('elapsed', end);
+	}
 	update_time(event) {
 		let timecode = convert.SecondsInTime(this.audiotag.currentTime);
 		let link_to = absolutize_url(this.audiotag.dataset.canonical)+'#';
@@ -968,48 +989,51 @@ class CpuAudioElement extends CpuControllerElement {
 		 
 		elapse_element.innerHTML = `${timecode}
 									<span class="${this.classname}-nosmall"> / ${total_duration}</span>`;
-		this.update_line('elapsed', this.audiotag.currentTime);
+		this.update_line('loading', this.audiotag.currentTime);
+		this.update_buffered();
 	}
 
 	update_loading(seconds) {
 		this.update_line('loading', seconds);
 		this.update_act_container('loading');
 	}
-	update() {
-		this.update_playbutton();
-		this.update_time();		
-	}
 
-
-	/// NNN?N???????
-	update_id_container_infos(container_id) {
-		let container = document.getElementById(container_id);
-		let event = this;
-		let audiotag = event.target;
-		if (audiotag.error === 'error') {
+	update_error() {
+		// NOTE : this is not working, even on non supported media type
+		// Chrome logs an error « Uncaught (in promise) DOMException: Failed to load because no supported source was found. »
+		// but don't update message
+		if (this.audiotag.error !== null) {
 			this.update_act_container('error');
-
-		   switch (audiotag.error.code) {
-				case audiotag.error.MEDIA_ERR_ABORTED:
-					alert(__.s('media_err_aborted'));
+			let error_message  ; // the audiotag.error.message is removed from living standard
+			switch (this.audiotag.error.code) {
+				case this.audiotag.error.MEDIA_ERR_ABORTED:
+					error_message = cpu_i18n.media_err_aborted;
 					break;
-				case audiotag.error.MEDIA_ERR_NETWORK:
-					alert(__.s('media_err_network'));
+				case this.audiotag.error.MEDIA_ERR_NETWORK:
+					error_message = cpu_i18n.media_err_network;
 					break;
-				case audiotag.error.MEDIA_ERR_DECODE:
-					alert(__.s('media_err_decode'));
+				case this.audiotag.error.MEDIA_ERR_DECODE:
+					error_message = cpu_i18n.media_err_decode;
 					break;
-				case audiotag.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-					alert(__.s('media_err_src_not_supported'));
+				case this.audiotag.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+					error_message = cpu_i18n.media_err_src_not_supported;
 					break;
 				default:
-					alert(__.s('media_err_unknow'));
+					alert(cpu_i18n.media_err_unknow);
 					break;
 		   	}
-			return;
+
+		   	this._elements['canonical'].innerText = error_message;
+			return true;
 		}
-		this.update_playbutton();
-		this.update_time(container);
+		return false;
+	}
+
+	update() {
+		if (!this.update_error()) {
+			this.update_playbutton();
+			this.update_time();
+		}
 	}
 
 	show_thobber_at(seeked_time) {
@@ -1033,7 +1057,7 @@ class CpuAudioElement extends CpuControllerElement {
 		if (phylactere._hider) {
 			window.clearTimeout(phylactere._hider);
 		}
-		phylactere._hider = window.setTimeout(this.hide_throbber, 1000, container);
+		phylactere._hider = window.setTimeout(this.hide_throbber, 1000);
 
 	}
 
@@ -1052,7 +1076,7 @@ class CpuAudioElement extends CpuControllerElement {
 					+ `#${this.audiotag.id}` 
 					+ ( this.audiotag.currentTime === 0 
 							? ''
-							: `&t=${convert.secondsInTime(this.audiotag.currentTime)}`
+							: `&t=${convert.SecondsInTime(this.audiotag.currentTime)}`
 						);
 
 		var _url = encodeURI(absolutize_url(url));
@@ -1066,13 +1090,13 @@ class CpuAudioElement extends CpuControllerElement {
 	show_interface(mode) {
 		this.container.classList.remove('show-main', 'show-share');
 		this.container.classList.add('show-'+mode);
-		this.update_links();
 	}
 	show_actions(event) {
 		let container = (event !== undefined) ?
 				CPU_Audio.find_container(event.target) :
 				this;
 		container.show_interface('share');
+		container.update_links();
 	}
 	show_main(event) {
 		let container = (event !== undefined) ?
@@ -1096,7 +1120,7 @@ class CpuAudioElement extends CpuControllerElement {
 	complete_template() {
 		var canonical = this.audiotag.dataset.canonical;
 		if (canonical === undefined) {
-			canonical = document.location.href;
+			canonical = window.location.href;
 		}
 		this._elements['canonical'].href = canonical;
 
@@ -1107,9 +1131,17 @@ class CpuAudioElement extends CpuControllerElement {
 
 		this._elements['poster'].src = this.audiotag.dataset.poster;
 	}
+	attach_audiotag_to_controller(audiotag) {
+		this.audiotag = audiotag;
+
+		this.add_id_to_audiotag()
+		this.complete_template();
+
+		// throw simplified event
+		trigger.update({target : this.audiotag});
+	}
 	build_controller() {
 
-		this.dataset.ondeplayer = this.audiotag.id;
 		this.classList.add(this.classname);
 		this.tabIndex = 0 // see http://snook.ca/archives/accessibility_and_usability/elements_focusable_with_tabindex and http://www.456bereastreet.com/archive/201302/making_elements_keyboard_focusable_and_clickable/
 
@@ -1124,9 +1156,6 @@ class CpuAudioElement extends CpuControllerElement {
 			});
 		}, this.shadowRoot);
 
-		this.complete_template();
-
-		//this.add_related_controller(audiotag, container);
 		let cliquables = {
 			'pause'		: trigger.play,
 			'play'		: trigger.pause,
@@ -1157,20 +1186,40 @@ class CpuAudioElement extends CpuControllerElement {
 				event_name,
 				do_events[event_name] ? trigger.hover : trigger.out);				
 		}
-
-		// throw simplified event
 		this.show_main();
-		trigger.update({target : this.audiotag});
 	}
 
 }
 
-window.customElements.define(CPU_Audio.selector_container, CpuAudioElement);
+// Controller with assigned audio element
+class CpuAudioElement extends CpuControllerElement {
+
+	connectedCallback() {
+		if (not_screen_context()) {
+			return ;
+		}
+
+		this.audiotag = this.querySelector('audio');
+		// copying personalized data to audio tag
+		for (var key of ['title', 'poster', 'canonical']) {
+			this.audiotag.dataset[key] = this.dataset[key];
+		}
+		super.connectedCallback();
+
+		CPU_Audio.connect_audiotag(this.audiotag);
+		// this.attach_audiotag_to_controller(this.audiotag);
+
+		CPU_Audio.recall_stored_play({target : this.audiotag});
+
+	}
+
+
+}
+
 window.customElements.define('cpu-controller', CpuControllerElement);
-thisDoc.addEventListener('hashchange', trigger.hashOrder, false);
+window.customElements.define(CPU_Audio.selector_container, CpuAudioElement);
+window.addEventListener('hashchange', trigger.hashOrder, false);
 trigger.hashOrder({ at_start : true });
-
-
 
 })();
 </script>
