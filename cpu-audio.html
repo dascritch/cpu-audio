@@ -1166,7 +1166,7 @@ class CpuAudioElement extends CpuControllerElement {
 
 window.customElements.define(CPU_Audio.selector_container, CpuAudioElement);
 window.customElements.define('cpu-controller', CpuControllerElement);
-window.addEventListener('hashchange', trigger.hashOrder, false);
+thisDoc.addEventListener('hashchange', trigger.hashOrder, false);
 trigger.hashOrder({ at_start : true });
 
 
