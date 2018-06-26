@@ -30,6 +30,10 @@ Note. Fonctions retirées :
 		--cpu-font-size : 15px;
 		--cpu-background : #555;
 		--cpu-color : #ccc;
+		--cpu-link-color : #aaf;
+		--cpu-playing-background : #444;
+		--cpu-playing-color : #ddd;
+		--cpu-playing-link-color : #bbf;
 		--cpu-popup-background : #aaa;
 		--cpu-popup-color : #333;
 	}
@@ -67,7 +71,7 @@ Note. Fonctions retirées :
 }
 
 a {
-	color : #aaf;
+	color : var(--cpu-link-color);
 	border : none !important;
 	text-decoration : none;
 }
@@ -78,11 +82,21 @@ svg {
 }
 a:hover {
 	color : var(--cpu-background);
-	background : #aaf;
+	background : var(--cpu-link-color);
 }
 a:hover svg {
 	fill : var(--cpu-background);
 }
+
+.act-play {
+	background : var(--cpu-playing-background);
+	color : var(--cpu-playing-color);
+}
+
+.act-play a {
+	color : var(--cpu-playing-link-color);
+}
+
 .control,
 .actions,
 .back {
@@ -626,7 +640,7 @@ const trigger = {
 			audiotag = CPU_Audio.find_container(event.target).audiotag;
 		}
 		if ( (CPU_Audio.only_play_one_audiotag) && (CPU_Audio.current_audiotag_playing) ) {
-			trigger.pause(undefined, document.getElementById(CPU_Audio.current_audiotag_playing))
+			CPU_Audio.current_audiotag_playing.pause()
 		}
 		CPU_Audio.current_audiotag_playing = audiotag;
 		audiotag.play();
