@@ -22,12 +22,23 @@ blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-m
 Note. Fonctions retirées :
 - i18n
 -->
+
+<style>
+	/* Global default style, usign var. Integrators may override them */
+	:root {
+		--cpu-font-family : Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+		--cpu-font-size : 15px;
+		--cpu-background : #555;
+		--cpu-color : #ccc;
+	}
+</style>
+
 <template>
-    <style>
+<style>
 
 .cpu-audio {
-	font-family : Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif !important;
-	font-size : 15px !important;
+	font-family : var(--cpu-font-family) !important;
+	font-size : var(--cpu-font-size) !important;
 }
 
 .cpu-audio, * {
@@ -44,8 +55,8 @@ Note. Fonctions retirées :
 
 .cpu-audio {
 	display : flex;
-	background : #555;
-	color : #ccc;
+	background : var(--cpu-background);
+	color : var(--cpu-color);
 	height : 64px;
 }
 
@@ -64,11 +75,11 @@ svg {
 	height : 64px;
 }
 a:hover {
-	color : #555;
+	color : var(--cpu-background);
 	background : #aaf;
 }
 a:hover svg {
-	fill : #555;
+	fill : var(--cpu-background);
 }
 .control,
 .actions,
@@ -85,7 +96,8 @@ a:hover svg {
 	cursor : pointer;
 }
 
-.loading, .play, .pause {
+.loading, .play, .pause,
+.show-main .pageshare, .show-share .pagemain {
 	display : none;
 }
 
@@ -95,6 +107,13 @@ a:hover svg {
 	display : block;
 }
 
+.show-share .pageshare,
+.show-main .pagemain,
+.share {
+	flex : 1 1 100%;
+	display : flex;
+	align-items: center;
+}
 
 .act-loading .loading circle:nth-child(1) {
 	  animation: pulse0 2s infinite;
@@ -221,11 +240,7 @@ a:hover svg {
 .act-loading .loadingline {
 	animation: pulse3 2s infinite;
 }
-.pagemain, .pageshare, .share {
-	flex : 1 1 100%;
-	display : flex;
-	align-items: center;
-}
+
 .share {
 	text-align : center;
 }
@@ -305,8 +320,8 @@ a:hover svg {
 	text-align : center;
 	padding : 4px;
 	border-radius: 4px;
-	background : #ccc;
-	color : #555;
+	background : var(--cpu-color);
+	color : var(--cpu-background);
 	opacity : 0;
 	transition : opacity 1s;
 	pointer-events : none;
@@ -324,13 +339,13 @@ a:hover svg {
 	bottom: -8px;
 	height : 0;
 	width: 0;
-	border-top: 8px solid #ccc;
+	border-top: 8px solid var(--cpu-background);
 	border-left: 4px solid transparent;
 	border-right: 4px solid transparent;
 	pointer-events : none;
 } 
 
-    </style>
+</style>
 
 <div class="cpu-audio">
 	<img class="poster nosmall" src="" alt="" />
@@ -414,38 +429,29 @@ if (document.domain !== '') {
 }
 
 
-
 (function(){
 
 
 var thisDoc =  (document._currentScript || document.currentScript).ownerDocument;
 var template, shadow_element;
 
-var cpu_i18n = {
-		'untitled' : '(sans titre)',
-		'cover' : 'pochette',
-		'more' : 'Partager',
-		'twitter' : 'Partager sur Twitter',
-		'facebook' : 'Partager sur Facebook',
-		'e-mail' : 'Partager par e-mail',
-		'download' : 'Télécharger',
-		'back' : 'Annuler',
+var twitter_via = 'dascritch';
+const cpu_i18n = {
+	'untitled' : '(sans titre)',
+	'cover' : 'pochette',
+	'more' : 'Partager',
+	'twitter' : 'Partager sur Twitter',
+	'facebook' : 'Partager sur Facebook',
+	'e-mail' : 'Partager par e-mail',
+	'download' : 'Télécharger',
+	'back' : 'Annuler',
 
-		'media_err_aborted' : 'Vous avez annulé la lecture.',
-		'media_err_network' : 'Une erreur réseau a causé l\'interruption du téléchargement.',
-		'media_err_decode' : 'La lecture du sonore a été annulée suite à des problèmes de corruption ou de fonctionnalités non supportés par votre navigateur.',
-		'media_err_src_not_supported' : 'Le sonore n\'a pu être chargé, soit à cause de sourcis sur le serveur, le réseau ou parce que le format n\'est pas supporté.',
-		'media_err_unknow' : 'Erreur due à une raison inconnue'
+	'media_err_aborted' : 'Vous avez annulé la lecture.',
+	'media_err_network' : 'Une erreur réseau a causé l\'interruption du téléchargement.',
+	'media_err_decode' : 'La lecture du sonore a été annulée suite à des problèmes de corruption ou de fonctionnalités non supportés par votre navigateur.',
+	'media_err_src_not_supported' : 'Le sonore n\'a pu être chargé, soit à cause de sourcis sur le serveur, le réseau ou parce que le format n\'est pas supporté.',
+	'media_err_unknow' : 'Erreur due à une raison inconnue'
 };
-
-var _units = {
-	'd' : 86400,
-	'h' : 3600,
-	'm' : 60,
-	's' : 1
-};
-
-
 
 function onDebug(callback_fx) {
 	// this is needed for testing, as we now run in async tests
@@ -461,6 +467,13 @@ function querySelector_apply(selector, callback, subtree) {
 }
 
 const convert = {
+	_units : {
+		'd' : 86400,
+		'h' : 3600,
+		'm' : 60,
+		's' : 1
+	},
+
 	TimeInSeconds : function(givenTime) {
 		var seconds = 0;
 		if (/^\d+$/.test(givenTime)) {
@@ -472,10 +485,10 @@ const convert = {
 	},
 	SubunitTimeInSeconds : function(givenTime) {
 		var seconds = 0;
-		for(var key in _units) {
-			if ( (_units.hasOwnProperty(key)) && (givenTime.indexOf(key) !== -1) ) {
+		for(var key in convert._units) {
+			if ( (convert._units.hasOwnProperty(key)) && (givenTime.indexOf(key) !== -1) ) {
 				var atoms = givenTime.split(key);
-				seconds += Number(atoms[0].replace(/\D*/g,'' )) * _units[key];
+				seconds += Number(atoms[0].replace(/\D*/g,'' )) * convert._units[key];
 				givenTime = atoms[1];
 			}
 		}
@@ -493,9 +506,9 @@ const convert = {
 	SecondsInTime : function(givenSeconds) {
 		var converted = '';
 		var inned = false;
-		for(var key in _units) {
-			if (_units.hasOwnProperty(key)) {
-				var multiply = _units[key];
+		for(var key in convert._units) {
+			if (convert._units.hasOwnProperty(key)) {
+				var multiply = convert._units[key];
 				if ((givenSeconds >= multiply) || (inned)) {
 					inned = true;
 					var digits = Math.floor(givenSeconds / multiply);
@@ -512,6 +525,7 @@ const convert = {
 }
 
 const trigger = {
+
 	hashOrder : function(hashcode,callback_fx){
 		let at_start = true;
 		if (typeof hashcode !== 'string') {
@@ -568,12 +582,13 @@ const trigger = {
 		return true;
 	},
 	hover : function(event) {
-		var target_rect = event.target.getClientRects()[0];
-		var relLeft = target_rect.left;
-		var ratio = (event.clientX - relLeft) / event.target.clientWidth;
-		//var container = self.find_container(event.originalTarget);
-		var seeked_time = ratio * self.audiotag.duration;
-		self.show_thobber_at(self.container, seeked_time);
+		let container = CPU_Audio.find_container(event.originalTarget);
+
+		let target_rect = event.target.getClientRects()[0];
+		let relLeft = target_rect.left;
+		let ratio = (event.clientX - relLeft) / event.target.clientWidth;
+		let seeked_time = ratio * container.audiotag.duration;
+		container.show_thobber_at(seeked_time);
 	},
 	out : function(event) {
 		self.hide_throbber(self.container);
@@ -590,7 +605,7 @@ const trigger = {
 			let ratio = (event.clientX - relLeft) / event.target.clientWidth;
 			at = ratio * self.audiotag.duration;
 		}
-		self.seekElementAt(self.audiotag, at);
+		CPU_Audio.seekElementAt(self.audiotag, at);
 		trigger.play(event);
 	},
 	pause : function(event, audiotag) {
@@ -609,35 +624,47 @@ const trigger = {
 		self.audiotag.play();
 	},
 	key : function(event) {
+		let container = CPU_Audio.find_container(event.target);
+
 		function seek_relative(seconds) {
 			event.at = self.audiotag.currentTime + seconds;
-			self.show_thobber_at(self.container, event.at);
+			container.show_thobber_at(self.container, event.at);
 			trigger.throbble(event);
 			self.hide_throbber_later(self.container);
 		}
 
-		let container = template; //self.find_container(event.target);
-		switch(event.keyCode) {
+		
+
+		switch (event.keyCode) {
 			// can't use enter : standard usage
 			case 27 : // esc
-				self.seekElementAt(self.audiotag, 0);
+				CPU_Audio.seekElementAt(container.audiotag, 0);
 				self.audiotag.pause();
 				break;
 			case 32 : // space
 				self.audiotag.paused ? self.audiotag.play() : self.audiotag.pause();
 				break;
 			case 35 : // end
-				self.seekElementAt(self.audiotag, self.audiotag.duration);
+				CPU_Audio.seekElementAt(self.audiotag, self.audiotag.duration);
 				break;
 			case 36 : // home
-				self.seekElementAt(self.audiotag, 0);
+				CPU_Audio.seekElementAt(self.audiotag, 0);
 				break;
 			case 37 : // ←
-				seek_relative(- self.keymove);
+				seek_relative(- CPU_Audio.keymove);
 				break;
 			case 39 : // →
-				seek_relative(+ self.keymove);
+				seek_relative(+ CPU_Audio.keymove);
 				break;
+		}
+	},
+	update : function(event) {
+		let audiotag = event.target;
+		// CPU_Audio.find_container(audiotag).update();
+		// et éventuellement, le controlleur global de page
+		// CPU_Audio.global_controller.update();
+		if (!audiotag.paused) {
+			localStorage.setItem(audiotag.currentSrc, String(audiotag.currentTime));
 		}
 	},
 }
@@ -652,418 +679,126 @@ function not_screen_context() {
 	return !window.matchMedia("screen").matches;
 }
 
-var self = {
-		selector_media : 'audio', // [controls]
-		selector_fallback : 'audio[data-ondeplayer]',
-		selector_container : '.cpu-audio',
-        dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
-        dontHideAudioTag : false,
-        poster_fallback : '//dascritch.net/themes/DSN13/img/entete1.svg',
-        _elements : {},
-		rebuild_eventname : 'cpu.rebuild',
-		keymove : 5,
-		count_element : 0,
-		only_play_one_audiotag : true,
-		current_audiotag_playing : null,
-		twitter_via : 'dascritch',
+function prevent_link_on_same_page(event) {
+	if (absolutize_url(document.location.href) !== absolutize_url(event.target.href)) {
+		return ;
+	}
+	event.preventDefault();
+}
 
-		seekElementAt : function(audiotag, seconds) {
-			if (self.audiotag.fastSeek !== undefined) {
-				self.audiotag.fastSeek(seconds);
-				// Firefox doesn't see fastSeek
-			} else {
-				try {
-					// but can set currentTime
-					self.audiotag.currentTime = seconds;
-				} catch(e) {
-					// exept sometimes, so you must use standard media fragment
-					self.audiotag.src = `${self.audiotag.currentSrc.split('#')[0]}#t=${seconds}`;
-				}
-			}
-			function update_id_container_loading(container_id) {
-				var container = document.getElementById(container_id);
-				self.update_line(self.audiotag, container, 'loading', seconds);
-				self.update_act_container('loading', container);
-			}
-			self.audiotag._ondemiroir.forEach(update_id_container_loading);
-		},
-		jumpIdAt : function(hash,timecode,callback_fx) {
-			function _isEvent(event) {
-				return event.preventDefault !== undefined;
-			}
+function element_prevent_link_on_same_page(element) {
+	element.addEventListener('click', prevent_link_on_same_page);
+}
 
-			function do_element_play(event) {
-				var tag = event.target;
-				tag.play();
-				if (_isEvent(event)) {
-					tag.removeEventListener('canplay', do_element_play, true);
-				}
-				onDebug(callback_fx);
-			}
 
-			function do_needle_move(event) {
+const CPU_Audio = {
+	// global object for global controller
 
-				if (_isEvent(event)) {
-					self.audiotag.removeEventListener('loadedmetadata', do_needle_move, true);
-				}
+	keymove : 5,
+	only_play_one_audiotag : true,
+	current_audiotag_playing : null,
+	// this one, later
+	global_controller : null,
+	selector_container : 'cpu-audio',
+	selector_interface : '.cpu-audio',
+	dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
+	count_element : 0,
 
-				var secs = convert.TimeInSeconds(timecode);
-				self.seekElementAt(self.audiotag, secs);
+	do_needle_move : function(event) {
 
-				if (self.audiotag.readyState >= audiotag.HAVE_FUTURE_DATA)  {
-					do_element_play({ target : self.audiotag });
-				} else {
-					self.audiotag.addEventListener('canplay', do_element_play, true);
-				}
-				self.update({target : self.audiotag});
-			}
-
-			self.audiotag = (hash !== '') ? document.getElementById(hash) : document.querySelector(this.selector_fallback);
-
-			if ((self.audiotag === undefined) || (self.audiotag === null) || (self.audiotag.currentTime === undefined)) {
-				return false;
-			}
-
-			if (self.audiotag.readyState < self.audiotag.HAVE_CURRENT_DATA ) {
-				self.audiotag.addEventListener('loadedmetadata', do_needle_move , true);
-				self.audiotag.load();
-			} else {
-				do_needle_move({});
-			}
-			self.update({target : self.audiotag});
-		},
-
-		update_act_container : function (act, container) {
-			self.container.classList.remove(
-				'act-loading',
-				'act-pause',
-				'act-play');
-			self.container.classList.add('act-'+act);
-		},
-		update_playbutton : function(event, audiotag, container) {
-
-			if (self.audiotag.readyState < self.audiotag.HAVE_CURRENT_DATA ) {
-				self.update_act_container('loading', container);
-				return;
-			}
-			if (!self.audiotag.paused) {
-				self.update_act_container('play', container);
-			} else {
-				self.update_act_container('pause', container);
-			}
-		},
-		update_line : function(audiotag, container, type, seconds) {
-			// type = 'elapsed', 'loading'
-			self._elements[type+'line'].style.width = self.audiotag.duration === 0 ? 0 : (String(100 *seconds / self.audiotag.duration)+'%');
-		},
-		update_time : function(event, audiotag, container) {
-			let timecode = convert.SecondsInTime(self.audiotag.currentTime)
-			let link_to = absolutize_url(self.audiotag.dataset.canonical)+'#';
-			link_to += self.audiotag.id ? (self.audiotag.id+'&') : '';
-			link_to += 't='+timecode;
-
-			var elapse_element = self._elements['elapse'];
-			elapse_element.href = link_to;
-
-			var total_duration = '…';
-			if (!isNaN(Math.round(self.audiotag.duration))){
-				total_duration = convert.SecondsInTime(Math.round(self.audiotag.duration));
-			} 
-			 
-			elapse_element.innerHTML = `${timecode}
-										<span class="${self.container.classname}-nosmall"> / ${total_duration}</span>`;
-			self.update_line(self.audiotag, container, 'elapsed', self.audiotag.currentTime);
-		},
-		update_id_container_infos: function (container_id) {
-				var container = document.getElementById(container_id);
-				var event = this;
-				var audiotag = event.target;
-				if (audiotag.error === 'error') {
-					self.update_act_container('error', container);
-
-				   switch (audiotag.error.code) {
-						case audiotag.error.MEDIA_ERR_ABORTED:
-							alert(__.s('media_err_aborted'));
-							break;
-						case audiotag.error.MEDIA_ERR_NETWORK:
-							alert(__.s('media_err_network'));
-							break;
-						case audiotag.error.MEDIA_ERR_DECODE:
-							alert(__.s('media_err_decode'));
-							break;
-						case audiotag.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-							alert(__.s('media_err_src_not_supported'));
-							break;
-						default:
-							alert(__.s('media_err_unknow'));
-							break;
-				   	}
-					return;
-				}
-				self.update_playbutton(event, audiotag, container);
-				self.update_time(event, audiotag, container);
-		},
-		update : function(event) {
-			let audiotag = event.target;
-			self.audiotag._ondemiroir.forEach(self.update_id_container_infos, event);
-			if (!self.audiotag.paused) {
-				localStorage.setItem(self.audiotag.currentSrc, String(self.audiotag.currentTime));
-			}
-		},
-		find_container : function (child) {
-			if (child.closest) {
-				// DOMnode.closest is not yet available anywhere
-				return child.closest('.cpu-audio')
-			}
-			return (child.className === self.container.classname) ? child : self.find_container(child.parentNode);
-		},
-		show_thobber_at : function(container, seeked_time) {
-			if (self.audiotag.duration < 1) {
-				// do not try to show if no metadata
-				return;
-			}
-			var phylactere = self._elements['popup'];
-			var elapse_element = self._elements['line'];
-
-			/* 30 pixels out, the Part Of Gad in the CSS */
-			phylactere.style.opacity = 1;
-			phylactere.style.left = (100 * seeked_time / self.audiotag.duration ) +'%';
-			phylactere.innerHTML = convert.SecondsInTime(seeked_time);
-		},
-		hide_throbber : function(container) {
-			var phylactere = self._elements['popup'];
-			phylactere.style.opacity = 0;
-		},
-		hide_throbber_later : function(container) {
-			var phylactere = self._elements['popup'];
-			if (phylactere._hider) {
-				window.clearTimeout(phylactere._hider);
-			}
-			phylactere._hider = window.setTimeout(self.hide_throbber, 1000, container);
-
-		},
-
-		update_links : function(audiotag, container) {
-			function ahref(category, href) {
-				self._elements[category].href = href;
-			}
-			function remove_hash(canonical) {
-				var hash_at = canonical.indexOf('#');
-				return hash_at === -1 ? canonical : canonical.substr(0,hash_at);
-			}
-
-			var canonical = audiotag.dataset.canonical
-			var url = (canonical === undefined ? '' : remove_hash(canonical) )
-						+ `#${audiotag.id}` 
-						+ (audiotag.currentTime === 0 ? '' : `&t=${convert.secondsInTime(audiotag.currentTime)}`);
-
-			var _url = encodeURI(absolutize_url(url));
-			var _title = encodeURI(audiotag.title);
-			ahref('twitter', `https://twitter.com/share?text=${_title}&url=${_url}&via=${self.twitter_via}`);
-			ahref('facebook', `https://www.facebook.com/sharer.php?t=${_title}&u=${_url}`);
-			ahref('email', `mailto:?subject=${_title}&body=${_url}`);
-			ahref('link', audiotag.currentSrc);
-		},
-		show_actions : function(event) {
-			// TODO replace with a class on container
-			var container = self.find_container(event.target);
-			self._elements['pagemain'].style.display  = 'none';
-			self._elements['pageshare'].style.display  = 'flex';
-			self.update_links(document.getElementById(container.dataset.ondeplayer), container)
-		},
-		show_main : function(event) {
-			// TODO replace with a class on container
-			var container = self.find_container(event.target);
-			self._elements['pagemain'].style.display = 'flex';
-			self._elements['pageshare'].style.display = 'none';
-		},
-		element_attribute : function(element, key, missing) {
-			return (element.attributes[key] === undefined) ? missing : element.attributes[key].value;
-		},
-		rebuild : function(event) {
-			function rebuild_container_id(element_id) {
-				var container = document.getElementById(element_id);
-				if (container.dataset.ondeplayer === undefined) {
-					container.remove();
-					self.build_for_audiotag(self.audiotag);
-				} else {
-					container.innerHTML = '';
-					self.build_for_placeholder(container);
-				}
-			}
-			self.audiotag._ondemiroir.forEach(rebuild_container_id);
-		},
-		add_id_to_container : function(container) {
-			self.container.id = self.container.id !== ''? self.container.id : (self.container.idPrefix + String(self.count_element++));
-		},
-		add_id_to_audiotag : function(audiotag) {
-			if (self.audiotag.id === '') {
-				self.audiotag.id = self.dynamicallyAllocatedIdPrefix + String(self.count_element++);
-			}
-		},
-		add_related_controller : function(audiotag, container) {
-			self.add_id_to_container(self.container);
-			if (self.audiotag._ondemiroir.indexOf(self.container.id) > -1) {
-				return;
-			}
-			self.audiotag._ondemiroir.push(container.id);
-		},
-
-		complete_template : function() {
-			var canonical = self.audiotag.dataset.canonical;
-			if (canonical === undefined) {
-				canonical = document.location.href;
-			}
-			self._elements['canonical'].href = canonical;
-
-			var title = self.audiotag.dataset.title;
-			title = title === undefined ? cpu_i18n['untitled'] : title;
-			self._elements['canonical'].innerText = title; // ? title : self.no_title;
-			self._elements['canonical'].title = title;
-
-			self._elements['poster'].src = self.audiotag.dataset.poster;
-		},
-		build_controller : function(container, audiotag) {
-			container.dataset.ondeplayer = audiotag.id;
-			container.classList.add(container.classname);
-			container.tabIndex = 0 // see http://snook.ca/archives/accessibility_and_usability/elements_focusable_with_tabindex and http://www.456bereastreet.com/archive/201302/making_elements_keyboard_focusable_and_clickable/
-
-			// the following mess is to simplify sub element declaration and selection
-			self._elements = {};
-			querySelector_apply('*', function(element){
-				element.classList.forEach(function(this_class) {
-					if (self._elements[this_class] === undefined) {
-						self._elements[this_class] = element;
-					}
-				});
-			}, container);
-
-			self.complete_template();
-
-			self.add_related_controller(audiotag, container);
-			var cliquables = {
-				'pause'		: trigger.play,
-				'play'		: trigger.pause,
-				'time'		: trigger.throbble,
-				'actions'	: self.show_actions,
-				'back' 		: self.show_main,
-				'poster'	: self.show_main,
-			};
-			for (let that in cliquables) {
-				self._elements[that].addEventListener('click', cliquables[that]);
-			}
-			// key management
-			container.addEventListener('keydown', trigger.key);
-			// throbber management
-			var timeline_element = self._elements['time'];
-			var do_events = {
-				'mouseover' : true,
-				'mousemove' : true,
-				'mouseout'  : false,
-
-				'touchstart'  : true,
-				// 'touchmove'   : true,
-				'touchend'    : false,
-				'touchcancel' : false,
-			}
-			for( var event_name in do_events) {
-				timeline_element.addEventListener(
-					event_name,
-					do_events[event_name] ? trigger.hover : trigger.out);				
-			}
-
-			// throw simplified event
-			self.show_main({target : container.querySelector('a')});
-			self.update({target : audiotag});
-			return container;
-		},
-		find_placeholders : function() {
-			// NOTE : to use placeholders, you need to build a <div id data-ondeplayer="el-audio" >
-			// AND you audio element SHOULD have an ID. Really
-			let audiotag = document.getElementById(self.container.dataset.ondeplayer);
-			if (audiotag === null) {
-				return;
-			}
-			self.add_related_controller(audiotag, self.container);
-			self.build_controller(self.container, audiotag);
-		},
-		recall_stored_play : function(event) {
-			if (self.current_audiotag_playing !== null) {
-				return;
-			} 
-			var audiotag = event.target;
-			var lasttimecode = Number(localStorage.getItem(audiotag.currentSrc));
-			// TODO and no hashed time
-			if (lasttimecode > 0) {
-				self.seekElementAt(audiotag, lasttimecode);
-				trigger.play(undefined, audiotag);
-			}
-		},
-		build_for_audiotag : function(audiotag) {
-			if (audiotag._ondemiroir === undefined) {
-				audiotag._ondemiroir = []
-			}
-			self.add_id_to_audiotag(audiotag)
-
-			//var container = thisDoc.querySelector('.cpu-audio')
-			self.container.dataset.ondeplayer = audiotag.id;
-
-			// see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events for list of events
-			[
-				'ready', 'load', 'loadeddata', 'canplay', 'abort', 
-				// 'error', 'stalled', 'suspend', 'emptied',
-				'play', 'playing', 'pause', 'suspend', 'ended',
-				'durationchange',  'loadedmetadata', 'progress', 'timeupdate', 'waiting'
-			].forEach( function(on){ audiotag.addEventListener(on, self.update); } );
-			audiotag.addEventListener(self.rebuild_eventname, self.rebuild);
-
-			audiotag.addEventListener('loadedmetadata', self.recall_stored_play);
-			// those ↓ for PHRACKING SAFARI
-			audiotag.addEventListener('ready', self.recall_stored_play);
-			audiotag.addEventListener('canplay', self.recall_stored_play);
-
-			// ask ASAP metadata about media
-			// we have to set in HTML code preload="none" due to a very laggy behaviour in HTTP2
-			// https://stackoverflow.com/questions/14479413/chrome-ignoring-audio-preload-metadata
-			if (self.audiotag.preload === '') {
-				self.audiotag.preload = 'metadata';
-			}
-			audiotag.load();
-
-			self.update({target : audiotag})
-			self.recall_stored_play({target : audiotag})
-
-			if (self.dontHideAudioTag === false) {
-				audiotag.hidden = true;
-				// PHRACK SAFARI
-				audiotag.removeAttribute('controls');
-				audiotag.setAttribute('data-ondeplayer', '');
-			}	
-		},
-		prevent_link_on_same_page : function(event) {
-			if (absolutize_url( document.location.href ) !== absolutize_url(event.target.href)) {
-				return ;
-			}
-			event.preventDefault();
-		},
-		element_prevent_link_on_same_page : function(element) {
-			element.addEventListener('click', self.prevent_link_on_same_page);
-		},
-		launch : function() {
-
-			//new CustomEvent(self.rebuild_eventname);
-			self.build_for_audiotag(self.audiotag);
-			self.find_placeholders(self.selector);
-			querySelector_apply('.canonical', self.element_prevent_link_on_same_page);
-			trigger.hashOrder({ at_start : true })
-
-			window.addEventListener('hashchange', trigger.hashOrder, false);
+		if (_isEvent(event)) {
+			self.audiotag.removeEventListener('loadedmetadata', CPU_Audio.do_needle_move, true);
 		}
-	};
 
+		var secs = convert.TimeInSeconds(timecode);
+		CPU_Audio.seekElementAt(self.audiotag, secs);
 
+		if (self.audiotag.readyState >= audiotag.HAVE_FUTURE_DATA)  {
+			do_element_play({ target : self.audiotag });
+		} else {
+			self.audiotag.addEventListener('canplay', do_element_play, true);
+		}
+		trigger.update({target : self.audiotag});
+	},
 
-class CpuAudioElement extends HTMLElement {
+	jumpIdAt : function(hash,timecode,callback_fx) {
+		function _isEvent(event) {
+			// is this event really triggered via a native event ?
+			return event.preventDefault !== undefined;
+		}
+
+		function do_element_play(event) {
+			var tag = event.target;
+			tag.play();
+			if (_isEvent(event)) {
+				tag.removeEventListener('canplay', do_element_play, true);
+			}
+			onDebug(callback_fx);
+		}
+
+		let audiotag = (hash !== '') ? document.getElementById(hash) : document.querySelector(this.selector_fallback);
+
+		if ((audiotag === undefined) || (audiotag === null) || (audiotag.currentTime === undefined)) {
+			return false;
+		}
+
+		if (audiotag.readyState < audiotag.HAVE_CURRENT_DATA ) {
+			audiotag.addEventListener('loadedmetadata', CPU_Audio.do_needle_move , true);
+			audiotag.load();
+		} else {
+			CPU_Audio.do_needle_move({});
+		}
+		trigger.update({target : audiotag});
+	},
+
+	find_container : function(child) {
+		// DOMnode.closest won't work in too old browsers
+		// CF https://caniuse.com/#search=closest
+		return child.closest(CPU_Audio.selector_container);
+	},
+	find_interface : function(child) {
+		return child.closest(CPU_Audio.selector_interface);
+	},
+	seekElementAt : function (audiotag, seconds) {
+		if (audiotag.fastSeek !== undefined) {
+			audiotag.fastSeek(seconds);
+			// Firefox doesn't see fastSeek
+		} else {
+			try {
+				// but can set currentTime
+				audiotag.currentTime = seconds;
+			} catch(e) {
+				// exept sometimes, so you must use standard media fragment
+				audiotag.src = `${audiotag.currentSrc.split('#')[0]}#t=${seconds}`;
+			}
+		}
+
+		CPU_Audio.find_container(audiotag).update_loading();
+	},
+
+	recall_stored_play : function(event) {
+		if (CPU_Audio.current_audiotag_playing !== null) {
+			return;
+		} 
+		let audiotag = event.target;
+		let lasttimecode = Number(localStorage.getItem(audiotag.currentSrc));
+		// TODO and no hashed time
+		if (lasttimecode > 0) {
+			self.seekElementAt(audiotag, lasttimecode);
+			trigger.play(undefined, audiotag);
+		}
+	}
+
+}
+
+// Extension on media element
+
+// Controller without assigned audio element, i.e. global page controller
+class CpuControllerElement extends HTMLElement {
+}
+
+// Controller with assigned audio element
+class CpuAudioElement extends CpuControllerElement {
 
 	constructor() {
 		// Always call super first in constructor
@@ -1074,6 +809,16 @@ class CpuAudioElement extends HTMLElement {
 			// Sorry, but your browser's native controls are surely more accessible
 			return ;
 		}
+
+		// self variables
+
+		this.selector_fallback = 'audio[data-ondeplayer]';
+		
+		this.dontHideAudioTag = false;
+		this.poster_fallback = '//dascritch.net/themes/DSN13/img/entete1.svg';
+		this._elements = {};
+	
+		this.audiotag = null;
 
 		template =  thisDoc.querySelector('template');
 		shadow_element = this.attachShadow({mode: 'open'})//.appendChild(template.cloneNode(true));
@@ -1086,21 +831,300 @@ class CpuAudioElement extends HTMLElement {
 		}
 
 		let audiotag = this.querySelector('audio');
-		self.audiotag = audiotag;
+		this.audiotag = audiotag;
 			// TODO prévoir quand audiotag est une référence, et non pas inclus dans le tag
 
-		self.container = shadow_element.querySelector('.cpu-audio');
+		this.container = shadow_element.querySelector('.cpu-audio');
 		// copying personalized data to audio tag
 		for (var key of ['title', 'poster', 'canonical']) {
-			self.audiotag.dataset[key] = this.dataset[key];
+			this.audiotag.dataset[key] = this.dataset[key];
 		}
-		self.launch();
+
+		// WAS build_for_audiotag
+		this.add_id_to_audiotag()
+		this.dataset.ondeplayer = this.audiotag.id;
+
+		this.build_controller();
+
+		// see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events for list of events
+		[
+			'ready', 'load', 'loadeddata', 'canplay', 'abort', 
+			// 'error', 'stalled', 'suspend', 'emptied',
+			'play', 'playing', 'pause', 'suspend', 'ended',
+			'durationchange',  'loadedmetadata', 'progress', 'timeupdate', 'waiting'
+		].forEach( function(on){ 
+			audiotag.addEventListener(on, trigger.update); 
+		});
+
+		this.audiotag.addEventListener('loadedmetadata', CPU_Audio.recall_stored_play);
+		// those ↓ for PHRACKING SAFARI
+		this.audiotag.addEventListener('ready', CPU_Audio.recall_stored_play);
+		this.audiotag.addEventListener('canplay', CPU_Audio.recall_stored_play);
+
+		// ask ASAP metadata about media
+		// we have to set in HTML code preload="none" due to a very laggy behaviour in HTTP2
+		// https://stackoverflow.com/questions/14479413/chrome-ignoring-audio-preload-metadata
+		if (this.audiotag.preload === '') {
+			this.audiotag.preload = 'metadata';
+		}
+		this.audiotag.load();
+
+		trigger.update({target : audiotag});
+		CPU_Audio.recall_stored_play({target : audiotag});
+
+		if (this.dontHideAudioTag === false) {
+			this.audiotag.hidden = true;
+			// PHRACK SAFARI
+			this.audiotag.removeAttribute('controls');
+			this.audiotag.setAttribute('data-ondeplayer', '');
+		}	
+
+		// TODO : Event should be set on controller , with checking event.originalTarget.classlist.has()
+		querySelector_apply('.canonical', element_prevent_link_on_same_page);
+
 	}
 
 	disconnectedCallback() {
 	}
+
+
+	update_act_container(act) {
+		this.classList.remove(
+			'act-loading',
+			'act-pause',
+			'act-play');
+		this.classList.add(`act-${act}`);
+	}
+
+	update_playbutton(event) {
+		if (this.audiotag.readyState < self.audiotag.HAVE_CURRENT_DATA ) {
+			self.update_act_container('loading');
+			return;
+		}
+
+		this.update_act_container(this.audiotag.paused ? 'pause' : 'play');
+	}
+
+	update_line(type, seconds) {
+		// type = 'elapsed', 'loading'
+		let duration = this.audiotag.duration;
+		this._elements[`${type}line`].style.width = duration === 0
+												? 0
+												: `${100*seconds / duration}%`;
+	}
+
+	update_time(event) {
+		let timecode = convert.SecondsInTime(this.audiotag.currentTime);
+		let link_to = absolutize_url(this.audiotag.dataset.canonical)+'#';
+		link_to += this.audiotag.id ? (this.audiotag.id+'&') : '';
+		link_to += 't='+timecode;
+
+		let elapse_element = this._elements['elapse'];
+		elapse_element.href = link_to;
+
+		let total_duration = '…';
+		if (!isNaN(Math.round(this.audiotag.duration))){
+			total_duration = convert.SecondsInTime(Math.round(this.audiotag.duration));
+		} 
+		 
+		elapse_element.innerHTML = `${timecode}
+									<span class="${this.classname}-nosmall"> / ${total_duration}</span>`;
+		this.update_line('elapsed', this.audiotag.currentTime);
+	}
+
+	update_loading() {
+		this.update_line('loading', seconds);
+		this.update_act_container('loading');
+	}
+
+	/// NNN?N???????
+	update_id_container_infos(container_id) {
+		let container = document.getElementById(container_id);
+		let event = this;
+		let audiotag = event.target;
+		if (audiotag.error === 'error') {
+			this.update_act_container('error');
+
+		   switch (audiotag.error.code) {
+				case audiotag.error.MEDIA_ERR_ABORTED:
+					alert(__.s('media_err_aborted'));
+					break;
+				case audiotag.error.MEDIA_ERR_NETWORK:
+					alert(__.s('media_err_network'));
+					break;
+				case audiotag.error.MEDIA_ERR_DECODE:
+					alert(__.s('media_err_decode'));
+					break;
+				case audiotag.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+					alert(__.s('media_err_src_not_supported'));
+					break;
+				default:
+					alert(__.s('media_err_unknow'));
+					break;
+		   	}
+			return;
+		}
+		this.update_playbutton(container);
+		this.update_time(container);
+	}
+
+	show_thobber_at(seeked_time) {
+		if (this.audiotag.duration < 1) {
+			// do not try to show if no metadata
+			return;
+		}
+		var phylactere = this._elements['popup'];
+		var elapse_element = this._elements['line'];
+
+		phylactere.style.opacity = 1;
+		phylactere.style.left = (100 * seeked_time / this.audiotag.duration ) +'%';
+		phylactere.innerHTML = convert.SecondsInTime(seeked_time);
+	}
+	hide_throbber() {
+		var phylactere = this._elements['popup'];
+		phylactere.style.opacity = 0;
+	}
+	hide_throbber_later() {
+		var phylactere = this._elements['popup'];
+		if (phylactere._hider) {
+			window.clearTimeout(phylactere._hider);
+		}
+		phylactere._hider = window.setTimeout(this.hide_throbber, 1000, container);
+
+	}
+
+	update_links() {
+		var container = this;
+		function ahref(category, href) {
+			container._elements[category].href = href;
+		}
+		function remove_hash(canonical) {
+			var hash_at = canonical.indexOf('#');
+			return hash_at === -1 ? canonical : canonical.substr(0,hash_at);
+		}
+
+		var canonical = this.audiotag.dataset.canonical
+		var url = (canonical === undefined ? '' : remove_hash(canonical) )
+					+ `#${this.audiotag.id}` 
+					+ ( this.audiotag.currentTime === 0 
+							? ''
+							: `&t=${convert.secondsInTime(this.audiotag.currentTime)}`
+						);
+
+		var _url = encodeURI(absolutize_url(url));
+		var _title = encodeURI(this.audiotag.title);
+		ahref('twitter', `https://twitter.com/share?text=${_title}&url=${_url}&via=${twitter_via}`);
+		ahref('facebook', `https://www.facebook.com/sharer.php?t=${_title}&u=${_url}`);
+		ahref('email', `mailto:?subject=${_title}&body=${_url}`);
+		ahref('link', this.audiotag.currentSrc);
+	}
+
+	show_actions(event) {
+		let container = (event !== undefined) ?
+				CPU_Audio.find_interface(event.target) :
+				this.container;
+		container.classList.remove('show-main');
+		container.classList.add('show-share');
+		this.update_links(document.getElementById(container.dataset.ondeplayer), container)
+	}
+	show_main(event) {
+		let container = (event !== undefined) ?
+				CPU_Audio.find_interface(event.target) :
+				this.container;
+		container.classList.add('show-main');
+		container.classList.remove('show-share');
+	}
+	element_attribute(element, key, missing) {
+		return (element.attributes[key] === undefined) ? missing : element.attributes[key].value;
+	}
+
+	add_id_to_container() {
+		this.id = this.id !== ''? this.id : (this.idPrefix + String(CPU_Audio.count_element++));
+	}
+	add_id_to_audiotag() {
+		if (this.audiotag.id === '') {
+			this.audiotag.id = CPU_Audio.dynamicallyAllocatedIdPrefix + String(CPU_Audio.count_element++);
+		}
+	}
+
+	complete_template() {
+		var canonical = this.audiotag.dataset.canonical;
+		if (canonical === undefined) {
+			canonical = document.location.href;
+		}
+		this._elements['canonical'].href = canonical;
+
+		var title = this.audiotag.dataset.title;
+		title = title === undefined ? cpu_i18n['untitled'] : title;
+		this._elements['canonical'].innerText = title; 
+		this._elements['canonical'].title = title;
+
+		this._elements['poster'].src = this.audiotag.dataset.poster;
+	}
+	build_controller() {
+
+		this.dataset.ondeplayer = this.audiotag.id;
+		this.classList.add(this.classname);
+		this.tabIndex = 0 // see http://snook.ca/archives/accessibility_and_usability/elements_focusable_with_tabindex and http://www.456bereastreet.com/archive/201302/making_elements_keyboard_focusable_and_clickable/
+
+		// the following mess is to simplify sub element declaration and selection
+		this._elements = {};
+		let controller = this;
+		querySelector_apply('*', function(element){
+			element.classList.forEach(function(this_class) {
+				if (controller._elements[this_class] === undefined) {
+					controller._elements[this_class] = element;
+				}
+			});
+		}, this.shadowRoot);
+
+		this.complete_template();
+
+		//this.add_related_controller(audiotag, container);
+		let cliquables = {
+			'pause'		: trigger.play,
+			'play'		: trigger.pause,
+			'time'		: trigger.throbble,
+			'actions'	: this.show_actions,
+			'back' 		: this.show_main,
+			'poster'	: this.show_main,
+		};
+		for (let that in cliquables) {
+			this._elements[that].addEventListener('click', cliquables[that]);
+		}
+		// key management
+		this.addEventListener('keydown', trigger.key);
+		// throbber management
+		let timeline_element = this._elements['time'];
+		let do_events = {
+			'mouseover' : true,
+			'mousemove' : true,
+			'mouseout'  : false,
+
+			'touchstart'  : true,
+			// 'touchmove'   : true,
+			'touchend'    : false,
+			'touchcancel' : false,
+		}
+		for(let event_name in do_events) {
+			timeline_element.addEventListener(
+				event_name,
+				do_events[event_name] ? trigger.hover : trigger.out);				
+		}
+
+		// throw simplified event
+		this.show_main();
+		trigger.update({target : this.audiotag});
+	}
+
 }
+
 window.customElements.define('cpu-audio', CpuAudioElement);
+window.customElements.define('cpu-controller', CpuControllerElement);
+window.addEventListener('hashchange', trigger.hashOrder, false);
+trigger.hashOrder({ at_start : true });
+
+
 
 })();
 </script>
