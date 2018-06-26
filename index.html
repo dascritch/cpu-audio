@@ -28,6 +28,10 @@
 <div>
 000
 </div>
+<div>
+↓ Controller only on the playing / last played &lt;audio&gt;
+</div>
+
 <!-- Interact with the upgraded element -->
 <script>
   window.addEventListener('WebComponentsReady', function() {
@@ -37,7 +41,7 @@
 
     let MyElement = customElements.get(mytag);
     let element = document.querySelector(mytag);
-    console.assert(element instanceof MyElement);
+    //console.assert(element instanceof MyElement);
     //element.someAPI();
   });
 </script>

@@ -30,6 +30,8 @@ Note. Fonctions retirées :
 		--cpu-font-size : 15px;
 		--cpu-background : #555;
 		--cpu-color : #ccc;
+		--cpu-popup-background : #aaa;
+		--cpu-popup-color : #333;
 	}
 </style>
 
@@ -318,10 +320,10 @@ a:hover svg {
 	min-width : 50px;
 	font-size : 11px;
 	text-align : center;
-	padding : 4px;
+	padding : 8px;
 	border-radius: 4px;
-	background : var(--cpu-color);
-	color : var(--cpu-background);
+	background : var(--cpu-popup-background);
+	color : var(--cpu-popup-color);
 	opacity : 0;
 	transition : opacity 1s;
 	pointer-events : none;
@@ -330,6 +332,7 @@ a:hover svg {
 	ms-user-select: none;
 	webkit-user-select: none;
 	user-select: none;
+	box-shadow: black 2px 2px
 } 
 
 .popup:before {
@@ -339,7 +342,7 @@ a:hover svg {
 	bottom: -8px;
 	height : 0;
 	width: 0;
-	border-top: 8px solid var(--cpu-background);
+	border-top: 8px solid var(--cpu-popup-background);
 	border-left: 4px solid transparent;
 	border-right: 4px solid transparent;
 	pointer-events : none;
@@ -576,13 +579,13 @@ const trigger = {
 			onDebug(callback_fx);
 			return false;
 		}
-		self.jumpIdAt(hash,timecode,callback_fx);
+		CPU_Audio.jumpIdAt(hash,timecode,callback_fx);
 		// scroll to the audio element. Should be reworked
 		document.location.hash = `#${hash}`;
 		return true;
 	},
 	hover : function(event) {
-		let container = CPU_Audio.find_container(event.originalTarget);
+		let container = CPU_Audio.find_container(event.target);
 
 		let target_rect = event.target.getClientRects()[0];
 		let relLeft = target_rect.left;
@@ -591,64 +594,67 @@ const trigger = {
 		container.show_thobber_at(seeked_time);
 	},
 	out : function(event) {
-		self.hide_throbber(self.container);
+		let container = CPU_Audio.find_container(event.target);
+		container.hide_throbber();
 	},
 
 	throbble : function(event) {
-		//var container = self.find_container(event.target);
 		let at = 0;
+		let container = CPU_Audio.find_container(event.target);
+		let audiotag = container.audiotag;
 		if (event.at !== undefined) {
 			at = event.at;
 		} else {
 			// normal usage
 			let relLeft = event.target.getClientRects()[0].left;
 			let ratio = (event.clientX - relLeft) / event.target.clientWidth;
-			at = ratio * self.audiotag.duration;
+			at = ratio * audiotag.duration;
 		}
-		CPU_Audio.seekElementAt(self.audiotag, at);
+		CPU_Audio.seekElementAt(audiotag, at);
 		trigger.play(event);
 	},
 	pause : function(event, audiotag) {
-		self.audiotag.pause();
-		self.current_audiotag_playing = null;
-		localStorage.removeItem(self.audiotag.currentSrc);
+		if (audiotag === undefined) {
+			audiotag = CPU_Audio.find_container(event.target).audiotag;
+		}
+		audiotag.pause();
+		CPU_Audio.current_audiotag_playing = null;
+		localStorage.removeItem(audiotag.currentSrc);
 	},
 	play : function(event, audiotag) {
 		if (audiotag === undefined) {
-			audiotag = self.audiotag;
+			audiotag = CPU_Audio.find_container(event.target).audiotag;
 		}
-		if ( (self.only_play_one_audiotag) && (self.current_audiotag_playing) ) {
-			trigger.pause(undefined, document.getElementById(self.current_audiotag_playing))
+		if ( (CPU_Audio.only_play_one_audiotag) && (CPU_Audio.current_audiotag_playing) ) {
+			trigger.pause(undefined, document.getElementById(CPU_Audio.current_audiotag_playing))
 		}
-		self.current_audiotag_playing = audiotag.id;
-		self.audiotag.play();
+		CPU_Audio.current_audiotag_playing = audiotag;
+		audiotag.play();
 	},
 	key : function(event) {
-		let container = CPU_Audio.find_container(event.target);
+		let container = event.target;
 
 		function seek_relative(seconds) {
-			event.at = self.audiotag.currentTime + seconds;
-			container.show_thobber_at(self.container, event.at);
+			event.at = container.audiotag.currentTime + seconds;
+			container.show_thobber_at(container, event.at);
 			trigger.throbble(event);
-			self.hide_throbber_later(self.container);
+			container.hide_throbber_later();
 		}
-
-		
 
 		switch (event.keyCode) {
 			// can't use enter : standard usage
 			case 27 : // esc
 				CPU_Audio.seekElementAt(container.audiotag, 0);
-				self.audiotag.pause();
+				container.audiotag.pause();
 				break;
 			case 32 : // space
-				self.audiotag.paused ? self.audiotag.play() : self.audiotag.pause();
+				container.audiotag.paused ? container.audiotag.play() : container.audiotag.pause();
 				break;
 			case 35 : // end
-				CPU_Audio.seekElementAt(self.audiotag, self.audiotag.duration);
+				CPU_Audio.seekElementAt(container.audiotag, container.audiotag.duration);
 				break;
 			case 36 : // home
-				CPU_Audio.seekElementAt(self.audiotag, 0);
+				CPU_Audio.seekElementAt(container.audiotag, 0);
 				break;
 			case 37 : // ←
 				seek_relative(- CPU_Audio.keymove);
@@ -660,9 +666,7 @@ const trigger = {
 	},
 	update : function(event) {
 		let audiotag = event.target;
-		// CPU_Audio.find_container(audiotag).update();
-		// et éventuellement, le controlleur global de page
-		// CPU_Audio.global_controller.update();
+		audiotag.CPU_update();
 		if (!audiotag.paused) {
 			localStorage.setItem(audiotag.currentSrc, String(audiotag.currentTime));
 		}
@@ -705,20 +709,21 @@ const CPU_Audio = {
 	count_element : 0,
 
 	do_needle_move : function(event) {
+		let audiotag = event.target;
 
 		if (_isEvent(event)) {
-			self.audiotag.removeEventListener('loadedmetadata', CPU_Audio.do_needle_move, true);
+			audiotag.removeEventListener('loadedmetadata', CPU_Audio.do_needle_move, true);
 		}
 
 		var secs = convert.TimeInSeconds(timecode);
-		CPU_Audio.seekElementAt(self.audiotag, secs);
+		CPU_Audio.seekElementAt(audiotag, secs);
 
-		if (self.audiotag.readyState >= audiotag.HAVE_FUTURE_DATA)  {
-			do_element_play({ target : self.audiotag });
+		if (audiotag.readyState >= audiotag.HAVE_FUTURE_DATA)  {
+			do_element_play({ target : audiotag });
 		} else {
-			self.audiotag.addEventListener('canplay', do_element_play, true);
+			audiotag.addEventListener('canplay', do_element_play, true);
 		}
-		trigger.update({target : self.audiotag});
+		trigger.update({target : audiotag});
 	},
 
 	jumpIdAt : function(hash,timecode,callback_fx) {
@@ -746,20 +751,24 @@ const CPU_Audio = {
 			audiotag.addEventListener('loadedmetadata', CPU_Audio.do_needle_move , true);
 			audiotag.load();
 		} else {
-			CPU_Audio.do_needle_move({});
+			CPU_Audio.do_needle_move({target : audiotag});
 		}
 		trigger.update({target : audiotag});
 	},
 
 	find_container : function(child) {
+		if (child.tagName ===  CPU_Audio.selector_container.toUpperCase()) {
+			return child
+		}
 		// DOMnode.closest won't work in too old browsers
 		// CF https://caniuse.com/#search=closest
-		return child.closest(CPU_Audio.selector_container);
+		return this.find_interface(child).parentNode.host;
 	},
 	find_interface : function(child) {
 		return child.closest(CPU_Audio.selector_interface);
 	},
 	seekElementAt : function (audiotag, seconds) {
+
 		if (audiotag.fastSeek !== undefined) {
 			audiotag.fastSeek(seconds);
 			// Firefox doesn't see fastSeek
@@ -773,7 +782,7 @@ const CPU_Audio = {
 			}
 		}
 
-		CPU_Audio.find_container(audiotag).update_loading();
+		audiotag.CPU_controller().update_loading(seconds);
 	},
 
 	recall_stored_play : function(event) {
@@ -784,7 +793,7 @@ const CPU_Audio = {
 		let lasttimecode = Number(localStorage.getItem(audiotag.currentSrc));
 		// TODO and no hashed time
 		if (lasttimecode > 0) {
-			self.seekElementAt(audiotag, lasttimecode);
+			CPU_Audio.seekElementAt(audiotag, lasttimecode);
 			trigger.play(undefined, audiotag);
 		}
 	}
@@ -792,6 +801,21 @@ const CPU_Audio = {
 }
 
 // Extension on media element
+
+HTMLAudioElement.prototype.CPU_controller = function() {
+	return this.closest(CPU_Audio.selector_container);
+	controller.update();
+	if (CPU_Audio.global_controller) {
+		CPU_Audio.global_controller.update();
+	}
+}
+
+HTMLAudioElement.prototype.CPU_update = function() {
+	this.CPU_controller().update();
+	if (CPU_Audio.global_controller) {
+		CPU_Audio.global_controller.update();
+	}
+}
 
 // Controller without assigned audio element, i.e. global page controller
 class CpuControllerElement extends HTMLElement {
@@ -889,16 +913,16 @@ class CpuAudioElement extends CpuControllerElement {
 
 
 	update_act_container(act) {
-		this.classList.remove(
+		this.container.classList.remove(
 			'act-loading',
 			'act-pause',
 			'act-play');
-		this.classList.add(`act-${act}`);
+		this.container.classList.add(`act-${act}`);
 	}
 
-	update_playbutton(event) {
-		if (this.audiotag.readyState < self.audiotag.HAVE_CURRENT_DATA ) {
-			self.update_act_container('loading');
+	update_playbutton() {
+		if (this.audiotag.readyState < this.audiotag.HAVE_CURRENT_DATA ) {
+			this.update_act_container('loading');
 			return;
 		}
 
@@ -932,10 +956,15 @@ class CpuAudioElement extends CpuControllerElement {
 		this.update_line('elapsed', this.audiotag.currentTime);
 	}
 
-	update_loading() {
+	update_loading(seconds) {
 		this.update_line('loading', seconds);
 		this.update_act_container('loading');
 	}
+	update() {
+		this.update_playbutton();
+		this.update_time();		
+	}
+
 
 	/// NNN?N???????
 	update_id_container_infos(container_id) {
@@ -964,7 +993,7 @@ class CpuAudioElement extends CpuControllerElement {
 		   	}
 			return;
 		}
-		this.update_playbutton(container);
+		this.update_playbutton();
 		this.update_time(container);
 	}
 
@@ -1019,20 +1048,22 @@ class CpuAudioElement extends CpuControllerElement {
 		ahref('link', this.audiotag.currentSrc);
 	}
 
+	show_interface(mode) {
+		this.container.classList.remove('show-main', 'show-share');
+		this.container.classList.add('show-'+mode);
+		this.update_links();
+	}
 	show_actions(event) {
 		let container = (event !== undefined) ?
-				CPU_Audio.find_interface(event.target) :
-				this.container;
-		container.classList.remove('show-main');
-		container.classList.add('show-share');
-		this.update_links(document.getElementById(container.dataset.ondeplayer), container)
+				CPU_Audio.find_container(event.target) :
+				this;
+		container.show_interface('share');
 	}
 	show_main(event) {
 		let container = (event !== undefined) ?
-				CPU_Audio.find_interface(event.target) :
-				this.container;
-		container.classList.add('show-main');
-		container.classList.remove('show-share');
+				CPU_Audio.find_container(event.target) :
+				this;
+		container.show_interface('main');
 	}
 	element_attribute(element, key, missing) {
 		return (element.attributes[key] === undefined) ? missing : element.attributes[key].value;
@@ -1119,7 +1150,7 @@ class CpuAudioElement extends CpuControllerElement {
 
 }
 
-window.customElements.define('cpu-audio', CpuAudioElement);
+window.customElements.define(CPU_Audio.selector_container, CpuAudioElement);
 window.customElements.define('cpu-controller', CpuControllerElement);
 window.addEventListener('hashchange', trigger.hashOrder, false);
 trigger.hashOrder({ at_start : true });
