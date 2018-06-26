@@ -708,6 +708,10 @@ function element_prevent_link_on_same_page(element) {
 	element.addEventListener('click', prevent_link_on_same_page);
 }
 
+function _isEvent(event) {
+	// is this event really triggered via a native event ?
+	return event.preventDefault !== undefined;
+}
 
 const CPU_Audio = {
 	// global object for global controller
@@ -722,28 +726,25 @@ const CPU_Audio = {
 	dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
 	count_element : 0,
 
-	do_needle_move : function(event) {
-		let audiotag = event.target;
-
-		if (_isEvent(event)) {
-			audiotag.removeEventListener('loadedmetadata', CPU_Audio.do_needle_move, true);
-		}
-
-		var secs = convert.TimeInSeconds(timecode);
-		CPU_Audio.seekElementAt(audiotag, secs);
-
-		if (audiotag.readyState >= audiotag.HAVE_FUTURE_DATA)  {
-			do_element_play({ target : audiotag });
-		} else {
-			audiotag.addEventListener('canplay', do_element_play, true);
-		}
-		trigger.update({target : audiotag});
-	},
 
 	jumpIdAt : function(hash,timecode,callback_fx) {
-		function _isEvent(event) {
-			// is this event really triggered via a native event ?
-			return event.preventDefault !== undefined;
+
+		function do_needle_move(event) {
+			let audiotag = event.target;
+
+			if (_isEvent(event)) {
+				audiotag.removeEventListener('loadedmetadata', do_needle_move, true);
+			}
+
+			var secs = convert.TimeInSeconds(timecode);
+			CPU_Audio.seekElementAt(audiotag, secs);
+
+			if (audiotag.readyState >= audiotag.HAVE_FUTURE_DATA)  {
+				do_element_play({ target : audiotag });
+			} else {
+				audiotag.addEventListener('canplay', do_element_play, true);
+			}
+			trigger.update({target : audiotag});
 		}
 
 		function do_element_play(event) {
@@ -762,10 +763,10 @@ const CPU_Audio = {
 		}
 
 		if (audiotag.readyState < audiotag.HAVE_CURRENT_DATA ) {
-			audiotag.addEventListener('loadedmetadata', CPU_Audio.do_needle_move , true);
+			audiotag.addEventListener('loadedmetadata', do_needle_move , true);
 			audiotag.load();
 		} else {
-			CPU_Audio.do_needle_move({target : audiotag});
+			do_needle_move({target : audiotag});
 		}
 		trigger.update({target : audiotag});
 	},
