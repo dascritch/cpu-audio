@@ -991,7 +991,7 @@ class CpuControllerElement extends HTMLElement {
 		} 
 		 
 		elapse_element.innerHTML = `${timecode}
-									<span class="${this.classname}-nosmall"> / ${total_duration}</span>`;
+									<span class="nosmall"> / ${total_duration}</span>`;
 		this.update_line('loading', this.audiotag.currentTime);
 		this.update_buffered();
 	}
