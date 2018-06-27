@@ -118,14 +118,10 @@ a:hover svg {
 	fill : var(--cpu-playing-background);
 }
 
-.act-error {
+.show-error {
 	background : var(--cpu-error-background);
 	color : var(--cpu-error-color);
 }
-
-.act-error .elapse , .act-error .line {
-		display : none;
-	}
 
 .control,
 .actions,
@@ -143,12 +139,13 @@ a:hover svg {
 }
 
 .loading, .play, .pause,
-.show-main .pageshare, .show-share .pagemain {
+.show-main .pageshare, .show-main .pageerror,
+.show-share .pagemain, .show-share .pageerror,
+.show-error .pagemain, .show-error .pageshare {
 	display : none;
 }
 
 .act-loading .loading,
-.act-error .loading,
 .act-play .play,
 .act-pause .pause {
 	display : block;
@@ -261,7 +258,7 @@ a:hover svg {
 
 }
 .elapse {
-	flex : 1 0 160px;
+	flex : 1 0 170px;
 	text-align : right;
 }
 .time {
@@ -282,6 +279,9 @@ a:hover svg {
 	left : 0;
 	border-radius : 4px;
 	pointer-events : none;
+}
+.elapsedline {
+	z-index : 2;
 }
 
 .act-loading .loadingline {
@@ -316,6 +316,41 @@ a:hover svg {
 .facebook {background : #5974CC}
 .email {background : #CC0000}
 .link {background : #77F}
+
+
+.popup {
+	position: absolute;
+	transform: translate(-25px, -15px);
+	z-index : 127;
+	min-width : 50px;
+	font-size : 11px;
+	text-align : center;
+	padding : 8px;
+	border-radius: 4px;
+	background : var(--cpu-popup-background);
+	color : var(--cpu-popup-color);
+	opacity : 0;
+	transition : opacity 1s;
+	pointer-events : none;
+	/* absolute pos, need to repeat it →  https://developer.mozilla.org/en-US/docs/Web/CSS/user-select */
+	moz-user-select: none;
+	ms-user-select: none;
+	webkit-user-select: none;
+	user-select: none;
+	box-shadow: black 2px 2px
+} 
+.popup:before {
+	content:"";
+	position: absolute;
+	left: 20px;
+	bottom: -8px;
+	height : 0;
+	width: 0;
+	border-top: 8px solid var(--cpu-popup-background);
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	pointer-events : none;
+} 
 
 @media screen and (max-width: 640px) {
 
@@ -362,45 +397,13 @@ a:hover svg {
 	}
 }
 
-.popup {
-	position: absolute;
-	transform: translate(-25px, -15px);
-	z-index : 127;
-	min-width : 50px;
-	font-size : 11px;
-	text-align : center;
-	padding : 8px;
-	border-radius: 4px;
-	background : var(--cpu-popup-background);
-	color : var(--cpu-popup-color);
-	opacity : 0;
-	transition : opacity 1s;
-	pointer-events : none;
-	/* absolute pos, need to repeat it →  https://developer.mozilla.org/en-US/docs/Web/CSS/user-select */
-	moz-user-select: none;
-	ms-user-select: none;
-	webkit-user-select: none;
-	user-select: none;
-	box-shadow: black 2px 2px
-} 
-
-.popup:before {
-	content:"";
-	position: absolute;
-	left: 20px;
-	bottom: -8px;
-	height : 0;
-	width: 0;
-	border-top: 8px solid var(--cpu-popup-background);
-	border-left: 4px solid transparent;
-	border-right: 4px solid transparent;
-	pointer-events : none;
-} 
 
 </style>
 
 <div class="cpu-audio">
 	<img class="poster nosmall" src="" alt="" />
+	<div class="pageerror">
+	</div>
 	<div class="pagemain">
 		<div class="control">
 			<div class="loading" title="Chargement en cours">
@@ -674,6 +677,7 @@ const trigger = {
 		CPU_Audio.current_audiotag_playing = audiotag;
 		if (CPU_Audio.global_controller) {
 			CPU_Audio.global_controller.attach_audiotag_to_controller(CPU_Audio.current_audiotag_playing);
+			CPU_Audio.global_controller.show_main();
 		}
 		audiotag.play();
 	},
@@ -941,8 +945,7 @@ class CpuControllerElement extends HTMLElement {
 		this.container.classList.remove(
 			'act-loading',
 			'act-pause',
-			'act-play',
-			'act-error'
+			'act-play'
 			);
 		this.container.classList.add(`act-${act}`);
 	}
@@ -1003,27 +1006,26 @@ class CpuControllerElement extends HTMLElement {
 		// Chrome logs an error « Uncaught (in promise) DOMException: Failed to load because no supported source was found. »
 		// but don't update message
 		if (this.audiotag.error !== null) {
-			this.update_act_container('error');
-			let error_message  ; // the audiotag.error.message is removed from living standard
+			this.show_interface('error');
+			let pageerror = this._elements['pageerror'];
 			switch (this.audiotag.error.code) {
 				case this.audiotag.error.MEDIA_ERR_ABORTED:
-					error_message = cpu_i18n.media_err_aborted;
+					pageerror.innerText = cpu_i18n.media_err_aborted;
 					break;
 				case this.audiotag.error.MEDIA_ERR_NETWORK:
-					error_message = cpu_i18n.media_err_network;
+					pageerror.innerText = cpu_i18n.media_err_network;
 					break;
 				case this.audiotag.error.MEDIA_ERR_DECODE:
-					error_message = cpu_i18n.media_err_decode;
+					pageerror.innerText = cpu_i18n.media_err_decode;
 					break;
 				case this.audiotag.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-					error_message = cpu_i18n.media_err_src_not_supported;
+					pageerror.innerText = cpu_i18n.media_err_src_not_supported;
 					break;
 				default:
-					alert(cpu_i18n.media_err_unknow);
+					pageerror.innerText = cpu_i18n.media_err_unknow;
 					break;
 		   	}
-
-		   	this._elements['canonical'].innerText = error_message;
+		   	pageerror.innerText = error_message;
 			return true;
 		}
 		return false;
@@ -1088,7 +1090,7 @@ class CpuControllerElement extends HTMLElement {
 	}
 
 	show_interface(mode) {
-		this.container.classList.remove('show-main', 'show-share');
+		this.container.classList.remove('show-main', 'show-share', 'show-error');
 		this.container.classList.add('show-'+mode);
 	}
 	show_actions(event) {
