@@ -1,84 +1,103 @@
-<!doctype>
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <script src="webcomponentsjs/webcomponents-loader.js"></script>
-    <link rel="import" href="./cpu-audio.html" type="text/html">
-
+  <meta charset="utf-8">
+  <script src="webcomponentsjs/webcomponents-loader.js"></script>
+  <link rel="import" href="./cpu-audio.html" type="text/html">
 </head>
+
 <body>
+  <cpu-audio data-title="Ex0085 Le Mystère Enigma" data-poster="https://cpu.dascritch.net/public/Images/Emissions/.1805-Ex0085-Enigma_m.jpg"
+    data-canonical="https://cpu.dascritch.net/post/2018/05/17/Ex0085-Histoires-de-la-cryptographie%2C-2%C3%A8me-partie-%3A-Le-myst%C3%A8re-d-Enigma">
+    <!-- Pour des raisons  de compatibilité arrière, il faut garder la balise audio dans la déclaration. -->
+    <audio controls id="emission">
+      <source src="https://dascritch.net/vrac/Emissions/CPU/0085-CPU%2817-05-18%29.ogg" type="audio/ogg">
+      <source src="https://dascritch.net/vrac/Emissions/CPU/podcast/0085-CPU%2817-05-18%29.mp3" type="audio/mpeg">
+    </audio>
+  </cpu-audio>
 
-    <cpu-audio data-title="Ex0085 Le Mystère Enigma" data-poster="https://cpu.dascritch.net/public/Images/Emissions/.1805-Ex0085-Enigma_m.jpg" data-canonical="https://cpu.dascritch.net/post/2018/05/17/Ex0085-Histoires-de-la-cryptographie%2C-2%C3%A8me-partie-%3A-Le-myst%C3%A8re-d-Enigma">
-        <!-- pour des raisons  de compatibilité arrière, il faut garder la balise audio dans la déclaration -->
-        <audio controls id="emission">
-            <source src="https://dascritch.net/vrac/Emissions/CPU/0085-CPU%2817-05-18%29.ogg"  type="audio/ogg" />
-            <source src="https://dascritch.net/vrac/Emissions/CPU/podcast/0085-CPU%2817-05-18%29.mp3"  type="audio/mpeg" />
-        </audio>
-    </cpu-audio>
+  <div>
+    Chapters (click on timecodes) :
+    <ol>
+      <li>
+        <a href="https://cpu.dascritch.net/post/2018/05/18/Bonjour-%C3%A0-toi%2C-Enfant-du-Futur-Imm%C3%A9diat-%3A-Des-chiffres-et-des-lettres">Bonjour à toi, Enfant du Futur Immédiat : Des chiffres et des lettres</a> —
+        <a href="#emission&amp;t=1m17s">(1:17)</a>
+      </li>
+      <li>
+        <a href="https://cpu.dascritch.net/post/2018/05/22/Lexique-%3A-Casser-un-chiffrement">Lexique : Casser un chiffrement</a> —
+        <a href="#emission&amp;t=6m28s">(6:28)</a>
+      </li>
+      <li>♪ The Limp Twins -
+        <em>If it ain't broke... Break it !</em> —
+        <a href="#emission&amp;t=9m16s">(9:16)</a>
+      </li>
+      <li>
+        <a href="https://cpu.dascritch.net/post/2018/05/23/Plantage-La-chute-de-l-Empire-du-chiffre-Allemand">Plantage : La chute de l'Empire du chiffre Allemand</a> —
+        <a href="#emission&amp;t=12m45s">(12:45)</a>
+      </li>
+      <li>
+        <a href="https://cpu.dascritch.net/post/2018/05/25/Artefact-du-pass%C3%A9-%3A-La-machine-Enigma">Artefact du passé : La machine Enigma</a> —
+        <a href="#emission&amp;t=20m45s">(20:45)</a>
+      </li>
+      <li>♪ Clair obscur -
+        <em>Es war</em> —
+        <a href="#emission&amp;t=29m22s">(29:22)</a>
+      </li>
+      <li>
+        <a href="https://cpu.dascritch.net/post/2018/05/28/Histoire-%3A-Les-g%C3%A9nies-du-Biuro-Szyfr%C3%B3w">Histoire : Les génies du Biuro Szyfrów</a> —
+        <a href="#emission&amp;t=33m19s">(33:19)</a>
+      </li>
+      <li>
+        <a href="https://cpu.dascritch.net/post/2018/05/29/Ainsi-naquit-%3A-Benchley-Park%2C-le-premier-campus-technologique">Ainsi naquit : Benchley Park, le premier campus technologique</a> —
+        <a href="#emission&amp;t=38m35s">(38:35)</a>
+      </li>
+      <li>♪ Alexandre Desplat -
+        <em>The imitation game (opening)</em> —
+        <a href="#emission&amp;t=47m27s">(47:27)</a>
+      </li>
+      <li>
+        <a href="https://cpu.dascritch.net/post/2018/05/29/Le-gourou-%3A-Alan-Turing">Le gourou : Alan Turing</a> —
+        <a href="#emission&amp;t=50m3s">(50:03)</a>
+      </li>
+    </ol>
+  </div>
 
-
-<div>
-Chapters (click on timecodes) : 
-
-<ol>
-<li><a href="https://cpu.dascritch.net/post/2018/05/18/Bonjour-%C3%A0-toi%2C-Enfant-du-Futur-Imm%C3%A9diat-%3A-Des-chiffres-et-des-lettres">Bonjour à toi, Enfant du Futur Immédiat : Des chiffres et des lettres</a> — <a href="#emission&amp;t=1m17s">(1:17)</a></li>
-<li><a href="https://cpu.dascritch.net/post/2018/05/22/Lexique-%3A-Casser-un-chiffrement">Lexique : Casser un chiffrement</a> — <a href="#emission&amp;t=6m28s">(6:28)</a></li>
-<li>♪ The Limp Twins - <em>If it ain't broke... Break it !</em> — <a href="#emission&amp;t=9m16s">(9:16)</a></li>
-<li><a href="https://cpu.dascritch.net/post/2018/05/23/Plantage-La-chute-de-l-Empire-du-chiffre-Allemand">Plantage : La chute de l'Empire du chiffre Allemand</a> — <a href="#emission&amp;t=12m45s">(12:45)</a></li>
-<li><a href="https://cpu.dascritch.net/post/2018/05/25/Artefact-du-pass%C3%A9-%3A-La-machine-Enigma">Artefact du passé : La machine Enigma</a> — <a href="#emission&amp;t=20m45s">(20:45)</a></li>
-<li>♪ Clair obscur - <em>Es war</em> — <a href="#emission&amp;t=29m22s">(29:22)</a></li>
-<li><a href="https://cpu.dascritch.net/post/2018/05/28/Histoire-%3A-Les-g%C3%A9nies-du-Biuro-Szyfr%C3%B3w">Histoire : Les génies du Biuro Szyfrów</a> — <a href="#emission&amp;t=33m19s">(33:19)</a></li>
-<li><a href="https://cpu.dascritch.net/post/2018/05/29/Ainsi-naquit-%3A-Benchley-Park%2C-le-premier-campus-technologique">Ainsi naquit : Benchley Park, le premier campus technologique</a> — <a href="#emission&amp;t=38m35s">(38:35)</a></li>
-<li>♪ Alexandre Desplat - <em>The imitation game (opening)</em> — <a href="#emission&amp;t=47m27s">(47:27)</a></li>
-<li><a href="https://cpu.dascritch.net/post/2018/05/29/Le-gourou-%3A-Alan-Turing">Le gourou : Alan Turing</a> — <a href="#emission&amp;t=50m3s">(50:03)</a></li>
-</ol>
-
-</div>
-
-<div>
+  <div>
     Aspect changes at 640px and 320px wide; We are waiting @element implementation to complete this.
-    <cpu-audio data-title="Samba Résille live (2003)" data-poster="https://cpu.dascritch.net/public/Images/Emissions/.1804-Ex0080-Pizza_m.jpg" data-canonical="https://dascritch.net/">
-        <!-- pour des raisons  de compatibilité arrière, il faut garder la balise audio dans la déclaration -->
-        <audio controls id="live">
-            <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3"  type="audio/mpeg" />
-        </audio>
+    <cpu-audio data-title="Samba Résille live (2003)" data-poster="https://cpu.dascritch.net/public/Images/Emissions/.1804-Ex0080-Pizza_m.jpg"
+      data-canonical="https://dascritch.net/">
+      <!-- Pour des raisons  de compatibilité arrière, il faut garder la balise audio dans la déclaration. -->
+      <audio controls id="live">
+        <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
+      </audio>
     </cpu-audio>
-</div>
+  </div>
 
-<div>
-↓ Bad media call.
-
-    <cpu-audio data-title="Samba Résille live (2003)" data-poster="https://cpu.dascritch.net/public/Images/Emissions/.1804-Ex0080-Pizza_m.jpg" data-canonical="https://dascritch.net/">
-        <!-- pour des raisons  de compatibilité arrière, il faut garder la balise audio dans la déclaration -->
-        <audio controls id="oups">
-            <source src="https://cpu.dascritch.net/public/Images/Emissions/.1804-Ex0080-Pizza_m.jpg"  type="audio/mpeg" />
-        </audio>
+  <div>
+    ↓ Bad media call.
+    <cpu-audio data-title="Samba Résille live (2003)" data-poster="https://cpu.dascritch.net/public/Images/Emissions/.1804-Ex0080-Pizza_m.jpg"
+      data-canonical="https://dascritch.net/">
+      <!-- Pour des raisons  de compatibilité arrière, il faut garder la balise audio dans la déclaration. -->
+      <audio controls id="oups">
+        <source src="https://cpu.dascritch.net/public/Images/Emissions/.1804-Ex0080-Pizza_m.jpg" type="audio/mpeg">
+      </audio>
     </cpu-audio>
+  </div>
+  <div>
+    ↓ Controller only on the playing / last played &lt;audio&gt;
+    <cpu-controller>
+    </cpu-controller>
+  </div>
 
-</div>
-<div>
-↓ Controller only on the playing / last played &lt;audio&gt;
-
-<cpu-controller>
-</cpu-controller>
-
-</div>
-
-
-
-<!-- Interact with the upgraded element -->
-<script>
-  window.addEventListener('WebComponentsReady', function() {
-    // At this point we are guaranteed that all required polyfills have loaded,
-    // all HTML imports have loaded, and all defined custom elements have upgraded
-    let mytag = 'cpu-audio';
-
-    let MyElement = customElements.get(mytag);
-    let element = document.querySelector(mytag);
-    //console.assert(element instanceof MyElement);
-    //element.someAPI();
-  });
-</script>
-
+  <!-- Interact with the upgraded element. -->
+  <script>
+    window.addEventListener('WebComponentsReady', () => {
+      // At this point we are guaranteed that all required polyfills have loaded,
+      // all HTML imports have loaded, and all defined custom elements have upgraded.
+      const mytag = 'cpu-audio';
+      const MyElement = customElements.get(mytag);
+      const element = document.querySelector(mytag);
+    });
+  </script>
 </body>
 </html>
