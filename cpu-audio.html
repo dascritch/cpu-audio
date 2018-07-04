@@ -22,9 +22,9 @@ blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-m
 Note.
 
 Bugs restants :
-- au rechargement, seul le premier player est pris en compte pour la reprise de lecture
-- au chargement, le player global n'a qu'à moitié les propriétés du premier player audio
-- sur Chrome, une erreur media n'est pas de suite remontée
+- au chargement, le <cpu-controller> n'a qu'à moitié les propriétés du premier player audio, notamment titre et poster
+- au rechargement, seul le premier <cpu-audio> est pris en compte pour la reprise de lecture
+- sur Chrome, une erreur media n'est pas de suite remontée dans son <cpu-audio>. Il faut cliquer dessus pour qu'il aie effectiement lieu
 
 
 Fonctions retirées :
@@ -32,11 +32,16 @@ Fonctions retirées :
 - i18n
 
 Fonctions à ajouter :
-- mode lecture auto de la playlust paramétrable (API au niveau du DOM)
+- a girl has no name : un (sans titre) devrait être en italiques
+- ajouter des tests TDD/BDD  ... via une page de tests ?
+- mode lecture auto de la playlist paramétrable (API au niveau du DOM)
 - affichage de la playlist au niveau du player global
 - regrouper les fonctions en dehors du niveau de l'élément (en sub genre domobject.CPU.fx())
 - native chapters via <tracks>
 - support des multimedia keys
+- <cpu-audio> caché, pour playlist de <cpu-controller> (si son <audio controls> est caché par défaut ?)
+- ajout dynamique d'un <cpu-audio>
+- suppression dynamique d'un <cpu-audio>
 
 -->
 
@@ -91,6 +96,7 @@ Fonctions à ajouter :
 
 .cpu-audio {
 	display : flex;
+	overflow : hidden;
 	background : var(--cpu-background);
 	color : var(--cpu-color);
 	height : var(--cpu-height);
@@ -138,6 +144,11 @@ a:hover svg {
 .show-error {
 	background : var(--cpu-error-background);
 	color : var(--cpu-error-color);
+}
+
+.pageerror {
+	padding: 0px 4px;
+    align-self: center;
 }
 
 .control,
@@ -945,7 +956,7 @@ class CpuControllerElement extends HTMLElement {
 			this.audiotag = window.document.querySelector('cpu-audio audio');
 		}
 		this.attach_audiotag_to_controller(this.audiotag);
-
+		trigger.hashOrder({ at_start : true });
 	}
 
 	disconnectedCallback() {
@@ -1222,6 +1233,7 @@ class CpuAudioElement extends CpuControllerElement {
 		CPU_Audio.connect_audiotag(this.audiotag);
 
 		CPU_Audio.recall_stored_play({target : this.audiotag});
+		trigger.hashOrder({ at_start : true });
 	}
 
 }
@@ -1229,7 +1241,6 @@ class CpuAudioElement extends CpuControllerElement {
 window.customElements.define('cpu-controller', CpuControllerElement);
 window.customElements.define(CPU_Audio.selector_container, CpuAudioElement);
 window.addEventListener('hashchange', trigger.hashOrder, false);
-trigger.hashOrder({ at_start : true });
 
 })();
 </script>
