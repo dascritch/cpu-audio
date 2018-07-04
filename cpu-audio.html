@@ -32,7 +32,6 @@ Fonctions retirées :
 - i18n
 
 Fonctions à ajouter :
-- a girl has no name : un (sans titre) devrait être en italiques
 - ajouter des tests TDD/BDD  ... via une page de tests ?
 - mode lecture auto de la playlist paramétrable (API au niveau du DOM)
 - affichage de la playlist au niveau du player global
@@ -283,7 +282,9 @@ a:hover svg {
 	text-overflow : ellipsis;
 	max-height: 48px;
 	overflow: hidden;
-
+}
+.canonical.untitled {
+	font-style : italic;
 }
 .elapse {
 	flex : 1 0 170px;
@@ -1149,9 +1150,16 @@ class CpuControllerElement extends HTMLElement {
 		this._elements['canonical'].href = canonical;
 
 		var title = this.audiotag.dataset.title;
-		title = title === undefined ? cpu_i18n['untitled'] : title;
+		if (title === undefined) {
+			this._elements['canonical'].classList.add('untitled')
+			title = cpu_i18n['untitled']
+		} else {
+			this._elements['canonical'].classList.remove('untitled')
+		}
 		this._elements['canonical'].innerText = title; 
 		this._elements['canonical'].title = title;
+
+
 
 		this._elements['poster'].src = this.audiotag.dataset.poster;
 	}
