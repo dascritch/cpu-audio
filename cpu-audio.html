@@ -22,13 +22,22 @@ blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-m
 Note.
 
 Bugs restants :
-- au rechargement, seul le premier player est pris en compte
+- au rechargement, seul le premier player est pris en compte pour la reprise de lecture
+- au chargement, le player global n'a qu'à moitié les propriétés du premier player audio
 - sur Chrome, une erreur media n'est pas de suite remontée
 
 
 Fonctions retirées :
-- playlist
+- playlist offline
 - i18n
+
+Fonctions à ajouter :
+- mode lecture auto de la playlust paramétrable (API au niveau du DOM)
+- affichage de la playlist au niveau du player global
+- regrouper les fonctions en dehors du niveau de l'élément (en sub genre domobject.CPU.fx())
+- native chapters via <tracks>
+- support des multimedia keys
+
 -->
 
 <style>
@@ -88,7 +97,7 @@ Fonctions retirées :
 }
 
 .act-error {
-	color : #cc0;
+	color : var(--cpu-error-color);
 }
 
 a {
@@ -97,8 +106,8 @@ a {
 	text-decoration : none;
 }
 svg {
-  	fill : #ffffff;
-  	width : var(--cpu-height);
+	fill : #ffffff;
+	width : var(--cpu-height);
 	height : var(--cpu-height);
 }
 a:hover {
@@ -149,7 +158,7 @@ a:hover svg {
 .loading, .play, .pause,
 .show-main .pageshare, .show-main .pageerror,
 .show-share .pagemain, .show-share .pageerror,
-.show-error .pagemain, .show-error .pageshare {
+.show-error .pagemain, .show-error .pageshare , .show-error .poster {
 	display : none;
 }
 
@@ -180,60 +189,60 @@ a:hover svg {
 }
 
 @keyframes pulse0 {
-    0% {
-        opacity : 1;
-    }
-    50% {
-        opacity : 0;
-    }
-    100% {
-        opacity : 1;
-    }
+	0% {
+		opacity : 1;
+	}
+	50% {
+		opacity : 0;
+	}
+	100% {
+		opacity : 1;
+	}
 }
 
 @keyframes pulse1 {
-    0% {
-        opacity : 0.75;
-    }
-    12% {
-        opacity : 1;
-    }
-    62% {
-        opacity : 0;
-    }
-    100% {
-        opacity : 0.75;
-    }
+	0% {
+		opacity : 0.75;
+	}
+	12% {
+		opacity : 1;
+	}
+	62% {
+		opacity : 0;
+	}
+	100% {
+		opacity : 0.75;
+	}
 }
 
 @keyframes pulse2 {
-    0% {
-        opacity : 0.5;
-    }
-    25% {
-        opacity : 1;
-    }
-    75% {
-        opacity : 0;
-    }
-    100% {
-        opacity : 0.5;
-    }
+	0% {
+		opacity : 0.5;
+	}
+	25% {
+		opacity : 1;
+	}
+	75% {
+		opacity : 0;
+	}
+	100% {
+		opacity : 0.5;
+	}
 }
 
 @keyframes pulse3 {
-    0% {
-        opacity : 0.25;
-    }
-    37% {
-        opacity : 1;
-    }
-    87% {
-        opacity : 0;
-    }
-    100% {
-        opacity : 0.5;
-    }
+	0% {
+		opacity : 0.25;
+	}
+	37% {
+		opacity : 1;
+	}
+	87% {
+		opacity : 0;
+	}
+	100% {
+		opacity : 0.5;
+	}
 }
 
 .cover {
@@ -259,7 +268,7 @@ a:hover svg {
 	position : relative;
 }
 .title a {
-    display : block;
+	display : block;
 	text-overflow : ellipsis;
 	max-height: 48px;
 	overflow: hidden;
@@ -332,12 +341,12 @@ a:hover svg {
 
 .popup {
 	position: absolute;
-	transform: translate(-25px, -15px);
+	transform: translate(-25px, -19px);
 	z-index : 127;
 	min-width : 50px;
 	font-size : 11px;
 	text-align : center;
-	padding : 8px;
+	padding : 2px;
 	border-radius: 4px;
 	background : var(--cpu-popup-background);
 	color : var(--cpu-popup-color);
@@ -366,19 +375,19 @@ a:hover svg {
 
 @media screen and (max-width: 640px) {
 
-  	.nosmall {
+	.nosmall {
 		display : none;
-  	}
+	}
 	.title a {
 		max-height : 16px;
 	}
 
-  	.elapse {
-  		flex : 1 0 80px;
+	.elapse {
+		flex : 1 0 80px;
 		max-height : 16px;
-  	}
+	}
 
-  	.time,
+	.time,
 	.loadingline,
 	.elapsedline {
 		height : 8px ;
@@ -1008,26 +1017,27 @@ class CpuControllerElement extends HTMLElement {
 		// Chrome logs an error « Uncaught (in promise) DOMException: Failed to load because no supported source was found. »
 		// but don't update message
 		if (this.audiotag.error !== null) {
-			this.show_interface('error');
+			let error_message;
 			let pageerror = this._elements['pageerror'];
+			this.show_interface('error');
 			switch (this.audiotag.error.code) {
 				case this.audiotag.error.MEDIA_ERR_ABORTED:
-					pageerror.innerText = cpu_i18n.media_err_aborted;
+					error_message = cpu_i18n.media_err_aborted;
 					break;
 				case this.audiotag.error.MEDIA_ERR_NETWORK:
-					pageerror.innerText = cpu_i18n.media_err_network;
+					error_message = cpu_i18n.media_err_network;
 					break;
 				case this.audiotag.error.MEDIA_ERR_DECODE:
-					pageerror.innerText = cpu_i18n.media_err_decode;
+					error_message = cpu_i18n.media_err_decode;
 					break;
 				case this.audiotag.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-					pageerror.innerText = cpu_i18n.media_err_src_not_supported;
+					error_message = cpu_i18n.media_err_src_not_supported;
 					break;
 				default:
-					pageerror.innerText = cpu_i18n.media_err_unknow;
+					error_message = cpu_i18n.media_err_unknow;
 					break;
-		   	}
-		   	pageerror.innerText = error_message;
+			}
+			pageerror.innerText = error_message;
 			return true;
 		}
 		return false;
@@ -1211,12 +1221,9 @@ class CpuAudioElement extends CpuControllerElement {
 		super.connectedCallback();
 
 		CPU_Audio.connect_audiotag(this.audiotag);
-		// this.attach_audiotag_to_controller(this.audiotag);
 
 		CPU_Audio.recall_stored_play({target : this.audiotag});
-
 	}
-
 
 }
 
