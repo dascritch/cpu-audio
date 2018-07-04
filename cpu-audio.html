@@ -34,9 +34,9 @@ Fonctions retirées :
 <style>
 	/* Global default style, usign var. Integrators may override them */
 	:root {
+		--cpu-height : 64px;
 		--cpu-font-family : Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
 		--cpu-font-size : 15px;
-		--cpu-small-font-size : 13px;
 		--cpu-background : #555;
 		--cpu-color : #ccc;
 		--cpu-link-color : #aaf;
@@ -50,6 +50,13 @@ Fonctions retirées :
 
 		/** TODO */
 		--poster-fallback : '//dascritch.net/themes/DSN13/img/entete1.svg';
+	}
+
+	@media screen and (max-width: 640px) {
+		:root {
+			--cpu-font-size : 13px;
+			--cpu-height : 32px;
+		}
 	}
 </style>
 
@@ -77,7 +84,7 @@ Fonctions retirées :
 	display : flex;
 	background : var(--cpu-background);
 	color : var(--cpu-color);
-	height : 64px;
+	height : var(--cpu-height);
 }
 
 .act-error {
@@ -91,8 +98,8 @@ a {
 }
 svg {
   	fill : #ffffff;
-  	width:64px;
-	height : 64px;
+  	width : var(--cpu-height);
+	height : var(--cpu-height);
 }
 a:hover {
 	color : var(--cpu-background);
@@ -127,9 +134,9 @@ a:hover svg {
 .control,
 .actions,
 .back {
-	flex : 0 0 64px;
-	width : 64px;
-	max-height : 64px;
+	flex : 0 0 var(--cpu-height);
+	width : var(--cpu-height);
+	max-height : var(--cpu-height);
 	height : 100%;
 	text-align : center;
 	vertical-align : middle;
@@ -230,12 +237,12 @@ a:hover svg {
 }
 
 .cover {
-	width : 64px;
+	width : var(--cpu-height);
  }
 
 .poster {
-	width : 64px;
-	height : 64px;
+	width : var(--cpu-height);
+	height : var(--cpu-height);
 	object-fit: contain;
 }
 
@@ -287,10 +294,6 @@ a:hover svg {
 
 .act-loading .loadingline {
 	background : grey;
-	/*
-	background: repeating-linear-gradient(135deg, #bbb 0, #999 5px, #999 45px, #ddd 55px, #ddd 95px, #bbb 100px);
-    animation: progressIndeterminate 950ms linear infinite;
-    */
 }
 
 .share {
@@ -298,7 +301,7 @@ a:hover svg {
 }
 
 .share a {
-	height : 64px;
+	height : var(--cpu-height);
 }
 
 .share a, .share div {
@@ -310,13 +313,21 @@ a:hover svg {
 }
 .share svg {
 	vertical-align : middle;
-  		width:32px;
-		height : 32px;
+	width : 32px;
+	height : 32px;
 }
-.twitter {background : #4DB5F4}
-.facebook {background : #5974CC}
-.email {background : #CC0000}
-.link {background : #77F}
+.twitter {
+	background : #4DB5F4
+}
+.facebook {
+	background : #5974CC
+}
+.email {
+	background : #CC0000
+}
+.link {
+	background : #77F
+}
 
 
 .popup {
@@ -355,24 +366,9 @@ a:hover svg {
 
 @media screen and (max-width: 640px) {
 
-	.cpu-audio {
-		height : 32px;
-		font-size : var(--cpu-small-font-size);
-	}
-
   	.nosmall {
 		display : none;
   	}
-  	.control,
-	.actions {
-		flex : 0 0 32px;
-		height : 32px;
-		width : 32px;
-	}
-	svg {
-  		width:32px;
-		height : 32px;
-	}
 	.title a {
 		max-height : 16px;
 	}
@@ -386,10 +382,6 @@ a:hover svg {
 	.loadingline,
 	.elapsedline {
 		height : 8px ;
-	}
-
-  	.share a {
-		height : 32px;
 	}
 }
 @media screen and (max-width: 319px) {
