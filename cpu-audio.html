@@ -348,17 +348,16 @@ a:hover svg {
 	text-align : center;
 	padding : 2px;
 	border-radius: 4px;
+	box-shadow: black 2px 2px;
 	background : var(--cpu-popup-background);
 	color : var(--cpu-popup-color);
 	opacity : 0;
-	transition : opacity 1s;
 	pointer-events : none;
 	/* absolute pos, need to repeat it →  https://developer.mozilla.org/en-US/docs/Web/CSS/user-select */
 	moz-user-select: none;
 	ms-user-select: none;
 	webkit-user-select: none;
 	user-select: none;
-	box-shadow: black 2px 2px
 } 
 .popup:before {
 	content:"";
