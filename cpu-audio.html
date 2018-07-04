@@ -36,6 +36,7 @@ Fonctions retirées :
 	:root {
 		--cpu-font-family : Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
 		--cpu-font-size : 15px;
+		--cpu-small-font-size : 13px;
 		--cpu-background : #555;
 		--cpu-color : #ccc;
 		--cpu-link-color : #aaf;
@@ -356,7 +357,7 @@ a:hover svg {
 
 	.cpu-audio {
 		height : 32px;
-		font-size : 12px;
+		font-size : var(--cpu-small-font-size) !important;
 	}
 
   	.nosmall {
