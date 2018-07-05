@@ -90,15 +90,5 @@
 	</cpu-controller>
 </div>
 
-  <!-- Interact with the upgraded element. -->
-<script>
-	window.addEventListener('WebComponentsReady', () => {
-		// At this point we are guaranteed that all required polyfills have loaded,
-		// all HTML imports have loaded, and all defined custom elements have upgraded.
-		const mytag = 'cpu-audio';
-		const MyElement = customElements.get(mytag);
-		const element = document.querySelector(mytag);
-	});
-</script>
 </body>
 </html>

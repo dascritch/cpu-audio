@@ -160,8 +160,8 @@ a:hover svg {
 	text-align : center;
 	vertical-align : middle;
 }
-.actions,
-.back {
+
+a {
 	cursor : pointer;
 }
 
@@ -356,8 +356,8 @@ a:hover svg {
 	background : #77F
 }
 
-
 .popup {
+	pointer-events : none;
 	position: absolute;
 	transform: translate(-25px, -19px);
 	z-index : 127;
@@ -370,7 +370,6 @@ a:hover svg {
 	background : var(--cpu-popup-background);
 	color : var(--cpu-popup-color);
 	opacity : 0;
-	pointer-events : none;
 	/* absolute pos, need to repeat it →  https://developer.mozilla.org/en-US/docs/Web/CSS/user-select */
 	moz-user-select: none;
 	ms-user-select: none;
@@ -378,16 +377,18 @@ a:hover svg {
 	user-select: none;
 } 
 .popup:before {
+	pointer-events : none;
 	content:"";
 	position: absolute;
+	z-index : 127;
 	left: 20px;
 	bottom: -8px;
-	height : 0;
 	width: 0;
+	height : 0;
+	/* arrow form */
 	border-top: 8px solid var(--cpu-popup-background);
 	border-left: 4px solid transparent;
 	border-right: 4px solid transparent;
-	pointer-events : none;
 } 
 
 @media screen and (max-width: 640px) {
