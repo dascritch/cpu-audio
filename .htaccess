@@ -1,0 +1,2 @@
+Header always set Content-Security-Policy "upgrade-insecure-requests ; default-src 'self' *.dascritch.net *.dascritch.com https: 'unsafe-eval' 'unsafe-inline'; img-src *; object-src *; connect-src 'self' ; child-src *; frame-ancestors *; script-src 'self' data: 'unsafe-inline'"
+
