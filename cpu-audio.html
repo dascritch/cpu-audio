@@ -287,7 +287,7 @@ a:hover svg {
 	font-style : italic;
 }
 .elapse {
-	flex : 1 0 170px;
+	flex : 1 0 180px;
 	text-align : right;
 }
 .time {
@@ -332,6 +332,12 @@ a:hover svg {
 	overflow : hidden;
 	text-overflow : clip;
 }
+
+.share a:hover, .share div:hover {
+	color : var(--cpu-background);
+	background : var(--cpu-link-color);
+}
+
 .share svg {
 	vertical-align : middle;
 	width : 32px;
@@ -394,7 +400,7 @@ a:hover svg {
 	}
 
 	.elapse {
-		flex : 1 0 80px;
+		flex : 1 0 160px;
 		max-height : 16px;
 	}
 
@@ -404,7 +410,16 @@ a:hover svg {
 		height : 8px ;
 	}
 }
-@media screen and (max-width: 319px) {
+@media screen and (max-width: 480px) {
+	.notiny {
+		display : none;
+	}
+
+	.elapse {
+		flex : 1 0 80px;
+	}
+}
+@media screen and (max-width: 320px) {
 	.elapse {
 		display : none;
 	}
@@ -1013,7 +1028,7 @@ class CpuControllerElement extends HTMLElement {
 		} 
 		 
 		elapse_element.innerHTML = `${timecode}
-									<span class="nosmall"> / ${total_duration}</span>`;
+									<span class="notiny"> / ${total_duration}</span>`;
 		this.update_line('loading', this.audiotag.currentTime);
 		this.update_buffered();
 	}
