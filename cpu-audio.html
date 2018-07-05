@@ -22,18 +22,32 @@ blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-m
 Note.
 
 Bugs restants :
-- au rechargement, seul le premier player est pris en compte
-- sur Chrome, une erreur media n'est pas de suite remontée
+- au chargement, le <cpu-controller> n'a qu'à moitié les propriétés du premier player audio, notamment titre et poster
+- au rechargement, seul le premier <cpu-audio> est pris en compte pour la reprise de lecture
+- sur Chrome, une erreur media n'est pas de suite remontée dans son <cpu-audio>. Il faut cliquer dessus pour qu'il aie effectiement lieu
 
 
 Fonctions retirées :
-- playlist
+- playlist offline
 - i18n
+
+Fonctions à ajouter :
+- ajouter des tests TDD/BDD  ... via une page de tests ?
+- mode lecture auto de la playlist paramétrable (API au niveau du DOM)
+- affichage de la playlist au niveau du player global
+- regrouper les fonctions en dehors du niveau de l'élément (en sub genre domobject.CPU.fx())
+- native chapters via <tracks>
+- support des multimedia keys
+- <cpu-audio> caché, pour playlist de <cpu-controller> (si son <audio controls> est caché par défaut ?)
+- ajout dynamique d'un <cpu-audio>
+- suppression dynamique d'un <cpu-audio>
+
 -->
 
 <style>
 	/* Global default style, usign var. Integrators may override them */
 	:root {
+		--cpu-height : 64px;
 		--cpu-font-family : Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
 		--cpu-font-size : 15px;
 		--cpu-background : #555;
@@ -50,22 +64,29 @@ Fonctions retirées :
 		/** TODO */
 		--poster-fallback : '//dascritch.net/themes/DSN13/img/entete1.svg';
 	}
+
+	@media screen and (max-width: 640px) {
+		:root {
+			--cpu-font-size : 13px;
+			--cpu-height : 32px;
+		}
+	}
 </style>
 
 <template>
 <style>
 
 .cpu-audio {
-	font-family : var(--cpu-font-family) !important;
-	font-size : var(--cpu-font-size) !important;
+	font-family : var(--cpu-font-family);
+	font-size : var(--cpu-font-size);
 }
 
 .cpu-audio, * {
-	line-height : 1.2 !important;
-	border : none !important;
-	padding : 0 !important;
-	margin : 0 !important;
-	transition : none !important;
+	line-height : 1.2;
+	border : none;
+	padding : 0;
+	margin : 0;
+	transition : none;
 	moz-user-select: none;
 	ms-user-select: none;
 	webkit-user-select: none;
@@ -74,24 +95,25 @@ Fonctions retirées :
 
 .cpu-audio {
 	display : flex;
+	overflow : hidden;
 	background : var(--cpu-background);
 	color : var(--cpu-color);
-	height : 64px;
+	height : var(--cpu-height);
 }
 
 .act-error {
-	color : #cc0;
+	color : var(--cpu-error-color);
 }
 
 a {
 	color : var(--cpu-link-color);
-	border : none !important;
+	border : none;
 	text-decoration : none;
 }
 svg {
-  	fill : #ffffff;
-  	width:64px;
-	height : 64px;
+	fill : #ffffff;
+	width : var(--cpu-height);
+	height : var(--cpu-height);
 }
 a:hover {
 	color : var(--cpu-background);
@@ -123,12 +145,17 @@ a:hover svg {
 	color : var(--cpu-error-color);
 }
 
+.pageerror {
+	padding: 0px 4px;
+    align-self: center;
+}
+
 .control,
 .actions,
 .back {
-	flex : 0 0 64px;
-	width : 64px;
-	max-height : 64px;
+	flex : 0 0 var(--cpu-height);
+	width : var(--cpu-height);
+	max-height : var(--cpu-height);
 	height : 100%;
 	text-align : center;
 	vertical-align : middle;
@@ -141,7 +168,7 @@ a:hover svg {
 .loading, .play, .pause,
 .show-main .pageshare, .show-main .pageerror,
 .show-share .pagemain, .show-share .pageerror,
-.show-error .pagemain, .show-error .pageshare {
+.show-error .pagemain, .show-error .pageshare , .show-error .poster {
 	display : none;
 }
 
@@ -172,69 +199,69 @@ a:hover svg {
 }
 
 @keyframes pulse0 {
-    0% {
-        opacity : 1;
-    }
-    50% {
-        opacity : 0;
-    }
-    100% {
-        opacity : 1;
-    }
+	0% {
+		opacity : 1;
+	}
+	50% {
+		opacity : 0;
+	}
+	100% {
+		opacity : 1;
+	}
 }
 
 @keyframes pulse1 {
-    0% {
-        opacity : 0.75;
-    }
-    12% {
-        opacity : 1;
-    }
-    62% {
-        opacity : 0;
-    }
-    100% {
-        opacity : 0.75;
-    }
+	0% {
+		opacity : 0.75;
+	}
+	12% {
+		opacity : 1;
+	}
+	62% {
+		opacity : 0;
+	}
+	100% {
+		opacity : 0.75;
+	}
 }
 
 @keyframes pulse2 {
-    0% {
-        opacity : 0.5;
-    }
-    25% {
-        opacity : 1;
-    }
-    75% {
-        opacity : 0;
-    }
-    100% {
-        opacity : 0.5;
-    }
+	0% {
+		opacity : 0.5;
+	}
+	25% {
+		opacity : 1;
+	}
+	75% {
+		opacity : 0;
+	}
+	100% {
+		opacity : 0.5;
+	}
 }
 
 @keyframes pulse3 {
-    0% {
-        opacity : 0.25;
-    }
-    37% {
-        opacity : 1;
-    }
-    87% {
-        opacity : 0;
-    }
-    100% {
-        opacity : 0.5;
-    }
+	0% {
+		opacity : 0.25;
+	}
+	37% {
+		opacity : 1;
+	}
+	87% {
+		opacity : 0;
+	}
+	100% {
+		opacity : 0.5;
+	}
 }
 
 .cover {
-	width : 64px;
+	width : var(--cpu-height);
  }
 
 .poster {
-	width : 64px;
-	height : 64px;
+	width : var(--cpu-height);
+	height : var(--cpu-height);
 	object-fit: contain;
 }
 
@@ -251,11 +278,13 @@ a:hover svg {
 	position : relative;
 }
 .title a {
-    display : block;
+	display : block;
 	text-overflow : ellipsis;
 	max-height: 48px;
 	overflow: hidden;
-
+}
+.canonical.untitled {
+	font-style : italic;
 }
 .elapse {
 	flex : 1 0 170px;
@@ -286,10 +315,6 @@ a:hover svg {
 
 .act-loading .loadingline {
 	background : grey;
-	/*
-	background: repeating-linear-gradient(135deg, #bbb 0, #999 5px, #999 45px, #ddd 55px, #ddd 95px, #bbb 100px);
-    animation: progressIndeterminate 950ms linear infinite;
-    */
 }
 
 .share {
@@ -297,7 +322,7 @@ a:hover svg {
 }
 
 .share a {
-	height : 64px;
+	height : var(--cpu-height);
 }
 
 .share a, .share div {
@@ -309,35 +334,42 @@ a:hover svg {
 }
 .share svg {
 	vertical-align : middle;
-  		width:32px;
-		height : 32px;
+	width : 32px;
+	height : 32px;
 }
-.twitter {background : #4DB5F4}
-.facebook {background : #5974CC}
-.email {background : #CC0000}
-.link {background : #77F}
+.twitter {
+	background : #4DB5F4
+}
+.facebook {
+	background : #5974CC
+}
+.email {
+	background : #CC0000
+}
+.link {
+	background : #77F
+}
 
 
 .popup {
 	position: absolute;
-	transform: translate(-25px, -15px);
+	transform: translate(-25px, -19px);
 	z-index : 127;
 	min-width : 50px;
 	font-size : 11px;
 	text-align : center;
-	padding : 8px;
+	padding : 2px;
 	border-radius: 4px;
+	box-shadow: black 2px 2px;
 	background : var(--cpu-popup-background);
 	color : var(--cpu-popup-color);
 	opacity : 0;
-	transition : opacity 1s;
 	pointer-events : none;
 	/* absolute pos, need to repeat it →  https://developer.mozilla.org/en-US/docs/Web/CSS/user-select */
 	moz-user-select: none;
 	ms-user-select: none;
 	webkit-user-select: none;
 	user-select: none;
-	box-shadow: black 2px 2px
 } 
 .popup:before {
 	content:"";
@@ -354,35 +386,22 @@ a:hover svg {
 
 @media screen and (max-width: 640px) {
 
-	.cpu-audio {
-		height : 32px;
-		font-size : 12px;
-	}
-
-  	.nosmall {
+	.nosmall {
 		display : none;
-  	}
-  	.control,
-	.actions {
-		flex : 0 0 32px;
-		height : 32px;
-		width : 32px;
-	}
-	svg {
-  		width:32px;
-		height : 32px;
 	}
 	.title a {
 		max-height : 16px;
 	}
 
-  	.elapse {
-  		flex : 1 0 80px;
+	.elapse {
+		flex : 1 0 80px;
 		max-height : 16px;
-  	}
+	}
 
-  	.share a {
-		height : 32px;
+	.time,
+	.loadingline,
+	.elapsedline {
+		height : 8px ;
 	}
 }
 @media screen and (max-width: 319px) {
@@ -714,7 +733,10 @@ const trigger = {
 			case 39 : // →
 				seek_relative(+ CPU_Audio.keymove);
 				break;
+			default:
+				return ;
 		}
+		event.preventDefault();
 	},
 	update : function(event) {
 		let audiotag = event.target;
@@ -935,7 +957,7 @@ class CpuControllerElement extends HTMLElement {
 			this.audiotag = window.document.querySelector('cpu-audio audio');
 		}
 		this.attach_audiotag_to_controller(this.audiotag);
-
+		trigger.hashOrder({ at_start : true });
 	}
 
 	disconnectedCallback() {
@@ -1006,26 +1028,27 @@ class CpuControllerElement extends HTMLElement {
 		// Chrome logs an error « Uncaught (in promise) DOMException: Failed to load because no supported source was found. »
 		// but don't update message
 		if (this.audiotag.error !== null) {
-			this.show_interface('error');
+			let error_message;
 			let pageerror = this._elements['pageerror'];
+			this.show_interface('error');
 			switch (this.audiotag.error.code) {
 				case this.audiotag.error.MEDIA_ERR_ABORTED:
-					pageerror.innerText = cpu_i18n.media_err_aborted;
+					error_message = cpu_i18n.media_err_aborted;
 					break;
 				case this.audiotag.error.MEDIA_ERR_NETWORK:
-					pageerror.innerText = cpu_i18n.media_err_network;
+					error_message = cpu_i18n.media_err_network;
 					break;
 				case this.audiotag.error.MEDIA_ERR_DECODE:
-					pageerror.innerText = cpu_i18n.media_err_decode;
+					error_message = cpu_i18n.media_err_decode;
 					break;
 				case this.audiotag.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-					pageerror.innerText = cpu_i18n.media_err_src_not_supported;
+					error_message = cpu_i18n.media_err_src_not_supported;
 					break;
 				default:
-					pageerror.innerText = cpu_i18n.media_err_unknow;
+					error_message = cpu_i18n.media_err_unknow;
 					break;
-		   	}
-		   	pageerror.innerText = error_message;
+			}
+			pageerror.innerText = error_message;
 			return true;
 		}
 		return false;
@@ -1127,9 +1150,16 @@ class CpuControllerElement extends HTMLElement {
 		this._elements['canonical'].href = canonical;
 
 		var title = this.audiotag.dataset.title;
-		title = title === undefined ? cpu_i18n['untitled'] : title;
+		if (title === undefined) {
+			this._elements['canonical'].classList.add('untitled')
+			title = cpu_i18n['untitled']
+		} else {
+			this._elements['canonical'].classList.remove('untitled')
+		}
 		this._elements['canonical'].innerText = title; 
 		this._elements['canonical'].title = title;
+
+
 
 		this._elements['poster'].src = this.audiotag.dataset.poster;
 	}
@@ -1209,19 +1239,16 @@ class CpuAudioElement extends CpuControllerElement {
 		super.connectedCallback();
 
 		CPU_Audio.connect_audiotag(this.audiotag);
-		// this.attach_audiotag_to_controller(this.audiotag);
 
 		CPU_Audio.recall_stored_play({target : this.audiotag});
-
+		trigger.hashOrder({ at_start : true });
 	}
-
 
 }
 
 window.customElements.define('cpu-controller', CpuControllerElement);
 window.customElements.define(CPU_Audio.selector_container, CpuAudioElement);
 window.addEventListener('hashchange', trigger.hashOrder, false);
-trigger.hashOrder({ at_start : true });
 
 })();
 </script>
