@@ -19,29 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 project repository : https://github.com/dascritch/ondemiroir-audio-tag
 blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore
 
-Note.
-
-Bugs restants :
-- au chargement, le <cpu-controller> n'a qu'à moitié les propriétés du premier player audio, notamment titre et poster
-- au rechargement, seul le premier <cpu-audio> est pris en compte pour la reprise de lecture
-- sur Chrome, une erreur media n'est pas de suite remontée dans son <cpu-audio>. Il faut cliquer dessus pour qu'il aie effectiement lieu
-
-
-Fonctions retirées :
-- playlist offline
-- i18n
-
-Fonctions à ajouter :
-- ajouter des tests TDD/BDD  ... via une page de tests ?
-- mode lecture auto de la playlist paramétrable (API au niveau du DOM)
-- affichage de la playlist au niveau du player global
-- regrouper les fonctions en dehors du niveau de l'élément (en sub genre domobject.CPU.fx())
-- native chapters via <tracks>
-- support des multimedia keys
-- <cpu-audio> caché, pour playlist de <cpu-controller> (si son <audio controls> est caché par défaut ?)
-- ajout dynamique d'un <cpu-audio>
-- suppression dynamique d'un <cpu-audio>
-
 -->
 
 <style>
