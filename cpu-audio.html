@@ -577,10 +577,7 @@ const convert = {
 				}
 			}
 		}
-		if (converted === '') {
-			converted = '0s';
-		}
-		return converted;
+		return converted === '' ? '0s' : converted;
 	},
 }
 
@@ -775,6 +772,7 @@ const CPU_Audio = {
 	// this one, later
 	global_controller : null,
 	selector_container : 'cpu-audio',
+	selector_container_controller :'cpu-controller',
 	selector_interface : '.cpu-audio',
 	dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
 	count_element : 0,
@@ -854,7 +852,9 @@ const CPU_Audio = {
 	},
 
 	find_container : function(child) {
-		if (child.tagName ===  CPU_Audio.selector_container.toUpperCase()) {
+
+		if ((child.tagName ===  CPU_Audio.selector_container.toUpperCase()) 
+			|| ( child.tagName ===  CPU_Audio.selector_container_controller.toUpperCase())) {
 			return child
 		}
 		// DOMnode.closest won't work in too old browsers
@@ -865,6 +865,11 @@ const CPU_Audio = {
 		return child.closest(CPU_Audio.selector_interface);
 	},
 	seekElementAt : function (audiotag, seconds) {
+
+		if (isNaN(seconds)) {
+			// may happens, if the audio track is not loaded/loadable
+			return;
+		}
 
 		if (audiotag.fastSeek !== undefined) {
 			audiotag.fastSeek(seconds);
@@ -879,7 +884,11 @@ const CPU_Audio = {
 			}
 		}
 
-		audiotag.CPU_controller().update_loading(seconds);
+		let controller = audiotag.CPU_controller();
+		if (controller.update_loading) {
+			// it may be still constructing it
+			controller.update_loading(seconds);
+		}
 	},
 
 	recall_stored_play : function(event) {
@@ -1234,14 +1243,13 @@ class CpuAudioElement extends CpuControllerElement {
 		CPU_Audio.connect_audiotag(this.audiotag);
 
 		CPU_Audio.recall_stored_play({target : this.audiotag});
-		trigger.hashOrder({ at_start : true });
 	}
 
 }
 
-window.customElements.define('cpu-controller', CpuControllerElement);
+window.customElements.define(CPU_Audio.selector_container_controller, CpuControllerElement);
 window.customElements.define(CPU_Audio.selector_container, CpuAudioElement);
 window.addEventListener('hashchange', trigger.hashOrder, false);
-
+trigger.hashOrder({ at_start : true });
 })();
 </script>

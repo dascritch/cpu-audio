@@ -21,8 +21,6 @@ Attention, pour l'instant, n'a été testé que sur :
 
 Bugs restants :
 
-- au chargement, le `<cpu-controller>` n'a qu'à moitié les propriétés du premier player audio, notamment titre et poster
-- au rechargement, seul le premier `<cpu-audio>` est pris en compte pour la reprise de lecture
 - Une erreur media n'est pas de suite remontée dans son `<cpu-audio>`. Il faut cliquer dessus pour qu'il aie effectiement lieu sur Chrome, Firefo ne le voit jamais.
 - Pour que le polyfill webcomponents.js marche bien, Firefox a besoin que le CSP autorise `data:`
 
