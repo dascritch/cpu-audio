@@ -42,7 +42,7 @@ Then encapsulate  `<audio control>` with `<cpu-audio>` to compose an specialy cr
 
 The script will link automatically to the playlister in the same repertory.
 
-Cloned player : You can invoke a cloned player by giving an id to the `<audio>` tag, then create an empty `<div>` with an `data-ondeplayer=` attribute, reffering to the id of the `<audio>` tag.
+Cloned player : You can invoke a global media controller by creating a `<cpu-controller>` without `<audio>` tag.
 
 Beware, WebComponents is a to-be-implemented standard. Will work mainly on : 
 
