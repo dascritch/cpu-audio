@@ -5,7 +5,7 @@ Author :  [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 
 Version : 5
 
-Rewrite of the [ondemiroir-audio-tag](https://github.com/dascritch/ondemiroir-audio-tag) towards WebComponents ( polyfilled with [webcomponentsjs](https://github.com/webcomponents/webcomponentsjs) ), which is an extension of [ondemiroir-audio-tag](https://github.com/dascritch/timecodehash)  . Commits history lost due to a fenzy code rage during a morning ;)
+Rewrite of the [ondemiroir-audio-tag](https://github.com/dascritch/ondemiroir-audio-tag) towards WebComponents ( polyfilled with [webcomponentsjs](https://github.com/webcomponents/webcomponentsjs) ), which is an extension of [timecodehash](https://github.com/dascritch/timecodehash). Commits history lost due to a fenzy code rage during a morning ;)
 
 Thank you to my lovely friends
 * [Thomas Parisot](https://oncletom.io/) for suggestions
@@ -68,7 +68,7 @@ Keyboard functions
 Permitted notations
 -------------------
 
-Original purpose of `timecodehash` is to link any media element of any webpage to a specific moment. It uses the [W3C standard Media Fragments](https://www.w3.org/TR/media-frags/) notation. 
+Original purpose of [“timecodehash” is to link any media element of any webpage to a specific moment](https://github.com/dascritch/timecodehash). It uses the [W3C standard Media Fragments](https://www.w3.org/TR/media-frags/) notation, extending the URL. 
 
 For the timecode, you can use :
 
