@@ -100,6 +100,10 @@ a:hover svg {
 	fill : var(--cpu-background);
 }
 
+.loading circle {
+	fill : #777;
+}
+
 .act-play {
 	background : var(--cpu-playing-background);
 	color : var(--cpu-playing-color);
@@ -180,60 +184,30 @@ a {
 }
 
 @keyframes pulse0 {
-	0% {
-		opacity : 1;
-	}
-	50% {
-		opacity : 0;
-	}
-	100% {
-		opacity : 1;
-	}
+	0%		{opacity : 1;}
+	50%		{opacity : 0;}
+	100%	{opacity : 1;}
 }
 
 @keyframes pulse1 {
-	0% {
-		opacity : 0.75;
-	}
-	12% {
-		opacity : 1;
-	}
-	62% {
-		opacity : 0;
-	}
-	100% {
-		opacity : 0.75;
-	}
+	0%		{opacity : 0.75;}
+	12%		{opacity : 1;}
+	62%		{opacity : 0;}
+	100%	{opacity : 0.75;}
 }
 
 @keyframes pulse2 {
-	0% {
-		opacity : 0.5;
-	}
-	25% {
-		opacity : 1;
-	}
-	75% {
-		opacity : 0;
-	}
-	100% {
-		opacity : 0.5;
-	}
+	0% 		{opacity : 0.5;}
+	25% 	{opacity : 1;}
+	75%		{opacity : 0;}
+	100% 	{opacity : 0.5;}
 }
 
 @keyframes pulse3 {
-	0% {
-		opacity : 0.25;
-	}
-	37% {
-		opacity : 1;
-	}
-	87% {
-		opacity : 0;
-	}
-	100% {
-		opacity : 0.5;
-	}
+	0% 		{opacity : 0.25;}
+	37% 	{opacity : 1;}
+	87% 	{opacity : 0;}
+	100% 	{opacity : 0.5;}
 }
 
 .cover {
@@ -392,7 +366,7 @@ a {
 		height : 8px ;
 	}
 }
-@media (max-width: 480px) , @element .cpu-audio and (max-width: 640px) {
+@media (max-width: 480px) , @element .cpu-audio and (max-width: 480px) {
 	.notiny {
 		display : none;
 	}
@@ -401,7 +375,7 @@ a {
 		flex : 1 0 80px;
 	}
 }
-@media (max-width: 320px) , @element .cpu-audio and (max-width: 640px) {
+@media (max-width: 320px) , @element .cpu-audio and (max-width: 320px) {
 	.elapse {
 		display : none;
 	}
@@ -413,7 +387,6 @@ a {
 	}
 }
 
-
 </style>
 
 <div class="cpu-audio">
@@ -424,9 +397,9 @@ a {
 		<div class="control">
 			<div class="loading" title="Chargement en cours">
 				<svg viewBox="0 0 32 32">
-					<circle cx="6" cy="22" r="4" fill="#777777" />
-					<circle cx="16" cy="22" r="4" fill="#777777" />
-					<circle cx="26" cy="22" r="4" fill="#777777" />
+					<circle cx="6" cy="22" r="4" />
+					<circle cx="16" cy="22" r="4" />
+					<circle cx="26" cy="22" r="4" />
 				</svg>
 			</div>
 			<a class="play" title="Lecture">
@@ -496,10 +469,10 @@ a {
 
 'use strict';
 
-var thisDoc =  (document._currentScript || document.currentScript).ownerDocument;
-var template, shadow_element;
+let thisDoc =  (document._currentScript || document.currentScript).ownerDocument;
+let template, shadow_element;
 
-var twitter_via = 'dascritch';
+let twitter_via = 'dascritch';
 const cpu_i18n = {
 	'untitled' : '(sans titre)',
 	'cover' : 'pochette',
@@ -539,7 +512,7 @@ const convert = {
 	},
 
 	TimeInSeconds : function(givenTime) {
-		var seconds = 0;
+		let seconds = 0;
 		if (/^\d+$/.test(givenTime)) {
 			seconds = Number(givenTime);
 		} else {
@@ -548,10 +521,10 @@ const convert = {
 		return seconds;
 	},
 	SubunitTimeInSeconds : function(givenTime) {
-		var seconds = 0;
-		for(var key in convert._units) {
+		let seconds = 0;
+		for(let key in convert._units) {
 			if ( (convert._units.hasOwnProperty(key)) && (givenTime.indexOf(key) !== -1) ) {
-				var atoms = givenTime.split(key);
+				let atoms = givenTime.split(key);
 				seconds += Number(atoms[0].replace(/\D*/g,'' )) * convert._units[key];
 				givenTime = atoms[1];
 			}
@@ -559,23 +532,23 @@ const convert = {
 		return seconds;
 	},
 	ColonTimeInSeconds : function(givenTime) {
-		var seconds = 0;
-		var atoms = givenTime.split(':');
-		var convert = [1, 60, 3600, 86400];
-		for (var pos = 0 ; pos < atoms.length ; pos++ ) {
+		let seconds = 0;
+		let atoms = givenTime.split(':');
+		let convert = [1, 60, 3600, 86400];
+		for (let pos = 0 ; pos < atoms.length ; pos++ ) {
 			seconds += Number(atoms[pos]) * convert[((atoms.length-1) - pos)];
 		}
 		return seconds;
 	},
 	SecondsInTime : function(givenSeconds) {
-		var converted = '';
-		var inned = false;
-		for(var key in convert._units) {
+		let converted = '';
+		let inned = false;
+		for(let key in convert._units) {
 			if (convert._units.hasOwnProperty(key)) {
-				var multiply = convert._units[key];
+				let multiply = convert._units[key];
 				if ((givenSeconds >= multiply) || (inned)) {
 					inned = true;
-					var digits = Math.floor(givenSeconds / multiply);
+					let digits = Math.floor(givenSeconds / multiply);
 					converted += digits + key;
 					givenSeconds -= digits * multiply;
 				}
@@ -742,7 +715,7 @@ const trigger = {
 }
 
 function absolutize_url(url) {
-	var test_element = document.createElement('a');
+	let test_element = document.createElement('a');
 	test_element.href = url;
 	return test_element.href;
 }
@@ -820,7 +793,7 @@ const CPU_Audio = {
 				audiotag.removeEventListener('loadedmetadata', do_needle_move, true);
 			}
 
-			var secs = convert.TimeInSeconds(timecode);
+			let secs = convert.TimeInSeconds(timecode);
 			CPU_Audio.seekElementAt(audiotag, secs);
 
 			if (audiotag.readyState >= audiotag.HAVE_FUTURE_DATA)  {
@@ -832,7 +805,7 @@ const CPU_Audio = {
 		}
 
 		function do_element_play(event) {
-			var tag = event.target;
+			let tag = event.target;
 			trigger.play(undefined,tag)
 			if (_isEvent(event)) {
 				tag.removeEventListener('canplay', do_element_play, true);
@@ -1071,46 +1044,45 @@ class CpuControllerElement extends HTMLElement {
 			// do not try to show if no metadata
 			return;
 		}
-		var phylactere = this._elements['popup'];
-		var elapse_element = this._elements['line'];
+		let phylactere = this._elements['popup'];
+		let elapse_element = this._elements['line'];
 
 		phylactere.style.opacity = 1;
-		phylactere.style.left = (100 * seeked_time / this.audiotag.duration ) +'%';
+		phylactere.style.left = (100 * seeked_time / this.audiotag.duration) +'%';
 		phylactere.innerHTML = convert.SecondsInTime(seeked_time);
 	}
 	hide_throbber() {
-		var phylactere = this._elements['popup'];
+		let phylactere = this._elements['popup'];
 		phylactere.style.opacity = 0;
 	}
 	hide_throbber_later() {
-		var phylactere = this._elements['popup'];
+		let phylactere = this._elements['popup'];
 		if (phylactere._hider) {
 			window.clearTimeout(phylactere._hider);
 		}
 		phylactere._hider = window.setTimeout(this.hide_throbber, 1000);
-
 	}
 
 	update_links() {
-		var container = this;
+		let container = this;
 		function ahref(category, href) {
 			container._elements[category].href = href;
 		}
 		function remove_hash(canonical) {
-			var hash_at = canonical.indexOf('#');
+			let hash_at = canonical.indexOf('#');
 			return hash_at === -1 ? canonical : canonical.substr(0,hash_at);
 		}
 
-		var canonical = this.audiotag.dataset.canonical
-		var url = (canonical === undefined ? '' : remove_hash(canonical) )
+		let canonical = this.audiotag.dataset.canonical
+		let url = (canonical === undefined ? '' : remove_hash(canonical) )
 					+ `#${this.audiotag.id}` 
 					+ ( this.audiotag.currentTime === 0 
 							? ''
 							: `&t=${convert.SecondsInTime(this.audiotag.currentTime)}`
 						);
 
-		var _url = encodeURI(absolutize_url(url));
-		var _title = encodeURI(this.audiotag.title);
+		let _url = encodeURI(absolutize_url(url));
+		let _title = encodeURI(this.audiotag.title);
 		ahref('twitter', `https://twitter.com/share?text=${_title}&url=${_url}&via=${twitter_via}`);
 		ahref('facebook', `https://www.facebook.com/sharer.php?t=${_title}&u=${_url}`);
 		ahref('email', `mailto:?subject=${_title}&body=${_url}`);
@@ -1148,13 +1120,13 @@ class CpuControllerElement extends HTMLElement {
 	}
 
 	complete_template() {
-		var canonical = this.audiotag.dataset.canonical;
+		let canonical = this.audiotag.dataset.canonical;
 		if (canonical === undefined) {
 			canonical = window.location.href;
 		}
 		this._elements['canonical'].href = canonical;
 
-		var title = this.audiotag.dataset.title;
+		let title = this.audiotag.dataset.title;
 		if (title === undefined) {
 			this._elements['canonical'].classList.add('untitled')
 			title = cpu_i18n['untitled']
@@ -1163,9 +1135,6 @@ class CpuControllerElement extends HTMLElement {
 		}
 		this._elements['canonical'].innerText = title; 
 		this._elements['canonical'].title = title;
-
-
-
 		this._elements['poster'].src = this.audiotag.dataset.poster;
 	}
 	attach_audiotag_to_controller(audiotag) {
@@ -1238,7 +1207,7 @@ class CpuAudioElement extends CpuControllerElement {
 
 		this.audiotag = this.querySelector('audio');
 		// copying personalized data to audio tag
-		for (var key of ['title', 'poster', 'canonical']) {
+		for (let key of ['title', 'poster', 'canonical']) {
 			this.audiotag.dataset[key] = this.dataset[key];
 		}
 		super.connectedCallback();
