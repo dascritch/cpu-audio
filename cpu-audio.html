@@ -416,8 +416,8 @@ a {
 		</div>
 		<div class="about">
 			<div class="titleline">
-				<div class="title"><a href="#" class="canonical"></a></div>
-				<a class="elapse">…</a>
+				<div class="title"><a href="#" class="canonical" title="Lien vers la fiche du sonore"></a></div>
+				<a class="elapse" title="Lien direct à ce moment">…</a>
 			</div>
 			<div class="line">
 				<div class="time">
@@ -1107,7 +1107,6 @@ var CPU_element_api = class {
 			this.elements['canonical'].classList.remove('untitled')
 		}
 		this.elements['canonical'].innerText = title; 
-		this.elements['canonical'].title = title;
 		this.elements['poster'].src = this.audiotag.dataset.poster;
 	}
 	attach_audiotag_to_controller(audiotag) {
