@@ -140,7 +140,7 @@ Planned evolutions
 - [ ] [Using touchstart event to emulate hover](https://github.com/dascritch/ondemiroir-audio-tag/issues/37)
 - [ ] [Support MSE API for non-burferred playing, needed for HTTP/2](https://github.com/dascritch/ondemiroir-audio-tag/issues/22)
 - [X] [CSS Element Query: css width jump by real element width](https://github.com/dascritch/ondemiroir-audio-tag/issues/5)
-
+- [ ] add a minimalistic player (only play/pause and total time)
 
 Retired functions from v4
 -------------------------
