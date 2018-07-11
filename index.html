@@ -86,6 +86,34 @@
 </div>
 
 <div>
+	↓ Controller only on the playing / last played &lt;audio&gt;
+	<cpu-controller>
+	</cpu-controller>
+</div>
+
+
+<h3>Error cases</h3>
+
+<div>
+	↓ No media tag. The component must not start
+
+	<cpu-audio data-title="This player must crash">
+	</cpu-audio>
+</div>
+
+<div>
+	↓ Media tag without controls. The component must not start
+
+	<cpu-audio>
+		<!-- Pour des raisons  de compatibilité arrière, il *faut* garder la balise <audio controls> dans la déclaration. -->
+		<audio id="emission_fail">
+			<source src="https://dascritch.net/vrac/Emissions/CPU/0085-CPU%2817-05-18%29.ogg" type="audio/ogg">
+			<source src="https://dascritch.net/vrac/Emissions/CPU/podcast/0085-CPU%2817-05-18%29.mp3" type="audio/mpeg">
+		</audio>
+	</cpu-audio>
+</div>
+
+<div>
 	↓ Bad media call. Alas, Chrome won't crash it until any interaction, Firefox never display any error.
 
 	<cpu-audio data-title="This player must crash" data-poster="https://cpu.dascritch.net/public/Images/Emissions/.1804-Ex0080-Pizza_m.jpg" data-canonical="https://dascritch.net/">
@@ -95,11 +123,7 @@
 		</audio>
 	</cpu-audio>
 </div>
-<div>
-	↓ Controller only on the playing / last played &lt;audio&gt;
-	<cpu-controller>
-	</cpu-controller>
-</div>
+
 
 </body>
 </html>
