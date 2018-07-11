@@ -29,10 +29,8 @@ blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-m
 		--cpu-font-size : 15px;
 		--cpu-background : #555;
 		--cpu-color : #ddd;
-		--cpu-link-color : #aaf;
 		--cpu-playing-background : #444;
 		--cpu-playing-color : #fff;
-		--cpu-playing-link-color : #bbf;
 		--cpu-error-background : #a00 ;
 		--cpu-error-color : #ff7 ;
 		--cpu-popup-background : #aaa;
@@ -83,7 +81,7 @@ blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-m
 }
 
 a {
-	color : var(--cpu-link-color);
+	color : var(--cpu-color);
 	border : none;
 	text-decoration : none;
 }
@@ -94,7 +92,7 @@ svg {
 }
 a:hover {
 	color : var(--cpu-background);
-	background : var(--cpu-link-color);
+	background : var(--cpu-color);
 }
 a:hover svg {
 	fill : var(--cpu-background);
@@ -114,12 +112,12 @@ a:hover svg {
 }
 
 .act-play a {
-	color : var(--cpu-playing-link-color);
+	color : var(--cpu-playing-color);
 }
 
 .act-play a:hover {
 	color : var(--cpu-playing-background);
-	background : var(--cpu-playing-link-color);
+	background : var(--cpu-playing-color);
 }
 .act-play a:hover svg {
 	fill : var(--cpu-playing-background);
@@ -290,7 +288,7 @@ a {
 
 .share a:hover, .share div:hover {
 	color : var(--cpu-background);
-	background : var(--cpu-link-color);
+	background : var(--cpu-color);
 }
 
 .share svg {
