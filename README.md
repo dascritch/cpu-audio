@@ -110,7 +110,8 @@ Planned evolutions
 - [ ] make hash observer service usable even if webcomponent is not launched (Graceful degradation / progressive enhancement)
 - [ ] if too old or not suitable, make a fallback to old `ondemiroir-audio-tag` (will need a specific js snippet out of webcomponent)
 - [X] group functions out of the DOM basic level of the element (subsection, may be `domobject.CPU.fx()`)
-- [ ] [rewrite quesrySelector_apply](https://github.com/dascritch/ondemiroir-audio-tag/issues/51)
+- [X] [rewrite quesrySelector_apply](https://github.com/dascritch/ondemiroir-audio-tag/issues/51)
+- [ ] use standard [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) in `hashOrder`. We need a strategy to get the anchor, seen as a key without value
 - [ ] [recreate/adding TDD/BDD.  Via a browsable test page ?](https://github.com/dascritch/ondemiroir-audio-tag/issues/35)
 - [ ] [playlists in a page, play net in playlist parametrable via API](https://github.com/dascritch/ondemiroir-audio-tag/issues/47)
 - [ ] show playlist in `<cpu-controller>`

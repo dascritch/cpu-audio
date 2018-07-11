@@ -501,8 +501,7 @@ function onDebug(callback_fx) {
 
 function querySelector_apply(selector, callback, subtree) {
 	subtree = subtree === undefined ? document : subtree;
-	// explication de cette construction : https://coderwall.com/p/jcmzxw
-	[].forEach.call(subtree.querySelectorAll(selector), callback);
+	Array.from(subtree.querySelectorAll(selector)).forEach(callback);
 }
 
 const convert = {
