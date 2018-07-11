@@ -109,7 +109,7 @@ Planned evolutions
 - [ ] make a test about available functions and browser version (for Firefox <63)
 - [ ] make hash observer service usable even if webcomponent is not launched (Graceful degradation / progressive enhancement)
 - [ ] if too old or not suitable, make a fallback to old `ondemiroir-audio-tag` (will need a specific js snippet out of webcomponent)
-- [ ] group functions out of the DOM basic level of the element (subsection, may be `domobject.CPU.fx()`)
+- [X] group functions out of the DOM basic level of the element (subsection, may be `domobject.CPU.fx()`)
 - [ ] [rewrite quesrySelector_apply](https://github.com/dascritch/ondemiroir-audio-tag/issues/51)
 - [ ] [recreate/adding TDD/BDD.  Via a browsable test page ?](https://github.com/dascritch/ondemiroir-audio-tag/issues/35)
 - [ ] [playlists in a page, play net in playlist parametrable via API](https://github.com/dascritch/ondemiroir-audio-tag/issues/47)

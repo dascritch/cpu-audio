@@ -469,10 +469,12 @@ a {
 
 'use strict';
 
-let thisDoc =  (document._currentScript || document.currentScript).ownerDocument;
+const thisDoc =  (document._currentScript || document.currentScript).ownerDocument;
 let template, shadow_element;
 
+const dataset_keys = ['title', 'poster', 'canonical']
 let twitter_via = 'dascritch';
+
 const cpu_i18n = {
 	'untitled' : '(sans titre)',
 	'cover' : 'pochette',
@@ -828,18 +830,18 @@ const CPU_Audio = {
 		trigger.update({target : audiotag});
 	},
 
+	find_interface : function(child) {
+		return child.closest(CPU_Audio.selector_interface);
+	},
 	find_container : function(child) {
 
 		if ((child.tagName ===  CPU_Audio.selector_container.toUpperCase()) 
 			|| ( child.tagName ===  CPU_Audio.selector_container_controller.toUpperCase())) {
-			return child
+			return child.CPU
 		}
 		// DOMnode.closest won't work in too old browsers
 		// CF https://caniuse.com/#search=closest
-		return this.find_interface(child).parentNode.host;
-	},
-	find_interface : function(child) {
-		return child.closest(CPU_Audio.selector_interface);
+		return this.find_interface(child).parentNode.host.CPU;
 	},
 	seekElementAt : function (audiotag, seconds) {
 
@@ -890,55 +892,27 @@ HTMLAudioElement.prototype.CPU_controller = function() {
 }
 
 HTMLAudioElement.prototype.CPU_update = function() {
-	if (this.CPU_controller().update) {
-		this.CPU_controller().update();
+	let controller = this.CPU_controller();
+	if (controller) {
+		let api = controller.CPU;
+		if ((api) && (api.update)) {
+			// i don't like try catch
+			api.update();
+		}
 	}
 	if (CPU_Audio.global_controller) {
 		CPU_Audio.global_controller.update();
 	}
 }
 
-// Controller without assigned audio element, i.e. global page controller
-class CpuControllerElement extends HTMLElement {
-
-	constructor() {
-		// Always call super first in constructor
-		super();
-
-		if (not_screen_context()) {
-			// I'm not in a screen context, as a braille surface
-			// Sorry, but your browser's native controls are surely more accessible
-			return ;
-		}
-
-		// self variables
+var CPU_element_api = class {
+	constructor(element, container_interface) {
+		// I hate this style. I rather prefer the object notation
+		this.element = element;
 		this.poster_fallback = '//dascritch.net/themes/DSN13/img/entete1.svg';
-		this._elements = {};
-		this.audiotag = null;
-
-		template =  thisDoc.querySelector('template');
-		shadow_element = this.attachShadow({mode: 'open'})//.appendChild(template.cloneNode(true));
-		shadow_element.innerHTML = thisDoc.querySelector('template').innerHTML;
-	}
-
-	connectedCallback() {
-		if (not_screen_context()) {
-			return ;
-		}
-		this.container = shadow_element.querySelector('.cpu-audio');
-		this.build_controller();
-		// TODO : Event should be set on controller , with checking event.originalTarget.classlist.has()
-		querySelector_apply('.canonical', element_prevent_link_on_same_page);
-
-		if (this.audiotag === null) {
-			CPU_Audio.global_controller = this;
-			this.audiotag = window.document.querySelector('cpu-audio audio');
-		}
-		this.attach_audiotag_to_controller(this.audiotag);
-		trigger.hashOrder({ at_start : true });
-	}
-
-	disconnectedCallback() {
+		this.elements = {};
+		this.audiotag = element._audiotag;
+		this.container = container_interface;
 	}
 
 	update_act_container(act) {
@@ -962,7 +936,7 @@ class CpuControllerElement extends HTMLElement {
 	update_line(type, seconds) {
 		// type = 'elapsed', 'loading'
 		let duration = this.audiotag.duration;
-		this._elements[`${type}line`].style.width = duration === 0
+		this.elements[`${type}line`].style.width = duration === 0
 												? 0
 												: `${100*seconds / duration}%`;
 	}
@@ -982,7 +956,7 @@ class CpuControllerElement extends HTMLElement {
 		link_to += this.audiotag.id ? (this.audiotag.id+'&') : '';
 		link_to += 't='+timecode;
 
-		let elapse_element = this._elements['elapse'];
+		let elapse_element = this.elements['elapse'];
 		elapse_element.href = link_to;
 
 		let total_duration = '…';
@@ -1007,7 +981,7 @@ class CpuControllerElement extends HTMLElement {
 		// but don't update message
 		if (this.audiotag.error !== null) {
 			let error_message;
-			let pageerror = this._elements['pageerror'];
+			let pageerror = this.elements['pageerror'];
 			this.show_interface('error');
 			switch (this.audiotag.error.code) {
 				case this.audiotag.error.MEDIA_ERR_ABORTED:
@@ -1044,19 +1018,19 @@ class CpuControllerElement extends HTMLElement {
 			// do not try to show if no metadata
 			return;
 		}
-		let phylactere = this._elements['popup'];
-		let elapse_element = this._elements['line'];
+		let phylactere = this.elements['popup'];
+		let elapse_element = this.elements['line'];
 
 		phylactere.style.opacity = 1;
 		phylactere.style.left = (100 * seeked_time / this.audiotag.duration) +'%';
 		phylactere.innerHTML = convert.SecondsInTime(seeked_time);
 	}
 	hide_throbber() {
-		let phylactere = this._elements['popup'];
+		let phylactere = this.elements['popup'];
 		phylactere.style.opacity = 0;
 	}
 	hide_throbber_later() {
-		let phylactere = this._elements['popup'];
+		let phylactere = this.elements['popup'];
 		if (phylactere._hider) {
 			window.clearTimeout(phylactere._hider);
 		}
@@ -1066,7 +1040,7 @@ class CpuControllerElement extends HTMLElement {
 	update_links() {
 		let container = this;
 		function ahref(category, href) {
-			container._elements[category].href = href;
+			container.elements[category].href = href;
 		}
 		function remove_hash(canonical) {
 			let hash_at = canonical.indexOf('#');
@@ -1124,18 +1098,18 @@ class CpuControllerElement extends HTMLElement {
 		if (canonical === undefined) {
 			canonical = window.location.href;
 		}
-		this._elements['canonical'].href = canonical;
+		this.elements['canonical'].href = canonical;
 
 		let title = this.audiotag.dataset.title;
 		if (title === undefined) {
-			this._elements['canonical'].classList.add('untitled')
+			this.elements['canonical'].classList.add('untitled')
 			title = cpu_i18n['untitled']
 		} else {
-			this._elements['canonical'].classList.remove('untitled')
+			this.elements['canonical'].classList.remove('untitled')
 		}
-		this._elements['canonical'].innerText = title; 
-		this._elements['canonical'].title = title;
-		this._elements['poster'].src = this.audiotag.dataset.poster;
+		this.elements['canonical'].innerText = title; 
+		this.elements['canonical'].title = title;
+		this.elements['poster'].src = this.audiotag.dataset.poster;
 	}
 	attach_audiotag_to_controller(audiotag) {
 		this.audiotag = audiotag;
@@ -1148,19 +1122,18 @@ class CpuControllerElement extends HTMLElement {
 	}
 	build_controller() {
 
-		this.classList.add(this.classname);
+		this.element.classList.add(this.classname);
 		this.tabIndex = 0 // see http://snook.ca/archives/accessibility_and_usability/elements_focusable_with_tabindex and http://www.456bereastreet.com/archive/201302/making_elements_keyboard_focusable_and_clickable/
 
 		// the following mess is to simplify sub element declaration and selection
-		this._elements = {};
 		let controller = this;
 		querySelector_apply('*', function(element){
 			element.classList.forEach(function(this_class) {
-				if (controller._elements[this_class] === undefined) {
-					controller._elements[this_class] = element;
+				if (controller.elements[this_class] === undefined) {
+					controller.elements[this_class] = element;
 				}
 			});
-		}, this.shadowRoot);
+		}, this.element.shadowRoot);
 
 		let cliquables = {
 			'pause'		: trigger.play,
@@ -1171,12 +1144,12 @@ class CpuControllerElement extends HTMLElement {
 			'poster'	: this.show_main,
 		};
 		for (let that in cliquables) {
-			this._elements[that].addEventListener('click', cliquables[that]);
+			this.elements[that].addEventListener('click', cliquables[that]);
 		}
 		// key management
-		this.addEventListener('keydown', trigger.key);
+		this.element.addEventListener('keydown', trigger.key);
 		// throbber management
-		let timeline_element = this._elements['time'];
+		let timeline_element = this.elements['time'];
 		let do_events = {
 			'mouseover' : true,
 			'mousemove' : true,
@@ -1194,6 +1167,48 @@ class CpuControllerElement extends HTMLElement {
 		}
 		this.show_main();
 	}
+};
+
+
+// Controller without assigned audio element, i.e. global page controller
+class CpuControllerElement extends HTMLElement {
+
+	constructor() {
+		// Always call super first in constructor
+		super();
+
+		if (not_screen_context()) {
+			// I'm not in a screen context, as a braille surface
+			// Sorry, but your browser's native controls are surely more accessible
+			return ;
+		}
+
+		template =  thisDoc.querySelector('template');
+		shadow_element = this.attachShadow({mode: 'open'});
+		shadow_element.innerHTML = template.innerHTML;
+	}
+
+	connectedCallback() {
+		if (not_screen_context()) {
+			return ;
+		}
+		this.CPU = new CPU_element_api(
+			this,
+			this.shadowRoot.querySelector('.cpu-audio')
+		);
+
+		this.CPU.build_controller();
+		querySelector_apply('.canonical', element_prevent_link_on_same_page);
+
+		if (this.CPU.audiotag === undefined) {
+			CPU_Audio.global_controller = this.CPU;
+			this.CPU.audiotag = window.document.querySelector('cpu-audio audio');
+		}
+		this.CPU.attach_audiotag_to_controller(this.CPU.audiotag);
+	}
+
+	disconnectedCallback() {
+	}
 
 }
 
@@ -1204,23 +1219,21 @@ class CpuAudioElement extends CpuControllerElement {
 		if (not_screen_context()) {
 			return ;
 		}
-
-		this.audiotag = this.querySelector('audio');
+		this._audiotag = this.querySelector('audio');
 		// copying personalized data to audio tag
-		for (let key of ['title', 'poster', 'canonical']) {
-			this.audiotag.dataset[key] = this.dataset[key];
+		for (let key of dataset_keys) {
+			this._audiotag.dataset[key] = this.dataset[key];
 		}
 		super.connectedCallback();
 
-		CPU_Audio.connect_audiotag(this.audiotag);
-
-		CPU_Audio.recall_stored_play({target : this.audiotag});
+		CPU_Audio.connect_audiotag(this.CPU.audiotag);
+		CPU_Audio.recall_stored_play({target : this.CPU.audiotag});
 	}
 
 }
 
-window.customElements.define(CPU_Audio.selector_container_controller, CpuControllerElement);
 window.customElements.define(CPU_Audio.selector_container, CpuAudioElement);
+window.customElements.define(CPU_Audio.selector_container_controller, CpuControllerElement);
 window.addEventListener('hashchange', trigger.hashOrder, false);
 trigger.hashOrder({ at_start : true });
 })();
