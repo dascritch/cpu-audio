@@ -804,11 +804,11 @@ const CPU_Audio = {
 			audiotag.preload = 'metadata';
 		}
 		audiotag.load();
-		if (this.dontHideAudioTag === false) {
-			audiotag.hidden = true;
-			// PHRACK SAFARI
-			audiotag.removeAttribute('controls');
-		}
+
+		// hide native controls
+		audiotag.hidden = true;
+		// PHRACK SAFARI
+		audiotag.removeAttribute('controls');
 	},
 
 	jumpIdAt : function(hash,timecode,callback_fx) {
@@ -939,7 +939,6 @@ class CpuControllerElement extends HTMLElement {
 		}
 
 		// self variables
-		this.dontHideAudioTag = false;
 		this.poster_fallback = '//dascritch.net/themes/DSN13/img/entete1.svg';
 		this._elements = {};
 		this.audiotag = null;
