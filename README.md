@@ -7,12 +7,13 @@ Version : 5
 
 Rewrite of the [ondemiroir-audio-tag](https://github.com/dascritch/ondemiroir-audio-tag) towards WebComponents ( polyfilled with [webcomponentsjs](https://github.com/webcomponents/webcomponentsjs) ), which is an extension of [timecodehash](https://github.com/dascritch/timecodehash). Commits history lost due to a fenzy code rage during a morning ;)
 
-Thank you to my lovely friends
+Thank you to my lovely friends :
 * [Thomas Parisot](https://oncletom.io/) for suggestions
 * [Loïc Gerbaud](https://github.com/chibani) for corrections
 * [Guillaume Lemoine and Phonitive](http://www.phonitive.fr/) for helping
 * [Benoît Salles](https://twitter.com/infestedgrunt) for testing
 
+Some links :
 * Informations (in french) : <http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore>
 * Demonstration page : https://dascritch.net/vrac/.projets/audiowc/index.html
 * Its source : https://github.com/dascritch/cpu-audio/blob/master/index.html
@@ -28,6 +29,7 @@ This is an hashtag extention for `<audio>`, derivated from my [timecodehash.js](
 * Recall the player where it was unexpectedly left (click on a link when playing).
 * Plays only one sound in the page
 * Global `<cpu-controller>` 
+* Standards first, de-polyfillable
 
 How-to
 ------
@@ -88,18 +90,39 @@ Planned evolutions
 ------------------
 
 * report issues from `timecodehash` and `ondemiroir-audio-tag`
-* recreate/adding TDD/BDD.  Via a browsable test page ?
-* playlists in a page, play net in playlist (parametrable via API)
+* make a test about available functions and browser version (for Firefox <63)
+* [rewrite quesrySelector_apply](https://github.com/dascritch/ondemiroir-audio-tag/issues/51)
+* [recreate/adding TDD/BDD.  Via a browsable test page ?](https://github.com/dascritch/ondemiroir-audio-tag/issues/35)
+* [playlists in a page, play net in playlist parametrable via API](https://github.com/dascritch/ondemiroir-audio-tag/issues/47)
 * show playlist in `<cpu-controller>`
+* `<track>` support : [chapters](https://github.com/dascritch/timecodehash/issues/1)
+* `<track>` support : [named chapters](https://github.com/dascritch/ondemiroir-audio-tag/issues/9)
 * `<track>` support : show subtitles 
 * group functions out of the DOM basic level of the elemnt (subsection, may be `domobject.CPU.fx()`)
 * native chapters via `<tracks>`
-* multimedia keys support, at the document.body DOM level
+* [multimedia keys support, at the document.body DOM level](https://github.com/dascritch/ondemiroir-audio-tag/issues/57)
 * ability to hide `<cpu-audio>` , if a `<cpu-controller>` is declared and `<audio controls>` hidden
 * dynamic creation of a `<cpu-audio>`
 * dynamic remove of a `<cpu-audio>`
-* `<video>` support
+* [remove of a `<cpu-audio>` on a `<audio>` remove](https://github.com/dascritch/ondemiroir-audio-tag/issues/8)
 * Support for elapsed time / countdown time / total time
+* using a `data-twitter`, fallback `<meta name="twitter:site" content="">` to catch the twitter nickname, instead of the magic value
+* using a css value for fallback `data-poster` image, or get it from `<meta itemprop="image" content="">`
+* using `<title>` for fallback when missing `data-title`
+* using `<link rel="canonical" href="">` or `window.location` for fallback when missing `data-canonical`
+* [support of end point timecode](https://github.com/dascritch/ondemiroir-audio-tag/issues/25)
+* [parameters to not put share button](https://github.com/dascritch/ondemiroir-audio-tag/issues/26)
+* deploiement on <http://cpu.pm> , when [HTML imports will be properly supported](https://caniuse.com/#feat=imports) or via better polyfill support (still bugs in Firefox 61)
+* `<video>` support
+* Restore i18n [timecodehash#12](https://github.com/dascritch/timecodehash/issues/12)
+* [Support incoming navigator.share API](https://github.com/dascritch/ondemiroir-audio-tag/issues/55) . Standards first.
+* [Put a soundwave form image alongside the timeline, server precalculated](https://github.com/dascritch/ondemiroir-audio-tag/issues/52)
+* [Supporting annotations à la SoundCloud](https://github.com/dascritch/ondemiroir-audio-tag/issues/29)
+* [Create a real playlist service](https://github.com/dascritch/ondemiroir-audio-tag/issues/42)
+* [Using touchstart event to emulate hover](https://github.com/dascritch/ondemiroir-audio-tag/issues/37)
+* [Support MSE API for non-burferred playing, needed for HTTP/2](https://github.com/dascritch/ondemiroir-audio-tag/issues/22)
+* [CSS Element Query: css width jump by real element width](https://github.com/dascritch/ondemiroir-audio-tag/issues/5)
+
 
 Retired functions
 -----------------
@@ -111,7 +134,7 @@ Retired functions
 Versions
 --------
 
-* June 2018 : 5 , forking to cpu-audio, WebComponent version
+* April 2018 : 5 , [forking to cpu-audio, WebComponent version](https://github.com/dascritch/ondemiroir-audio-tag/issues/7#issuecomment-382043789)
 * August 2017 : 4 , i18n, modularization, clone
 * August 2015 : 3 , forking to ondemiroir-audio-tag
 * October 2014 : Final version
