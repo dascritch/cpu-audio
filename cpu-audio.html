@@ -470,8 +470,8 @@ a {
 const thisDoc =  (document._currentScript || document.currentScript).ownerDocument;
 let template, shadow_element;
 
-const dataset_keys = ['title', 'poster', 'canonical']
-let twitter_via = 'dascritch';
+const dataset_keys = ['title', 'poster', 'canonical', 'twitter']
+var twitter_account = undefined;
 
 const cpu_i18n = {
 	'untitled' : '(sans titre)',
@@ -501,6 +501,15 @@ function querySelector_apply(selector, callback, subtree) {
 	subtree = subtree === undefined ? document : subtree;
 	Array.from(subtree.querySelectorAll(selector)).forEach(callback);
 }
+
+function get_default_twitter_account() {
+	// try to catch it via social meta for twitter partage
+	let header_element = window.document.querySelector('meta[name="twitter:creator"]');
+	if ((header_element !== null) && (header_element.content.length>1)) {
+		twitter_account = header_element.content.length;
+	}
+}
+
 
 const convert = {
 	_units : {
@@ -1054,7 +1063,17 @@ var CPU_element_api = class {
 
 		let _url = encodeURI(absolutize_url(url));
 		let _title = encodeURI(this.audiotag.title);
-		ahref('twitter', `https://twitter.com/share?text=${_title}&url=${_url}&via=${twitter_via}`);
+		let _this_twitter_account = this.audiotag.dataset.twitter;
+		/* ATTENTION sur la ligne suivante, on ne fait pas d'équivalence stricte
+		  car j'ai des 'undefined' au lieu d'un réel undefined chez Chrome. 
+		  yep. Crade.
+		*/
+		_this_twitter_account = _this_twitter_account == undefined ? twitter_account : _this_twitter_account;
+		let _twitter = '';
+		if ((_this_twitter_account !== undefined) && (_this_twitter_account[0]==='@')) {
+			_twitter = `&via=${_this_twitter_account.substring(1)}`;
+		}
+		ahref('twitter', `https://twitter.com/share?text=${_title}&url=${_url}${_twitter}`);
 		ahref('facebook', `https://www.facebook.com/sharer.php?t=${_title}&u=${_url}`);
 		ahref('email', `mailto:?subject=${_title}&body=${_url}`);
 		ahref('link', this.audiotag.currentSrc);
@@ -1228,6 +1247,7 @@ class CpuAudioElement extends CpuControllerElement {
 
 }
 
+get_default_twitter_account();
 window.customElements.define(CPU_Audio.selector_container, CpuAudioElement);
 window.customElements.define(CPU_Audio.selector_container_controller, CpuControllerElement);
 window.addEventListener('hashchange', trigger.hashOrder, false);

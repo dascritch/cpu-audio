@@ -58,9 +58,10 @@ Simply put `<link rel="import" href="./cpu-audio.html" type="text/html">` in the
 
 Then encapsulate `<audio control>` with `<cpu-audio>` to compose an specialy crafted UI. Some attributes enhance the component :
 
-* `data-title="<string>"` : Name of the audio
-* `data-poster="<url>"` : Cover image
+* `data-title="<string>"` : name of the audio 
+* `data-poster="<url>"` : cover image, squarred ratio prefered
 * `data-canonical="<url>"` : link to the original page of the sound
+* `data-twitter="@<account>"` : twitter handle for social partage (fallback on the declared one in your page)
 
 The script will link automatically to the playlister in the same repertory.
 
@@ -110,10 +111,10 @@ Planned evolutions
 - [ ] make hash observer service usable even if webcomponent is not launched (Graceful degradation / progressive enhancement)
 - [ ] if too old or not suitable, make a fallback to old `ondemiroir-audio-tag` (will need a specific js snippet out of webcomponent)
 - [X] group functions out of the DOM basic level of the element (subsection, may be `domobject.CPU.fx()`)
-- [X] [rewrite quesrySelector_apply](https://github.com/dascritch/ondemiroir-audio-tag/issues/51)
+- [X] [rewrite querySelector_apply](https://github.com/dascritch/ondemiroir-audio-tag/issues/51)
 - [ ] use standard [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) in `hashOrder`. We need a strategy to get the anchor, seen as a key without value
 - [ ] [recreate/adding TDD/BDD.  Via a browsable test page ?](https://github.com/dascritch/ondemiroir-audio-tag/issues/35)
-- [ ] [playlists in a page, play net in playlist parametrable via API](https://github.com/dascritch/ondemiroir-audio-tag/issues/47)
+- [ ] [playlists in a page, play next audio in playlist parametrable via API](https://github.com/dascritch/ondemiroir-audio-tag/issues/47)
 - [ ] show playlist in `<cpu-controller>`
 - [ ] `<track>` support : [chapters](https://github.com/dascritch/timecodehash/issues/1)
 - [ ] `<track>` support : [named chapters](https://github.com/dascritch/ondemiroir-audio-tag/issues/9)
@@ -125,7 +126,7 @@ Planned evolutions
 - [ ] dynamic remove of a `<cpu-audio>`
 - [ ] [remove of a `<cpu-audio>` on a `<audio>` remove](https://github.com/dascritch/ondemiroir-audio-tag/issues/8)
 - [ ] Support for elapsed time / countdown time / total time
-- [ ] using a `data-twitter`, fallback `<meta name="twitter:site" content="">` to catch the twitter nickname, instead of the magic value
+- [X] using a `data-twitter`, fallback `<meta name="twitter:site" content="">` to catch the twitter nickname, instead of the magic value
 - [ ] using a css value for fallback `data-poster` image, or get it from `<meta itemprop="image" content="">`
 - [ ] using `<title>` for fallback when missing `data-title`
 - [ ] using `<link rel="canonical" href="">` or `window.location` for fallback when missing `data-canonical`
