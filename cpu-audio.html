@@ -470,8 +470,6 @@ a {
 const thisDoc =  (document._currentScript || document.currentScript).ownerDocument;
 let template, shadow_element;
 
-const dataset_keys = ['title', 'poster', 'canonical', 'twitter']
-var twitter_account = undefined;
 
 const cpu_i18n = {
 	'untitled' : '(sans titre)',
@@ -502,14 +500,22 @@ function querySelector_apply(selector, callback, subtree) {
 	Array.from(subtree.querySelectorAll(selector)).forEach(callback);
 }
 
-function get_default_twitter_account() {
-	// try to catch it via social meta for twitter partage
-	let header_element = window.document.querySelector('meta[name="twitter:creator"]');
-	if ((header_element !== null) && (header_element.content.length>1)) {
-		twitter_account = header_element.content.length;
-	}
+// NOTE : we will need to refresh this when the <head> of the host page changes
+const default_dataset = {
+	'title' : function () { 
+			let title = window.document.title;
+			return title === '' ? undefined : title;
+		}(), 
+	'poster': undefined,
+	'canonical' : window.location.href,
+	'twitter' : function () {
+			let header_element = window.document.querySelector('meta[name="twitter:creator"]');
+			if ((header_element !== null) && (header_element.content.length>1)) {
+				return header_element.content.length;
+			}
+			return undefined;
+		}()
 }
-
 
 const convert = {
 	_units : {
@@ -1068,7 +1074,7 @@ var CPU_element_api = class {
 		  car j'ai des 'undefined' au lieu d'un réel undefined chez Chrome. 
 		  yep. Crade.
 		*/
-		_this_twitter_account = _this_twitter_account == undefined ? twitter_account : _this_twitter_account;
+		_this_twitter_account = _this_twitter_account == undefined ? default_dataset.twitter : _this_twitter_account;
 		let _twitter = '';
 		if ((_this_twitter_account !== undefined) && (_this_twitter_account[0]==='@')) {
 			_twitter = `&via=${_this_twitter_account.substring(1)}`;
@@ -1236,8 +1242,9 @@ class CpuAudioElement extends CpuControllerElement {
 		}
 		this._audiotag = this.querySelector('audio');
 		// copying personalized data to audio tag
-		for (let key of dataset_keys) {
-			this._audiotag.dataset[key] = this.dataset[key];
+		for (let key in default_dataset) {
+			let value = this.dataset[key];
+			this._audiotag.dataset[key] = value !== undefined ? value : default_dataset[key];
 		}
 		super.connectedCallback();
 
@@ -1247,7 +1254,6 @@ class CpuAudioElement extends CpuControllerElement {
 
 }
 
-get_default_twitter_account();
 window.customElements.define(CPU_Audio.selector_container, CpuAudioElement);
 window.customElements.define(CPU_Audio.selector_container_controller, CpuControllerElement);
 window.addEventListener('hashchange', trigger.hashOrder, false);
