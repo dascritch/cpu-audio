@@ -42,8 +42,8 @@ blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-m
 		--poster-fallback : '//dascritch.net/themes/DSN13/img/entete1.svg';
 	}
 
-	@media screen and (max-width: 640px) {
-		:root {
+	@media (max-width: 640px) , @element .cpu-audio and (max-width: 640px) {
+		:root , .cpu-audio {
 			--cpu-font-size : 13px;
 			--cpu-height : 32px;
 		}
