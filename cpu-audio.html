@@ -28,10 +28,10 @@ blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-m
 		--cpu-font-family : Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
 		--cpu-font-size : 15px;
 		--cpu-background : #555;
-		--cpu-color : #ccc;
+		--cpu-color : #ddd;
 		--cpu-link-color : #aaf;
 		--cpu-playing-background : #444;
-		--cpu-playing-color : #ddd;
+		--cpu-playing-color : #fff;
 		--cpu-playing-link-color : #bbf;
 		--cpu-error-background : #a00 ;
 		--cpu-error-color : #ff7 ;
@@ -88,7 +88,7 @@ a {
 	text-decoration : none;
 }
 svg {
-	fill : #ffffff;
+	fill : var(--cpu-color);
 	width : var(--cpu-height);
 	height : var(--cpu-height);
 }
@@ -103,6 +103,10 @@ a:hover svg {
 .act-play {
 	background : var(--cpu-playing-background);
 	color : var(--cpu-playing-color);
+}
+
+.act-play svg {
+	fill : var(--playing-cpu-color);
 }
 
 .act-play a {
