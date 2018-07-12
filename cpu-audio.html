@@ -35,9 +35,6 @@ blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-m
 		--cpu-error-color : #ff7 ;
 		--cpu-popup-background : #aaa;
 		--cpu-popup-color : #333;
-
-		/** TODO */
-		--poster-fallback : '//dascritch.net/themes/DSN13/img/entete1.svg';
 	}
 
 	@media (max-width: 640px) , @element .cpu-audio and (max-width: 640px) {
@@ -501,17 +498,41 @@ function querySelector_apply(selector, callback, subtree) {
 }
 
 // NOTE : we will need to refresh this when the <head> of the host page changes
-const default_dataset = {
+var default_dataset = {
 	'title' : function () { 
+			let header_element = window.document.querySelector('meta[property="og:title"]');
+			if (header_element !== null) {
+				return header_element.content;
+			}
+			header_element = window.document.querySelector('meta[property="twitter:title"]');
+			if (header_element !== null) {
+				return header_element.content;
+			}
 			let title = window.document.title;
 			return title === '' ? undefined : title;
 		}(), 
-	'poster': undefined,
-	'canonical' : window.location.href,
+	'poster' : function () {
+			let header_element = window.document.querySelector('meta[property="og:image"]');
+			if (header_element !== null) {
+				return header_element.content;
+			}
+			header_element = window.document.querySelector('meta[name="twitter:image:src"]');
+			if (header_element !== null) {
+				return header_element.content;
+			}
+			return undefined;
+		}(),
+	'canonical' : function () {
+			let header_element = window.document.querySelector('link[rel="canonical"]');
+			if (header_element !== null) {
+				return header_element.href;
+			}
+			return window.location.href;
+		}(),
 	'twitter' : function () {
 			let header_element = window.document.querySelector('meta[name="twitter:creator"]');
 			if ((header_element !== null) && (header_element.content.length>1)) {
-				return header_element.content.length;
+				return header_element.content;
 			}
 			return undefined;
 		}()
@@ -1235,6 +1256,7 @@ class CpuAudioElement extends CpuControllerElement {
 		// copying personalized data to audio tag
 		for (let key in default_dataset) {
 			let value = this.dataset[key];
+			// makes it dynamic later
 			this._audiotag.dataset[key] = value !== undefined ? value : default_dataset[key];
 		}
 		super.connectedCallback();

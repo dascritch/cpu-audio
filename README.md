@@ -127,9 +127,9 @@ Planned evolutions
 - [ ] [remove of a `<cpu-audio>` on a `<audio>` remove](https://github.com/dascritch/ondemiroir-audio-tag/issues/8)
 - [ ] Support for elapsed time / countdown time / total time
 - [X] using a `data-twitter`, fallback `<meta name="twitter:site" content="">` to catch the twitter nickname, instead of the magic value
-- [ ] using a css value for fallback `data-poster` image, or get it from `<meta itemprop="image" content="">`
-- [ ] using `<title>` for fallback when missing `data-title`
-- [ ] using `<link rel="canonical" href="">` or `window.location` for fallback when missing `data-canonical`
+- [X] using a css value for fallback `data-poster` image, or get it from `<meta itemprop="image" content="">`
+- [X] using `<title>` for fallback when missing `data-title`
+- [X] using `<link rel="canonical" href="">` or `window.location` for fallback when missing `data-canonical`
 - [ ] [support of end point timecode](https://github.com/dascritch/ondemiroir-audio-tag/issues/25)
 - [ ] [parameters to not put share button](https://github.com/dascritch/ondemiroir-audio-tag/issues/26)
 - [ ] deploiement on <http://cpu.pm> , when [HTML imports will be properly supported](https://caniuse.com/#feat=imports) or via better polyfill support (still bugs in Firefox 61)
