@@ -111,8 +111,7 @@ Planned evolutions
 - [ ] make hash observer service usable even if webcomponent is not launched (Graceful degradation / progressive enhancement)
 - [ ] if too old or not suitable, make a fallback to old `ondemiroir-audio-tag` (will need a specific js snippet out of webcomponent)
 - [X] group functions out of the DOM basic level of the element (subsection, may be `domobject.CPU.fx()`)
-- [X] [rewrite querySelector_apply](https://github.com/dascritch/ondemiroir-audio-tag/issues/51)
-- [ ] use standard [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) in `hashOrder`. We need a strategy to get the anchor, seen as a key without value
+- [ ] use standard [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) in `hashOrder`, instead of the custom code. We need a strategy to get the anchor, seen as a key without value
 - [ ] [recreate/adding TDD/BDD.  Via a browsable test page ?](https://github.com/dascritch/ondemiroir-audio-tag/issues/35)
 - [ ] [playlists in a page, play next audio in playlist parametrable via API](https://github.com/dascritch/ondemiroir-audio-tag/issues/47)
 - [ ] show playlist in `<cpu-controller>`
@@ -125,10 +124,6 @@ Planned evolutions
 - [ ] dynamic remove of a `<cpu-audio>`
 - [ ] [remove of a `<cpu-audio>` on a `<audio>` remove](https://github.com/dascritch/ondemiroir-audio-tag/issues/8)
 - [ ] Support for elapsed time / countdown time / total time
-- [X] using a `data-twitter`, fallback `<meta name="twitter:site" content="">` to catch the twitter nickname, instead of the magic value
-- [X] using a css value for fallback `data-poster` image, or get it from `<meta itemprop="image" content="">`
-- [X] using `<title>` for fallback when missing `data-title`
-- [X] using `<link rel="canonical" href="">` or `window.location` for fallback when missing `data-canonical`
 - [ ] [support of end point timecode](https://github.com/dascritch/ondemiroir-audio-tag/issues/25)
 - [ ] [parameters to not put share button](https://github.com/dascritch/ondemiroir-audio-tag/issues/26)
 - [ ] deploiement on <http://cpu.pm> , when [HTML imports will be properly supported](https://caniuse.com/#feat=imports) or via better polyfill support (still bugs in Firefox 61)
@@ -140,7 +135,6 @@ Planned evolutions
 - [ ] [Create a real playlist service](https://github.com/dascritch/ondemiroir-audio-tag/issues/42)
 - [ ] [Using touchstart event to emulate hover](https://github.com/dascritch/ondemiroir-audio-tag/issues/37)
 - [ ] [Support MSE API for non-burferred playing, needed for HTTP/2](https://github.com/dascritch/ondemiroir-audio-tag/issues/22)
-- [X] [CSS Element Query: css width jump by real element width](https://github.com/dascritch/ondemiroir-audio-tag/issues/5)
 - [ ] add a minimalistic player (only play/pause and total time)
 
 Retired functions from v4
