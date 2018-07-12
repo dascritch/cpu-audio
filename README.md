@@ -120,7 +120,6 @@ Planned evolutions
 - [ ] `<track>` support : [named chapters](https://github.com/dascritch/ondemiroir-audio-tag/issues/9)
 - [ ] `<track>` support : show subtitles 
 - [ ] native chapters via `<tracks>`
-- [ ] [multimedia keys support, at the document.body DOM level](https://github.com/dascritch/ondemiroir-audio-tag/issues/57)
 - [ ] ability to hide `<cpu-audio>` , if a `<cpu-controller>` is declared and `<audio controls>` hidden
 - [ ] dynamic creation of a `<cpu-audio>`
 - [ ] dynamic remove of a `<cpu-audio>`
