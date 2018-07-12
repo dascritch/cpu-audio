@@ -756,11 +756,9 @@ function _isEvent(event) {
 
 const CPU_Audio = {
 	// global object for global controller
-
 	keymove : 5,
 	only_play_one_audiotag : true,
 	current_audiotag_playing : null,
-	// this one, later
 	global_controller : null,
 	selector_container : 'cpu-audio',
 	selector_container_controller :'cpu-controller',
@@ -1211,7 +1209,7 @@ class CpuControllerElement extends HTMLElement {
 
 		if (this.CPU.audiotag === undefined) {
 			CPU_Audio.global_controller = this.CPU;
-			this.CPU.audiotag = window.document.querySelector('cpu-audio audio');
+			this.CPU.audiotag = window.document.querySelector('cpu-audio audio[control]');
 		}
 		this.CPU.attach_audiotag_to_controller(this.CPU.audiotag);
 	}
@@ -1228,7 +1226,12 @@ class CpuAudioElement extends CpuControllerElement {
 		if (not_screen_context()) {
 			return ;
 		}
-		this._audiotag = this.querySelector('audio');
+		this._audiotag = this.querySelector('audio[control]');
+		if (this._audiotag === null) {
+			// Graceful degradation : do not start if no media element OR no native controls
+			return;
+		}
+
 		// copying personalized data to audio tag
 		for (let key in default_dataset) {
 			let value = this.dataset[key];
