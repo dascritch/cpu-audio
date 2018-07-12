@@ -935,7 +935,6 @@ var CPU_element_api = class {
 			);
 		this.container.classList.add(`act-${act}`);
 	}
-
 	update_playbutton() {
 		if (this.audiotag.readyState < this.audiotag.HAVE_CURRENT_DATA ) {
 			this.update_act_container('loading');
@@ -944,7 +943,6 @@ var CPU_element_api = class {
 
 		this.update_act_container(this.audiotag.paused ? 'pause' : 'play');
 	}
-
 	update_line(type, seconds) {
 		// type = 'elapsed', 'loading'
 		let duration = this.audiotag.duration;
@@ -952,7 +950,6 @@ var CPU_element_api = class {
 												? 0
 												: `${100*seconds / duration}%`;
 	}
-
 	update_buffered() {
 		let end = 0;
 		let buffered  = this.audiotag.buffered ;
@@ -981,12 +978,10 @@ var CPU_element_api = class {
 		this.update_line('loading', this.audiotag.currentTime);
 		this.update_buffered();
 	}
-
 	update_loading(seconds) {
 		this.update_line('loading', seconds);
 		this.update_act_container('loading');
 	}
-
 	update_error() {
 		// NOTE : this is not working, even on non supported media type
 		// Chrome logs an error « Uncaught (in promise) DOMException: Failed to load because no supported source was found. »
@@ -1017,7 +1012,6 @@ var CPU_element_api = class {
 		}
 		return false;
 	}
-
 	update() {
 		if (!this.update_error()) {
 			this.update_playbutton();
@@ -1102,13 +1096,7 @@ var CPU_element_api = class {
 				this;
 		container.show_interface('main');
 	}
-	element_attribute(element, key, missing) {
-		return (element.attributes[key] === undefined) ? missing : element.attributes[key].value;
-	}
 
-	add_id_to_container() {
-		this.id = this.id !== ''? this.id : (this.idPrefix + String(CPU_Audio.count_element++));
-	}
 	add_id_to_audiotag() {
 		if (this.audiotag.id === '') {
 			this.audiotag.id = CPU_Audio.dynamicallyAllocatedIdPrefix + String(CPU_Audio.count_element++);
