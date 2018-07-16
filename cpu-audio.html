@@ -1208,7 +1208,17 @@ class CpuControllerElement extends HTMLElement {
 		if (not_screen_context()) {
 			// I'm not in a screen context, as a braille surface
 			// Sorry, but your browser's native controls are surely more accessible
+			this.remove();
 			return ;
+		}
+
+		if (this.tagName === CPU_Audio.selector_container.toUpperCase()) {
+			if (this.querySelector('audio[controls]') === null) {
+				// Graceful degradation : do not start if no media element OR no native controls
+				console.error(`Tag <${CPU_Audio.selector_container}> without <audio controls>`);
+				this.remove();
+				return;
+			}
 		}
 
 		template =  thisDoc.querySelector('template');
@@ -1224,14 +1234,14 @@ class CpuControllerElement extends HTMLElement {
 			this,
 			this.shadowRoot.querySelector('.cpu-audio')
 		);
+		if (!this.CPU.audiotag) {
+			CPU_Audio.global_controller = this.CPU;
+			this.CPU.audiotag = window.document.querySelector('cpu-audio audio');
+		}
 
 		this.CPU.build_controller();
 		querySelector_apply('.canonical', element_prevent_link_on_same_page);
 
-		if (this.CPU.audiotag === undefined) {
-			CPU_Audio.global_controller = this.CPU;
-			this.CPU.audiotag = window.document.querySelector('cpu-audio audio[control]');
-		}
 		this.CPU.attach_audiotag_to_controller(this.CPU.audiotag);
 	}
 
@@ -1244,12 +1254,9 @@ class CpuControllerElement extends HTMLElement {
 class CpuAudioElement extends CpuControllerElement {
 
 	connectedCallback() {
-		if (not_screen_context()) {
-			return ;
-		}
-		this._audiotag = this.querySelector('audio[control]');
+
+		this._audiotag = this.querySelector('audio[controls]');
 		if (this._audiotag === null) {
-			// Graceful degradation : do not start if no media element OR no native controls
 			return;
 		}
 
