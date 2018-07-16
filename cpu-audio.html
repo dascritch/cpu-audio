@@ -497,47 +497,6 @@ function querySelector_apply(selector, callback, subtree) {
 	Array.from(subtree.querySelectorAll(selector)).forEach(callback);
 }
 
-// NOTE : we will need to refresh this when the <head> of the host page changes
-var default_dataset = {
-	'title' : function () { 
-			let header_element = window.document.querySelector('meta[property="og:title"]');
-			if (header_element !== null) {
-				return header_element.content;
-			}
-			header_element = window.document.querySelector('meta[property="twitter:title"]');
-			if (header_element !== null) {
-				return header_element.content;
-			}
-			let title = window.document.title;
-			return title === '' ? undefined : title;
-		}(), 
-	'poster' : function () {
-			let header_element = window.document.querySelector('meta[property="og:image"]');
-			if (header_element !== null) {
-				return header_element.content;
-			}
-			header_element = window.document.querySelector('meta[name="twitter:image:src"]');
-			if (header_element !== null) {
-				return header_element.content;
-			}
-			return undefined;
-		}(),
-	'canonical' : function () {
-			let header_element = window.document.querySelector('link[rel="canonical"]');
-			if (header_element !== null) {
-				return header_element.href;
-			}
-			return window.location.href;
-		}(),
-	'twitter' : function () {
-			let header_element = window.document.querySelector('meta[name="twitter:creator"]');
-			if ((header_element !== null) && (header_element.content.length>1)) {
-				return header_element.content;
-			}
-			return undefined;
-		}()
-}
-
 const convert = {
 	_units : {
 		'd' : 86400,
@@ -783,6 +742,47 @@ const CPU_Audio = {
 	dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
 	count_element : 0,
 
+	// NOTE : we will need to refresh this when the <head> of the host page changes
+	default_dataset : {
+		'title' : function () { 
+				let header_element = window.document.querySelector('meta[property="og:title"]');
+				if (header_element !== null) {
+					return header_element.content;
+				}
+				header_element = window.document.querySelector('meta[property="twitter:title"]');
+				if (header_element !== null) {
+					return header_element.content;
+				}
+				let title = window.document.title;
+				return title === '' ? undefined : title;
+			}(), 
+		'poster' : function () {
+				let header_element = window.document.querySelector('meta[property="og:image"]');
+				if (header_element !== null) {
+					return header_element.content;
+				}
+				header_element = window.document.querySelector('meta[name="twitter:image:src"]');
+				if (header_element !== null) {
+					return header_element.content;
+				}
+				return undefined;
+			}(),
+		'canonical' : function () {
+				let header_element = window.document.querySelector('link[rel="canonical"]');
+				if (header_element !== null) {
+					return header_element.href;
+				}
+				return window.location.href;
+			}(),
+		'twitter' : function () {
+				let header_element = window.document.querySelector('meta[name="twitter:creator"]');
+				if ((header_element !== null) && (header_element.content.length>1)) {
+					return header_element.content;
+				}
+				return undefined;
+			}()
+	},
+
 	connect_audiotag(audiotag) {
 		// see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events for list of events
 		[
@@ -936,7 +936,6 @@ var CPU_element_api = class {
 	constructor(element, container_interface) {
 		// I hate this style. I rather prefer the object notation
 		this.element = element;
-		this.poster_fallback = '//dascritch.net/themes/DSN13/img/entete1.svg';
 		this.elements = {};
 		this.audiotag = element._audiotag;
 		this.container = container_interface;
@@ -1083,7 +1082,7 @@ var CPU_element_api = class {
 		  car j'ai des 'undefined' au lieu d'un réel undefined chez Chrome. 
 		  yep. Crade.
 		*/
-		_this_twitter_account = _this_twitter_account == undefined ? default_dataset.twitter : _this_twitter_account;
+		_this_twitter_account = _this_twitter_account == undefined ? CPU_Audio.default_dataset.twitter : _this_twitter_account;
 		let _twitter = '';
 		if ((_this_twitter_account !== undefined) && (_this_twitter_account[0]==='@')) {
 			_twitter = `&via=${_this_twitter_account.substring(1)}`;
@@ -1257,10 +1256,10 @@ class CpuAudioElement extends CpuControllerElement {
 		}
 
 		// copying personalized data to audio tag
-		for (let key in default_dataset) {
+		for (let key in CPU_Audio.default_dataset) {
 			let value = this.dataset[key];
 			// makes it dynamic later
-			this._audiotag.dataset[key] = value !== undefined ? value : default_dataset[key];
+			this._audiotag.dataset[key] = value !== undefined ? value : CPU_Audio.default_dataset[key];
 		}
 		super.connectedCallback();
 
@@ -1269,6 +1268,10 @@ class CpuAudioElement extends CpuControllerElement {
 	}
 
 }
+
+
+// expose API in parent page DOM
+thisDoc.CPU = CPU_Audio;
 
 window.customElements.define(CPU_Audio.selector_container, CpuAudioElement);
 window.customElements.define(CPU_Audio.selector_container_controller, CpuControllerElement);
