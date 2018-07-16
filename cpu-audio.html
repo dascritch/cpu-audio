@@ -608,7 +608,7 @@ const trigger = {
 
 		for (let _id in segments) {
 			let parameter = segments[_id];
-			if (parameter.indexOf('=') === -1) {
+			if ((parameter.indexOf('=') === -1) && (hash === '')) {
 				// should reference to the ID of the element
 				hash = parameter;
 			} else {
