@@ -625,15 +625,11 @@ const trigger = {
 						break;
 					case 'autoplay':
 						// is a card from a social network, run now
-						if (p_value='1') {
-							autoplay = true;
-						}
+						autoplay =  p_value === '1';
 						break;
 					case 'auto_play':
 						// is a card from a social network, run now
-						if (p_value='true') {
-							autoplay = true;
-						}
+						autoplay = p_value === 'true';
 						break;
 				}
 
