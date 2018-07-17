@@ -7,11 +7,13 @@
 </head>
 
 <body>
-<div>
+<h1>
 	Page demo for <a href="https://github.com/dascritch/cpu-audio">CPU-Audio</a> project. 
-</div>
+</h1>
 
 <div>
+	<p>See <a href="https://github.com/dascritch/cpu-audio">README.md on this project's github</a></p>
+
 	<cpu-audio 
 		title="Ex0085 Le Mystère Enigma"
 		poster="https://cpu.dascritch.net/public/Images/Emissions/.1805-Ex0085-Enigma_m.jpg"
@@ -23,6 +25,8 @@
 			<source src="https://dascritch.net/vrac/Emissions/CPU/podcast/0085-CPU%2817-05-18%29.mp3" type="audio/mpeg">
 		</audio>
 	</cpu-audio>
+
+	<h3 id="hashlinks">Link moments in audio into html pages</h3>
 
 	Chapters (click on timecodes) :
 	<ol>
@@ -69,8 +73,11 @@
 	</ol>
 </div>
 
+
+<h3 id="size">Size constraints</h3>
+
 <div>
-	Aspect changes at 640px and 320px wide; We are waiting @element implementation to complete this.
+	Aspect changes whe page is under 640px and 320px wide 
 	<cpu-audio 
 		title="Au carnaval avec Samba Résille (2003)"
 		poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
@@ -82,17 +89,44 @@
 			<source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
 		</audio>
 	</cpu-audio>
-
 </div>
 
+<div style="width:600px;margin :0 auto;">
+	We are waiting @element implementation to complete this., this element is constraigned, so the webcomponent
+	<cpu-audio 
+		title="Au carnaval avec Samba Résille (2003)"
+		poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
+		canonical="https://dascritch.net/post/2014/04/08/Au-Carnaval-avec-Samba-R%C3%A9sille"
+		twitter="@dascritch"
+		>
+	  	<!-- Pour des raisons  de compatibilité arrière, il faut garder la balise audio dans la déclaration. -->
+		<audio controls id="live">
+			<source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
+		</audio>
+	</cpu-audio>
+</div>
+
+
+<h3 id="cpu_controller">Global page controller</h3>
 <div>
 	↓ Controller only on the playing / last played &lt;audio&gt;
 	<cpu-controller>
 	</cpu-controller>
 </div>
 
+<h3 id="keys">Keyboard controls</h3>
+<ul>
+	<li> <kbd>Space</kbd> : play/pause audio</li>
+	<li> <kbd>Enter</kbd> : play/pause audio (only on play/pause button)</li>
+	<li> <kbd>←</kbd> : -5 seconds</li>
+	<li> <kbd>→</kbd> : +5 seconds</li>
+	<li> <kbd>↖</kbd> : back to start</li>
+	<li> <kbd>End</kbd> : to the end, finish playing</li>
+	<li> <kbd>Escape</kbd> : back to start, stop playing</li>
+</ul>
 
-<h3>Error cases</h3>
+
+<h3 id="errors">Error test-cases</h3>
 
 <div>
 	↓ No media tag. The component must not start
