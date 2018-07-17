@@ -126,47 +126,50 @@ Bugs
 * A media error is not correctly triggered and unseen from its  `<cpu-audio>`. Chrome needs to be asked to go inside (click on the timeline), Firefox never gets it.
 * To use correctly the webcomponents.js polyfill, as it still lacks `<link rel="import">` support, Firefox (Nightly, 63 as today) needs a CSP policy permitting `data:` scripts.
 * Firefox versions 62 and below cannot start it even with the polyfill.
-* Middle click on canonical not working on Firefox
-* Key browsing focus is trapped inside the webcomponent on Firefox
+* [Middle click on canonical not working on Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1476302)
+* [Key browsing focus is trapped inside the webcomponent on Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1476301)
 
 Planned evolutions
 ------------------
 
 - [X] report issues from `timecodehash` and `ondemiroir-audio-tag`
-- [ ] link back from `timecodehash` and `ondemiroir-audio-tag`
-- [ ] merge with `ondemiroir-audio-tag` , rename or redirect to `cpu-audio`
-- [ ] mark `timecodehash` as no-more maintened
-- [X] transform `component.dataset` in `component.attributes`
+    - [ ] link back from `timecodehash` and `ondemiroir-audio-tag`
+    - [ ] merge with `ondemiroir-audio-tag` , rename or redirect to `cpu-audio`
+    - [ ] mark `timecodehash` as no-more maintened
 - [ ] explode webcomponent source, and write a build and deploy makefile 
-- [ ] make a test about available functions and browser version (for Firefox <63)
-- [ ] make hash observer service usable even if webcomponent is not launched (Graceful degradation / progressive enhancement)
-- [ ] if too old or not suitable, make a fallback to old `ondemiroir-audio-tag` (will need a specific js snippet out of webcomponent)
-- [X] group functions out of the DOM basic level of the element (subsection, may be `domobject.CPU.fx()`)
-- [ ] use standard [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) in `hashOrder`, instead of the custom code. We need a strategy to get the anchor, seen as a key without value
+- [ ] fallbacks
+    - [ ] make a test about available functions and browser version (for Firefox <63)
+    - [ ] make hash observer service usable even if webcomponent is not launched (Graceful degradation / progressive enhancement)
+    - [ ] if too old or not suitable, make a fallback to old `ondemiroir-audio-tag` (will need a specific js snippet out of webcomponent)
+- [ ] Standards first
+    - [ ] [Support incoming navigator.share API](https://github.com/dascritch/ondemiroir-audio-tag/issues/55) . .
+    - [ ] use standard [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) in `hashOrder`, instead of the custom code. We need a strategy to get the anchor, seen as a key without value
+    - [ ] [Support MSE API for non-burferred playing, needed for HTTP/2](https://github.com/dascritch/ondemiroir-audio-tag/issues/22)
 - [ ] [recreate/adding TDD/BDD.  Via a browsable test page ?](https://github.com/dascritch/ondemiroir-audio-tag/issues/35)
 - [ ] [playlists in a page, play next audio in playlist parametrable via API](https://github.com/dascritch/ondemiroir-audio-tag/issues/47)
 - [ ] show playlist in `<cpu-controller>`
-- [ ] `<track>` support : [chapters](https://github.com/dascritch/timecodehash/issues/1)
-- [ ] `<track>` support : [named chapters](https://github.com/dascritch/ondemiroir-audio-tag/issues/9)
-- [ ] dynamic creation of a `<cpu-audio>` (not feasable because of `<audio controls>` needed)
-- [ ] dynamic remove of a `<cpu-audio>`
-- [ ] [remove of a `<cpu-audio>` on a `<audio>` remove](https://github.com/dascritch/ondemiroir-audio-tag/issues/8)
-- [X] Support for elapsed time / countdown time / total time (unuseful)
+- [ ] `<track>` support :
+    - [ ] [chapters](https://github.com/dascritch/timecodehash/issues/1)
+    - [ ] [named chapters](https://github.com/dascritch/ondemiroir-audio-tag/issues/9)
+    - [ ] show subtitles 
+- [ ] DOM manipulation events :
+    - [ ] dynamic creation of a `<cpu-audio>` (not feasable because of `<audio controls>` needed)
+    - [ ] dynamic remove of a `<cpu-audio>`
+    - [ ] [remove of a `<cpu-audio>` on a `<audio>` remove](https://github.com/dascritch/ondemiroir-audio-tag/issues/8)
 - [ ] [support of end point timecode](https://github.com/dascritch/ondemiroir-audio-tag/issues/25)
 - [ ] [parameters to not put share button](https://github.com/dascritch/ondemiroir-audio-tag/issues/26)
-- [ ] add a minimalistic player `mode="compact"` (only play/pause and total time)
+- [ ] Support of `mode` attributes to dictate aspects
+    - [ ] `mode="compact"` minimalistic player (only play/pause and total time)
+    - [ ] `mode="hidden"` ability to hide `<cpu-audio>` ONLY if a `<cpu-controller>` is declared
 - [ ] deploiement on <http://cpu.pm> , when [HTML imports will be properly supported](https://caniuse.com/#feat=imports) or via better polyfill support (still bugs in Firefox 61)
-- [ ] [public announcement](https://www.webcomponents.org/publish)
-- [ ] `<track>` support : show subtitles 
+    - [ ] [public announcement](https://www.webcomponents.org/publish)
 - [ ] `<video>` support
-    - [ ] ability to hide `<cpu-audio>` , if a `<cpu-controller>` is declared and `<audio controls>` hidden, or `mode="hidden"`
 - [ ] Restore i18n [timecodehash#12](https://github.com/dascritch/timecodehash/issues/12)
-- [ ] [Support incoming navigator.share API](https://github.com/dascritch/ondemiroir-audio-tag/issues/55) . Standards first.
 - [ ] [Put a soundwave form image alongside the timeline, server precalculated](https://github.com/dascritch/ondemiroir-audio-tag/issues/52)
 - [ ] [Supporting annotations à la SoundCloud](https://github.com/dascritch/ondemiroir-audio-tag/issues/29)
 - [ ] [Create a real playlist service](https://github.com/dascritch/ondemiroir-audio-tag/issues/42)
 - [ ] [Using touchstart event to emulate hover](https://github.com/dascritch/ondemiroir-audio-tag/issues/37)
-- [ ] [Support MSE API for non-burferred playing, needed for HTTP/2](https://github.com/dascritch/ondemiroir-audio-tag/issues/22)
+
 
 Retired functions from v4
 -------------------------
