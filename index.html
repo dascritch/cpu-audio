@@ -2,8 +2,12 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<title>cpu-audio webcomponent demo</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
 	<script src="webcomponentsjs/webcomponents-loader.js"></script>
 	<link rel="import" href="./cpu-audio.html" type="text/html">
+
 </head>
 
 <body>
@@ -92,16 +96,16 @@
 </div>
 
 <div style="width:600px;margin :0 auto;">
-	We are waiting @element implementation to complete this., this element is constraigned, so the webcomponent
+	We are waiting @element implementation to complete this. The parent element is width-constraigned, so the webcomponent
 	<cpu-audio 
-		title="Au carnaval avec Samba Résille (2003)"
-		poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
-		canonical="https://dascritch.net/post/2014/04/08/Au-Carnaval-avec-Samba-R%C3%A9sille"
+		title="Montage worst of SWE 2009"
+		poster="https://dascritch.net/vrac/.blog2/radio/swe-saison5.png"
+		canonical="https://dascritch.net/post/2010/01/02/Supplement-Week-End-samedi-2-Janvier-2010"
 		twitter="@dascritch"
 		>
 	  	<!-- Pour des raisons  de compatibilité arrière, il faut garder la balise audio dans la déclaration. -->
 		<audio controls id="live">
-			<source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
+			<source src="https://dascritch.net/vrac/Emissions/Speciales/podcast/100105-MontageWorstOfSWE2009.mp3" type="audio/mpeg">
 		</audio>
 	</cpu-audio>
 </div>
@@ -112,9 +116,13 @@
 	<code>mode="compact"</code>.<br />
 	The component SHOULD NOT reduce under 640px wide.<br />
 	No needs for <code>title=""</code>, <code>poster=""</code>, <code>canonical=""</code> or <code>twitter=""</code> attributes <em>excepted</em> when you also use <code>&lt;cpu-controller&gt;</code>.
-	<cpu-audio  mode="compact">
+	<cpu-audio  mode="compact"
+		canonical="https://dascritch.net/post/2016/12/27/35-ans-de-Radio-FMR%2C-et-elle-dure-encore"
+		title="35 ans de Radio FMR, et elle dure encore"
+		poster="https://dascritch.net/vrac/.blog2/radio/.1612-FMR-35ans_t.jpg"
+	>
 		<audio controls id="b1">
-			<source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
+			<source src="https://dascritch.net/vrac/Emissions/Speciales/podcast/1612-35ans-RadioFMR.mp3" type="audio/mpeg">
 		</audio>
 	</cpu-audio>
 </div>
