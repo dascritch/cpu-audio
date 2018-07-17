@@ -796,7 +796,7 @@ const CPU_Audio = {
 					}
 				}
 				let title = window.document.title;
-				return title === '' ? undefined : title;
+				return title === '' ? null : title;
 			}(), 
 		'poster' : function () {
 				for(let attr of ['property="og:image"', 'name="twitter:image:src"']){
@@ -805,7 +805,7 @@ const CPU_Audio = {
 						return header_element.content;
 					}
 				}
-				return undefined;
+				return null;
 			}(),
 		'canonical' : function () {
 				let header_element = window.document.querySelector('link[rel="canonical"]');
@@ -819,7 +819,7 @@ const CPU_Audio = {
 				if ((header_element !== null) && (header_element.content.length>1)) {
 					return header_element.content;
 				}
-				return undefined;
+				return null;
 			}()
 	},
 
@@ -1098,6 +1098,22 @@ var CPU_element_api = class {
 		phylactere._hider = window.setTimeout(this.hide_throbber, 1000, this);
 	}
 
+	fetch_audiotag_dataset() {
+		let dataset = {} 
+		for (let key in CPU_Audio.default_dataset) {
+			let value = null;
+			if (key in this.audiotag.dataset) {
+				value = this.audiotag.dataset[key];
+			} else {
+				if (CPU_Audio.default_dataset[key] !== null) {
+					value = CPU_Audio.default_dataset[key];
+				}
+			}
+			dataset[key] = value === undefined ? null : value;
+		}
+		return dataset;
+	}
+
 	update_links() {
 		let container = this;
 		function ahref(category, href) {
@@ -1108,8 +1124,9 @@ var CPU_element_api = class {
 			return hash_at === -1 ? canonical : canonical.substr(0,hash_at);
 		}
 
-		let canonical = this.audiotag.dataset.canonical
-		let url = (canonical === undefined ? '' : remove_hash(canonical) )
+		let dataset = this.fetch_audiotag_dataset();
+
+		let url = (dataset.canonical === undefined ? '' : remove_hash(dataset.canonical))
 					+ `#${this.audiotag.id}` 
 					+ ( this.audiotag.currentTime === 0 
 							? ''
@@ -1117,20 +1134,13 @@ var CPU_element_api = class {
 						);
 
 		let _url = encodeURI(absolutize_url(url));
-		let _title = encodeURI(this.audiotag.dataset.title);
-		let _this_twitter_account = this.audiotag.dataset.twitter;
-		/* ATTENTION sur la ligne suivante, on ne fait pas d'équivalence stricte
-		  car j'ai des 'undefined' au lieu d'un réel undefined chez Chrome. 
-		  yep. Crade.
-		*/
-		_this_twitter_account = _this_twitter_account == undefined ? CPU_Audio.default_dataset.twitter : _this_twitter_account;
 		let _twitter = '';
-		if ((_this_twitter_account !== undefined) && (_this_twitter_account[0]==='@')) {
-			_twitter = `&via=${_this_twitter_account.substring(1)}`;
+		if ((dataset.twitter !== undefined) && (dataset.twitter[0]==='@')) {
+			_twitter = `&via=${dataset.twitter.substring(1)}`;
 		}
-		ahref('twitter', `https://twitter.com/share?text=${_title}&url=${_url}${_twitter}`);
-		ahref('facebook', `https://www.facebook.com/sharer.php?t=${_title}&u=${_url}`);
-		ahref('email', `mailto:?subject=${_title}&body=${_url}`);
+		ahref('twitter', `https://twitter.com/share?text=${dataset.title}&url=${_url}${_twitter}`);
+		ahref('facebook', `https://www.facebook.com/sharer.php?t=${dataset.title}&u=${_url}`);
+		ahref('email', `mailto:?subject=${dataset.title}&body=${_url}`);
 		ahref('link', this.audiotag.currentSrc);
 	}
 
@@ -1158,22 +1168,20 @@ var CPU_element_api = class {
 		}
 	}
 
-	complete_template() {
-		let canonical = this.audiotag.dataset.canonical;
-		if (canonical === undefined) {
-			canonical = window.location.href;
-		}
-		this.elements['canonical'].href = canonical;
 
-		let title = this.audiotag.dataset.title;
-		if (title === undefined) {
+	complete_template() {
+		let dataset = this.fetch_audiotag_dataset();
+
+		this.elements['canonical'].href = dataset.canonical;
+
+		if (dataset.title === null) {
 			this.elements['canonical'].classList.add('untitled')
-			title = cpu_i18n['untitled']
+			dataset.title = cpu_i18n['untitled']
 		} else {
 			this.elements['canonical'].classList.remove('untitled')
 		}
-		this.elements['canonical'].innerText = title; 
-		this.elements['poster'].src = this.audiotag.dataset.poster;
+		this.elements['canonical'].innerText = dataset.title; 
+		this.elements['poster'].src = dataset.poster;
 	}
 	attach_audiotag_to_controller(audiotag) {
 		this.audiotag = audiotag;
@@ -1301,8 +1309,9 @@ class CpuAudioElement extends CpuControllerElement {
 		// copying personalized data to audio tag
 		for (let key in CPU_Audio.default_dataset) {
 			let value = this.getAttribute(key);
-			// makes it dynamic later
-			this._audiotag.dataset[key] = value !== null ? value : CPU_Audio.default_dataset[key];
+			if (value !== null) {
+				this._audiotag.dataset[key] = value;
+			}
 		}
 		super.connectedCallback();
 
@@ -1316,7 +1325,6 @@ class CpuAudioElement extends CpuControllerElement {
 	}
 
 }
-
 
 // expose API in parent page DOM
 thisDoc.CPU = CPU_Audio;
