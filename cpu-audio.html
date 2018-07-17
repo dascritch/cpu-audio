@@ -392,16 +392,16 @@ a {
 	}
 }
 @media (max-width: 480px) , @element .cpu-audio and (max-width: 480px) {
-	.notiny {
+	.mode-default .notiny {
 		display : none;
 	}
 
-	.elapse {
+	.mode-default .elapse {
 		flex : 1 0 80px;
 	}
 }
 @media (max-width: 320px) , @element .cpu-audio and (max-width: 320px) {
-	.elapse {
+	.mode-default .elapse {
 		display : none;
 	}
 }
@@ -1313,6 +1313,10 @@ class CpuControllerElement extends HTMLElement {
 		querySelector_apply('.canonical', element_prevent_link_on_same_page);
 
 		this.CPU.attach_audiotag_to_controller(this.CPU.audiotag);
+
+		let mode = this.getAttribute('mode');
+		mode = mode !== null ? mode : 'default'
+		this.CPU.elements['cpu-audio'].classList.add(`mode-${mode}`)
 	}
 
 	disconnectedCallback() {
@@ -1342,10 +1346,7 @@ class CpuAudioElement extends CpuControllerElement {
 		CPU_Audio.connect_audiotag(this.CPU.audiotag);
 		CPU_Audio.recall_stored_play({target : this.CPU.audiotag});
 
-		let mode = this.getAttribute('mode');
-		if (mode !== null) {
-			this.CPU.elements['cpu-audio'].classList.add(`mode-${mode}`)
-		}
+
 	}
 
 }
