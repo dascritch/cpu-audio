@@ -807,8 +807,12 @@ const trigger = {
 		if (previous !== null) {
 			previous.classList.remove(classname);
 		}
+		if (event.target.activeCues.length === 0) {
+			// too early, we need to keep this case from Chrome
+			return;
+		}
+
 		let cue_id = event.target.activeCues[0].id;
-		console.log('cue_id ', cue_id);
 		chapters_element.querySelector(`#${cue_id}`).classList.add(classname);
 	},
 
@@ -905,6 +909,7 @@ const CPU_Audio = {
 		});
 
 		audiotag.addEventListener('loadedmetadata', CPU_Audio.recall_stored_play);
+		audiotag.addEventListener('loadedmetadata', CPU_Audio.find_container(audiotag).build_chapters);
 		// those ↓ for PHRACKING SAFARI
 		audiotag.addEventListener('ready', CPU_Audio.recall_stored_play);
 		audiotag.addEventListener('canplay', CPU_Audio.recall_stored_play);
@@ -976,8 +981,9 @@ const CPU_Audio = {
 			|| ( child.tagName === CpuControllerTagName)) {
 			return child.CPU
 		}
-		// DOMnode.closest won't work in too old browsers
-		// CF https://caniuse.com/#search=closest
+		if (child.tagName === 'AUDIO') {
+			return child.parentNode.CPU
+		}
 		return this.find_interface(child).parentNode.host.CPU;
 	},
 	seekElementAt : function (audiotag, seconds) {
@@ -1261,20 +1267,27 @@ var CPU_element_api = class {
 		// throw simplified event
 		trigger.update({target : this.audiotag});
 	}
-	build_chapters() {
-		if (this.element.tagName !== CpuAudioTagName) {
+	build_chapters(event) {
+		let self = this;
+
+		if (event !== undefined) {
+			// Chrome load <track> afterwards, so an event is needed, and we need to recatch our CPU api to this event
+			self = CPU_Audio.find_container(event.target);
+		}
+
+		if (self.element.tagName !== CpuAudioTagName) {
 			// we will only build (now) the chapter list for <cup-audio>
 			return;
 		}
 
 		// chapters. future use
-		let chapters_element = this.elements['chapters'];
+		let chapters_element = self.elements['chapters'];
 		chapters_element.innerHTML = '';
-		if ((!this.audiotag.textTracks) || (this.audiotag.textTracks.length === 0)) {
+		if ((!self.audiotag.textTracks) || (self.audiotag.textTracks.length === 0)) {
 			return;
 		}
 
-		for (let tracks of this.audiotag.textTracks) {
+		for (let tracks of self.audiotag.textTracks) {
 			// WHY Chrome won't load it ?
 			if (tracks.kind === 'chapters') {
 				tracks.addEventListener('cuechange', function(event) {
@@ -1287,11 +1300,11 @@ var CPU_element_api = class {
 					line.classList.add('cue');
 					let cuepoint = convert.SecondsInTime(cue.startTime);
 					let cuetime = convert.SecondsInColonTime(cue.startTime);
-					line.innerHTML = `<a href="#${this.audiotag.id}&t=${cuepoint}" tabindex="0">
+					line.innerHTML = `<a href="#${self.audiotag.id}&t=${cuepoint}" tabindex="0">
 										<strong>${cue.text}</strong>
 										<span>${cuetime}</span>
 									</a>`;
-					this.elements['chapters'].append(line);
+					self.elements['chapters'].append(line);
 				}
 			}
 		}
