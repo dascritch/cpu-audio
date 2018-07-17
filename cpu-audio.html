@@ -863,6 +863,16 @@ const CPU_Audio = {
 		audiotag.addEventListener('ready', CPU_Audio.recall_stored_play);
 		audiotag.addEventListener('canplay', CPU_Audio.recall_stored_play);
 
+		// chapters. future use
+		if (audiotag.textTracks.length>0) {
+			for (let track of audiotag.textTracks) {
+				track.addEventListener('cuechange', function(e){
+					console.log(e.target.activeCues[0].text ,  e)
+				}); 
+			}
+			
+		}
+
 		// ask ASAP metadata about media
 		// we have to set in HTML code preload="none" due to a very laggy behaviour in HTTP2
 		// https://stackoverflow.com/questions/14479413/chrome-ignoring-audio-preload-metadata
