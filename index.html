@@ -107,6 +107,40 @@
 </div>
 
 
+<h3 id="modes">Modes</h3>
+<div>
+	<code>mode="compact"</code>.<br />
+	The component SHOULD NOT reduce under 640px wide.<br />
+	No needs for <code>title=""</code>, <code>poster=""</code>, <code>canonical=""</code> or <code>twitter=""</code> attributes <em>excepted</em> when you also use <code>&lt;cpu-controller&gt;</code>.
+	<cpu-audio  mode="compact">
+		<audio controls id="b1">
+			<source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
+		</audio>
+	</cpu-audio>
+</div>
+
+<div>
+	<code>mode="button"</code>.<br />
+	The component SHOULD NOT reduce under 640px wide.<br />
+	No needs for <code>title=""</code>, <code>poster=""</code>, <code>canonical=""</code> or <code>twitter=""</code> attributes <em>excepted</em> when you also use <code>&lt;cpu-controller&gt;</code>.
+	<cpu-audio mode="button">
+		<audio controls id="b2">
+			<source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
+		</audio>
+	</cpu-audio>
+</div>
+
+<div>
+	<code>mode="hidden"</code>.<br />
+	Why ?
+	<cpu-audio mode="hidden">
+		<audio controls id="b3">
+			<source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
+		</audio>
+	</cpu-audio>
+</div>
+
+
 <h3 id="cpu_controller">Global page controller</h3>
 <div>
 	↓ Controller only on the playing / last played &lt;audio&gt;

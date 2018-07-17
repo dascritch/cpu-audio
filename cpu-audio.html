@@ -35,6 +35,7 @@ blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-m
 		--cpu-error-color : #ff7 ;
 		--cpu-popup-background : #aaa;
 		--cpu-popup-color : #333;
+		--cpu-elapse-width : 185px;
 	}
 
 	@media (max-width: 640px) , @element .cpu-audio and (max-width: 640px) {
@@ -241,7 +242,7 @@ a {
 	font-style : italic;
 }
 .elapse {
-	flex : 1 0 185px;
+	flex : 1 0 var(--cpu-elapse-width);
 	text-align : right;
 }
 .time {
@@ -344,6 +345,31 @@ a {
 	border-left: 4px solid transparent;
 	border-right: 4px solid transparent;
 } 
+
+
+.mode-compact {
+	width : calc(var(--cpu-elapse-width) + var(--cpu-height) + 32px);
+}
+
+.mode-button {
+	width : var(--cpu-height);
+}
+
+.mode-compact .poster,
+.mode-compact .title,
+.mode-compact .line,
+.mode-compact .actions,
+.mode-button .poster,
+.mode-button .about,
+.mode-button .actions,
+.mode-hidden 
+ {
+	display : none;
+}
+
+.mode-compact.show-main .pagemain {
+	flex : 0 0 auto;
+}
 
 @media (max-width: 640px) , @element .cpu-audio and (max-width: 640px) {
 
@@ -1282,6 +1308,12 @@ class CpuAudioElement extends CpuControllerElement {
 
 		CPU_Audio.connect_audiotag(this.CPU.audiotag);
 		CPU_Audio.recall_stored_play({target : this.CPU.audiotag});
+
+		let mode = this.getAttribute('mode');
+		console.log(this.CPU.elements['cpu-audio'])
+		if (mode !== null) {
+			this.CPU.elements['cpu-audio'].classList.add(`mode-${mode}`)
+		}
 	}
 
 }

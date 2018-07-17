@@ -158,9 +158,10 @@ Planned evolutions
     - [ ] [remove of a `<cpu-audio>` on a `<audio>` remove](https://github.com/dascritch/ondemiroir-audio-tag/issues/8)
 - [ ] [support of end point timecode](https://github.com/dascritch/ondemiroir-audio-tag/issues/25)
 - [ ] [parameters to not put share button](https://github.com/dascritch/ondemiroir-audio-tag/issues/26)
-- [ ] Support of `mode` attributes to dictate aspects
-    - [ ] `mode="compact"` minimalistic player (only play/pause and total time)
-    - [ ] `mode="hidden"` ability to hide `<cpu-audio>` ONLY if a `<cpu-controller>` is declared
+- [X] Support of `mode` attributes to dictate aspects
+    - [ ] INCOMPLETE `mode="compact"` minimalistic player (only play/pause and total time)
+    - [ ] INCOMPLETE `mode="button"` minimalistic player (only play/pause) 
+    - [X] `mode="hidden"` ability to hide `<cpu-audio>` ONLY if a `<cpu-controller>` is declared
 - [ ] deploiement on <http://cpu.pm> , when [HTML imports will be properly supported](https://caniuse.com/#feat=imports) or via better polyfill support (still bugs in Firefox 61)
     - [ ] [public announcement](https://www.webcomponents.org/publish)
 - [ ] `<video>` support
