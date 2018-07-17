@@ -120,17 +120,18 @@ Planned evolutions
 - [ ] show playlist in `<cpu-controller>`
 - [ ] `<track>` support : [chapters](https://github.com/dascritch/timecodehash/issues/1)
 - [ ] `<track>` support : [named chapters](https://github.com/dascritch/ondemiroir-audio-tag/issues/9)
-- [ ] `<track>` support : show subtitles 
-- [ ] native chapters via `<tracks>`
-- [ ] ability to hide `<cpu-audio>` , if a `<cpu-controller>` is declared and `<audio controls>` hidden
 - [ ] dynamic creation of a `<cpu-audio>` (not feasable because of `<audio controls>` needed)
 - [ ] dynamic remove of a `<cpu-audio>`
 - [ ] [remove of a `<cpu-audio>` on a `<audio>` remove](https://github.com/dascritch/ondemiroir-audio-tag/issues/8)
-- [ ] Support for elapsed time / countdown time / total time
+- [X] Support for elapsed time / countdown time / total time (unuseful)
 - [ ] [support of end point timecode](https://github.com/dascritch/ondemiroir-audio-tag/issues/25)
 - [ ] [parameters to not put share button](https://github.com/dascritch/ondemiroir-audio-tag/issues/26)
+- [ ] add a minimalistic player `mode="compact"` (only play/pause and total time)
 - [ ] deploiement on <http://cpu.pm> , when [HTML imports will be properly supported](https://caniuse.com/#feat=imports) or via better polyfill support (still bugs in Firefox 61)
+- [ ] [public announcement](https://www.webcomponents.org/publish)
+- [ ] `<track>` support : show subtitles 
 - [ ] `<video>` support
+    - [ ] ability to hide `<cpu-audio>` , if a `<cpu-controller>` is declared and `<audio controls>` hidden, or `mode="hidden"`
 - [ ] Restore i18n [timecodehash#12](https://github.com/dascritch/timecodehash/issues/12)
 - [ ] [Support incoming navigator.share API](https://github.com/dascritch/ondemiroir-audio-tag/issues/55) . Standards first.
 - [ ] [Put a soundwave form image alongside the timeline, server precalculated](https://github.com/dascritch/ondemiroir-audio-tag/issues/52)
@@ -138,7 +139,6 @@ Planned evolutions
 - [ ] [Create a real playlist service](https://github.com/dascritch/ondemiroir-audio-tag/issues/42)
 - [ ] [Using touchstart event to emulate hover](https://github.com/dascritch/ondemiroir-audio-tag/issues/37)
 - [ ] [Support MSE API for non-burferred playing, needed for HTTP/2](https://github.com/dascritch/ondemiroir-audio-tag/issues/22)
-- [ ] add a minimalistic player (only play/pause and total time)
 
 Retired functions from v4
 -------------------------
