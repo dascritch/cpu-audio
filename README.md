@@ -45,6 +45,7 @@ Keyboard functions
 ------------------
 
 * <kbd>Space</kbd> : play/pause audio
+* <kbd>Enter</kbd> : play/pause audio (only on play/pause button)
 * <kbd>←</kbd> : -5 seconds
 * <kbd>→</kbd> : +5 seconds
 * <kbd>↖</kbd> : back to start
