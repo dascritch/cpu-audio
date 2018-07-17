@@ -598,6 +598,13 @@ const convert = {
 				}
 			}
 		}
+		if (converted.length === 1) {
+			return '0:0' + converted;
+		}
+		if (converted.length === 2) {
+			return '0:' + converted;
+		} 
+		
 		return converted === '' ? '0:00' : converted;
 	},
 }
