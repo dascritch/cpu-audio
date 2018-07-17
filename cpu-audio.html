@@ -467,6 +467,8 @@ a {
 const thisDoc =  (document._currentScript || document.currentScript).ownerDocument;
 let template, shadow_element;
 
+const CpuAudioTagName = 'CPU-AUDIO';
+const CpuControllerTagName = 'CPU-CONTROLLER';
 
 const cpu_i18n = {
 	'untitled' : '(sans titre)',
@@ -529,7 +531,7 @@ const convert = {
 		let seconds = 0;
 		let atoms = givenTime.split(':');
 		let convert = [1, 60, 3600, 86400];
-		for (let pos = 0 ; pos < atoms.length ; pos++ ) {
+		for (let pos = 0 ; pos < atoms.length ; pos++) {
 			seconds += Number(atoms[pos]) * convert[((atoms.length-1) - pos)];
 		}
 		return seconds;
@@ -736,8 +738,6 @@ const CPU_Audio = {
 	only_play_one_audiotag : true,
 	current_audiotag_playing : null,
 	global_controller : null,
-	selector_container : 'cpu-audio',
-	selector_container_controller :'cpu-controller',
 	selector_interface : '.cpu-audio',
 	dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
 	count_element : 0,
@@ -858,8 +858,8 @@ const CPU_Audio = {
 	},
 	find_container : function(child) {
 
-		if ((child.tagName ===  CPU_Audio.selector_container.toUpperCase()) 
-			|| ( child.tagName ===  CPU_Audio.selector_container_controller.toUpperCase())) {
+		if ((child.tagName ===  CpuAudioTagName) 
+			|| ( child.tagName ===  CpuControllerTagName )) {
 			return child.CPU
 		}
 		// DOMnode.closest won't work in too old browsers
@@ -911,7 +911,7 @@ const CPU_Audio = {
 // Extension on media element
 
 HTMLAudioElement.prototype.CPU_controller = function() {
-	return this.closest(CPU_Audio.selector_container);
+	return this.closest(CpuAudioTagName);
 }
 
 HTMLAudioElement.prototype.CPU_update = function() {
@@ -1203,10 +1203,10 @@ class CpuControllerElement extends HTMLElement {
 			return ;
 		}
 
-		if (this.tagName === CPU_Audio.selector_container.toUpperCase()) {
+		if (this.tagName === CpuAudioTagName) {
 			if (this.querySelector('audio[controls]') === null) {
 				// Graceful degradation : do not start if no media element OR no native controls
-				console.warn(`Tag <${CPU_Audio.selector_container}> without <audio controls>`);
+				console.warn(`Tag <${CpuAudioTagName}> without <audio controls>`);
 				this.remove();
 				return;
 			}
@@ -1269,8 +1269,8 @@ class CpuAudioElement extends CpuControllerElement {
 // expose API in parent page DOM
 thisDoc.CPU = CPU_Audio;
 
-window.customElements.define(CPU_Audio.selector_container, CpuAudioElement);
-window.customElements.define(CPU_Audio.selector_container_controller, CpuControllerElement);
+window.customElements.define(CpuAudioTagName.toLowerCase(), CpuAudioElement);
+window.customElements.define(CpuControllerTagName.toLowerCase(), CpuControllerElement);
 window.addEventListener('hashchange', trigger.hashOrder, false);
 trigger.hashOrder({ at_start : true });
 })();
