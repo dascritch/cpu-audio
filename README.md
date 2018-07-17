@@ -63,11 +63,36 @@ Then encapsulate `<audio control>` with `<cpu-audio>` to compose an specialy cra
 * `canonical="<url>"` : link to the original page of the sound
 * `twitter="@<account>"` : twitter handle for social partage (fallback on the declared one in your page)
 
-The script will link automatically to the playlister in the same repertory.
+Example : 
+
+<!--
+```
+<custom-element-demo>
+  <template>
+    <link rel="import" href="cpu-audio.html">
+    <next-code-block></next-code-block>
+  </template>
+</custom-element-demo>
+```
+-->
+```html
+<cpu-audio 
+    title="Au carnaval avec Samba Résille (2003)"
+    poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
+    canonical="https://dascritch.net/post/2014/04/08/Au-Carnaval-avec-Samba-R%C3%A9sille"
+    twitter="@dascritch"
+    >
+    <audio controls id="audiodemo">
+        <source src="https://dascritch.net/vrac/sonores/1404-SambaResille2003.mp3" type="audio/ogg">
+        <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
+    </audio>
+</cpu-audio>
+```
+
 
 Cloned player : You can invoke a global media controller by creating a `<cpu-controller>` without `<audio>` tag.
 
-Beware, WebComponents is a to-be-implemented standard. Will work mainly on : 
+Beware, WebComponents is a to-be-implemented-elsewhere standard. Will work mainly on : 
 
 * Google Chrome
 * Firefox Nightly (not yet for 61)
@@ -77,7 +102,6 @@ To be tested on :
 * Safari iOS
 * Edge
 * Safari Mac
-
 
 Permitted hash notations
 ------------------------
