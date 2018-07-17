@@ -384,12 +384,12 @@ a {
 
 </style>
 
-<div class="cpu-audio">
+<div class="cpu-audio" tabindex="0">
 	<img class="poster nosmall" src="" alt="" />
 	<div class="pageerror">
 	</div>
 	<div class="pagemain">
-		<div class="control">
+		<div class="control" tabindex="0">
 			<div class="loading" title="Chargement en cours">
 				<svg viewBox="0 0 32 32">
 					<circle cx="6" cy="22" r="4" />
@@ -614,7 +614,7 @@ const trigger = {
 		let relLeft = target_rect.left;
 		let ratio = (event.clientX - relLeft) / event.target.clientWidth;
 		let seeked_time = ratio * container.audiotag.duration;
-		container.show_thobber_at(seeked_time);
+		container.show_throbber_at(seeked_time);
 	},
 	out : function(event) {
 		let container = CPU_Audio.find_container(event.target);
@@ -655,16 +655,17 @@ const trigger = {
 		CPU_Audio.current_audiotag_playing = audiotag;
 		if (CPU_Audio.global_controller) {
 			CPU_Audio.global_controller.attach_audiotag_to_controller(CPU_Audio.current_audiotag_playing);
+			CPU_Audio.global_controller.audiotag = audiotag;
 			CPU_Audio.global_controller.show_main();
 		}
 		audiotag.play();
 	},
 	key : function(event) {
-		let container = event.target;
+		let container = CPU_Audio.find_container(event.target);
 
 		function seek_relative(seconds) {
 			event.at = container.audiotag.currentTime + seconds;
-			container.show_thobber_at(container, event.at);
+			container.show_throbber_at(container, event.at);
 			trigger.throbble(event);
 			container.hide_throbber_later();
 		}
@@ -858,8 +859,8 @@ const CPU_Audio = {
 	},
 	find_container : function(child) {
 
-		if ((child.tagName ===  CpuAudioTagName) 
-			|| ( child.tagName ===  CpuControllerTagName )) {
+		if ((child.tagName === CpuAudioTagName) 
+			|| ( child.tagName === CpuControllerTagName)) {
 			return child.CPU
 		}
 		// DOMnode.closest won't work in too old browsers
@@ -1029,7 +1030,7 @@ var CPU_element_api = class {
 		}
 	}
 
-	show_thobber_at(seeked_time) {
+	show_throbber_at(seeked_time) {
 		if (this.audiotag.duration < 1) {
 			// do not try to show if no metadata
 			return;
