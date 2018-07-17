@@ -583,6 +583,23 @@ const convert = {
 		}
 		return converted === '' ? '0s' : converted;
 	},
+	SecondsInColonTime : function(givenSeconds) {
+		let converted = '';
+		let inned = false;
+		for(let key in convert._units) {
+			if (convert._units.hasOwnProperty(key)) {
+				let multiply = convert._units[key];
+				if ((givenSeconds >= multiply) || (inned)) {
+					inned = true;
+					let digits = Math.floor(givenSeconds / multiply);
+					converted += (converted === '' ? '' : ':');
+					converted += ( ((digits<10) && (converted !== '')) ? '0' : '') + digits ;
+					givenSeconds -= digits * multiply;
+				}
+			}
+		}
+		return converted === '' ? '0:00' : converted;
+	},
 }
 
 const trigger = {
@@ -1024,10 +1041,10 @@ var CPU_element_api = class {
 
 		let total_duration = '…';
 		if (!isNaN(Math.round(this.audiotag.duration))){
-			total_duration = convert.SecondsInTime(Math.round(this.audiotag.duration));
+			total_duration = convert.SecondsInColonTime(Math.round(this.audiotag.duration));
 		} 
 		 
-		elapse_element.innerHTML = `${timecode}
+		elapse_element.innerHTML = `${convert.SecondsInColonTime(this.audiotag.currentTime)}
 									<span class="notiny"> / ${total_duration}</span>`;
 		this.update_line('loading', this.audiotag.currentTime);
 		this.update_buffered();
@@ -1083,7 +1100,7 @@ var CPU_element_api = class {
 
 		phylactere.style.opacity = 1;
 		phylactere.style.left = (100 * seeked_time / this.audiotag.duration) +'%';
-		phylactere.innerHTML = convert.SecondsInTime(seeked_time);
+		phylactere.innerHTML = convert.SecondsInColonTime(seeked_time);
 	}
 	hide_throbber(that) {
 		that = that === undefined ? this : that;
