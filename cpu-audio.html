@@ -389,7 +389,7 @@ a {
 	<div class="pageerror">
 	</div>
 	<div class="pagemain">
-		<div class="control" tabindex="0">
+		<div class="control">
 			<div class="loading" title="Chargement en cours">
 				<svg viewBox="0 0 32 32">
 					<circle cx="6" cy="22" r="4" />
@@ -397,13 +397,13 @@ a {
 					<circle cx="26" cy="22" r="4" />
 				</svg>
 			</div>
-			<a class="play" title="Lecture">
+			<a class="play" title="Lecture" tabindex="0">
 				<svg viewBox="0 0 32 32">
 					<path d="M 6,6 12.667,6 12.667,26 6,26 z" />
 					<path d="M 19.333,6 26,6 26,26 19.333,26 z" />
 				</svg>
 			</a>
-			<a class="pause" title="Pause">
+			<a class="pause" title="Pause" tabindex="0">
 				<svg viewBox="0 0 32 32">
 					<path d="M 6,6 6,26 26,16 z" />
 				</svg>
@@ -469,6 +469,7 @@ let template, shadow_element;
 
 const CpuAudioTagName = 'CPU-AUDIO';
 const CpuControllerTagName = 'CPU-CONTROLLER';
+const selector_interface = '.cpu-audio';
 
 const cpu_i18n = {
 	'untitled' : '(sans titre)',
@@ -614,6 +615,7 @@ const trigger = {
 		let relLeft = target_rect.left;
 		let ratio = (event.clientX - relLeft) / event.target.clientWidth;
 		let seeked_time = ratio * container.audiotag.duration;
+
 		container.show_throbber_at(seeked_time);
 	},
 	out : function(event) {
@@ -665,7 +667,7 @@ const trigger = {
 
 		function seek_relative(seconds) {
 			event.at = container.audiotag.currentTime + seconds;
-			container.show_throbber_at(container, event.at);
+			container.show_throbber_at(event.at);
 			trigger.throbble(event);
 			container.hide_throbber_later();
 		}
@@ -739,7 +741,6 @@ const CPU_Audio = {
 	only_play_one_audiotag : true,
 	current_audiotag_playing : null,
 	global_controller : null,
-	selector_interface : '.cpu-audio',
 	dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
 	count_element : 0,
 
@@ -855,7 +856,7 @@ const CPU_Audio = {
 	},
 
 	find_interface : function(child) {
-		return child.closest(CPU_Audio.selector_interface);
+		return child.closest(selector_interface);
 	},
 	find_container : function(child) {
 
@@ -1042,8 +1043,9 @@ var CPU_element_api = class {
 		phylactere.style.left = (100 * seeked_time / this.audiotag.duration) +'%';
 		phylactere.innerHTML = convert.SecondsInTime(seeked_time);
 	}
-	hide_throbber() {
-		let phylactere = this.elements['popup'];
+	hide_throbber(that) {
+		that = that === undefined ? this : that;
+		let phylactere = that.elements['popup'];
 		phylactere.style.opacity = 0;
 	}
 	hide_throbber_later() {
@@ -1051,7 +1053,7 @@ var CPU_element_api = class {
 		if (phylactere._hider) {
 			window.clearTimeout(phylactere._hider);
 		}
-		phylactere._hider = window.setTimeout(this.hide_throbber, 1000);
+		phylactere._hider = window.setTimeout(this.hide_throbber, 1000, this);
 	}
 
 	update_links() {
