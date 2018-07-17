@@ -62,6 +62,7 @@ Then encapsulate `<audio control>` with `<cpu-audio>` to compose an specialy cra
 * `title="<string>"` : name of the audio 
 * `poster="<url>"` : cover image, squarred ratio prefered
 * `canonical="<url>"` : link to the original page of the sound
+* `mode="<string>"` : kind of presentation (default, compact, button, hidden)
 * `twitter="@<account>"` : twitter handle for social partage (fallback on the declared one in your page)
 
 Example : 
@@ -159,8 +160,8 @@ Planned evolutions
 - [ ] [support of end point timecode](https://github.com/dascritch/ondemiroir-audio-tag/issues/25)
 - [ ] [parameters to not put share button](https://github.com/dascritch/ondemiroir-audio-tag/issues/26)
 - [X] Support of `mode` attributes to dictate aspects
-    - [ ] INCOMPLETE `mode="compact"` minimalistic player (only play/pause and total time)
-    - [ ] INCOMPLETE `mode="button"` minimalistic player (only play/pause) 
+    - [X] `mode="compact"` minimalistic player (only play/pause and total time)
+    - [X] `mode="button"` minimalistic player (only play/pause) 
     - [X] `mode="hidden"` ability to hide `<cpu-audio>` ONLY if a `<cpu-controller>` is declared
 - [ ] deploiement on <http://cpu.pm> , when [HTML imports will be properly supported](https://caniuse.com/#feat=imports) or via better polyfill support (still bugs in Firefox 61)
     - [ ] [public announcement](https://www.webcomponents.org/publish)
