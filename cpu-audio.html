@@ -353,6 +353,9 @@ a {
 .cue {
 	border-top : 1px solid black;
 }
+.active-cue {
+	background : black;
+}
 .cue.active-cue {
 	color : yellow;
 }
@@ -795,13 +798,18 @@ const trigger = {
 		event.preventDefault();
 	},
 
-	cuechange : function(event) {
-		console.log(event.target.activeCues[0].text ,  event)
-		let container = CPU_Audio.find_container(event.explicitOriginalTarget);
+	cuechange : function(event, chapters_element) {
+		if (chapters_element === undefined) {
+			return;
+		}
 		let classname = 'active-cue';
-		container.element.querySelector(`.${classname}`).classList.remove(classname);
+		let previous = chapters_element.querySelector(`.${classname}`);
+		if (previous !== null) {
+			previous.classList.remove(classname);
+		}
 		let cue_id = event.target.activeCues[0].id;
-		container.element.querySelector(`.cue#${cue_id}`).classList.add(classname);
+		console.log('cue_id ', cue_id);
+		chapters_element.querySelector(`#${cue_id}`).classList.add(classname);
 	},
 
 	update : function(event) {
@@ -1260,7 +1268,8 @@ var CPU_element_api = class {
 		}
 
 		// chapters. future use
-		this.elements['chapters'].innerHTML = '';
+		let chapters_element = this.elements['chapters'];
+		chapters_element.innerHTML = '';
 		if ((!this.audiotag.textTracks) || (this.audiotag.textTracks.length === 0)) {
 			return;
 		}
@@ -1268,7 +1277,10 @@ var CPU_element_api = class {
 		for (let tracks of this.audiotag.textTracks) {
 			// WHY Chrome won't load it ?
 			if (tracks.kind === 'chapters') {
-				tracks.addEventListener('cuechange', trigger.cuechange);
+				tracks.addEventListener('cuechange', function(event) {
+					// ugly, but best way to catch the DOM element
+					trigger.cuechange(event, chapters_element);
+				});
 				for (let cue of tracks.cues) {
 					let line = document.createElement('li');
 					line.id  = cue.id;
