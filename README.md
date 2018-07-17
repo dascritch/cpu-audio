@@ -87,6 +87,9 @@ Example :
         <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
     </audio>
 </cpu-audio>
+<p>
+Jump at <a href="#audiodemo&amp;t=5m">5 minutes</a> in the sound
+</p>
 ```
 
 
