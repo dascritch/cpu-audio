@@ -1117,7 +1117,7 @@ var CPU_element_api = class {
 						);
 
 		let _url = encodeURI(absolutize_url(url));
-		let _title = encodeURI(this.audiotag.title);
+		let _title = encodeURI(this.audiotag.dataset.title);
 		let _this_twitter_account = this.audiotag.dataset.twitter;
 		/* ATTENTION sur la ligne suivante, on ne fait pas d'équivalence stricte
 		  car j'ai des 'undefined' au lieu d'un réel undefined chez Chrome. 
@@ -1310,7 +1310,6 @@ class CpuAudioElement extends CpuControllerElement {
 		CPU_Audio.recall_stored_play({target : this.CPU.audiotag});
 
 		let mode = this.getAttribute('mode');
-		console.log(this.CPU.elements['cpu-audio'])
 		if (mode !== null) {
 			this.CPU.elements['cpu-audio'].classList.add(`mode-${mode}`)
 		}
