@@ -766,6 +766,11 @@ const trigger = {
 		
 		event.preventDefault();
 	},
+
+	cuechange : function(event) {
+		console.log(event.target.activeCues[0].text ,  event)
+	},
+
 	update : function(event) {
 		let audiotag = event.target;
 		audiotag.CPU_update();
@@ -847,7 +852,16 @@ const CPU_Audio = {
 			}()
 	},
 
-	connect_audiotag(audiotag) {
+	connect_chapters : function(audiotag) {
+		// chapters. future use
+		if ((audiotag.textTracks) && (audiotag.textTracks.length > 0)) {
+			for (let track of audiotag.textTracks) {
+				track.addEventListener('cuechange', trigger.cuechange);
+			}
+		}
+	},
+
+	connect_audiotag : function(audiotag) {
 		// see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events for list of events
 		[
 			'ready', 'load', 'loadeddata', 'canplay', 'abort', 
@@ -863,16 +877,7 @@ const CPU_Audio = {
 		audiotag.addEventListener('ready', CPU_Audio.recall_stored_play);
 		audiotag.addEventListener('canplay', CPU_Audio.recall_stored_play);
 
-		// chapters. future use
-		if (audiotag.textTracks.length>0) {
-			for (let track of audiotag.textTracks) {
-				track.addEventListener('cuechange', function(e){
-					console.log(e.target.activeCues[0].text ,  e)
-				}); 
-			}
-			
-		}
-
+		CPU_Audio.connect_chapters(audiotag);
 		// ask ASAP metadata about media
 		// we have to set in HTML code preload="none" due to a very laggy behaviour in HTTP2
 		// https://stackoverflow.com/questions/14479413/chrome-ignoring-audio-preload-metadata
