@@ -65,6 +65,7 @@ blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-m
 	user-select: none;
 }
 
+
 .cpu-audio {
 	display : flex;
 	overflow : hidden;
@@ -87,11 +88,11 @@ svg {
 	width : var(--cpu-height);
 	height : var(--cpu-height);
 }
-a:hover {
+a:hover, a:focus {
 	color : var(--cpu-background);
 	background : var(--cpu-color);
 }
-a:hover svg {
+a:hover svg , a:focus svg {
 	fill : var(--cpu-background);
 }
 
@@ -112,11 +113,11 @@ a:hover svg {
 	color : var(--cpu-playing-color);
 }
 
-.act-play a:hover {
+.act-play a:hover, .act-play a:focus {
 	color : var(--cpu-playing-background);
 	background : var(--cpu-playing-color);
 }
-.act-play a:hover svg {
+.act-play a:hover svg, .act-play a:focus svg {
 	fill : var(--cpu-playing-background);
 }
 
@@ -220,6 +221,9 @@ a {
 	max-width : 100%;
 	max-height : 100%;
 }
+.loading {
+	background : var(--cpu-background) !important;
+}
 .titleline {
 	display : flex;
 }
@@ -283,7 +287,7 @@ a {
 	text-overflow : clip;
 }
 
-.share a:hover, .share div:hover {
+.share a:hover, .share a:focus, .share div:hover {
 	color : var(--cpu-background);
 	background : var(--cpu-color);
 }
@@ -384,12 +388,12 @@ a {
 
 </style>
 
-<div class="cpu-audio" tabindex="0">
+<div class="cpu-audio">
 	<img class="poster nosmall" src="" alt="" />
 	<div class="pageerror">
 	</div>
 	<div class="pagemain">
-		<div class="control">
+		<a class="control" tabindex="0">
 			<div class="loading" title="Chargement en cours">
 				<svg viewBox="0 0 32 32">
 					<circle cx="6" cy="22" r="4" />
@@ -397,22 +401,22 @@ a {
 					<circle cx="26" cy="22" r="4" />
 				</svg>
 			</div>
-			<a class="play" title="Lecture" tabindex="0">
+			<div class="play" title="Lecture">
 				<svg viewBox="0 0 32 32">
 					<path d="M 6,6 12.667,6 12.667,26 6,26 z" />
 					<path d="M 19.333,6 26,6 26,26 19.333,26 z" />
 				</svg>
-			</a>
-			<a class="pause" title="Pause" tabindex="0">
+			</div>
+			<div class="pause" title="Pause">
 				<svg viewBox="0 0 32 32">
 					<path d="M 6,6 6,26 26,16 z" />
 				</svg>
-			</a>
-		</div>
+			</div>
+		</a>
 		<div class="about">
 			<div class="titleline">
 				<div class="title"><a href="#" class="canonical" title="Lien vers la fiche du sonore"></a></div>
-				<a class="elapse" title="Lien direct à ce moment">…</a>
+				<a class="elapse" title="Lien direct à ce moment" tabindex="-1">…</a>
 			</div>
 			<div class="line">
 				<div class="time">
@@ -698,6 +702,20 @@ const trigger = {
 			default:
 				return ;
 		}
+		event.preventDefault();
+	},
+	keydownplay : function(event) {
+		console.log(event.keyCode)
+		if (event.keyCode !== 13 ) {
+			return;
+		}
+
+		let container = CPU_Audio.find_container(event.target);
+
+		container.audiotag.paused ?
+			trigger.play(undefined,container.audiotag) :
+			trigger.pause(undefined,container.audiotag);
+		
 		event.preventDefault();
 	},
 	update : function(event) {
@@ -1145,7 +1163,7 @@ var CPU_element_api = class {
 	build_controller() {
 
 		this.element.classList.add(this.classname);
-		this.tabIndex = 0 // see http://snook.ca/archives/accessibility_and_usability/elements_focusable_with_tabindex and http://www.456bereastreet.com/archive/201302/making_elements_keyboard_focusable_and_clickable/
+		//this.tabIndex = 0 // see http://snook.ca/archives/accessibility_and_usability/elements_focusable_with_tabindex and http://www.456bereastreet.com/archive/201302/making_elements_keyboard_focusable_and_clickable/
 
 		// the following mess is to simplify sub element declaration and selection
 		let controller = this;
@@ -1170,6 +1188,8 @@ var CPU_element_api = class {
 		}
 		// key management
 		this.element.addEventListener('keydown', trigger.key);
+		// not working correctly :/
+		this.elements['control'].addEventListener('keydown', trigger.keydownplay);
 		// throbber management
 		let timeline_element = this.elements['time'];
 		let do_events = {
