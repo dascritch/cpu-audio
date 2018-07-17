@@ -143,7 +143,7 @@ Planned evolutions
     - [ ] make hash observer service usable even if webcomponent is not launched (Graceful degradation / progressive enhancement)
     - [ ] if too old or not suitable, make a fallback to old `ondemiroir-audio-tag` (will need a specific js snippet out of webcomponent)
 - [ ] Standards first
-    - [ ] [Support incoming navigator.share API](https://github.com/dascritch/ondemiroir-audio-tag/issues/55) . .
+    - [ ] [Support incoming navigator.share API](https://github.com/dascritch/ondemiroir-audio-tag/issues/55)
     - [ ] use standard [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) in `hashOrder`, instead of the custom code. We need a strategy to get the anchor, seen as a key without value
     - [ ] [Support MSE API for non-burferred playing, needed for HTTP/2](https://github.com/dascritch/ondemiroir-audio-tag/issues/22)
 - [ ] [recreate/adding TDD/BDD.  Via a browsable test page ?](https://github.com/dascritch/ondemiroir-audio-tag/issues/35)
@@ -157,19 +157,18 @@ Planned evolutions
     - [ ] dynamic creation of a `<cpu-audio>` (not feasable because of `<audio controls>` needed)
     - [ ] dynamic remove of a `<cpu-audio>`
     - [ ] [remove of a `<cpu-audio>` on a `<audio>` remove](https://github.com/dascritch/ondemiroir-audio-tag/issues/8)
+    - [ ] dynamic modification of `<head>`
+    - [ ] dynamic modification of window.document.location.href (webapp)
 - [ ] [support of end point timecode](https://github.com/dascritch/ondemiroir-audio-tag/issues/25)
 - [ ] [parameters to not put share button](https://github.com/dascritch/ondemiroir-audio-tag/issues/26)
-- [X] Support of `mode` attributes to dictate aspects
-    - [X] `mode="compact"` minimalistic player (only play/pause and total time)
-    - [X] `mode="button"` minimalistic player (only play/pause) 
-    - [X] `mode="hidden"` ability to hide `<cpu-audio>` ONLY if a `<cpu-controller>` is declared
 - [ ] deploiement on <http://cpu.pm> , when [HTML imports will be properly supported](https://caniuse.com/#feat=imports) or via better polyfill support (still bugs in Firefox 61)
     - [ ] [public announcement](https://www.webcomponents.org/publish)
 - [ ] `<video>` support
 - [ ] Restore i18n [timecodehash#12](https://github.com/dascritch/timecodehash/issues/12)
 - [ ] [Put a soundwave form image alongside the timeline, server precalculated](https://github.com/dascritch/ondemiroir-audio-tag/issues/52)
-- [ ] [Supporting annotations à la SoundCloud](https://github.com/dascritch/ondemiroir-audio-tag/issues/29)
-- [ ] [Create a real playlist service](https://github.com/dascritch/ondemiroir-audio-tag/issues/42)
+- [ ] Sharing service companion
+    - [ ] [Create a real playlist service](https://github.com/dascritch/ondemiroir-audio-tag/issues/42)
+    - [ ] [Supporting annotations à la SoundCloud](https://github.com/dascritch/ondemiroir-audio-tag/issues/29)
 - [ ] [Using touchstart event to emulate hover](https://github.com/dascritch/ondemiroir-audio-tag/issues/37)
 
 
