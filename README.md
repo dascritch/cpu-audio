@@ -97,6 +97,8 @@ Jump at <a href="#audiodemo&amp;t=5m">5 minutes</a> in the sound
 
 Cloned player : You can invoke a global media controller by creating a `<cpu-controller>` without `<audio>` tag.
 
+Chapters : You cna add a chapters track into the `<audio>`, : `<track kind="chapters" src="chapters-ex0085.vtt" default>`. Note that `default` is really needed.
+
 Beware, WebComponents is a to-be-implemented-elsewhere standard. Will work mainly on : 
 
 * Google Chrome
@@ -149,10 +151,9 @@ Planned evolutions
 - [ ] [recreate/adding TDD/BDD.  Via a browsable test page ?](https://github.com/dascritch/ondemiroir-audio-tag/issues/35)
 - [ ] [playlists in a page, play next audio in playlist parametrable via API](https://github.com/dascritch/ondemiroir-audio-tag/issues/47)
 - [ ] show playlist in `<cpu-controller>`
-- [ ] `<track>` support :
-    - [ ] [chapters](https://github.com/dascritch/timecodehash/issues/1)
-    - [ ] [named chapters](https://github.com/dascritch/ondemiroir-audio-tag/issues/9)
-    - [ ] show subtitles 
+- [X] `<track>` support :
+    - [X] [chapters](https://github.com/dascritch/timecodehash/issues/1)
+    - [X] [named chapters](https://github.com/dascritch/ondemiroir-audio-tag/issues/9)
 - [ ] DOM manipulation events :
     - [ ] dynamic creation of a `<cpu-audio>` (not feasable because of `<audio controls>` needed)
     - [ ] dynamic remove of a `<cpu-audio>`
@@ -164,6 +165,7 @@ Planned evolutions
 - [ ] deploiement on <http://cpu.pm> , when [HTML imports will be properly supported](https://caniuse.com/#feat=imports) or via better polyfill support (still bugs in Firefox 61)
     - [ ] [public announcement](https://www.webcomponents.org/publish)
 - [ ] `<video>` support
+- [ ] `<track>` support for subtitles 
 - [ ] Restore i18n [timecodehash#12](https://github.com/dascritch/timecodehash/issues/12)
 - [ ] [Put a soundwave form image alongside the timeline, server precalculated](https://github.com/dascritch/ondemiroir-audio-tag/issues/52)
 - [ ] Sharing service companion

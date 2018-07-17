@@ -1288,8 +1288,8 @@ var CPU_element_api = class {
 		}
 
 		for (let tracks of self.audiotag.textTracks) {
-			// WHY Chrome won't load it ?
-			if (tracks.kind === 'chapters') {
+			
+			if ((tracks.kind === 'chapters') && (tracks.cues !== null)) {
 				tracks.addEventListener('cuechange', function(event) {
 					// ugly, but best way to catch the DOM element
 					trigger.cuechange(event, chapters_element);
