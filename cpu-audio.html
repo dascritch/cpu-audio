@@ -38,8 +38,8 @@ blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-m
 		--cpu-elapse-width : 185px;
 	}
 
-	@media (max-width: 640px) , @element .cpu-audio and (max-width: 640px) {
-		:root , .cpu-audio {
+	@media (max-width: 640px) , @element .interface and (max-width: 640px) {
+		:root , .interface {
 			--cpu-font-size : 13px;
 			--cpu-height : 32px;
 		}
@@ -49,12 +49,12 @@ blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-m
 <template>
 <style>
 
-.cpu-audio {
+.interface {
 	font-family : var(--cpu-font-family);
 	font-size : var(--cpu-font-size);
 }
 
-.cpu-audio, * {
+.interface, * {
 	line-height : 1.2;
 	border : none;
 	padding : 0;
@@ -67,7 +67,7 @@ blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-m
 }
 
 
-.cpu-audio {
+.interface {
 	display : flex;
 	overflow : hidden;
 	background : var(--cpu-background);
@@ -371,7 +371,7 @@ a {
 	flex : 0 0 auto;
 }
 
-@media (max-width: 640px) , @element .cpu-audio and (max-width: 640px) {
+@media (max-width: 640px) , @element .interface and (max-width: 640px) {
 
 	.nosmall {
 		display : none;
@@ -391,7 +391,7 @@ a {
 		height : 8px ;
 	}
 }
-@media (max-width: 480px) , @element .cpu-audio and (max-width: 480px) {
+@media (max-width: 480px) , @element .interface and (max-width: 480px) {
 	.mode-default .notiny {
 		display : none;
 	}
@@ -400,21 +400,21 @@ a {
 		flex : 1 0 80px;
 	}
 }
-@media (max-width: 320px) , @element .cpu-audio and (max-width: 320px) {
+@media (max-width: 320px) , @element .interface and (max-width: 320px) {
 	.mode-default .elapse {
 		display : none;
 	}
 }
 
 @media print {
-	.cpu-audio {
+	.interface {
 		display : none;
 	}
 }
 
 </style>
 
-<div class="cpu-audio" tabindex="0">
+<div class="interface" tabindex="0">
 	<img class="poster nosmall" src="" alt="" />
 	<div class="pageerror">
 	</div>
@@ -499,7 +499,7 @@ let template, shadow_element;
 
 const CpuAudioTagName = 'CPU-AUDIO';
 const CpuControllerTagName = 'CPU-CONTROLLER';
-const selector_interface = '.cpu-audio';
+const selector_interface = '.interface';
 
 const cpu_i18n = {
 	'untitled' : '(sans titre)',
@@ -1302,7 +1302,7 @@ class CpuControllerElement extends HTMLElement {
 		}
 		this.CPU = new CPU_element_api(
 			this,
-			this.shadowRoot.querySelector('.cpu-audio')
+			this.shadowRoot.querySelector('.interface')
 		);
 		if (!this.CPU.audiotag) {
 			CPU_Audio.global_controller = this.CPU;
@@ -1316,7 +1316,7 @@ class CpuControllerElement extends HTMLElement {
 
 		let mode = this.getAttribute('mode');
 		mode = mode !== null ? mode : 'default'
-		this.CPU.elements['cpu-audio'].classList.add(`mode-${mode}`)
+		this.CPU.elements['interface'].classList.add(`mode-${mode}`)
 	}
 
 	disconnectedCallback() {
