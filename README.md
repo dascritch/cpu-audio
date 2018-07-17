@@ -58,10 +58,10 @@ Simply put `<link rel="import" href="./cpu-audio.html" type="text/html">` in the
 
 Then encapsulate `<audio control>` with `<cpu-audio>` to compose an specialy crafted UI. Some attributes enhance the component :
 
-* `data-title="<string>"` : name of the audio 
-* `data-poster="<url>"` : cover image, squarred ratio prefered
-* `data-canonical="<url>"` : link to the original page of the sound
-* `data-twitter="@<account>"` : twitter handle for social partage (fallback on the declared one in your page)
+* `title="<string>"` : name of the audio 
+* `poster="<url>"` : cover image, squarred ratio prefered
+* `canonical="<url>"` : link to the original page of the sound
+* `twitter="@<account>"` : twitter handle for social partage (fallback on the declared one in your page)
 
 The script will link automatically to the playlister in the same repertory.
 
@@ -108,6 +108,7 @@ Planned evolutions
 - [ ] link back from `timecodehash` and `ondemiroir-audio-tag`
 - [ ] merge with `ondemiroir-audio-tag` , rename or redirect to `cpu-audio`
 - [ ] mark `timecodehash` as no-more maintened
+- [X] transform `component.dataset` in `component.attributes`
 - [ ] explode webcomponent source, and write a build and deploy makefile 
 - [ ] make a test about available functions and browser version (for Firefox <63)
 - [ ] make hash observer service usable even if webcomponent is not launched (Graceful degradation / progressive enhancement)
@@ -122,7 +123,7 @@ Planned evolutions
 - [ ] `<track>` support : show subtitles 
 - [ ] native chapters via `<tracks>`
 - [ ] ability to hide `<cpu-audio>` , if a `<cpu-controller>` is declared and `<audio controls>` hidden
-- [ ] dynamic creation of a `<cpu-audio>`
+- [ ] dynamic creation of a `<cpu-audio>` (not feasable because of `<audio controls>` needed)
 - [ ] dynamic remove of a `<cpu-audio>`
 - [ ] [remove of a `<cpu-audio>` on a `<audio>` remove](https://github.com/dascritch/ondemiroir-audio-tag/issues/8)
 - [ ] Support for elapsed time / countdown time / total time

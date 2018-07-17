@@ -707,8 +707,7 @@ const trigger = {
 	keydownplay : function(event) {
 		if (event.keyCode !== 13 ) {
 			return;
-		}
-
+		} 
 		let container = CPU_Audio.find_container(event.target);
 
 		container.audiotag.paused ?
@@ -1275,9 +1274,9 @@ class CpuAudioElement extends CpuControllerElement {
 
 		// copying personalized data to audio tag
 		for (let key in CPU_Audio.default_dataset) {
-			let value = this.dataset[key];
+			let value = this.getAttribute(key);
 			// makes it dynamic later
-			this._audiotag.dataset[key] = value !== undefined ? value : CPU_Audio.default_dataset[key];
+			this._audiotag.dataset[key] = value !== null ? value : CPU_Audio.default_dataset[key];
 		}
 		super.connectedCallback();
 
