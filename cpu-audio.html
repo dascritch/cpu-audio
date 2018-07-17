@@ -745,25 +745,21 @@ const CPU_Audio = {
 	// NOTE : we will need to refresh this when the <head> of the host page changes
 	default_dataset : {
 		'title' : function () { 
-				let header_element = window.document.querySelector('meta[property="og:title"]');
-				if (header_element !== null) {
-					return header_element.content;
-				}
-				header_element = window.document.querySelector('meta[property="twitter:title"]');
-				if (header_element !== null) {
-					return header_element.content;
+				for(let domain of ['og', 'twitter']){
+					let header_element = window.document.querySelector(`meta[property="${domain}:title"]`);
+					if (header_element !== null) {
+						return header_element.content;
+					}
 				}
 				let title = window.document.title;
 				return title === '' ? undefined : title;
 			}(), 
 		'poster' : function () {
-				let header_element = window.document.querySelector('meta[property="og:image"]');
-				if (header_element !== null) {
-					return header_element.content;
-				}
-				header_element = window.document.querySelector('meta[name="twitter:image:src"]');
-				if (header_element !== null) {
-					return header_element.content;
+				for(let attr of ['property="og:image"', 'name="twitter:image:src"']){
+					let header_element = window.document.querySelector(`meta[${attr}]`);
+					if (header_element !== null) {
+						return header_element.content;
+					}
 				}
 				return undefined;
 			}(),
