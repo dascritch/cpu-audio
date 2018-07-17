@@ -98,6 +98,8 @@ Bugs
 * A media error is not correctly triggered and unseen from its  `<cpu-audio>`. Chrome needs to be asked to go inside (click on the timeline), Firefox never gets it.
 * To use correctly the webcomponents.js polyfill, as it still lacks `<link rel="import">` support, Firefox (Nightly, 63 as today) needs a CSP policy permitting `data:` scripts.
 * Firefox versions 62 and below cannot start it even with the polyfill.
+* Middle click on canonical not working on Firefox
+* Key browsing focus is trapped inside the webcomponent on Firefox
 
 Planned evolutions
 ------------------
