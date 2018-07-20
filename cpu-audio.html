@@ -692,7 +692,6 @@ const trigger = {
 			onDebug(callback_fx);
 			return false;
 		}
-		console.log('trigger hashorder ',timecode)
 		CPU_Audio.jumpIdAt(hash,timecode,callback_fx);
 		// scroll to the audio element. Should be reworked
 		// window.location.hash = `#${hash}`;
@@ -902,7 +901,24 @@ const CPU_Audio = {
 			}()
 	},
 
-	connect_audiotag : function(audiotag) {
+	recall_stored_play : function(event) {
+		if (CPU_Audio.current_audiotag_playing !== null) {
+			return;
+		} 
+		let audiotag = event.target;
+		let lasttimecode = Number(window.localStorage.getItem(audiotag.currentSrc));
+		// TODO and no hashed time
+		if (lasttimecode > 0) {
+			CPU_Audio.seekElementAt(audiotag, lasttimecode);
+			trigger.play(undefined, audiotag);
+		}
+	},
+	recall_audiotag : function(audiotag) {
+		audiotag.addEventListener('loadedmetadata', CPU_Audio.recall_stored_play);
+		// those ↓ for PHRACKING SAFARI
+		audiotag.addEventListener('ready', CPU_Audio.recall_stored_play);
+		audiotag.addEventListener('canplay', CPU_Audio.recall_stored_play);
+
 		// see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events for list of events
 		[
 			'ready', 'load', 'loadeddata', 'canplay', 'abort', 
@@ -913,12 +929,6 @@ const CPU_Audio = {
 			audiotag.addEventListener(on, trigger.update); 
 		});
 
-		audiotag.addEventListener('loadedmetadata', CPU_Audio.recall_stored_play);
-		audiotag.addEventListener('loadedmetadata', CPU_Audio.find_container(audiotag).build_chapters);
-		// those ↓ for PHRACKING SAFARI
-		audiotag.addEventListener('ready', CPU_Audio.recall_stored_play);
-		audiotag.addEventListener('canplay', CPU_Audio.recall_stored_play);
-
 		// ask ASAP metadata about media
 		// we have to set in HTML code preload="none" due to a very laggy behaviour in HTTP2
 		// https://stackoverflow.com/questions/14479413/chrome-ignoring-audio-preload-metadata
@@ -926,6 +936,14 @@ const CPU_Audio = {
 			audiotag.preload = 'metadata';
 		}
 		audiotag.load();
+	},
+
+	connect_audiotag : function(audiotag) {
+
+
+		audiotag.addEventListener('loadedmetadata', CPU_Audio.find_container(audiotag).build_chapters);
+
+		CPU_Audio.recall_audiotag(audiotag);
 
 		// hide native controls
 		audiotag.hidden = true;
@@ -934,7 +952,6 @@ const CPU_Audio = {
 	},
 
 	jumpIdAt : function(hash,timecode,callback_fx) {
-		console.log(`jumpIdAt(#${hash}, ${timecode}`)
 
 		function do_needle_move(event) {
 			let audiotag = event.target;
@@ -1013,23 +1030,9 @@ const CPU_Audio = {
 		}
 
 		let controller = audiotag.CPU_controller();
-		if (controller.update_loading) {
+		if ((controller !== null) && (controller.update_loading)) {
 			// it may be still constructing it
 			controller.update_loading(seconds);
-		}
-	},
-
-	recall_stored_play : function(event) {
-		if (CPU_Audio.current_audiotag_playing !== null) {
-			return;
-		} 
-		let audiotag = event.target;
-		let lasttimecode = Number(window.localStorage.getItem(audiotag.currentSrc));
-		// TODO and no hashed time
-		if (lasttimecode > 0) {
-			console.log('recall_stored_play ', lasttimecode)
-			CPU_Audio.seekElementAt(audiotag, lasttimecode);
-			trigger.play(undefined, audiotag);
 		}
 	}
 
@@ -1461,6 +1464,8 @@ trigger.hashOrder({ at_start : true });
 
 if (!is_decent_browser_for_webcomponents()) {
 	console.error(`<${CpuAudioTagName}> WebComponent may NOT behave correctly. Only timecode hash links are activated.\nSee https://github.com/dascritch/cpu-audio/blob/master/index.html for details`);
+
+	querySelector_apply('audio[controls]', CPU_Audio.recall_audiotag);
 } else {
 	window.customElements.define(CpuAudioTagName.toLowerCase(), CpuAudioElement);
 	window.customElements.define(CpuControllerTagName.toLowerCase(), CpuControllerElement);	

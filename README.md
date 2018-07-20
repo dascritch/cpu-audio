@@ -160,8 +160,10 @@ Planned evolutions
 	- [ ] use standard [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) in `hashOrder`, instead of the custom code. We need a strategy to get the anchor, seen as a key without value
 	- [ ] [Support MSE API for non-burferred playing, needed for HTTP/2](https://github.com/dascritch/ondemiroir-audio-tag/issues/22)
 - [ ] [recreate/adding TDD/BDD.  Via a browsable test page ?](https://github.com/dascritch/ondemiroir-audio-tag/issues/35)
-- [ ] [playlists in a page, play next audio in playlist parametrable via API](https://github.com/dascritch/ondemiroir-audio-tag/issues/47)
-- [ ] show playlist in `<cpu-controller>`
+- [ ] [playlists in a page](https://github.com/dascritch/ondemiroir-audio-tag/issues/47)
+	- [ ] expose playlist in document.CPU API
+	- [ ] [playlists in a page, play next audio in playlist parametrable via API](https://github.com/dascritch/ondemiroir-audio-tag/issues/47)
+	- [ ] show playlist in `<cpu-controller>`
 - [X] `<track>` support :
 	- [X] [chapters](https://github.com/dascritch/timecodehash/issues/1)
 	- [X] [named chapters](https://github.com/dascritch/ondemiroir-audio-tag/issues/9)
