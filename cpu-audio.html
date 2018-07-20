@@ -729,7 +729,8 @@ const trigger = {
 	},
 	pause : function(event, audiotag) {
 		if (audiotag === undefined) {
-			audiotag = CPU_Audio.find_container(event.target).audiotag;
+			let target = event.target;
+			audiotag = (target.tagName === 'AUDIO') ? target : CPU_Audio.find_container(target).audiotag;
 		}
 		audiotag.pause();
 		CPU_Audio.current_audiotag_playing = null;
@@ -923,11 +924,21 @@ const CPU_Audio = {
 		[
 			'ready', 'load', 'loadeddata', 'canplay', 'abort', 
 			'error', 'stalled', 'suspend', 'emptied',
-			'play', 'playing', 'pause', 'suspend', 'ended',
+			'play', 'playing', 'pause', 'ended',
 			'durationchange',  'loadedmetadata', 'progress', 'timeupdate', 'waiting'
 		].forEach( function(on){ 
 			audiotag.addEventListener(on, trigger.update); 
 		});
+
+		if (!is_decent_browser_for_webcomponents()) {
+			// in case we are in legacy mode
+			[
+				'pause', 'ended'
+			].forEach( function(on){ 
+				audiotag.addEventListener(on, trigger.pause);
+			});
+		}
+		
 
 		// ask ASAP metadata about media
 		// we have to set in HTML code preload="none" due to a very laggy behaviour in HTTP2
