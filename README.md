@@ -141,9 +141,9 @@ Planned evolutions
     - [ ] merge with `ondemiroir-audio-tag` , rename or redirect to `cpu-audio`
     - [ ] mark `timecodehash` as no-more maintened
 - [ ] explode webcomponent source, and write a build and deploy makefile 
-- [ ] fallbacks
+- [X] fallbacks
     - [X] make a test about available functions and browser version (for Firefox <63)
-    - [ ] make hash observer service usable even if webcomponent is not launched (Graceful degradation / progressive enhancement)
+    - [X] make hash observer service usable even if webcomponent is not launched (Graceful degradation / progressive enhancement)
     - [ ] if too old or not suitable, make a fallback to old `ondemiroir-audio-tag` (will need a specific js snippet out of webcomponent)
 - [ ] Standards first
     - [ ] [Support incoming navigator.share API](https://github.com/dascritch/ondemiroir-audio-tag/issues/55)

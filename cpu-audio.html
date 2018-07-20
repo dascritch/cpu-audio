@@ -692,6 +692,7 @@ const trigger = {
 			onDebug(callback_fx);
 			return false;
 		}
+		console.log('trigger hashorder ',timecode)
 		CPU_Audio.jumpIdAt(hash,timecode,callback_fx);
 		// scroll to the audio element. Should be reworked
 		// window.location.hash = `#${hash}`;
@@ -933,6 +934,7 @@ const CPU_Audio = {
 	},
 
 	jumpIdAt : function(hash,timecode,callback_fx) {
+		console.log(`jumpIdAt(#${hash}, ${timecode}`)
 
 		function do_needle_move(event) {
 			let audiotag = event.target;
@@ -954,7 +956,7 @@ const CPU_Audio = {
 
 		function do_element_play(event) {
 			let tag = event.target;
-			trigger.play(undefined,tag)
+			trigger.play(undefined, tag)
 			if (_isEvent(event)) {
 				tag.removeEventListener('canplay', do_element_play, true);
 			}
@@ -1025,6 +1027,7 @@ const CPU_Audio = {
 		let lasttimecode = Number(window.localStorage.getItem(audiotag.currentSrc));
 		// TODO and no hashed time
 		if (lasttimecode > 0) {
+			console.log('recall_stored_play ', lasttimecode)
 			CPU_Audio.seekElementAt(audiotag, lasttimecode);
 			trigger.play(undefined, audiotag);
 		}
@@ -1442,8 +1445,9 @@ class CpuAudioElement extends CpuControllerElement {
 		super.connectedCallback();
 
 		CPU_Audio.connect_audiotag(this.CPU.audiotag);
-		CPU_Audio.recall_stored_play({target : this.CPU.audiotag});
 
+		// If we didn't have a timecode hash at loading document, try to recall previous interrupted player
+		//CPU_Audio.recall_stored_play({target : this.CPU.audiotag});
 
 	}
 
@@ -1452,16 +1456,14 @@ class CpuAudioElement extends CpuControllerElement {
 // expose API in parent page DOM
 thisDoc.CPU = CPU_Audio;
 
+window.addEventListener('hashchange', trigger.hashOrder, false);
+trigger.hashOrder({ at_start : true });
+
 if (!is_decent_browser_for_webcomponents()) {
-	console.error(`Player <${CpuAudioTagName}> may NOT behave correctly`);
+	console.error(`Player <${CpuAudioTagName}> may NOT behave correctly. Only timecode hash links are activated.`);
 } else {
-	console.info('Launching window.customElements');
 	window.customElements.define(CpuAudioTagName.toLowerCase(), CpuAudioElement);
 	window.customElements.define(CpuControllerTagName.toLowerCase(), CpuControllerElement);	
 }
-
-
-window.addEventListener('hashchange', trigger.hashOrder, false);
-trigger.hashOrder({ at_start : true });
 })();
 </script>
