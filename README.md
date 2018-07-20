@@ -5,11 +5,12 @@ Author :  [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 
 Version : 5 ALPHA
 
-Rewrite of the [ondemiroir-audio-tag](https://github.com/dascritch/ondemiroir-audio-tag) towards WebComponents ( polyfilled with [webcomponentsjs](https://github.com/webcomponents/webcomponentsjs) ), which is an extension of [timecodehash](https://github.com/dascritch/timecodehash).
+Rewrite of the [ondemiroir-audio-tag](https://github.com/dascritch/ondemiroir-audio-tag) towards WebComponents, which is an extension of [timecodehash](https://github.com/dascritch/timecodehash).
 
 Some links :
 * Informations (in french) : <http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore>
 * Demonstration page : https://dascritch.net/vrac/.projets/audiowc/index.html
+* `<link rel="import">` polyfilled with [webcomponentsjs](https://github.com/webcomponents/webcomponentsjs)
 
 Copyright © 2014 Xavier "dascritch" Mouton-Dubosc ; Licence GPL 3
 
@@ -127,8 +128,8 @@ Bugs
 ----
 
 * A media error is not correctly triggered and unseen from its  `<cpu-audio>`. Chrome needs to be asked to go inside (click on the timeline), Firefox never gets it.
-* To use correctly the webcomponents.js polyfill, as it still lacks `<link rel="import">` support, Firefox (Nightly, 63 as today) needs a CSP policy permitting `data:` scripts.
-* Firefox versions 62 and below cannot start it even with the polyfill.
+* To use correctly the webcomponents.js polyfill, as [it still lacks `<link rel="import">` support](https://hacks.mozilla.org/2015/06/the-state-of-web-components/), Firefox (Nightly, 63 as today) needs a CSP policy permitting `data:` scripts.
+* Firefox versions 62 and below cannot start it correctly even with the polyfill.
 * [Middle click on canonical not working on Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1476302)
 * [Key browsing focus is trapped inside the webcomponent on Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1476301)
 
@@ -141,7 +142,7 @@ Planned evolutions
     - [ ] mark `timecodehash` as no-more maintened
 - [ ] explode webcomponent source, and write a build and deploy makefile 
 - [ ] fallbacks
-    - [ ] make a test about available functions and browser version (for Firefox <63)
+    - [X] make a test about available functions and browser version (for Firefox <63)
     - [ ] make hash observer service usable even if webcomponent is not launched (Graceful degradation / progressive enhancement)
     - [ ] if too old or not suitable, make a fallback to old `ondemiroir-audio-tag` (will need a specific js snippet out of webcomponent)
 - [ ] Standards first

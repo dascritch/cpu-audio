@@ -561,6 +561,10 @@ function querySelector_apply(selector, callback, subtree) {
 	Array.from(subtree.querySelectorAll(selector)).forEach(callback);
 }
 
+function is_decent_browser_for_webcomponents() {
+	return window.customElements !== undefined;
+}
+
 const convert = {
 	_units : {
 		'd' : 86400,
@@ -1448,8 +1452,15 @@ class CpuAudioElement extends CpuControllerElement {
 // expose API in parent page DOM
 thisDoc.CPU = CPU_Audio;
 
-window.customElements.define(CpuAudioTagName.toLowerCase(), CpuAudioElement);
-window.customElements.define(CpuControllerTagName.toLowerCase(), CpuControllerElement);
+if (!is_decent_browser_for_webcomponents()) {
+	console.error(`Player <${CpuAudioTagName}> may NOT behave correctly`);
+} else {
+	console.info('Launching window.customElements');
+	window.customElements.define(CpuAudioTagName.toLowerCase(), CpuAudioElement);
+	window.customElements.define(CpuControllerTagName.toLowerCase(), CpuControllerElement);	
+}
+
+
 window.addEventListener('hashchange', trigger.hashOrder, false);
 trigger.hashOrder({ at_start : true });
 })();
