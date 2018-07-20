@@ -1386,7 +1386,7 @@ class CpuControllerElement extends HTMLElement {
 		if (this.tagName === CpuAudioTagName) {
 			if (this.querySelector('audio[controls]') === null) {
 				// Graceful degradation : do not start if no media element OR no native controls
-				console.warn(`Tag <${CpuAudioTagName}> without <audio controls>`);
+				console.warn(`Tag <${CpuAudioTagName}> without <audio controls>.\nSee https://github.com/dascritch/cpu-audio/blob/master/index.html for a correct installation.`);
 				this.remove();
 				return;
 			}
@@ -1460,7 +1460,7 @@ window.addEventListener('hashchange', trigger.hashOrder, false);
 trigger.hashOrder({ at_start : true });
 
 if (!is_decent_browser_for_webcomponents()) {
-	console.error(`Player <${CpuAudioTagName}> may NOT behave correctly. Only timecode hash links are activated.`);
+	console.error(`<${CpuAudioTagName}> WebComponent may NOT behave correctly. Only timecode hash links are activated.\nSee https://github.com/dascritch/cpu-audio/blob/master/index.html for details`);
 } else {
 	window.customElements.define(CpuAudioTagName.toLowerCase(), CpuAudioElement);
 	window.customElements.define(CpuControllerTagName.toLowerCase(), CpuControllerElement);	
