@@ -76,6 +76,7 @@ blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-m
 }
 
 .act-error {
+	background : var(--cpu-error-background);
 	color : var(--cpu-error-color);
 }
 
@@ -950,7 +951,6 @@ const CPU_Audio = {
 	},
 
 	connect_audiotag : function(audiotag) {
-
 
 		audiotag.addEventListener('loadedmetadata', CPU_Audio.find_container(audiotag).build_chapters);
 
