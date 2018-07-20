@@ -8,6 +8,13 @@
 	<script src="webcomponentsjs/webcomponents-hi.js"></script>
 	<link rel="import" href="./cpu-audio.html" type="text/html">
 
+
+	<style type="text/css">
+		style#fallback {
+			display : block;
+		}
+	</style>
+
 </head>
 
 <body>
@@ -174,7 +181,6 @@
 	<li> <kbd>Escape</kbd> : back to start, stop playing</li>
 </ul>
 
-
 <h3 id="errors">Error test-cases</h3>
 
 <div>
@@ -207,6 +213,19 @@
 	</cpu-audio>
 </div>
 
+<h3 id="fallbacks">Fallbacks</h3>
+<div>
+	Browsers that don't support enough in webcomponents must display correction the &lt;audio controls&gt; tag, as follow : 
+</div>
+
+<pre>
+<style id="fallback">
+	audio[controls] {
+		display : block;
+		width : 100%;
+	}
+</style>
+</pre>
 
 </body>
 </html>
