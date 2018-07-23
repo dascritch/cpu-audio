@@ -13,6 +13,11 @@
 		style#fallback {
 			display : block;
 		}
+
+		.cpu-audio-without-webcomponents .cpu-audio-with-webcomponents,
+		.cpu-audio-with-webcomponents .cpu-audio-without-webcomponents {
+			display : none;
+		}
 	</style>
 
 </head>
@@ -23,6 +28,9 @@
 </h1>
 
 <div>
+	<p class="cpu-audio-without-webcomponents">Your browser DOESN'T support WebComponent, only the hash-links functions works.</p>
+	<p class="cpu-audio-with-webcomponents">Your browser supports WebComponent.</p>
+
 	<p><a href="index.html">This is a standard link to the page</a>, a sound will start if you inadvertly quited the page.</p>
 	<p><a href="index.html#emission&t=20m45s">This link starts the below player at 20:45</a></p>
 
