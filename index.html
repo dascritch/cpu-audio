@@ -10,7 +10,7 @@
 
 
 	<style type="text/css">
-		style#fallback {
+		style.showcode {
 			display : block;
 		}
 
@@ -27,8 +27,14 @@
 	Page demo for <a href="https://github.com/dascritch/cpu-audio">CPU-Audio</a> project. 
 </h1>
 
+<div class="cpu-audio-without-webcomponents">
+	<h2>Your browser DOESN'T support WebComponent.</h2>
+	<p>
+		Following examples are not functionnal, as the interface is not shown and the browser display its native player.
+		Only the hash-links functions works.
+	</p>
+</div>
 <div>
-	<p class="cpu-audio-without-webcomponents">Your browser DOESN'T support WebComponent, only the hash-links functions works.</p>
 	<p class="cpu-audio-with-webcomponents">Your browser supports WebComponent.</p>
 
 	<p><a href="index.html">This is a standard link to the page</a>, a sound will start if you inadvertly quited the page.</p>
@@ -105,7 +111,7 @@
 <h3 id="size">Size constraints</h3>
 
 <div>
-	Aspect changes whe page is under 640px and 320px wide 
+	Aspect changes when page's width is under 640px and 320px wide.
 	<cpu-audio 
 		title="Au carnaval avec Samba Résille (2003)"
 		poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
@@ -173,6 +179,31 @@
 </div>
 
 
+<h3 id="personnalization">Personnalization</h3>
+<div id="personnalization-demo">
+	With CSS variables, you can change some aspects
+	<pre>
+	<style class="showcode" scoped>
+		#personnalization-demo {
+		--cpu-background : yellow;
+		--cpu-color : green;
+		--cpu-playing-background : yellow;
+		--cpu-playing-color : green;
+		}
+	</style>
+	</pre>
+	<cpu-audio
+		title="Au carnaval avec Samba Résille (2003)"
+		poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
+		canonical="https://dascritch.net/post/2014/04/08/Au-Carnaval-avec-Samba-R%C3%A9sille"
+	>
+		<audio controls id="p1">
+			<source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
+		</audio>
+	</cpu-audio>
+</div>
+
+
 <h3 id="cpu_controller">Global page controller</h3>
 <div>
 	↓ Controller only on the playing / last played &lt;audio&gt;
@@ -229,7 +260,7 @@
 </div>
 
 <pre>
-<style id="fallback">
+<style class="showcode">
 	audio[controls] {
 		display : block;
 		width : 100%;
