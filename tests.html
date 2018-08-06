@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>cpu-audio tests</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="tests/qunit.css">
+
+	<script src="webcomponentsjs/webcomponents-hi.js"></script>
+	<link rel="import" href="./cpu-audio.html" type="text/html">
+</head>
+<body>
+
+	<cpu-audio 
+		title="Supplément Week-End, samedi 31 Mai 2014 en direct du THSF"
+		poster="https://dascritch.net/vrac/.blog2/radio/swe-saison5.png"
+		canonical="https://dascritch.net/post/2014/05/31/Suppl%C3%A9ment-Week-End%2C-samedi-31-Mai-2014">
+		<!-- Pour des raisons  de compatibilité arrière, il *faut* garder la balise <audio controls> dans la déclaration. -->
+		<audio id="track" controls="controls">
+			<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/386-SupplementWeekEnd%2831-05-14%29.ogg" type="audio/ogg; codecs=vorbis" />
+			<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/podcast/386-SupplementWeekEnd%2831-05-14%29.mp3" type="audio/mpeg" />
+		</audio>
+	</cpu-audio>
+
+	<p>
+		Manual test : <a href="#track@5m">named jump at 5mn</a>, <a href="#@15m">unnamed jump at 15mn</a>
+	</p>
+
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+	<script src="tests/qunit.js"></script>
+	<script src="tests/tests.js"></script>
+</body>
+</html>

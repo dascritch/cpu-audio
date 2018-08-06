@@ -865,6 +865,8 @@ const CPU_Audio = {
 	global_controller : null,
 	dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
 	count_element : 0,
+	convert : convert, // Needed for tests
+	trigger : trigger, // Needed for tests
 
 	// NOTE : we will need to refresh this when the <head> of the host page changes
 	default_dataset : {
@@ -962,7 +964,7 @@ const CPU_Audio = {
 		audiotag.removeAttribute('controls');
 	},
 
-	jumpIdAt : function(hash,timecode,callback_fx) {
+	jumpIdAt : function(hash, timecode, callback_fx) {
 
 		function do_needle_move(event) {
 			let audiotag = event.target;
