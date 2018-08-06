@@ -3,11 +3,11 @@ window.addEventListener('WebComponentsReady', function() {
 	window.location = '#';
 	var lock = false;
 	var lockedAt = 0;
-	var $track = document.getElementById('track');
+	var audiotag = document.getElementById('track');
 
 	function stopPlayer() {
 		window.location = '#';
-		$track.pause();
+		audiotag.pause();
 		lock = false;
 	}
 
@@ -25,11 +25,14 @@ window.addEventListener('WebComponentsReady', function() {
 
 	test( "Checking browser abilities", function() {
 		ok( window.customElements !== undefined, "window.customElements" );
+		ok( audiotag.fastSeek !== undefined, "seekElementAt can use audiotag.fastSeek" );
+		ok( audiotag.currentTime !== undefined, "seekElementAt can use audiotag.currentTime" );
+
 	});
 
 	test( "hello CPU API", function() {
 		ok( typeof document.CPU === "object", "Passed!" );
-		ok($track.paused, 'paused by defaults' );
+		ok(audiotag.paused, 'paused by defaults' );
 	});
 
 	let convert = document.CPU.convert;
@@ -60,14 +63,24 @@ window.addEventListener('WebComponentsReady', function() {
 		ok(convert.SecondsInTime(7442) === '2h4m2s', 'got 2 hours, 4 minutes and 2 seconds' );
 	});
 
+	test( "document.CPU.convert.SecondsInColonTime", function() {
+		ok(convert.SecondsInColonTime(0) === '0:00', 'got 0:00' );
+		ok(convert.SecondsInColonTime(1) === '0:01', 'got 0:01' );
+		ok(convert.SecondsInColonTime(20) === '0:20', 'got 0:20' );
+		ok(convert.SecondsInColonTime(60) === '1:00', 'got 1:00' );
+		ok(convert.SecondsInColonTime(61) === '1:01', 'got 1:01' );
+		ok(convert.SecondsInColonTime(130) === '2:10', 'got 2:10' );
+		ok(convert.SecondsInColonTime(7442) === '2:04:02', 'got 2:04:02' );
+	});
+
 	var cpu = document.CPU;
 
 	nowLock();
 	QUnit.asyncTest( "document.CPU.jumpIdAt existing at start", function( assert ) {
 		expect( 2 );
 		cpu.jumpIdAt('track', 0, function() {
-			assert.ok($track.currentTime === 0, 'is at start' );
-			assert.ok(!$track.paused, 'not paused afterwards' );
+			assert.ok(audiotag.currentTime === 0, 'is at start' );
+			assert.ok(!audiotag.paused, 'not paused afterwards' );
 			QUnit.start();
 			stopPlayer();
 		});
@@ -78,7 +91,7 @@ window.addEventListener('WebComponentsReady', function() {
 	QUnit.asyncTest( "document.CPU.jumpIdAt existing at 600 secs", function( assert ) {
 		expect( 1 );
 		cpu.jumpIdAt('track', 600, function() {
-			assert.ok($track.currentTime === 600, 'is at 10mn' );
+			assert.ok(audiotag.currentTime === 600, 'is at 10mn' );
 			QUnit.start();
 			stopPlayer();
 		});
@@ -89,7 +102,7 @@ window.addEventListener('WebComponentsReady', function() {
 	QUnit.asyncTest( "document.CPU.jumpIdAt unnamed at 300 secs", function( assert ) {
 		expect( 1 );
 		cpu.jumpIdAt('', 300, function() {
-			assert.ok($track.currentTime === 300, 'is at 5mn' );
+			assert.ok(audiotag.currentTime === 300, 'is at 5mn' );
 			QUnit.start();
 			stopPlayer();
 		});
@@ -103,7 +116,7 @@ window.addEventListener('WebComponentsReady', function() {
 			nowLock();
 			expect( 1 );
 			cpu.trigger.hashOrder(hash, function() {
-				assert.ok($track.currentTime === expected_time, expected_string);
+				assert.ok(audiotag.currentTime === expected_time, expected_string);
 				QUnit.start();
 				stopPlayer();
 			});
@@ -119,13 +132,13 @@ window.addEventListener('WebComponentsReady', function() {
 	function hashtest(hash,expects,describ) {
 		waitNoLock();
 		// nowLock();
-		var $track = document.getElementById('track');
+		var audiotag = document.getElementById('track');
 		QUnit.asyncTest(`on hash change : ${describ}`, function(assert) {
 			nowLock();
 			expect(1);
 			window.location = hash;
 			function event_callback() {
-				assert.ok($track.currentTime === expects);
+				assert.ok(audiotag.currentTime === expects);
 				window.removeEventListener( 'hashchange', event_callback,false);
 				stopPlayer();
 				QUnit.start();
