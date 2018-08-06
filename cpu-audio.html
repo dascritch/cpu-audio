@@ -647,7 +647,7 @@ const convert = {
 
 const trigger = {
 
-	hashOrder : function(hashcode,callback_fx){
+	hashOrder : function(hashcode, callback_fx){
 		let at_start = true;
 		if (typeof hashcode !== 'string') {
 			at_start = 'at_start' in hashcode;
@@ -693,7 +693,7 @@ const trigger = {
 			onDebug(callback_fx);
 			return false;
 		}
-		CPU_Audio.jumpIdAt(hash,timecode,callback_fx);
+		CPU_Audio.jumpIdAt(hash, timecode, callback_fx);
 		// scroll to the audio element. Should be reworked
 		// window.location.hash = `#${hash}`;
 		return true;
@@ -993,9 +993,11 @@ const CPU_Audio = {
 			onDebug(callback_fx);
 		}
 
-		let audiotag = (hash !== '') ? document.getElementById(hash) : document.querySelector(this.selector_fallback);
+		let selector_fallback = 'audio'; // should be 'audio[controls]' but PHRACK APPLE !
+		let audiotag = (hash !== '') ? document.getElementById(hash) : document.querySelector(selector_fallback);
 
 		if ((audiotag === undefined) || (audiotag === null) || (audiotag.currentTime === undefined)) {
+			console.warn('jumpIdAt audiotag ', audiotag)
 			return false;
 		}
 

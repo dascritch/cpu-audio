@@ -3,10 +3,11 @@ window.addEventListener('WebComponentsReady', function() {
 	window.location = '#';
 	var lock = false;
 	var lockedAt = 0;
+	var $track = document.getElementById('track');
 
 	function stopPlayer() {
 		window.location = '#';
-		document.getElementById('track').pause();
+		$track.pause();
 		lock = false;
 	}
 
@@ -22,10 +23,12 @@ window.addEventListener('WebComponentsReady', function() {
 
 	QUnit.testDone(stopPlayer);
 
+	test( "Checking browser abilities", function() {
+		ok( window.customElements !== undefined, "window.customElements" );
+	});
+
 	test( "hello CPU API", function() {
 		ok( typeof document.CPU === "object", "Passed!" );
-
-		var $track = document.getElementById('track');
 		ok($track.paused, 'paused by defaults' );
 	});
 
@@ -58,12 +61,10 @@ window.addEventListener('WebComponentsReady', function() {
 	});
 
 	var cpu = document.CPU;
-	var $track = document.getElementById('track');
 
 	nowLock();
 	QUnit.asyncTest( "document.CPU.jumpIdAt existing at start", function( assert ) {
 		expect( 2 );
-		
 		cpu.jumpIdAt('track', 0, function() {
 			assert.ok($track.currentTime === 0, 'is at start' );
 			assert.ok(!$track.paused, 'not paused afterwards' );
@@ -76,9 +77,19 @@ window.addEventListener('WebComponentsReady', function() {
 	nowLock();
 	QUnit.asyncTest( "document.CPU.jumpIdAt existing at 600 secs", function( assert ) {
 		expect( 1 );
-		
 		cpu.jumpIdAt('track', 600, function() {
 			assert.ok($track.currentTime === 600, 'is at 10mn' );
+			QUnit.start();
+			stopPlayer();
+		});
+	});
+
+	waitNoLock();
+	nowLock();
+	QUnit.asyncTest( "document.CPU.jumpIdAt unnamed at 300 secs", function( assert ) {
+		expect( 1 );
+		cpu.jumpIdAt('', 300, function() {
+			assert.ok($track.currentTime === 300, 'is at 5mn' );
 			QUnit.start();
 			stopPlayer();
 		});
@@ -88,7 +99,7 @@ window.addEventListener('WebComponentsReady', function() {
 	{
 		waitNoLock();
 		nowLock();
-		QUnit.asyncTest( "document.CPU.trigger.hashOrder "+expected_string, function( assert ) {
+		QUnit.asyncTest( `document.CPU.trigger.hashOrder ${expected_string}`, function( assert ) {
 			nowLock();
 			expect( 1 );
 			cpu.trigger.hashOrder(hash, function() {
@@ -103,13 +114,13 @@ window.addEventListener('WebComponentsReady', function() {
 	hashOrder_test('unnammed track is at 40 seconds', 't=40', 40);
 	hashOrder_test('unnammed track is at 20 seconds', 't=20s', 20);
 	hashOrder_test('track is at 02:04:02', 'track&t=01:04:02', 3842);
-	hashOrder_test('unnamed track is at 1:02', 't=1:02', 62);
+	hashOrder_test('unnamed track is at 1:02', '&t=1:02', 62);
 
 	function hashtest(hash,expects,describ) {
 		waitNoLock();
 		// nowLock();
 		var $track = document.getElementById('track');
-		QUnit.asyncTest('on hash change : '+describ, function(assert) {
+		QUnit.asyncTest(`on hash change : ${describ}`, function(assert) {
 			nowLock();
 			expect(1);
 			window.location = hash;
@@ -128,9 +139,10 @@ window.addEventListener('WebComponentsReady', function() {
 		hashtest('#track&t=30',			30,		'named is at 30 seconds' );
 		hashtest('#track&t=25s',		25,		'named is at 25 seconds' );
 		hashtest('#track&t=10m10s',		610,	'is at 10 minutes and 10 seconds');
-		hashtest('#&t=10s',				10,		'unnamed is at 10 seconds');
-		hashtest('#&t=01:01:01',		3661,	'unnamed is at 01:01:01');
+		hashtest('#t=10s',				10,		'unnamed is at 10 seconds');
+		hashtest('#t=01:01:01',		3661,	'unnamed is at 01:01:01');
 		hashtest('#track&t=00:10:00',	600,	'named is at 00:10:00');
 	}
+	//test_finaux();
 
 });
