@@ -526,7 +526,8 @@ a {
 
 'use strict';
 
-const thisDoc =  (document._currentScript || document.currentScript).ownerDocument;
+const thisDoc = (document._currentScript || document.currentScript).ownerDocument;
+
 let template, shadow_element;
 
 const CpuAudioTagName = 'CPU-AUDIO';
@@ -1472,7 +1473,7 @@ class CpuAudioElement extends CpuControllerElement {
 }
 
 // expose API in parent page DOM
-thisDoc.CPU = CPU_Audio;
+window.document.CPU = CPU_Audio;
 
 window.addEventListener('hashchange', trigger.hashOrder, false);
 trigger.hashOrder({ at_start : true });
