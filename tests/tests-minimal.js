@@ -23,13 +23,6 @@ window.addEventListener('WebComponentsReady', function() {
 
 	QUnit.testDone(stopPlayer);
 
-	test( "Checking browser abilities", function() {
-		ok( window.customElements !== undefined, "window.customElements" );
-		ok( audiotag.fastSeek !== undefined, "seekElementAt can use audiotag.fastSeek" );
-		ok( audiotag.currentTime !== undefined, "seekElementAt can use audiotag.currentTime" );
-
-	});
-
 	test( "hello CPU API", function() {
 		ok( typeof document.CPU === "object", "Passed!" );
 		ok(audiotag.paused, 'paused by defaults' );
@@ -75,6 +68,7 @@ window.addEventListener('WebComponentsReady', function() {
 
 	var cpu = document.CPU;
 
+
 	nowLock();
 	QUnit.asyncTest( "document.CPU.jumpIdAt existing at start", function( assert ) {
 		expect( 2 );
@@ -108,6 +102,8 @@ window.addEventListener('WebComponentsReady', function() {
 		});
 	});
 
+
+
 	function hashOrder_test(expected_string, hash , expected_time)
 	{
 		waitNoLock();
@@ -129,33 +125,12 @@ window.addEventListener('WebComponentsReady', function() {
 	hashOrder_test('track is at 02:04:02', 'track&t=01:04:02', 3842);
 	hashOrder_test('unnamed track is at 1:02', '&t=1:02', 62);
 
-	function hashtest(hash,expects,describ) {
-		waitNoLock();
-		// nowLock();
-		var audiotag = document.getElementById('track');
-		QUnit.asyncTest(`on hash change : ${describ}`, function(assert) {
-			nowLock();
-			expect(1);
-			window.location = hash;
-			function event_callback() {
-				assert.ok(audiotag.currentTime === expects);
-				window.removeEventListener( 'hashchange', event_callback,false);
-				stopPlayer();
-				QUnit.start();
-			}
-			window.addEventListener( 'hashchange', event_callback,false);
-		});
-	}
-	function test_finaux() {
-		waitNoLock();
-		nowLock();
-		hashtest('#track&t=30',			30,		'named is at 30 seconds' );
-		hashtest('#track&t=25s',		25,		'named is at 25 seconds' );
-		hashtest('#track&t=10m10s',		610,	'is at 10 minutes and 10 seconds');
-		hashtest('#t=10s',				10,		'unnamed is at 10 seconds');
-		hashtest('#t=01:01:01',		3661,	'unnamed is at 01:01:01');
-		hashtest('#track&t=00:10:00',	600,	'named is at 00:10:00');
-	}
-	//test_finaux();
+
+	// Dynamic add a second audio player
+	// check only_play_one_audiotag
+
+	// Try trigger.hashOrder({ at_start : true }); with hash link
+	// Try trigger.hashOrder({ at_start : true }); with in-memory interruptd play and without hash link
+	// Try trigger.hashOrder({ at_start : true }); with in-memory interruptd play and with hash link (hash link should have priority)
 
 });

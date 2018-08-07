@@ -11,6 +11,18 @@
 </head>
 <body>
 
+	<p>
+		This is the minimal service tests. Your browser should be able to use the hash links, even if the graphical interface don't show up, and the audio player still show the native controls.<br />
+		Manual test : <a href="#track&t=5m">named jump at 5mn</a>, <a href="#&t=15m">unnamed jump at 15mn</a>
+	</p>
+	<p>
+		See also :
+	</p>
+	<ul>
+		<li><a href="./tests-browser.html">Browser compliance and implementation tests</a></li>
+		<li><a href="./tests-interface.html">Graphic interface, if WebComponent fully supported</a></li>
+	</ul>
+
 	<cpu-audio 
 		title="Supplément Week-End, samedi 31 Mai 2014 en direct du THSF"
 		poster="https://dascritch.net/vrac/.blog2/radio/swe-saison5.png"
@@ -22,13 +34,10 @@
 		</audio>
 	</cpu-audio>
 
-	<p>
-		Manual test : <a href="#track&t=5m">named jump at 5mn</a>, <a href="#&t=15m">unnamed jump at 15mn</a>
-	</p>
 
 	<div id="qunit"></div>
 	<div id="qunit-fixture"></div>
 	<script src="tests/qunit.js"></script>
-	<script src="tests/tests.js"></script>
+	<script src="tests/tests-minimal.js"></script>
 </body>
 </html>

@@ -994,7 +994,7 @@ const CPU_Audio = {
 			onDebug(callback_fx);
 		}
 
-		let selector_fallback = 'audio'; // should be 'audio[controls]' but PHRACK APPLE !
+		let selector_fallback = 'cpu-audio audio'; // should be 'audio[controls]' but PHRACK APPLE !
 		let audiotag = (hash !== '') ? document.getElementById(hash) : document.querySelector(selector_fallback);
 
 		if ((audiotag === undefined) || (audiotag === null) || (audiotag.currentTime === undefined)) {

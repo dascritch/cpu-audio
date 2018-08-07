@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>cpu-audio tests browser</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="tests/qunit.css">
+</head>
+<body>
+
+	<p>
+		This is the browser tests. Your browser may fail some tests, but the webcomponent may work even not degraded.
+	</p>
+	<p>
+		See also :
+	</p>
+	<ul>
+		<li><a href="./tests-minimal.html">Minimum services, as hash links</a></li>
+		<li><a href="./tests-interface.html">Graphic interface, if WebComponent fully supported</a></li>
+	</ul>
+
+	<audio id="track" controls="controls">
+		<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/386-SupplementWeekEnd%2831-05-14%29.ogg" type="audio/ogg; codecs=vorbis" />
+		<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/podcast/386-SupplementWeekEnd%2831-05-14%29.mp3" type="audio/mpeg" />
+	</audio>
+
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+	<script src="tests/qunit.js"></script>
+	<script src="tests/tests-browser.js"></script>
+</body>
+</html>
