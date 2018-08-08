@@ -4,6 +4,7 @@ window.addEventListener('WebComponentsReady', function() {
 	var lock = false;
 	var lockedAt = 0;
 	var audiotag = document.getElementById('track');
+	var playground = document.getElementById('playground');
 
 	function stopPlayer() {
 		window.location = '#';
@@ -30,6 +31,7 @@ window.addEventListener('WebComponentsReady', function() {
 
 	let convert = document.CPU.convert;
 
+	waitNoLock();
 	test( "document.CPU.convert.TimeInSeconds", function() {
 		ok(convert.TimeInSeconds(0) === 0, 'got zero' );
 		ok(convert.TimeInSeconds('1') === 1, 'got one' );
@@ -126,8 +128,36 @@ window.addEventListener('WebComponentsReady', function() {
 	hashOrder_test('unnamed track is at 1:02', '&t=1:02', 62);
 
 
-	// Dynamic add a second audio player
-	// check only_play_one_audiotag
+	waitNoLock();
+	QUnit.asyncTest( "no cacophony feature : mute other player when another one starts to play", function( assert ) {
+		waitNoLock();
+		nowLock();
+		expect(2);
+		audiotag.play();
+		// Dynamic add a second audio player
+		playground.innerHTML = `
+		<cpu-audio>
+			<audio id="secondary" controls="controls">
+				<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/386-SupplementWeekEnd%2831-05-14%29.ogg" type="audio/ogg; codecs=vorbis" />
+				<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/podcast/386-SupplementWeekEnd%2831-05-14%29.mp3" type="audio/mpeg" />
+			</audio>
+		</cpu-audio>`;
+		let secondary_audiotag = document.getElementById('secondary');
+		let check_only_one_play_this;
+
+		function check_only_one_play() {
+			assert.ok(! secondary_audiotag.paused, 'Second player should continue to play');
+			assert.ok(audiotag.paused, 'First player should have been paused');
+			QUnit.start();
+			stopPlayer();
+			//playground.innerHTML = '';
+		}
+		check_only_one_play_this = check_only_one_play.bind(this);
+		setTimeout(check_only_one_play_this, 500);
+		secondary_audiotag.play();
+	});
+
+
 
 	// Try trigger.hashOrder({ at_start : true }); with hash link
 	// Try trigger.hashOrder({ at_start : true }); with in-memory interruptd play and without hash link
