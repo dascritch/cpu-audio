@@ -33,6 +33,7 @@ window.addEventListener('WebComponentsReady', function() {
 	let convert = document.CPU.convert;
 
 	waitNoLock();
+	nowLock();
 	test( "document.CPU.convert.TimeInSeconds", function() {
 		ok(convert.TimeInSeconds(0) === 0, 'got zero' );
 		ok(convert.TimeInSeconds('1') === 1, 'got one' );
@@ -72,6 +73,7 @@ window.addEventListener('WebComponentsReady', function() {
 	var cpu = document.CPU;
 
 
+	waitNoLock();
 	nowLock();
 	QUnit.asyncTest( "document.CPU.jumpIdAt existing at start", function( assert ) {
 		expect( 2 );
@@ -130,9 +132,8 @@ window.addEventListener('WebComponentsReady', function() {
 
 
 	waitNoLock();
+	nowLock();
 	QUnit.asyncTest( "no cacophony feature : mute other player when another one starts to play", function( assert ) {
-		waitNoLock();
-		nowLock();
 		expect(2);
 		audiotag.play();
 		// Dynamic add a second audio player
@@ -158,8 +159,62 @@ window.addEventListener('WebComponentsReady', function() {
 	});
 
 
-
+	waitNoLock();
+	nowLock();
 	// Try trigger.hashOrder({ at_start : true }); with hash link
+	QUnit.asyncTest( "Startup page with a hash link and without localStorage still played", function(assert) {
+		expect(3);
+		playground.innerHTML = `
+			<cpu-audio>
+				<audio id="secondary" controls="controls">
+					<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/386-SupplementWeekEnd%2831-05-14%29.ogg" type="audio/ogg; codecs=vorbis" />
+					<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/podcast/386-SupplementWeekEnd%2831-05-14%29.mp3" type="audio/mpeg" />
+				</audio>
+			</cpu-audio>`;
+		let secondary_audiotag = document.getElementById('secondary');
+		localStorage.clear();
+		function check_onstart() {
+			assert.ok(! secondary_audiotag.paused, 'Second player should have started');
+			assert.ok(secondary_audiotag.currentTime = 10, 'Second player should be at 10s');
+			assert.ok(audiotag.paused, 'First player should be paused');
+			QUnit.start();
+			stopPlayer();
+		}
+		// désactiver provisoirement le hashchange event ?
+		window.location = '#secondary&t=10';
+		cpu.trigger.hashOrder({ at_start : true });
+		setTimeout(check_onstart, 100);
+	});
+
+	waitNoLock();
+	nowLock();
+	// Try trigger.hashOrder({ at_start : true }); with hash link
+	QUnit.asyncTest( "Startup page without hash link and with a localStorage recalling", function(assert) {
+		expect(3);
+		playground.innerHTML = `
+			<cpu-audio>
+				<audio id="secondary" controls="controls">
+					<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/386-SupplementWeekEnd%2831-05-14%29.ogg" type="audio/ogg; codecs=vorbis" />
+					<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/podcast/386-SupplementWeekEnd%2831-05-14%29.mp3" type="audio/mpeg" />
+				</audio>
+			</cpu-audio>`;
+		let secondary_audiotag = document.getElementById('secondary');
+		localStorage.setItem(secondary_audiotag.currentSrc, String(30));
+		localStorage.clear();
+		function check_onstart() {
+			assert.ok(! secondary_audiotag.paused, 'Second player should have started');
+			assert.ok(secondary_audiotag.currentTime = 30, 'Second player should be at 30s');
+			assert.ok(audiotag.paused, 'First player should be paused');
+			QUnit.start();
+			stopPlayer();
+		}
+		// désactiver provisoirement le hashchange event ?
+		window.location = '#';
+		cpu.trigger.hashOrder({ at_start : true });
+		setTimeout(check_onstart, 100);
+	});
+
+
 	// Try trigger.hashOrder({ at_start : true }); with in-memory interruptd play and without hash link
 	// Try trigger.hashOrder({ at_start : true }); with in-memory interruptd play and with hash link (hash link should have priority)
 
