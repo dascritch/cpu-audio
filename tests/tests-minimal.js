@@ -7,7 +7,6 @@ window.addEventListener('WebComponentsReady', function() {
 	var playground = document.getElementById('playground');
 
 	function stopPlayer() {
-		window.location = '#';
 		audiotag.pause();
 		lock = false;
 		playground.innerHTML = '';
@@ -163,6 +162,8 @@ window.addEventListener('WebComponentsReady', function() {
 	nowLock();
 	// Try trigger.hashOrder({ at_start : true }); with hash link
 	QUnit.asyncTest( "Startup page with a hash link and without localStorage still played", function(assert) {
+		waitNoLock();
+		nowLock();
 		expect(3);
 		playground.innerHTML = `
 			<cpu-audio>
@@ -179,17 +180,22 @@ window.addEventListener('WebComponentsReady', function() {
 			assert.ok(audiotag.paused, 'First player should be paused');
 			QUnit.start();
 			stopPlayer();
+			window.addEventListener('hashchange', cpu.trigger.hashOrder, false);
 		}
-		// désactiver provisoirement le hashchange event ?
+		// désactiver provisoirement le hashchange event
+		window.removeEventListener('hashchange', cpu.trigger.hashOrder);
 		window.location = '#secondary&t=10';
 		cpu.trigger.hashOrder({ at_start : true });
 		setTimeout(check_onstart, 100);
+		
 	});
 
 	waitNoLock();
 	nowLock();
 	// Try trigger.hashOrder({ at_start : true }); with hash link
 	QUnit.asyncTest( "Startup page without hash link and with a localStorage recalling", function(assert) {
+		waitNoLock();
+		nowLock();
 		expect(3);
 		playground.innerHTML = `
 			<cpu-audio>
@@ -207,15 +213,48 @@ window.addEventListener('WebComponentsReady', function() {
 			assert.ok(audiotag.paused, 'First player should be paused');
 			QUnit.start();
 			stopPlayer();
+			window.addEventListener('hashchange', cpu.trigger.hashOrder, false);
 		}
-		// désactiver provisoirement le hashchange event ?
+		// désactiver provisoirement le hashchange event
+		window.removeEventListener('hashchange', cpu.trigger.hashOrder);
 		window.location = '#';
 		cpu.trigger.hashOrder({ at_start : true });
 		setTimeout(check_onstart, 100);
 	});
 
+	waitNoLock();
+	nowLock();
+	// Try trigger.hashOrder({ at_start : true }); with hash link
+	QUnit.asyncTest( "Startup page with a hash link and with a localStorage recalling", function(assert) {
+		waitNoLock();
+		nowLock();
+		expect(3);
+		playground.innerHTML = `
+			<cpu-audio>
+				<audio id="secondary" controls="controls">
+					<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/386-SupplementWeekEnd%2831-05-14%29.ogg" type="audio/ogg; codecs=vorbis" />
+					<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/podcast/386-SupplementWeekEnd%2831-05-14%29.mp3" type="audio/mpeg" />
+				</audio>
+			</cpu-audio>`;
+		let secondary_audiotag = document.getElementById('secondary');
+		localStorage.setItem(secondary_audiotag.currentSrc, String(30));
+		localStorage.clear();
+		function check_onstart() {
+			assert.ok(! secondary_audiotag.paused, 'Second player should have started');
+			assert.ok(secondary_audiotag.currentTime = 30, 'Second player should be at 30s');
+			assert.ok(audiotag.paused, 'First player should be paused');
+			QUnit.start();
+			stopPlayer();
+			window.addEventListener('hashchange', cpu.trigger.hashOrder, false);
+		}
+		// désactiver provisoirement le hashchange event
+		window.removeEventListener('hashchange', cpu.trigger.hashOrder);
+		window.location = '#track&t=10';
+		cpu.trigger.hashOrder({ at_start : true });
+		setTimeout(check_onstart, 100);
+		
+	});
 
-	// Try trigger.hashOrder({ at_start : true }); with in-memory interruptd play and without hash link
 	// Try trigger.hashOrder({ at_start : true }); with in-memory interruptd play and with hash link (hash link should have priority)
 
 });
