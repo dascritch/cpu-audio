@@ -7,12 +7,12 @@ Bugs
 * A media error is not correctly triggered and unseen from its  `<cpu-audio>`. Chrome needs to be asked to go inside (click on the timeline), Firefox never gets it.
 * To use correctly the webcomponents.js polyfill, as [it still lacks `<link rel="import">` support](https://hacks.mozilla.org/2015/06/the-state-of-web-components/), Firefox (Nightly, 63 as today) needs a CSP policy permitting `data:` scripts.
 * Firefox versions 62 and below cannot start it correctly even with the polyfill.
-* [Key browsing focus is trapped inside the webcomponent on Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1476301)
 
-Resolved implementations
-------------------------
+Resolved standards issues
+-------------------------
 
 * [Middle click on canonical not working on Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1476302)
+* [Key browsing focus is trapped inside the webcomponent on Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1476301)
 
 Planned evolutions
 ------------------
