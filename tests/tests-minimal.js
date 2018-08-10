@@ -10,6 +10,7 @@ window.addEventListener('WebComponentsReady', function() {
 		window.location = '#';
 		audiotag.pause();
 		lock = false;
+		playground.innerHTML = '';
 	}
 
 	function nowLock() {
@@ -150,10 +151,9 @@ window.addEventListener('WebComponentsReady', function() {
 			assert.ok(audiotag.paused, 'First player should have been paused');
 			QUnit.start();
 			stopPlayer();
-			//playground.innerHTML = '';
 		}
 		check_only_one_play_this = check_only_one_play.bind(this);
-		setTimeout(check_only_one_play_this, 500);
+		setTimeout(check_only_one_play_this, 100);
 		secondary_audiotag.play();
 	});
 

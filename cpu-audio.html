@@ -738,17 +738,20 @@ const trigger = {
 		CPU_Audio.current_audiotag_playing = null;
 		window.localStorage.removeItem(audiotag.currentSrc);
 	},
+	play_once : function(event) {
+		let audiotag = event.target;
+		
+		if ( (CPU_Audio.only_play_one_audiotag) && (CPU_Audio.current_audiotag_playing) && (!audiotag.isEqualNode(CPU_Audio.current_audiotag_playing)) ) {
+			trigger.pause(undefined, CPU_Audio.current_audiotag_playing);
+		}
+		CPU_Audio.current_audiotag_playing = audiotag;
+	},
 	play : function(event, audiotag) {
 		if (audiotag === undefined) {
 			audiotag = CPU_Audio.find_container(event.target).audiotag;
 		}
-		if ( (CPU_Audio.only_play_one_audiotag) && (CPU_Audio.current_audiotag_playing) ) {
-			trigger.pause(undefined, CPU_Audio.current_audiotag_playing);
-		}
-
-		CPU_Audio.current_audiotag_playing = audiotag;
 		if (CPU_Audio.global_controller) {
-			CPU_Audio.global_controller.attach_audiotag_to_controller(CPU_Audio.current_audiotag_playing);
+			CPU_Audio.global_controller.attach_audiotag_to_controller(audiotag);
 			CPU_Audio.global_controller.audiotag = audiotag;
 			CPU_Audio.global_controller.show_main();
 		}
@@ -920,6 +923,8 @@ const CPU_Audio = {
 	},
 	recall_audiotag : function(audiotag) {
 		audiotag.addEventListener('loadedmetadata', CPU_Audio.recall_stored_play);
+		audiotag.addEventListener('play', trigger.play_once);
+		// audiotag.addEventListener('progress', trigger.play_once);
 		// those ↓ for PHRACKING SAFARI
 		audiotag.addEventListener('ready', CPU_Audio.recall_stored_play);
 		audiotag.addEventListener('canplay', CPU_Audio.recall_stored_play);
@@ -942,6 +947,7 @@ const CPU_Audio = {
 				audiotag.addEventListener(on, trigger.pause);
 			});
 		}
+
 		
 
 		// ask ASAP metadata about media
