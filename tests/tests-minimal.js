@@ -3,26 +3,13 @@ QUnit.config.autostart = false;
 window.addEventListener('WebComponentsReady', function() {
 
 	window.location = '#';
-	let lock = false;
-	let lockedAt = 0;
 	let audiotag = document.getElementById('track');
 	let playground = document.getElementById('playground');
 	audiotag.volume = 0;
 
 	function stopPlayer() {
 		audiotag.pause();
-		lock = false;
 		playground.innerHTML = '';
-	}
-
-	function nowLock() {
-		lock = true;
-		lockedAt = Date.now();
-	}
-
-	function waitNoLock() {
-		while (lock && (Date.now() < (lockedAt+10))) ;
-		lock = false;
 	}
 
 	QUnit.testDone(stopPlayer);
@@ -35,8 +22,6 @@ window.addEventListener('WebComponentsReady', function() {
 
 	let convert = document.CPU.convert;
 
-	waitNoLock();
-	nowLock();
 	QUnit.test( "document.CPU.convert.TimeInSeconds", function( assert ) {
 		assert.ok(convert.TimeInSeconds(0) === 0, 'got zero' );
 		assert.ok(convert.TimeInSeconds('1') === 1, 'got one' );
@@ -75,54 +60,41 @@ window.addEventListener('WebComponentsReady', function() {
 
 	var cpu = document.CPU;
 
-	//waitNoLock();
-	//nowLock();
 	QUnit.test( "document.CPU.jumpIdAt existing at start", function( assert ) {
 		assert.expect( 2 );
 		let done = assert.async();
 		cpu.jumpIdAt('track', 0, function() {
 			assert.ok(audiotag.currentTime === 0, 'is at start' );
 			assert.ok(!audiotag.paused, 'not paused afterwards' );
-			stopPlayer();
 			done();
 		});
 	});
 
-	//waitNoLock();
-	//nowLock();
 	QUnit.test( "document.CPU.jumpIdAt existing at 600 secs", function( assert ) {
 		assert.expect( 1 );
 		let done = assert.async();
 		cpu.jumpIdAt('track', 600, function() {
 			assert.ok(audiotag.currentTime === 600, 'is at 10mn' );
-			//stopPlayer();
 			done();
 		});
 	});
 
-	//waitNoLock();
-	//nowLock();
 	QUnit.test( "document.CPU.jumpIdAt unnamed at 300 secs", function( assert ) {
 		assert.expect( 1 );
 		let done = assert.async();
 		cpu.jumpIdAt('', 300, function() {
 			assert.ok(audiotag.currentTime === 300, 'is at 5mn' );
-			//stopPlayer();
 			done();
 		});
 	});
 
 	function hashOrder_test(expected_string, hash , expected_time)
 	{
-		//waitNoLock();
-		//nowLock();
 		QUnit.test( `document.CPU.trigger.hashOrder ${expected_string}`, function( assert ) {
-			nowLock();
 			assert.expect( 1 );
 			let done = assert.async();
 			cpu.trigger.hashOrder(hash, function() {
 				assert.ok(audiotag.currentTime === expected_time, expected_string);
-				//stopPlayer();
 				done();
 			});
 		});
@@ -134,8 +106,6 @@ window.addEventListener('WebComponentsReady', function() {
 	hashOrder_test('track is at 02:04:02', 'track&t=01:04:02', 3842);
 	hashOrder_test('unnamed track is at 1:02', '&t=1:02', 62);
 
-	//waitNoLock();
-	//nowLock();
 	QUnit.test( "no cacophony feature : mute other player when another one starts to play", function( assert ) {
 		let done = assert.async();
 		assert.expect(2);
@@ -155,7 +125,6 @@ window.addEventListener('WebComponentsReady', function() {
 		function check_only_one_play() {
 			assert.ok(! secondary_audiotag.paused, 'Second player should continue to play');
 			assert.ok(audiotag.paused, 'First player should have been paused');
-			// stopPlayer();
 			done();
 		}
 		check_only_one_play_this = check_only_one_play.bind(this);
@@ -163,13 +132,9 @@ window.addEventListener('WebComponentsReady', function() {
 		secondary_audiotag.play();
 	});
 
-	// waitNoLock();
-	// nowLock();
 	// Try trigger.hashOrder({ at_start : true }); with hash link
 	QUnit.test( "Startup page with a hash link and without localStorage still played", function(assert) {
 		let done = assert.async();
-		//waitNoLock();
-		//nowLock();
 		assert.expect(3);
 		playground.innerHTML = `
 			<cpu-audio>
@@ -185,25 +150,19 @@ window.addEventListener('WebComponentsReady', function() {
 			assert.ok(! secondary_audiotag.paused, 'Second player should have started');
 			assert.ok(secondary_audiotag.currentTime = 10, 'Second player should be at 10s');
 			assert.ok(audiotag.paused, 'First player should be paused');
-			//stopPlayer();
 			window.addEventListener('hashchange', cpu.trigger.hashOrder, false);
 			done();
 		}
 		// désactiver provisoirement le hashchange event
-		setTimeout(check_onstart, 200);
 		window.removeEventListener('hashchange', cpu.trigger.hashOrder);
 		window.location = '#secondary&t=10';
-		cpu.trigger.hashOrder({ at_start : true });
-		
+		cpu.trigger.hashOrder({ at_start : true }, check_onstart);
+		// won't work because missing querySelector_apply('audio[controls]', CPU_Audio.recall_audiotag);
 	});
 
-	//waitNoLock();
-	//nowLock();
 	// Try trigger.hashOrder({ at_start : true }); with hash link
 	QUnit.test( "Startup page without hash link and with a localStorage recalling", function(assert) {
 		let done = assert.async();
-		//waitNoLock();
-		//nowLock();
 		assert.expect(3);
 		playground.innerHTML = `
 			<cpu-audio>
@@ -220,24 +179,19 @@ window.addEventListener('WebComponentsReady', function() {
 			assert.ok(! secondary_audiotag.paused, 'Second player should have started');
 			assert.ok(secondary_audiotag.currentTime = 30, 'Second player should be at 30s');
 			assert.ok(audiotag.paused, 'First player should be paused');
-			//stopPlayer();
 			window.addEventListener('hashchange', cpu.trigger.hashOrder, false);
 			done();
 		}
 		// désactiver provisoirement le hashchange event
 		window.removeEventListener('hashchange', cpu.trigger.hashOrder);
-		setTimeout(check_onstart, 200);
 		window.location = '#';
-		cpu.trigger.hashOrder({ at_start : true });
+		cpu.trigger.hashOrder({ at_start : true }, check_onstart);
+		// won't work because missing querySelector_apply('audio[controls]', CPU_Audio.recall_audiotag);
 	});
 
-	// waitNoLock();
-	// nowLock();
 	// Try trigger.hashOrder({ at_start : true }); with hash link
 	QUnit.test( "Startup page with a hash link and with a localStorage recalling", function(assert) {
 		let done = assert.async();
-		//waitNoLock();
-		//nowLock();
 		assert.expect(3);
 		playground.innerHTML = `
 			<cpu-audio>
@@ -254,15 +208,14 @@ window.addEventListener('WebComponentsReady', function() {
 			assert.ok(! secondary_audiotag.paused, 'Second player should have started');
 			assert.ok(secondary_audiotag.currentTime = 30, 'Second player should be at 30s');
 			assert.ok(audiotag.paused, 'First player should be paused');
-			//stopPlayer();
 			window.addEventListener('hashchange', cpu.trigger.hashOrder, false);
 			done();
 		}
 		// désactiver provisoirement le hashchange event
 		window.removeEventListener('hashchange', cpu.trigger.hashOrder);
-		setTimeout(check_onstart, 200);
 		window.location = '#track&t=10';
-		cpu.trigger.hashOrder({ at_start : true });
+		cpu.trigger.hashOrder({ at_start : true }, check_onstart);
+		// won't work because missing querySelector_apply('audio[controls]', CPU_Audio.recall_audiotag);
 		
 	});
 
