@@ -705,7 +705,7 @@ const trigger = {
 
 		let target_rect = event.target.getClientRects()[0];
 		let relLeft = target_rect.left;
-		let ratio = (event.clientX - relLeft) / event.target.clientWidth;
+		let ratio = event.offsetX / event.target.clientWidth;
 		let seeked_time = ratio * container.audiotag.duration;
 
 		container.show_throbber_at(seeked_time);
@@ -723,8 +723,7 @@ const trigger = {
 			at = event.at;
 		} else {
 			// normal usage
-			let relLeft = event.target.getClientRects()[0].left;
-			let ratio = (event.clientX - relLeft) / event.target.clientWidth;
+			let ratio = event.offsetX  / event.target.clientWidth;
 			at = ratio * audiotag.duration;
 		}
 		CPU_Audio.seekElementAt(audiotag, at);
@@ -1313,7 +1312,6 @@ var CPU_element_api = class {
 			return;
 		}
 
-		// chapters. future use
 		let chapters_element = self.elements['chapters'];
 		chapters_element.innerHTML = '';
 		if ((!self.audiotag.textTracks) || (self.audiotag.textTracks.length === 0)) {
