@@ -1,5 +1,5 @@
 How-to install
---------------
+==============
 
 Simply put `<link rel="import" href="./cpu-audio.html" type="text/html">` in the head of your html page. (eventually include webcomponentjs for polyfill).
 
@@ -12,13 +12,7 @@ Insert this CSS snippet for browsers not able to use WebComponents :
     }
 ```
 
-Then encapsulate `<audio control>` with `<cpu-audio>` to compose an specialy crafted UI. Some attributes enhance the component :
-
-* `title="<string>"` : name of the audio 
-* `poster="<url>"` : cover image, squarred ratio prefered
-* `canonical="<url>"` : link to the original page of the sound
-* `mode="<string>"` : kind of presentation (default, compact, button, hidden)
-* `twitter="@<account>"` : twitter handle for social partage (fallback on the declared one in your page)
+Then encapsulate `<audio control>` with `<cpu-audio>` to compose an specialy crafted UI. 
 
 Example : 
 
@@ -50,10 +44,24 @@ Jump at <a href="#audiodemo&amp;t=5m">5 minutes</a> in the sound
 
 ```
 
+Some attributes enhance the component :
+
+* `title="<string>"` : name of the audio 
+* `poster="<url>"` : cover image, squarred ratio prefered
+* `canonical="<url>"` : link to the original page of the sound
+* `mode="<string>"` : kind of presentation (`default`, `compact`, `button`, `hidden`)
+* `twitter="@<account>"` : twitter handle for social partage (fallback on the declared one in your page)
+
 
 Cloned player : You can invoke a global media controller by creating a `<cpu-controller>` without `<audio>` tag.
 
-Chapters : You can add a chapters track into the `<audio>`, : `<track kind="chapters" src="chapters.vtt" default>`. Note that `default` attribute **is really needed**.
+Chapters : You can add a chapters track into the `<audio>` tag : 
+
+```html
+    <track kind="chapters" src="chapters.vtt" default>
+```
+
+Note that `default` attribute **is really needed**.
 
 
 Permitted hash notations

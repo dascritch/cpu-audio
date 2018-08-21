@@ -12,21 +12,20 @@ Some links :
 * Demonstration page : https://dascritch.net/vrac/.projets/audiowc/index.html
 * `<link rel="import">` polyfilled with [webcomponentsjs](https://github.com/webcomponents/webcomponentsjs)
 
-Copyright © 2014 Xavier "dascritch" Mouton-Dubosc ; Licence GPL 3
+Copyright © 2014-2018 Xavier "dascritch" Mouton-Dubosc ; Licence GPL 3
+
 
 Features
 ----------
 
 * standards first, de-polyfillable, future-proof ;
 * hyperlink `<audio>` tags to a specific time, [Media Fragment standards](https://www.w3.org/TR/media-frags/) ;
-* add an UI ;
-* Customizable UI via attributes and CSS variables ;
+* add an UI, customizable via attributes and CSS variables ;
 * recall the player where it was unexpectedly left (click on a link when playing) ;
 * play only one sound in the page ;
 * global `<cpu-controller>` .
 
 It could have been done via polyfills or frameworks, but I wanted a plain standard, vanilla javascript, easy to install and configure.
-
 
 Beware, WebComponents is a to-be-implemented-elsewhere standard. Will work mainly on : 
 
@@ -56,6 +55,7 @@ During the page life :
 * no cacophony : when a `<audio controls>` starts, it will stop any other `<audio controls>` in the page ;
 * if you have a `<cpu-controller>`, this one will clone the playing `<cpu-audio>` interface.
 
+
 Keyboard functions
 ------------------
 
@@ -66,6 +66,7 @@ Keyboard functions
 * <kbd>↖</kbd> : back to start
 * <kbd>End</kbd> : to the end, finish playing
 * <kbd>Escape</kbd> : back to start, stop playing
+
 
 Versions
 --------
@@ -80,6 +81,7 @@ Versions
 * June 2014 : 0.2 , proof of concept
 * October 2012 : first version, trashed
 
+
 Credits
 -------
 
@@ -88,6 +90,7 @@ Thank you to my lovely friends :
 * [Loïc Gerbaud](https://github.com/chibani) for corrections
 * [Guillaume Lemoine and Phonitive](http://www.phonitive.fr/) for helping
 * [Benoît Salles](https://twitter.com/infestedgrunt) for testing
+
 
 Keeping in touch
 ----------------
