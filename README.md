@@ -134,6 +134,25 @@ For the timecode, you can use :
 
 Note : if a timecode without named anchor is given, as in `href="#&t=2h4m2s"`, the very first `<audio controls>` element of the document will be started and placed at this time.
 
+Personnalizatios via CSS variables
+----------------------------------
+
+variable | description | default value 
+--|--|--
+`--cpu-background` | Interface's background, except playing or in error | #555
+`--cpu-height` | Height of the buttons | 64px (32px under 640px width)
+`--cpu-font-family` | Interface font families | Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif
+`--cpu-font-size` | Interface font size | 15px
+`--cpu-color` | Interface's color, except playing | #ddd
+`--cpu-playing-background` | Interface's background while playing | #444
+`--cpu-playing-color` | Interface's color while playing | #fff
+`--cpu-error-background` | Interface's background when there is a media error | #a00
+`--cpu-error-color` | Interface's color when there is a media error | #ff7
+`--cpu-popup-background` | Background for the time pointer | #aaa
+`--cpu-popup-color` | Text color for the time pointer | #333
+`--cpu-elapse-width` | Time indicator width | 185px (160px under 640px width, 80px under 480px, 0 under 320px)
+
+
 Versions
 --------
 

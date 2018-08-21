@@ -42,7 +42,14 @@ blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-m
 		:root , .interface {
 			--cpu-font-size : 13px;
 			--cpu-height : 32px;
+			--cpu-elapse-width : 160px;
 		}
+
+	@media (max-width: 480px) , @element .interface and (max-width: 480px) {
+		:root , .interface {
+			--cpu-elapse-width : 80px;
+		}
+
 	}
 </style>
 
@@ -409,7 +416,6 @@ a {
 	}
 
 	.elapse {
-		flex : 1 0 160px;
 		max-height : 16px;
 	}
 
@@ -425,7 +431,7 @@ a {
 	}
 
 	.mode-default .elapse {
-		flex : 1 0 80px;
+		flex : 1 0 var(--cpu-elapse-width);
 	}
 }
 @media (max-width: 320px) , @element .interface and (max-width: 320px) {
