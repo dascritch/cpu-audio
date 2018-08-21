@@ -26,7 +26,7 @@ Example :
 
 ```
 
-In case of problems, please also add in your css this rule :
+In case of problems, please also add this rule in your css :
 
 ```css
 audio[controls] {
@@ -40,11 +40,15 @@ Attributes references
 
 Some attributes enhance the component :
 
-* `title="<string>"` : name of the audio 
-* `poster="<url>"` : cover image, squarred ratio prefered
-* `canonical="<url>"` : link to the original page of the sound
-* `mode="<string>"` : kind of presentation (`default`, `compact`, `button`, `hidden`)
-* `twitter="@<account>"` : twitter handle for social partage (fallback on the declared one in your page)
+* `title="<string>"` : name of the sound ;
+* `poster="<url>"` : cover image, squarred ratio prefered ;
+* `canonical="<url>"` : link to the original page of the sound ; 
+* `mode="<string>"` : kind of presentation :
+    * `default` : player with poster, timeline and chapters list,
+    * `compact` : play/pause button and time indication,
+    * `button` : play/pause button only,
+    * `hidden` : nothing to show ;
+* `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page) ;
 
 
 Cloned player
