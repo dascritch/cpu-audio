@@ -1399,6 +1399,8 @@ var CPU_element_api = class {
 };
 
 
+let acceptable_selector = 'audio[controls]';
+
 // Controller without assigned audio element, i.e. global page controller
 class CpuControllerElement extends HTMLElement {
 
@@ -1414,9 +1416,9 @@ class CpuControllerElement extends HTMLElement {
 		}
 
 		if (this.tagName === CpuAudioTagName) {
-			if (this.querySelector('audio[controls]') === null) {
+			if (this.querySelector(acceptable_selector) === null) {
 				// Graceful degradation : do not start if no media element OR no native controls
-				console.warn(`Tag <${CpuAudioTagName}> without <audio controls>.\nSee https://github.com/dascritch/cpu-audio/blob/master/index.html for a correct installation.`);
+				console.warn(`Tag <${CpuAudioTagName}> without <audio controls>.\nSee https://github.com/dascritch/cpu-audio/blob/master/INSTALL.md for a correct installation.`);
 				this.remove();
 				return;
 			}
@@ -1460,7 +1462,7 @@ class CpuAudioElement extends CpuControllerElement {
 
 	connectedCallback() {
 
-		this._audiotag = this.querySelector('audio[controls]');
+		this._audiotag = this.querySelector(acceptable_selector);
 		if (this._audiotag === null) {
 			return;
 		}
@@ -1491,7 +1493,7 @@ trigger.hashOrder({ at_start : true });
 
 if (!is_decent_browser_for_webcomponents()) {
 	console.error(`<${CpuAudioTagName}> WebComponent may NOT behave correctly. Only timecode hash links are activated.\nSee https://github.com/dascritch/cpu-audio/blob/master/index.html for details`);
-	querySelector_apply('audio[controls]', CPU_Audio.recall_audiotag);
+	querySelector_apply(acceptable_selector, CPU_Audio.recall_audiotag);
 	window.document.body.classList.add('cpu-audio-without-webcomponents');
 } else {
 	window.customElements.define(CpuAudioTagName.toLowerCase(), CpuAudioElement);
