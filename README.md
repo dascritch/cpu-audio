@@ -27,6 +27,19 @@ Features
 
 It could have been done via polyfills or frameworks, but I wanted a plain standard, vanilla javascript, easy to install and configure.
 
+
+Beware, WebComponents is a to-be-implemented-elsewhere standard. Will work mainly on : 
+
+* Google Chrome
+* Firefox Nightly (63+, not yet for 61)
+* Safari Mac
+
+To be tested on :
+
+* Safari iOS
+* Edge
+
+
 Purpose
 -------
 

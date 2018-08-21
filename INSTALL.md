@@ -55,18 +55,6 @@ Cloned player : You can invoke a global media controller by creating a `<cpu-con
 
 Chapters : You can add a chapters track into the `<audio>`, : `<track kind="chapters" src="chapters.vtt" default>`. Note that `default` attribute **is really needed**.
 
-Beware, WebComponents is a to-be-implemented-elsewhere standard. Will work mainly on : 
-
-* Google Chrome
-* Firefox Nightly (not yet for 61)
-
-To be tested on :
-
-* Safari iOS
-* Edge
-* Safari Mac
-
-
 
 Permitted hash notations
 ------------------------
@@ -80,6 +68,7 @@ For the timecode, you can use :
 * `page.html#tagID&t=2h4m2s` : human-readable units, sub-units availables : `s`econds, `m`inutes, `h`ours and `d`ays
 
 Note : if a timecode without named anchor is given, as in `href="#&t=2h4m2s"`, the very first `<audio controls>` element of the document will be started and placed at this time.
+
 
 Personnalizatios via CSS variables
 ----------------------------------
