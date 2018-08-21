@@ -56,6 +56,20 @@ During the page life :
 * if you have a `<cpu-controller>`, this one will clone the playing `<cpu-audio>` interface.
 
 
+Permitted hash notations
+------------------------
+
+Original purpose [was to link any media element of any webpage to a specific moment](http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore). It uses the [W3C standard Media Fragments](https://www.w3.org/TR/media-frags/) notation, extending the URL. 
+
+For the timecode, you can use :
+
+* `page.html#tagID&t=7442` : seconds without unit ;
+* `page.html#tagID&t=02:04:02` : colon (“professional”) timecode as `02:04:02` (2 hours, 4 minutes and 2 seconds) ;
+* `page.html#tagID&t=2h4m2s` : human-readable units, sub-units availables : `s`econds, `m`inutes, `h`ours and `d`ays
+
+Note : if a timecode without any named anchor is given, as in `href="#t=2h4m2s"`, the very first `<audio controls>` element of the document will be started and placed at this time.
+
+
 Keyboard functions
 ------------------
 

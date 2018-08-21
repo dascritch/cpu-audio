@@ -16,16 +16,6 @@ Then encapsulate `<audio control>` with `<cpu-audio>` to compose an specialy cra
 
 Example : 
 
-<!--
-```
-<custom-element-demo>
-  <template>
-    <link rel="import" href="cpu-audio.html">
-    <next-code-block></next-code-block>
-  </template>
-</custom-element-demo>
-```
--->
 ```html
 <cpu-audio 
     title="Au carnaval avec Samba Résille (2003)"
@@ -44,6 +34,10 @@ Jump at <a href="#audiodemo&amp;t=5m">5 minutes</a> in the sound
 
 ```
 
+
+Attributes references
+---------------------
+
 Some attributes enhance the component :
 
 * `title="<string>"` : name of the audio 
@@ -53,9 +47,18 @@ Some attributes enhance the component :
 * `twitter="@<account>"` : twitter handle for social partage (fallback on the declared one in your page)
 
 
-Cloned player : You can invoke a global media controller by creating a `<cpu-controller>` without `<audio>` tag.
+Cloned player
+-------------
 
-Chapters : You can add a chapters track into the `<audio>` tag : 
+You can invoke a global media controller by creating a `<cpu-controller>` without `<audio>` tag. 
+
+It may be useful if, as [in the CPU website](http://cpu.pm), you have a player in the main content and a cloned one in a fixed element.
+
+
+Chapters
+--------
+
+You can add a chapters track into the `<audio>` tag : 
 
 ```html
     <track kind="chapters" src="chapters.vtt" default>
@@ -63,35 +66,23 @@ Chapters : You can add a chapters track into the `<audio>` tag :
 
 Note that `default` attribute **is really needed**.
 
-
-Permitted hash notations
-------------------------
-
-Original purpose of [“timecodehash” is to link any media element of any webpage to a specific moment](https://github.com/dascritch/timecodehash). It uses the [W3C standard Media Fragments](https://www.w3.org/TR/media-frags/) notation, extending the URL. 
-
-For the timecode, you can use :
-
-* `page.html#tagID&t=7442` : seconds without unit ;
-* `page.html#tagID&t=02:04:02` : colon (“professional”) timecode as `02:04:02` (2 hours, 4 minutes and 2 seconds) ;
-* `page.html#tagID&t=2h4m2s` : human-readable units, sub-units availables : `s`econds, `m`inutes, `h`ours and `d`ays
-
-Note : if a timecode without named anchor is given, as in `href="#&t=2h4m2s"`, the very first `<audio controls>` element of the document will be started and placed at this time.
+The chapter list will only appears in `mode="default"` settings
 
 
-Personnalizatios via CSS variables
+Personnalization via CSS variables
 ----------------------------------
 
 variable | description | default value 
 --|--|--
-`--cpu-background` | Interface's background, except playing or in error | #555
-`--cpu-height` | Height of the buttons | 64px (32px under 640px width)
-`--cpu-font-family` | Interface font families | Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif
-`--cpu-font-size` | Interface font size | 15px
-`--cpu-color` | Interface's color, except playing | #ddd
-`--cpu-playing-background` | Interface's background while playing | #444
-`--cpu-playing-color` | Interface's color while playing | #fff
-`--cpu-error-background` | Interface's background when there is a media error | #a00
-`--cpu-error-color` | Interface's color when there is a media error | #ff7
-`--cpu-popup-background` | Background for the time pointer | #aaa
-`--cpu-popup-color` | Text color for the time pointer | #333
-`--cpu-elapse-width` | Time indicator width | 185px (160px under 640px width, 80px under 480px, 0 under 320px)
+`--cpu-background`  | Background, except playing or in error            | `#555`
+`--cpu-color`       | Color, except playing                             | `#ddd`
+`--cpu-error-background` | Background when there is a media error       | `#a00`
+`--cpu-error-color` | Color when there is a media error                 | `#ff7`
+`--cpu-font-family` | Font families                                     | `Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif`
+`--cpu-font-size`   | Font size                                         | `15px`
+`--cpu-elapse-width` | Time indicator width                             | `185px` (`160px` under 640px width, `80px` under 480px, `0` under 320px)
+`--cpu-height`      | Height of the buttons                             | `64px` (`32px` under 640px width)
+`--cpu-playing-background` | Background while playing                   | `#444`
+`--cpu-playing-color` | Color while playing                             | `#fff`
+`--cpu-popup-background` | Background for the time pointer              | `#aaa`
+`--cpu-popup-color` | Text color for the time pointer                   | `#333`
