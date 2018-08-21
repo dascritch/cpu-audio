@@ -108,7 +108,7 @@ Jump at <a href="#audiodemo&amp;t=5m">5 minutes</a> in the sound
 
 Cloned player : You can invoke a global media controller by creating a `<cpu-controller>` without `<audio>` tag.
 
-Chapters : You cna add a chapters track into the `<audio>`, : `<track kind="chapters" src="chapters-ex0085.vtt" default>`. Note that `default` is really needed.
+Chapters : You can add a chapters track into the `<audio>`, : `<track kind="chapters" src="chapters.vtt" default>`. Note that `default` attribute **is really needed**.
 
 Beware, WebComponents is a to-be-implemented-elsewhere standard. Will work mainly on : 
 
