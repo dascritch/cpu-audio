@@ -22,6 +22,10 @@ Planned evolutions
     - [ ] merge with `ondemiroir-audio-tag` , rename or redirect to `cpu-audio`
     - [ ] mark `timecodehash` as no-more maintened
 - [ ] explode webcomponent source, and write a build and deploy makefile 
+    - [ ] create dist/ and src/
+    - [ ] explode webcomponent source
+    - [ ] make the webcomponent .html version
+    - [ ] make a .js version (so no needs to polyfill)
 - [X] fallbacks
     - [X] make a test about available functions and browser version (for Firefox <63)
     - [X] make hash observer service usable even if webcomponent is not launched (Graceful degradation / progressive enhancement)
