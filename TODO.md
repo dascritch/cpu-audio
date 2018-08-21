@@ -21,10 +21,10 @@ Planned evolutions
     - [ ] link back from `timecodehash` and `ondemiroir-audio-tag`
     - [ ] merge with `ondemiroir-audio-tag` , rename or redirect to `cpu-audio`
     - [ ] mark `timecodehash` as no-more maintened
-- [ ] explode webcomponent source, and write a build and deploy makefile 
-    - [ ] create dist/ and src/
-    - [ ] explode webcomponent source
-    - [ ] make the webcomponent .html version
+- [X] explode webcomponent source, and write a build and deploy makefile 
+    - [X] create dist/ and src/
+    - [X] explode webcomponent source
+    - [X] make the webcomponent .html version
     - [ ] make a .js version (so no needs to polyfill)
 - [X] fallbacks
     - [X] make a test about available functions and browser version (for Firefox <63)

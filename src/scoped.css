@@ -1,0 +1,390 @@
+
+.interface {
+    font-family : var(--cpu-font-family);
+    font-size : var(--cpu-font-size);
+}
+
+.interface, * {
+    line-height : 1.2;
+    border : none;
+    padding : 0;
+    margin : 0;
+    transition : none;
+    moz-user-select: none;
+    ms-user-select: none;
+    webkit-user-select: none;
+    user-select: none;
+}
+
+
+.principal {
+    display : flex;
+    overflow : hidden;
+    background : var(--cpu-background);
+    color : var(--cpu-color);
+    height : var(--cpu-height);
+}
+
+.act-error {
+    background : var(--cpu-error-background);
+    color : var(--cpu-error-color);
+}
+
+a {
+    color : var(--cpu-color);
+    border : none;
+    text-decoration : none;
+}
+svg {
+    fill : var(--cpu-color);
+    width : var(--cpu-height);
+    height : var(--cpu-height);
+}
+a:hover, a:focus {
+    color : var(--cpu-background);
+    background : var(--cpu-color);
+}
+a:hover svg , a:focus svg {
+    fill : var(--cpu-background);
+}
+
+.loading circle {
+    fill : #777;
+}
+
+.act-play {
+    background : var(--cpu-playing-background);
+    color : var(--cpu-playing-color);
+}
+
+.act-play svg {
+    fill : var(--cpu-playing-color);
+}
+
+.act-play a {
+    color : var(--cpu-playing-color);
+}
+
+.act-play a:hover, .act-play a:focus {
+    color : var(--cpu-playing-background);
+    background : var(--cpu-playing-color);
+}
+.act-play a:hover svg, .act-play a:focus svg {
+    fill : var(--cpu-playing-background);
+}
+
+.show-error {
+    background : var(--cpu-error-background);
+    color : var(--cpu-error-color);
+}
+
+.pageerror {
+    padding: 0px 4px;
+    align-self: center;
+}
+
+.control,
+.actions,
+.back {
+    flex : 0 0 var(--cpu-height);
+    width : var(--cpu-height);
+    max-height : var(--cpu-height);
+    height : 100%;
+    text-align : center;
+    vertical-align : middle;
+}
+
+a {
+    cursor : pointer;
+}
+
+.loading, .play, .pause,
+.show-main .pageshare, .show-main .pageerror,
+.show-share .pagemain, .show-share .pageerror,
+.show-error .pagemain, .show-error .pageshare , .show-error .poster {
+    display : none;
+}
+
+.act-loading .loading,
+.act-play .play,
+.act-pause .pause {
+    display : block;
+}
+
+.show-share .pageshare,
+.show-main .pagemain,
+.share {
+    flex : 1 1 100%;
+    display : flex;
+    align-items: center;
+}
+
+.act-loading .loading circle:nth-child(1) {
+      animation: pulse0 2s infinite;
+}
+
+.act-loading .loading circle:nth-child(2) {
+      animation: pulse1 2s infinite;
+}
+
+.act-loading .loading circle:nth-child(3) {
+      animation: pulse2 2s infinite;
+}
+
+@keyframes pulse0 {
+    0%      {opacity : 1;}
+    50%     {opacity : 0;}
+    100%    {opacity : 1;}
+}
+
+@keyframes pulse1 {
+    0%      {opacity : 0.75;}
+    12%     {opacity : 1;}
+    62%     {opacity : 0;}
+    100%    {opacity : 0.75;}
+}
+
+@keyframes pulse2 {
+    0%      {opacity : 0.5;}
+    25%     {opacity : 1;}
+    75%     {opacity : 0;}
+    100%    {opacity : 0.5;}
+}
+
+@keyframes pulse3 {
+    0%      {opacity : 0.25;}
+    37%     {opacity : 1;}
+    87%     {opacity : 0;}
+    100%    {opacity : 0.25;}
+}
+
+.poster {
+    width : var(--cpu-height);
+    height : var(--cpu-height);
+    object-fit: contain;
+}
+
+.loading svg, .play svg, .pause svg, .actions svg {
+    vertical-align : middle;
+    max-width : 100%;
+    max-height : 100%;
+}
+.loading {
+    background : var(--cpu-background) !important;
+}
+.titleline {
+    display : flex;
+}
+.about, .title {
+    flex : 1 1 100%;
+    position : relative;
+}
+.title a {
+    display : block;
+    text-overflow : ellipsis;
+    max-height: 48px;
+    overflow: hidden;
+}
+.canonical.untitled {
+    font-style : italic;
+}
+.elapse {
+    flex : 1 0 var(--cpu-elapse-width);
+    text-align : right;
+}
+.time {
+    background : black;
+    width : 100%;
+    height : 10px;
+    display : block;
+    border-radius : 4px;
+    position : relative;
+    cursor:none;
+}
+.loadingline,
+.elapsedline {
+    background : white;
+    height : 10px ;
+    display : block ;
+    position : absolute;
+    left : 0;
+    border-radius : 4px;
+    pointer-events : none;
+}
+.elapsedline {
+    z-index : 2;
+}
+
+.act-loading .loadingline {
+    background : grey;
+}
+
+.share {
+    text-align : center;
+}
+
+.share a {
+    height : var(--cpu-height);
+}
+
+.share a, .share div {
+    flex : 1 0;
+    color : white;
+    text-decoration : none;
+    overflow : hidden;
+    text-overflow : clip;
+}
+
+.share a:hover, .share a:focus, .share div:hover {
+    color : var(--cpu-background);
+    background : var(--cpu-color);
+}
+
+.share svg {
+    vertical-align : middle;
+    width : 32px;
+    height : 32px;
+}
+.twitter {
+    background : #4DB5F4
+}
+.facebook {
+    background : #5974CC
+}
+.email {
+    background : #CC0000
+}
+.link {
+    background : #77F
+}
+
+.popup {
+    pointer-events : none;
+    position: absolute;
+    transform: translate(-25px, -19px);
+    z-index : 127;
+    min-width : 50px;
+    font-size : 11px;
+    text-align : center;
+    padding : 2px;
+    border-radius: 4px;
+    box-shadow: black 2px 2px;
+    background : var(--cpu-popup-background);
+    color : var(--cpu-popup-color);
+    opacity : 0;
+    /* absolute pos, need to repeat it →  https://developer.mozilla.org/en-US/docs/Web/CSS/user-select */
+    moz-user-select: none;
+    ms-user-select: none;
+    webkit-user-select: none;
+    user-select: none;
+} 
+.popup:before {
+    pointer-events : none;
+    content:"";
+    position: absolute;
+    z-index : 127;
+    left: 20px;
+    bottom: -8px;
+    width: 0;
+    height : 0;
+    /* arrow form */
+    border-top: 8px solid var(--cpu-popup-background);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+} 
+
+.chapters {
+    display : flex;
+    overflow : scoll;
+    background : var(--cpu-background);
+    color : var(--cpu-color);
+    list-style: none;
+    flex-direction: column; 
+}
+.cue {
+    border-top : 1px solid black;
+}
+.active-cue {
+    background : black;
+}
+.cue.active-cue {
+    color : yellow;
+}
+.cue a {
+    display : flex;
+    margin : 0px;
+    padding : 2px
+}
+.cue strong {
+    flex : 1 1;
+    font-weight : normal;
+}
+.cue span {
+    flex : 0 0 var(--cpu-elapse-width);
+    text-align : right;
+}
+
+
+.mode-compact {
+    width : calc(var(--cpu-elapse-width) + var(--cpu-height) + 32px);
+}
+
+.mode-button {
+    width : var(--cpu-height);
+}
+
+.mode-compact .poster,
+.mode-compact .title,
+.mode-compact .line,
+.mode-compact .actions,
+.mode-button .poster,
+.mode-button .about,
+.mode-button .actions,
+.mode-hidden 
+ {
+    display : none;
+}
+
+.mode-compact.show-main .pagemain {
+    flex : 0 0 auto;
+}
+
+@media (max-width: 640px) , @element .interface and (max-width: 640px) {
+
+    .nosmall {
+        display : none;
+    }
+    .title a {
+        max-height : 16px;
+    }
+
+    .elapse {
+        max-height : 16px;
+    }
+
+    .time,
+    .loadingline,
+    .elapsedline {
+        height : 8px ;
+    }
+}
+@media (max-width: 480px) , @element .interface and (max-width: 480px) {
+    .mode-default .notiny {
+        display : none;
+    }
+
+    .mode-default .elapse {
+        flex : 1 0 var(--cpu-elapse-width);
+    }
+}
+@media (max-width: 320px) , @element .interface and (max-width: 320px) {
+    .mode-default .elapse {
+        display : none;
+    }
+}
+
+@media print {
+    .interface {
+        display : none;
+    }
+}

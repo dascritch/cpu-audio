@@ -1,0 +1,35 @@
+/* Fallback */
+audio[controls] {
+    display : block;
+    width : 100%;
+}
+
+/* Global default style, usign var. Integrators may override them */
+:root {
+    --cpu-height : 64px;
+    --cpu-font-family : Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+    --cpu-font-size : 15px;
+    --cpu-background : #555;
+    --cpu-color : #ddd;
+    --cpu-playing-background : #444;
+    --cpu-playing-color : #fff;
+    --cpu-error-background : #a00 ;
+    --cpu-error-color : #ff7 ;
+    --cpu-popup-background : #aaa;
+    --cpu-popup-color : #333;
+    --cpu-elapse-width : 185px;
+}
+
+@media (max-width: 640px) , @element .interface and (max-width: 640px) {
+    :root , .interface {
+        --cpu-font-size : 13px;
+        --cpu-height : 32px;
+        --cpu-elapse-width : 160px;
+    }
+
+@media (max-width: 480px) , @element .interface and (max-width: 480px) {
+    :root , .interface {
+        --cpu-elapse-width : 80px;
+    }
+
+}

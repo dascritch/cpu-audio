@@ -1,7 +1,9 @@
 How-to install
 ==============
 
-Simply put `<link rel="import" href="./cpu-audio.html" type="text/html">` in the head of your html page. (eventually include webcomponentjs for polyfill).
+Copy [`dist/cpu-audio.html`](dist/cpu-audio.html) file on your website.
+
+Simply put `<link rel="import" href="./cpu-audio.html" type="text/html">` in the head of your html page. (eventually include webcomponentjs for polyfill. You may have to change CSP settings).
 
 Then encapsulate `<audio control>` with `<cpu-audio>`. 
 
@@ -90,3 +92,6 @@ variable | description | default value
 `--cpu-playing-color` | Color while playing                             | `#fff`
 `--cpu-popup-background` | Background for the time pointer              | `#aaa`
 `--cpu-popup-color` | Text color for the time pointer                   | `#333`
+
+
+
