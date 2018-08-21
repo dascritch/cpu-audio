@@ -27,17 +27,17 @@
 	Page demo for <a href="https://github.com/dascritch/cpu-audio">CPU-Audio</a> project. 
 </h1>
 
-<div class="cpu-audio-without-webcomponents">
-	<h2>Your browser DOESN'T support WebComponent.</h2>
+<div class="cpu-audio-without-webcomponents" style="border : 4px red solid; padding : 4px;">
+	<h2>Your browser DOESN'T support WebComponent fairly enough.</h2>
 	<p>
-		Following examples are not functionnal, as the interface is not shown and the browser display its native player.
+		Following examples are not fully functionnal, as the interface is not shown and the browser display its native player.
 		Only the hash-links functions works.
 	</p>
 </div>
 <div>
 	<p class="cpu-audio-with-webcomponents">Your browser supports WebComponent.</p>
 
-	<p><a href="index.html">This is a standard link to the page</a>, a sound will start if you inadvertly quited the page.</p>
+	<p><a href="index.html">This is a standard link to the page</a>, a sound will start if you inadvently quited the page.</p>
 	<p><a href="index.html#emission&t=20m45s">This link starts the below player at 20:45</a></p>
 
 	<p>See <a href="https://github.com/dascritch/cpu-audio">README.md on this project's github</a></p>
@@ -47,7 +47,7 @@
 <h3 id="hashlinks">Link moments in audio into html pages</h3>
 
 <div>
-	<p>You can point to a moment of any audio of this page via a <code>&lt;a href&gt;</code> tag, even from outside.</p>
+	<p>You can point to a moment of any audio of this page via a <code>&lt;a href&gt;</code> tag, even outside from this page.</p>
 
 	<cpu-audio 
 		title="Ex0085 Le Mystère Enigma"
@@ -144,7 +144,6 @@
 <h3 id="modes">Modes</h3>
 <div>
 	<code>mode="compact"</code>.<br />
-	The component SHOULD NOT reduce under 640px wide.<br />
 	No needs for <code>title=""</code>, <code>poster=""</code>, <code>canonical=""</code> or <code>twitter=""</code> attributes <em>excepted</em> when you also use <code>&lt;cpu-controller&gt;</code>.
 	<cpu-audio  mode="compact"
 		canonical="https://dascritch.net/post/2016/12/27/35-ans-de-Radio-FMR%2C-et-elle-dure-encore"
@@ -170,7 +169,7 @@
 
 <div>
 	<code>mode="hidden"</code>.<br />
-	Why ?
+	Why ? <a href="#tests">For TESTS</a>
 	<cpu-audio mode="hidden">
 		<audio controls id="b3">
 			<source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
@@ -181,7 +180,7 @@
 
 <h3 id="personnalization">Personnalization</h3>
 <div id="personnalization-demo">
-	With CSS variables, you can change some aspects
+	With CSS variables, you can change some aspects, even only in a region of your page.
 	<pre>
 	<style class="showcode" scoped>
 		#personnalization-demo {
