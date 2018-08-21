@@ -3,16 +3,7 @@ How-to install
 
 Simply put `<link rel="import" href="./cpu-audio.html" type="text/html">` in the head of your html page. (eventually include webcomponentjs for polyfill).
 
-Insert this CSS snippet for browsers not able to use WebComponents :
-
-```css
-    audio[controls] {
-        display : block;
-        width : 100%;
-    }
-```
-
-Then encapsulate `<audio control>` with `<cpu-audio>` to compose an specialy crafted UI. 
+Then encapsulate `<audio control>` with `<cpu-audio>`. 
 
 Example : 
 
@@ -28,12 +19,21 @@ Example :
         <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
     </audio>
 </cpu-audio>
+
 <p>
-Jump at <a href="#audiodemo&amp;t=5m">5 minutes</a> in the sound
+    Jump at <a href="#audiodemo&amp;t=5m">5 minutes</a> in the sound
 </p>
 
 ```
 
+In case of problems, please also add in your css this rule :
+
+```css
+audio[controls] {
+    display : block;
+    width : 100%;
+}
+```
 
 Attributes references
 ---------------------
@@ -61,7 +61,7 @@ Chapters
 You can add a chapters track into the `<audio>` tag : 
 
 ```html
-    <track kind="chapters" src="chapters.vtt" default>
+<track kind="chapters" src="chapters.vtt" default>
 ```
 
 Note that `default` attribute **is really needed**.
