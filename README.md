@@ -20,6 +20,7 @@ Features
 * standards first, de-polyfillable, future-proof ;
 * hyperlink `<audio>` tags to a specific time, [Media Fragment standards](https://www.w3.org/TR/media-frags/) ;
 * add an UI ;
+* Customizable UI via attributes and CSS variables ;
 * recall the player where it was unexpectedly left (click on a link when playing) ;
 * play only one sound in the page ;
 * global `<cpu-controller>` .
