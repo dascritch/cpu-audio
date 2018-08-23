@@ -25,7 +25,6 @@ Example :
 <p>
     Jump at <a href="#audiodemo&amp;t=5m">5 minutes</a> in the sound
 </p>
-
 ```
 
 In case of problems, please also add this rule in your css :
@@ -36,6 +35,7 @@ audio[controls] {
     width : 100%;
 }
 ```
+
 
 Attributes references
 ---------------------
@@ -92,6 +92,4 @@ variable | description | default value
 `--cpu-playing-color` | Color while playing                             | `#fff`
 `--cpu-popup-background` | Background for the time pointer              | `#aaa`
 `--cpu-popup-color` | Text color for the time pointer                   | `#333`
-
-
 

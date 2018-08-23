@@ -74,20 +74,41 @@ java -jar /usr/share/java/closure-compiler.jar \
     --create_source_map "${PROJECT_DIR}/tmp/main.js.map"
 
 
+license=$(cat "${PROJECT_DIR}/src/license.txt")
+global_css=$(cat "${PROJECT_DIR}/tmp/global.css")
+scoped_css=$(cat "${PROJECT_DIR}/tmp/scoped.css")
+template_html=$(cat "${PROJECT_DIR}/tmp/template.html")
+main_js=$(cat "${PROJECT_DIR}/tmp/main.js")
 
-component_html="${PROJECT_DIR}/dist/cpu-audio.html"
+component_html="<!--
 
-echo "<style>" > "${component_html}"
-cat "${PROJECT_DIR}/tmp/global.css" >> "${component_html}"
-echo "</style>" >> "${component_html}"
-echo "<template><style>" >> "${component_html}"
-cat "${PROJECT_DIR}/tmp/scoped.css" >> "${component_html}"
-echo "</style>" >> "${component_html}"
-cat "${PROJECT_DIR}/tmp/template.html" >> "${component_html}" 
-echo "</template>" >> "${component_html}"
-echo "<script>" >> "${component_html}"
-cat "${PROJECT_DIR}/tmp/main.js" >> "${component_html}" 
-echo "</script>" >> "${component_html}"
+${license}
+
+-->
+<style>${global_css}</style>
+<template>
+<style>${scoped_css}</style>
+${template_html}
+</template>
+<script>${main_js}</script>"
+
+echo "${component_html}" > "${PROJECT_DIR}/dist/cpu-audio.html"
+
+component_js="/*
+
+${license}
+
+*/
+let include_style=\`${global_css}\`;
+let include_template=\`<style>${scoped_css}</style>
+${template_html}\`;
+
+${main_js}
+delete include_style, include_template;
+"
+
+echo "${component_js}" > "${PROJECT_DIR}/dist/cpu-audio.js"
+
 
 if [ '' != "${DESTINATION}" ] ; then
     scp ${PROJECT_DIR}/dist/cpu-audio.html ${DESTINATION}/cpu-audio.html
