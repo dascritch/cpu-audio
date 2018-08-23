@@ -5,7 +5,7 @@ How-to install
 Copy [`dist/cpu-audio.js`](dist/cpu-audio.js) file on your website.
 Put in the head of your html page :
 
-```hmtl
+```html
 <script src="./cpu-audio.js" async></script>
 ```
 
