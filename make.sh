@@ -99,12 +99,22 @@ component_js="/*
 ${license}
 
 */
-let include_style=\`${global_css}\`;
-let include_template=\`<style>${scoped_css}</style>
-${template_html}\`;
+
+function _insert(){
+    let style = document.createElement('style');
+    style.innerHTML=\`${global_css}\`;
+    document.head.appendChild(style);
+    let template = document.createElement('template');
+    template.innerHTML=\`<style>${scoped_css}</style>${template_html}\`;
+    document.body.appendChild(template);
+}
+if (document.body !== null) {
+_insert();
+} else {
+    document.addEventListener('DOMContentLoaded', _insert, false);
+}
 
 ${main_js}
-delete include_style, include_template;
 "
 
 echo "${component_js}" > "${PROJECT_DIR}/dist/cpu-audio.js"

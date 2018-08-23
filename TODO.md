@@ -25,7 +25,7 @@ Planned evolutions
     - [X] create dist/ and src/
     - [X] explode webcomponent source
     - [X] make the webcomponent .html version
-    - [ ] make a .js version (so no needs to polyfill)
+    - [X] make a .js version (so no needs to polyfill)
 - [X] fallbacks
     - [X] make a test about available functions and browser version (for Firefox <63)
     - [X] make hash observer service usable even if webcomponent is not launched (Graceful degradation / progressive enhancement)
@@ -35,7 +35,7 @@ Planned evolutions
     - [ ] [Support MSE API for non-burferred playing, needed for HTTP/2](https://github.com/dascritch/ondemiroir-audio-tag/issues/22)
 - [X] [recreate/adding TDD/BDD.  Via a browsable test page ?](https://github.com/dascritch/ondemiroir-audio-tag/issues/35)
     - [ ] add tests on restart from previous visit
-    - [ ] add behaviour tests on interface
+    - [X] add behaviour tests on interface
 - [ ] [playlists in a page](https://github.com/dascritch/ondemiroir-audio-tag/issues/47)
     - [ ] expose playlist in document.CPU API
     - [ ] [playlists in a page, play next audio in playlist parametrable via API](https://github.com/dascritch/ondemiroir-audio-tag/issues/47)
@@ -44,8 +44,8 @@ Planned evolutions
     - [X] [chapters](https://github.com/dascritch/timecodehash/issues/1)
     - [X] [named chapters](https://github.com/dascritch/ondemiroir-audio-tag/issues/9)
 - [ ] DOM manipulation events :
-    - [ ] dynamic creation of a `<cpu-audio>` (not feasable because of `<audio controls>` needed)
-    - [ ] dynamic remove of a `<cpu-audio>`
+    - [X] dynamic creation of a `<cpu-audio>` (not feasable because of `<audio controls>` needed)
+    - [X] dynamic remove of a `<cpu-audio>`
     - [ ] [remove of a `<cpu-audio>` on a `<audio>` remove](https://github.com/dascritch/ondemiroir-audio-tag/issues/8)
     - [ ] dynamic modification of `<head>`
     - [ ] dynamic modification of window.document.location.href (webapp)

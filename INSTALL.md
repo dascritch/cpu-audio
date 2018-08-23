@@ -1,8 +1,13 @@
 How-to install
 ==============
 
-Copy [`dist/cpu-audio.html`](dist/cpu-audio.html) file on your website.
 
+Copy [`dist/cpu-audio.js`](dist/cpu-audio.js) file on your website.
+Simply put `<script src="./cpu-audio.js"></script` in the head of your html page.
+
+OR
+
+Copy [`dist/cpu-audio.html`](dist/cpu-audio.html) file on your website.
 Simply put `<link rel="import" href="./cpu-audio.html" type="text/html">` in the head of your html page. (eventually include webcomponentjs for polyfill. You may have to change CSP settings).
 
 Then encapsulate `<audio control>` with `<cpu-audio>`. 
