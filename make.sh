@@ -106,9 +106,9 @@ function _insert(){
     document.head.appendChild(style);
     let template = document.createElement('template');
     template.innerHTML=\`<style>${scoped_css}</style>${template_html}\`;
-    document.body.appendChild(template);
+    document.head.appendChild(template);
 }
-if (document.body !== null) {
+if (document.head !== null) {
 _insert();
 } else {
     document.addEventListener('DOMContentLoaded', _insert, false);

@@ -3,14 +3,33 @@ How-to install
 
 
 Copy [`dist/cpu-audio.js`](dist/cpu-audio.js) file on your website.
-Simply put `<script src="./cpu-audio.js"></script` in the head of your html page.
+Put in the head of your html page :
 
-OR
+```hmtl
+<script src="./cpu-audio.js" async></script>
+```
+
+
+Alternative insertion via HTML Imports
+--------------------------------------
 
 Copy [`dist/cpu-audio.html`](dist/cpu-audio.html) file on your website.
-Simply put `<link rel="import" href="./cpu-audio.html" type="text/html">` in the head of your html page. (eventually include webcomponentjs for polyfill. You may have to change CSP settings).
+Get [webcomponentsjs polyfill](https://github.com/webcomponents/webcomponentsjs) and call it on your website. You may have to change CSP settings on your website to let it working seamlessly. Note that Firefox will only need `webcomponents-hi.js`.
 
-Then encapsulate `<audio control>` with `<cpu-audio>`. 
+Put in the head of your html page
+
+```html
+<script src="./webcomponents-hi.js"></script>
+<link rel="import" href="./cpu-audio.html" type="text/html">
+```
+
+This may be a less efficient method. But we need to keep it [to run tests](./tests-interface.html).
+
+
+Invoking element
+----------------
+
+Encapsulate your usual `<audio control>` with `<cpu-audio>`. 
 
 Example : 
 
@@ -26,13 +45,10 @@ Example :
         <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
     </audio>
 </cpu-audio>
-
-<p>
-    Jump at <a href="#audiodemo&amp;t=5m">5 minutes</a> in the sound
-</p>
 ```
 
-In case of problems, please also add this rule in your css :
+It is recommended to set it an `id` attribute for using anchoring feature.
+You **must** out a `control` attribute, as a fallback in case of malfunctions. Please also add this rule in your css :
 
 ```css
 audio[controls] {
@@ -58,6 +74,19 @@ Some attributes enhance the component :
 * `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page) ;
 
 
+How to link
+-----------
+
+
+In the upper example, `<audio>` tag is id-ed as `audiodemo`. Usually, you link to it with `#audiodemo`. Add a parameter `t=` with the expected timecode, with a `&` as separator. By example, for 5 minutes from the start, you should target `#audiodemo&t=5m` : 
+
+```html
+<p>
+    Jump at <a href="#audiodemo&amp;t=5m">5 minutes</a> in the sound
+</p>
+```
+
+
 Cloned player
 -------------
 
@@ -69,7 +98,7 @@ It may be useful if, as [in the CPU website](http://cpu.pm), you have a player i
 Chapters
 --------
 
-You can add a chapters track into the `<audio>` tag : 
+You can add a chapters track into the `<audio control>` tag : 
 
 ```html
 <track kind="chapters" src="chapters.vtt" default>
@@ -97,4 +126,5 @@ variable | description | default value
 `--cpu-playing-color` | Color while playing                             | `#fff`
 `--cpu-popup-background` | Background for the time pointer              | `#aaa`
 `--cpu-popup-color` | Text color for the time pointer                   | `#333`
+
 
