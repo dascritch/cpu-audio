@@ -118,8 +118,7 @@ window.addEventListener('WebComponentsReady', function() {
 
 	QUnit.test( "Media tag without controls attribute. The component must not start", function( assert ) {
 		playground.innerHTML = `<cpu-audio id="no_check"><audio id="emission_fail">
-									<source src="https://dascritch.net/vrac/Emissions/CPU/0085-CPU%2817-05-18%29.ogg" type="audio/ogg">
-									<source src="https://dascritch.net/vrac/Emissions/CPU/podcast/0085-CPU%2817-05-18%29.mp3" type="audio/mpeg">
+									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 								</audio>
 							</cpu-audio>`;
 		let done = assert.async();

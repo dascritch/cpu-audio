@@ -23,14 +23,9 @@
 		<li><a href="./tests-minimal.html">Minimum services, as hash links</a></li>
 	</ul>
 
-	<cpu-audio 
-		title="Supplément Week-End, samedi 31 Mai 2014 en direct du THSF"
-		poster="https://dascritch.net/vrac/.blog2/radio/swe-saison5.png"
-		canonical="https://dascritch.net/post/2014/05/31/Suppl%C3%A9ment-Week-End%2C-samedi-31-Mai-2014">
-		<!-- Pour des raisons  de compatibilité arrière, il *faut* garder la balise <audio controls> dans la déclaration. -->
-		<audio id="track" controls="controls">
-			<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/386-SupplementWeekEnd%2831-05-14%29.ogg" type="audio/ogg; codecs=vorbis" />
-			<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/podcast/386-SupplementWeekEnd%2831-05-14%29.mp3" type="audio/mpeg" />
+	<cpu-audio>
+		<audio id="track" controls="controls"  preload="auto">
+			<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 		</audio>
 	</cpu-audio>
 

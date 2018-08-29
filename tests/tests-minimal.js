@@ -69,20 +69,20 @@ window.addEventListener('WebComponentsReady', function() {
 		});
 	});
 
-	QUnit.test( "document.CPU.jumpIdAt existing at 600 secs", function( assert ) {
+	QUnit.test( "document.CPU.jumpIdAt existing at 60 secs", function( assert ) {
 		assert.expect( 1 );
 		let done = assert.async();
-		cpu.jumpIdAt('track', 600, function() {
-			assert.ok(audiotag.currentTime === 600, 'is at 10mn' );
+		cpu.jumpIdAt('track', 60, function() {
+			assert.ok(audiotag.currentTime === 60, 'is at 1mn' );
 			done();
 		});
 	});
 
-	QUnit.test( "document.CPU.jumpIdAt unnamed at 300 secs", function( assert ) {
+	QUnit.test( "document.CPU.jumpIdAt unnamed at 30 secs", function( assert ) {
 		assert.expect( 1 );
 		let done = assert.async();
-		cpu.jumpIdAt('', 300, function() {
-			assert.ok(audiotag.currentTime === 300, 'is at 5mn' );
+		cpu.jumpIdAt('', 30, function() {
+			assert.ok(audiotag.currentTime === 30, 'is at 30s' );
 			done();
 		});
 	});
@@ -99,10 +99,10 @@ window.addEventListener('WebComponentsReady', function() {
 		});
 	}
 	hashOrder_test('is at 10 seconds', 'track&t=10', 10);
-	hashOrder_test('is at one hour, 2 minutes and 4 seconds', 'track&t=1h2m4s', 3724);
+	hashOrder_test('is at one minute and 2 seconds', 'track&t=1m2s', 62);
 	hashOrder_test('unnammed track is at 40 seconds', 't=40', 40);
 	hashOrder_test('unnammed track is at 20 seconds', 't=20s', 20);
-	hashOrder_test('track is at 02:04:02', 'track&t=01:04:02', 3842);
+	hashOrder_test('track is at 00:01:42', 'track&t=00:01:42', 102);
 	hashOrder_test('unnamed track is at 1:02', '&t=1:02', 62);
 
 	QUnit.test( "no cacophony feature : mute other player when another one starts to play", function( assert ) {
@@ -113,8 +113,7 @@ window.addEventListener('WebComponentsReady', function() {
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls">
-				<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/386-SupplementWeekEnd%2831-05-14%29.ogg" type="audio/ogg; codecs=vorbis" />
-				<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/podcast/386-SupplementWeekEnd%2831-05-14%29.mp3" type="audio/mpeg" />
+				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 			</audio>
 		</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
@@ -139,8 +138,7 @@ window.addEventListener('WebComponentsReady', function() {
 		playground.innerHTML = `
 			<cpu-audio>
 				<audio id="secondary" controls="controls">
-					<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/386-SupplementWeekEnd%2831-05-14%29.ogg" type="audio/ogg; codecs=vorbis" />
-					<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/podcast/386-SupplementWeekEnd%2831-05-14%29.mp3" type="audio/mpeg" />
+					<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
@@ -170,8 +168,7 @@ window.addEventListener('WebComponentsReady', function() {
 		playground.innerHTML = `
 			<cpu-audio>
 				<audio id="secondary" controls="controls">
-					<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/386-SupplementWeekEnd%2831-05-14%29.ogg" type="audio/ogg; codecs=vorbis" />
-					<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/podcast/386-SupplementWeekEnd%2831-05-14%29.mp3" type="audio/mpeg" />
+					<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
@@ -201,8 +198,7 @@ window.addEventListener('WebComponentsReady', function() {
 		playground.innerHTML = `
 			<cpu-audio>
 				<audio id="secondary" controls="controls">
-					<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/386-SupplementWeekEnd%2831-05-14%29.ogg" type="audio/ogg; codecs=vorbis" />
-					<source src="https://dascritch.net/vrac/Emissions/SuppWeekEnd/podcast/386-SupplementWeekEnd%2831-05-14%29.mp3" type="audio/mpeg" />
+					<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
