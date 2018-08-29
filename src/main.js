@@ -1,11 +1,10 @@
-const thisDoc = (document._currentScript || document.currentScript).ownerDocument;
-
 let template, shadow_element;
 
+const thisDoc = (document._currentScript || document.currentScript).ownerDocument;
 const CpuAudioTagName = 'CPU-AUDIO';
 const CpuControllerTagName = 'CPU-CONTROLLER';
 const selector_interface = '.interface';
-let acceptable_selector = 'audio[controls]';
+const acceptable_selector = 'audio[controls]';
 
 
 function launch() {
@@ -32,5 +31,4 @@ if (window.document.body !== null) {
     // needed in cpu-audio.js context
     window.document.addEventListener('DOMContentLoaded', launch, false);
 }
-
 

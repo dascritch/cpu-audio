@@ -32,9 +32,9 @@ Planned evolutions
 - [ ] Standards first
     - [ ] [Support incoming navigator.share API](https://github.com/dascritch/ondemiroir-audio-tag/issues/55)
     - [ ] use standard [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) in `hashOrder`, instead of the custom code. We need a strategy to get the anchor, seen as a key without value
-    - [ ] [Support MSE API for non-burferred playing, needed for HTTP/2](https://github.com/dascritch/ondemiroir-audio-tag/issues/22)
-- [X] [recreate/adding TDD/BDD.  Via a browsable test page ?](https://github.com/dascritch/ondemiroir-audio-tag/issues/35)
-    - [ ] add tests on restart from previous visit
+    - [ ] [Support MSE API for non-buffered playing, needed for HTTP/2](https://github.com/dascritch/ondemiroir-audio-tag/issues/22)
+- [X] [recreate/adding TDD/BDD. Via a browsable test page ?](https://github.com/dascritch/ondemiroir-audio-tag/issues/35)
+    - [X] add tests on restart from previous visit
     - [X] add behaviour tests on interface
 - [ ] [playlists in a page](https://github.com/dascritch/ondemiroir-audio-tag/issues/47)
     - [ ] expose playlist in document.CPU API
@@ -47,6 +47,7 @@ Planned evolutions
     - [X] dynamic creation of a `<cpu-audio>` (not feasable because of `<audio controls>` needed)
     - [X] dynamic remove of a `<cpu-audio>`
     - [ ] [remove of a `<cpu-audio>` on a `<audio>` remove](https://github.com/dascritch/ondemiroir-audio-tag/issues/8)
+    - [ ] dynamic modification of `<audio>`
     - [ ] dynamic modification of `<head>`
     - [ ] dynamic modification of window.document.location.href (webapp)
 - [ ] [support of end point timecode](https://github.com/dascritch/ondemiroir-audio-tag/issues/25)
