@@ -106,5 +106,29 @@ window.addEventListener('WebComponentsReady', function() {
 		});
 	});
 
+	QUnit.test( "Cannot start if no <audio> tag included", function( assert ) {
+		playground.innerHTML = '<cpu-audio id="no_check"></cpu-audio>';
+		let done = assert.async();
+		setTimeout(function() {
+			let no_check_element = playground.querySelector('#no_check');
+			assert.ok(null === no_check_element, 'webcomponent not inserted');
+			done();
+		}, 100);
+	});
+
+	QUnit.test( "Media tag without controls attribute. The component must not start", function( assert ) {
+		playground.innerHTML = `<cpu-audio id="no_check"><audio id="emission_fail">
+									<source src="https://dascritch.net/vrac/Emissions/CPU/0085-CPU%2817-05-18%29.ogg" type="audio/ogg">
+									<source src="https://dascritch.net/vrac/Emissions/CPU/podcast/0085-CPU%2817-05-18%29.mp3" type="audio/mpeg">
+								</audio>
+							</cpu-audio>`;
+		let done = assert.async();
+		setTimeout(function() {
+			let no_check_element = playground.querySelector('#no_check');
+			assert.ok(null === no_check_element, 'webcomponent not inserted');
+			done();
+		}, 100);
+	});
+
 
 });
