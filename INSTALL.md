@@ -47,8 +47,7 @@ Example :
 </cpu-audio>
 ```
 
-It is recommended to set it an `id` attribute for using anchoring feature.
-You **must** out a `control` attribute, as a fallback in case of malfunctions. Please also add this rule in your css :
+You **must** put a `control` attribute to the included `<audio>` tag as a fallback in case of malfunction. Please also add this rule in your css :
 
 ```css
 audio[controls] {
@@ -57,14 +56,15 @@ audio[controls] {
 }
 ```
 
+It is recommended to set to the `<audio>` tag an `id` attribute for using anchoring feature.
 
 Attributes references
 ---------------------
 
 Some attributes enhance the component :
 
-* `title="<string>"` : name of the sound ;
-* `poster="<url>"` : cover image, squarred ratio prefered ;
+* `title="<string>"` : title of the sound ;
+* `poster="<url>"` : cover image, squared ratio recommended ;
 * `canonical="<url>"` : link to the original page of the sound ; 
 * `mode="<string>"` : kind of presentation :
     * `default` : player with poster, timeline and chapters list,
@@ -112,19 +112,21 @@ The chapter list will only appears in `mode="default"` settings
 Personnalization via CSS variables
 ----------------------------------
 
+You can change some presentation features of the interface [with CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables).
+
 variable | description | default value 
 --|--|--
-`--cpu-background`  | Background, except playing or in error            | `#555`
-`--cpu-color`       | Color, except playing                             | `#ddd`
-`--cpu-error-background` | Background when there is a media error       | `#a00`
-`--cpu-error-color` | Color when there is a media error                 | `#ff7`
-`--cpu-font-family` | Font families                                     | `Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif`
-`--cpu-font-size`   | Font size                                         | `15px`
-`--cpu-elapse-width` | Time indicator width                             | `185px` (`160px` under 640px width, `80px` under 480px, `0` under 320px)
-`--cpu-height`      | Height of the buttons                             | `64px` (`32px` under 640px width)
-`--cpu-playing-background` | Background while playing                   | `#444`
-`--cpu-playing-color` | Color while playing                             | `#fff`
-`--cpu-popup-background` | Background for the time pointer              | `#aaa`
-`--cpu-popup-color` | Text color for the time pointer                   | `#333`
+`--cpu-background`  | Background, except playing or in error      | `#555`
+`--cpu-color`       | Color, except playing                       | `#ddd`
+`--cpu-error-background` | Background when there is a media error | `#a00`
+`--cpu-error-color` | Color when there is a media error           | `#ff7`
+`--cpu-font-family` | Font families                               | `Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif`
+`--cpu-font-size`   | Font size                                   | `15px`
+`--cpu-elapse-width` | Time indicator width                       | `185px` (`160px` under 640px width, `80px` under 480px, `0` under 320px)
+`--cpu-height`      | Height and width of the square buttons      | `64px` (`32px` under 640px width)
+`--cpu-playing-background` | Background while playing             | `#444`
+`--cpu-playing-color` | Color while playing                       | `#fff`
+`--cpu-popup-background` | Background for the time pointer        | `#aaa`
+`--cpu-popup-color` | Text color for the time pointer             | `#333`
 
 
