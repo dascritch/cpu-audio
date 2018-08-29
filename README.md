@@ -10,7 +10,6 @@ Rewrite of the [ondemiroir-audio-tag](https://github.com/dascritch/ondemiroir-au
 Some links :
 * Informations (in french) : <http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore>
 * Demonstration page : https://dascritch.net/vrac/.projets/audiowc/index.html
-* `<link rel="import">` polyfilled with [webcomponentsjs](https://github.com/webcomponents/webcomponentsjs)
 
 Copyright © 2014-2018 Xavier "dascritch" Mouton-Dubosc ; Licence GPL 3
 
