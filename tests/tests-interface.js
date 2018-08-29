@@ -130,5 +130,18 @@ window.addEventListener('WebComponentsReady', function() {
 		}, 100);
 	});
 
+	/**
+
+	↓ Bad media call. Alas, Chrome won't crash it until any interaction, Firefox never display any error.
+
+	<cpu-audio title="This player must crash" poster="https://cpu.dascritch.net/public/Images/Emissions/.1804-Ex0080-Pizza_m.jpg" canonical="https://dascritch.net/">
+		<!-- pour des raisons  de compatibilité arrière, il faut garder la balise audio dans la déclaration -->
+		<audio controls id="oups">
+			<source src="https://cpu.dascritch.net/public/Images/Emissions/.1804-Ex0080-Pizza_m.jpg"  type="audio/mpeg" />
+		</audio>
+	</cpu-audio>
+	
+	**/
+
 
 });
