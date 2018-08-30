@@ -151,7 +151,7 @@ let CPU_element_api = class {
 
         let dataset = this.fetch_audiotag_dataset();
 
-        let url = (dataset.canonical === undefined ? '' : remove_hash(dataset.canonical))
+        let url = (dataset.canonical === null ? '' : remove_hash(dataset.canonical))
                     + `#${this.audiotag.id}` 
                     + ( this.audiotag.currentTime === 0 
                             ? ''
@@ -160,7 +160,10 @@ let CPU_element_api = class {
 
         let _url = encodeURI(absolutize_url(url));
         let _twitter = '';
-        if ((dataset.twitter !== undefined) && (dataset.twitter[0]==='@')) {
+        if (
+            (dataset.twitter) && /* a little bit better than dataset.twitter === null or typeof dataset.twitter === 'string' . but really, “a little bit” */
+            (dataset.twitter[0]==='@') /* why did I want an @ in the attribute if I cut it in my code ? to keep HTML readable and comprehensible, instead to developpe attribute name into a "twitter-handler" */
+            ) {
             _twitter = `&via=${dataset.twitter.substring(1)}`;
         }
         ahref('twitter', `https://twitter.com/share?text=${dataset.title}&url=${_url}${_twitter}`);

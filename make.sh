@@ -58,7 +58,16 @@ for file in 'template.html' 'global.css' 'scoped.css'
     cat "${PROJECT_DIR}/src/${file}" | tr '\n' ' ' | sed -r 's/[\t ]+/ /g' > "${PROJECT_DIR}/tmp/${file}"
 done
 
-# Build player lib
+# Build a dummy for readibility
+
+echo '' > "${PROJECT_DIR}/tmp/UNCOMPRESSED.js"
+for src in ${PROJECT_DIR}/src/{prologue,i18n,utils,convert,trigger,document_cpu,element_cpu,media_element_extension,cpu_controller.class,cpu_audio.class,main}.js ; do
+    echo "/* ${src} */" >> "${PROJECT_DIR}/tmp/UNCOMPRESSED.js"
+    cat $src >> "${PROJECT_DIR}/tmp/UNCOMPRESSED.js"
+done
+
+
+# Build player lib for dist
 
 java -jar /usr/share/java/closure-compiler.jar \
     --compilation_level ${JS_COMPILATION_LEVEL} \
