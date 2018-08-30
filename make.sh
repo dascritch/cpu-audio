@@ -46,50 +46,70 @@ DESTINATION=${1}
 JS_COMPILATION_LEVEL='SIMPLE_OPTIMIZATIONS'
 # JS_COMPILATION_LEVEL='WHITESPACE_ONLY'
 
-mkdir -p ${PROJECT_DIR}/tmp
-rm ${PROJECT_DIR}/dist/*
-rm ${PROJECT_DIR}/tmp/*
 
-# It fails ? crash
-set -e
+function _clean() {
+    mkdir -p ${PROJECT_DIR}/tmp
+    rm ${PROJECT_DIR}/dist/*
+    rm ${PROJECT_DIR}/tmp/*    
+}
 
-for file in 'template.html' 'global.css' 'scoped.css'
-    do
-    cat "${PROJECT_DIR}/src/${file}" | tr '\n' ' ' | sed -r 's/[\t ]+/ /g' > "${PROJECT_DIR}/tmp/${file}"
-done
+function _remove_spaces() {
+    from=${1}
+    to=${2}
 
-# Build a dummy for readibility
+    cat "${from}" | tr '\n' ' ' | sed -r 's/[\t ]+/ /g' > "${to}"
+}
 
-echo '' > "${PROJECT_DIR}/tmp/UNCOMPRESSED.js"
-for src in ${PROJECT_DIR}/src/{prologue,i18n,utils,convert,trigger,document_cpu,element_cpu,media_element_extension,cpu_controller.class,cpu_audio.class,main}.js ; do
-    echo "/* ${src} */" >> "${PROJECT_DIR}/tmp/UNCOMPRESSED.js"
-    cat $src >> "${PROJECT_DIR}/tmp/UNCOMPRESSED.js"
-done
+function _assemble_javascript() {
+    # NOTE:
+    # closure-compiler has a feature for that. 
+    # We called it with : 
+    # « java -jar /usr/share/java/closure-compiler.jar \
+    # […]
+    # --js ${PROJECT_DIR}/src/{prologue,i18n,utils,convert,trigger,document_cpu,element_cpu,media_element_extension,cpu_controller.class,cpu_audio.class,main}.js \
+    # --entry_point "${PROJECT_DIR}/src/main.js" \
+    # 
+    # But the main problem is that their script
+    # doesn't provide a way to have a PLAIN version without removed spaces.
+    #
+    # So I had to recreate this mess
+    # Build a dummy for readibility
+    build_source="${PROJECT_DIR}/tmp/build_source.js"
+    uncommented="${PROJECT_DIR}/tmp/uncommented.js"
+    despaced="${PROJECT_DIR}/tmp/despaced.js"
+    main="${PROJECT_DIR}/tmp/main.js"
 
+    echo '' > "${build_source}"
+    for src in ${PROJECT_DIR}/src/{prologue,i18n,utils,convert,trigger,document_cpu,element_cpu,media_element_extension,cpu_controller.class,cpu_audio.class,main}.js ; do
+        echo -e ";\n\n/* ${src} */\n" >> "${build_source}"
+        cat ${src} >> "${build_source}"
+    done
 
-# Build player lib for dist
+    # I remove spaces INTO strings. But first, I have to remove one-liner comments
+        # grep -v '//' "${build_source}" >> "${uncommented}"
+        # _remove_spaces "${uncommented}" "${despaced}"
 
-java -jar /usr/share/java/closure-compiler.jar \
-    --compilation_level ${JS_COMPILATION_LEVEL} \
-        --use_types_for_optimization=true \
-        --summary_detail_level=3 \
-    --js ${PROJECT_DIR}/src/{prologue,i18n,utils,convert,trigger,document_cpu,element_cpu,media_element_extension,cpu_controller.class,cpu_audio.class,main}.js \
-    --entry_point "${PROJECT_DIR}/src/main.js" \
-       --language_in ECMASCRIPT_2017 \
-            --module_resolution BROWSER \
-            --js_module_root src --jscomp_off internetExplorerChecks \
-    --js_output_file "${PROJECT_DIR}/tmp/main.js" \
-        --language_out ECMASCRIPT_2017 \
-    --create_source_map "${PROJECT_DIR}/tmp/main.js.map"
+    # Build player lib for dist
 
+    # Note the create_source_map still uuseful, as long we both generate JS and HTML import versions
 
-license=$(cat "${PROJECT_DIR}/src/license.txt")
-global_css=$(cat "${PROJECT_DIR}/tmp/global.css")
-scoped_css=$(cat "${PROJECT_DIR}/tmp/scoped.css")
-template_html=$(cat "${PROJECT_DIR}/tmp/template.html")
-main_js=$(cat "${PROJECT_DIR}/tmp/main.js")
+    java -jar /usr/share/java/closure-compiler.jar \
+        --compilation_level ${JS_COMPILATION_LEVEL} \
+            --use_types_for_optimization=true \
+            --summary_detail_level=3 \
+        --js "${build_source}" \
+        --entry_point "${build_source}" \
+           --language_in ECMASCRIPT_2017 \
+                --module_resolution BROWSER \
+                --js_module_root src --jscomp_off internetExplorerChecks \
+        --js_output_file "${main}" \
+            --language_out ECMASCRIPT_2017 \
+        --create_source_map "${main}.map"
 
-component_html="<!--
+}
+
+function _assemble_component_html() {
+    component_html="<!--
 
 ${license}
 
@@ -102,8 +122,10 @@ ${template_html}
 <script>(function(){'use strict';${main_js}})();</script>"
 
 echo "${component_html}" > "${PROJECT_DIR}/dist/cpu-audio.html"
+}
 
-component_js="/*
+function _assemble_component_js() {
+    component_js="/*
 
 ${license}
 
@@ -127,9 +149,39 @@ if (document.head !== null) {
 "
 
 echo "${component_js}" > "${PROJECT_DIR}/dist/cpu-audio.js"
+}
+
+function _copy_to_server() {
+    if [ '' != "${DESTINATION}" ] ; then
+        scp ${PROJECT_DIR}/dist/cpu-audio.html ${DESTINATION}/cpu-audio.html
+        scp ${PROJECT_DIR}/dist/cpu-audio.js ${DESTINATION}/cpu-audio.js
+    fi
+}
 
 
-if [ '' != "${DESTINATION}" ] ; then
-    scp ${PROJECT_DIR}/dist/cpu-audio.html ${DESTINATION}/cpu-audio.html
-    scp ${PROJECT_DIR}/dist/cpu-audio.js ${DESTINATION}/cpu-audio.js
-fi
+# main
+
+_clean
+
+# It fails ? crash
+set -e
+
+for file in 'template.html' 'global.css' 'scoped.css'
+    do
+    _remove_spaces "${PROJECT_DIR}/src/${file}" "${PROJECT_DIR}/tmp/${file}"
+done
+
+_assemble_javascript
+
+
+license=$(cat "${PROJECT_DIR}/src/license.txt")
+global_css=$(cat "${PROJECT_DIR}/tmp/global.css")
+scoped_css=$(cat "${PROJECT_DIR}/tmp/scoped.css")
+template_html=$(cat "${PROJECT_DIR}/tmp/template.html")
+main_js=$(cat "${PROJECT_DIR}/tmp/main.js")
+
+_assemble_component_html
+_assemble_component_js
+
+_copy_to_server
+
