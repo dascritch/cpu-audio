@@ -71,19 +71,19 @@ let CPU_element_api = class {
             this.show_interface('error');
             switch (this.audiotag.error.code) {
                 case this.audiotag.error.MEDIA_ERR_ABORTED:
-                    error_message = cpu_i18n.media_err_aborted;
+                    error_message = __.media_err_aborted;
                     break;
                 case this.audiotag.error.MEDIA_ERR_NETWORK:
-                    error_message = cpu_i18n.media_err_network;
+                    error_message = __.media_err_network;
                     break;
                 case this.audiotag.error.MEDIA_ERR_DECODE:
-                    error_message = cpu_i18n.media_err_decode;
+                    error_message = __.media_err_decode;
                     break;
                 case this.audiotag.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-                    error_message = cpu_i18n.media_err_src_not_supported;
+                    error_message = __.media_err_src_not_supported;
                     break;
                 default:
-                    error_message = cpu_i18n.media_err_unknow;
+                    error_message = __.media_err_unknow;
                     break;
             }
             pageerror.innerText = error_message;
@@ -203,7 +203,7 @@ let CPU_element_api = class {
 
         if (dataset.title === null) {
             this.elements['canonical'].classList.add('untitled')
-            dataset.title = cpu_i18n['untitled']
+            dataset.title = __.untitled
         } else {
             this.elements['canonical'].classList.remove('untitled')
         }

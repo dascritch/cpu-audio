@@ -60,95 +60,58 @@ function _remove_spaces() {
     cat "${from}" | tr '\n' ' ' | sed -r 's/[\t ]+/ /g' > "${to}"
 }
 
-function _assemble_javascript() {
-    # NOTE:
-    # closure-compiler has a feature for that. 
-    # We called it with : 
-    # « java -jar /usr/share/java/closure-compiler.jar \
-    # […]
-    # --js ${PROJECT_DIR}/src/{prologue,i18n,utils,convert,trigger,document_cpu,element_cpu,media_element_extension,cpu_controller.class,cpu_audio.class,main}.js \
-    # --entry_point "${PROJECT_DIR}/src/main.js" \
-    # 
-    # But the main problem is that their script
-    # doesn't provide a way to have a PLAIN version without removed spaces.
-    #
-    # So I had to recreate this mess
-    # Build a dummy for readibility
-    build_source="${PROJECT_DIR}/tmp/build_source.js"
-    uncommented="${PROJECT_DIR}/tmp/uncommented.js"
-    despaced="${PROJECT_DIR}/tmp/despaced.js"
-    main="${PROJECT_DIR}/tmp/main.js"
-
-    echo '' > "${build_source}"
-    for src in ${PROJECT_DIR}/src/{prologue,i18n,utils,convert,trigger,document_cpu,element_cpu,media_element_extension,cpu_controller.class,cpu_audio.class,main}.js ; do
-        echo -e ";\n\n/* ${src} */\n" >> "${build_source}"
-        cat ${src} >> "${build_source}"
+function _build_template() {
+    for file in 'template.html' 'global.css' 'scoped.css'
+    do
+        _remove_spaces "${PROJECT_DIR}/src/${file}" "${PROJECT_DIR}/tmp/${file}"
     done
 
-    # I remove spaces INTO strings. But first, I have to remove one-liner comments
-        # grep -v '//' "${build_source}" >> "${uncommented}"
-        # _remove_spaces "${uncommented}" "${despaced}"
+    global_css=$(cat "${PROJECT_DIR}/tmp/global.css")
+    scoped_css=$(cat "${PROJECT_DIR}/tmp/scoped.css")
+    template_html=$(cat "${PROJECT_DIR}/tmp/template.html")
 
-    # Build player lib for dist
+    echo "function _insert(){
+        let style = document.createElement('style');
+        style.innerHTML=\`${global_css}\`;
+        document.head.appendChild(style);
 
-    # Note the create_source_map still uuseful, as long we both generate JS and HTML import versions
+        let template = document.createElement('template');
+        template.innerHTML=\`<style>${scoped_css}</style>${template_html}\`;
+        document.head.appendChild(template);
+    }
+    if (document.head !== null) {
+        _insert();
+    } else {
+        document.addEventListener('DOMContentLoaded', _insert, false);
+    }" > "${PROJECT_DIR}/tmp/insert_template.js"
+
+}
+
+license="/**
+
+$(cat ${PROJECT_DIR}/src/license.txt)
+
+**/
+
+"
+
+function _build_component_js() {
+
+    component_file_js="${PROJECT_DIR}/dist/cpu-audio.js"
 
     java -jar /usr/share/java/closure-compiler.jar \
         --compilation_level ${JS_COMPILATION_LEVEL} \
             --use_types_for_optimization=true \
             --summary_detail_level=3 \
-        --js "${build_source}" \
-        --entry_point "${build_source}" \
+        --js ${PROJECT_DIR}/src/{prologue,i18n,../tmp/insert_template,utils,convert,trigger,document_cpu,element_cpu,media_element_extension,cpu_controller.class,cpu_audio.class,main}.js \
+        --entry_point "${PROJECT_DIR}/src/main.js" \
            --language_in ECMASCRIPT_2017 \
                 --module_resolution BROWSER \
                 --js_module_root src --jscomp_off internetExplorerChecks \
-        --js_output_file "${main}" \
+        --js_output_file "${component_file_js}" \
             --language_out ECMASCRIPT_2017 \
-        --create_source_map "${main}.map"
-
-}
-
-function _assemble_component_html() {
-    component_html="<!--
-
-${license}
-
--->
-<style>${global_css}</style>
-<template>
-<style>${scoped_css}</style>
-${template_html}
-</template>
-<script>(function(){'use strict';${main_js}})();</script>"
-
-echo "${component_html}" > "${PROJECT_DIR}/dist/cpu-audio.html"
-}
-
-function _assemble_component_js() {
-    component_js="/*
-
-${license}
-
-*/
-
-function _insert(){
-    let style = document.createElement('style');
-    style.innerHTML=\`${global_css}\`;
-    document.head.appendChild(style);
-    let template = document.createElement('template');
-    template.innerHTML=\`<style>${scoped_css}</style>${template_html}\`;
-    document.head.appendChild(template);
-}
-if (document.head !== null) {
-    _insert();
-} else {
-    document.addEventListener('DOMContentLoaded', _insert, false);
-}
-
-(function(){'use strict';${main_js}})();
-"
-
-echo "${component_js}" > "${PROJECT_DIR}/dist/cpu-audio.js"
+        --create_source_map "${component_file_js}.map" \
+        --output_wrapper "${license}(function(){%output%})();"
 }
 
 function _copy_to_server() {
@@ -166,22 +129,8 @@ _clean
 # It fails ? crash
 set -e
 
-for file in 'template.html' 'global.css' 'scoped.css'
-    do
-    _remove_spaces "${PROJECT_DIR}/src/${file}" "${PROJECT_DIR}/tmp/${file}"
-done
-
-_assemble_javascript
-
-
-license=$(cat "${PROJECT_DIR}/src/license.txt")
-global_css=$(cat "${PROJECT_DIR}/tmp/global.css")
-scoped_css=$(cat "${PROJECT_DIR}/tmp/scoped.css")
-template_html=$(cat "${PROJECT_DIR}/tmp/template.html")
-main_js=$(cat "${PROJECT_DIR}/tmp/main.js")
-
-_assemble_component_html
-_assemble_component_js
+_build_template
+_build_component_js
 
 _copy_to_server
 
