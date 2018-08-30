@@ -72,11 +72,12 @@ function _build_template() {
 
     echo "function _insert(){
         let style = document.createElement('style');
-        style.innerHTML=\`${global_css}\`;
+        style.innerHTML = \`${global_css}\`;
         document.head.appendChild(style);
 
         let template = document.createElement('template');
-        template.innerHTML=\`<style>${scoped_css}</style>${template_html}\`;
+        template.id = 'template_cpu';
+        template.innerHTML = \`<style>${scoped_css}</style>${template_html}\`;
         document.head.appendChild(template);
     }
     if (document.head !== null) {
