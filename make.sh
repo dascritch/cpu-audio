@@ -64,7 +64,7 @@ java -jar /usr/share/java/closure-compiler.jar \
     --compilation_level ${JS_COMPILATION_LEVEL} \
         --use_types_for_optimization=true \
         --summary_detail_level=3 \
-    --js ${PROJECT_DIR}/src/{i18n,utils,convert,trigger,document_cpu,element_cpu,media_element_extension,cpu_controller.class,cpu_audio.class,main}.js \
+    --js ${PROJECT_DIR}/src/{prologue,i18n,utils,convert,trigger,document_cpu,element_cpu,media_element_extension,cpu_controller.class,cpu_audio.class,main}.js \
     --entry_point "${PROJECT_DIR}/src/main.js" \
        --language_in ECMASCRIPT_2017 \
             --module_resolution BROWSER \
