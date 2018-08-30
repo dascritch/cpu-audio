@@ -18,50 +18,36 @@ Planned evolutions
 ------------------
 
 - [X] report issues from `timecodehash` and `ondemiroir-audio-tag`
-    - [ ] link back from `timecodehash` and `ondemiroir-audio-tag`
-    - [ ] merge with `ondemiroir-audio-tag` , rename or redirect to `cpu-audio`
-    - [ ] mark `timecodehash` as no-more maintened
-- [X] explode webcomponent source, and write a build and deploy makefile 
-    - [X] create dist/ and src/
-    - [X] explode webcomponent source
-    - [X] make the webcomponent .html version
-    - [X] make a .js version (so no needs to polyfill)
-- [X] fallbacks
-    - [X] make a test about available functions and browser version (for Firefox <63)
-    - [X] make hash observer service usable even if webcomponent is not launched (Graceful degradation / progressive enhancement)
+    - [X] link back from `timecodehash` and `ondemiroir-audio-tag`
+    - [ ] <del>merge with `ondemiroir-audio-tag` , rename or redirect to `cpu-audio`</del>
+    - [X] mark `timecodehash` as no-more maintened
 - [ ] Standards first
-    - [ ] [Support incoming navigator.share API](https://github.com/dascritch/ondemiroir-audio-tag/issues/55)
+    - [ ] [Support incoming navigator.share API](https://github.com/dascritch/cpu-audio/issues/4)
     - [ ] use standard [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) in `hashOrder`, instead of the custom code. We need a strategy to get the anchor, seen as a key without value
-    - [ ] [Support MSE API for non-buffered playing, needed for HTTP/2](https://github.com/dascritch/ondemiroir-audio-tag/issues/22)
-- [X] [recreate/adding TDD/BDD. Via a browsable test page ?](https://github.com/dascritch/ondemiroir-audio-tag/issues/35)
-    - [X] add tests on restart from previous visit
-    - [X] add behaviour tests on interface
-- [ ] [playlists in a page](https://github.com/dascritch/ondemiroir-audio-tag/issues/47)
+    - [ ] [Support MSE API for non-buffered playing, needed for HTTP/2](https://github.com/dascritch/cpu-audio/issues/12)
+- [ ] [playlists in a page](https://github.com/dascritch/cpu-audio/issues/7)
     - [ ] expose playlist in document.CPU API
-    - [ ] [playlists in a page, play next audio in playlist parametrable via API](https://github.com/dascritch/ondemiroir-audio-tag/issues/47)
+    - [ ] playlists in a page, play next audio in playlist parametrable via API
     - [ ] show playlist in `<cpu-controller>`
-- [X] `<track>` support :
-    - [X] [chapters](https://github.com/dascritch/timecodehash/issues/1)
-    - [X] [named chapters](https://github.com/dascritch/ondemiroir-audio-tag/issues/9)
 - [ ] DOM manipulation events :
     - [X] dynamic creation of a `<cpu-audio>` (not feasable because of `<audio controls>` needed)
     - [X] dynamic remove of a `<cpu-audio>`
     - [ ] [remove of a `<cpu-audio>` on a `<audio>` remove](https://github.com/dascritch/ondemiroir-audio-tag/issues/8)
-    - [ ] dynamic modification of `<audio>`
+    - [ ] [dynamic modification of `<audio>`](https://github.com/dascritch/cpu-audio/issues/13)
     - [ ] dynamic modification of `<head>`
     - [ ] dynamic modification of window.document.location.href (webapp)
-- [ ] [support of end point timecode](https://github.com/dascritch/ondemiroir-audio-tag/issues/25)
-- [ ] [parameters to not put share button](https://github.com/dascritch/ondemiroir-audio-tag/issues/26)
+- [ ] [support of end point timecode](https://github.com/dascritch/cpu-audio/issues/11)
+- [ ] [parameters to not put share button](https://github.com/dascritch/cpu-audio/issues/15)
 - [ ] deploiement on <http://cpu.pm> , when [HTML imports will be properly supported](https://caniuse.com/#feat=imports) or via better polyfill support (still bugs in Firefox 61)
     - [ ] [public announcement](https://www.webcomponents.org/publish)
 - [ ] `<video>` support
 - [ ] `<track>` support for subtitles 
-- [ ] Restore i18n [timecodehash#12](https://github.com/dascritch/timecodehash/issues/12)
-- [ ] [Put a soundwave form image alongside the timeline, server precalculated](https://github.com/dascritch/ondemiroir-audio-tag/issues/52)
+- [ ] [Restore i18n](https://github.com/dascritch/cpu-audio/issues/16)
+- [ ] [Put a soundwave form image alongside the timeline, server precalculated](https://github.com/dascritch/cpu-audio/issues/6)
 - [ ] Sharing service companion
-    - [ ] [Create a real playlist service](https://github.com/dascritch/ondemiroir-audio-tag/issues/42)
-    - [ ] [Supporting annotations à la SoundCloud](https://github.com/dascritch/ondemiroir-audio-tag/issues/29)
-- [ ] [Using touchstart event to emulate hover](https://github.com/dascritch/ondemiroir-audio-tag/issues/37)
+    - [ ] [Create a real playlist service](https://github.com/dascritch/cpu-audio/issues/8)
+    - [ ] [Supporting annotations à la SoundCloud](https://github.com/dascritch/cpu-audio/issues/10)
+- [ ] [Using touchstart event to emulate hover](https://github.com/dascritch/cpu-audio/issues/9)
 
 
 Retired functions from v4
