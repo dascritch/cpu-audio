@@ -35,7 +35,7 @@ const CPU_Audio = {
                 if (header_element !== null) {
                     return header_element.href;
                 }
-                return window.location.href;
+                return window.location.href.split('#')[0];
             }(),
         'twitter' : function () {
                 let header_element = window.document.querySelector('meta[name="twitter:creator"]');

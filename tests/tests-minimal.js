@@ -1,6 +1,6 @@
 QUnit.config.autostart = false;
 
-window.addEventListener('WebComponentsReady', function() {
+window.addEventListener('load', function() {
 
 	window.location = '#';
 	let audiotag = document.getElementById('track');

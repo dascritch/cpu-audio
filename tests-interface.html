@@ -6,8 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="tests/qunit.css">
 
-	<script src="./tests-assets/webcomponents-hi.js"></script>
-	<link rel="import" href="./dist/cpu-audio.html" type="text/html">
+	<script src="./dist/cpu-audio.js"></script>
 </head>
 <body>
 
@@ -23,8 +22,8 @@
 		<li><a href="./tests-minimal.html">Minimum services, as hash links</a></li>
 	</ul>
 
-	<cpu-audio>
-		<audio id="track" controls="controls"  preload="auto">
+	<cpu-audio canonical="https://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore">
+		<audio id="track" controls="controls" preload="auto">
 			<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 		</audio>
 	</cpu-audio>
