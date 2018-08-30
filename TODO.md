@@ -6,7 +6,8 @@ Bugs
 
 * A media error is not correctly triggered and unseen from its  `<cpu-audio>`. Chrome needs to be asked to go inside (click on the timeline), Firefox never gets it.
 * To use correctly the webcomponents.js polyfill, as [it still lacks `<link rel="import">` support](https://hacks.mozilla.org/2015/06/the-state-of-web-components/), Firefox (Nightly, 63 as today) needs a CSP policy permitting `data:` scripts.
-* Firefox versions 62 and below cannot start it correctly even with the polyfill.
+* Firefox versions 62 and below cannot start HTML Import version correctly even with the polyfill.
+* Firefox versions 63 and upper seems to still have a focus trap into the WebComponent
 
 Resolved standards issues
 -------------------------

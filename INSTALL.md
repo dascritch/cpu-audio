@@ -14,7 +14,7 @@ Alternative insertion via HTML Imports
 --------------------------------------
 
 Copy [`dist/cpu-audio.html`](dist/cpu-audio.html) file on your website.
-Get [webcomponentsjs polyfill](https://github.com/webcomponents/webcomponentsjs) and call it on your website. You may have to change CSP settings on your website to let it working seamlessly. Note that Firefox will only need `webcomponents-hi.js`.
+Get [webcomponentsjs polyfill](https://github.com/webcomponents/webcomponentsjs) and call it on your website. Note that Firefox will only need `webcomponents-hi.js`.
 
 Put in the head of your html page
 
@@ -23,7 +23,7 @@ Put in the head of your html page
 <link rel="import" href="./cpu-audio.html" type="text/html">
 ```
 
-This may be a less efficient method. But we need to keep it [to run tests](./tests-interface.html).
+This may be a less efficient method. You may have to change [the CSP settings on your website](https://content-security-policy.com/) to let the polyfill working seamlessly. You will have to permitting `data:` scripts, which is **DANGEROUS and TOTALLY UNSAFE**.
 
 
 Invoking element
