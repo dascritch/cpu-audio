@@ -8,7 +8,7 @@ Version : 5 ALPHA
 Rewrite of the [ondemiroir-audio-tag](https://github.com/dascritch/ondemiroir-audio-tag) towards WebComponents, which is an extension of [timecodehash](https://github.com/dascritch/timecodehash).
 
 Some links :
-* Informations (in french) : <http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore>
+* Informations (in french) : <https://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore>
 * Demonstration page : https://dascritch.net/vrac/.projets/audiowc/index.html
 
 Copyright © 2014-2018 Xavier "dascritch" Mouton-Dubosc ; Licence GPL 3
@@ -58,7 +58,7 @@ During the page life :
 Permitted hash notations
 ------------------------
 
-Original purpose [was to link any media element of any webpage to a specific moment](http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore). It uses the [W3C standard Media Fragments](https://www.w3.org/TR/media-frags/) notation, extending the URL. 
+Original purpose [was to link any media element of any webpage to a specific moment](https://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore). It uses the [W3C standard Media Fragments](https://www.w3.org/TR/media-frags/) notation, extending the URL. 
 
 For the timecode, you can use :
 

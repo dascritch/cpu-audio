@@ -18,10 +18,6 @@ Resolved standards issues
 Planned evolutions
 ------------------
 
-- [X] report issues from `timecodehash` and `ondemiroir-audio-tag`
-    - [X] link back from `timecodehash` and `ondemiroir-audio-tag`
-    - [ ] <del>merge with `ondemiroir-audio-tag` , rename or redirect to `cpu-audio`</del>
-    - [X] mark `timecodehash` as no-more maintened
 - [ ] Standards first
     - [ ] [Support incoming navigator.share API](https://github.com/dascritch/cpu-audio/issues/4)
     - [ ] use standard [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) in `hashOrder`, instead of the custom code. We need a strategy to get the anchor, seen as a key without value
