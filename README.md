@@ -81,17 +81,6 @@ Keyboard functions
 * <kbd>Escape</kbd> : back to start, stop playing
 
 
-Development
------------
-
-You will need :
-- sed
-- tr
-- Google closure compiler (an so, Java, sigh)
-
-To make the file, use `./make.sh`
-
-
 Versions
 --------
 
