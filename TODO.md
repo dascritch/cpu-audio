@@ -37,7 +37,6 @@ Planned evolutions
     - [ ] [public announcement](https://www.webcomponents.org/publish)
 - [ ] `<video>` support
 - [ ] `<track>` support for subtitles 
-- [ ] [Restore i18n](https://github.com/dascritch/cpu-audio/issues/16)
 - [ ] [Put a soundwave form image alongside the timeline, server precalculated](https://github.com/dascritch/cpu-audio/issues/6)
 - [ ] Sharing service companion
     - [ ] [Create a real playlist service](https://github.com/dascritch/cpu-audio/issues/8)

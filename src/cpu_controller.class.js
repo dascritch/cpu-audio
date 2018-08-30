@@ -22,7 +22,7 @@ class CpuControllerElement extends HTMLElement {
             }
         }
 
-        template =  thisDoc.querySelector('template');
+        template =  thisDoc.querySelector('template#template_cpu');
         shadow_element = this.attachShadow({mode: 'open'});
         shadow_element.innerHTML = template.innerHTML;
     }
