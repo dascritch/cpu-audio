@@ -185,8 +185,10 @@ const trigger = {
             window.localStorage.setItem(audiotag.currentSrc, String(audiotag.currentTime));
         }
     },
-    ended : function(event) {
-        let audiotag = event.target;
+    ended : function(event, audiotag) {
+        if (audiotag === undefined) {
+            audiotag = event.target;
+        }
         if (!('playlist' in audiotag.dataset)) {
             return;
         }
