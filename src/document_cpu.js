@@ -4,8 +4,11 @@ const CPU_Audio = {
     only_play_one_audiotag : true,
     current_audiotag_playing : null,
     global_controller : null,
+    // to add attributes for unnamed <audio>
     dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
     count_element : 0,
+    // playlists
+    playlists : {},
     convert : convert, // Needed for tests
     trigger : trigger, // Needed for tests
 
@@ -106,6 +109,10 @@ const CPU_Audio = {
         audiotag.hidden = true;
         // PHRACK SAFARI
         audiotag.removeAttribute('controls');
+
+        // playlist 
+        console.log(audiotag.dataset['playlist']);
+
     },
 
     jumpIdAt : function(hash, timecode, callback_fx) {

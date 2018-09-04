@@ -220,7 +220,27 @@ window.addEventListener('load', function() {
 		window.removeEventListener('hashchange', cpu.trigger.hashOrder);
 		window.location = '#track&t=10';
 		cpu.trigger.hashOrder({ at_start : true }, check_onstart);
-		
+	});
+
+
+	// Try trigger.hashOrder({ at_start : true }); with in-memory interruptd play and with hash link (hash link should have priority)
+	QUnit.test( "Constitute a playlist", function(assert) {
+		let done = assert.async();
+		playground.innerHTML = `
+			<cpu-audio playlist="plname">
+				<audio id="pl1" controls="controls">
+					<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+				</audio>
+			</cpu-audio>
+			<cpu-audio playlist="plname">
+				<audio id="pl2" controls="controls">
+					<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+				</audio>
+			</cpu-audio>
+			`;
+		assert.ok('plname' in cpu.playlists, 'Playlist “plname” created');
+		assert.equal(cpu.playlists.length, 2 , 'Playlist “plname” with 2 items');
+		assert.equal(cpu.playlists.plname, ['pl1', 'pl2'] , 'Playlist “plname” with 2 items');
 	});
 
 
