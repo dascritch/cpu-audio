@@ -18,7 +18,7 @@ audio[controls] {
     --cpu-popup-background : #aaa;
     --cpu-popup-color : #333;
     --cpu-elapse-width : 185px;
-    --cpu-min-padding : 8px;
+    --cpu-min-padding : 16px;
 }
 
 @media (max-width: 640px) , @element .interface and (max-width: 640px) {

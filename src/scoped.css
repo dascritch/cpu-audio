@@ -310,6 +310,7 @@ a {
     color : var(--cpu-color);
     list-style: none;
     flex-direction: column; 
+    padding : 0 var(--cpu-min-padding);
 }
 .cue {
     border-top : 1px solid black;
