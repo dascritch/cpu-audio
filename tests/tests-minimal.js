@@ -240,7 +240,8 @@ window.addEventListener('load', function() {
 			`;
 		assert.ok('plname' in cpu.playlists, 'Playlist “plname” created');
 		assert.equal(cpu.playlists.plname.length, 2 , 'Playlist “plname” with 2 items');
-		assert.strictEqual(cpu.playlists.plname, ['pl1', 'pl2'] , 'Playlist “plname” with 2 items');
+		assert.equal(JSON.stringify(cpu.playlists.plname),
+					JSON.stringify(['pl1', 'pl2']), 'Playlist “plname” with "pl1" and "pl2"');
 	});
 
 

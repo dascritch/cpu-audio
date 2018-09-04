@@ -185,4 +185,32 @@ const trigger = {
             window.localStorage.setItem(audiotag.currentSrc, String(audiotag.currentTime));
         }
     },
+    ended : function(event) {
+        let audiotag = event.target;
+        if (!('playlist' in audiotag.dataset)) {
+            return;
+        }
+        let playlist_name = audiotag.dataset.playlist;
+        let playlist = document.CPU.playlists[playlist_name];
+        if (playlist === undefined) {
+            console.warn(`Named playlist ${playlist_name} not created. WTF ?`);
+            return;
+        }
+        let playlist_index = playlist.indexOf(audiotag.id);
+        if (playlist_index === -1) {
+            console.warn(`Audiotag ${audiotag.id} not in playlist ${playlist_name}. WTF ?`);
+            return;
+        }
+        if ((playlist_index +1) === playlist.length) {
+            // end of playlist
+            return;
+        }
+        let next_id = playlist[playlist_index+1];
+        let next_audiotag = document.getElementById(next_id);
+        if (next_audiotag === null) {
+            console.warn(`Audiotag #${next_id} doesn't exists. WTF ?`);
+            return;
+        }
+        trigger.play(undefined, next_audiotag);
+    }
 }

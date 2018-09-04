@@ -9,8 +9,11 @@ const CPU_Audio = {
     count_element : 0,
     // playlists
     playlists : {},
-    convert : convert, // Needed for tests
-    trigger : trigger, // Needed for tests
+    advance_in_playlist : true,
+
+    // Exposing internals needed for tests
+    convert : convert, 
+    trigger : trigger,
 
     // NOTE : we will need to refresh this when the <head> of the host page changes
     default_dataset : {
@@ -65,6 +68,7 @@ const CPU_Audio = {
     recall_audiotag : function(audiotag) {
         audiotag.addEventListener('loadedmetadata', CPU_Audio.recall_stored_play);
         audiotag.addEventListener('play', trigger.play_once);
+        audiotag.addEventListener('ended', trigger.ended);
         // audiotag.addEventListener('progress', trigger.play_once);
         // those ↓ for PHRACKING SAFARI
         audiotag.addEventListener('ready', CPU_Audio.recall_stored_play);
