@@ -239,8 +239,8 @@ window.addEventListener('load', function() {
 			</cpu-audio>
 			`;
 		assert.ok('plname' in cpu.playlists, 'Playlist “plname” created');
-		assert.equal(cpu.playlists.length, 2 , 'Playlist “plname” with 2 items');
-		assert.equal(cpu.playlists.plname, ['pl1', 'pl2'] , 'Playlist “plname” with 2 items');
+		assert.equal(cpu.playlists.plname.length, 2 , 'Playlist “plname” with 2 items');
+		assert.strictEqual(cpu.playlists.plname, ['pl1', 'pl2'] , 'Playlist “plname” with 2 items');
 	});
 
 

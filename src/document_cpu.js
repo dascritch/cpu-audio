@@ -46,7 +46,8 @@ const CPU_Audio = {
                     return header_element.content;
                 }
                 return null;
-            }()
+            }(),
+        'playlist' : null,
     },
 
     recall_stored_play : function(event) {
@@ -111,8 +112,13 @@ const CPU_Audio = {
         audiotag.removeAttribute('controls');
 
         // playlist 
-        console.log(audiotag.dataset['playlist']);
-
+        if (typeof(audiotag.dataset.playlist) === 'string') {
+            let playlist_name = audiotag.dataset.playlist;
+            if (!(playlist_name in CPU_Audio.playlists)) {
+                CPU_Audio.playlists[playlist_name] = []
+            }
+            CPU_Audio.playlists[playlist_name].push(audiotag.id)
+        }
     },
 
     jumpIdAt : function(hash, timecode, callback_fx) {

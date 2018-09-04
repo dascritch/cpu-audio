@@ -93,6 +93,7 @@ license="/**
 $(cat ${PROJECT_DIR}/src/license.txt)
 
 **/
+//# sourceMappingURL=./cpu-audio.js.map
 
 "
 
