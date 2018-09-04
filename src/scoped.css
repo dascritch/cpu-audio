@@ -159,8 +159,10 @@ a {
 }
 
 .poster {
-    width : var(--cpu-height);
-    height : var(--cpu-height);
+    max-width : var(--cpu-height);
+    min-width : var(--cpu-height);
+    max-height : var(--cpu-height);
+    min-height : var(--cpu-height);
     object-fit: contain;
 }
 
