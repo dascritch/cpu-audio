@@ -56,6 +56,7 @@ Some attributes enhance the component :
     * `button` : play/pause button only,
     * `hidden` : nothing to show ;
 * `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page) ;
+* `playlist="<string>"` : add this media in a named playlist, play the next one when ended.
 
 
 How to link
