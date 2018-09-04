@@ -221,6 +221,14 @@ a {
     background : grey;
 }
 
+.hide-actions .actions {
+    /* we won't display:none, as we need a padding on the right */
+    visibility : hidden;
+    pointer-events: none;
+    min-width : var(--cpu-min-padding);
+    max-width : var(--cpu-min-padding);
+}
+
 .share {
     text-align : center;
 }

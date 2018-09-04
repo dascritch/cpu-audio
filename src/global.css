@@ -18,6 +18,7 @@ audio[controls] {
     --cpu-popup-background : #aaa;
     --cpu-popup-color : #333;
     --cpu-elapse-width : 185px;
+    --cpu-min-padding : 8px;
 }
 
 @media (max-width: 640px) , @element .interface and (max-width: 640px) {
@@ -25,6 +26,7 @@ audio[controls] {
         --cpu-font-size : 13px;
         --cpu-height : 32px;
         --cpu-elapse-width : 160px;
+        --cpu-min-padding : 4px;
     }
 
 @media (max-width: 480px) , @element .interface and (max-width: 480px) {
