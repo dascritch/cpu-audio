@@ -57,6 +57,7 @@ Some attributes enhance the component :
     * `hidden` : nothing to show ;
 * `hide="<string>"` : hide some features, comma-separated :
     * `actions` : the share button
+    * `chapters` : the chapters list
 * `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page) ;
 * `playlist="<string>"` : add this media in a named playlist, play the next one when ended.
 

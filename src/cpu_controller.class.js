@@ -55,10 +55,9 @@ class CpuControllerElement extends HTMLElement {
         let hide_those = this.getAttribute('hide');
         if (hide_those !== null) {
             let hide_elements = hide_those.split(',');
-            let acceptables = ['actions'];
             for (let hide_this of hide_elements) {
                 hide_this = hide_this.toLowerCase();
-                if (acceptables.indexOf(hide_this)>-1) {
+                if (acceptable_hide_atttributes.indexOf(hide_this)>-1) {
                     interface_classlist.add(`hide-${hide_this}`)
                 }
             }

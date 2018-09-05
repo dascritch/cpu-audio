@@ -349,11 +349,13 @@ a {
 .mode-compact .title,
 .mode-compact .line,
 .mode-compact .actions,
+.mode-compact .chapters,
 .mode-button .poster,
 .mode-button .about,
 .mode-button .actions,
-.mode-hidden 
- {
+.mode-button .chapters,
+.mode-hidden,
+.hide-chapters .chapters {
     display : none;
 }
 
