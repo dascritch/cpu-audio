@@ -256,13 +256,40 @@ let CPU_element_api = class {
                                         <strong>${cue.text}</strong>
                                         <span>${cuetime}</span>
                                     </a>`;
-                    self.elements['chapters'].append(line);
+                    chapters_element.append(line);
                 }
             }
         }
 
         if ((CPU_Audio.current_audiotag_playing !== null) && (self.audiotag.id === CPU_Audio.current_audiotag_playing.id) && (CPU_Audio.global_controller !== null)) {
             CPU_Audio.global_controller.build_chapters();
+        }
+
+    }
+    build_playlist() {
+        // Note that ONLY the global controller will display the playlist
+
+        let playlist_element = this.elements['playlist'];
+        playlist_element.innerHTML = '';
+
+        let current_playlist = CPU_Audio.find_current_playlist();
+        if (current_playlist === null) {
+            return;
+        }
+
+        for (let audiotag_id of current_playlist) {
+            let audiotag = document.getElementById(audiotag_id);
+            
+            let line = document.createElement('li');
+            line.classList.add('cue');
+
+            if (audiotag_id === this.audiotag.id) {
+                line.classList.add('active-cue');
+            }
+            line.innerHTML = `<a href="#${audiotag.id}&t=0" tabindex="0">
+                                <strong>${audiotag.dataset.title}</strong>
+                            </a>`;
+            playlist_element.append(line);
         }
 
     }

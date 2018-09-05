@@ -209,6 +209,18 @@ const CPU_Audio = {
             // it may be still constructing it
             controller.update_loading(seconds);
         }
+    },
+    find_current_playlist : function() {
+        let current_audiotag = this.global_controller.audiotag;
+        if (current_audiotag === null) {
+            return null;
+        }
+        for (let playlist_name in this.playlists) {
+            if (this.playlists[playlist_name].indexOf(current_audiotag.id) >= 0) {
+                return this.playlists[playlist_name];
+            }
+        }
+        return null;
     }
 
 }

@@ -303,7 +303,7 @@ a {
     border-right: 4px solid transparent;
 } 
 
-.chapters {
+.chapters, .playlist {
     display : flex;
     overflow : scoll;
     background : var(--cpu-background);
