@@ -23,7 +23,8 @@ Planned evolutions
 - [ ] [playlists in a page](https://github.com/dascritch/cpu-audio/issues/7)
     - [X] expose playlist in document.CPU API
     - [X] playlists in a page, play next audio in playlist parametrable via API
-    - [ ] show playlist in `<cpu-controller>`
+    - [X] show playlist in `<cpu-controller>`
+    - [ ] show playlist in current playing `<cpu-audio>`
 - [ ] DOM manipulation events :
     - [X] dynamic creation of a `<cpu-audio>` (not feasable because of `<audio controls>` needed)
     - [X] dynamic remove of a `<cpu-audio>`
