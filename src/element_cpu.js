@@ -221,16 +221,17 @@ let CPU_element_api = class {
     }
     build_chapters(event) {
         let self = this;
-
         if (event !== undefined) {
             // Chrome load <track> afterwards, so an event is needed, and we need to recatch our CPU api to this event
             self = CPU_Audio.find_container(event.target);
         }
 
+        /*
         if (self.element.tagName !== CpuAudioTagName) {
             // we will only build (now) the chapter list for <cup-audio>
             return;
         }
+        */
 
         let chapters_element = self.elements['chapters'];
         chapters_element.innerHTML = '';
@@ -259,6 +260,11 @@ let CPU_element_api = class {
                 }
             }
         }
+
+        if ((CPU_Audio.current_audiotag_playing !== null) && (self.audiotag.id === CPU_Audio.current_audiotag_playing.id) && (CPU_Audio.global_controller !== null)) {
+            CPU_Audio.global_controller.build_chapters();
+        }
+
     }
     build_controller() {
 

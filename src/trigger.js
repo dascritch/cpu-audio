@@ -106,6 +106,7 @@ const trigger = {
             CPU_Audio.global_controller.attach_audiotag_to_controller(audiotag);
             CPU_Audio.global_controller.audiotag = audiotag;
             CPU_Audio.global_controller.show_main();
+            CPU_Audio.global_controller.build_chapters();
         }
         audiotag.play();
     },

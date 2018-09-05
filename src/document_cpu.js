@@ -91,10 +91,11 @@ const CPU_Audio = {
             ].forEach( function(on){ 
                 audiotag.addEventListener(on, trigger.pause);
             });
+        } else {
+            audiotag.addEventListener('loadedmetadata', CPU_Audio.find_container(audiotag).build_chapters);
+            ///  TODO audiotag.addEventListener('loadedmetadata', CPU_Audio.find_container(audiotag).build_chapters);
         }
-
-        
-
+  
         // ask ASAP metadata about media
         // we have to set in HTML code preload="none" due to a very laggy behaviour in HTTP2
         // https://stackoverflow.com/questions/14479413/chrome-ignoring-audio-preload-metadata
@@ -105,8 +106,6 @@ const CPU_Audio = {
     },
 
     connect_audiotag : function(audiotag) {
-
-        audiotag.addEventListener('loadedmetadata', CPU_Audio.find_container(audiotag).build_chapters);
 
         CPU_Audio.recall_audiotag(audiotag);
 
