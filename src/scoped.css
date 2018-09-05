@@ -311,6 +311,7 @@ a {
     list-style: none;
     flex-direction: column; 
     padding : 0 var(--cpu-min-padding);
+    box-shadow: var(--cpu-inner-shadow);
 }
 .cue {
     border-top : 1px solid black;
