@@ -40,6 +40,8 @@ audio[controls] {
 }
 ```
 
+**Important Note** : Put only one and only one `<audio>` tag into `<cpu-audio>`, or you may have unexpected issues.
+
 It is recommended to set to the `<audio>` tag an `id` attribute for using anchoring feature.
 
 Attributes references
