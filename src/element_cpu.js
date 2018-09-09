@@ -34,7 +34,7 @@ let CPU_element_api = class {
         let end = 0;
         let buffered  = this.audiotag.buffered ;
         for (let segment=0 ; segment++; segment < buffered.length) {
-            end = buffered.end(segment)
+            end = buffered.end(segment);
         }
         this.update_line('elapsed', end);
     }
@@ -228,7 +228,7 @@ let CPU_element_api = class {
 
         /*
         if (self.element.tagName !== CpuAudioTagName) {
-            // we will only build (now) the chapter list for <cup-audio>
+            // we will only build (now) the chapter list for <cpu-audio>
             return;
         }
         */
