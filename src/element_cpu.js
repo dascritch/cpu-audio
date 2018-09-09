@@ -226,13 +226,6 @@ let CPU_element_api = class {
             self = CPU_Audio.find_container(event.target);
         }
 
-        /*
-        if (self.element.tagName !== CpuAudioTagName) {
-            // we will only build (now) the chapter list for <cpu-audio>
-            return;
-        }
-        */
-
         let chapters_element = self.elements['chapters'];
         chapters_element.innerHTML = '';
         if ((!self.audiotag.textTracks) || (self.audiotag.textTracks.length === 0)) {
