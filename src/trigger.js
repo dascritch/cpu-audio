@@ -217,5 +217,31 @@ const trigger = {
             return;
         }
         trigger.play(undefined, next_audiotag);
+    },
+    observer_cpuaudio : function(mutationsList) {
+        let container = document.CPU.find_container(mutationsList[0].target);
+
+        let audio_element = container.element.querySelector('audio')
+        if (audio_element === null) {
+            console.info('element audio was removed')
+            container.element.remove();
+            return;
+        }
+    },
+    observer_audio : function(mutationsList) {
+        let container = document.CPU.find_container(mutationsList[0].target);
+
+        // in case <track> changed/removed
+        container.build_chapters();
+
+        // in case attributes changed
+        container.complete_template();
+
+        let global_controller = CPU_Audio.global_controller;
+        if ((global_controller) && (container.audiotag.isEqualNode(global_controller.audiotag))) {
+            global_controller.build_chapters();
+            global_controller.complete_template();
+        }
     }
+
 }

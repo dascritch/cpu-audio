@@ -254,7 +254,11 @@ let CPU_element_api = class {
             }
         }
 
-        if ((CPU_Audio.current_audiotag_playing !== null) && (self.audiotag.id === CPU_Audio.current_audiotag_playing.id) && (CPU_Audio.global_controller !== null)) {
+        if (
+            (self.element.tagName === CpuAudioTagName) &&
+            (CPU_Audio.current_audiotag_playing !== null) &&
+            (self.audiotag.id === CPU_Audio.current_audiotag_playing.id) &&
+            (CPU_Audio.global_controller !== null)) {
             CPU_Audio.global_controller.build_chapters();
         }
 
