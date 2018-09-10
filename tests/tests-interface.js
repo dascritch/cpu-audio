@@ -146,5 +146,57 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 	
 	**/
 
+	QUnit.test( "Dynamically change elements, as removing track", function( assert ) {
+		playground.innerHTML = `<cpu-audio id="track_will_disapear"><audio id="will_lose_track" controls>
+									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+									<track />
+								</audio>
+							</cpu-audio>`;
+		let done = assert.async();
+		setTimeout(function() {
+			let component = playground.querySelector('#track_will_disapear');
+			let chapters = component.shadowRoot.querySelector('.chapters');
+			chapters.innerHTML="<li>Hello</li><li>World</li>"
+			component.querySelector('track').remove();
+			setTimeout(function() {
+				assert.equal(chapters.innerHTML, '', 'chapters purged');
+				done();
+			}, 100);
+		}, 100);
+	});
+
+	QUnit.test( "Dynamically change attribute, as component title", function( assert ) {
+		playground.innerHTML = `<cpu-audio title="hello" id="will_change"><audio id="void" controls>
+									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+								</audio>
+							</cpu-audio>`;
+		let done = assert.async();
+		setTimeout(function() {
+			let component = playground.querySelector('#will_change');
+			component.setAttribute('title', 'world');
+
+			setTimeout(function() {
+				assert.equal(component.shadowRoot.querySelector('.canonical').innerText, 'world', 'Display title changed');
+				done();
+			}, 100);
+		}, 100);
+	});
+
+	QUnit.test( "Dynamically change attribute, as audio tag dataset", function( assert ) {
+		playground.innerHTML = `<cpu-audio title="hello" id="will_change"><audio id="void" controls>
+									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+								</audio>
+							</cpu-audio>`;
+		let done = assert.async();
+		setTimeout(function() {
+			let component = playground.querySelector('#will_change');
+			component.querySelector('audio').dataset.title = 'world';
+
+			setTimeout(function() {
+				assert.equal(component.shadowRoot.querySelector('.canonical').innerText, 'world', 'Display title changed');
+				done();
+			}, 100);
+		}, 100);
+	});
 
 });

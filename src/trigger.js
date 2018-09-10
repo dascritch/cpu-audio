@@ -227,6 +227,7 @@ const trigger = {
             container.element.remove();
             return;
         }
+        container.element.copy_attributes_to_media_dataset();
     },
     observer_audio : function(mutationsList) {
         let container = document.CPU.find_container(mutationsList[0].target);

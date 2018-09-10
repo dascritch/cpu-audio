@@ -2,6 +2,16 @@
 // Controller with assigned audio element
 class CpuAudioElement extends CpuControllerElement {
 
+    copy_attributes_to_media_dataset() {
+        // copying personalized data to audio tag
+        for (let key in CPU_Audio.default_dataset) {
+            let value = this.getAttribute(key);
+            if (value !== null) {
+                this._audiotag.dataset[key.toLowerCase()] = value;
+            }
+        }        
+    }
+
     connectedCallback() {
 
         this._audiotag = this.querySelector(acceptable_selector);
@@ -9,13 +19,7 @@ class CpuAudioElement extends CpuControllerElement {
             return;
         }
 
-        // copying personalized data to audio tag
-        for (let key in CPU_Audio.default_dataset) {
-            let value = this.getAttribute(key);
-            if (value !== null) {
-                this._audiotag.dataset[key.toLowerCase()] = value;
-            }
-        }
+        this.copy_attributes_to_media_dataset();
 
         super.connectedCallback();
 
