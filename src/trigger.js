@@ -106,6 +106,9 @@ const trigger = {
             CPU_Audio.global_controller.attach_audiotag_to_controller(audiotag);
             CPU_Audio.global_controller.audiotag = audiotag;
             CPU_Audio.global_controller.show_main();
+            CPU_Audio.global_controller.build_chapters();
+            // exclusive feature of <cpu-controller>
+            CPU_Audio.global_controller.build_playlist();
         }
         audiotag.play();
     },
@@ -185,4 +188,60 @@ const trigger = {
             window.localStorage.setItem(audiotag.currentSrc, String(audiotag.currentTime));
         }
     },
+    ended : function(event, audiotag) {
+        if (audiotag === undefined) {
+            audiotag = event.target;
+        }
+        if (!('playlist' in audiotag.dataset)) {
+            return;
+        }
+        let playlist_name = audiotag.dataset.playlist;
+        let playlist = document.CPU.playlists[playlist_name];
+        if (playlist === undefined) {
+            console.warn(`Named playlist ${playlist_name} not created. WTF ?`);
+            return;
+        }
+        let playlist_index = playlist.indexOf(audiotag.id);
+        if (playlist_index === -1) {
+            console.warn(`Audiotag ${audiotag.id} not in playlist ${playlist_name}. WTF ?`);
+            return;
+        }
+        if ((playlist_index +1) === playlist.length) {
+            // end of playlist
+            return;
+        }
+        let next_id = playlist[playlist_index+1];
+        let next_audiotag = document.getElementById(next_id);
+        if (next_audiotag === null) {
+            console.warn(`Audiotag #${next_id} doesn't exists. WTF ?`);
+            return;
+        }
+        trigger.play(undefined, next_audiotag);
+    },
+    observer_cpuaudio : function(mutationsList) {
+        let container = document.CPU.find_container(mutationsList[0].target);
+
+        let audio_element = container.element.querySelector('audio')
+        if (audio_element === null) {
+            console.info('element audio was removed')
+            container.element.remove();
+            return;
+        }
+    },
+    observer_audio : function(mutationsList) {
+        let container = document.CPU.find_container(mutationsList[0].target);
+
+        // in case <track> changed/removed
+        container.build_chapters();
+
+        // in case attributes changed
+        container.complete_template();
+
+        let global_controller = CPU_Audio.global_controller;
+        if ((global_controller) && (container.audiotag.isEqualNode(global_controller.audiotag))) {
+            global_controller.build_chapters();
+            global_controller.complete_template();
+        }
+    }
+
 }

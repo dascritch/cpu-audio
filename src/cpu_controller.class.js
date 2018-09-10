@@ -45,9 +45,23 @@ class CpuControllerElement extends HTMLElement {
 
         this.CPU.attach_audiotag_to_controller(this.CPU.audiotag);
 
+        // construct aspects
+        let interface_classlist = this.CPU.elements['interface'].classList;
+
         let mode = this.getAttribute('mode');
         mode = mode !== null ? mode : 'default'
-        this.CPU.elements['interface'].classList.add(`mode-${mode}`)
+        interface_classlist.add(`mode-${mode}`)
+
+        let hide_those = this.getAttribute('hide');
+        if (hide_those !== null) {
+            let hide_elements = hide_those.split(',');
+            for (let hide_this of hide_elements) {
+                hide_this = hide_this.toLowerCase();
+                if (acceptable_hide_atttributes.indexOf(hide_this)>-1) {
+                    interface_classlist.add(`hide-${hide_this}`)
+                }
+            }
+        }
     }
 
     disconnectedCallback() {

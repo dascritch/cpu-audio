@@ -47,7 +47,7 @@
 <div>
 	<p>You can point to a moment of any audio of this page via a <code>&lt;a href&gt;</code> tag, even outside from this page.</p>
 
-	<cpu-audio 
+	<cpu-audio
 		title="Ex0085 Le Mystère Enigma"
 		poster="https://cpu.dascritch.net/public/Images/Emissions/.1805-Ex0085-Enigma_m.jpg"
 		canonical="https://cpu.dascritch.net/post/2018/05/17/Ex0085-Histoires-de-la-cryptographie%2C-2%C3%A8me-partie-%3A-Le-myst%C3%A8re-d-Enigma"
@@ -165,17 +165,6 @@
 	</cpu-audio>
 </div>
 
-<div>
-	<code>mode="hidden"</code>.<br />
-	Why ? <a href="#tests">For TESTS</a>
-	<cpu-audio mode="hidden">
-		<audio controls id="b3">
-			<source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
-		</audio>
-	</cpu-audio>
-</div>
-
-
 <h3 id="personnalization">Personnalization</h3>
 <div id="personnalization-demo">
 	With CSS variables, you can change some aspects, even only in a region of your page.
@@ -199,6 +188,47 @@
 		</audio>
 	</cpu-audio>
 </div>
+
+<h3 id="playlists">Playlists</h3>
+<div>
+	<p>
+		You can create playlists. When a player is ending, the next one in its playlists starts.
+	</p>
+	<cpu-audio 
+		playlist="demo"
+		title="micro @HalluFMR #36 : Placebo"
+		poster="https://dascritch.net/vrac/.blog2/radio/.1409-Hallucinarium-FMR_s.jpg"
+		canonical="https://dascritch.net/post/2015/05/27/micro-%40HalluFMR-36-%3A-Placebo">
+		<audio controls id="pl1">
+			<source src="https://dascritch.net/vrac/Emissions/AtHalluFMR/podcast/36-AtHalluFMR%2827-05-15%29.mp3" type="audio/mpeg">
+		</audio>
+	</cpu-audio>
+	<cpu-audio
+		playlist="demo"
+		title="micro @HalluFMR #38 : Sensationnel"
+		poster="https://dascritch.net/vrac/.blog2/radio/1411-AtHalluFmr/.1505-PassageF3_m.jpg"
+		canonical="https://dascritch.net/post/2015/06/10/micro-%40HalluFMR-38-%3A-Sensationnel">
+		<audio controls id="pl2">
+			<source src="http://dascritch.net/vrac/Emissions/AtHalluFMR/podcast/38-AtHalluFMR(10-06-15).mp3" type="audio/mpeg">
+		</audio>
+	</cpu-audio>
+	<cpu-audio
+		playlist="demo"
+		title="micro @HalluFMR #40 : Conditions Générales"
+		poster="https://dascritch.net/vrac/.blog2/radio/.1409-Hallucinarium-FMR_s.jpg"
+		canonical="https://dascritch.net/post/2015/06/24/micro-%40HalluFMR-40-%3A-Conditions-G%C3%A9n%C3%A9rales">
+		<audio controls id="pl3">
+			<source src="http://dascritch.net/vrac/Emissions/AtHalluFMR/podcast/40-AtHalluFMR(24-06-15).mp3" type="audio/mpeg">
+		</audio>
+	</cpu-audio>
+	<p>
+		Note that the global controller (see below) is able to show the current playlist, and highlight the playing media.
+	</p>
+	<p>
+		// Maybe the current playing cpu-audio will also be able to display the playlist
+	</p>
+</div>
+
 
 
 <h3 id="cpu_controller">Global page controller</h3>

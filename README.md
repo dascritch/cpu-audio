@@ -40,6 +40,7 @@ Features
 * add an UI, customizable via attributes and CSS variables ;
 * recall the player where it was unexpectedly left (click on a link when playing) ;
 * play only one sound in the page ;
+* playlist with auto-advance ;
 * global `<cpu-controller>` .
 
 It could have been done via polyfills or frameworks, but I wanted a plain standard, vanilla javascript, easy to install and configure.

@@ -40,6 +40,8 @@ audio[controls] {
 }
 ```
 
+**Important Note** : Put only one and only one `<audio>` tag into `<cpu-audio>`, or you may have unexpected issues.
+
 It is recommended to set to the `<audio>` tag an `id` attribute for using anchoring feature.
 
 Attributes references
@@ -55,7 +57,11 @@ Some attributes enhance the component :
     * `compact` : play/pause button and time indication,
     * `button` : play/pause button only,
     * `hidden` : nothing to show ;
+* `hide="<string>"` : hide some features, comma-separated :
+    * `actions` : the share button
+    * `chapters` : the chapters list
 * `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page) ;
+* `playlist="<string>"` : add this media in a named playlist, play the next one when ended.
 
 
 How to link
@@ -102,15 +108,15 @@ variable | description | default value
 --|--|--
 `--cpu-background`  | Background, except playing or in error      | `#555`
 `--cpu-color`       | Color, except playing                       | `#ddd`
+`--cpu-elapse-width` | Time indicator width                       | `185px` (`160px` under 640px width, `80px` under 480px, `0` under 320px)
 `--cpu-error-background` | Background when there is a media error | `#a00`
 `--cpu-error-color` | Color when there is a media error           | `#ff7`
 `--cpu-font-family` | Font families                               | `Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif`
 `--cpu-font-size`   | Font size                                   | `15px`
-`--cpu-elapse-width` | Time indicator width                       | `185px` (`160px` under 640px width, `80px` under 480px, `0` under 320px)
 `--cpu-height`      | Height and width of the square buttons      | `64px` (`32px` under 640px width)
+`--cpu-inner-shadow` | Shadow between horizontal panels           | `inset 0px 5px 10px -5px black`
 `--cpu-playing-background` | Background while playing             | `#444`
 `--cpu-playing-color` | Color while playing                       | `#fff`
 `--cpu-popup-background` | Background for the time pointer        | `#aaa`
 `--cpu-popup-color` | Text color for the time pointer             | `#333`
-
 

@@ -4,10 +4,16 @@ const CPU_Audio = {
     only_play_one_audiotag : true,
     current_audiotag_playing : null,
     global_controller : null,
+    // to add attributes for unnamed <audio>
     dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
     count_element : 0,
-    convert : convert, // Needed for tests
-    trigger : trigger, // Needed for tests
+    // playlists
+    playlists : {},
+    advance_in_playlist : true,
+
+    // Exposing internals needed for tests
+    convert : convert, 
+    trigger : trigger,
 
     // NOTE : we will need to refresh this when the <head> of the host page changes
     default_dataset : {
@@ -43,7 +49,8 @@ const CPU_Audio = {
                     return header_element.content;
                 }
                 return null;
-            }()
+            }(),
+        'playlist' : null,
     },
 
     recall_stored_play : function(event) {
@@ -61,6 +68,7 @@ const CPU_Audio = {
     recall_audiotag : function(audiotag) {
         audiotag.addEventListener('loadedmetadata', CPU_Audio.recall_stored_play);
         audiotag.addEventListener('play', trigger.play_once);
+        audiotag.addEventListener('ended', trigger.ended);
         // audiotag.addEventListener('progress', trigger.play_once);
         // those ↓ for PHRACKING SAFARI
         audiotag.addEventListener('ready', CPU_Audio.recall_stored_play);
@@ -83,10 +91,11 @@ const CPU_Audio = {
             ].forEach( function(on){ 
                 audiotag.addEventListener(on, trigger.pause);
             });
+        } else {
+            audiotag.addEventListener('loadedmetadata', CPU_Audio.find_container(audiotag).build_chapters);
+            ///  TODO audiotag.addEventListener('loadedmetadata', CPU_Audio.find_container(audiotag).build_chapters);
         }
-
-        
-
+  
         // ask ASAP metadata about media
         // we have to set in HTML code preload="none" due to a very laggy behaviour in HTTP2
         // https://stackoverflow.com/questions/14479413/chrome-ignoring-audio-preload-metadata
@@ -98,14 +107,21 @@ const CPU_Audio = {
 
     connect_audiotag : function(audiotag) {
 
-        audiotag.addEventListener('loadedmetadata', CPU_Audio.find_container(audiotag).build_chapters);
-
         CPU_Audio.recall_audiotag(audiotag);
 
         // hide native controls
         audiotag.hidden = true;
         // PHRACK SAFARI
         audiotag.removeAttribute('controls');
+
+        // playlist 
+        if (typeof(audiotag.dataset.playlist) === 'string') {
+            let playlist_name = audiotag.dataset.playlist;
+            if (!(playlist_name in CPU_Audio.playlists)) {
+                CPU_Audio.playlists[playlist_name] = []
+            }
+            CPU_Audio.playlists[playlist_name].push(audiotag.id)
+        }
     },
 
     jumpIdAt : function(hash, timecode, callback_fx) {
@@ -193,6 +209,18 @@ const CPU_Audio = {
             // it may be still constructing it
             controller.update_loading(seconds);
         }
+    },
+    find_current_playlist : function() {
+        let current_audiotag = this.global_controller.audiotag;
+        if (current_audiotag === null) {
+            return null;
+        }
+        for (let playlist_name in this.playlists) {
+            if (this.playlists[playlist_name].indexOf(current_audiotag.id) >= 0) {
+                return this.playlists[playlist_name];
+            }
+        }
+        return null;
     }
 
 }

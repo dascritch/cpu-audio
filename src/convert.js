@@ -1,5 +1,5 @@
 const convert = {
-    _units : {
+    units : {
         'd' : 86400,
         'h' : 3600,
         'm' : 60,
@@ -17,10 +17,10 @@ const convert = {
     },
     SubunitTimeInSeconds : function(givenTime) {
         let seconds = 0;
-        for(let key in convert._units) {
-            if ( (convert._units.hasOwnProperty(key)) && (givenTime.indexOf(key) !== -1) ) {
+        for(let key in convert.units) {
+            if ( (convert.units.hasOwnProperty(key)) && (givenTime.indexOf(key) !== -1) ) {
                 let atoms = givenTime.split(key);
-                seconds += Number(atoms[0].replace(/\D*/g,'' )) * convert._units[key];
+                seconds += Number(atoms[0].replace(/\D*/g,'' )) * convert.units[key];
                 givenTime = atoms[1];
             }
         }
@@ -38,9 +38,9 @@ const convert = {
     SecondsInTime : function(givenSeconds) {
         let converted = '';
         let inned = false;
-        for(let key in convert._units) {
-            if (convert._units.hasOwnProperty(key)) {
-                let multiply = convert._units[key];
+        for(let key in convert.units) {
+            if (convert.units.hasOwnProperty(key)) {
+                let multiply = convert.units[key];
                 if ((givenSeconds >= multiply) || (inned)) {
                     inned = true;
                     let digits = Math.floor(givenSeconds / multiply);
@@ -54,9 +54,9 @@ const convert = {
     SecondsInColonTime : function(givenSeconds) {
         let converted = '';
         let inned = false;
-        for(let key in convert._units) {
-            if (convert._units.hasOwnProperty(key)) {
-                let multiply = convert._units[key];
+        for(let key in convert.units) {
+            if (convert.units.hasOwnProperty(key)) {
+                let multiply = convert.units[key];
                 if ((givenSeconds >= multiply) || (inned)) {
                     inned = true;
                     let digits = Math.floor(givenSeconds / multiply);

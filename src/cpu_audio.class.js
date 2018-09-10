@@ -13,15 +13,28 @@ class CpuAudioElement extends CpuControllerElement {
         for (let key in CPU_Audio.default_dataset) {
             let value = this.getAttribute(key);
             if (value !== null) {
-                this._audiotag.dataset[key] = value;
+                this._audiotag.dataset[key.toLowerCase()] = value;
             }
         }
+
         super.connectedCallback();
 
         CPU_Audio.connect_audiotag(this.CPU.audiotag);
+    
+        this.observer_cpuaudio = new MutationObserver(trigger.observer_cpuaudio);
+        this.observer_cpuaudio.observe(this, {
+            childList: true,
+            attributes : true
+        });
 
-        // If we didn't have a timecode hash at loading document, try to recall previous interrupted player
-        //CPU_Audio.recall_stored_play({target : this.CPU.audiotag});
+        this.observer_audio = new MutationObserver(trigger.observer_audio);
+        this.observer_audio.observe(this, {
+            childList: true,
+            attributes : true,
+            subtree : true
+        });
+
+        // this.observer.disconnect();
 
     }
 
