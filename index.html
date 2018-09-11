@@ -40,9 +40,17 @@
 			box-shadow: black 2px 2px 2px;
 		}
 
-		div p, div ul, div ol {
+		div p, div ul, div ol, div pre, h1, h2, h3 {
 			margin : 0 auto;
 			max-width : 80em;
+		}
+
+		h1, h2, h3 {
+			margin : 2em auto 1em;
+			padding : 10px;
+			background : #333;
+			color : #CCC;
+			text-align: center
 		}
 	</style>
 
@@ -50,10 +58,10 @@
 
 <body>
 <h1>
-	Presentation of <a href="https://github.com/dascritch/cpu-audio">&lt;CPU-Audio&gt;</a> project. 
+	Presentation of &lt;CPU-Audio&gt; project. 
 </h1>
 
-<div><p>An audio web-component to provide an user-interface, timecoded links and some other features.</p>
+<div><p>An audio web-component to provide an user-interface, timecoded links and some other features. <a href="https://github.com/dascritch/cpu-audio">Open-source</p></p>
 	</div>
 
 <div class="cpu-audio-without-webcomponents" style="border : 4px red solid; padding : 4px;">
@@ -65,7 +73,7 @@
 </div>
 
 
-<h2>Features</h2>
+<h3>Features</h3>
 <div>
 	<ul>
 		<li><a href="#hashlinks">Link moments in audio into html pages</a></li>
@@ -324,16 +332,14 @@
 	<p>
 	Browsers that don't support enough in webcomponents must display the &lt;audio controls&gt; tag as follow :
 	</p>
-</div>
 
-<pre>
-<style class="showcode">
+<pre><style class="showcode">
 	audio[controls] {
 		display : block;
 		width : 100%;
 	}
-</style>
-</pre>
+</style></pre>
+</div>
 
 </body>
 </html>
