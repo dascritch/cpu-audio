@@ -53,6 +53,10 @@
 			text-align: center;
 			box-shadow: grey 2px -2px 2px;
 		}
+
+		pre style {
+			overflow : scroll;
+		}
 	</style>
 
 </head>
@@ -230,12 +234,12 @@
 <div id="personnalization-demo">
 	<p>With CSS variables, you can change some aspects, even only in a region of your page.</p>
 	<pre><style class="showcode" scoped>
-		#personnalization-demo {
-		--cpu-background : yellow;
-		--cpu-color : green;
-		--cpu-playing-background : yellow;
-		--cpu-playing-color : green;
-		}
+#personnalization-demo {
+	--cpu-background : yellow;
+	--cpu-color : green;
+	--cpu-playing-background : yellow;
+	--cpu-playing-color : green;
+}
 	</style></pre>
 	<cpu-audio
 		title="Au carnaval avec Samba Résille (2003)"
@@ -333,10 +337,10 @@
 	</p>
 
 <pre><style class="showcode">
-	audio[controls] {
-		display : block;
-		width : 100%;
-	}
+audio[controls] {
+	display : block;
+	width : 100%;
+}
 </style></pre>
 </div>
 
