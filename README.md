@@ -13,32 +13,6 @@ Some links :
 
 Copyright © 2014-2018 Xavier "dascritch" Mouton-Dubosc ; Licence GPL 3
 
-
-Features
-----------
-
-* standards first, de-polyfillable, future-proof ;
-* hyperlink `<audio>` tags to a specific time, [Media Fragment standards](https://www.w3.org/TR/media-frags/) ;
-* add an UI, customizable via attributes and CSS variables ;
-* recall the player where it was unexpectedly left (click on a link when playing) ;
-* play only one sound in the page ;
-* playlist with auto-advance ;
-* global `<cpu-controller>` .
-
-It could have been done via polyfills or frameworks, but I wanted a plain standard, vanilla javascript, easy to install and configure.
-
-Beware, WebComponents is a to-be-implemented-elsewhere standard. Will work mainly on : 
-
-* Google Chrome
-* Firefox Nightly (63+, not yet for 61)
-* Safari Mac
-
-To be tested on :
-
-* Safari iOS
-* Edge
-
-
 Purpose
 -------
 
@@ -54,6 +28,33 @@ During the page life :
 * if an `<audio controls>` anchor is linked with a timecode, the service will play this tag at this timecode ;
 * no cacophony : when a `<audio controls>` starts, it will stop any other `<audio controls>` in the page ;
 * if you have a `<cpu-controller>`, this one will clone the playing `<cpu-audio>` interface.
+
+
+Features
+----------
+
+* hyperlink `<audio>` tags to a specific time, [Media Fragment standards](https://www.w3.org/TR/media-frags/) ;
+* standards first, future-proof ;
+* pure vanilla, no dependencies to any framework ;
+* progressive enhancement ; 
+* add an UI, customizable via attributes and CSS variables ;
+* recall the player where it was unexpectedly left (click on a link when playing) ;
+* play only one sound in the page ;
+* playlist with auto-advance ;
+* global `<cpu-controller>` .
+
+It could have been done via polyfills or frameworks, but I wanted a plain standard, vanilla javascript, easy to install and configure.
+
+Beware, WebComponents is a to-be-implemented-elsewhere standard. Will work mainly on : 
+
+* Google Chrome
+* Firefox Nightly (63 +)
+* Safari Mac
+
+To be tested on :
+
+* Safari iOS
+* Edge
 
 
 Permitted hash notations
