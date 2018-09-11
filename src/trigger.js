@@ -216,6 +216,7 @@ const trigger = {
             console.warn(`Audiotag #${next_id} doesn't exists. WTF ?`);
             return;
         }
+        CPU_Audio.seekElementAt(next_audiotag, 0);
         trigger.play(undefined, next_audiotag);
     },
     observer_cpuaudio : function(mutationsList) {
