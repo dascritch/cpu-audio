@@ -7,13 +7,14 @@ Author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 
 Version : 5 BETA
 
-Rewrite of the [ondemiroir-audio-tag](https://github.com/dascritch/ondemiroir-audio-tag) towards WebComponents, which is an extension of [timecodehash](https://github.com/dascritch/timecodehash).
-
 Some links :
-* Informations (in french) : <https://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore>
 * Demonstration page : https://dascritch.net/vrac/.projets/audiowc/index.html
+* Informations (in french) : <https://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore>
+* The timecodehash.js project, first implementation : <https://github.com/dascritch/timecodehash>
+* Previous version of the projet, ondemiroir-audio-tag : <https://github.com/dascritch/ondemiroir-audio-tag>
 
 Copyright © 2014-2018 Xavier "dascritch" Mouton-Dubosc ; Licence GPL 3
+
 
 Purpose
 -------
