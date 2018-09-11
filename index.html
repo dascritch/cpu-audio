@@ -8,6 +8,8 @@
 	<script src="./dist/cpu-audio.js" async></script>
 
 	<style type="text/css">
+		/* Useful */
+
 		style.showcode {
 			display : block;
 		}
@@ -16,36 +18,81 @@
 		.cpu-audio-with-webcomponents .cpu-audio-without-webcomponents {
 			display : none;
 		}
+
+
+		/* Presentation only */
+
+		body {
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 1em ;
+			line-height : 1.5em;
+		}
+
+		code, pre, kbd {
+			font-family: 'Lucida Console', Monaco, monospace;
+		}
+
+		kbd {
+			background: #f5f5dc;
+			padding: 2px 4px;
+			border: 1px solid grey;
+			font-size: 0.8em;
+			box-shadow: black 2px 2px 2px;
+		}
+
+		div p, div ul, div ol {
+			margin : 0 auto;
+			max-width : 80em;
+		}
 	</style>
 
 </head>
 
 <body>
 <h1>
-	Page demo for <a href="https://github.com/dascritch/cpu-audio">CPU-Audio</a> project. 
+	Presentation of <a href="https://github.com/dascritch/cpu-audio">&lt;CPU-Audio&gt;</a> project. 
 </h1>
+
+<div><p>An audio web-component to provide an user-interface, timecoded links and some other features.</p>
+	</div>
 
 <div class="cpu-audio-without-webcomponents" style="border : 4px red solid; padding : 4px;">
 	<h2>Your browser DOESN'T support WebComponent fairly enough.</h2>
 	<p>
-		Following examples are not fully functionnal, as the interface is not shown and the browser display its native player.
+		Following examples are <strong>not fully functionnal</strong>, as the interface is not shown and the browser display its native player. This is intentional.<br />
 		Only the hash-links functions works.
 	</p>
 </div>
-<div>
-	<p class="cpu-audio-with-webcomponents">Your browser supports WebComponent.</p>
 
-	<p><a href="index.html">This is a standard link to the page</a>, a sound will start if you inadvently quited the page.</p>
-	<p><a href="index.html#emission&t=20m45s">This link starts the below player at 20:45</a></p>
+
+<h2>Features</h2>
+<div>
+	<ul>
+		<li><a href="#hashlinks">Link moments in audio into html pages</a></li>
+		<li><a href="#size">Size constraints</a></li>
+		<li><a href="#modes">Modes</a></li>
+		<li><a href="#personnalization">Personnalization</a></li>
+		<li><a href="#playlists">Playlists</a></li>
+		<li><a href="#cpu_controller">Global page controller</a></li>
+		<li><a href="#keys">Keyboard controls</a></li>
+		<li><a href="#tests">Tests</a></li>
+		<li><a href="#fallbacks">Fallbacks</a></li>
+	</ul>
 
 	<p>See <a href="https://github.com/dascritch/cpu-audio">README.md on this project's github</a></p>
 </div>
 
 
+
 <h3 id="hashlinks">Link moments in audio into html pages</h3>
 
 <div>
-	<p>You can point to a moment of any audio of this page via a <code>&lt;a href&gt;</code> tag, even outside from this page.</p>
+	<p>You can point to a moment of any audio of this page via a <code>&lt;a href&gt;</code> tag, even outside from this page&nbsp;:</p>
+
+	<ul>
+		<li><a href="index.html">This is a standard link to the page</a>, a sound will start if you inadvently quited the page.</li>
+		<li><a href="index.html#emission&t=20m45s">This link starts the below player at 20:45</a></li>
+	</ul>
 
 	<cpu-audio
 		title="Ex0085 Le Mystère Enigma"
@@ -60,47 +107,49 @@
 		</audio>
 	</cpu-audio>
 
-	Chapters (click on timecodes. This section for demo purposes is static, not generated) :
+	<p>
+		Chapters (↓ This section for demo purposes is static, not generated) :
+	</p>
 	<ol>
 		<li>
-			<a href="https://cpu.dascritch.net/post/2018/05/18/Bonjour-%C3%A0-toi%2C-Enfant-du-Futur-Imm%C3%A9diat-%3A-Des-chiffres-et-des-lettres">Bonjour à toi, Enfant du Futur Immédiat : Des chiffres et des lettres</a> —
-			<a href="#emission&amp;t=1m17s">(1:17)</a>
+			<a href="#emission&amp;t=1m17s">Bonjour à toi, Enfant du Futur Immédiat : Des chiffres et des lettres —
+			(1:17)</a>
 		</li>
 		<li>
-			<a href="https://cpu.dascritch.net/post/2018/05/22/Lexique-%3A-Casser-un-chiffrement">Lexique : Casser un chiffrement</a> —
-			<a href="#emission&amp;t=6m28s">(6:28)</a>
+			<a href="#emission&amp;t=6m28s">Lexique : Casser un chiffrement —
+			(6:28)</a>
 		</li>
 		<li>
-			♪ The Limp Twins - <em>If it ain't broke... Break it !</em> —
-			<a href="#emission&amp;t=9m16s">(9:16)</a>
+			<a href="#emission&amp;t=9m16s">♪ The Limp Twins - <em>If it ain't broke... Break it !</em> —
+			(9:16)</a>
 		</li>
 		<li>
-			<a href="https://cpu.dascritch.net/post/2018/05/23/Plantage-La-chute-de-l-Empire-du-chiffre-Allemand">Plantage : La chute de l'Empire du chiffre Allemand</a> —
-			<a href="#emission&amp;t=12m45s">(12:45)</a>
+			<a href="#emission&amp;t=12m45s">Plantage : La chute de l'Empire du chiffre Allemand —
+			(12:45)</a>
 		</li>
 		<li>
-			<a href="https://cpu.dascritch.net/post/2018/05/25/Artefact-du-pass%C3%A9-%3A-La-machine-Enigma">Artefact du passé : La machine Enigma</a> —
-			<a href="#emission&amp;t=20m45s">(20:45)</a>
+			<a href="#emission&amp;t=20m45s">Artefact du passé : La machine Enigma —
+			(20:45)</a>
 		</li>
 		<li>
-			♪ Clair obscur - <em>Es war</em> —
-			<a href="#emission&amp;t=29m22s">(29:22)</a>
+			<a href="#emission&amp;t=29m22s">♪ Clair obscur - <em>Es war</em> —
+			(29:22)</a>
 		</li>
 		<li>
-			<a href="https://cpu.dascritch.net/post/2018/05/28/Histoire-%3A-Les-g%C3%A9nies-du-Biuro-Szyfr%C3%B3w">Histoire : Les génies du Biuro Szyfrów</a> —
-			<a href="#emission&amp;t=33m19s">(33:19)</a>
+			<a href="#emission&amp;t=33m19s">Histoire : Les génies du Biuro Szyfrów —
+			(33:19)</a>
 		</li>
 		<li>
-			<a href="https://cpu.dascritch.net/post/2018/05/29/Ainsi-naquit-%3A-Benchley-Park%2C-le-premier-campus-technologique">Ainsi naquit : Benchley Park, le premier campus technologique</a> —
-			<a href="#emission&amp;t=38m35s">(38:35)</a>
+			<a href="#emission&amp;t=38m35s">Ainsi naquit : Benchley Park, le premier campus technologique —
+			(38:35)</a>
 		</li>
 		<li>
-			♪ Alexandre Desplat - <em>The imitation game (opening)</em> —
-			<a href="#emission&amp;t=47m27s">(47:27)</a>
+			<a href="#emission&amp;t=47m27s">♪ Alexandre Desplat - <em>The imitation game (opening)</em> —
+			(47:27)</a>
 		</li>
 		<li>
-			<a href="https://cpu.dascritch.net/post/2018/05/29/Le-gourou-%3A-Alan-Turing">Le gourou : Alan Turing</a> —
-			<a href="#emission&amp;t=50m3s">(50:03)</a>
+			<a href="#emission&amp;t=50m3s">Le gourou : Alan Turing —
+			(50:03)</a>
 		</li>
 	</ol>
 </div>
@@ -109,7 +158,7 @@
 <h3 id="size">Size constraints</h3>
 
 <div>
-	Aspect changes when page's width is under 640px and 320px wide.
+	<p>Aspect changes when page's width is under 640px and 320px wide. The element must be able to insert itself in any width constraints, in liquid responsive web-design fashion.</p>
 	<cpu-audio 
 		title="Au carnaval avec Samba Résille (2003)"
 		poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
@@ -124,7 +173,7 @@
 </div>
 
 <div style="max-width:600px;margin :0 auto;">
-	We are waiting @element implementation to complete this. The parent element is width-constraigned, so the webcomponent
+	<p>We are waiting @element implementation to complete this. The parent element is width-constraigned, so the webcomponent</p>
 	<cpu-audio 
 		title="Montage worst of SWE 2009"
 		poster="https://dascritch.net/vrac/.blog2/radio/swe-saison5.png"
@@ -141,8 +190,8 @@
 
 <h3 id="modes">Modes</h3>
 <div>
-	<code>mode="compact"</code>.<br />
-	No needs for <code>title=""</code>, <code>poster=""</code>, <code>canonical=""</code> or <code>twitter=""</code> attributes <em>excepted</em> when you also use <code>&lt;cpu-controller&gt;</code>.
+	<p><strong><code>mode="compact"</code></strong>.<br />
+	No needs for <code>title=""</code>, <code>poster=""</code>, <code>canonical=""</code> or <code>twitter=""</code> attributes <em>excepted</em> when you also use <code>&lt;cpu-controller&gt;</code>.</p>
 	<cpu-audio  mode="compact"
 		canonical="https://dascritch.net/post/2016/12/27/35-ans-de-Radio-FMR%2C-et-elle-dure-encore"
 		title="35 ans de Radio FMR, et elle dure encore"
@@ -155,19 +204,22 @@
 </div>
 
 <div>
-	<code>mode="button"</code>.<br />
+	<p><strong><code>mode="button"</code></strong>.<br />
 	The component SHOULD NOT reduce under 640px wide.<br />
 	No needs for <code>title=""</code>, <code>poster=""</code>, <code>canonical=""</code> or <code>twitter=""</code> attributes <em>excepted</em> when you also use <code>&lt;cpu-controller&gt;</code>.
+	</p>
 	<cpu-audio mode="button">
 		<audio controls id="b2">
 			<source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
 		</audio>
 	</cpu-audio>
+
+	<p>Other modes exists, and some feature may be hidden. See INSTALL.md</p>
 </div>
 
 <h3 id="personnalization">Personnalization</h3>
 <div id="personnalization-demo">
-	With CSS variables, you can change some aspects, even only in a region of your page.
+	<p>With CSS variables, you can change some aspects, even only in a region of your page.</p>
 	<pre>
 	<style class="showcode" scoped>
 		#personnalization-demo {
@@ -192,7 +244,7 @@
 <h3 id="playlists">Playlists</h3>
 <div>
 	<p>
-		You can create playlists. When a player is ending, the next one in its playlists starts.
+		You can create playlists on a page, one or more. When a player is ending, the next one in its playlists starts.
 	</p>
 	<cpu-audio 
 		playlist="demo"
@@ -233,34 +285,45 @@
 
 <h3 id="cpu_controller">Global page controller</h3>
 <div>
-	↓ Controller only on the playing / last played <code>&lt;audio&gt;</code>
+	<p>↓ Controller only on the playing / last played <code>&lt;audio&gt;</code></p>
 	<cpu-controller>
 	</cpu-controller>
 </div>
 
 <h3 id="keys">Keyboard controls</h3>
-<ul>
-	<li> <kbd>Space</kbd> : play/pause audio</li>
-	<li> <kbd>Enter</kbd> : play/pause audio (only on play/pause button)</li>
-	<li> <kbd>←</kbd> : -5 seconds</li>
-	<li> <kbd>→</kbd> : +5 seconds</li>
-	<li> <kbd>↖</kbd> : back to start</li>
-	<li> <kbd>End</kbd> : to the end, finish playing</li>
-	<li> <kbd>Escape</kbd> : back to start, stop playing</li>
-</ul>
+<div>
+	<p>
+		When the webcomponent has the focus, some keys are used to pilot it.
+	</p>
+	<ul>
+		<li> <kbd>Space</kbd> : play/pause audio</li>
+		<li> <kbd>Enter</kbd> : play/pause audio (only on play/pause button)</li>
+		<li> <kbd>←</kbd> : -5 seconds</li>
+		<li> <kbd>→</kbd> : +5 seconds</li>
+		<li> <kbd>↖</kbd> : back to start</li>
+		<li> <kbd>End</kbd> : to the end, finish playing, if in playlist, start the next song</li>
+		<li> <kbd>Escape</kbd> : back to start, stop playing</li>
+	</ul>
+</div>
 
 <h3 id="tests">Tests</h3>
-
-<ul>
-	<li><a href="./tests-browser.html">Browser compliance and implementation tests</a></li>
-	<li><a href="./tests-minimal.html">Minimum services, as hash links</a></li>
-	<li><a href="./tests-interface.html">Graphic interface, if WebComponent fully supported</a></li>
-</ul>
+<div>
+	<p>
+		As I'm not perfect, some tests were written for non-regressions, conformity and check feature support by browsers.
+	</p>
+	<ul>
+		<li><a href="./tests-browser.html">Browser compliance and implementation tests</a></li>
+		<li><a href="./tests-minimal.html">Minimum services, as hash links</a></li>
+		<li><a href="./tests-interface.html">Graphic interface, if WebComponent fully supported</a></li>
+	</ul>
+</div>
 
 
 <h3 id="fallbacks">Fallbacks</h3>
 <div>
-	Browsers that don't support enough in webcomponents must display the &lt;audio controls&gt; tag as follow : 
+	<p>
+	Browsers that don't support enough in webcomponents must display the &lt;audio controls&gt; tag as follow :
+	</p>
 </div>
 
 <pre>

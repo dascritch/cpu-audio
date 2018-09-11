@@ -1,9 +1,11 @@
 WebComponent version of CPU-Audio
 =================================
 
+An audio web-component to provide an user-interface, timecoded links and some other features.
+
 Author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 
-Version : 5 ALPHA
+Version : 5 BETA
 
 Rewrite of the [ondemiroir-audio-tag](https://github.com/dascritch/ondemiroir-audio-tag) towards WebComponents, which is an extension of [timecodehash](https://github.com/dascritch/timecodehash).
 
