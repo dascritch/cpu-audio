@@ -217,7 +217,7 @@ const trigger = {
             console.warn(`Audiotag #${next_id} doesn't exists. WTF ?`);
             return;
         }
-        // Ply the next media in playlist, starting at zero
+        // Play the next media in playlist, starting at zero
         CPU_Audio.seekElementAt(next_audiotag, 0);
         trigger.play(undefined, next_audiotag);
     },

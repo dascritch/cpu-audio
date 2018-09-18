@@ -28,12 +28,12 @@ Planned evolutions
 - [ ] DOM manipulation events :
     - [X] dynamic creation of a `<cpu-audio>` (not feasable because of `<audio controls>` needed)
     - [X] dynamic remove of a `<cpu-audio>`
-    - [ ] [remove of a `<cpu-audio>` on a `<audio>` remove](https://github.com/dascritch/ondemiroir-audio-tag/issues/8)
-    - [ ] [dynamic modification of `<audio>`](https://github.com/dascritch/cpu-audio/issues/13)
+    - [X] [remove of a `<cpu-audio>` on a `<audio>` remove](https://github.com/dascritch/ondemiroir-audio-tag/issues/8)
+    - [X] [dynamic modification of `<audio>`](https://github.com/dascritch/cpu-audio/issues/13)
     - [ ] dynamic modification of `<head>`
     - [ ] dynamic modification of window.document.location.href (webapp)
 - [ ] [support of end point timecode](https://github.com/dascritch/cpu-audio/issues/11)
-- [ ] [parameters to not put share button](https://github.com/dascritch/cpu-audio/issues/15)
+- [X] [parameters to not put share button](https://github.com/dascritch/cpu-audio/issues/15)
 - [ ] deploiement on <http://cpu.pm> 
     - [ ] [public announcement](https://www.webcomponents.org/publish)
 - [ ] `<video>` support
