@@ -92,7 +92,7 @@ const trigger = {
     play_once : function(event) {
         let audiotag = event.target;
         
-        if ( (CPU_Audio.only_play_one_audiotag) && (CPU_Audio.current_audiotag_playing) && (!audiotag.isEqualNode(CPU_Audio.current_audiotag_playing)) ) {
+        if ( (CPU_Audio.only_play_one_audiotag) && (CPU_Audio.current_audiotag_playing) && (!CPU_Audio.is_audiotag_playing(audiotag)) ) {
             trigger.pause(undefined, CPU_Audio.current_audiotag_playing);
         }
         CPU_Audio.current_audiotag_playing = audiotag;

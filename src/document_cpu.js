@@ -121,6 +121,9 @@ const CPU_Audio = {
             CPU_Audio.playlists[playlist_name].push(audiotag.id)
         }
     },
+    is_audiotag_playing : function(audiotag) {
+        return (CPU_Audio.current_audiotag_playing) && (audiotag.isEqualNode(CPU_Audio.current_audiotag_playing))
+    },
 
     jumpIdAt : function(hash, timecode, callback_fx) {
 
