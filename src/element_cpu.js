@@ -41,6 +41,7 @@ let CPU_element_api = class {
     update_time(event) {
         let timecode = convert.SecondsInTime(this.audiotag.currentTime);
         let link_to = absolutize_url(this.audiotag.dataset.canonical)+'#';
+        // WHAAAT ? I should have done something wrong there
         link_to += this.audiotag.id ? (this.audiotag.id+'&') : '';
         link_to += 't='+timecode;
 
@@ -161,7 +162,7 @@ let CPU_element_api = class {
         let _url = encodeURI(absolutize_url(url));
         let _twitter = '';
         if (
-            (dataset.twitter) && /* a little bit better than dataset.twitter === null or typeof dataset.twitter === 'string' . but really, “a little bit” */
+            (dataset.twitter) && /* a little bit better than `dataset.twitter === null` or `typeof dataset.twitter === 'string'` . but really, “a little bit” */
             (dataset.twitter[0]==='@') /* why did I want an @ in the attribute if I cut it in my code ? to keep HTML readable and comprehensible, instead to developpe attribute name into a "twitter-handler" */
             ) {
             _twitter = `&via=${dataset.twitter.substring(1)}`;
@@ -236,7 +237,7 @@ let CPU_element_api = class {
             
             if ((tracks.kind === 'chapters') && (tracks.cues !== null)) {
                 tracks.addEventListener('cuechange', function(event) {
-                    // ugly, but best way to catch the DOM element
+                    // ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
                     trigger.cuechange(event, chapters_element);
                 });
                 for (let cue of tracks.cues) {
@@ -245,10 +246,11 @@ let CPU_element_api = class {
                     line.classList.add('cue');
                     let cuepoint = convert.SecondsInTime(cue.startTime);
                     let cuetime = convert.SecondsInColonTime(cue.startTime);
-                    line.innerHTML = `<a href="#${self.audiotag.id}&t=${cuepoint}" tabindex="0">
-                                        <strong>${cue.text}</strong>
-                                        <span>${cuetime}</span>
-                                    </a>`;
+                    line.innerHTML = 
+                        `<a href="#${self.audiotag.id}&t=${cuepoint}" tabindex="0">
+                            <strong>${cue.text}</strong>
+                            <span>${cuetime}</span>
+                        </a>`;
                     chapters_element.append(line);
                 }
             }
@@ -264,7 +266,7 @@ let CPU_element_api = class {
 
     }
     build_playlist() {
-        // Note that ONLY the global controller will display the playlist
+        // Note that ONLY the global controller will display the playlist. For now.
 
         let playlist_element = this.elements['playlist'];
         playlist_element.innerHTML = '';
@@ -295,7 +297,7 @@ let CPU_element_api = class {
         this.element.classList.add(this.classname);
         //this.tabIndex = 0 // see http://snook.ca/archives/accessibility_and_usability/elements_focusable_with_tabindex and http://www.456bereastreet.com/archive/201302/making_elements_keyboard_focusable_and_clickable/
 
-        // the following mess is to simplify sub element declaration and selection
+        // the following mess is to simplify sub-element declaration and selection
         let controller = this;
         querySelector_apply('*', function(element){
             element.classList.forEach(function(this_class) {

@@ -37,7 +37,6 @@ const trigger = {
                         autoplay = p_value === 'true';
                         break;
                 }
-
             }
         }
 
@@ -48,7 +47,7 @@ const trigger = {
         }
 
         CPU_Audio.jumpIdAt(hash, timecode, callback_fx);
-        // scroll to the audio element. Should be reworked
+        // scroll to the audio element. Should be reworked, or parametrable
         // window.location.hash = `#${hash}`;
         return true;
     },
@@ -107,7 +106,6 @@ const trigger = {
             CPU_Audio.global_controller.audiotag = audiotag;
             CPU_Audio.global_controller.show_main();
             CPU_Audio.global_controller.build_chapters();
-            // exclusive feature of <cpu-controller>
             CPU_Audio.global_controller.build_playlist();
         }
         audiotag.play();
@@ -164,6 +162,7 @@ const trigger = {
     },
 
     cuechange : function(event, chapters_element) {
+        // when the position in a media element goes out of the current
         if (chapters_element === undefined) {
             return;
         }
@@ -189,12 +188,14 @@ const trigger = {
         }
     },
     ended : function(event, audiotag) {
+        // the media element reached its end 
         if (audiotag === undefined) {
             audiotag = event.target;
         }
         if (!('playlist' in audiotag.dataset)) {
             return;
         }
+        // and is in a declarated playlist
         let playlist_name = audiotag.dataset.playlist;
         let playlist = document.CPU.playlists[playlist_name];
         if (playlist === undefined) {
@@ -216,6 +217,7 @@ const trigger = {
             console.warn(`Audiotag #${next_id} doesn't exists. WTF ?`);
             return;
         }
+        // Ply the next media in playlist, starting at zero
         CPU_Audio.seekElementAt(next_audiotag, 0);
         trigger.play(undefined, next_audiotag);
     },
@@ -224,7 +226,7 @@ const trigger = {
 
         let audio_element = container.element.querySelector('audio')
         if (audio_element === null) {
-            console.info('element audio was removed')
+            console.info('<audio> element was removed.')
             container.element.remove();
             return;
         }

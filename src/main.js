@@ -1,6 +1,6 @@
 
 function launch() {
-    // expose API in parent page DOM
+    // expose global API in parent page DOM
     window.document.CPU = CPU_Audio;
 
     window.addEventListener('hashchange', trigger.hashOrder, false);

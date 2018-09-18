@@ -1,12 +1,14 @@
 const CPU_Audio = {
-    // global object for global controller
+    // global object for global API
     keymove : 5,
     only_play_one_audiotag : true,
     current_audiotag_playing : null,
     global_controller : null,
+
     // to add attributes for unnamed <audio>
     dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
     count_element : 0,
+
     // playlists
     playlists : {},
     advance_in_playlist : true,
@@ -69,7 +71,6 @@ const CPU_Audio = {
         audiotag.addEventListener('loadedmetadata', CPU_Audio.recall_stored_play);
         audiotag.addEventListener('play', trigger.play_once);
         audiotag.addEventListener('ended', trigger.ended);
-        // audiotag.addEventListener('progress', trigger.play_once);
         // those ↓ for PHRACKING SAFARI
         audiotag.addEventListener('ready', CPU_Audio.recall_stored_play);
         audiotag.addEventListener('canplay', CPU_Audio.recall_stored_play);
@@ -93,12 +94,9 @@ const CPU_Audio = {
             });
         } else {
             audiotag.addEventListener('loadedmetadata', CPU_Audio.find_container(audiotag).build_chapters);
-            ///  TODO audiotag.addEventListener('loadedmetadata', CPU_Audio.find_container(audiotag).build_chapters);
         }
   
         // ask ASAP metadata about media
-        // we have to set in HTML code preload="none" due to a very laggy behaviour in HTTP2
-        // https://stackoverflow.com/questions/14479413/chrome-ignoring-audio-preload-metadata
         if (audiotag.preload === '') {
             audiotag.preload = 'metadata';
         }

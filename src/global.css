@@ -22,6 +22,8 @@ audio[controls] {
     --cpu-inner-shadow : inset 0px 5px 10px -5px black;
 }
 
+/* If css element queries not available, fallback to media queries */
+
 @media (max-width: 640px) , @element .interface and (max-width: 640px) {
     :root , .interface {
         --cpu-font-size : 13px;
