@@ -163,7 +163,7 @@ window.addEventListener('load', function() {
 		});
 	});
 
-/*
+
 	QUnit.test( "hashorder start,end with erroneous entries ", function (assert){
 		assert.expect( 2 );
 		let done = assert.async();
@@ -174,7 +174,23 @@ window.addEventListener('load', function() {
 		});
 	});
 
-*/
+	QUnit.test( "end timecode stops the play", function( assert ) {
+		let done = assert.async();
+		assert.expect(1);
+		audiotag.play();
+
+		let check_only_one_play_this;
+		function check_only_one_play() {
+			assert.ok(audiotag.paused, 'Player should have been paused');
+			done();
+		}
+		check_only_one_play_this = check_only_one_play.bind(this);
+		cpu.trigger.hashOrder('track&t=20,21', function() {
+			setTimeout(check_only_one_play_this, 1500);
+		});
+	});
+
+
 	QUnit.test( "no cacophony feature : mute other player when another one starts to play", function( assert ) {
 		let done = assert.async();
 		assert.expect(2);

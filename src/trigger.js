@@ -195,6 +195,11 @@ const trigger = {
 
     update : function(event) {
         let audiotag = event.target;
+
+        if ((trigger._timecode_end !== false) && (audiotag.currentTime > trigger._timecode_end)) {
+            trigger.pause(undefined, audiotag);
+        }
+
         audiotag.CPU_update();
         if (!audiotag.paused) {
             window.localStorage.setItem(audiotag.currentSrc, String(audiotag.currentTime));
