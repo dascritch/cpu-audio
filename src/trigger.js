@@ -1,5 +1,7 @@
 const trigger = {
 
+    _timecode_end : false,
+
     hashOrder : function(hashcode, callback_fx){
         let at_start = true;
         if (typeof hashcode !== 'string') {
@@ -24,6 +26,7 @@ const trigger = {
                 switch (p_key) {
                     case 't':
                         // is a time index
+                        p_value = (p_value !== '') ? p_value : '0';
                         timecode = p_value;
                         // we make autoplay at requested timecode, simplier of the user
                         autoplay = true;
@@ -46,7 +49,17 @@ const trigger = {
             return false;
         }
 
-        CPU_Audio.jumpIdAt(hash, timecode, callback_fx);
+        // we may have a begin,end notation
+        let times = timecode.split(',');
+        let timecode_start = times[0];
+        trigger._timecode_end = times.length > 1 ? convert.TimeInSeconds(times[1]) : false;
+        if (trigger._timecode_end !== false) {
+            trigger._timecode_end = (trigger._timecode_end > convert.TimeInSeconds(timecode_start)) ?
+                trigger._timecode_end :
+                false;
+        }
+
+        CPU_Audio.jumpIdAt(hash, timecode_start, callback_fx);
         // scroll to the audio element. Should be reworked, or parametrable
         // window.location.hash = `#${hash}`;
         return true;

@@ -29,6 +29,7 @@ window.addEventListener('load', function() {
 
 
 	QUnit.test( "document.CPU.convert.TimeInSeconds", function( assert ) {
+		assert.equal(convert.TimeInSeconds(''), 0, 'empty string' );
 		assert.equal(convert.TimeInSeconds(0), 0, 'got zero' );
 		assert.equal(convert.TimeInSeconds('1'), 1, 'got one' );
 		assert.equal(convert.TimeInSeconds('1s'), 1, 'got one second' );
@@ -103,12 +104,24 @@ window.addEventListener('load', function() {
 			});
 		});
 	}
+	hashOrder_test('is at start if empty', 'track&t=', 0);
 	hashOrder_test('is at 10 seconds', 'track&t=10', 10);
 	hashOrder_test('is at one minute and 2 seconds', 'track&t=1m2s', 62);
 	hashOrder_test('unnammed track is at 40 seconds', 't=40', 40);
 	hashOrder_test('unnammed track is at 20 seconds', 't=20s', 20);
 	hashOrder_test('track is at 00:01:42', 'track&t=00:01:42', 102);
 	hashOrder_test('unnamed track is at 1:02', '&t=1:02', 62);
+
+	QUnit.test( "hashorder starts,end , same notation", function (assert){
+		assert.expect( 2 );
+		let done = assert.async();
+		cpu.trigger.hashOrder('track&t=0:20,0:30', function() {
+			assert.equal(audiotag.currentTime , 20, 'starts at 20 seconds');
+			assert.equal(cpu.trigger._timecode_end, 30, 'ends at 30 seconds');
+			done();
+		});
+	});
+
 	
 	QUnit.test( "hashorder starts,end , mixed notation", function (assert){
 		assert.expect( 2 );
@@ -119,13 +132,13 @@ window.addEventListener('load', function() {
 			done();
 		});
 	});
-/*
+
 	QUnit.test( "hashorder ,end ", function (assert){
 		assert.expect( 2 );
 		let done = assert.async();
 		cpu.trigger.hashOrder('track&t=,20', function() {
-			assert.ok(audiotag.currentTime === 0, 'starts at 0 second');
-			assert.ok(cpu.trigger._timecode_end === 20, 'ends at 20 seconds');
+			assert.equal(audiotag.currentTime, 0, 'starts at 0 second');
+			assert.equal(cpu.trigger._timecode_end, 20, 'ends at 20 seconds');
 			done();
 		});
 	});
@@ -134,12 +147,23 @@ window.addEventListener('load', function() {
 		assert.expect( 2 );
 		let done = assert.async();
 		cpu.trigger.hashOrder('track&t=20,', function() {
-			assert.ok(audiotag.currentTime === 20, 'starts at 0 second');
-			assert.ok(cpu.trigger._timecode_end === false, 'natural end');
+			assert.equal(audiotag.currentTime, 20, 'starts at 0 second');
+			assert.equal(cpu.trigger._timecode_end, false, 'natural end');
 			done();
 		});
 	});
 
+	QUnit.test( "hashorder end,start ", function (assert){
+		assert.expect( 2 );
+		let done = assert.async();
+		cpu.trigger.hashOrder('track&t=20,10', function() {
+			assert.equal(audiotag.currentTime, 20, 'starts at 0 second');
+			assert.equal(cpu.trigger._timecode_end, false, 'ignored end');
+			done();
+		});
+	});
+
+/*
 	QUnit.test( "hashorder start,end with erroneous entries ", function (assert){
 		assert.expect( 2 );
 		let done = assert.async();

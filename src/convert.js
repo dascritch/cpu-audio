@@ -8,10 +8,14 @@ const convert = {
 
     TimeInSeconds : function(givenTime) {
         let seconds = 0;
-        if (/^\d+$/.test(givenTime)) {
-            seconds = Number(givenTime);
-        } else {
-            seconds = (givenTime.indexOf(':') === -1) ? this.SubunitTimeInSeconds(givenTime) : this.ColonTimeInSeconds(givenTime) ;
+        if (givenTime !== '') {
+            if (/^\d+$/.test(givenTime)) {
+                seconds = Number(givenTime);
+            } else {
+                seconds = (givenTime.indexOf(':') === -1) ? 
+                    this.SubunitTimeInSeconds(givenTime) : 
+                    this.ColonTimeInSeconds(givenTime) ;
+            }
         }
         return seconds;
     },
