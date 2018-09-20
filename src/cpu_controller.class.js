@@ -41,7 +41,7 @@ class CpuControllerElement extends HTMLElement {
         }
 
         this.CPU.build_controller();
-        querySelector_apply('.canonical', element_prevent_link_on_same_page);
+        querySelector_apply('.canonical', element_prevent_link_on_same_page, this.shadowRoot);
 
         this.CPU.attach_audiotag_to_controller(this.CPU.audiotag);
 
