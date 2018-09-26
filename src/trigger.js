@@ -1,5 +1,6 @@
 const trigger = {
 
+    _timecode_start : false,
     _timecode_end : false,
 
     hashOrder : function(hashcode, callback_fx){
@@ -52,9 +53,10 @@ const trigger = {
         // we may have a begin,end notation
         let times = timecode.split(',');
         let timecode_start = times[0];
+        trigger._timecode_start = convert.TimeInSeconds(timecode_start);
         trigger._timecode_end = times.length > 1 ? convert.TimeInSeconds(times[1]) : false;
         if (trigger._timecode_end !== false) {
-            trigger._timecode_end = (trigger._timecode_end > convert.TimeInSeconds(timecode_start)) ?
+            trigger._timecode_end = (trigger._timecode_end > trigger._timecode_start) ?
                 trigger._timecode_end :
                 false;
         }
@@ -104,7 +106,7 @@ const trigger = {
     },
     play_once : function(event) {
         let audiotag = event.target;
-        
+      
         if ( (CPU_Audio.only_play_one_audiotag) && (CPU_Audio.current_audiotag_playing) && (!CPU_Audio.is_audiotag_playing(audiotag)) ) {
             trigger.pause(undefined, CPU_Audio.current_audiotag_playing);
         }

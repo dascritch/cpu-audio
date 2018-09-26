@@ -124,6 +124,9 @@ const CPU_Audio = {
     is_audiotag_playing : function(audiotag) {
         return (CPU_Audio.current_audiotag_playing) && (audiotag.isEqualNode(CPU_Audio.current_audiotag_playing))
     },
+    is_audiotag_global : function(audiotag) {
+        return this.global_controller === null ? this.is_audiotag_playing(audiotag) : audiotag.isEqualNode(this.global_controller.audiotag)
+    },
 
     jumpIdAt : function(hash, timecode, callback_fx) {
 

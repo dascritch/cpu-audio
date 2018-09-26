@@ -58,6 +58,16 @@ let CPU_element_api = class {
         this.update_line('loading', this.audiotag.currentTime);
         this.update_buffered();
     }
+    update_time_borders() {
+        if ((!CPU_Audio.is_audiotag_global(this.audiotag)) || (trigger._timecode_end === false)) {
+            this.elements.points.style.opacity = 0;
+            return;
+        }
+        this.elements.points.style.opacity = 1;
+        this.elements.pointstart.style.left = `calc(${100 * trigger._timecode_start / this.audiotag.duration}% - 4px)`;
+        this.elements.pointend.style.left = `calc(${100 * trigger._timecode_end / this.audiotag.duration}% + 0px)`;
+
+    }
     update_loading(seconds) {
         this.update_line('loading', seconds);
         this.update_act_container('loading');
@@ -96,6 +106,7 @@ let CPU_element_api = class {
         if (!this.update_error()) {
             this.update_playbutton();
             this.update_time();
+            this.update_time_borders();
         }
     }
 
