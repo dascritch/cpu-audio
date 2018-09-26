@@ -3,6 +3,14 @@ const trigger = {
     _timecode_start : false,
     _timecode_end : false,
 
+    _remove_timecode_outofborders : function(at) {
+        if ( ((trigger._timecode_start !== false) && (at < trigger._timecode_start)) 
+            || ((trigger._timecode_end !== false) && (at > trigger._timecode_end)) ) {
+            trigger._timecode_start = false;
+            trigger._timecode_end = false;
+        }
+    },
+
     hashOrder : function(hashcode, callback_fx){
         let at_start = true;
         if (typeof hashcode !== 'string') {
@@ -92,6 +100,9 @@ const trigger = {
             let ratio = event.offsetX  / event.target.clientWidth;
             at = ratio * audiotag.duration;
         }
+
+        trigger._remove_timecode_outofborders(at);
+
         CPU_Audio.seekElementAt(audiotag, at);
         trigger.play(event);
     },
@@ -106,7 +117,7 @@ const trigger = {
     },
     play_once : function(event) {
         let audiotag = event.target;
-      
+
         if ( (CPU_Audio.only_play_one_audiotag) && (CPU_Audio.current_audiotag_playing) && (!CPU_Audio.is_audiotag_playing(audiotag)) ) {
             trigger.pause(undefined, CPU_Audio.current_audiotag_playing);
         }
@@ -116,6 +127,8 @@ const trigger = {
         if (audiotag === undefined) {
             audiotag = CPU_Audio.find_container(event.target).audiotag;
         }
+
+        trigger._remove_timecode_outofborders(audiotag.currentTime);
         if (CPU_Audio.global_controller) {
             CPU_Audio.global_controller.attach_audiotag_to_controller(audiotag);
             CPU_Audio.global_controller.audiotag = audiotag;
