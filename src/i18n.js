@@ -8,7 +8,8 @@ const sources_i18n = {
 
         'untitled' : '(sans titre)',
         'cover' : 'pochette',
-        'more' : 'Partager',
+        'more' : 'Actions',
+        'share' : 'Partager',
         'twitter' : 'Partager sur Twitter',
         'facebook' : 'Partager sur Facebook',
         'e_mail' : 'Partager par e-mail',
@@ -30,7 +31,8 @@ const sources_i18n = {
 
         'untitled' : '(untitled)',
         'cover' : 'cover',
-        'more' : 'Share',
+        'more' : 'Actions',
+        'share' : 'Share',
         'twitter' : 'Share on Twitter',
         'facebook' : 'Share on Facebook',
         'e-mail' : 'Share via e-mail',

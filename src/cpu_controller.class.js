@@ -49,8 +49,8 @@ class CpuControllerElement extends HTMLElement {
         let interface_classlist = this.CPU.elements['interface'].classList;
 
         let mode = this.getAttribute('mode');
-        mode = mode !== null ? mode : 'default'
-        interface_classlist.add(`mode-${mode}`)
+        mode = mode !== null ? mode : 'default';
+        interface_classlist.add(`mode-${mode}`);
 
         let hide_those = this.getAttribute('hide');
         if (hide_those !== null) {
@@ -61,6 +61,11 @@ class CpuControllerElement extends HTMLElement {
                     interface_classlist.add(`hide-${hide_this}`)
                 }
             }
+        }
+
+        if (navigator.share) {
+            interface_classlist.add('hasnativeshare');
+            this.CPU.elements['nativeshare'].addEventListener('click', trigger.native_share);
         }
     }
 

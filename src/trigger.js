@@ -279,6 +279,15 @@ const trigger = {
             global_controller.build_chapters();
             global_controller.complete_template();
         }
+    },
+    native_share : function(event) {
+        let dataset = document.CPU.find_container(event.target).fetch_audiotag_dataset();;
+        navigator.share({
+            title: dataset.title,
+            text: dataset.title,
+            url: dataset.canonical
+        })
+
     }
 
 }

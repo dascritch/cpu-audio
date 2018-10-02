@@ -276,10 +276,23 @@ a {
     width : 32px;
     height : 32px;
 }
+
+.nativeshare {
+    display : none;
+}
+
+.hasnativeshare .nativeshare {
+    display : flex;
+}
+
+.hasnativeshare .nonativeshare {
+    display : none;
+}
+
 .twitter {
     background : #4DB5F4
 }
-.facebook {
+.facebook, .nativeshare {
     background : #5974CC
 }
 .email {
