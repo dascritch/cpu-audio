@@ -1,4 +1,4 @@
-const CPU_Audio = {
+document.CPU = document.CPU ? document.CPU : {
     // global object for global API
     keymove : 5,
     only_play_one_audiotag : true,
@@ -56,24 +56,24 @@ const CPU_Audio = {
     },
 
     recall_stored_play : function(event) {
-        if (CPU_Audio.current_audiotag_playing !== null) {
+        if (document.CPU.current_audiotag_playing !== null) {
             return;
         } 
         let audiotag = event.target;
         let lasttimecode = Number(window.localStorage.getItem(audiotag.currentSrc));
         // TODO and no hashed time
         if (lasttimecode > 0) {
-            CPU_Audio.seekElementAt(audiotag, lasttimecode);
+            document.CPU.seekElementAt(audiotag, lasttimecode);
             trigger.play(undefined, audiotag);
         }
     },
     recall_audiotag : function(audiotag) {
-        audiotag.addEventListener('loadedmetadata', CPU_Audio.recall_stored_play);
+        audiotag.addEventListener('loadedmetadata', document.CPU.recall_stored_play);
         audiotag.addEventListener('play', trigger.play_once);
         audiotag.addEventListener('ended', trigger.ended);
         // those ↓ for PHRACKING SAFARI
-        audiotag.addEventListener('ready', CPU_Audio.recall_stored_play);
-        audiotag.addEventListener('canplay', CPU_Audio.recall_stored_play);
+        audiotag.addEventListener('ready', document.CPU.recall_stored_play);
+        audiotag.addEventListener('canplay', document.CPU.recall_stored_play);
 
         // see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events for list of events
         [
@@ -93,7 +93,7 @@ const CPU_Audio = {
                 audiotag.addEventListener(on, trigger.pause);
             });
         } else {
-            audiotag.addEventListener('loadedmetadata', CPU_Audio.find_container(audiotag).build_chapters);
+            audiotag.addEventListener('loadedmetadata', document.CPU.find_container(audiotag).build_chapters);
         }
   
         // ask ASAP metadata about media
@@ -105,7 +105,7 @@ const CPU_Audio = {
 
     connect_audiotag : function(audiotag) {
 
-        CPU_Audio.recall_audiotag(audiotag);
+        document.CPU.recall_audiotag(audiotag);
 
         // hide native controls
         audiotag.hidden = true;
@@ -115,14 +115,14 @@ const CPU_Audio = {
         // playlist 
         if (typeof(audiotag.dataset.playlist) === 'string') {
             let playlist_name = audiotag.dataset.playlist;
-            if (!(playlist_name in CPU_Audio.playlists)) {
-                CPU_Audio.playlists[playlist_name] = []
+            if (!(playlist_name in document.CPU.playlists)) {
+                document.CPU.playlists[playlist_name] = []
             }
-            CPU_Audio.playlists[playlist_name].push(audiotag.id)
+            document.CPU.playlists[playlist_name].push(audiotag.id)
         }
     },
     is_audiotag_playing : function(audiotag) {
-        return (CPU_Audio.current_audiotag_playing) && (audiotag.isEqualNode(CPU_Audio.current_audiotag_playing))
+        return (document.CPU.current_audiotag_playing) && (audiotag.isEqualNode(document.CPU.current_audiotag_playing))
     },
     is_audiotag_global : function(audiotag) {
         return this.global_controller === null ? this.is_audiotag_playing(audiotag) : audiotag.isEqualNode(this.global_controller.audiotag)
@@ -138,7 +138,7 @@ const CPU_Audio = {
             }
 
             let secs = convert.TimeInSeconds(timecode);
-            CPU_Audio.seekElementAt(audiotag, secs);
+            document.CPU.seekElementAt(audiotag, secs);
 
             if (audiotag.readyState >= audiotag.HAVE_FUTURE_DATA)  {
                 do_element_play({ target : audiotag });

@@ -36,7 +36,7 @@ class CpuControllerElement extends HTMLElement {
             this.shadowRoot.querySelector('.interface')
         );
         if (!this.CPU.audiotag) {
-            CPU_Audio.global_controller = this.CPU;
+            document.CPU.global_controller = this.CPU;
             this.CPU.audiotag = window.document.querySelector('cpu-audio audio');
         }
 

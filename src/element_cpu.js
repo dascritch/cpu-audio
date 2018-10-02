@@ -59,7 +59,7 @@ let CPU_element_api = class {
         this.update_buffered();
     }
     update_time_borders() {
-        if ((!CPU_Audio.is_audiotag_global(this.audiotag)) || (trigger._timecode_end === false)) {
+        if ((!document.CPU.is_audiotag_global(this.audiotag)) || (trigger._timecode_end === false)) {
             this.elements.points.style.opacity = 0;
             return;
         }
@@ -137,13 +137,13 @@ let CPU_element_api = class {
 
     fetch_audiotag_dataset() {
         let dataset = {} 
-        for (let key in CPU_Audio.default_dataset) {
+        for (let key in document.CPU.default_dataset) {
             let value = null;
             if (key in this.audiotag.dataset) {
                 value = this.audiotag.dataset[key];
             } else {
-                if (CPU_Audio.default_dataset[key] !== null) {
-                    value = CPU_Audio.default_dataset[key];
+                if (document.CPU.default_dataset[key] !== null) {
+                    value = document.CPU.default_dataset[key];
                 }
             }
             dataset[key] = value === undefined ? null : value;
@@ -190,21 +190,21 @@ let CPU_element_api = class {
     }
     show_actions(event) {
         let container = (event !== undefined) ?
-                CPU_Audio.find_container(event.target) :
+                document.CPU.find_container(event.target) :
                 this;
         container.show_interface('share');
         container.update_links();
     }
     show_main(event) {
         let container = (event !== undefined) ?
-                CPU_Audio.find_container(event.target) :
+                document.CPU.find_container(event.target) :
                 this;
         container.show_interface('main');
     }
 
     add_id_to_audiotag() {
         if (this.audiotag.id === '') {
-            this.audiotag.id = CPU_Audio.dynamicallyAllocatedIdPrefix + String(CPU_Audio.count_element++);
+            this.audiotag.id = document.CPU.dynamicallyAllocatedIdPrefix + String(document.CPU.count_element++);
         }
     }
 
@@ -235,7 +235,7 @@ let CPU_element_api = class {
         let self = this;
         if (event !== undefined) {
             // Chrome load <track> afterwards, so an event is needed, and we need to recatch our CPU api to this event
-            self = CPU_Audio.find_container(event.target);
+            self = document.CPU.find_container(event.target);
         }
 
         let chapters_element = self.elements['chapters'];
@@ -269,9 +269,9 @@ let CPU_element_api = class {
 
         if (
             (self.element.tagName === CpuAudioTagName) &&
-            (CPU_Audio.is_audiotag_playing(self.audiotag)) &&
-            (CPU_Audio.global_controller !== null)) {
-            CPU_Audio.global_controller.build_chapters();
+            (document.CPU.is_audiotag_playing(self.audiotag)) &&
+            (document.CPU.global_controller !== null)) {
+            document.CPU.global_controller.build_chapters();
         }
 
     }
@@ -281,7 +281,7 @@ let CPU_element_api = class {
         let playlist_element = this.elements['playlist'];
         playlist_element.innerHTML = '';
 
-        let current_playlist = CPU_Audio.find_current_playlist();
+        let current_playlist = document.CPU.find_current_playlist();
         if (current_playlist === null) {
             return;
         }

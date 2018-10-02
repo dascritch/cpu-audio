@@ -13,7 +13,7 @@ HTMLAudioElement.prototype.CPU_update = function() {
             api.update();
         }
     }
-    if (CPU_Audio.global_controller) {
-        CPU_Audio.global_controller.update();
+    if (document.CPU.global_controller) {
+        document.CPU.global_controller.update();
     }
 }

@@ -69,13 +69,13 @@ const trigger = {
                 false;
         }
 
-        CPU_Audio.jumpIdAt(hash, timecode_start, callback_fx);
+        document.CPU.jumpIdAt(hash, timecode_start, callback_fx);
         // scroll to the audio element. Should be reworked, or parametrable
         // window.location.hash = `#${hash}`;
         return true;
     },
     hover : function(event) {
-        let container = CPU_Audio.find_container(event.target);
+        let container = document.CPU.find_container(event.target);
 
         let target_rect = event.target.getClientRects()[0];
         let relLeft = target_rect.left;
@@ -85,13 +85,13 @@ const trigger = {
         container.show_throbber_at(seeked_time);
     },
     out : function(event) {
-        let container = CPU_Audio.find_container(event.target);
+        let container = document.CPU.find_container(event.target);
         container.hide_throbber();
     },
 
     throbble : function(event) {
         let at = 0;
-        let container = CPU_Audio.find_container(event.target);
+        let container = document.CPU.find_container(event.target);
         let audiotag = container.audiotag;
         if (event.at !== undefined) {
             at = event.at;
@@ -103,43 +103,43 @@ const trigger = {
 
         trigger._remove_timecode_outofborders(at);
 
-        CPU_Audio.seekElementAt(audiotag, at);
+        document.CPU.seekElementAt(audiotag, at);
         trigger.play(event);
     },
     pause : function(event, audiotag) {
         if (audiotag === undefined) {
             let target = event.target;
-            audiotag = (target.tagName === 'AUDIO') ? target : CPU_Audio.find_container(target).audiotag;
+            audiotag = (target.tagName === 'AUDIO') ? target : document.CPU.find_container(target).audiotag;
         }
         audiotag.pause();
-        CPU_Audio.current_audiotag_playing = null;
+        document.CPU.current_audiotag_playing = null;
         window.localStorage.removeItem(audiotag.currentSrc);
     },
     play_once : function(event) {
         let audiotag = event.target;
 
-        if ( (CPU_Audio.only_play_one_audiotag) && (CPU_Audio.current_audiotag_playing) && (!CPU_Audio.is_audiotag_playing(audiotag)) ) {
-            trigger.pause(undefined, CPU_Audio.current_audiotag_playing);
+        if ( (document.CPU.only_play_one_audiotag) && (document.CPU.current_audiotag_playing) && (!document.CPU.is_audiotag_playing(audiotag)) ) {
+            trigger.pause(undefined, document.CPU.current_audiotag_playing);
         }
-        CPU_Audio.current_audiotag_playing = audiotag;
+        document.CPU.current_audiotag_playing = audiotag;
     },
     play : function(event, audiotag) {
         if (audiotag === undefined) {
-            audiotag = CPU_Audio.find_container(event.target).audiotag;
+            audiotag = document.CPU.find_container(event.target).audiotag;
         }
 
         trigger._remove_timecode_outofborders(audiotag.currentTime);
-        if (CPU_Audio.global_controller) {
-            CPU_Audio.global_controller.attach_audiotag_to_controller(audiotag);
-            CPU_Audio.global_controller.audiotag = audiotag;
-            CPU_Audio.global_controller.show_main();
-            CPU_Audio.global_controller.build_chapters();
-            CPU_Audio.global_controller.build_playlist();
+        if (document.CPU.global_controller) {
+            document.CPU.global_controller.attach_audiotag_to_controller(audiotag);
+            document.CPU.global_controller.audiotag = audiotag;
+            document.CPU.global_controller.show_main();
+            document.CPU.global_controller.build_chapters();
+            document.CPU.global_controller.build_playlist();
         }
         audiotag.play();
     },
     key : function(event) {
-        let container = CPU_Audio.find_container(event.target);
+        let container = document.CPU.find_container(event.target);
 
         function seek_relative(seconds) {
             event.at = container.audiotag.currentTime + seconds;
@@ -151,7 +151,7 @@ const trigger = {
         switch (event.keyCode) {
             // can't use enter : standard usage
             case 27 : // esc
-                CPU_Audio.seekElementAt(container.audiotag, 0);
+                document.CPU.seekElementAt(container.audiotag, 0);
                 trigger.pause(undefined,container.audiotag);
                 break;
             case 32 : // space
@@ -160,16 +160,16 @@ const trigger = {
                     trigger.pause(undefined,container.audiotag);
                 break;
             case 35 : // end
-                CPU_Audio.seekElementAt(container.audiotag, container.audiotag.duration);
+                document.CPU.seekElementAt(container.audiotag, container.audiotag.duration);
                 break;
             case 36 : // home
-                CPU_Audio.seekElementAt(container.audiotag, 0);
+                document.CPU.seekElementAt(container.audiotag, 0);
                 break;
             case 37 : // ←
-                seek_relative(- CPU_Audio.keymove);
+                seek_relative(- document.CPU.keymove);
                 break;
             case 39 : // →
-                seek_relative(+ CPU_Audio.keymove);
+                seek_relative(+ document.CPU.keymove);
                 break;
             default:
                 return ;
@@ -180,7 +180,7 @@ const trigger = {
         if (event.keyCode !== 13 ) {
             return;
         } 
-        let container = CPU_Audio.find_container(event.target);
+        let container = document.CPU.find_container(event.target);
 
         container.audiotag.paused ?
             trigger.play(undefined,container.audiotag) :
@@ -251,7 +251,7 @@ const trigger = {
             return;
         }
         // Play the next media in playlist, starting at zero
-        CPU_Audio.seekElementAt(next_audiotag, 0);
+        document.CPU.seekElementAt(next_audiotag, 0);
         trigger.play(undefined, next_audiotag);
     },
     observer_cpuaudio : function(mutationsList) {
@@ -274,7 +274,7 @@ const trigger = {
         // in case attributes changed
         container.complete_template();
 
-        let global_controller = CPU_Audio.global_controller;
+        let global_controller = document.CPU.global_controller;
         if ((global_controller) && (container.audiotag.isEqualNode(global_controller.audiotag))) {
             global_controller.build_chapters();
             global_controller.complete_template();

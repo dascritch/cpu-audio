@@ -4,7 +4,7 @@ class CpuAudioElement extends CpuControllerElement {
 
     copy_attributes_to_media_dataset() {
         // copying personalized data to audio tag
-        for (let key in CPU_Audio.default_dataset) {
+        for (let key in document.CPU.default_dataset) {
             let value = this.getAttribute(key);
             if (value !== null) {
                 this._audiotag.dataset[key.toLowerCase()] = value;
@@ -23,7 +23,7 @@ class CpuAudioElement extends CpuControllerElement {
 
         super.connectedCallback();
 
-        CPU_Audio.connect_audiotag(this.CPU.audiotag);
+        document.CPU.connect_audiotag(this.CPU.audiotag);
     
         this.observer_cpuaudio = new MutationObserver(trigger.observer_cpuaudio);
         this.observer_cpuaudio.observe(this, {
