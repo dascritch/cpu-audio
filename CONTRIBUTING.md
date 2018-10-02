@@ -23,7 +23,7 @@ Development
 You will need :
 - sed
 - tr
-- Google closure compiler (an so, Java, sigh)
+- [Google closure compiler](https://developers.google.com/closure/compiler/) (an so, Java, sigh)
 
 
 How to
