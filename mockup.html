@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>cpu-audio mockup handheld</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="tests/qunit.css">
+
+	<script src="./dist/cpu-audio.js"></script>
+</head>
+<body>
+
+	<p><a href="./index.html">CPU-Audio Webcomponent</a></p>
+
+	<p>
+		This page to test a better timeline navigation interface for handhelds.
+	</p>
+	
+	
+	<cpu-audio>
+		<audio id="track" controls="controls" preload="auto">
+			<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+		</audio>
+	</cpu-audio>
+
+	<p>
+		<button type="button">|⇐</button> .
+		<button type="button">⇐</button> . 
+		<button type="button">←</button> . 
+		<input type="time" step="1" max="00:02:00" /><button type="button">go</button> .
+		<button type="button">→</button> .
+		<button type="button">⇒</button>
+	</p>
+
+</body>
+</html>
