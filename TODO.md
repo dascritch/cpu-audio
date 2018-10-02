@@ -17,7 +17,7 @@ Planned evolutions
 ------------------
 
 - [ ] Standards first
-    - [ ] [Support incoming navigator.share API](https://github.com/dascritch/cpu-audio/issues/4)
+    - [X] [Support incoming navigator.share API](https://github.com/dascritch/cpu-audio/issues/4)
     - [ ] use standard [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) in `hashOrder`, instead of the custom code. We need a strategy to get the anchor, seen as a key without value
     - [ ] [Support MSE API for non-buffered playing, needed for HTTP/2](https://github.com/dascritch/cpu-audio/issues/12)
 - [ ] [playlists in a page](https://github.com/dascritch/cpu-audio/issues/7)
