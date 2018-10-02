@@ -25,6 +25,10 @@ Planned evolutions
     - [X] playlists in a page, play next audio in playlist parametrable via API
     - [X] show playlist in `<cpu-controller>`
     - [ ] show playlist in current playing `<cpu-audio>`
+- [ ] manage [autoplaying sound blocking](https://github.com/dascritch/cpu-audio/issues/17)
+    - [ ] for tests
+    - [ ] hashlinked
+    - [ ] resumed play
 - [ ] DOM manipulation events :
     - [X] dynamic creation of a `<cpu-audio>` (not feasable because of `<audio controls>` needed)
     - [X] dynamic remove of a `<cpu-audio>`
