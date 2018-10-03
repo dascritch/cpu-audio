@@ -56,9 +56,12 @@ let CPU_element_api = class {
         let colon_time = convert.SecondsInColonTime(this.audiotag.currentTime);
         elapse_element.innerHTML = `${colon_time}
                                     <span class="notiny"> / ${total_duration}</span>`;
-        this.elements.inputtime.value = convert.SecondsInPaddledColonTime( this.audiotag.currentTime );  // yes, this SHOULD be in HH:MM:SS format precisely
-        let _colon_max = convert.SecondsInPaddledColonTime(this.audiotag.duration);
-        this.elements.inputtime.max = '00:00:00'.substr(0, 8 - _colon_max.length );
+
+        // How to check a focused element ? document.activeElement respond the webcomponent tag :/ You must call shadowRoot.activeElement
+        if (!this.elements.inputtime.isEqualNode(this.element.shadowRoot.activeElement)) {
+            this.elements.inputtime.value = convert.SecondsInPaddledColonTime( this.audiotag.currentTime );  // yes, this SHOULD be in HH:MM:SS format precisely
+        }
+        this.elements.inputtime.max = convert.SecondsInPaddledColonTime(this.audiotag.duration);
         this.update_line('loading', this.audiotag.currentTime);
         this.update_buffered();
     }
@@ -373,8 +376,8 @@ let CPU_element_api = class {
             timeline_element.addEventListener('touchstart', trigger.touchstart);
             timeline_element.addEventListener('touchend', trigger.touchcancel);
             timeline_element.addEventListener('contextmenu', this.show_handheld_nav );
-            this.elements['inputtime'].addEventListener('input', event.input_time_change);
-            this.elements['inputtime'].addEventListener('change', event.input_time_change);
+            this.elements['inputtime'].addEventListener('input', trigger.input_time_change);
+            this.elements['inputtime'].addEventListener('change', trigger.input_time_change);
 
         this.show_main();
         this.build_chapters();
