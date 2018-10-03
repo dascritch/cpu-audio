@@ -45,6 +45,7 @@ Planned evolutions
     - [ ] [Create a real playlist service](https://github.com/dascritch/cpu-audio/issues/8)
     - [ ] [Supporting annotations à la SoundCloud](https://github.com/dascritch/cpu-audio/issues/10)
 - [ ] [Using touchstart event to emulate hover](https://github.com/dascritch/cpu-audio/issues/9)
+- [ ] [Prepare design and key bindings for RTL localizations](https://github.com/dascritch/cpu-audio/issues/26)
 
 
 Retired functions from v4
