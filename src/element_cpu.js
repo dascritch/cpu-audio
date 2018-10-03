@@ -53,8 +53,12 @@ let CPU_element_api = class {
             total_duration = convert.SecondsInColonTime(Math.round(this.audiotag.duration));
         } 
          
-        elapse_element.innerHTML = `${convert.SecondsInColonTime(this.audiotag.currentTime)}
+        let colon_time = convert.SecondsInColonTime(this.audiotag.currentTime);
+        elapse_element.innerHTML = `${colon_time}
                                     <span class="notiny"> / ${total_duration}</span>`;
+        this.elements.inputtime.value = convert.SecondsInPaddledColonTime( this.audiotag.currentTime );  // yes, this SHOULD be in HH:MM:SS format precisely
+        let _colon_max = convert.SecondsInPaddledColonTime(this.audiotag.duration);
+        this.elements.inputtime.max = '00:00:00'.substr(0, 8 - _colon_max.length );
         this.update_line('loading', this.audiotag.currentTime);
         this.update_buffered();
     }
@@ -64,6 +68,7 @@ let CPU_element_api = class {
             return;
         }
         this.elements.points.style.opacity = 1;
+        // UGLY to rewrite
         this.elements.pointstart.style.left = `calc(${100 * trigger._timecode_start / this.audiotag.duration}% - 4px)`;
         this.elements.pointend.style.left = `calc(${100 * trigger._timecode_end / this.audiotag.duration}% + 0px)`;
 
@@ -202,6 +207,14 @@ let CPU_element_api = class {
         container.show_interface('main');
     }
 
+    show_handheld_nav(event) {
+        let container = (event !== undefined) ?
+                document.CPU.find_container(event.target) :
+                this;
+        container.container.classList.toggle('show-handheld-nav');
+        event.preventDefault();
+    }
+
     add_id_to_audiotag() {
         if (this.audiotag.id === '') {
             this.audiotag.id = document.CPU.dynamicallyAllocatedIdPrefix + String(document.CPU.count_element++);
@@ -324,12 +337,19 @@ let CPU_element_api = class {
             'actions'   : this.show_actions,
             'back'      : this.show_main,
             'poster'    : this.show_main,
+            // handheld nav. To allow repetition , we will move it to keypress later
+            'restart'   : trigger.restart,
+            'fastreward': trigger.fastreward,
+            'reward'    : trigger.reward,
+            'foward'    : trigger.foward,
+            'fastfoward': trigger.fastfoward,
         };
         for (let that in cliquables) {
             this.elements[that].addEventListener('click', cliquables[that]);
         }
         // key management
         this.element.addEventListener('keydown', trigger.key);
+
         // not working correctly :/
         this.elements['control'].addEventListener('keydown', trigger.keydownplay);
         // throbber management
@@ -349,6 +369,13 @@ let CPU_element_api = class {
                 event_name,
                 do_events[event_name] ? trigger.hover : trigger.out);               
         }
+        // alternative ime navigation for handhelds
+            timeline_element.addEventListener('touchstart', trigger.touchstart);
+            timeline_element.addEventListener('touchend', trigger.touchcancel);
+            timeline_element.addEventListener('contextmenu', this.show_handheld_nav );
+            this.elements['inputtime'].addEventListener('input', event.input_time_change);
+            this.elements['inputtime'].addEventListener('change', event.input_time_change);
+
         this.show_main();
         this.build_chapters();
     }

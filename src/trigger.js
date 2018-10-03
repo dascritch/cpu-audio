@@ -1,3 +1,6 @@
+const KEY_LEFT_ARROW = 37;
+const KEY_RIGHT_ARROW = 39;
+
 const trigger = {
 
     _timecode_start : false,
@@ -151,7 +154,7 @@ const trigger = {
         switch (event.keyCode) {
             // can't use enter : standard usage
             case 27 : // esc
-                document.CPU.seekElementAt(container.audiotag, 0);
+                trigger.restart(event);
                 trigger.pause(undefined,container.audiotag);
                 break;
             case 32 : // space
@@ -163,12 +166,12 @@ const trigger = {
                 document.CPU.seekElementAt(container.audiotag, container.audiotag.duration);
                 break;
             case 36 : // home
-                document.CPU.seekElementAt(container.audiotag, 0);
+                trigger.restart(event);
                 break;
-            case 37 : // ←
+            case KEY_LEFT_ARROW : // ←
                 seek_relative(- document.CPU.keymove);
                 break;
-            case 39 : // →
+            case KEY_RIGHT_ARROW : // →
                 seek_relative(+ document.CPU.keymove);
                 break;
             default:
@@ -187,6 +190,33 @@ const trigger = {
             trigger.pause(undefined,container.audiotag);
         
         event.preventDefault();
+    },
+    restart : function(event) {
+        let container = document.CPU.find_container(event.target);
+        document.CPU.seekElementAt(container.audiotag, 0);
+    },
+    reward : function(event) {
+        event.keyCode = KEY_LEFT_ARROW;
+        trigger.key(event);
+    },
+    foward : function(event) {
+        event.keyCode = KEY_RIGHT_ARROW;
+        trigger.key(event);
+    },
+    fastreward : function(event) {
+        for(let nb = 0; nb < 4 ; nb++) {
+            trigger.reward(event);
+        }
+    },
+    fastfoward : function(event) {
+        for(let nb = 0; nb < 4 ; nb++) {
+            trigger.foward(event);
+        }
+    },
+    input_time_change : function(event) {
+        let container = document.CPU.find_container(event.target);
+        let seconds = convert.ColonTimeInSeconds( event.target.value );
+        container.show_throbber_at(seconds);
     },
 
     cuechange : function(event, chapters_element) {
@@ -288,6 +318,18 @@ const trigger = {
             url: dataset.canonical
         })
 
-    }
+    },
+
+    _show_alternate_nav : false,
+
+    touchstart : function(event) {
+        let container = document.CPU.find_container(event.target);
+        trigger._show_alternate_nav = setTimeout(container.show_alternate_nav, 500, container);
+        // why 500ms ? Because Chrome ill trigger a touchcancel event at 800ms to show a context menu
+    },
+
+    touchcancel : function(event) {
+        clearTimeout(trigger._show_handheld_nav);
+    },
 
 }

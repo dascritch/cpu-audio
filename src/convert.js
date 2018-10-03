@@ -79,4 +79,9 @@ const convert = {
         
         return converted === '' ? '0:00' : converted;
     },
+    SecondsInPaddledColonTime : function(givenSeconds) {
+        // principaly needed by <input type="time"> whom need a really precise HH:MM:SS format
+        let colon_time = convert.SecondsInColonTime(givenSeconds);
+        return '00:00:00'.substr(0, 8 - colon_time.length ) + colon_time; 
+    }
 }

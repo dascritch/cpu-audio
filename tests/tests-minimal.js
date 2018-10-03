@@ -65,6 +65,12 @@ window.addEventListener('load', function() {
 		assert.equal(convert.SecondsInColonTime(7442), '2:04:02', 'got 2:04:02' );
 	});
 
+	QUnit.test( "document.CPU.convert.SecondsInPaddledColonTime", function( assert ) {
+		assert.equal(convert.SecondsInPaddledColonTime(61), '00:01:01', 'got 00:01:01' );
+		assert.equal(convert.SecondsInPaddledColonTime(7442), '02:04:02', 'got 02:04:02' );
+	});
+	
+
 	QUnit.test( "document.CPU.jumpIdAt existing at start", function( assert ) {
 		assert.expect( 2 );
 		let done = assert.async();

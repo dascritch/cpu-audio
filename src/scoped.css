@@ -30,7 +30,8 @@
     color : var(--cpu-error-color);
 }
 
-a {
+a, button {
+    background : var(--cpu-background);
     color : var(--cpu-color);
     border : none;
     text-decoration : none;
@@ -101,7 +102,8 @@ a {
 .loading, .play, .pause,
 .show-main .pageshare, .show-main .pageerror,
 .show-share .pagemain, .show-share .pageerror,
-.show-error .pagemain, .show-error .pageshare , .show-error .poster {
+.show-error .pagemain, .show-error .pageshare , .show-error .poster,
+.handheld-nav , .show-handheld-nav .titleline {
     display : none;
 }
 
@@ -241,6 +243,13 @@ a {
   100% { background-position-x : 0px;}
 }
 
+.show-handheld-nav .handheld-nav {
+    display : flex;
+}
+
+.handheld-nav * {
+  flex : 1 0 auto;
+}
 
 .hide-actions .actions {
     /* we won't display:none, as we need a padding on the right */
