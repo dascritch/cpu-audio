@@ -25,7 +25,7 @@ const sources_i18n = {
     'en' : {
         'loading' : 'Loading…',
         'pause' : 'Pause',
-        'play' : 'Lecture',
+        'play' : 'Play',
         'canonical' : 'Link to the sound\'s page',
         'moment' : 'Link to this time',
 
