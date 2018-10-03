@@ -15,6 +15,9 @@
 	<p>
 		This page to test a better timeline navigation interface for handhelds.
 	</p>
+	<p>
+		We hope to use <code>&lt;input type="time"&gt;</code>, even as that would be a improper usage.
+	</p>
 	
 	
 	<cpu-audio>
@@ -27,9 +30,13 @@
 		<button type="button">|⇐</button> .
 		<button type="button">⇐</button> . 
 		<button type="button">←</button> . 
-		<input type="time" step="1" max="00:02:00" /><button type="button">go</button> .
+		<input type="time" step="1" min="0:00:00" max="00:02:00" /><button type="button">go</button> .
 		<button type="button">→</button> .
 		<button type="button">⇒</button>
+	</p>
+
+	<p>
+		for any sound with a length < 24mn , remove step="" attribute and abuse notation on hour and minutes, as this : <input type="time" min="0:00" max="2:00:00" /><button type="button">go</button>
 	</p>
 
 </body>
