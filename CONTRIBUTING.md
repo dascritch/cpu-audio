@@ -1,3 +1,20 @@
+If you are not a developer
+--------------------------
+
+- My english is a pity. You may help me to correct it
+- You may test on some platforms. Mainly MacOS, iOS and Edge; And see some problems when comparing to Firefox or Chrome
+- You can re-read my doc, and ask me some precisions
+- You may be have a disability and you're using some accessibility tools… You're super useful ! I surely missed something important for you.
+- Perhaps you can help me on the design or the logos
+- Install in your own website, test, note the bugs, [report them in the issues section of the repo](https://github.com/dascritch/cpu-audio/issues)
+
+[thanks @mariejulien](https://twitter.com/mariejulien/status/1047827583126183937)
+
+
+If you are a developer
+----------------------
+
+
 Check first in [TODO.md](TODO.md) which lists some priorities and objectives.
 
 I usually [create bugs](https://github.com/dascritch/cpu-audio/issues) and refers to them in my commits. Most of the time.
