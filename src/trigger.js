@@ -287,9 +287,10 @@ const trigger = {
     observer_cpuaudio : function(mutationsList) {
         let container = document.CPU.find_container(mutationsList[0].target);
 
-        let audio_element = container.element.querySelector('audio')
+        let media_tagname = 'audio';
+        let audio_element = container.element.querySelector(media_tagname)
         if (audio_element === null) {
-            console.info('<audio> element was removed.')
+            console.info(`<${media_tagname}> element was removed.`)
             container.element.remove();
             return;
         }

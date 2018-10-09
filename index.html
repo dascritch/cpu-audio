@@ -178,7 +178,6 @@
 		canonical="https://dascritch.net/post/2014/04/08/Au-Carnaval-avec-Samba-R%C3%A9sille"
 		twitter="@dascritch"
 		>
-	  	<!-- Pour des raisons  de compatibilité arrière, il faut garder la balise audio dans la déclaration. -->
 		<audio controls id="live">
 			<source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
 		</audio>
@@ -193,7 +192,6 @@
 		canonical="https://dascritch.net/post/2010/01/02/Supplement-Week-End-samedi-2-Janvier-2010"
 		twitter="@dascritch"
 		>
-	  	<!-- Pour des raisons  de compatibilité arrière, il faut garder la balise audio dans la déclaration. -->
 		<audio controls id="live">
 			<source src="https://dascritch.net/vrac/Emissions/Speciales/podcast/100105-MontageWorstOfSWE2009.mp3" type="audio/mpeg">
 		</audio>
@@ -202,6 +200,7 @@
 
 
 <h3 id="modes">Modes</h3>
+
 <div>
 	<p><strong><code>mode="compact"</code></strong>.<br />
 	No needs for <code>title=""</code>, <code>poster=""</code>, <code>canonical=""</code> or <code>twitter=""</code> attributes <em>excepted</em> when you also use <code>&lt;cpu-controller&gt;</code>.</p>
@@ -230,7 +229,9 @@
 	<p>Other modes exists, and some feature may be hidden. See INSTALL.md</p>
 </div>
 
+
 <h3 id="personnalization">Personnalization</h3>
+
 <div id="personnalization-demo">
 	<p>With CSS variables, you can change some aspects, even only in a region of your page.</p>
 	<pre><style class="showcode" scoped>
@@ -252,7 +253,9 @@
 	</cpu-audio>
 </div>
 
+
 <h3 id="playlists">Playlists</h3>
+
 <div>
 	<p>
 		You can create playlists on a page, one or more. When a player is ending, the next one in its playlists starts.
@@ -295,13 +298,16 @@
 
 
 <h3 id="cpu_controller">Global page controller</h3>
+
 <div>
 	<p>↓ Controller only on the playing / last played <code>&lt;audio&gt;</code></p>
 	<cpu-controller>
 	</cpu-controller>
 </div>
 
+
 <h3 id="keys">Keyboard controls</h3>
+
 <div>
 	<p>
 		When the webcomponent has the focus, some keys are used to pilot it.
@@ -317,7 +323,9 @@
 	</ul>
 </div>
 
+
 <h3 id="tests">Tests</h3>
+
 <div>
 	<p>
 		As I'm not perfect, some tests were written for non-regressions, conformity and check feature support by browsers.
@@ -331,6 +339,7 @@
 
 
 <h3 id="fallbacks">Fallbacks</h3>
+
 <div>
 	<p>
 	Browsers that don't support enough in webcomponents must display the &lt;audio controls&gt; tag as follow :

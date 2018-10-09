@@ -260,9 +260,9 @@ let CPU_element_api = class {
             return;
         }
 
+
         for (let tracks of self.audiotag.textTracks) {
-            
-            if ((tracks.kind === 'chapters') && (tracks.cues !== null)) {
+            if ((tracks.kind.toLowerCase() === 'chapters') && (tracks.cues !== null)) {
                 tracks.addEventListener('cuechange', function(event) {
                     // ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
                     trigger.cuechange(event, chapters_element);

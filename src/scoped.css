@@ -37,7 +37,7 @@ a, button {
     text-decoration : none;
 }
 svg {
-    fill : var(--cpu-color);
+    fill : currentColor;
     width : var(--cpu-height);
     height : var(--cpu-height);
 }
@@ -46,7 +46,7 @@ a:hover, a:focus {
     background : var(--cpu-color);
 }
 a:hover svg , a:focus svg {
-    fill : var(--cpu-background);
+    fill : currentColor;
 }
 
 .loading circle {
@@ -58,10 +58,6 @@ a:hover svg , a:focus svg {
     color : var(--cpu-playing-color);
 }
 
-.act-play svg {
-    fill : var(--cpu-playing-color);
-}
-
 .act-play a {
     color : var(--cpu-playing-color);
 }
@@ -69,9 +65,6 @@ a:hover svg , a:focus svg {
 .act-play a:hover, .act-play a:focus {
     color : var(--cpu-playing-background);
     background : var(--cpu-playing-color);
-}
-.act-play a:hover svg, .act-play a:focus svg {
-    fill : var(--cpu-playing-background);
 }
 
 .show-error {
@@ -359,16 +352,14 @@ a {
 .cue {
     border-top : 1px solid black;
 }
-.active-cue {
-    background : black;
-}
-.cue.active-cue {
-    color : yellow;
-}
 .cue a {
     display : flex;
     margin : 0px;
     padding : 2px
+}
+.active-cue a {
+    background : var(--cpu-color);
+    color : var(--cpu-background);
 }
 .cue strong {
     flex : 1 1;
