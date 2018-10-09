@@ -109,6 +109,7 @@ Thank you to my lovely friends :
 * [Guillaume Lemoine and Phonitive](http://www.phonitive.fr/) for helping
 * [Benoît Salles](https://twitter.com/infestedgrunt) for testing
 
+Really sorry, [NerOcrO](https://github.com/NerOcrO)
 
 Keeping in touch
 ----------------
