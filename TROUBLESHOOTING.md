@@ -10,4 +10,4 @@ Troubleshoots
 
 - Sometimes, a chapter file will load but won't be displayed. You can check with <https://quuz.org/webvtt/>
 
-{% include footer.html %}
+<!-- {% include footer.html %} -->

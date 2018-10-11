@@ -54,4 +54,4 @@ You will need :
 - tr
 - [Google closure compiler](https://developers.google.com/closure/compiler/) (an so, Java, sigh). Don't forget to keep it up to date.
 
-{% include footer.html %}
+<!-- {% include footer.html %} -->

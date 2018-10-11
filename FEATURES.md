@@ -15,7 +15,7 @@ An example with chapters.
         <source src="https://dascritch.net/vrac/Emissions/CPU/podcast/0085-CPU%2817-05-18%29.mp3" type="audio/mpeg">
         <track kind="chapters" src="./tests-assets/chapters-ex0085.vtt" default>
     </audio>
-    {% include no_component_message.html %}
+    <!-- {% include no_component_message.html %} -->
 </cpu-audio>
 
 <!--p class="cpu-audio-without-webcomponents">
@@ -190,4 +190,4 @@ Global page controller
 </cpu-controller>
 
 
-{% include footer.html %}
+<!-- {% include footer.html %} -->

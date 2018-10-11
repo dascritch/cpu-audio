@@ -44,7 +44,7 @@ audio[controls] {
 It is recommended to set to the `<audio>` tag an `id` attribute for using anchoring feature.
 
 
-You can try playing with our [live configurator tool](LIVE.html), event it isn't perfect yet.
+You can try playing with our [live configurator tool](LIVE.md), event it isn't perfect yet.
 
 
 Attributes references
@@ -138,4 +138,4 @@ variable | description | default value
 `--cpu-popup-background` | Background for the time pointer        | `#aaa`
 `--cpu-popup-color` | Text color for the time pointer             | `#333`
 
-{% include footer.html %}
+<!-- {% include footer.html %} -->

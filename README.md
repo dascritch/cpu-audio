@@ -100,6 +100,7 @@ HOW TO install
 --------------
 
 * [How install, deploy and customize on your server](INSTALL.md)
+* [You can try playing with our live configurator tool, event it isn't perfect yet.](LIVE.md)
 * [Known problems and misconfigurations](TROUBLESHOOTING.md)
 
 
@@ -145,4 +146,4 @@ Keeping in touch
 * blog <http://dascritch.net>
 * twitter : [@dascritch](https://twitter.com/dascritch)
 
-{% include footer.html %}
+<!-- {% include footer.html %} -->

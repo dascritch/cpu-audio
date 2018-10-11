@@ -54,4 +54,4 @@ Retired functions from v4
 - offline cross-sites playlist
 - ability to use another format than `&t=`
 
-{% include footer.html %}
+<!-- {% include footer.html %} -->
