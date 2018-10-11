@@ -267,7 +267,7 @@ function configurator_css() {
 }
 
 function noop(event) {
-    document.location.href = event.target.action;
+    document.location.hash = event.target.action;
     event.preventDefault();
 }
 
@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function(){
     form_css.addEventListener('input', configurator_css);
     reset_css_default();
     configurator_html();
-    document.location.href = '#'+form_html.id; 
+    document.location.hash = '#'+form_html.id; 
 }, false);
 
 </script>
