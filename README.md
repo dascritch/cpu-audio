@@ -13,14 +13,7 @@ An audio WebComponent to provide an user-interface, timecoded links and some oth
     <audio controls id="sound">
         <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
     </audio>
-    <!-- fallback messages for browsers without webcomponents -->
-    <!-- div class="cpu-audio-without-webcomponents too-old">
-        <h2>Your browser DOESN'T support WebComponent fairly enough.</h2>
-        <p>
-            Following examples are <strong>not fully functionnal</strong>, as the interface is not shown and the browser display its native player. This is intentional.<br />
-            Only the hash-links functions works.
-        </p>
-    </div -->
+    {% include no_component_message.html %}
 </cpu-audio>
 
 Some links :
