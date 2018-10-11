@@ -9,3 +9,5 @@ Troubleshoots
 - I've put the script in my page, linked to another website, but there is no player, and it won't start at the desired timestamp : You need to have the script installed also in the target web page.
 
 - Sometimes, a chapter file will load but won't be displayed. You can check with <https://quuz.org/webvtt/>
+
+{% include footer.html %}

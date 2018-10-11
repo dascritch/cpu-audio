@@ -52,5 +52,6 @@ Retired functions from v4
 -------------------------
 
 - offline cross-sites playlist
-- i18n
 - ability to use another format than `&t=`
+
+{% include footer.html %}

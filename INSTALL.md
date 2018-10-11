@@ -1,7 +1,6 @@
 How-to install
 ==============
 
-
 Copy [`dist/cpu-audio.js`](dist/cpu-audio.js) file on your website.
 Put in the head of your html page :
 
@@ -135,3 +134,4 @@ variable | description | default value
 `--cpu-popup-background` | Background for the time pointer        | `#aaa`
 `--cpu-popup-color` | Text color for the time pointer             | `#333`
 
+{% include footer.html %}

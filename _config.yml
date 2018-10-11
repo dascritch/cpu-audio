@@ -1,2 +1,5 @@
 theme: jekyll-theme-dinky
 show_downloads: ["true"]
+
+plugins:
+  - jekyll-sitemap

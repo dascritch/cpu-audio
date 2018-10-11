@@ -221,14 +221,5 @@ Global page controller
 </cpu-controller>
 
 
-Fallbacks
----------
 
-Browsers that don't support enough in webcomponents must display the `<audio controls>` tag as follow :
-
-```css
-audio[controls] {
-    display : block;
-    width : 100%;
-}
-```
+{% include footer.html %}
