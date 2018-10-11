@@ -17,10 +17,10 @@
 
 <div class="cpu-audio-with-webcomponents">
 
-<a href="#configurator_html">Configure html</a>
-<a href="#generated_html">Generated html</a>
-<a href="#configurator_css">Configure css</a>
-<a href="#generated_css">Generated css</a>
+- [Configure html](#configurator_html)
+- [Generated html](#generated_html)
+- [Configure css](#configurator_css)
+- [Generated css](#generated_css)
 
 <form id="configurator_html" action="#generated_html" class="pan" >
 
@@ -272,10 +272,12 @@ function noop(event) {
 }
 
 document.addEventListener('DOMContentLoaded', function(){
-    form_html.addEventListener('input', configurator_html);
-    form_css.addEventListener('input', configurator_css);
-    form_html.addEventListener('input', configurator_html);
-    form_css.addEventListener('input', configurator_css);
+    for (let event of ['input', 'change' ,'reset']) {
+        form_html.addEventListener(event, configurator_html);
+        form_css.addEventListener(event, configurator_css);
+    }
+    form_html.addEventListener('submit', noop);
+    form_css.addEventListener('submit', noop);
     reset_css_default();
     configurator_html();
     document.location.hash = '#'+form_html.id; 
