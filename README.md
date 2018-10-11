@@ -13,7 +13,7 @@ An audio WebComponent to provide an user-interface, timecoded links and some oth
     <audio controls id="sound">
         <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
     </audio>
-    {% include no_component_message.html %}
+    <!-- {% include no_component_message.html %} -->
 </cpu-audio>
 
 Some links :
