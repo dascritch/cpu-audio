@@ -5,6 +5,20 @@ An audio WebComponent to provide an user-interface, timecoded links and some oth
 
 <!-- calling the webcomponent -->
 <script src="./dist/cpu-audio.js" async></script>
+<style type="text/css">
+    /* fallback style for browsers without webcomponents */
+    audio[control] {
+        display : block;
+        width : 100%;
+    }
+    .cpu-audio-without-webcomponents .cpu-audio-without-webcomponents {
+        border : 4px red solid; padding : 4px;
+    }
+    /* fully operative */
+    .cpu-audio-with-webcomponents .cpu-audio-without-webcomponents {
+        display : none;
+    }
+</style>
 <cpu-audio 
     title="Au carnaval avec Samba Résille (2003)"
     poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
@@ -23,20 +37,6 @@ An audio WebComponent to provide an user-interface, timecoded links and some oth
         </p>
     </div>
 </cpu-audio>
-<style type="text/css">
-    /* fallback style for browsers without webcomponents */
-    audio[control] {
-        display : block;
-        width : 100%;
-    }
-    .cpu-audio-without-webcomponents .cpu-audio-without-webcomponents {
-        border : 4px red solid; padding : 4px;
-    }
-    /* fully operative */
-    .cpu-audio-with-webcomponents .cpu-audio-without-webcomponents {
-        display : none;
-    }
-</style>
 
 Some links :
 * [Demonstration page](https://dascritch.github.io/cpu-audio/)

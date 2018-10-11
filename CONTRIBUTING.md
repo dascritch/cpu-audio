@@ -14,12 +14,21 @@ If you are not a developer
 If you are a developer
 ----------------------
 
-
 Check first in [TODO.md](TODO.md) which lists some priorities and objectives.
 
 I usually [create bugs](https://github.com/dascritch/cpu-audio/issues) and refers to them in my commits. Most of the time.
 
 I'm sorry but due to draft rewrites and refactoring, I've lost most of the git history. Git blaming won't help for the code before September 2018.
+
+
+Tests
+-----
+
+As I'm not perfect, some tests were written for non-regressions, conformity and check feature support by browsers. Please, contribute also in tests, we really need a rock solid players with a few regressions as possible
+
+ * [Browser compliance and implementation tests](./tests-browser.html)
+ * [Minimum services, as hash links](./tests-minimal.html)
+ * [Graphic interface, if WebComponent fully supported](./tests-interface.html)
 
 
 Hygiene
@@ -34,18 +43,13 @@ Hygiene
   - [UI interfaces and webcomponents-dependant features](./test-interface.html)
 - Document everything, even dead-ends. Someone can find interestings your regrets.
 
+
 Development
 -----------
+
+To make the `dist/` files, use `./make.sh`
 
 You will need :
 - sed
 - tr
 - [Google closure compiler](https://developers.google.com/closure/compiler/) (an so, Java, sigh). Don't forget to keep it up to date.
-
-
-How to
-------
-
-To make the `dist/` files, use `./make.sh`
-
-Please, contribute also in tests, we really need a rock solid players with a few regressions as possible
