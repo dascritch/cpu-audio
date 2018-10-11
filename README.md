@@ -167,5 +167,4 @@ Keeping in touch
 * blog <http://dascritch.net>
 * twitter : [@dascritch](https://twitter.com/dascritch)
 
-
 {% include footer.html %}
