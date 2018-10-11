@@ -76,6 +76,21 @@ In the upper example, `<audio>` tag is id-ed as `audiodemo`. Usually, you link t
 </p>
 ```
 
+Permitted hash notations
+------------------------
+
+Original purpose [was to link any media element of any webpage to a specific moment](https://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore). It uses the [W3C standard Media Fragments](https://www.w3.org/TR/media-frags/) notation, extending the URL. 
+
+For the timecode, you can use :
+
+* `page.html#tagID&t=7442` : seconds without unit ;
+* `page.html#tagID&t=02:04:02` : colon (“professional”) timecode as `02:04:02` (2 hours, 4 minutes and 2 seconds) ;
+* `page.html#tagID&t=2h4m2s` : human-readable units, sub-units availables : `s`econds, `m`inutes, `h`ours and `d`ays
+
+Note : if a timecode without any named anchor is given, as in `href="#t=2h4m2s"`, the very first `<audio controls>` element of the document will be started and placed at this time.
+
+A playable range can be used : `page.html#tagID&t=5m,5m5s` will <a href="#sound&t=5m,5m5s">play the sound starting at 5 minutes, and stops it at 5 minutes and 5 seconds</a>
+
 
 Cloned player
 -------------

@@ -29,7 +29,7 @@ An audio WebComponent to provide an user-interface, timecoded links and some oth
         display : block;
         width : 100%;
     }
-    .cpu-audio-without-webcomponents {
+    .cpu-audio-without-webcomponents .cpu-audio-without-webcomponents {
         border : 4px red solid; padding : 4px;
     }
     /* fully operative */
@@ -56,12 +56,12 @@ An hashtag observer for `<audio>` tags with fancy interface, hyperlinks and shar
 
 When you load a page :
 
-1. if <a href="#sound&t=10m">your URL has an hash with a timecode (`page#tagID&t=10m`)</a>, the service will play the named `<audio controls>` at this timecode (here, `#TagID` at 10 minutes) ;
+1. if your URL has an hash with a timecode (`page#tagID&t=10m`), the service will play the named `<audio controls>` at this timecode (here, `#TagID` at 10 minutes) ;
 2. else, if a `<audio controls>` with a url `<source>` was played in your website, and was unexpectedly exited, the service will play the `<audio controls>` at the same timecode.
 
 During the page life :
 
-* if an `<audio controls>` anchor is linked with a timecode, as `<a href="#sound&t=10m">`, the service will play this tag at this timecode ;
+* if an `<audio controls>` anchor <a href="#sound&t=10m">is linked with a timecode, as `<a href="#sound&t=10m">`</a>, the service will play this tag at this timecode ;
 * no cacophony : when a `<audio controls>` starts, it will stop any other `<audio controls>` in the page ;
 * if you have a `<cpu-controller>` in your page, it will clone the playing `<cpu-audio>` interface.
 
@@ -82,6 +82,7 @@ Features
 * play only one sound in the page ;
 * playlist with auto-advance ;
 * play only a range between 2 timestamps ;
+* chapters ;
 * global `<cpu-controller>` .
 
 It could have been done via polyfills or frameworks, but I wanted a plain standard, vanilla javascript, easy to install and configure.
@@ -101,23 +102,6 @@ Standard not implemented yet, the hash links will work but without the interface
 * Edge
 
 
-
-Permitted hash notations
-------------------------
-
-Original purpose [was to link any media element of any webpage to a specific moment](https://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore). It uses the [W3C standard Media Fragments](https://www.w3.org/TR/media-frags/) notation, extending the URL. 
-
-For the timecode, you can use :
-
-* `page.html#tagID&t=7442` : seconds without unit ;
-* `page.html#tagID&t=02:04:02` : colon (“professional”) timecode as `02:04:02` (2 hours, 4 minutes and 2 seconds) ;
-* `page.html#tagID&t=2h4m2s` : human-readable units, sub-units availables : `s`econds, `m`inutes, `h`ours and `d`ays
-
-Note : if a timecode without any named anchor is given, as in `href="#t=2h4m2s"`, the very first `<audio controls>` element of the document will be started and placed at this time.
-
-A playable range can be used : `page.html#tagID&t=5m,5m5s` will <a href="#sound&t=5m,5m5s">play the sound starting at 5 minutes, and stops it at 5 minutes and 5 seconds</a>
-
-
 Keyboard functions
 ------------------
 
@@ -135,8 +119,8 @@ When the interface got the focus, you can use those keys :
 HOW TO install
 --------------
 
-* [How install and customize on your server](INSTALL.md)
-* [Known problems and misconfigurations](TROUBLESHOOTS.md)
+* [How install, deploy and customize on your server](INSTALL.md)
+* [Known problems and misconfigurations](TROUBLESHOOTING.md)
 
 
 Participate
