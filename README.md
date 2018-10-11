@@ -69,7 +69,9 @@ During the page life :
 
 
 Features
-----------
+---------
+
+[TL;DR ? See it in action](FEATURES.md)
 
 * hyperlink `<audio>` tags to a specific time, [Media Fragment standards](https://www.w3.org/TR/media-frags/) ;
 * standards first, future-proof ;
@@ -93,7 +95,7 @@ Beware, WebComponents is a to-be-implemented-elsewhere standard. Will work mainl
 * Firefox Nightly (63 +)
 * Safari Mac
 
-To be tested on :
+[To be tested](tests-minimal.html) on :
 
 * Safari iOS
 
