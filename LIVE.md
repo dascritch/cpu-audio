@@ -110,7 +110,7 @@
 <a href="#configurator_css">Go to CSS configurator</a>
 </div>
 
-<form id="configurator_css" action="#" class="pan">
+<form id="configurator_css" action="#generated_css" class="pan">
 
 <button type="reset">Reset values</button>
 
@@ -266,11 +266,19 @@ function configurator_css() {
     }
 }
 
+function noop(event) {
+    document.location.href = event.target.action;
+    event.preventDefault();
+}
+
 document.addEventListener('DOMContentLoaded', function(){
     form_html.addEventListener('input', configurator_html);
-    form_css.addEventListener('input', configurator_css),
+    form_css.addEventListener('input', configurator_css);
+    form_html.addEventListener('input', configurator_html);
+    form_css.addEventListener('input', configurator_css);
     reset_css_default();
     configurator_html();
+    document.location.href = '#'+form_html.id; 
 }, false);
 
 </script>
