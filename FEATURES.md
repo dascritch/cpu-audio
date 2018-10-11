@@ -16,56 +16,56 @@ An example with chapters.
         <track kind="chapters" src="./tests-assets/chapters-ex0085.vtt" default>
     </audio>
     <!-- fallback messages for browsers without webcomponents -->
-    <div class="cpu-audio-without-webcomponents too-old">
+    <!-- div class="cpu-audio-without-webcomponents too-old">
         <h2>Your browser DOESN'T support WebComponent fairly enough.</h2>
         <p>
             Following examples are <strong>not fully functionnal</strong>, as the interface is not shown and the browser display its native player. This is intentional.<br />
             Only the hash-links functions works.
         </p>
-    </div>
-</cpu-audio>
 
-<p class="cpu-audio-without-webcomponents">
-    Chapters (↓ This section for demo purposes is static, not generated, and only for old browsers) :
-</p>
-<ol class="cpu-audio-without-webcomponents">
-    <li>
-        <a href="#emission&amp;t=1m17s">Bonjour à toi, Enfant du Futur Immédiat : Des chiffres et des lettres —  (1:17)</a>
-    </li>
-    <li>
-        <a href="#emission&amp;t=6m28s">Lexique : Casser un chiffrement — (6:28)</a>
-    </li>
-    <li>
-        <a href="#emission&amp;t=9m16s">♪ The Limp Twins - <em>If it ain't broke... Break it !</em> — (9:16)</a>
-    </li>
-    <li>
-        <a href="#emission&amp;t=12m45s">Plantage : La chute de l'Empire du chiffre Allemand — (12:45)</a>
-    </li>
-    <li>
-        <a href="#emission&amp;t=20m45s">Artefact du passé : La machine Enigma —
-        (20:45)</a>
-    </li>
-    <li>
-        <a href="#emission&amp;t=29m22s">♪ Clair obscur - <em>Es war</em> —
-        (29:22)</a>
-    </li>
-    <li>
-        <a href="#emission&amp;t=33m19s">Histoire : Les génies du Biuro Szyfrów —
-        (33:19)</a>
-    </li>
-    <li>
-        <a href="#emission&amp;t=38m35s">Ainsi naquit : Benchley Park, le premier campus technologique —
-        (38:35)</a>
-    </li>
-    <li>
-        <a href="#emission&amp;t=47m27s">♪ Alexandre Desplat - <em>The imitation game (opening)</em> —
-        (47:27)</a>
-    </li>
-    <li>
-        <a href="#emission&amp;t=50m3s">Le gourou : Alan Turing —
-        (50:03)</a>
-    </li>
-</ol>
+    </div -->
+    <!--p class="cpu-audio-without-webcomponents">
+        Chapters (↓ This section for demo purposes is static, not generated, and only for old browsers) :
+    </p>
+    <ol class="cpu-audio-without-webcomponents">
+        <li>
+            <a href="#emission&amp;t=1m17s">Bonjour à toi, Enfant du Futur Immédiat : Des chiffres et des lettres —  (1:17)</a>
+        </li>
+        <li>
+            <a href="#emission&amp;t=6m28s">Lexique : Casser un chiffrement — (6:28)</a>
+        </li>
+        <li>
+            <a href="#emission&amp;t=9m16s">♪ The Limp Twins - <em>If it ain't broke... Break it !</em> — (9:16)</a>
+        </li>
+        <li>
+            <a href="#emission&amp;t=12m45s">Plantage : La chute de l'Empire du chiffre Allemand — (12:45)</a>
+        </li>
+        <li>
+            <a href="#emission&amp;t=20m45s">Artefact du passé : La machine Enigma —
+            (20:45)</a>
+        </li>
+        <li>
+            <a href="#emission&amp;t=29m22s">♪ Clair obscur - <em>Es war</em> —
+            (29:22)</a>
+        </li>
+        <li>
+            <a href="#emission&amp;t=33m19s">Histoire : Les génies du Biuro Szyfrów —
+            (33:19)</a>
+        </li>
+        <li>
+            <a href="#emission&amp;t=38m35s">Ainsi naquit : Benchley Park, le premier campus technologique —
+            (38:35)</a>
+        </li>
+        <li>
+            <a href="#emission&amp;t=47m27s">♪ Alexandre Desplat - <em>The imitation game (opening)</em> —
+            (47:27)</a>
+        </li>
+        <li>
+            <a href="#emission&amp;t=50m3s">Le gourou : Alan Turing —
+            (50:03)</a>
+        </li>
+    </ol -->
+</cpu-audio>
 
 
 Size constraints
