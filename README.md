@@ -3,36 +3,6 @@ CPU-Audio WebComponent
 
 An audio WebComponent to provide an user-interface, timecoded links and some other features to an `<audio>` tag.
 
-Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
-
-Some links :
-* [Demonstration page](https://dascritch.github.io/cpu-audio/)
-* [Code repository](https://github.com/dascritch/cpu-audio/)
-* Informations (in french) : [Timecodehash : Lier vers un moment d'un sonore](https://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore)
-* [The timecodehash.js project, first implementation](https://github.com/dascritch/timecodehash)
-* [Previous version of the projet, ondemiroir-audio-tag](https://github.com/dascritch/ondemiroir-audio-tag)
-
-Version : 5 BETA. Copyright © 2014-2018 Xavier "dascritch" Mouton-Dubosc. Licence GPL 3
-
-
-Purpose
--------
-
-An hashtag observer for `<audio>` tags with fancy interface, hyperlinks and share buttons.
-
-When you load a page :
-
-1. if <a href="#sound&t=10m">your URL has an hash with a timecode (`page#tagID&t=10m`)</a>, the service will play the named `<audio controls>` at this timecode (here, `#TagID` at 10 minutes) ;
-2. else, if a `<audio controls>` with a url `<source>` was played in your website, and was unexpectedly exited, the service will play the `<audio controls>` at the same timecode.
-
-During the page life :
-
-* if an `<audio controls>` anchor is linked with a timecode, as `<a href="#sound&t=10m">`, the service will play this tag at this timecode ;
-* no cacophony : when a `<audio controls>` starts, it will stop any other `<audio controls>` in the page ;
-* if you have a `<cpu-controller>` in your page, it will clone the playing `<cpu-audio>` interface.
-
-<a href="#sound&t=20m45s">This link starts the below player at 20:45</a>
-
 <!-- calling the webcomponent -->
 <script src="./dist/cpu-audio.js" async></script>
 <cpu-audio 
@@ -67,6 +37,35 @@ During the page life :
         display : none;
     }
 </style>
+
+Some links :
+* [Demonstration page](https://dascritch.github.io/cpu-audio/)
+* [Code repository](https://github.com/dascritch/cpu-audio/)
+* Informations (in french) : [Timecodehash : Lier vers un moment d'un sonore](https://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore)
+* [The timecodehash.js project, first implementation](https://github.com/dascritch/timecodehash)
+* [Previous version of the projet, ondemiroir-audio-tag](https://github.com/dascritch/ondemiroir-audio-tag)
+* Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
+
+Version : 5 BETA. [Licence GPL 3](LICENSE.md)
+
+
+Purpose
+-------
+
+An hashtag observer for `<audio>` tags with fancy interface, hyperlinks and share buttons.
+
+When you load a page :
+
+1. if <a href="#sound&t=10m">your URL has an hash with a timecode (`page#tagID&t=10m`)</a>, the service will play the named `<audio controls>` at this timecode (here, `#TagID` at 10 minutes) ;
+2. else, if a `<audio controls>` with a url `<source>` was played in your website, and was unexpectedly exited, the service will play the `<audio controls>` at the same timecode.
+
+During the page life :
+
+* if an `<audio controls>` anchor is linked with a timecode, as `<a href="#sound&t=10m">`, the service will play this tag at this timecode ;
+* no cacophony : when a `<audio controls>` starts, it will stop any other `<audio controls>` in the page ;
+* if you have a `<cpu-controller>` in your page, it will clone the playing `<cpu-audio>` interface.
+
+<a href="#sound&t=20m45s">This link starts the upper player at 20:45</a>
 
 
 Features
@@ -131,6 +130,22 @@ When the interface got the focus, you can use those keys :
 * <kbd>↖</kbd> : back to start
 * <kbd>End</kbd> : to the end, finish playing, ev. skip to the sound in playlist
 * <kbd>Escape</kbd> : back to start, stop playing
+
+
+HOW TO install
+--------------
+
+* [How install and customize on your server](INSTALL.md)
+* [Known problems and misconfigurations](TROUBLESHOOTS.md)
+
+
+Participate
+-----------
+
+* [Contribute in any way](CONTRIBUTING.md)
+* [Tests](tests-minimal.html)
+* [Bugs, issues, tickets and features](https://github.com/dascritch/cpu-audio/issues)
+* [What to do, next](TODO.md)
 
 
 Versions
