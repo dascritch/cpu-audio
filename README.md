@@ -4,21 +4,6 @@ CPU-Audio WebComponent
 An audio WebComponent to provide an user-interface, timecoded links and some other features to an `<audio>` tag.
 
 <!-- calling the webcomponent -->
-<script src="./dist/cpu-audio.js" async></script>
-<style type="text/css">
-    /* fallback style for browsers without webcomponents */
-    audio[control] {
-        display : block;
-        width : 100%;
-    }
-    .cpu-audio-without-webcomponents .cpu-audio-without-webcomponents {
-        border : 4px red solid; padding : 4px;
-    }
-    /* fully operative */
-    .cpu-audio-with-webcomponents .cpu-audio-without-webcomponents {
-        display : none;
-    }
-</style>
 <cpu-audio 
     title="Au carnaval avec Samba Résille (2003)"
     poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
@@ -29,7 +14,7 @@ An audio WebComponent to provide an user-interface, timecoded links and some oth
         <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
     </audio>
     <!-- fallback messages for browsers without webcomponents -->
-    <div class="cpu-audio-without-webcomponents">
+    <div class="cpu-audio-without-webcomponents too-old">
         <h2>Your browser DOESN'T support WebComponent fairly enough.</h2>
         <p>
             Following examples are <strong>not fully functionnal</strong>, as the interface is not shown and the browser display its native player. This is intentional.<br />

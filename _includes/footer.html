@@ -1,11 +1,33 @@
-<p>
-<a href="https://dascritch.github.io/cpu-audio/">CPU Audio</a>
-</p>
+<h1><a href="https://dascritch.github.io/cpu-audio/">CPU Audio webcomponent</a></h1>
 <ul id="pieddepage">
     <li><a href="FEATURES.md">Features</a></li>
     <li><a href="INSTALL.md">How to install</a></li>
+    <li><a href="LIVE.html">Live preview</a></li>
     <li><a href="TROUBLESHOOTING.md">Troubleshooting</a></li>
     <li><a href="CONTRIBUTING.md">How to contribute</a></li>
     <li><a href="TODO.md">What to do</a></li>
     <li><a href="https://github.com/dascritch/cpu-audio/">Repository</a></li>
 </ul>
+<script src="./dist/cpu-audio.js" async></script>
+<style type="text/css">
+    style.showcode {
+        display : block;
+    }
+
+    /* fallback style for browsers without webcomponents */
+    audio[control] {
+        display : block;
+        width : 100%;
+    }
+    .cpu-audio-without-webcomponents .cpu-audio-without-webcomponents {
+        display : block;
+    }
+    /* fully operative */
+    .cpu-audio-with-webcomponents .cpu-audio-without-webcomponents {
+        display : none;
+    }
+
+    .too-old {
+        border : 4px red solid; padding : 4px;
+    }
+</style>

@@ -4,30 +4,6 @@ CPU-Audio features
 An example with chapters.
 
 <!-- calling the webcomponent -->
-<script src="./dist/cpu-audio.js" async></script>
-<style type="text/css">
-    style.showcode {
-        display : block;
-    }
-
-    /* fallback style for browsers without webcomponents */
-    audio[control] {
-        display : block;
-        width : 100%;
-    }
-    .cpu-audio-without-webcomponents .cpu-audio-without-webcomponents {
-        display : block;
-    }
-    /* fully operative */
-    .cpu-audio-with-webcomponents .cpu-audio-without-webcomponents {
-        display : none;
-    }
-
-    .too-old {
-        border : 4px red solid; padding : 4px;
-    }
-
-</style>
 <cpu-audio
     title="Ex0085 Le Mystère Enigma"
     poster="https://cpu.dascritch.net/public/Images/Emissions/.1805-Ex0085-Enigma_m.jpg"
@@ -219,7 +195,6 @@ Global page controller
 
 <cpu-controller>
 </cpu-controller>
-
 
 
 {% include footer.html %}

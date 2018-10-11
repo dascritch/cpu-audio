@@ -43,6 +43,10 @@ audio[controls] {
 
 It is recommended to set to the `<audio>` tag an `id` attribute for using anchoring feature.
 
+
+You can try playing with our [live configurator tool](LIVE.html), event it isn't perfect yet.
+
+
 Attributes references
 ---------------------
 
@@ -66,7 +70,6 @@ Some attributes enhance the component :
 How to link
 -----------
 
-
 In the upper example, `<audio>` tag is id-ed as `audiodemo`. Usually, you link to it with `#audiodemo`. Add a parameter `t=` with the expected timecode, with a `&` as separator. By example, for 5 minutes from the start, you should target `#audiodemo&t=5m` : 
 
 ```html
@@ -74,6 +77,7 @@ In the upper example, `<audio>` tag is id-ed as `audiodemo`. Usually, you link t
     Jump at <a href="#audiodemo&amp;t=5m">5 minutes</a> in the sound
 </p>
 ```
+
 
 Permitted hash notations
 ------------------------
