@@ -22,15 +22,7 @@
 <a href="#configurator_css">Configure css</a>
 <a href="#generated_css">Generated css</a>
 
-TODO :
-* separate style modifications events
-* group widths on width breakpoints
-* split --cpu-inner-shadow color
-* show only changed css parameters
-
-<form id="configurator_html" action="#" class="pan" >
-
-<button type="reset">Reset values</button>
+<form id="configurator_html" action="#generated_html" class="pan" >
 
 <fieldset>
     <label for="source_1">
@@ -104,13 +96,18 @@ TODO :
     </label>
 </fieldset>
 
+<button type="reset">Reset values</button>
+<button type="submit">See result HTML code</button>
+
 </form>
 
 
-<div class="pan" id="generated_html">
+<div class="pan" id="generated_css">
     Paste this HTML code where you want the player in your page
 <pre id="code">
 </pre>
+
+<a href="#configurator_css">Go to CSS configurator</a>
 </div>
 
 <form id="configurator_css" action="#" class="pan">
@@ -159,6 +156,9 @@ TODO :
         <input name="css_popup-color" type="color" />
     </label>
 </fieldset>
+
+<button type="reset">Reset values</button>
+<button type="submit">See result CSS code</button>
 
 </form>
 
