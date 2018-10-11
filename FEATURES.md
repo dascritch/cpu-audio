@@ -126,7 +126,7 @@ Aspect changes when page's width is under 640px and 320px wide. The element must
 Modes
 -----
 
-`mode="compact"` . No needs for `title=""`, `poster=""`, `canonical=""` or `twitter=""` attributes _excepted_ when you also use `<cpu-controller>`
+↓ `mode="compact"` 
 
 <cpu-audio  mode="compact"
     canonical="https://dascritch.net/post/2016/12/27/35-ans-de-Radio-FMR%2C-et-elle-dure-encore"
@@ -137,8 +137,7 @@ Modes
     </audio>
 </cpu-audio>
 
-
-`mode="button"` . The component **should not** reduce under 640px wide. No needs for `title=""`, `poster=""`, `canonical=""` or `twitter=""` attributes _excepted_ when you also use `<cpu-controller>`
+↓ `mode="button"` . The component **should not** reduce under 640px wide. 
 
 <cpu-audio mode="button">
     <audio controls id="b2">
@@ -146,14 +145,16 @@ Modes
     </audio>
 </cpu-audio>
 
-Other modes exists, and some feature may be hidden. [See INSTALL.md](INSTALL.md)
+
+No need to use `title=""`, `poster=""`, `canonical=""` or `twitter=""` attributes for the two previous examples _excepted_ when you also use `<cpu-controller>`. Other modes exists, and some feature may be hidden. [See INSTALL.md](INSTALL.md)
 
 
 Personnalization
 ----------------
 
-You can change some aspects of the interface via CSS variables, even only in a region of your page.
+You can change some aspects of the interface [via some handy CSS variables](https://dascritch.github.io/cpu-audio/INSTALL.html#personnalization-via-css-variables), even only in a region of your page.
 
+<div id="personnalization-demo">
 <pre><style class="showcode" scoped contenteditable>/* you can edit to test it right now */
     #personnalization-demo {
         --cpu-background : yellow;
@@ -172,6 +173,7 @@ You can change some aspects of the interface via CSS variables, even only in a r
         <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
     </audio>
 </cpu-audio>
+</div>
 
 
 Playlists
@@ -215,6 +217,8 @@ Global page controller
 
 ↓ Controller only on the playing / last played `<audio>`
 
+<cpu-controller>
+</cpu-controller>
 
 
 Fallbacks
