@@ -283,7 +283,7 @@ function noop(event) {
 }
 
 document.addEventListener('DOMContentLoaded', function(){
-    for (let event of ['input', 'change' ,'reset']) {
+    for (let event of ['input', 'change' ]) {
         form_html.addEventListener(event, configurator_html);
         form_css.addEventListener(event, configurator_css);
     }
