@@ -8,8 +8,6 @@ If you are not a developer
 - Perhaps you can help me on the design or the logos
 - Install in your own website, test, note the bugs, [report them in the issues section of the repo](https://github.com/dascritch/cpu-audio/issues)
 
-[thanks @mariejulien](https://twitter.com/mariejulien/status/1047827583126183937)
-
 
 If you are a developer
 ----------------------

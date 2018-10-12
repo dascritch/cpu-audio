@@ -135,6 +135,7 @@ Thank you to my lovely friends :
 * [Loïc Gerbaud](https://github.com/chibani) for corrections
 * [Guillaume Lemoine and Phonitive](http://www.phonitive.fr/) for helping
 * [Benoît Salles](https://twitter.com/infestedgrunt) for testing
+- [@mariejulien](https://twitter.com/mariejulien/status/1047827583126183937) about [CONTRIBUTING.md](CONTRIBUTING)
 
 Really sorry, [NerOcrO](https://github.com/NerOcrO)
 
