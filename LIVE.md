@@ -1,4 +1,4 @@
-This is a primitive live configurator por CPU-Audio. Please note that you should have a browser with webcomponents support to really enjoy it.
+This is a primitive live configurator for CPU-Audio, helping you to tune it for your website. Please note that you should have a browser with webcomponents support to really enjoy it.
 
 See [INSTALL.md](INSTALL) for explanations on attributes and values.
 
