@@ -255,7 +255,7 @@ function configurator_html(event) {
     }
 }
 
-function configurator_css() {
+function configurator_css(event) {
 
     function input_changed(element) {
         return element.value !== element.attributes.value.value;
@@ -313,11 +313,18 @@ function noop(event) {
     event.preventDefault();
 }
 
+function reset(event) {
+    let event_change = new Event('change');
+    setTimeout( function(){ event.target.dispatchEvent(event_change); }, 100);
+}
+
 document.addEventListener('DOMContentLoaded', function(){
-    for (let event of ['input', 'change', 'reset' ]) {
+    for (let event of ['input', 'change' ]) {
         form_html.addEventListener(event, configurator_html);
         form_css.addEventListener(event, configurator_css);
     }
+    form_html.addEventListener('reset', reset);
+    form_css.addEventListener('reset', reset);
     form_html.addEventListener('submit', noop);
     form_css.addEventListener('submit', noop);
     configurator_html();
