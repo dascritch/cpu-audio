@@ -115,7 +115,7 @@ Modes
 </cpu-audio>
 
 
-No need to use `title=""`, `poster=""`, `canonical=""` or `twitter=""` attributes for the two previous examples _excepted_ when you also use `<cpu-controller>`. Other modes exists, and some feature may be hidden. [See INSTALL.md](INSTALL.md)
+No need to use `title=""`, `poster=""`, `canonical=""` or `twitter=""` attributes for the two previous examples _excepted_ when you also use `<cpu-controller>`. Other modes exists, and some feature may be hidden. [See INSTALL.md](INSTALL)
 
 
 Personnalization

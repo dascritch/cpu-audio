@@ -24,7 +24,7 @@ Some links :
 * [Previous version of the projet, ondemiroir-audio-tag](https://github.com/dascritch/ondemiroir-audio-tag)
 * Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 
-Version : 5 BETA. [Licence GPL 3](LICENSE.md)
+Version : 5 BETA. [Licence GPL 3](LICENSE)
 
 
 Purpose
@@ -49,7 +49,7 @@ During the page life :
 Features
 ---------
 
-[TL;DR ? See it in action](FEATURES.md)
+[TL;DR ? See it in action](FEATURES)
 
 * hyperlink `<audio>` tags to a specific time, [Media Fragment standards](https://www.w3.org/TR/media-frags/) ;
 * standards first, future-proof ;
@@ -99,18 +99,18 @@ When the interface got the focus, you can use those keys :
 HOW TO install
 --------------
 
-* [How install, deploy and customize on your server](INSTALL.md)
-* [You can try playing with our live configurator tool, event it isn't perfect yet.](LIVE.md)
-* [Known problems and misconfigurations](TROUBLESHOOTING.md)
+* [How install, deploy and customize on your server](INSTALL)
+* [You can try playing with our live configurator tool, event it isn't perfect yet.](LIVE)
+* [Known problems and misconfigurations](TROUBLESHOOTING)
 
 
 Participate
 -----------
 
-* [Contribute in any way](CONTRIBUTING.md)
+* [Contribute in any way](CONTRIBUTING)
 * [Tests](tests-minimal.html)
 * [Bugs, issues, tickets and features](https://github.com/dascritch/cpu-audio/issues)
-* [What to do, next](TODO.md)
+* [What to do, next](TODO)
 
 
 Versions

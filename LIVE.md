@@ -3,7 +3,7 @@
 - [Configure css](#configurator_css)
 - [Generated css](#generated_css)
 
-{ % include_relative live_config.html %}
+{% include_relative live_config.html %}
 
 
-<!-- { % include footer.html %} -->
+<!-- {% include footer.html %} -->
