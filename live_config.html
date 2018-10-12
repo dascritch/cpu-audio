@@ -15,11 +15,12 @@
 </cpu-audio>
 </div>
 
-<a href="#configurator_html">Configure html</a>
-<a href="#generated_html">Generated html</a>
-<a href="#configurator_css">Configure css</a>
-<a href="#generated_css">Generated css</a>
-
+<p id="steps">
+    <a href="#configurator_html">Configure html</a>
+    <a href="#generated_html">Generated html</a>
+    <a href="#configurator_css">Configure css</a>
+    <a href="#generated_css">Generated css</a>
+</p>
 
 <form id="configurator_html" action="#generated_html" class="pan" >
 
@@ -34,7 +35,7 @@
                 <option value="audio/wav">WAV</option>
             </select> sound file
         </span>
-        <input id="source_1" name="source_1" type="url" value="https://dascritch.net/vrac/Emissions/CPU/0085-CPU%2817-05-18%29.ogg" />
+        <input id="source_1" name="source_1" type="url" value="https://dascritch.net/vrac/sonores/1404-SambaResille2003.ogg" />
     </label>
     <label for="source_2">
         <span>
@@ -46,7 +47,7 @@
                 <option value="audio/wav">WAV</option>
             </select> sound file
         </span>
-        <input id="source_2" name="source_2" type="url" value="https://dascritch.net/vrac/Emissions/CPU/podcast/0085-CPU%2817-05-18%29.mp3" />
+        <input id="source_2" name="source_2" type="url" value="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" />
     </label>
     <label for="source_3">
         <span>
@@ -58,7 +59,7 @@
                 <option value="audio/wav">WAV</option>
             </select> sound file
         </span>
-        <input id="source_3" name="source_3" type="url"  />
+        <input id="source_3" name="source_3" type="url" />
     </label>
     <label for="source_vtt">
         <span>Chapter VTT text file</span>
@@ -114,7 +115,11 @@
 <fieldset>
     <label for="css_font-family">
         <span>Font families</span>
-        <input id="css_font-family" name="css_font-family" type="text" />
+        <input id="css_font-family" name="css_font-family" type="text" value='Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif' />
+    </label>
+    <label for="css_inner-shadow">
+        <span>Shadow between horizontal panels</span>
+        <input id="css_inner-shadow" name="css_inner-shadow" type="text" value="inset 0px 5px 10px -5px black" />
     </label>
 </fieldset>
 
@@ -150,8 +155,8 @@
             <tr>
                 <th>Breakpoints</th>
                 <th colspan="2">wider</th>
-                <th colspan="2"><input name="css_breakpoint[0]" type="text" value="640px"></th>
-                <th colspan="2"><input name="css_breakpoint[1]" type="text" value="480px"></th>
+                <th colspan="2"><input name="css_breakpoint[1]" type="text" value="640px"></th>
+                <th colspan="2"><input name="css_breakpoint[2]" type="text" value="480px"></th>
                 <th>smaller</th>
             </tr>
         </thead>
@@ -160,7 +165,7 @@
                 <th scope="row" colspan="2">Time indicator width</th>
                 <td colspan="2"><input name="css_elapse-width[0]" type="text" value="185px" /></td>
                 <td colspan="2"><input name="css_elapse-width[1]" type="text" value="160px" /></td>
-                <td colspan="2"><input id="css_elapse-width" name="css_elapse-width[2]" type="text" value="80px" /></td>
+                <td colspan="2"><input id="css_elapse-width[2]" name="css_elapse-width[2]" type="text" value="80px" /></td>
             </tr>
             <tr>
                 <th scope="row" colspan="2">Font size</th>
@@ -178,14 +183,6 @@
     </table>
 
 </fieldset>
-
-<fieldset>
-    <label for="css_inner-shadow">
-        <span>Shadow between horizontal panels</span>
-        <input id="css_inner-shadow" name="css_inner-shadow" type="text" />
-    </label>
-</fieldset>
-
 
 <button type="reset">Reset values</button>
 <button type="submit">See result CSS code</button>
@@ -258,27 +255,52 @@ function configurator_html(event) {
     }
 }
 
-let css_attributes = [
-    'background', 'color',
-    'elapse-width',
-    'error-background', 'error-color',
-    'font-family', 'font-size',
-    'height', 'inner-shadow',
-    'playing-background', 'playing-color',
-    'popup-background', 'popup-color'
-    ];
-
 function configurator_css() {
-    let css = 'body {';
+
+    function input_changed(element) {
+        return element.value !== element.attributes.value.value;
+    }
+
+    let css = '';
+    let attrs = ['font-family', 'inner-shadow'];
     for (let key of ['','error-','playing-','popup-']) {
         for (let attr of ['color','background']) {
-            let value = form_css.querySelector(`[name="css_${key}${attr}"]`).value;
-            if (value) {
-                css += `\n    --cpu-${key}${attr} : ${value};`;
+            attrs.push(`${key}${attr}`);
+        }
+    }
+    for (let attr of attrs) {
+        let element = form_css.querySelector(`[name="css_${attr}"]`);
+        let value = element.value;
+        if ((input_changed(element)) && (value !== '')) {
+            css += `\n\t--cpu-${attr} : ${value};`;
+        }
+    }
+
+    if (css !== '') {
+        css = `body {\n${css}\n}`;
+    }
+
+    for (let level of ['0', '1', '2']) {
+        let rules_breakpoint = '';
+        for(let attr of ['elapse-width', 'font-size', 'height']) {
+            let element = form_css.querySelector(`[name="css_${attr}[${level}]"]`);
+            let value = element.value;
+            if ((input_changed(element)) && (value !== '')) {
+                rules_breakpoint += `\n\t\t--cpu-${attr} : ${value};`;
+            }
+        }
+
+        if (rules_breakpoint !== '') {
+            if (level === '0') {
+                css += `\n\nbody, .interface {\n${rules_breakpoint}\n}`;
+            } else {
+                let max_width = form_css.querySelector(`[name="css_breakpoint[${level}]"]`).value;
+                if (max_width !== '') {
+                    css += `\n\n@media (max-width: 640px) , @element .interface and (max-width: 640px) {\n\tbody, .interface {${rules_breakpoint}\n\t}\n} `;
+                }
             }
         }
     }
-    css += '\n}';
 
     document.getElementById('style').innerHTML = css;
     if (event) {
@@ -292,7 +314,7 @@ function noop(event) {
 }
 
 document.addEventListener('DOMContentLoaded', function(){
-    for (let event of ['input', 'change' ]) {
+    for (let event of ['input', 'change', 'reset' ]) {
         form_html.addEventListener(event, configurator_html);
         form_css.addEventListener(event, configurator_css);
     }
@@ -305,6 +327,17 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 
 <style>
+
+    #steps {
+        display: flex;
+        width: 100%;
+    }
+
+    #steps a {
+        padding : 4px;
+        border : 1px #ccc solid;
+    }
+
     form label {display : flex;}
     form label * {flex : 1 0 auto;}
     form label span {flex : 0 0 200px;}
@@ -312,4 +345,31 @@ document.addEventListener('DOMContentLoaded', function(){
 
     .pan { display :none ; }
     .pan:target { display :block ; }
+
+    fieldset {
+        border  :1px solid #ccc
+    }
+
+    table input {
+        max-width : 100px;
+    }
+
+    /* need to cancel Dinky theme style for this page **/
+    table {
+
+    }
+
+    th {
+        font-family : "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        padding : 4px;
+        color : #232323;
+        background : transparent;
+    }
+
+    td {
+        padding : 0px;
+        background : transparent;
+    }
+
 </style>

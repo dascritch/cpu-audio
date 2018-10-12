@@ -1,7 +1,6 @@
-- [Configure html](#configurator_html)
-- [Generated html](#generated_html)
-- [Configure css](#configurator_css)
-- [Generated css](#generated_css)
+This is a primitive live configurator por CPU-Audio. Please note that you should have a browser with webcomponents support to really enjoy it.
+
+See [INSTALL.md](INSTALL) for explanations on attributes and values.
 
 {% include_relative live_config.html %}
 

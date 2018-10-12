@@ -99,7 +99,7 @@ $(cat ${PROJECT_DIR}/src/license.txt)
 
 function _build_component_js() {
 
-    component_file_js="${PROJECT_DIR}/dist/cpu-audio.js"
+    component_file_js="./dist/cpu-audio.js" # ${PROJECT_DIR}
 
     java -jar /usr/share/java/closure-compiler.jar \
         --compilation_level ${JS_COMPILATION_LEVEL} \
