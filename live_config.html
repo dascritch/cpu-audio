@@ -111,8 +111,6 @@
 
 <form id="configurator_css" action="#generated_css" class="pan">
 
-<button type="reset">Reset values</button>
-
 <fieldset>
     <label for="css_font-family">
         <span>Font families</span>
@@ -126,47 +124,68 @@
     </label>
     <label>
         <span>Colours except playing or in error</span>
-        <input name="css_background" type="color" />
-        <input name="css_color" type="color" />
+        <input name="css_color" type="color" value="#dddddd" />
+        <input name="css_background" type="color" value="#555555" />
     </label>
     <label for="css_error-background">
         <span>Colours when there is a media error</span>
-        <input name="css_error-background" type="color" />
-        <input name="css_error-color" type="color" />
-    </label>
-    <label for="css_inner-shadow">
-        <span>Shadow between horizontal panels</span>
-        <input id="css_inner-shadow" name="css_inner-shadow" type="text" />
+        <input name="css_error-color" type="color" value="#ffff77" />
+        <input name="css_error-background" type="color" value="#aa0000" />
     </label>
     <label for="css_playing-background">
         <span>Colours while playing</span>
-        <input name="css_playing-background" type="color" />
-        <input name="css_playing-color" type="color" />
+        <input name="css_playing-color" type="color" value="#ffffff" />
+        <input name="css_playing-background" type="color" value="#444444" />
     </label>
     <label for="css_popup-background">
         <span>Colours for the time pointer</span>
-        <input name="css_popup-background" type="color" />
-        <input name="css_popup-color" type="color" />
+        <input name="css_popup-color" type="color" value="#aaaaaa" />
+        <input name="css_popup-background" type="color" value="#333333" />
     </label>
 </fieldset>
 
 <fieldset>
-    <label>
-        <span></span><span></span><span><input type="text" /></span>
-    </label>
-    <label for="css_elapse-width">
-        <span>Time indicator width (upper than 640px wide)</span>
-        <input id="css_elapse-width" name="css_elapse-width" type="text" />
-    </label>
-    <label for="css_font-size">
-        <span>Font size</span>
-        <input id="css_font-size" name="css_font-size" type="text" />
-    </label>
-    <label for="css_height">
-        <span>Height and width of the square buttons</span>
-        <input id="css_height" name="css_height" type="text" />
+    <table>
+        <thead>
+            <tr>
+                <th>Breakpoints</th>
+                <th colspan="2">wider</th>
+                <th colspan="2"><input name="css_breakpoint[0]" type="text" value="640px"></th>
+                <th colspan="2"><input name="css_breakpoint[1]" type="text" value="480px"></th>
+                <th>smaller</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row" colspan="2">Time indicator width</th>
+                <td colspan="2"><input name="css_elapse-width[0]" type="text" value="185px" /></td>
+                <td colspan="2"><input name="css_elapse-width[1]" type="text" value="160px" /></td>
+                <td><input id="css_elapse-width" name="css_elapse-width[2]" type="text" value="80px" /></td>
+            </tr>
+            <tr>
+                <th scope="row" colspan="2">Font size</th>
+                <td colspan="2"><input name="css_font-size[0]" type="text" value="15px" /></td>
+                <td colspan="2"><input name="css_font-size[1]" type="text" value="13px" /></td>
+                <td><input name="css_font-size[2]" type="text" value="" /></td>
+            </tr>
+            <tr>
+                <th scope="row" colspan="2">Height and width of the square buttons</th>
+                <td colspan="2"><input name="css_height[0]" type="text" value="64px" /></td>
+                <td colspan="2"><input name="css_height[1]" type="text" value="32px" /></td>
+                <td><input name="css_height[2]" type="text" value="" /></td>
+            </tr>
+        </tbody>
+    </table>
+
+</fieldset>
+
+<fieldset>
+    <label for="css_inner-shadow">
+        <span>Shadow between horizontal panels</span>
+        <input id="css_inner-shadow" name="css_inner-shadow" type="text" />
     </label>
 </fieldset>
+
 
 <button type="reset">Reset values</button>
 <button type="submit">See result CSS code</button>
@@ -186,29 +205,7 @@
 let form_html = document.getElementById('configurator_html');
 let form_css = document.getElementById('configurator_css');
 let cpu_audio = document.querySelector('cpu-audio');
-let css_attributes = [
-    'background', 'color',
-    'elapse-width',
-    'error-background', 'error-color',
-    'font-family', 'font-size',
-    'height', 'inner-shadow',
-    'playing-background', 'playing-color',
-    'popup-background', 'popup-color'
-    ];
 
-function reset_css_default() {
-    // ah ouais, faut intégrer global.css preums
-    // i have grave la femme
-    let style = getComputedStyle(document.body);
-    let regex_4096_colours = /^#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])$/;
-    for (let attr of css_attributes) {
-        let input = form_css.querySelector(`[name="css_${attr}"]`);
-        let value = style.getPropertyValue(`--cpu-${attr}`).trim();
-        value = value.replace(regex_4096_colours,'#$1$1$2$2$3$3')
-        input.value = value;
-        input.setAttribute('value', value);
-    }
-}
 
 function configurator_html(event) {
     let cpu_audio_attributes = '';
@@ -261,12 +258,24 @@ function configurator_html(event) {
     }
 }
 
+let css_attributes = [
+    'background', 'color',
+    'elapse-width',
+    'error-background', 'error-color',
+    'font-family', 'font-size',
+    'height', 'inner-shadow',
+    'playing-background', 'playing-color',
+    'popup-background', 'popup-color'
+    ];
+
 function configurator_css() {
     let css = 'body {';
-    for (let attr of css_attributes) {
-        let value = form_css.querySelector(`[name="css_${attr}"]`).value;
-        if (value) {
-            css += `\n    --cpu-${attr} : ${value};`;
+    for (let key of ['','error-','playing-','popup-']) {
+        for (let attr of ['color','background']) {
+            let value = form_css.querySelector(`[name="css_${key}${attr}"]`).value;
+            if (value) {
+                css += `\n    --cpu-${key}${attr} : ${value};`;
+            }
         }
     }
     css += '\n}';
@@ -289,7 +298,6 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     form_html.addEventListener('submit', noop);
     form_css.addEventListener('submit', noop);
-    reset_css_default();
     configurator_html();
     document.location.hash = '#'+form_html.id; 
 }, false);
