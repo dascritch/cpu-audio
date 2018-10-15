@@ -257,6 +257,9 @@ a {
 }
 
 .share a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height : var(--cpu-height);
 }
 
