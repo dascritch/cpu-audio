@@ -41,7 +41,7 @@ svg {
     width : var(--cpu-height);
     height : var(--cpu-height);
 }
-a:hover, a:focus {
+a:hover, a:focus, button:hover, button:focus {
     color : var(--cpu-background);
     background : var(--cpu-color);
 }
