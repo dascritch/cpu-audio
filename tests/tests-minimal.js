@@ -1,5 +1,21 @@
 QUnit.config.autostart = false;
 
+
+function check_focus() {
+	console.info('check_focus ', document.hasFocus())
+	document.body.style.background = document.hasFocus() ? 'white' : 'grey';
+}
+
+check_focus();
+document.addEventListener('focus', check_focus)
+document.addEventListener('blur', check_focus)
+
+
+if (!document.hasFocus()) {
+	alert('Please click on the web view, giving focus, to autorize the audio tag. Else, numerous tests will fail. See issu 17 on our github for details : https://github.com/dascritch/cpu-audio/issues/17 .');
+}
+
+
 window.addEventListener('load', function() {
 
 	let cpu = document.CPU;
