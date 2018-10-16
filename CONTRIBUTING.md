@@ -1,12 +1,12 @@
 If you are not a developer
 --------------------------
 
-- My english is a pity. You may help me to correct it
-- You may test on some platforms. Mainly MacOS, iOS and Edge; And see some problems when comparing to Firefox or Chrome
-- You can re-read my doc, and ask me some precisions
+- My english is a pity. You may help me to correct it.
+- You may test on some platforms. Mainly MacOS, iOS and Edge; And see some problems when comparing to Firefox or Chrome.
+- You can re-read my doc, and ask me some precisions.
 - You may be have a disability and you're using some accessibility tools… You're super useful ! I surely missed something important for you.
-- Perhaps you can help me on the design or the logos
-- Install in your own website, test, note the bugs, [report them in the issues section of the repo](https://github.com/dascritch/cpu-audio/issues)
+- Perhaps you can help me on the design or the logos.
+- Install in your own website, test, note the bugs, [report them in the issues section of the repo](https://github.com/dascritch/cpu-audio/issues).
 
 
 If you are a developer
@@ -22,7 +22,7 @@ I'm sorry but due to draft rewrites and refactoring, I've lost most of the git h
 Tests
 -----
 
-As I'm not perfect, some tests were written for non-regressions, conformity and check feature support by browsers. Please, contribute also in tests, we really need a rock solid players with a few regressions as possible
+As I'm not perfect, some tests were written for non-regressions, conformity and check feature support by browsers. Please contribute also in tests, we really need a rock solid players with a few regressions as possible.
 
  * [Browser compliance and implementation tests](./tests-browser.html)
  * [Minimum services, as hash links](./tests-minimal.html)
