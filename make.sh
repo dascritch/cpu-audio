@@ -105,8 +105,8 @@ function _build_component_js() {
         --compilation_level ${JS_COMPILATION_LEVEL} \
             --use_types_for_optimization=true \
             --summary_detail_level=3 \
-        --js ${PROJECT_DIR}/src/{00_prologue,10_i18n,../tmp/insert_template,11_utils,20_convert,30_trigger,40_document_cpu,45_element_cpu,50_media_element_extension,70_cpu_controller.class,71_cpu_audio.class,90_main}.js \
-        --entry_point "${PROJECT_DIR}/src/90_main.js" \
+        --js ./src/{00_prologue,10_i18n,../tmp/insert_template,11_utils,20_convert,30_trigger,40_document_cpu,45_element_cpu,50_media_element_extension,70_cpu_controller.class,71_cpu_audio.class,90_main}.js \
+        --entry_point "./src/90_main.js" \
            --language_in ECMASCRIPT_2017 \
                 --module_resolution BROWSER \
                 --js_module_root src --jscomp_off internetExplorerChecks \
