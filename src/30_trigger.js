@@ -141,7 +141,8 @@ const trigger = {
         }
         audiotag.play();
     },
-    key : function(event) {
+    key : function(event, mult) {
+        mult = mult === undefined ? 1 : mult;
         let container = document.CPU.find_container(event.target);
 
         function seek_relative(seconds) {
@@ -169,10 +170,10 @@ const trigger = {
                 trigger.restart(event);
                 break;
             case KEY_LEFT_ARROW : // ←
-                seek_relative(- document.CPU.keymove);
+                seek_relative(- (document.CPU.keymove * mult));
                 break;
             case KEY_RIGHT_ARROW : // →
-                seek_relative(+ document.CPU.keymove);
+                seek_relative(+ (document.CPU.keymove * mult));
                 break;
             default:
                 return ;
@@ -204,14 +205,12 @@ const trigger = {
         trigger.key(event);
     },
     fastreward : function(event) {
-        for(let nb = 0; nb < 4 ; nb++) {
-            trigger.reward(event);
-        }
+        event.keyCode = KEY_LEFT_ARROW;
+        trigger.key(event, 4);
     },
     fastfoward : function(event) {
-        for(let nb = 0; nb < 4 ; nb++) {
-            trigger.foward(event);
-        }
+        event.keyCode = KEY_RIGHT_ARROW;
+        trigger.key(event, 4);
     },
     input_time_change : function(event) {
         let container = document.CPU.find_container(event.target);
