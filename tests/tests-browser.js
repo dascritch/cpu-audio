@@ -1,5 +1,4 @@
 function check_focus() {
-    console.info('check_focus ', document.hasFocus())
     document.body.style.background = document.hasFocus() ? 'white' : 'grey';
 }
 

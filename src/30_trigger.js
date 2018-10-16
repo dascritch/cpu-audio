@@ -217,6 +217,7 @@ const trigger = {
         let container = document.CPU.find_container(event.target);
         let seconds = convert.ColonTimeInSeconds( event.target.value );
         container.show_throbber_at(seconds);
+        document.CPU.seekElementAt(container.audiotag, seconds);
     },
 
     cuechange : function(event, chapters_element) {
