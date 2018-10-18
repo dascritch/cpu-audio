@@ -57,7 +57,7 @@ function _remove_spaces() {
     from=${1}
     to=${2}
 
-    cat "${from}" | tr '\n' ' '  | sed -r 's/[\t ]+/ /g' > "${to}"
+    cat "${from}"  | sed  -r 's/\/\*.*\*\// /g' | tr '\n' ' '  | sed -r 's/[\t ]+/ /g' > "${to}"
 }
 
 function _build_template() {
