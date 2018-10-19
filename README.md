@@ -107,7 +107,7 @@ HOW TO install
 Participate
 -----------
 
-* [Contribute in any way](CONTRIBUTING)
+* [Contribute in any way](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
 * [Tests](tests-minimal.html)
 * [Bugs, issues, tickets and features](https://github.com/dascritch/cpu-audio/issues)
 * [What to do, next](TODO)
@@ -135,7 +135,7 @@ Thank you to my lovely friends :
 * [Loïc Gerbaud](https://github.com/chibani) for corrections
 * [Guillaume Lemoine and Phonitive](http://www.phonitive.fr/) for helping
 * [Benoît Salles](https://twitter.com/infestedgrunt) for testing
-- [@mariejulien](https://twitter.com/mariejulien/status/1047827583126183937) about [CONTRIBUTING.md](CONTRIBUTING)
+- [@mariejulien](https://twitter.com/mariejulien/status/1047827583126183937) about [CONTRIBUTING.md](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
 
 Really sorry, [NerOcrO](https://github.com/NerOcrO)
 
