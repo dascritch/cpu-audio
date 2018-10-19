@@ -95,6 +95,8 @@ When the interface got the focus, you can use those keys :
 * <kbd>End</kbd> : to the end, finish playing, ev. skip to the sound in playlist
 * <kbd>Escape</kbd> : back to start, stop playing
 
+For handheld users, a long press on the timeline will show you a bench of buttons for a more precise navigation.
+
 
 HOW TO install
 --------------
