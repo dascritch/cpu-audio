@@ -19,15 +19,15 @@ Planned evolutions
 - [ ] Standards first
     - [X] [Support incoming navigator.share API](https://github.com/dascritch/cpu-audio/issues/4)
     - [ ] use standard [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) in `hashOrder`, instead of the custom code. We need a strategy to get the anchor, seen as a key without value
-    - [ ] [Support MSE API for non-buffered playing, needed for HTTP/2](https://github.com/dascritch/cpu-audio/issues/12)
+    - [ ] [Support MSE API for non-buffered playing, needed for HTTP/2 push](https://github.com/dascritch/cpu-audio/issues/12)
 - [ ] [playlists in a page](https://github.com/dascritch/cpu-audio/issues/7)
     - [X] expose playlist in document.CPU API
     - [X] playlists in a page, play next audio in playlist parametrable via API
     - [X] show playlist in `<cpu-controller>`
     - [ ] show playlist in current playing `<cpu-audio>`
 - [ ] manage [autoplaying sound blocking](https://github.com/dascritch/cpu-audio/issues/17)
-    - [ ] for tests
-    - [ ] hashlinked
+    - [X] for tests
+    - [X] hashlinked
     - [ ] resumed play
 - [ ] DOM manipulation events :
     - [X] dynamic creation of a `<cpu-audio>` (not feasable because of `<audio controls>` needed)
@@ -35,8 +35,9 @@ Planned evolutions
     - [X] [remove of a `<cpu-audio>` on a `<audio>` remove](https://github.com/dascritch/ondemiroir-audio-tag/issues/8)
     - [X] [dynamic modification of `<audio>`](https://github.com/dascritch/cpu-audio/issues/13)
     - [ ] dynamic modification of `<head>`
-    - [ ] dynamic modification of window.document.location.href (webapp)
+    - [ ] dynamic modification of `window.document.location.href` (webapp)
 - [ ] deploiement on <http://cpu.pm> 
+    - [ ] publish post on blog
     - [ ] [public announcement](https://www.webcomponents.org/publish)
 - [ ] `<video>` support
 - [ ] `<track>` support for subtitles 
@@ -44,7 +45,6 @@ Planned evolutions
 - [ ] Sharing service companion
     - [ ] [Create a real playlist service](https://github.com/dascritch/cpu-audio/issues/8)
     - [ ] [Supporting annotations à la SoundCloud](https://github.com/dascritch/cpu-audio/issues/10)
-- [ ] [Using touchstart event to emulate hover](https://github.com/dascritch/cpu-audio/issues/9)
 - [ ] [Prepare design and key bindings for RTL localizations](https://github.com/dascritch/cpu-audio/issues/26)
 
 
