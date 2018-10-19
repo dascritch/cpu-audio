@@ -24,9 +24,9 @@ Tests
 
 As I'm not perfect, some tests were written for non-regressions, conformity and check feature support by browsers. Please contribute also in tests, we really need a rock solid players with a few regressions as possible.
 
- * [Browser compliance and implementation tests](./tests-browser.html)
- * [Minimum services, as hash links](./tests-minimal.html)
- * [Graphic interface, if WebComponent fully supported](./tests-interface.html)
+ * [Browser compliance, feature detections and implementation tests](./tests-browser.html)
+ * [Minimum services available even without webcomponent part, as hash links](./tests-minimal.html)
+ * [Graphic interface and webcomponents-dependant features](./tests-interface.html)
 
 
 Hygiene
@@ -35,10 +35,7 @@ Hygiene
 - Always prefer any W3C standards instead of create something.
 - Think about clean code, small parts, expressive variables and functions
 - Try to write a test, even for the UI. I know, the last part is hard, but it helps so much
-- Categorize the tests :
-  - [Browser implementations and feature detections](./test-browser.html)
-  - [minimal functions, available even without webcomponent part](./test-minimal.html)
-  - [UI interfaces and webcomponents-dependant features](./test-interface.html)
+- Categorize the tests
 - Document everything, even dead-ends. Someone can find interestings your regrets.
 
 

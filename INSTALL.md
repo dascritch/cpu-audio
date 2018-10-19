@@ -113,13 +113,15 @@ You can add a chapters track into the `<audio control>` tag :
 
 Note that `default` attribute **is really needed**.
 
-The chapter list will only appears in `mode="default"` settings
+The chapter list will only appears with `mode="default"` settings in `<cpu-audio>`.
+
+You may edit a VTT file with [our online editor](https://dascritch.github.io/cpu-audio/LIVE).
 
 
 Personnalization via CSS variables
 ----------------------------------
 
-You can change some presentation features of the interface [with CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables).
+You can change some presentation features of the interface [with CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables). Check their effects [with the live editor](https://dascritch.github.io/cpu-audio/LIVE)
 
 variable | description | default value 
 --|--|--
