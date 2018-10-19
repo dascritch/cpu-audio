@@ -12,7 +12,7 @@ If you are not a developer
 If you are a developer
 ----------------------
 
-Check first in [TODO.md](TODO) which lists some priorities and objectives.
+Check first in [TODO.md](TODO.md) which lists some priorities and objectives.
 
 I usually [create bugs](https://github.com/dascritch/cpu-audio/issues) and refers to them in my commits. Most of the time.
 

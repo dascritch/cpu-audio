@@ -110,7 +110,7 @@ Participate
 * [Contribute in any way](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
 * [Tests](tests-minimal.html)
 * [Bugs, issues, tickets and features](https://github.com/dascritch/cpu-audio/issues)
-* [What to do, next](TODO)
+* [What to do, next](https://github.com/dascritch/cpu-audio/blob/master/TODO.md)
 
 
 Versions
