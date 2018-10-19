@@ -64,8 +64,8 @@
             return;
         }
         let controller = document.createElement('cpu-controller');
-        controller.setAttribute('mode', 'compact');
-        document.querySelector('footer').appendChild(controller);
+        controller.setAttribute('mode', 'button');
+        document.querySelector('h1').prepend(controller);
     });
 </script>
 <!-- 
