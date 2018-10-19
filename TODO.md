@@ -36,6 +36,9 @@ Planned evolutions
     - [X] [dynamic modification of `<audio>`](https://github.com/dascritch/cpu-audio/issues/13)
     - [ ] dynamic modification of `<head>`
     - [ ] dynamic modification of `window.document.location.href` (webapp)
+- [ ] add-ons packages
+    - [ ] dotclear
+    - [ ] wordpress
 - [ ] deploiement on <http://cpu.pm> 
     - [ ] publish post on blog
     - [ ] [public announcement](https://www.webcomponents.org/publish)
