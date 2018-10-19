@@ -1,0 +1,279 @@
+<meta charset="UTF-8" />
+<script src="./dist/cpu-audio.js" async></script>
+
+<cpu-audio 
+    title="First, Choose an URL for source"
+    poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
+    twitter="@dascritch"
+    >
+    <audio controls id="sound" src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0093-CPU%2818-10-18%29.mp3">
+    </audio>
+    <!-- {% include no_component_message.html %} -->
+</cpu-audio>
+
+<p id="steps">
+    <a href="#configure">Configure</a>
+    <a href="#edit_chapters">Edit chapters</a>
+    <a href="#generated_html">Generated HTML</a>
+    <a href="#generated_md">Generated MarkDown</a>
+    <a href="#generated_wiki">Generated DokuWiki</a>
+    <a href="#generated_vtt">Generated WebVTT</a>
+</p>
+
+<!-- -->
+
+<form id="configure" action="#edit_chapters" class="pan" >
+
+    <fieldset>
+        <label for="source_audio">
+            <span>URL source audio</span>
+            <input id="source_audio" name="source_audio" type="url" />
+        </label>
+    </fieldset>
+
+    <button type="submit">Go to editor</button>
+
+</form>
+
+<!-- -->
+
+<form id="edit_chapters" action="#generated_html" class="pan">
+
+    <button type="button" id="add"><strong>+</strong> Add a chapter</button>
+    <button type="submit">See result</button>
+
+    <fieldset id="list">
+        <p class="line">
+            <!-- drag n drop is not sooo useful span>:::⇕:::</span -->
+            <button type="button" class="test">Test</button>
+            <button type="button" class="set">Set</button>
+            <input type="time" step="1" placeholder="Chapter time" />
+            <input type="text" placeholder="Chapter name" />
+            <button type="button" class="remove"><strong>×</strong> Remove</button>
+        </p>
+    </fieldset>
+
+</form>
+
+
+<div class="pan" id="generated_html">
+    <fieldset id="html_out">
+    </fieldset>    
+
+    <fieldset>
+        <p>Copy and paste this HTML code :</p>
+
+        <pre id="html_source"></pre>
+    </fieldset>
+</div>
+
+<div class="pan" id="generated_md">
+    <fieldset>
+        <p>Copy and paste this MarkDown code :</p>
+
+        <pre id="md_source"></pre>
+    </fieldset>
+</div>
+
+<div class="pan" id="generated_wiki">
+    <fieldset>
+        <p>Copy and paste this Wiki code :</p>
+
+        <pre id="wiki_source"></pre>
+    </fieldset>
+</div>
+
+<div class="pan" id="generated_vtt">
+    <fieldset>
+        <p>Copy and save this in a .vtt file :</p>
+
+        <pre id="vtt_source"></pre>
+
+        <p>Then insert a &lt;track&gt; tag reffering it in your &lt;audio control&gt; tag</p>
+    </fieldset>
+</div>
+
+<script>
+document.location.hash = '#configure'; 
+
+var new_chapter_line;
+var sound_element, list_element, edit_source_audio_element;
+
+var chapters = [];
+
+function set_source_audio() {
+    sound_element.src = edit_source_audio_element.value;
+}
+
+function check_configure(event) {
+    event.preventDefault();
+    // test if audio is correctly loaded
+    document.location.hash = '#edit_chapters';
+}
+
+function add_line() {
+    let line = document.createElement('p');
+    line.innerHTML = new_chapter_line;
+    document.getElementById('list').appendChild(line);
+}
+
+
+function reorder() {
+    /* TODO j'ai même pas eu le temps de manger */
+}
+
+function is_redorder(event) {
+    if ((event.target.tagName === 'INPUT') && (event.target.type === 'time')) {
+        reorder();
+    }
+}
+
+function check_for_actions(event) {
+    if (event.target.tagName === 'BUTTON') {
+        let this_line_element = event.target.closest('p');
+        let this_line_time_element = this_line_element.querySelector('[type="time"]');
+        switch (event.target.className) {
+            case 'test' : 
+                /* no yet*/
+                document.CPU.jumpIdAt('sound', this_line_time_element.value)
+                break ;
+            case 'set' : 
+                this_line_time_element.value = document.CPU.convert.SecondsInPaddledColonTime(sound_element.currentTime);
+                reorder();
+                break ;
+            case 'remove' :
+                this_line_element.remove();
+                event.preventDefault();
+                break ;
+        }
+    }
+}
+
+
+function interpret_form(event) {
+
+    function interpret_line(this_line_element) {
+        let time = this_line_element.querySelector('[type="time"]').value;
+        if (time === '') {
+            // no time code ? do not record this one
+            return ;
+        }
+        let this_line_data = {
+            time: document.CPU.convert.TimeInSeconds( time ),
+            text: this_line_element.querySelector('[type="text"]').value
+        };
+        chapters.push(this_line_data);
+
+        /** TODO : Reordinate by timestamp **/
+    }
+
+    function build_html_source() {
+        out =[];
+        for(let line of chapters) {
+           out.push(`\n\t<li><a href="#t=${document.CPU.convert.SecondsInTime(line.time)}">${line.text} (${document.CPU.convert.SecondsInColonTime(line.time)})</a></li>`) 
+        }
+        return `<ol>${out.join('')}\n</ol>`;
+    }
+
+    function build_md_source() {
+        out =[];
+        for(let line of chapters) {
+           out.push(`\n * [${line.text}](#t=${document.CPU.convert.SecondsInTime(line.time)})`) 
+        }
+        return `${out.join('')}`;
+    }
+
+    function build_wiki_source() {
+        out =[];
+        for(let line of chapters) {
+           out.push(`\n  - [[#t=${document.CPU.convert.SecondsInTime(line.time)}|${line.text}]]`) 
+        }
+        return `${out.join('')}`;
+    }
+
+    function build_vtt_source() {
+        out =[];
+        number = 0;
+        for(let line of chapters) {
+            number++;
+            let start = document.CPU.convert.SecondsInPaddledColonTime(line.time);
+            let end = document.CPU.convert.SecondsInPaddledColonTime( number < chapters.length ? chapters[number].time : sound_element.duration );
+            out.push(`\n\nchapter-${number}\n${start}.000 --> ${end}.000\n${line.text}`) 
+        }
+        return `WEBVTT FILE\n${out.join('')}\n`;
+    }
+
+    event.preventDefault();
+    chapters = [];
+    Array.from(list_element.querySelectorAll('p')).forEach(interpret_line);
+    let html_source =  build_html_source();
+    if (chapters.length === 0) {
+        // empty list
+        return;
+    }
+    document.getElementById('html_out').innerHTML = html_source;
+    document.getElementById('html_source').innerText =  html_source;
+    document.getElementById('md_source').innerText = build_md_source();
+    document.getElementById('wiki_source').innerText = build_wiki_source();
+    document.getElementById('vtt_source').innerText = build_vtt_source();
+    document.location.hash = '#generated_html';
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+    sound_element = document.getElementById('sound');
+    list_element = document.getElementById('list');
+    edit_source_audio_element = document.getElementById('source_audio');
+
+    /* Settings */
+    edit_source_audio_element.addEventListener('change', set_source_audio);
+    document.getElementById('configure').addEventListener('submit', check_configure);
+
+    /* Chapter editor */
+    new_chapter_line = document.querySelector('p.line').innerHTML;
+    document.getElementById('add').addEventListener('click', add_line);
+    list_element.addEventListener('click', check_for_actions);
+    list_element.addEventListener('change', is_redorder);
+
+    document.getElementById('edit_chapters').addEventListener('submit' , interpret_form);
+});
+</script>
+
+<style>
+
+    #steps {
+        display: flex;
+        width: 100%;
+    }
+
+    #steps a {
+        padding : 4px;
+        border : 1px #ccc solid;
+    }
+
+    .pan {
+        display :none ;
+    }
+    .pan:target {
+        display :block ;
+    }
+
+    fieldset {
+        border  :1px solid #ccc
+    }
+
+    #list p {
+        display : flex;
+        width : 100%;
+    }
+
+    #list p span {
+        user-select: none;
+        cursor: move;
+        flex : 0 0 auto;
+    }
+
+    #list p input[type="text"] {
+        flex : 1 0 auto;
+    }
+
+</style>
