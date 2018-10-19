@@ -78,9 +78,6 @@ In the upper example, `<audio>` tag is ID-entified as `audiodemo`. Usually, you 
 </p>
 ```
 
-If you are absolutely sure you will only have one audio tag in your page, you can omit the ID : `<a href="#t=5m">`
-
-
 Permitted hash notations
 ------------------------
 
@@ -92,9 +89,9 @@ For the timecode, you can use :
 * `page.html#tagID&t=02:04:02` : colon (“professional”) timecode as `02:04:02` (2 hours, 4 minutes and 2 seconds) ;
 * `page.html#tagID&t=2h4m2s` : human-readable units, sub-units availables : `s`econds, `m`inutes, `h`ours and `d`ays
 
-Note : if a timecode without any named anchor is given, as in `href="#t=2h4m2s"`, the very first `<audio controls>` element of the document will be started and placed at this time.
+A playable range can be indicated : `page.html#tagID&t=5m,5m5s` will <a href="#sound&t=5m,5m5s">play the sound starting at 5 minutes, and stops it at 5 minutes and 5 seconds</a>
 
-A playable range can be used : `page.html#tagID&t=5m,5m5s` will <a href="#sound&t=5m,5m5s">play the sound starting at 5 minutes, and stops it at 5 minutes and 5 seconds</a>
+**Note** : if a timecode without any named anchor is given, as in `href="#t=2h4m2s"`, the very first `<audio controls>` element of the document will be started and placed at this time. If you are absolutely sure you will only have one audio tag in your page, you can omit the ID : `<a href="#t=5m">`
 
 
 Cloned player
