@@ -70,13 +70,15 @@ Some attributes enhance the component :
 How to link
 -----------
 
-In the upper example, `<audio>` tag is id-ed as `audiodemo`. Usually, you link to it with `#audiodemo`. Add a parameter `t=` with the expected timecode, with a `&` as separator. By example, for 5 minutes from the start, you should target `#audiodemo&t=5m` : 
+In the upper example, `<audio>` tag is ID-entified as `audiodemo`. Usually, you link to it with `#audiodemo`. Add a parameter `t=` with the expected timecode, with a `&` as separator. By example, for 5 minutes from the start, you should target `#audiodemo&t=5m` : 
 
 ```html
 <p>
     Jump at <a href="#audiodemo&amp;t=5m">5 minutes</a> in the sound
 </p>
 ```
+
+If you are absolutely sure you will only have one audio tag in your page, you can omit the ID : `<a href="#t=5m">`
 
 
 Permitted hash notations
