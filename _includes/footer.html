@@ -60,6 +60,9 @@
 </style>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function(){
+        if (document.querySelector('cpu-audio') === null) {
+            return;
+        }
         let controller = document.createElement('cpu-controller');
         controller.setAttribute('mode', 'compact');
         document.querySelector('footer').appendChild(controller);
