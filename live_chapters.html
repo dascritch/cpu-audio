@@ -40,11 +40,11 @@
 <form id="edit_chapters" action="#generated_html" class="pan">
 
     <button type="button" id="add"><strong>+</strong> Add a chapter</button>
+    <button type="button" id="reorder"><strong>↓</strong> Reorder chapters</button>
     <button type="submit">See result</button>
 
     <fieldset id="list">
         <p class="line">
-            <!-- drag n drop is not sooo useful span>:::⇕:::</span -->
             <button type="button" class="test">Test</button>
             <button type="button" class="set">Set</button>
             <input type="time" step="1" placeholder="Chapter time" />
@@ -118,15 +118,38 @@ function add_line() {
 }
 
 
-function reorder() {
-    /* TODO j'ai même pas eu le temps de manger */
+function reorder_lines() {
+    let out = [];
+    let no_time_inc = 0;
+
+    function interpret_line(this_line_element) {
+        let time = this_line_element.querySelector('[type="time"]').value;
+        if (time === '') {
+            // no time code ? add a fake record for the end
+            time = `99:99:${no_time_inc++}`;
+        }
+        out.push({
+            'secs' : document.CPU.convert.TimeInSeconds(time),
+            'time' : this_line_element.querySelector('[type="time"]').value,
+            'text' : this_line_element.querySelector('[type="text"]').value,
+        });
+    }
+
+    let nb = 0;
+    function repopulate_line(this_line_element) {
+        let line = out[nb++];
+        this_line_element.querySelector('[type="time"]').value = line.time;
+        this_line_element.querySelector('[type="text"]').value = line.text;
+    }
+
+    Array.from(list_element.querySelectorAll('p')).forEach(interpret_line);
+
+    out.sort(function(a, b){
+        return a.secs - b.secs;
+    })
+    Array.from(list_element.querySelectorAll('p')).forEach(repopulate_line);
 }
 
-function is_redorder(event) {
-    if ((event.target.tagName === 'INPUT') && (event.target.type === 'time')) {
-        reorder();
-    }
-}
 
 function check_for_actions(event) {
     if (event.target.tagName === 'BUTTON') {
@@ -139,7 +162,6 @@ function check_for_actions(event) {
                 break ;
             case 'set' : 
                 this_line_time_element.value = document.CPU.convert.SecondsInPaddledColonTime(sound_element.currentTime);
-                reorder();
                 break ;
             case 'remove' :
                 this_line_element.remove();
@@ -204,6 +226,7 @@ function interpret_form(event) {
     }
 
     event.preventDefault();
+    reorder_lines();
     chapters = [];
     Array.from(list_element.querySelectorAll('p')).forEach(interpret_line);
     let html_source =  build_html_source();
@@ -231,8 +254,8 @@ document.addEventListener('DOMContentLoaded', function(){
     /* Chapter editor */
     new_chapter_line = document.querySelector('p.line').innerHTML;
     document.getElementById('add').addEventListener('click', add_line);
+    document.getElementById('reorder').addEventListener('click', reorder_lines);
     list_element.addEventListener('click', check_for_actions);
-    list_element.addEventListener('change', is_redorder);
 
     document.getElementById('edit_chapters').addEventListener('submit' , interpret_form);
 });
