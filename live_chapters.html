@@ -121,6 +121,7 @@ function add_line() {
 function reorder_lines() {
     let out = [];
     let no_time_inc = 0;
+    let lines = Array.from(list_element.querySelectorAll('p'));
 
     function interpret_line(this_line_element) {
         let time = this_line_element.querySelector('[type="time"]').value;
@@ -142,12 +143,11 @@ function reorder_lines() {
         this_line_element.querySelector('[type="text"]').value = line.text;
     }
 
-    Array.from(list_element.querySelectorAll('p')).forEach(interpret_line);
-
+    lines.forEach(interpret_line);
     out.sort(function(a, b){
         return a.secs - b.secs;
     })
-    Array.from(list_element.querySelectorAll('p')).forEach(repopulate_line);
+    lines.forEach(repopulate_line);
 }
 
 
