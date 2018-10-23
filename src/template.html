@@ -30,7 +30,13 @@
 					<a class="elapse" title="${__.moment}" tabindex="-1">…</a>
 				</div>
 				<div class="handheld-nav">
-					<button type="button" class="restart">&#65039;⏮</button>
+					<button type="button" class="restart">
+						<svg viewBox="0 0 32 32">
+							<polygon points="4,0 8,0 8,16 4,16"/>
+							<path d="M 16,0 8,8 16,16 z" />
+							<path d="M 24,0 16,8 24,16 z" />
+						</svg>
+					</button>
 					<button type="button" class="fastreward">
 						<svg viewBox="0 0 32 32">
 							<path d="M 8,0 0,8 8,16 z" />
@@ -42,7 +48,8 @@
 						<svg viewBox="0 0 32 32">
 							<path d="M 8,0 0,8 8,16 z" />
 							<path d="M 16,0 8,8 16,16 z" />
-						</svg></button>
+						</svg>
+					</button>
 					<input type="time" step="1" min="0:00" class="inputtime" />
 					<button type="button" class="foward">
 						<svg viewBox="0 0 32 32">
