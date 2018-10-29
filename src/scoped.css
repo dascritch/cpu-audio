@@ -288,15 +288,15 @@ a {
     height : 32px;
 }
 
-.nativeshare {
+.share .nativeshare {
     display : none;
 }
 
-.hasnativeshare .nativeshare {
+.hasnativeshare .share .nativeshare {
     display : flex;
 }
 
-.hasnativeshare .nonativeshare {
+.hasnativeshare .share .nonativeshare {
     display : none;
 }
 
