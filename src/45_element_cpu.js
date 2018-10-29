@@ -239,6 +239,9 @@ let CPU_element_api = class {
         this.elements['poster'].src = dataset.poster;
     }
     attach_audiotag_to_controller(audiotag) {
+        if (!audiotag) {
+            return;
+        }
         this.audiotag = audiotag;
 
         this.add_id_to_audiotag()
