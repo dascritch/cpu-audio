@@ -239,6 +239,9 @@ let CPU_element_api = class {
         this.elements['poster'].src = dataset.poster;
     }
     attach_audiotag_to_controller(audiotag) {
+        if (!audiotag) {
+            return;
+        }
         this.audiotag = audiotag;
 
         this.add_id_to_audiotag()
@@ -256,7 +259,7 @@ let CPU_element_api = class {
 
         let chapters_element = self.elements['chapters'];
         chapters_element.innerHTML = '';
-        if ((!self.audiotag.textTracks) || (self.audiotag.textTracks.length === 0)) {
+        if ((!self.audiotag) || (!self.audiotag.textTracks) || (self.audiotag.textTracks.length === 0)) {
             return;
         }
 
