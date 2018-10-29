@@ -256,7 +256,7 @@ let CPU_element_api = class {
 
         let chapters_element = self.elements['chapters'];
         chapters_element.innerHTML = '';
-        if ((!self.audiotag.textTracks) || (self.audiotag.textTracks.length === 0)) {
+        if ((!self.audiotag) || (!self.audiotag.textTracks) || (self.audiotag.textTracks.length === 0)) {
             return;
         }
 
