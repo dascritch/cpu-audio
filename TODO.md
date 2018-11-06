@@ -37,10 +37,10 @@ Planned evolutions
     - [ ] dynamic modification of `<head>`
     - [ ] dynamic modification of `window.document.location.href` (webapp)
 - [ ] add-ons packages
-    - [ ] dotclear
+    - [X] [dotclear](https://github.com/dascritch/plugin-dotclear-cpu-audio)
     - [ ] wordpress
-- [ ] deploiement on <http://cpu.pm> 
-    - [ ] publish post on blog
+- [X] deploiement on <http://cpu.pm> 
+    - [X] publish post on blog
     - [ ] [public announcement](https://www.webcomponents.org/publish)
 - [ ] `<video>` support
 - [ ] `<track>` support for subtitles 
