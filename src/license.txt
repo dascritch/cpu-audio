@@ -4,7 +4,7 @@ License GNU GPL 3
 
  - project mini-site https://dascritch.github.io/cpu-audio/
  - project repository : https://github.com/dascritch/cpu-audio
- - blog post : http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore
+ - blog post : https://dascritch.net/post/2018/11/06/Reconstruire-son-lecteur-audio-pour-le-web
  - previously known as
    - https://github.com/dascritch/timecodehash
    - https://github.com/dascritch/ondemiroir-audio-tag
