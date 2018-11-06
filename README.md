@@ -19,7 +19,7 @@ An audio WebComponent to provide an user-interface, timecoded links and some oth
 Some links :
 * [Demonstration page](https://dascritch.github.io/cpu-audio/)
 * [Code repository](https://github.com/dascritch/cpu-audio/)
-* Informations (in french) : [Timecodehash : Lier vers un moment d'un sonore](https://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore)
+* Informations (in french) : [Reconstruire son lecteur audio pour le web](https://dascritch.net/post/2018/11/06/Reconstruire-son-lecteur-audio-pour-le-web)
 * [The timecodehash.js project, first implementation](https://github.com/dascritch/timecodehash)
 * [Previous version of the projet, ondemiroir-audio-tag](https://github.com/dascritch/ondemiroir-audio-tag)
 * Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
