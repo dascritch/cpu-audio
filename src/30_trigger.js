@@ -235,7 +235,11 @@ const trigger = {
         }
 
         let cue_id = event.target.activeCues[0].id;
-        chapters_element.querySelector(`#${cue_id}`).classList.add(classname);
+        let new_active = chapters_element.querySelector(`#${cue_id}`)
+        if (new_active === null) {
+            return;
+        }
+        new_active.classList.add(classname);
     },
 
     update : function(event) {
