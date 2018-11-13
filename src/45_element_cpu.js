@@ -373,11 +373,11 @@ let CPU_element_api = class {
         for(let event_name in do_events) {
             timeline_element.addEventListener(
                 event_name,
-                do_events[event_name] ? trigger.hover : trigger.out);               
+                do_events[event_name] ? trigger.hover : trigger.out, {passive: true});
         }
         // alternative ime navigation for handhelds
-            timeline_element.addEventListener('touchstart', trigger.touchstart);
-            timeline_element.addEventListener('touchend', trigger.touchcancel);
+            timeline_element.addEventListener('touchstart', trigger.touchstart, {passive: true});
+            timeline_element.addEventListener('touchend', trigger.touchcancel, {passive: true});
             timeline_element.addEventListener('contextmenu', this.show_handheld_nav );
             this.elements['inputtime'].addEventListener('input', trigger.input_time_change);
             this.elements['inputtime'].addEventListener('change', trigger.input_time_change);
