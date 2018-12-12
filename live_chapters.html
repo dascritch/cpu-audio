@@ -85,7 +85,7 @@
 
 <div class="pan" id="generated_vtt">
     <fieldset>
-        <p>Copy and save this in a .vtt file :</p>
+        <p><a id="vtt_source_download" download="chapter.vtt">Save this in a .vtt file</a> :</p>
 
         <pre id="vtt_source"></pre>
 
@@ -174,6 +174,13 @@ function check_for_actions(event) {
 
 function interpret_form(event) {
 
+
+    function prepare_export_file(text) {
+        let data = new Blob([text], {type: 'text/plain'});
+        textFile = window.URL.createObjectURL(data);
+        return textFile;
+    }
+
     function interpret_line(this_line_element) {
         let time = this_line_element.querySelector('[type="time"]').value;
         if (time === '') {
@@ -238,7 +245,9 @@ function interpret_form(event) {
     document.getElementById('html_source').innerText =  html_source;
     document.getElementById('md_source').innerText = build_md_source();
     document.getElementById('wiki_source').innerText = build_wiki_source();
-    document.getElementById('vtt_source').innerText = build_vtt_source();
+    let vtt = build_vtt_source();
+    document.getElementById('vtt_source').innerText = vtt;
+    document.getElementById('vtt_source_download').href = prepare_export_file(vtt);
     document.location.hash = '#generated_html';
 }
 
