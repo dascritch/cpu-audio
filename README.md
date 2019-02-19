@@ -18,12 +18,11 @@ An audio WebComponent to provide an user-interface, timecoded links and some oth
 
 Some links :
 * [Demonstration page](https://dascritch.github.io/cpu-audio/)
-* [Code repository](https://github.com/dascritch/cpu-audio/), [latest release](https://github.com/dascritch/cpu-audio/releases/latest)
+* [JS installable code](https://dascritch.github.io/cpu-audio/dist/cpu-audio.js) 
+* [Code repository](https://github.com/dascritch/cpu-audio/), [Latest stable release](https://github.com/dascritch/cpu-audio/releases/latest)
 * Informations (in french) : [Reconstruire son lecteur audio pour le web](https://dascritch.net/post/2018/11/06/Reconstruire-son-lecteur-audio-pour-le-web)
 * Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 * [How to participate to this project](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
-* [The timecodehash.js project, first implementation](https://github.com/dascritch/timecodehash)
-* [Previous version of the projet, ondemiroir-audio-tag](https://github.com/dascritch/ondemiroir-audio-tag)
 
 Version : 5.1 [Licence GPL 3](LICENSE)
 
