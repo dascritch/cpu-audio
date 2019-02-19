@@ -78,7 +78,8 @@ Aspect changes when page's width is under 640px and 320px wide. The element must
 
 
 <div style="max-width:300px;margin :0 auto;">
-    <p>We are waiting CSS <code>@element</code> implementation to complete this. The parent element is width-constraigned, so should be the webcomponent</p>
+    <p>We are waiting CSS <code>@element</code> implementation to complete this. The parent element is width-constraigned, so should be the webcomponent.</p>
+    <!--
     <cpu-audio 
         title="Montage worst of SWE 2009"
         poster="https://dascritch.net/vrac/.blog2/radio/swe-saison5.png"
@@ -89,6 +90,7 @@ Aspect changes when page's width is under 640px and 320px wide. The element must
             <source src="https://dascritch.net/vrac/Emissions/Speciales/podcast/100105-MontageWorstOfSWE2009.mp3" type="audio/mpeg">
         </audio>
     </cpu-audio>
+    -->
 </div>
 
 
