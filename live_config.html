@@ -292,11 +292,11 @@ function configurator_css(event) {
 
         if (rules_breakpoint !== '') {
             if (level === '0') {
-                css += `\n\nbody, .interface {\n${rules_breakpoint}\n}`;
+                css += `\n\nbody, #interface {\n${rules_breakpoint}\n}`;
             } else {
                 let max_width = form_css.querySelector(`[name="css_breakpoint[${level}]"]`).value;
                 if (max_width !== '') {
-                    css += `\n\n@media (max-width: 640px) , @element .interface and (max-width: 640px) {\n\tbody, .interface {${rules_breakpoint}\n\t}\n} `;
+                    css += `\n\n@media (max-width: ${max_width}) , @element #interface and (max-width: ${max_width}) {\n\tbody, #interface {${rules_breakpoint}\n\t}\n} `;
                 }
             }
         }
