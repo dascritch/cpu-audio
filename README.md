@@ -18,7 +18,7 @@ An audio WebComponent to provide an user-interface, timecoded links and some oth
 
 Some links :
 * [Demonstration page](https://dascritch.github.io/cpu-audio/)
-* [Code repository](https://github.com/dascritch/cpu-audio/)
+* [Code repository](https://github.com/dascritch/cpu-audio/), [latest release](https://github.com/dascritch/cpu-audio/releases/latest)
 * Informations (in french) : [Reconstruire son lecteur audio pour le web](https://dascritch.net/post/2018/11/06/Reconstruire-son-lecteur-audio-pour-le-web)
 * Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 * [How to participate to this project](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
