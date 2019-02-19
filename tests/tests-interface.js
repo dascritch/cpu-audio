@@ -163,6 +163,21 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 	
 	**/
 
+	QUnit.test( "Audio without an ID gets an ID", function( assert ) {
+		playground.innerHTML = `<cpu-audio id="tag_without_id"><audio controls>
+									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+									<track />
+								</audio>
+							</cpu-audio>`;
+		let done = assert.async();
+		setTimeout(function() {
+			let component = playground.querySelector('#tag_without_id');
+			let audiotag = component.querySelector('audio');
+			assert.notEqual(audiotag.id, '', `Generated id ${audiotag.id}`);
+			done();
+		}, 100);
+	});
+
 	QUnit.test( "Dynamically change elements, as removing track", function( assert ) {
 		playground.innerHTML = `<cpu-audio id="track_will_disapear"><audio id="will_lose_track" controls>
 									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />

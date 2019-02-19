@@ -54,8 +54,7 @@ let CPU_element_api = class {
         } 
          
         let colon_time = convert.SecondsInColonTime(this.audiotag.currentTime);
-        elapse_element.innerHTML = `${colon_time}
-                                    <span class="notiny"> / ${total_duration}</span>`;
+        elapse_element.innerHTML = `${colon_time}<span class="notiny"> / ${total_duration}</span>`;
 
         // How to check a focused element ? document.activeElement respond the webcomponent tag :/ You must call shadowRoot.activeElement
         if (!this.elements.inputtime.isEqualNode(this.element.shadowRoot.activeElement)) {
@@ -266,7 +265,7 @@ let CPU_element_api = class {
 
         for (let tracks of self.audiotag.textTracks) {
             if ((tracks.kind.toLowerCase() === 'chapters') && (tracks.cues !== null)) {
-                tracks.addEventListener('cuechange', function(event) {
+                tracks.addEventListener('cuechange', function (event) {
                     // ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
                     trigger.cuechange(event, chapters_element);
                 });
