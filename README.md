@@ -67,17 +67,14 @@ Features
 
 It could have been done via polyfills or frameworks, but I wanted a plain standard, vanilla javascript, easy to install and configure.
 
-Beware, WebComponents is a to-be-implemented-elsewhere standard. Will work mainly on : 
+WebComponents will work mainly on : 
 
 * Google Chrome
-* Firefox Nightly (63 +)
+* Firefox (63 +)
 * Safari Mac
-
-[To be tested](tests-minimal.html) on :
-
 * Safari iOS
 
-Standard not implemented yet, the hash links will work but without the interface :
+WebComponent standard won't be implemented, the hash links will work but without the interface :
 
 * Edge
 
