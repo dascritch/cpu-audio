@@ -277,10 +277,10 @@ let CPU_element_api = class {
                     let cuepoint = convert.SecondsInTime(cue.startTime);
                     let cuetime = convert.SecondsInColonTime(cue.startTime);
                     line.innerHTML = 
-                        `<a href="#${self.audiotag.id}&t=${cuepoint}" tabindex="0">
-                            <strong>${cue.text}</strong>
-                            <span>${cuetime}</span>
-                        </a>`;
+                        `<a href="#${self.audiotag.id}&t=${cuepoint}" tabindex="0">`+
+                            `<strong>${cue.text}</strong>`+
+                            `<span>${cuetime}</span>`+
+                        `</a>`;
                     chapters_element.append(line);
                 }
             }
@@ -314,9 +314,9 @@ let CPU_element_api = class {
             if (audiotag_id === this.audiotag.id) {
                 line.classList.add('active-cue');
             }
-            line.innerHTML = `<a href="#${audiotag.id}&t=0" tabindex="0">
-                                <strong>${audiotag.dataset.title}</strong>
-                            </a>`;
+            line.innerHTML = `<a href="#${audiotag.id}&t=0" tabindex="0">`+
+                                `<strong>${audiotag.dataset.title}</strong>`+
+                            `</a>`;
             playlist_element.append(line);
         }
 
