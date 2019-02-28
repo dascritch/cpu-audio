@@ -143,6 +143,31 @@ let CPU_element_api = class {
         phylactere._hider = window.setTimeout(this.hide_throbber, 1000, this);
     }
 
+    preview(_timecode_start, _timecode_end) {
+        let mode = _timecode_start !== undefined;
+        let classlist = this.elements['interface'].classList;
+        let classname = 'with-preview';
+        if (mode) {
+            classlist.add(classname);
+            document.CPU.previewed = this.audiotag.id;
+        } else {
+            document.CPU.previewed = null;
+            classlist.remove(classname);
+            return ;
+        }
+
+        let element = this.elements['preview'];
+        console.log(element)
+        element.style.left = `${100 * _timecode_start / this.audiotag.duration}%`;
+        _timecode_end = _timecode_end === undefined ? this.audiotag.duration : _timecode_end;
+        element.style.right = `${100-100 * _timecode_end / this.audiotag.duration}%`;
+
+    }
+
+    preview_chapter(event) {
+        console.log(event)
+    }
+
     fetch_audiotag_dataset() {
         let dataset = {} 
         for (let key in document.CPU.default_dataset) {
@@ -380,5 +405,7 @@ let CPU_element_api = class {
 
         this.show_main();
         this.build_chapters();
+
+        this.elements['chapters'].addEventListener('hover', this.preview_chapter)
     }
 };

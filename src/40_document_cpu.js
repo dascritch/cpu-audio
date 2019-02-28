@@ -1,9 +1,14 @@
 document.CPU = document.CPU ? document.CPU : {
     // global object for global API
+
+    // parameters
     keymove : 5,
     only_play_one_audiotag : true,
+
+    // actual active elements
     current_audiotag_playing : null,
     global_controller : null,
+    previewed : null,
 
     // to add attributes for unnamed <audio>
     dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',

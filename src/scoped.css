@@ -227,6 +227,22 @@ a {
     width : 10px;
     height : 10px;
 }
+ 
+#preview {
+    display : none;
+}
+
+.with-preview #preview {
+    display : block;
+    position : absolute;
+    height : var(--cpu-timeline-height) ;
+    left : 0;
+    right: 0;
+    outline : 2px solid cyan;
+    border-radius : 4px;
+    z-index : 127;
+    pointer-events : none;
+}
 
 .act-loading #loadingline {
     background : repeating-linear-gradient(135deg, #bbb 0, #999 5px, #999 10px, #ddd 15px, #ddd 20px, #bbb 25px);

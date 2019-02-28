@@ -249,4 +249,69 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		}, 100);
 	});
 
+
+	// https://github.com/dascritch/cpu-audio/issues/47
+
+	QUnit.test( "API .preview(start, end) on cpu-audio", function( assert ) {
+		playground.innerHTML = `<cpu-audio><audio id="show_on_this" controls>
+									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+								</audio>
+							</cpu-audio>`;
+		let done = assert.async();
+		setTimeout(function() {
+			let component = playground.querySelector('#show_on_this').closest('cpu-audio');
+			let preview = component.shadowRoot.querySelector('#preview')
+			assert.equal(component.CPU.elements.interface.classList.contains('with-preview'), false , 'Highlight on timeline hidden by default');
+			component.CPU.preview(20,40);
+				
+			assert.equal(document.CPU.previewed, 'show_on_this', 'Global API has track of an focused/preview element');
+			assert.equal(component.CPU.elements.interface.classList.contains('with-preview'), true, 'Highlight on timeline shown');
+			assert.equal(Math.floor(preview.style.left.split('%')[0]) , Math.floor(100*20/120), 'Highlight on timeline starts at 20 seconds');
+			assert.equal(Math.floor(preview.style.right.split('%')[0]) , Math.floor(100- 100*40/120), 'Highlight on timeline ends at 40 seconds');
+			done();
+
+		}, 100);
+	});
+
+	QUnit.test( "API un- .preview() on cpu-audio", function( assert ) {
+		playground.innerHTML = `<cpu-audio><audio id="show_on_this" controls>
+									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+								</audio>
+							</cpu-audio>`;
+		let done = assert.async();
+		setTimeout(function() {
+			let component = playground.querySelector('#show_on_this').closest('cpu-audio');
+			component.CPU.preview(20,40);
+			component.CPU.preview();
+			
+			let preview = component.shadowRoot.querySelector('#preview')
+			assert.equal(document.CPU.previewed, null, 'Global API trace removed');
+			assert.equal(component.CPU.elements.interface.classList.contains('with-preview'), false, 'Highlight on timeline hidden');
+			done();
+
+		}, 100);
+	});
+
+	/*
+	QUnit.test( "Focusing a internal moment link shows on the timeline", function( assert ) {
+		playground.innerHTML = `<cpu-audio><audio source id="show_on_this" controls>
+									< src="./tests-assets/blank.mp3" type="audio/mpeg" />
+								</audio>
+							</cpu-audio>
+							<a id="internal_link" href="#show_on_this&t=2"></a>`;
+		let done = assert.async();
+		setTimeout(function() {
+			let component = playground.querySelector('#show_on_this').closest('cpu-audio');
+			let link = playground.querySelector('#internal_link');
+			link.focus();
+
+			setTimeout(function() {
+				assert.equal(document.CPU.previewed, 'show_on_this', 'Global API has track of an focused/preview element');
+				assert.equal(component.shadowRoot.querySelector('#highlight'), true, 'Highlight on timeline shown and starts at 2 seconds');
+				done();
+			}, 10);
+		}, 100);
+	});
+	*/
+
 });
