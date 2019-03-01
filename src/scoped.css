@@ -259,7 +259,7 @@ a {
 
 #handheld-nav * {
   flex : 1 0 auto;
-  height : calc( var(--cpu-height) - calc( var(--cpu-timeline-height) + 4px ) );
+  height : calc( var(--cpu-height) - calc( var(--cpu-timeline-height) + 8px ) );
 }
 
 [type="time"] {
