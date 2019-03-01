@@ -311,6 +311,12 @@ let CPU_element_api = class {
                     line.dataset.cueStartTime = cuepoint; 
                     line.dataset.cueEndTime = Math.floor(cue.endTime);
                 }
+
+                // indicate in host page that audio tag chapters are listed
+                // see https://github.com/dascritch/cpu-audio/issues/36
+                if (tracks.cues.length > 0) {
+                    document.body.classList.add(`cpu_tag_«${self.audiotag.id}»_chaptered`);
+                }
             }
         }
 
@@ -415,10 +421,12 @@ let CPU_element_api = class {
         let this_build_chapters = this.build_chapters.bind(this);
         // sometimes, we MAY have loose loading
         this.audiotag.addEventListener('loadedmetadata', this_build_chapters, passive_ev);
+        /*
         let track_element = this.audiotag.querySelector('track[kind="chapters"]');
         if (track_element) {
             track_element.addEventListener('load', this_build_chapters, passive_ev);
         }
+        */
 
         let chapters_element = this.elements['chapters'];
 
