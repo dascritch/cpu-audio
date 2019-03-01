@@ -14,7 +14,8 @@ const trigger = {
         }
     },
 
-    hashOrder : function(hashcode, callback_fx){
+    hashOrder : function(hashcode, callback_fx) {
+
         let at_start = true;
         if (typeof hashcode !== 'string') {
             at_start = 'at_start' in hashcode;
