@@ -360,6 +360,8 @@ let CPU_element_api = class {
             controller.elements[element.id] = element;
         }, this.element.shadowRoot);
 
+        this.elements['poster'].addEventListener('load', function() { controller.elements['interface'].classList.add('poster-loaded'); });
+
         let passive_ev = {passive: true};
 
         let cliquables = {

@@ -159,6 +159,11 @@ a {
     max-height : var(--cpu-height);
     min-height : var(--cpu-height);
     object-fit: contain;
+    opacity : 0;
+}
+
+.poster-loaded #poster {
+    opacity: 1;
 }
 
 #loading svg, #play svg, #pause svg, #actions svg {
