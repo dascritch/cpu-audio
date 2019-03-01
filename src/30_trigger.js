@@ -238,10 +238,12 @@ const trigger = {
     },
 
     cuechange : function(event, chapters_element) {
+        document.body.classList.remove(document.CPU.body_className_playing_cue);
         // when the position in a media element goes out of the current
         if (chapters_element === undefined) {
             return;
         }
+
         let classname = 'active-cue';
         let previous = chapters_element.querySelector(`.${classname}`);
         if (previous !== null) {
@@ -253,6 +255,14 @@ const trigger = {
         }
 
         let cue_id = event.target.activeCues[0].id;
+
+        // giving a class to document.body, with a syntax according to https://www.w3.org/TR/CSS21/syndata.html#characters
+        let current_audiotag = document.CPU.current_audiotag_playing;
+        if (current_audiotag !== null) {
+            document.CPU.body_className_playing_cue = `cpu_playing_tag_«${document.CPU.current_audiotag_playing.id}»_cue_«${cue_id}»`;
+            document.body.classList.add(document.CPU.body_className_playing_cue);
+        }
+
         let new_active = chapters_element.querySelector(`#${cue_id}`)
         if (new_active === null) {
             return;

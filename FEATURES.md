@@ -78,7 +78,10 @@ Aspect changes when page's width is under 640px and 320px wide. The element must
 
 
 <div style="max-width:300px;margin :0 auto;">
-    <p>We are waiting CSS <code>@element</code> implementation to complete this. The parent element is width-constraigned, so should be the webcomponent.</p>
+    <p>
+        We are waiting CSS <code>@element</code> implementation to complete this. 
+        The parent element is width-constraigned, so should be the webcomponent.
+    </p>
     <!--
     <cpu-audio 
         title="Montage worst of SWE 2009"
@@ -145,6 +148,12 @@ You can change some aspects of the interface [via some handy CSS variables](http
     </audio>
 </cpu-audio>
 </div>
+
+
+Highlighting text amond chapters
+--------------------------------
+
+If you use a chapter track with name chapters, you can use a CSS rule to highlight a portion of your text with the playing audio.
 
 
 Playlists

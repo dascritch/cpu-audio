@@ -117,6 +117,8 @@ The chapter list will only appears with `mode="default"` settings in `<cpu-audio
 
 You may edit a VTT file with [our online editor](https://dascritch.github.io/cpu-audio/LIVE).
 
+When there is a chapter track, the `<body>` of the hosting page will get a class among which cue is currently played. The naming scheme is `cpu_playing_tag_«audio_tag_id»_cue_«chapter_id»`, where `audio_tag_id` is the ID of the playing `audio>`, and `chapter_id` the name of the cue.
+
 
 Personnalization via CSS variables
 ----------------------------------

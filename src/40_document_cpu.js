@@ -9,6 +9,7 @@ document.CPU = document.CPU ? document.CPU : {
     current_audiotag_playing : null,
     global_controller : null,
     previewed : null,
+    body_className_playing_cue : null,
 
     // to add attributes for unnamed <audio>
     dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
