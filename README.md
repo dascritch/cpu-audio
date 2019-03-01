@@ -24,7 +24,7 @@ Some links :
 * Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 * [How to participate to this project](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
 
-Version : 5.1 [Licence GPL 3](LICENSE)
+Version : 5.2 [Licence GPL 3](LICENSE)
 
 
 Purpose
