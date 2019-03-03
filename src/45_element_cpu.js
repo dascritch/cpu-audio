@@ -283,48 +283,53 @@ let CPU_element_api = class {
 
         let chapters_element = self.elements['chapters'];
         chapters_element.innerHTML = '';
-        if ((!self.audiotag) || (!self.audiotag.textTracks) || (self.audiotag.textTracks.length === 0)) {
-            return;
-        }
+        let has = false;
 
+        if ((self.audiotag) && (self.audiotag.textTracks) && (self.audiotag.textTracks.length > 0)) {
 
-        for (let tracks of self.audiotag.textTracks) {
-            if ((tracks.kind.toLowerCase() === 'chapters') && (tracks.cues !== null)) {
-                tracks.addEventListener('cuechange', function (event) {
-                    // ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
-                    trigger.cuechange(event, chapters_element);
-                });
-                for (let cue of tracks.cues) {
-                    let line = document.createElement('li');
-                    line.id  = cue.id;
-                    line.classList.add('cue');
-                    let cuepoint = Math.floor(cue.startTime);
-                    let cuetime = convert.SecondsInColonTime(cue.startTime);
-                    line.innerHTML = 
-                        `<a href="#${self.audiotag.id}&t=${cuepoint}" tabindex="0">`+
-                            `<strong>${cue.text}</strong>`+
-                            `<span>${cuetime}</span>`+
-                        `</a>`;
-                    chapters_element.append(line);
+            for (let tracks of self.audiotag.textTracks) {
+                if ((tracks.kind.toLowerCase() === 'chapters') && (tracks.cues !== null)) {
+                    tracks.addEventListener('cuechange', function (event) {
+                        // ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
+                        trigger.cuechange(event, chapters_element);
+                    });
+                    for (let cue of tracks.cues) {
+                        let line = document.createElement('li');
+                        line.id  = cue.id;
+                        line.classList.add('cue');
+                        let cuepoint = Math.floor(cue.startTime);
+                        let cuetime = convert.SecondsInColonTime(cue.startTime);
+                        line.innerHTML = 
+                            `<a href="#${self.audiotag.id}&t=${cuepoint}" tabindex="0">`+
+                                `<strong>${cue.text}</strong>`+
+                                `<span>${cuetime}</span>`+
+                            `</a>`;
+                        chapters_element.append(line);
 
-                    line.dataset.cueId = cue.id; 
-                    line.dataset.cueStartTime = cuepoint; 
-                    line.dataset.cueEndTime = Math.floor(cue.endTime);
-                }
+                        line.dataset.cueId = cue.id; 
+                        line.dataset.cueStartTime = cuepoint; 
+                        line.dataset.cueEndTime = Math.floor(cue.endTime);
+                    }
 
-                // indicate in host page that audio tag chapters are listed
-                // see https://github.com/dascritch/cpu-audio/issues/36
-                if (tracks.cues.length > 0) {
-                    document.body.classList.add(`cpu_tag_«${self.audiotag.id}»_chaptered`);
+                    if (tracks.cues.length > 0) {
+                        has = true;
+                    }
                 }
             }
+
         }
 
-        if (
-            (self.element.tagName === CpuAudioTagName) &&
-            (document.CPU.is_audiotag_playing(self.audiotag)) &&
-            (document.CPU.global_controller !== null)) {
-            document.CPU.global_controller.build_chapters();
+        if (self.element.tagName === CpuAudioTagName) {
+            if (has) {
+                // indicate in host page that audio tag chapters are listed
+                // see https://github.com/dascritch/cpu-audio/issues/36
+                document.body.classList.add(`cpu_tag_«${self.audiotag.id}»_chaptered`);
+            }   
+            if (
+                (document.CPU.is_audiotag_playing(self.audiotag)) &&
+                (document.CPU.global_controller !== null)) {
+                document.CPU.global_controller.build_chapters();
+            }
         }
 
     }
