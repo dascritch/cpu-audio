@@ -16,12 +16,13 @@ let CPU_element_api = class {
         this.container.classList.add(`act-${act}`);
     }
     update_playbutton() {
-        if (this.audiotag.readyState < this.audiotag.HAVE_CURRENT_DATA ) {
+        let audiotag = this.audiotag;
+        if (audiotag.readyState < audiotag.HAVE_CURRENT_DATA ) {
             this.update_act_container('loading');
             return;
         }
 
-        this.update_act_container(this.audiotag.paused ? 'pause' : 'play');
+        this.update_act_container(audiotag.paused ? 'pause' : 'play');
     }
     update_line(type, seconds) {
         // type = 'elapsed', 'loading'
@@ -39,41 +40,44 @@ let CPU_element_api = class {
         this.update_line('elapsed', end);
     }
     update_time(event) {
-        let timecode = Math.floor(this.audiotag.currentTime);
-        let canonical = this.audiotag.dataset.canonical;
+        let audiotag = this.audiotag;
+        let timecode = Math.floor(audiotag.currentTime);
+        let canonical = audiotag.dataset.canonical;
         canonical = canonical === undefined ? '' : canonical;
         let link_to = absolutize_url(canonical)+'#';
-        link_to += ((canonical.indexOf('#') === -1) ? this.audiotag.id : canonical.substr(canonical.indexOf('#')+1) )+'&';
+        link_to += ((canonical.indexOf('#') === -1) ? audiotag.id : canonical.substr(canonical.indexOf('#')+1) )+'&';
         link_to += 't='+timecode;
 
         let elapse_element = this.elements['elapse'];
         elapse_element.href = link_to;
 
         let total_duration = '…';
-        if (!isNaN(Math.round(this.audiotag.duration))){
-            total_duration = convert.SecondsInColonTime(Math.round(this.audiotag.duration));
+        if (!isNaN(Math.round(audiotag.duration))){
+            total_duration = convert.SecondsInColonTime(Math.round(audiotag.duration));
         } 
          
-        let colon_time = convert.SecondsInColonTime(this.audiotag.currentTime);
+        let colon_time = convert.SecondsInColonTime(audiotag.currentTime);
         elapse_element.innerHTML = `${colon_time}<span class="notiny"> / ${total_duration}</span>`;
 
+        let inputtime_element = this.elements['inputtime'];
         // How to check a focused element ? document.activeElement respond the webcomponent tag :/ You must call shadowRoot.activeElement
-        if (!this.elements.inputtime.isEqualNode(this.element.shadowRoot.activeElement)) {
-            this.elements.inputtime.value = convert.SecondsInPaddledColonTime( this.audiotag.currentTime );  // yes, this SHOULD be in HH:MM:SS format precisely
+        if (!inputtime_element.isEqualNode(this.element.shadowRoot.activeElement)) {
+            inputtime_element.value = convert.SecondsInPaddledColonTime( audiotag.currentTime );  // yes, this SHOULD be in HH:MM:SS format precisely
         }
-        this.elements.inputtime.max = convert.SecondsInPaddledColonTime(this.audiotag.duration);
-        this.update_line('loading', this.audiotag.currentTime);
+        inputtime_element.max = convert.SecondsInPaddledColonTime(audiotag.duration);
+        this.update_line('loading', audiotag.currentTime);
         this.update_buffered();
     }
     update_time_borders() {
-        if ((!document.CPU.is_audiotag_global(this.audiotag)) || (trigger._timecode_end === false)) {
-            this.elements.points.style.opacity = 0;
+        let audiotag = this.audiotag;
+        if ((!document.CPU.is_audiotag_global(audiotag)) || (trigger._timecode_end === false)) {
+            this.elements['points'].style.opacity = 0;
             return;
         }
-        this.elements.points.style.opacity = 1;
+        this.elements['points'].style.opacity = 1;
         // UGLY to rewrite
-        this.elements.pointstart.style.left = `calc(${100 * trigger._timecode_start / this.audiotag.duration}% - 4px)`;
-        this.elements.pointend.style.left = `calc(${100 * trigger._timecode_end / this.audiotag.duration}% + 0px)`;
+        this.elements['pointstart'].style.left = `calc(${100 * trigger._timecode_start / audiotag.duration}% - 4px)`;
+        this.elements['pointend'].style.left = `calc(${100 * trigger._timecode_end / audiotag.duration}% + 0px)`;
 
     }
     update_loading(seconds) {
@@ -84,21 +88,22 @@ let CPU_element_api = class {
         // NOTE : this is not working, even on non supported media type
         // Chrome logs an error « Uncaught (in promise) DOMException: Failed to load because no supported source was found. »
         // but don't update message
-        if (this.audiotag.error !== null) {
+        let audiotag = this.audiotag;
+        if (audiotag.error !== null) {
             let error_message;
             let pageerror = this.elements['pageerror'];
             this.show_interface('error');
-            switch (this.audiotag.error.code) {
-                case this.audiotag.error.MEDIA_ERR_ABORTED:
+            switch (audiotag.error.code) {
+                case audiotag.error.MEDIA_ERR_ABORTED:
                     error_message = __.media_err_aborted;
                     break;
-                case this.audiotag.error.MEDIA_ERR_NETWORK:
+                case audiotag.error.MEDIA_ERR_NETWORK:
                     error_message = __.media_err_network;
                     break;
-                case this.audiotag.error.MEDIA_ERR_DECODE:
+                case audiotag.error.MEDIA_ERR_DECODE:
                     error_message = __.media_err_decode;
                     break;
-                case this.audiotag.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                case audiotag.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
                     error_message = __.media_err_src_not_supported;
                     break;
                 default:
@@ -147,9 +152,10 @@ let CPU_element_api = class {
         let mode = !isNaN(_timecode_start);
         let classlist = this.elements['interface'].classList;
         let classname = 'with-preview';
+        let audiotag = this.audiotag;
         if (mode) {
             classlist.add(classname);
-            document.CPU.previewed = this.audiotag.id;
+            document.CPU.previewed = audiotag.id;
         } else {
             classlist.remove(classname);
             document.CPU.previewed = null;
@@ -157,9 +163,9 @@ let CPU_element_api = class {
         }
 
         let element = this.elements['preview'];
-        element.style.left = `${100 * _timecode_start / this.audiotag.duration}%`;
-        _timecode_end = _timecode_end === undefined ? this.audiotag.duration : _timecode_end;
-        element.style.right = `${100-100 * _timecode_end / this.audiotag.duration}%`;
+        element.style.left = `${100 * _timecode_start / audiotag.duration}%`;
+        _timecode_end = _timecode_end === undefined ? audiotag.duration : _timecode_end;
+        element.style.right = `${100-100 * _timecode_end / audiotag.duration}%`;
 
     }
 
@@ -272,6 +278,7 @@ let CPU_element_api = class {
     }
     build_chapters(event) {
         let self = this;
+        let audiotag = this.audiotag;
         if (event !== undefined) {
             // Chrome load <track> afterwards, so an event is needed, and we need to recatch our CPU api to this event
             self = document.CPU.find_container(event.target);
@@ -285,9 +292,9 @@ let CPU_element_api = class {
         chapters_element.innerHTML = '';
         let has = false;
 
-        if ((self.audiotag) && (self.audiotag.textTracks) && (self.audiotag.textTracks.length > 0)) {
+        if ((audiotag) && (audiotag.textTracks) && (audiotag.textTracks.length > 0)) {
 
-            for (let tracks of self.audiotag.textTracks) {
+            for (let tracks of audiotag.textTracks) {
                 if ((tracks.kind.toLowerCase() === 'chapters') && (tracks.cues !== null)) {
                     tracks.addEventListener('cuechange', function (event) {
                         // ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
@@ -300,7 +307,7 @@ let CPU_element_api = class {
                         let cuepoint = Math.floor(cue.startTime);
                         let cuetime = convert.SecondsInColonTime(cue.startTime);
                         line.innerHTML = 
-                            `<a href="#${self.audiotag.id}&t=${cuepoint}" tabindex="0">`+
+                            `<a href="#${audiotag.id}&t=${cuepoint}" tabindex="0">`+
                                 `<strong>${cue.text}</strong>`+
                                 `<span>${cuetime}</span>`+
                             `</a>`;
@@ -323,10 +330,10 @@ let CPU_element_api = class {
             if (has) {
                 // indicate in host page that audio tag chapters are listed
                 // see https://github.com/dascritch/cpu-audio/issues/36
-                document.body.classList.add(`cpu_tag_«${self.audiotag.id}»_chaptered`);
+                document.body.classList.add(`cpu_tag_«${audiotag.id}»_chaptered`);
             }   
             if (
-                (document.CPU.is_audiotag_playing(self.audiotag)) &&
+                (document.CPU.is_audiotag_playing(audiotag)) &&
                 (document.CPU.global_controller !== null)) {
                 document.CPU.global_controller.build_chapters();
             }
