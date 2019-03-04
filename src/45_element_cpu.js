@@ -435,12 +435,12 @@ let CPU_element_api = class {
         let this_build_chapters = this.build_chapters.bind(this);
         // sometimes, we MAY have loose loading
         this.audiotag.addEventListener('loadedmetadata', this_build_chapters, passive_ev);
-        /*
+        
         let track_element = this.audiotag.querySelector('track[kind="chapters"]');
         if (track_element) {
             track_element.addEventListener('load', this_build_chapters, passive_ev);
         }
-        */
+        
 
         let chapters_element = this.elements['chapters'];
 
