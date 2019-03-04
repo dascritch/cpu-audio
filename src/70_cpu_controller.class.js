@@ -16,7 +16,7 @@ class CpuControllerElement extends HTMLElement {
         if (this.tagName === CpuAudioTagName) {
             if (this.querySelector(acceptable_selector) === null) {
                 // Graceful degradation : do not start if no media element OR no native controls
-                console.warn(`Tag <${CpuAudioTagName}> without <audio controls>.\nSee https://github.com/dascritch/cpu-audio/blob/master/INSTALL.md for a correct installation.`);
+                warn(`Tag <${CpuAudioTagName}> without <audio controls>.\nSee https://github.com/dascritch/cpu-audio/blob/master/INSTALL.md for a correct installation.`);
                 this.remove();
                 return;
             }

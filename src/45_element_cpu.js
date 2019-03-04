@@ -285,7 +285,7 @@ let CPU_element_api = class {
             self = document.CPU.find_container(event.target);
             if (self === null) {
                 // not yet ready, should not occurs
-                window.console.error('Container CPU- not ready yet. WTF ?');
+                error('Container CPU- not ready yet. WTF ?');
             }
         }
 

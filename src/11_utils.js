@@ -43,3 +43,15 @@ function _isEvent(event) {
 }
 
 
+
+function info(message) {
+    window.console.info(`${CpuAudioTagName}: ${message}`)
+}
+
+function warn(message) {
+    window.console.warn(`${CpuAudioTagName}: ${message}`)
+}
+
+function error(message) {
+    window.console.error(`${CpuAudioTagName}: ${message}`)
+}

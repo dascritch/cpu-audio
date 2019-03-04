@@ -302,12 +302,12 @@ const trigger = {
         let playlist_name = audiotag.dataset.playlist;
         let playlist = document.CPU.playlists[playlist_name];
         if (playlist === undefined) {
-            console.warn(`Named playlist ${playlist_name} not created. WTF ?`);
+            warn(`Named playlist ${playlist_name} not created. WTF ?`);
             return;
         }
         let playlist_index = playlist.indexOf(audiotag.id);
         if (playlist_index === -1) {
-            console.warn(`Audiotag ${audiotag.id} not in playlist ${playlist_name}. WTF ?`);
+            warn(`Audiotag ${audiotag.id} not in playlist ${playlist_name}. WTF ?`);
             return;
         }
         if ((playlist_index +1) === playlist.length) {
@@ -317,7 +317,7 @@ const trigger = {
         let next_id = playlist[playlist_index+1];
         let next_audiotag = document.getElementById(next_id);
         if (next_audiotag === null) {
-            console.warn(`Audiotag #${next_id} doesn't exists. WTF ?`);
+            warn(`Audiotag #${next_id} doesn't exists. WTF ?`);
             return;
         }
         // Play the next media in playlist, starting at zero
@@ -330,7 +330,7 @@ const trigger = {
         let media_tagname = 'audio';
         let audio_element = container.element.querySelector(media_tagname)
         if (audio_element === null) {
-            console.info(`<${media_tagname}> element was removed.`)
+            info(`<${media_tagname}> element was removed.`)
             container.element.remove();
             return;
         }
