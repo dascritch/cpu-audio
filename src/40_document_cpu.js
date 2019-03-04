@@ -1,13 +1,13 @@
-document.CPU = document.CPU ? document.CPU : {
+document['CPU'] = document['CPU'] ? document['CPU'] : {
     // global object for global API
 
     // parameters
-    keymove : 5,
-    only_play_one_audiotag : true,
+    'keymove' : 5,
+    'only_play_one_audiotag' : true,
 
     // actual active elements
-    current_audiotag_playing : null,
-    global_controller : null,
+    'current_audiotag_playing' : null,
+    'global_controller' : null,
     previewed : null,
     body_className_playing_cue : null,
 
@@ -16,28 +16,28 @@ document.CPU = document.CPU ? document.CPU : {
     count_element : 0,
 
     // playlists
-    playlists : {},
-    advance_in_playlist : true,
+    'playlists' : {},
+    'advance_in_playlist' : true,
 
     // Exposing internals needed for tests
-    convert : convert, 
-    trigger : trigger,
+    'convert' : convert, 
+    'trigger' : trigger,
 
     // NOTE : we will need to refresh this when the <head> of the host page changes
     default_dataset : {
         'title' : function () { 
                 for(let domain of ['og', 'twitter']){
-                    let header_element = window.document.querySelector(`meta[property="${domain}:title"]`);
+                    let header_element = document.querySelector(`meta[property="${domain}:title"]`);
                     if (header_element !== null) {
                         return header_element.content;
                     }
                 }
-                let title = window.document.title;
+                let title = document.title;
                 return title === '' ? null : title;
             }(), 
         'poster' : function () {
                 for(let attr of ['property="og:image"', 'name="twitter:image:src"']){
-                    let header_element = window.document.querySelector(`meta[${attr}]`);
+                    let header_element = document.querySelector(`meta[${attr}]`);
                     if (header_element !== null) {
                         return header_element.content;
                     }
@@ -45,14 +45,14 @@ document.CPU = document.CPU ? document.CPU : {
                 return null;
             }(),
         'canonical' : function () {
-                let header_element = window.document.querySelector('link[rel="canonical"]');
+                let header_element = document.querySelector('link[rel="canonical"]');
                 if (header_element !== null) {
                     return header_element.href;
                 }
-                return window.location.href.split('#')[0];
+                return location.href.split('#')[0];
             }(),
         'twitter' : function () {
-                let header_element = window.document.querySelector('meta[name="twitter:creator"]');
+                let header_element = document.querySelector('meta[name="twitter:creator"]');
                 if ((header_element !== null) && (header_element.content.length>1)) {
                     return header_element.content;
                 }
@@ -132,7 +132,7 @@ document.CPU = document.CPU ? document.CPU : {
         return this.global_controller === null ? this.is_audiotag_playing(audiotag) : audiotag.isEqualNode(this.global_controller.audiotag)
     },
 
-    jumpIdAt : function(hash, timecode, callback_fx) {
+    'jumpIdAt' : function(hash, timecode, callback_fx) {
 
         function do_needle_move(event) {
             let audiotag = event.target;
@@ -173,37 +173,29 @@ document.CPU = document.CPU ? document.CPU : {
             audiotag.addEventListener('loadedmetadata', do_needle_move , true);
             audiotag.load();
         } else {
-            do_needle_move({target : audiotag});
+            do_needle_move({'target' : audiotag});
         }
-        trigger.update({target : audiotag});
+        trigger.update({'target' : audiotag});
     },
 
-    find_interface : function(child) {
+    'find_interface' : function(child) {
         return child.closest(selector_interface);
     },
-    find_container : function(child) {
-
+    'find_container' : function(child) {
         if ((child.tagName === CpuAudioTagName) 
             || ( child.tagName === CpuControllerTagName)) {
             return child.CPU
         }
-        if (child.tagName === 'AUDIO'){
-            return child.parentNode.CPU
+
+        let closest_cpuaudio = child.closest(CpuAudioTagName);
+        if (closest_cpuaudio) {
+            return closest_cpuaudio.CPU
         }
-        let closest_audio = child.closest('AUDIO');
-        if (closest_audio){
-            return closest_audio.parentNode.CPU
-        }
+
         let _interface = document.CPU.find_interface(child);
-        /*
-        if (_interface === null) {
-            window.console.info({child:  child})
-            window.console.trace()
-            return null;
-        }*/
         return _interface.parentNode.host.CPU;
     },
-    seekElementAt : function (audiotag, seconds) {
+    'seekElementAt' : function (audiotag, seconds) {
 
         if (isNaN(seconds)) {
             // may happens, if the audio track is not loaded/loadable
@@ -229,7 +221,7 @@ document.CPU = document.CPU ? document.CPU : {
             controller.update_loading(seconds);
         }
     },
-    find_current_playlist : function() {
+    'find_current_playlist' : function() {
         let current_audiotag = this.global_controller.audiotag;
         if (current_audiotag === null) {
             return null;

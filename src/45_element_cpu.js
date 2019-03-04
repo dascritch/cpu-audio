@@ -152,20 +152,20 @@ let CPU_element_api = class {
         let mode = !isNaN(_timecode_start);
         let classlist = this.elements['interface'].classList;
         let classname = 'with-preview';
-        let audiotag = this.audiotag;
         if (mode) {
             classlist.add(classname);
-            document.CPU.previewed = audiotag.id;
+            document.CPU.previewed = this.audiotag.id;
         } else {
             classlist.remove(classname);
             document.CPU.previewed = null;
             return ;
         }
 
+        let audiotag_duration = this.audiotag.duration;
         let element = this.elements['preview'];
-        element.style.left = `${100 * _timecode_start / audiotag.duration}%`;
-        _timecode_end = _timecode_end === undefined ? audiotag.duration : _timecode_end;
-        element.style.right = `${100-100 * _timecode_end / audiotag.duration}%`;
+        element.style.left = `${100 * _timecode_start / audiotag_duration}%`;
+        _timecode_end = _timecode_end === undefined ? audiotag_duration : _timecode_end;
+        element.style.right = `${100-100 * _timecode_end / audiotag_duration}%`;
 
     }
 
@@ -252,16 +252,17 @@ let CPU_element_api = class {
 
     complete_template() {
         let dataset = this.fetch_audiotag_dataset();
+        let element_canonical = this.elements['canonical'];
 
-        this.elements['canonical'].href = dataset.canonical;
+        element_canonical.href = dataset.canonical;
 
         if (dataset.title === null) {
-            this.elements['canonical'].classList.add('untitled')
+            element_canonical.classList.add('untitled')
             dataset.title = __.untitled
         } else {
-            this.elements['canonical'].classList.remove('untitled')
+            element_canonical.classList.remove('untitled')
         }
-        this.elements['canonical'].innerText = dataset.title; 
+        element_canonical.innerText = dataset.title; 
         this.elements['poster'].src = dataset.poster;
     }
     attach_audiotag_to_controller(audiotag) {
@@ -274,7 +275,7 @@ let CPU_element_api = class {
         this.complete_template();
 
         // throw simplified event
-        trigger.update({target : this.audiotag});
+        trigger.update({target : audiotag});
     }
     build_chapters(event) {
         let self = this;
@@ -374,11 +375,12 @@ let CPU_element_api = class {
 
         // the following mess is to simplify sub-element declaration and selection
         let controller = this;
-        querySelector_apply('[id]', function(element){
+        querySelector_apply('[id]', function (element) {
             controller.elements[element.id] = element;
         }, this.element.shadowRoot);
-
-        this.elements['poster'].addEventListener('load', function() { controller.elements['interface'].classList.add('poster-loaded'); });
+        this.elements['poster'].addEventListener('load', function () {
+            controller.elements['interface'].classList.add('poster-loaded'); 
+        });
 
         let passive_ev = {passive: true};
 

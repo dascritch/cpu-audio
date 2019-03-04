@@ -7,13 +7,14 @@ function onDebug(callback_fx) {
 
 function querySelector_apply(selector, callback, subtree) {
     subtree = subtree === undefined ? document : subtree;
-    Array.from(subtree.querySelectorAll(selector)).forEach(callback);
+    Array.from(
+        subtree.querySelectorAll(selector)
+        ).forEach(callback);
 }
 
 function is_decent_browser_for_webcomponents() {
     return window.customElements !== undefined;
 }
-
 
 function absolutize_url(url) {
     let test_element = document.createElement('a');
@@ -40,3 +41,5 @@ function _isEvent(event) {
     // is this event really triggered via a native event ?
     return event.preventDefault !== undefined;
 }
+
+

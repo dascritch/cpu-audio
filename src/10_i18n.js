@@ -59,7 +59,12 @@ for (let entry in languages) {
         if (line.split) {
             // on extrait le code générique xx de xx-YY 
             let code = line.split('-')[0];
-            if ((!added) && (typeof i18n_source === 'object') && (i18n_source !== null) && (    i18n_source[code] !== undefined)) {
+            if (
+                (!added) && 
+                (typeof i18n_source === 'object') && 
+                (i18n_source !== null) && 
+                (i18n_source[code] !== undefined)
+                ) {
             prefered_language = code;
         }
     }

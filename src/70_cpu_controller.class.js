@@ -37,7 +37,7 @@ class CpuControllerElement extends HTMLElement {
         );
         if (!this.CPU.audiotag) {
             document.CPU.global_controller = this.CPU;
-            this.CPU.audiotag = window.document.querySelector('cpu-audio audio');
+            this.CPU.audiotag = document.querySelector('cpu-audio audio');
         }
 
         this.CPU.build_controller();

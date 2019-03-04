@@ -27,15 +27,15 @@ class CpuAudioElement extends CpuControllerElement {
     
         this.observer_cpuaudio = new MutationObserver(trigger.observer_cpuaudio);
         this.observer_cpuaudio.observe(this, {
-            childList: true,
-            attributes : true
+            'childList': true,
+            'attributes' : true
         });
 
         this.observer_audio = new MutationObserver(trigger.observer_audio);
         this.observer_audio.observe(this, {
-            childList: true,
-            attributes : true,
-            subtree : true
+            'childList': true,
+            'attributes' : true,
+            'subtree' : true
         });
 
         // this.observer.disconnect();

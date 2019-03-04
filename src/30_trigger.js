@@ -79,11 +79,12 @@ const trigger = {
         return true;
     },
     hover : function(event) {
-        let container = document.CPU.find_container(event.target);
+        let target = event.target;
+        let container = document.CPU.find_container(target);
 
-        let target_rect = event.target.getClientRects()[0];
+        let target_rect = target.getClientRects()[0];
         let relLeft = target_rect.left;
-        let ratio = event.offsetX / event.target.clientWidth;
+        let ratio = event.offsetX / target.clientWidth;
         let seeked_time = ratio * container.audiotag.duration;
 
         container.show_throbber_at(seeked_time);
@@ -97,8 +98,9 @@ const trigger = {
 
     },
     preview_container_hover : function(event) {
-        let container = document.CPU.find_container(event.target);
-        let link_element = event.target.closest('li');
+        let target = event.target;
+        let container = document.CPU.find_container(target);
+        let link_element = target.closest('li');
         // TODO : 
             // decode hash id, gets its container
             // use dataset.cueId  , derive startTime and endTime
@@ -113,13 +115,14 @@ const trigger = {
 
     throbble : function(event) {
         let at = 0;
-        let container = document.CPU.find_container(event.target);
+        let target = event.target;
+        let container = document.CPU.find_container(target);
         let audiotag = container.audiotag;
         if (event.at !== undefined) {
             at = event.at;
         } else {
             // normal usage
-            let ratio = event.offsetX  / event.target.clientWidth;
+            let ratio = event.offsetX  / target.clientWidth;
             at = ratio * audiotag.duration;
         }
 
@@ -152,17 +155,19 @@ const trigger = {
 
         trigger._remove_timecode_outofborders(audiotag.currentTime);
         if ((document.CPU.global_controller) && (!audiotag.isEqualNode(document.CPU.global_controller.audiotag))) {
-            document.CPU.global_controller.attach_audiotag_to_controller(audiotag);
-            document.CPU.global_controller.audiotag = audiotag;
-            document.CPU.global_controller.show_main();
-            document.CPU.global_controller.build_chapters();
-            document.CPU.global_controller.build_playlist();
+            let global_controller = document.CPU.global_controller;
+            global_controller.attach_audiotag_to_controller(audiotag);
+            global_controller.audiotag = audiotag;
+            global_controller.show_main();
+            global_controller.build_chapters();
+            global_controller.build_playlist();
         }
         audiotag.play();
     },
     key : function(event, mult) {
         mult = mult === undefined ? 1 : mult;
         let container = document.CPU.find_container(event.target);
+        let audiotag = container.audiotag;
 
         function seek_relative(seconds) {
             event.at = container.audiotag.currentTime + seconds;
@@ -175,15 +180,15 @@ const trigger = {
             // can't use enter : standard usage
             case 27 : // esc
                 trigger.restart(event);
-                trigger.pause(undefined,container.audiotag);
+                trigger.pause(undefined, audiotag);
                 break;
             case 32 : // space
-                container.audiotag.paused ?
-                    trigger.play(undefined,container.audiotag) :
-                    trigger.pause(undefined,container.audiotag);
+                audiotag.paused ?
+                    trigger.play(undefined, audiotag) :
+                    trigger.pause(undefined, audiotag);
                 break;
             case 35 : // end
-                document.CPU.seekElementAt(container.audiotag, container.audiotag.duration);
+                document.CPU.seekElementAt(audiotag, audiotag.duration);
                 break;
             case 36 : // home
                 trigger.restart(event);
@@ -204,10 +209,11 @@ const trigger = {
             return;
         } 
         let container = document.CPU.find_container(event.target);
+        let audiotag = container.audiotag;
 
-        container.audiotag.paused ?
-            trigger.play(undefined,container.audiotag) :
-            trigger.pause(undefined,container.audiotag);
+        audiotag.paused ?
+            trigger.play(undefined, audiotag) :
+            trigger.pause(undefined, audiotag);
         
         event.preventDefault();
     },
@@ -232,8 +238,9 @@ const trigger = {
         trigger.key(event, 4);
     },
     input_time_change : function(event) {
-        let container = document.CPU.find_container(event.target);
-        let seconds = convert.ColonTimeInSeconds( event.target.value );
+        let target = event.target;
+        let container = document.CPU.find_container(target);
+        let seconds = convert.ColonTimeInSeconds(target.value);
         container.show_throbber_at(seconds);
         document.CPU.seekElementAt(container.audiotag, seconds);
     },
@@ -347,9 +354,9 @@ const trigger = {
     native_share : function(event) {
         let dataset = document.CPU.find_container(event.target).fetch_audiotag_dataset();;
         navigator.share({
-            title: dataset.title,
-            text: dataset.title,
-            url: dataset.canonical
+            'title': dataset.title,
+            'text': dataset.title,
+            'url': dataset.canonical
         })
 
     },
@@ -359,7 +366,7 @@ const trigger = {
     touchstart : function(event) {
         let container = document.CPU.find_container(event.target);
         trigger._show_alternate_nav = setTimeout(container.show_alternate_nav, 500, container);
-        // why 500ms ? Because Chrome ill trigger a touchcancel event at 800ms to show a context menu
+        // why 500ms ? Because Chrome will trigger a touchcancel event at 800ms to show a context menu
     },
 
     touchcancel : function(event) {

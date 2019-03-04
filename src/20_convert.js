@@ -5,11 +5,13 @@ const convert = {
         'm' : 60,
         's' : 1
     },
+    _is_only_numeric : /^\d+$/,
+    _any_not_numeric : /\D*/g,
 
     TimeInSeconds : function(givenTime) {
         let seconds = 0;
         if (givenTime !== '') {
-            if (/^\d+$/.test(givenTime)) {
+            if (convert._is_only_numeric.test(givenTime)) {
                 seconds = Number(givenTime);
             } else {
                 seconds = (givenTime.indexOf(':') === -1) ? 
@@ -24,7 +26,7 @@ const convert = {
         for(let key in convert.units) {
             if ( (convert.units.hasOwnProperty(key)) && (givenTime.indexOf(key) !== -1) ) {
                 let atoms = givenTime.split(key);
-                seconds += Number(atoms[0].replace(/\D*/g,'' )) * convert.units[key];
+                seconds += Number(atoms[0].replace(convert._any_not_numeric,'' )) * convert.units[key];
                 givenTime = atoms[1];
             }
         }
@@ -58,7 +60,7 @@ const convert = {
     SecondsInColonTime : function(givenSeconds) {
         let converted = '';
         let inned = false;
-        for(let key in convert.units) {
+        for (let key in convert.units) {
             if (convert.units.hasOwnProperty(key)) {
                 let multiply = convert.units[key];
                 if ((givenSeconds >= multiply) || (inned)) {
@@ -71,16 +73,18 @@ const convert = {
             }
         }
         if (converted.length === 1) {
+            // between 0 and 9 seconds
             return '0:0' + converted;
         }
         if (converted.length === 2) {
+            // between 10 and 59 seconds
             return '0:' + converted;
         } 
         
         return converted === '' ? '0:00' : converted;
     },
     SecondsInPaddledColonTime : function(givenSeconds) {
-        // principaly needed by <input type="time"> whom need a really precise HH:MM:SS format
+        // principaly needed by <input type="time"> whom needs a really precise HH:MM:SS format
         let colon_time = convert.SecondsInColonTime(givenSeconds);
         return '00:00:00'.substr(0, 8 - colon_time.length ) + colon_time; 
     }
