@@ -264,7 +264,7 @@ a {
 
 #handheld-nav * {
   flex : 1 0 auto;
-  height : calc( var(--cpu-height) - calc( var(--cpu-timeline-height) + 8px ) );
+  height : calc( var(--cpu-height) / 2 );
 }
 
 [type="time"] {
@@ -455,6 +455,10 @@ a {
 }
 @media (max-width: 320px) , @element #interface and (max-width: 320px) {
     .mode-default #elapse {
+        display : none;
+    }
+
+    .nosmallest {
         display : none;
     }
 }
