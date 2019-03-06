@@ -1,11 +1,11 @@
-Cpu-Audio: an extension to the hash system to address timecode into audio/video elements. v 5.3 
-Copyright (C) 2014-2019 Xavier “dascritch” Mouton-Dubosc
+/** @license
+Cpu-Audio: an extension to the hash system to address timecode into audio/video elements.
+Version 5.3
+Copyright (C) 2014-2019 Xavier "dascritch" Mouton-Dubosc & contributors.
 License GNU GPL 3
 
- - project mini-site https://dascritch.github.io/cpu-audio/
- - project repository : https://github.com/dascritch/cpu-audio
- - blog post : https://dascritch.net/post/2018/11/06/Reconstruire-son-lecteur-audio-pour-le-web
- - previously known as
-   - https://github.com/dascritch/timecodehash
-   - https://github.com/dascritch/ondemiroir-audio-tag
-   - https://github.com/dascritch/plugin-dc-ondemiroir-audio-tag
+- project mini-site https://dascritch.github.io/cpu-audio/
+- project repository : https://github.com/dascritch/cpu-audio
+- use case : http://cpu.pm
+- blog post : https://dascritch.net/post/2018/11/06/Reconstruire-son-lecteur-audio-pour-le-web
+**/
