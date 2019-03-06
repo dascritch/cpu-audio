@@ -1,5 +1,5 @@
-Cpu-Audio, an extension to the hash system to address timecode into audio/video elements
-Copyright (C) 2014-2018 Xavier “dascritch” Mouton-Dubosc
+Cpu-Audio: an extension to the hash system to address timecode into audio/video elements. v 5.3 
+Copyright (C) 2014-2019 Xavier “dascritch” Mouton-Dubosc
 License GNU GPL 3
 
  - project mini-site https://dascritch.github.io/cpu-audio/
