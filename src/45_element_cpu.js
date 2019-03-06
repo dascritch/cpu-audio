@@ -148,10 +148,15 @@ let CPU_element_api = class {
         phylactere._hider = window.setTimeout(this.hide_throbber, 1000, this);
     }
 
-    preview(_timecode_start, _timecode_end) {
+    preview(_timecode_start, _timecode_end, _chapter_id) {
         let mode = !isNaN(_timecode_start);
         let classlist = this.elements['interface'].classList;
         let classname = 'with-preview';
+        let chaptersline = this.elements['chaptersline'];
+        let previous_segment = chaptersline.querySelector('.'+classname);
+        if (previous_segment) {
+            previous_segment.classList.remove(classname);
+        }
         if (mode) {
             classlist.add(classname);
             document.CPU.previewed = this.audiotag.id;
@@ -167,6 +172,10 @@ let CPU_element_api = class {
         _timecode_end = _timecode_end === undefined ? audiotag_duration : _timecode_end;
         element.style.right = `${100-100 * _timecode_end / audiotag_duration}%`;
 
+        let segment = chaptersline.querySelector('#segment-'+_chapter_id);
+        if (segment) {
+            segment.classList.add(classname);
+        }
     }
 
     fetch_audiotag_dataset() {
@@ -291,6 +300,9 @@ let CPU_element_api = class {
 
         let chapters_element = self.elements['chapters'];
         chapters_element.innerHTML = '';
+        let lines_element = self.elements['chaptersline'];
+        lines_element.innerHTML = '';
+        
         let has = false;
 
         if ((audiotag) && (audiotag.textTracks) && (audiotag.textTracks.length > 0)) {
@@ -302,6 +314,8 @@ let CPU_element_api = class {
                         trigger.cuechange(event, chapters_element);
                     });
                     for (let cue of tracks.cues) {
+                        /* list */
+
                         let line = document.createElement('li');
                         line.id  = cue.id;
                         line.classList.add('cue');
@@ -317,6 +331,13 @@ let CPU_element_api = class {
                         line.dataset.cueId = cue.id; 
                         line.dataset.cueStartTime = cuepoint; 
                         line.dataset.cueEndTime = Math.floor(cue.endTime);
+
+                        /* line */
+                        let segment = document.createElement('span');
+                        segment.id  = 'segment-'+cue.id;
+                        segment.style.left = String(100 * cue.startTime / audiotag.duration) +'%';
+                        segment.style.right = String(100 - (100 * cue.endTime / audiotag.duration)) +'%';
+                        lines_element.append(segment);
                     }
 
                     if (tracks.cues.length > 0) {
@@ -332,10 +353,12 @@ let CPU_element_api = class {
                 // indicate in host page that audio tag chapters are listed
                 // see https://github.com/dascritch/cpu-audio/issues/36
                 document.body.classList.add(`cpu_tag_«${audiotag.id}»_chaptered`);
-            }   
+            }
+
             if (
-                (document.CPU.is_audiotag_playing(audiotag)) &&
-                (document.CPU.global_controller !== null)) {
+                (document.CPU.global_controller !== null) &&
+                (audiotag.isEqualNode(document.CPU.global_controller.audiotag))
+                ) {
                 document.CPU.global_controller.build_chapters();
             }
         }

@@ -109,8 +109,7 @@ const trigger = {
 
         let start = link_element.dataset.cueStartTime;
         let end = link_element.dataset.cueEndTime;
-
-        container.preview(start, end);
+        container.preview(start, end, link_element.dataset.cueId);
     },
 
     throbble : function(event) {
