@@ -23,6 +23,11 @@ HELP
 
 PROJECT_DIR=$(readlink -f $(dirname ${0}))
 
+# JS_COMPILATION_LEVEL='ADVANCED_OPTIMIZATIONS'
+JS_COMPILATION_LEVEL='SIMPLE_OPTIMIZATIONS'
+# JS_COMPILATION_LEVEL='WHITESPACE_ONLY'
+# JS_COMPILATION_LEVEL='BUNDLE'
+
 while [ '-' == "${1:0:1}" ] ; do
     case "${1}" in
         -h|--help)
@@ -42,10 +47,6 @@ while [ '-' == "${1:0:1}" ] ; do
 done
 
 DESTINATION=${1}
-# JS_COMPILATION_LEVEL='ADVANCED_OPTIMIZATIONS'
-JS_COMPILATION_LEVEL='SIMPLE_OPTIMIZATIONS'
-# JS_COMPILATION_LEVEL='WHITESPACE_ONLY'
-
 
 function _clean() {
     mkdir -p ${PROJECT_DIR}/tmp
@@ -106,12 +107,14 @@ function _build_component_js() {
             --use_types_for_optimization=true \
             --summary_detail_level=3 \
         --isolation_mode=IIFE \
+        --assume_function_wrapper \
         --js ./src/license.txt \
         --js ./src/{00_prologue,10_i18n,../tmp/insert_template,11_utils,20_convert,30_trigger,40_document_cpu,45_element_cpu,50_media_element_extension,70_cpu_controller.class,71_cpu_audio.class,90_main}.js \
         --entry_point "./src/90_main.js" \
            --language_in ECMASCRIPT_2017 \
                 --module_resolution BROWSER \
                 --js_module_root src --jscomp_off internetExplorerChecks \
+                --strict_mode_input \
         --js_output_file "${component_file_js}" \
             --language_out ECMASCRIPT_2017 \
         --create_source_map "${component_file_js}.map" 
