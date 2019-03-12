@@ -225,15 +225,19 @@ a {
     bottom : -4px;
 }
 
-#chaptersline span {
+#chaptersline a {
     position : absolute;
     background : black;
     display : block;
     height : 2px;
     outline : 2px solid var(--cpu-background);
 }
-#chaptersline span.with-preview {
+#chaptersline a:hover, #chaptersline a.with-preview {
     background : white;
+}
+
+#chaptersline a.active-cue {
+    background : var(--cpu-color);
 }
 
 #points {

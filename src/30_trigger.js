@@ -244,12 +244,14 @@ const trigger = {
         document.CPU.seekElementAt(container.audiotag, seconds);
     },
 
-    cuechange : function(event, chapters_element) {
+    cuechange : function(event, element_interface) {
         document.body.classList.remove(document.CPU.body_className_playing_cue);
         // when the position in a media element goes out of the current
-        if (chapters_element === undefined) {
+        if (element_interface === undefined) {
             return;
         }
+        let chapters_element = element_interface.querySelector('#chapters');
+
 
         let classname = 'active-cue';
         let previous = chapters_element.querySelector(`.${classname}`);
@@ -275,6 +277,19 @@ const trigger = {
             return;
         }
         new_active.classList.add(classname);
+
+        let chaptersline = element_interface.querySelector('#chaptersline');
+
+        let last_preview = chaptersline.querySelector('.'+classname)
+        if (last_preview !== null) {
+            last_preview.classList.remove(classname);
+        }
+
+        let preview = chaptersline.querySelector('#segment-'+cue_id);
+        if (preview !== null) {
+            preview.classList.add(classname)
+        }
+
     },
 
     update : function(event) {

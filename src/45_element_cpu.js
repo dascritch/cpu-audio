@@ -286,8 +286,13 @@ let CPU_element_api = class {
         // throw simplified event
         trigger.update({target : audiotag});
     }
+    cuechange_event(event) {
+        // ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
+        trigger.cuechange(event, this.elements['interface']);
+    }
     build_chapters(event) {
         let self = this;
+
         let audiotag = this.audiotag;
         if (event !== undefined) {
             // Chrome load <track> afterwards, so an event is needed, and we need to recatch our CPU api to this event
@@ -309,20 +314,23 @@ let CPU_element_api = class {
 
             for (let tracks of audiotag.textTracks) {
                 if ((tracks.kind.toLowerCase() === 'chapters') && (tracks.cues !== null)) {
-                    tracks.addEventListener('cuechange', function (event) {
-                        // ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
-                        trigger.cuechange(event, chapters_element);
-                    });
+                    let cuechange_event = self.cuechange_event.bind(self);
+                    // too much calling during build, we have FOUR builds . We must find a way to clean it up, AND remove associated events via removeEventListener()
+                    tracks.removeEventListener('cuechange', cuechange_event);
+                    tracks.addEventListener('cuechange', cuechange_event);
+
                     for (let cue of tracks.cues) {
+                        let cuepoint = Math.floor(cue.startTime);
+                        let cuetime = convert.SecondsInColonTime(cue.startTime);
+                        let href = `#${audiotag.id}&t=${cuepoint}`;
+
                         /* list */
 
                         let line = document.createElement('li');
                         line.id  = cue.id;
                         line.classList.add('cue');
-                        let cuepoint = Math.floor(cue.startTime);
-                        let cuetime = convert.SecondsInColonTime(cue.startTime);
                         line.innerHTML = 
-                            `<a href="#${audiotag.id}&t=${cuepoint}" tabindex="0">`+
+                            `<a href="${href}" tabindex="0">`+
                                 `<strong>${cue.text}</strong>`+
                                 `<span>${cuetime}</span>`+
                             `</a>`;
@@ -333,8 +341,10 @@ let CPU_element_api = class {
                         line.dataset.cueEndTime = Math.floor(cue.endTime);
 
                         /* line */
-                        let segment = document.createElement('span');
+                        let segment = document.createElement('a');
                         segment.id  = 'segment-'+cue.id;
+                        segment.href  = href;
+                        segment.tabindex = '-1';
                         segment.style.left = String(100 * cue.startTime / audiotag.duration) +'%';
                         segment.style.right = String(100 - (100 * cue.endTime / audiotag.duration)) +'%';
                         lines_element.append(segment);
