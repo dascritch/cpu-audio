@@ -286,8 +286,23 @@ let CPU_element_api = class {
         // throw simplified event
         trigger.update({target : audiotag});
     }
-    cuechange_event(event) {
+    _cuechange_event(event) {
         // ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
+
+        // this junk to NOT repaint 4 times the same active chapter
+        try {
+
+            let activecue;
+            activecue = event.target.activeCues[0];
+            if (Object.is(activecue, this._activecue)) {
+                return ;
+            }
+            this._activecue = activecue;
+            // do NOT tell me this is ugly, i know this is ugly. I missed something better
+        } catch (error) {
+
+        }
+
         trigger.cuechange(event, this.elements['interface']);
     }
     build_chapters(event) {
@@ -311,13 +326,23 @@ let CPU_element_api = class {
         let has = false;
 
         if ((audiotag) && (audiotag.textTracks) && (audiotag.textTracks.length > 0)) {
-
             for (let tracks of audiotag.textTracks) {
-                if ((tracks.kind.toLowerCase() === 'chapters') && (tracks.cues !== null)) {
-                    let cuechange_event = self.cuechange_event.bind(self);
-                    // too much calling during build, we have FOUR builds . We must find a way to clean it up, AND remove associated events via removeEventListener()
-                    tracks.removeEventListener('cuechange', cuechange_event);
-                    tracks.addEventListener('cuechange', cuechange_event);
+                // TODO : we have here a singular problem : how to NOT rebuild the chapter lists, being sure to have the SAME cues and they are loaded, as we may have FOUR builds.
+                // Those multiple repaint events doesn't seem to have so much impact, but they are awful, unwanted and MAY have an impact
+                // We must find a way to clean it up or not rebuild for SAME tracks, AND remove associated events 
+                // AND clean up the chapter list if a new chapter list is loaded and really empty
+                if (
+                    (tracks.kind.toLowerCase() === 'chapters') &&
+                    (tracks.cues !== null) /*&&
+                    (!Object.is(self._chaptertracks, tracks))*/) {
+
+                    // window.console.log({ s: self._chaptertracks , t: tracks , l:tracks.cues.length ,c: Object.is(self._chaptertracks, tracks)})
+                    // self._chaptertracks = tracks;
+
+                    let _cuechange_event = self._cuechange_event.bind(self);
+                    tracks.removeEventListener('cuechange', _cuechange_event);
+                    // adding chapter changing event
+                    tracks.addEventListener('cuechange', _cuechange_event);
 
                     for (let cue of tracks.cues) {
                         let cuepoint = Math.floor(cue.startTime);

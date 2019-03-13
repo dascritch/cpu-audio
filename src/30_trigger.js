@@ -251,9 +251,8 @@ const trigger = {
             return;
         }
         let chapters_element = element_interface.querySelector('#chapters');
-
-
         let classname = 'active-cue';
+        
         let previous = chapters_element.querySelector(`.${classname}`);
         if (previous !== null) {
             previous.classList.remove(classname);
@@ -272,19 +271,19 @@ const trigger = {
             document.body.classList.add(document.CPU.body_className_playing_cue);
         }
 
+        // indicate active chapter in chapter list
         let new_active = chapters_element.querySelector(`#${cue_id}`)
         if (new_active === null) {
             return;
         }
         new_active.classList.add(classname);
 
+        // indicate active chapter in chapter timeline
         let chaptersline = element_interface.querySelector('#chaptersline');
-
         let last_preview = chaptersline.querySelector('.'+classname)
         if (last_preview !== null) {
             last_preview.classList.remove(classname);
         }
-
         let preview = chaptersline.querySelector('#segment-'+cue_id);
         if (preview !== null) {
             preview.classList.add(classname)
