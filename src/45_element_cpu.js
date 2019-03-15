@@ -196,7 +196,7 @@ let CPU_element_api = class {
         let element = this.elements['preview'];
         element.style.left = `${100 * _timecode_start / audiotag_duration}%`;
         _timecode_end = _timecode_end === undefined ? audiotag_duration : _timecode_end;
-        element.style.right = `${100-100 * _timecode_end / audiotag_duration}%`;
+        element.style.right = `${100- 100 *( _timecode_end / audiotag_duration) }%`;
 
         let segment = chaptersline.querySelector('#segment-'+_chapter_id);
         if (segment) {
@@ -397,8 +397,8 @@ let CPU_element_api = class {
                         segment.href  = href;
                         segment.title  = cue.text;
                         segment.tabIndex = '-1';
-                        segment.style.left = `${(100 * cue.startTime / audiotag.duration)}'%`;
-                        segment.style.right = `${(100 - (100 * cue.endTime / audiotag.duration))}'%`;
+                        segment.style.left = `${100 * (cue.startTime / audiotag.duration)}%`;
+                        segment.style.right = `${100 - 100 *( cue.endTime / audiotag.duration)}%`;
                         lines_element.append(segment);
                     }
 
