@@ -150,6 +150,11 @@
         <input name="css_popup-color" type="color" value="#aaaaaa" />
         <input name="css_popup-background" type="color" value="#333333" />
     </label>
+
+    <label for="css_color-transitions">
+        <span>Transition duration</span>
+        <input name="css_color-transitions" type="range" value="0" min="0" max="2" step="0.1" />
+    </label>
 </fieldset>
 
 <fieldset>
@@ -265,16 +270,23 @@ function configurator_css(event) {
     }
 
     let css = '';
-    let attrs = ['font-family', 'inner-shadow'];
+    let attrs = ['font-family', 'inner-shadow' ,'color-transitions'];
     for (let key of ['','error-','playing-','popup-']) {
         for (let attr of ['color','background']) {
             attrs.push(`${key}${attr}`);
         }
     }
+
     for (let attr of attrs) {
         let element = form_css.querySelector(`[name="css_${attr}"]`);
         let value = element.value;
         if ((input_changed(element)) && (value !== '')) {
+
+            // duration need unit
+            if (attr === 'color-transitions') {
+                value = value +'s';
+            }
+
             css += `\n\t--cpu-${attr} : ${value};`;
         }
     }

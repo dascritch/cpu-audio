@@ -128,18 +128,19 @@ You can change some presentation features of the interface [with CSS Variables](
 
 variable | description | default value 
 --|--|--
-`--cpu-background`  | Background, except playing or in error      | `#555`
-`--cpu-color`       | Color, except playing                       | `#ddd`
-`--cpu-elapse-width` | Time indicator width                       | `185px` (`160px` under 640px width, `80px` under 480px, `0` under 320px)
-`--cpu-error-background` | Background when there is a media error | `#a00`
-`--cpu-error-color` | Color when there is a media error           | `#ff7`
-`--cpu-font-family` | Font families                               | `Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif`
-`--cpu-font-size`   | Font size                                   | `15px`
-`--cpu-height`      | Height and width of the square buttons      | `64px` (`32px` under 640px width)
-`--cpu-inner-shadow` | Shadow between horizontal panels           | `inset 0px 5px 10px -5px black`
-`--cpu-playing-background` | Background while playing             | `#444`
-`--cpu-playing-color` | Color while playing                       | `#fff`
-`--cpu-popup-background` | Background for the time pointer        | `#aaa`
-`--cpu-popup-color` | Text color for the time pointer             | `#333`
+`--cpu-background`  | Background, except playing or in error                    | `#555`
+`--cpu-color`       | Color, except playing                                     | `#ddd`
+`--cpu-color-transitions` | Colors (text and background) transitions duration   | `0s`
+`--cpu-elapse-width` | Time indicator width                                     | `185px` (`160px` under 640px width, `80px` under 480px, `0` under 320px)
+`--cpu-error-background` | Background when there is a media error               | `#a00`
+`--cpu-error-color` | Color when there is a media error                         | `#ff7`
+`--cpu-font-family` | Font families                                             | `Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif`
+`--cpu-font-size`   | Font size                                                 | `15px`
+`--cpu-height`      | Height and width of the square buttons                    | `64px` (`32px` under 640px width)
+`--cpu-inner-shadow` | Shadow between horizontal panels                         | `inset 0px 5px 10px -5px black`
+`--cpu-playing-background` | Background while playing                           | `#444`
+`--cpu-playing-color` | Color while playing                                     | `#fff`
+`--cpu-popup-background` | Background for the time pointer                      | `#aaa`
+`--cpu-popup-color` | Text color for the time pointer                           | `#333`
 
 <!-- {% include footer.html %} -->
