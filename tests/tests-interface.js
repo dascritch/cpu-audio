@@ -317,18 +317,23 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 	});
 	*/
 
-	QUnit.test( 'mode="button,full" makes cpu-audio changing mode on first play', function( assert ) {
-		playground.innerHTML = `<cpu-audio mode="button">   ,full
+	QUnit.test( 'mode="button,default" makes cpu-audio changing mode on first play', function( assert ) {
+		playground.innerHTML = `<cpu-audio mode="button,default">
 								<audio id="change_show_on_play" controls muted>
 									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 								</audio>
 							</cpu-audio>`;
 		let done = assert.async();
 		setTimeout(function() {
-			let interface = playground.querySelector('#change_show_on_play').closest('cpu-audio').CPU.container;
-			assert.ok(interface.classList.contains('mode-button'), 'Global API trace removed');
-			
-			done();
+			let audiotag = playground.querySelector('#change_show_on_play');
+			let interface = audiotag.closest('cpu-audio').CPU.container;
+			console.log(interface.classList)
+			assert.ok(interface.classList.contains('mode-button'), 'Interface appears as a button before playing');
+			audiotag.play();
+			setTimeout(function() {
+				assert.ok(interface.classList.contains('mode-default'), 'Interface appears in full "default" when play starts');
+				done();
+			}, 100);
 
 		}, 100);
 	});

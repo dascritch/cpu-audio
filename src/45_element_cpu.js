@@ -5,6 +5,14 @@ let CPU_element_api = class {
         this.elements = {};
         this.audiotag = element._audiotag;
         this.container = container_interface;
+        this.mode_when_play = null;
+    }
+
+    update_mode_container(mode) {
+        mode = mode !== null ? mode : 'default';
+        this.container.classList.remove(`mode-${this.mode_was}`);
+        this.mode_was = mode;
+        this.container.classList.add(`mode-${mode}`);
     }
 
     update_act_container(act) {
@@ -15,6 +23,10 @@ let CPU_element_api = class {
             );
         this.container.classList.add(`act-${act}`);
     }
+    update_hide_container(hides) {
+        // TODO
+    }
+
     update_playbutton() {
         let audiotag = this.audiotag;
         if (audiotag.readyState < audiotag.HAVE_CURRENT_DATA ) {
@@ -23,6 +35,11 @@ let CPU_element_api = class {
         }
 
         this.update_act_container(audiotag.paused ? 'pause' : 'play');
+
+        if ((!audiotag.paused) && (this.mode_when_play !== null)) {
+            this.update_mode_container(this.mode_when_play);
+            this.mode_when_play = null;
+        }
     }
     update_line(type, seconds) {
         // type = 'elapsed', 'loading'

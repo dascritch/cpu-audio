@@ -59,6 +59,7 @@ Some attributes enhance the component :
     * `default` : player with poster, timeline and chapters list,
     * `compact` : play/pause button and time indication,
     * `button` : play/pause button only,
+    * `button,default`, `button,compact` or `compact,default` : will unfold from a standby mode (`button` or `compact`) to another one when starting to play,
     * `hidden` : nothing to show ;
 * `hide="<string>"` : hide some features, comma-separated :
     * `actions` : the share button

@@ -49,8 +49,15 @@ class CpuControllerElement extends HTMLElement {
         let interface_classlist = this.CPU.elements['interface'].classList;
 
         let mode = this.getAttribute('mode');
-        mode = mode !== null ? mode : 'default';
-        interface_classlist.add(`mode-${mode}`);
+        if (mode !== null) {
+        // in case of a mode"still,play" declaration
+            let modes = mode.split(',');
+            if (modes.length > 1) {
+                mode = this.CPU.audiotag.paused ? modes[0] : modes[1];
+                this.CPU.mode_when_play = modes[1];
+            }
+        }
+        this.CPU.update_mode_container(mode);
 
         let hide_those = this.getAttribute('hide');
         if (hide_those !== null) {

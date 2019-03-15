@@ -73,9 +73,12 @@
         <select id="meta_mode" name="meta_mode">
             <option value="default">default : player with poster, timeline, playlist and chapters list</option>
             <option value="compact">compact : play/pause button and time indication</option>
-            <option value="button">a single play/pause button only,</option>
-            <option value="hidden">hidden, mainly for tests purposes</option>
-            <option selected value="">be implicit, as "default"</option>
+            <option value="button">button : a single play/pause button only</option>
+            <option value="button,compact">button,compact : unfold at play from a button to compact</option>
+            <option value="button,default">button,default : unfold at play from a button to full “default” player</option>
+            <option value="compact,default">compact,default : unfold at play from “compact” to full “default” player</option>
+            <option value="hidden">hidden : mainly for tests purposes</option>
+            <option selected value="">be implicit, as “default”</option>
         </select>
     </label>
     <label for="meta_title">
