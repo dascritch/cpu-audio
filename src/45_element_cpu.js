@@ -8,14 +8,14 @@ let CPU_element_api = class {
         this.mode_when_play = null;
     }
 
-    update_mode_container(mode) {
+    set_mode_container(mode) {
         mode = mode !== null ? mode : 'default';
         this.container.classList.remove(`mode-${this.mode_was}`);
         this.mode_was = mode;
         this.container.classList.add(`mode-${mode}`);
     }
 
-    update_act_container(act) {
+    set_act_container(act) {
         this.container.classList.remove(
             'act-loading',
             'act-pause',
@@ -23,21 +23,30 @@ let CPU_element_api = class {
             );
         this.container.classList.add(`act-${act}`);
     }
-    update_hide_container(hides) {
-        // TODO
+    set_hide_container(hide_elements) {
+        for (let hide_this of acceptable_hide_atttributes) {
+            interface_classlist.remove(`hide-${hide_this}`)
+        }
+
+        for (let hide_this of hide_elements) {
+            hide_this = hide_this.toLowerCase();
+            if (acceptable_hide_atttributes.indexOf(hide_this)>-1) {
+                interface_classlist.add(`hide-${hide_this}`)
+            }
+        }
     }
 
     update_playbutton() {
         let audiotag = this.audiotag;
         if (audiotag.readyState < audiotag.HAVE_CURRENT_DATA ) {
-            this.update_act_container('loading');
+            this.set_act_container('loading');
             return;
         }
 
-        this.update_act_container(audiotag.paused ? 'pause' : 'play');
+        this.set_act_container(audiotag.paused ? 'pause' : 'play');
 
         if ((!audiotag.paused) && (this.mode_when_play !== null)) {
-            this.update_mode_container(this.mode_when_play);
+            this.set_mode_container(this.mode_when_play);
             this.mode_when_play = null;
         }
     }
@@ -99,7 +108,7 @@ let CPU_element_api = class {
     }
     update_loading(seconds) {
         this.update_line('loading', seconds);
-        this.update_act_container('loading');
+        this.set_act_container('loading');
     }
     update_error() {
         // NOTE : this is not working, even on non supported media type
@@ -388,8 +397,8 @@ let CPU_element_api = class {
                         segment.href  = href;
                         segment.title  = cue.text;
                         segment.tabIndex = '-1';
-                        segment.style.left = String(100 * cue.startTime / audiotag.duration) +'%';
-                        segment.style.right = String(100 - (100 * cue.endTime / audiotag.duration)) +'%';
+                        segment.style.left = `${(100 * cue.startTime / audiotag.duration)}'%`;
+                        segment.style.right = `${(100 - (100 * cue.endTime / audiotag.duration))}'%`;
                         lines_element.append(segment);
                     }
 

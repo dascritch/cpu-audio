@@ -57,17 +57,11 @@ class CpuControllerElement extends HTMLElement {
                 this.CPU.mode_when_play = modes[1];
             }
         }
-        this.CPU.update_mode_container(mode);
+        this.CPU.set_mode_container(mode);
 
         let hide_those = this.getAttribute('hide');
         if (hide_those !== null) {
-            let hide_elements = hide_those.split(',');
-            for (let hide_this of hide_elements) {
-                hide_this = hide_this.toLowerCase();
-                if (acceptable_hide_atttributes.indexOf(hide_this)>-1) {
-                    interface_classlist.add(`hide-${hide_this}`)
-                }
-            }
+            this.CPU.set_hide_container(hide_those.split(','));
         }
 
         if (navigator.share) {
