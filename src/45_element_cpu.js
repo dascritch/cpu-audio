@@ -370,7 +370,7 @@ let CPU_element_api = class {
                         segment.id  = 'segment-'+cue.id;
                         segment.href  = href;
                         segment.title  = cue.text;
-                        segment.tabindex = '-1';
+                        segment.tabIndex = '-1';
                         segment.style.left = String(100 * cue.startTime / audiotag.duration) +'%';
                         segment.style.right = String(100 - (100 * cue.endTime / audiotag.duration)) +'%';
                         lines_element.append(segment);
