@@ -2,6 +2,7 @@
     font-family : var(--cpu-font-family);
     font-size : var(--cpu-font-size);
     --cpu-timeline-height : 10px;
+    /* transition : width var(--cpu-unfold); */
 }
 
 #interface, * {
@@ -14,6 +15,7 @@
     ms-user-select: none;
     webkit-user-select: none;
     user-select: none;
+    transition : color var(--cpu-color-transitions), background-color var(--cpu-color-transitions);
 }
 
 
@@ -428,7 +430,11 @@ a {
 .mode-button #poster,
 .mode-button #about,
 .mode-button #actions,
-.mode-button #chapters,
+.mode-button #chapters {
+    width : 0;
+    display : none;
+}
+
 .mode-hidden,
 .hide-chapters #chapters {
     display : none;

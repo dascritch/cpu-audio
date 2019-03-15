@@ -20,6 +20,8 @@ audio[controls] {
     --cpu-elapse-width : 185px;
     --cpu-min-padding : 16px;
     --cpu-inner-shadow : inset 0px 5px 10px -5px black;
+    --cpu-color-transitions : 0s;
+    --cpu-unfold : 0s;
 }
 
 /* If css element queries not available, fallback to media queries */
