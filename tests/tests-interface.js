@@ -138,7 +138,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 	});
 
 	QUnit.test( "Media tag without controls attribute. The component must not start", function( assert ) {
-		playground.innerHTML = `<cpu-audio id="no_check"><audio id="emission_fail">
+		playground.innerHTML = `<cpu-audio id="no_check"><audio id="emission_fail" muted>
 									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 								</audio>
 							</cpu-audio>`;
@@ -164,7 +164,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 	**/
 
 	QUnit.test( "Audio without an ID gets an ID", function( assert ) {
-		playground.innerHTML = `<cpu-audio id="tag_without_id"><audio controls>
+		playground.innerHTML = `<cpu-audio id="tag_without_id"><audio controls muted>
 									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 									<track />
 								</audio>
@@ -179,7 +179,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 	});
 
 	QUnit.test( "Canonical with an ID keeps the ID", function( assert ) {
-		playground.innerHTML = `<cpu-audio id="canonical_with_id" canonical="./canonical.html#id"><audio controls>
+		playground.innerHTML = `<cpu-audio id="canonical_with_id" canonical="./canonical.html#id"><audio controls muted>
 									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 									<track />
 								</audio>
@@ -197,7 +197,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 	});
 
 	QUnit.test( "Dynamically change elements, as removing track", function( assert ) {
-		playground.innerHTML = `<cpu-audio id="track_will_disapear"><audio id="will_lose_track" controls>
+		playground.innerHTML = `<cpu-audio id="track_will_disapear"><audio id="will_lose_track" controls muted>
 									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 									<track />
 								</audio>
@@ -216,7 +216,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 	});
 
 	QUnit.test( "Dynamically change attribute, as component title", function( assert ) {
-		playground.innerHTML = `<cpu-audio title="hello" id="will_change"><audio id="void" controls>
+		playground.innerHTML = `<cpu-audio title="hello" id="will_change"><audio id="void" controls muted>
 									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 								</audio>
 							</cpu-audio>`;
@@ -233,7 +233,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 	});
 
 	QUnit.test( "Dynamically change attribute, as audio tag dataset", function( assert ) {
-		playground.innerHTML = `<cpu-audio title="hello" id="will_change"><audio id="void" controls>
+		playground.innerHTML = `<cpu-audio title="hello" id="will_change"><audio id="void" controls muted>
 									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 								</audio>
 							</cpu-audio>`;
@@ -253,7 +253,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 	// https://github.com/dascritch/cpu-audio/issues/47
 
 	QUnit.test( "API .preview(start, end) on cpu-audio", function( assert ) {
-		playground.innerHTML = `<cpu-audio><audio id="show_on_this" controls>
+		playground.innerHTML = `<cpu-audio><audio id="show_on_this" controls muted>
 									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 								</audio>
 							</cpu-audio>`;
@@ -274,7 +274,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 	});
 
 	QUnit.test( "API un- .preview() on cpu-audio", function( assert ) {
-		playground.innerHTML = `<cpu-audio><audio id="show_on_this" controls>
+		playground.innerHTML = `<cpu-audio><audio id="show_on_this" controls muted>
 									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 								</audio>
 							</cpu-audio>`;
@@ -294,7 +294,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 	/*
 	QUnit.test( "Focusing a internal moment link shows on the timeline", function( assert ) {
-		playground.innerHTML = `<cpu-audio><audio source id="show_on_this" controls>
+		playground.innerHTML = `<cpu-audio><audio source id="show_on_this" controls muted>
 									< src="./tests-assets/blank.mp3" type="audio/mpeg" />
 								</audio>
 							</cpu-audio>
@@ -316,5 +316,22 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		}, 100);
 	});
 	*/
+
+	QUnit.test( 'mode="button,full" makes cpu-audio changing mode on first play', function( assert ) {
+		playground.innerHTML = `<cpu-audio mode="button">   ,full
+								<audio id="change_show_on_play" controls muted>
+									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+								</audio>
+							</cpu-audio>`;
+		let done = assert.async();
+		setTimeout(function() {
+			let interface = playground.querySelector('#change_show_on_play').closest('cpu-audio').CPU.container;
+			assert.ok(interface.classList.contains('mode-button'), 'Global API trace removed');
+			
+			done();
+
+		}, 100);
+	});
+
 
 });

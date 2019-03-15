@@ -219,7 +219,7 @@ window.addEventListener('load', function() {
 		// Dynamic add a second audio player
 		playground.innerHTML = `
 		<cpu-audio>
-			<audio id="secondary" controls="controls">
+			<audio id="secondary" controls="controls" muted>
 				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 			</audio>
 		</cpu-audio>`;
@@ -244,7 +244,7 @@ window.addEventListener('load', function() {
 		// assert.expect(3);
 		playground.innerHTML = `
 			<cpu-audio>
-				<audio id="secondary" controls="controls">
+				<audio id="secondary" controls="controls" muted>
 					<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>`;
@@ -274,7 +274,7 @@ window.addEventListener('load', function() {
 		// assert.expect(3);
 		playground.innerHTML = `
 			<cpu-audio>
-				<audio id="secondary" controls="controls">
+				<audio id="secondary" controls="controls" muted>
 					<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>`;
@@ -304,7 +304,7 @@ window.addEventListener('load', function() {
 		assert.expect(3);
 		playground.innerHTML = `
 			<cpu-audio>
-				<audio id="secondary" controls="controls">
+				<audio id="secondary" controls="controls" muted>
 					<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>`;
@@ -338,12 +338,12 @@ window.addEventListener('load', function() {
 		assert.expect(5);
 		playground.innerHTML = `
 			<cpu-audio playlist="plname">
-				<audio id="pl1" controls="controls">
+				<audio id="pl1" controls="controls" muted>
 					<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>
 			<cpu-audio playlist="plname">
-				<audio id="pl2" controls="controls">
+				<audio id="pl2" controls="controls" muted>
 					<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>
@@ -352,14 +352,17 @@ window.addEventListener('load', function() {
 		assert.equal(cpu.playlists.plname.length, 2 , 'Playlist “plname” with 2 items');
 		assert.equal(JSON.stringify(cpu.playlists.plname),
 					JSON.stringify(['pl1', 'pl2']), 'Playlist “plname” with "pl1" and "pl2"');
-		cpu.jumpIdAt('pl1', 119);
 		setTimeout(function() {
 			let audiotag_pl1 = document.getElementById('pl1');
 			let audiotag_pl2 = document.getElementById('pl2');
-			assert.ok(audiotag_pl1.paused, '#pl1 paused');
-			assert.ok(!audiotag_pl2.paused, '#pl2 playing');
-			done();
-		}, 2000);
+			
+			cpu.jumpIdAt('pl1', 119);
+			setTimeout(function() {
+				assert.ok(audiotag_pl1.paused, '#pl1 paused');
+				assert.ok(!audiotag_pl2.paused, '#pl2 playing');
+				done();
+			}, 2000);
+		}, 100);
 	});
 
 

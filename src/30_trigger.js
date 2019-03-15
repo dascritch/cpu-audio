@@ -152,7 +152,6 @@ const trigger = {
             audiotag = document.CPU.find_container(event.target).audiotag;
         }
 
-        trigger._remove_timecode_outofborders(audiotag.currentTime);
         if ((document.CPU.global_controller) && (!audiotag.isEqualNode(document.CPU.global_controller.audiotag))) {
             let global_controller = document.CPU.global_controller;
             global_controller.attach_audiotag_to_controller(audiotag);
@@ -161,7 +160,12 @@ const trigger = {
             global_controller.build_chapters();
             global_controller.build_playlist();
         }
-        audiotag.play();
+        try {
+            audiotag.play();
+            trigger._remove_timecode_outofborders(audiotag.currentTime);            
+        } catch (e) {
+
+        }
     },
     key : function(event, mult) {
         mult = mult === undefined ? 1 : mult;
