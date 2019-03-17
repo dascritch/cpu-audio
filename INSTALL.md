@@ -144,3 +144,15 @@ variable | description | default value
 `--cpu-popup-color` | Text color for the time pointer                           | `#333`
 
 <!-- {% include footer.html %} -->
+
+
+Added classes to host page
+--------------------------
+
+You can use some CSS features in the host page, as some classes are added to your host page `<body>` to reflect what is happening with the player :
+
+    - `.cpu-audio-without-webcomponents` : cpu.audio.js is launched but the interface cannot be displayed, due to incomplete WebComponent suppport by the browser. Only the hash links are interpreted.
+    - `.cpu-audio-with-webcomponents` : cpu.audio.js is launched and interfaces can be displayed.
+    - `.cpu_tag_«${audiotag_id}»_chaptered` : The `<audio id="audiotag_id">` has its `<track kind="chapters">` decoded and displayed. Warning, this flag wil be displayed even if the chapters list is set to be hidden.
+    - `.cpu_playing_tag_«${audiotag_id}»_cue_«${cue_id}»` : The `<audio id="audiotag_id">` is actually in the chapter `cue_id`, as described in its `<track kind="chapters">`
+
