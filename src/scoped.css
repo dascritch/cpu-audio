@@ -15,7 +15,7 @@
     ms-user-select: none;
     webkit-user-select: none;
     user-select: none;
-    transition : color var(--cpu-color-transitions), background-color var(--cpu-color-transitions);
+    transition : /*color var(--cpu-color-transitions),*/ background-color var(--cpu-color-transitions);
 }
 
 
@@ -80,8 +80,7 @@ a:hover svg , a:focus svg {
 }
 
 #control,
-#actions,
-#back {
+#actions {
     flex : 0 0 var(--cpu-height);
     width : var(--cpu-height);
     max-height : var(--cpu-height);
