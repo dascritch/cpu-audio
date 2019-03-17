@@ -15,7 +15,7 @@
     ms-user-select: none;
     webkit-user-select: none;
     user-select: none;
-    transition : /*color var(--cpu-color-transitions),*/ background-color var(--cpu-color-transitions);
+    transition : color var(--cpu-color-transitions), background-color var(--cpu-background-transitions);
 }
 
 

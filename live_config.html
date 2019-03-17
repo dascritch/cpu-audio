@@ -154,6 +154,7 @@
     <label for="css_color-transitions">
         <span>Transition duration</span>
         <input name="css_color-transitions" type="range" value="0" min="0" max="2" step="0.1" />
+        <input name="css_background-transitions" type="range" value="0" min="0" max="2" step="0.1" />
     </label>
 </fieldset>
 
@@ -270,7 +271,7 @@ function configurator_css(event) {
     }
 
     let css = '';
-    let attrs = ['font-family', 'inner-shadow' ,'color-transitions'];
+    let attrs = ['font-family', 'inner-shadow' ,'color-transitions','background-transitions' ];
     for (let key of ['','error-','playing-','popup-']) {
         for (let attr of ['color','background']) {
             attrs.push(`${key}${attr}`);
@@ -283,7 +284,7 @@ function configurator_css(event) {
         if ((input_changed(element)) && (value !== '')) {
 
             // duration need unit
-            if (attr === 'color-transitions') {
+            if (['color-transitions', 'background-transitions'].indexOf(attr)>-1) {
                 value = value +'s';
             }
 
