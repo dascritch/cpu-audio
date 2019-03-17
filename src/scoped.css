@@ -261,7 +261,7 @@ a {
 }
 
 .act-loading #loadingline {
-    background : repeating-linear-gradient(135deg, #bbb 0, #999 5px, #999 10px, #ddd 15px, #ddd 20px, #bbb 25px);
+    background : repeating-linear-gradient(145deg, #bbb 0, #999 5px, #999 10px, #ddd 15px, #ddd 20px, #bbb 25px);
     animation: loadingline 500ms linear infinite;
 }
 @keyframes loadingline {
