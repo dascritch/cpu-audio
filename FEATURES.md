@@ -79,8 +79,7 @@ Aspect changes when page's width is under 640px and 320px wide. The element must
 
 <div style="max-width:300px;margin :0 auto;">
     <p>
-        We are waiting CSS <code>@element</code> implementation to complete this. 
-        The parent element is width-constraigned, so should be the webcomponent.
+        We are waiting <a href="https://webdesign.tutsplus.com/articles/the-current-state-of-element-queries--cms-29690">CSS <code>@element</code> queries</a> and <a href="https://drafts.csswg.org/css-env-1/">CSS Environment variables</a>  implementations to complete this : The parent element is width-constraigned, so should be the webcomponent.
     </p>
     <!--
     <cpu-audio 

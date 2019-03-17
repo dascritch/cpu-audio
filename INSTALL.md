@@ -126,28 +126,28 @@ Personnalization via CSS variables
 
 You can change some presentation features of the interface [with CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables). Check their effects [with the live editor](https://dascritch.github.io/cpu-audio/LIVE)
 
-variable | description | default value 
---|--|--
-`--cpu-background`  | Background, except playing or in error                    | `#555`
-`--cpu-color`       | Color, except playing                                     | `#ddd`
-`--cpu-color-transitions` | Colors (text and background) transitions duration   | `0s`
-`--cpu-elapse-width` | Time indicator width                                     | `185px` (`160px` under 640px width, `80px` under 480px, `0` under 320px)
-`--cpu-error-background` | Background when there is a media error               | `#a00`
-`--cpu-error-color` | Color when there is a media error                         | `#ff7`
-`--cpu-font-family` | Font families                                             | `Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif`
-`--cpu-font-size`   | Font size                                                 | `15px`
-`--cpu-height`      | Height and width of the square buttons                    | `64px` (`32px` under 640px width)
-`--cpu-inner-shadow` | Shadow between horizontal panels                         | `inset 0px 5px 10px -5px black`
-`--cpu-playing-background` | Background while playing                           | `#444`
-`--cpu-playing-color` | Color while playing                                     | `#fff`
-`--cpu-popup-background` | Background for the time pointer                      | `#aaa`
-`--cpu-popup-color` | Text color for the time pointer                           | `#333`
-
-<!-- {% include footer.html %} -->
+Variable name               | Description                                       | Default value 
+----------------------------|---------------------------------------------------|---------------------------------------------------------------------------------
+`--cpu-background`          | Background, except playing or in error            | `#555`
+`--cpu-color`               | Color, except playing                             | `#ddd`
+`--cpu-color-transitions`   | Colors (text and background) transitions duration | `0s`
+`--cpu-elapse-width`        | Time indicator width                              | `185px` (`160px` under 640px width, `80px` under 480px, `0` under 320px)
+`--cpu-error-background`    | Background when there is a media error            | `#a00`
+`--cpu-error-color`         | Color when there is a media error                 | `#ff7`
+`--cpu-font-family`         | Font families                                     | `Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif`
+`--cpu-font-size`           | Font size                                         | `15px`
+`--cpu-height`              | Height and width of the square buttons            | `64px` (`32px` under 640px width)
+`--cpu-inner-shadow`        | Shadow between horizontal panels                  | `inset 0px 5px 10px -5px black`
+`--cpu-playing-background`  | Background while playing                          | `#444`
+`--cpu-playing-color`       | Color while playing                               | `#fff`
+`--cpu-popup-background`    | Background for the time pointer                   | `#aaa`
+`--cpu-popup-color`         | Text color for the time pointer                   | `#333`
 
 
 Added classes to host page
 --------------------------
+
+The intention onto cpu-audio.js is to be configurable and usable without any javascript knwonledge. HTML attributes, CSS variables, and CSS selectors must be able to help integrators to hide some elements of their page without having to painly dig into javascript snippets.
 
 You can use some CSS features in the host page, as some classes are added to your host page `<body>` to reflect what is happening with the player :
 
@@ -156,3 +156,5 @@ You can use some CSS features in the host page, as some classes are added to you
     - `.cpu_tag_«${audiotag_id}»_chaptered` : The `<audio id="audiotag_id">` has its `<track kind="chapters">` decoded and displayed. Warning, this flag wil be displayed even if the chapters list is set to be hidden.
     - `.cpu_playing_tag_«${audiotag_id}»_cue_«${cue_id}»` : The `<audio id="audiotag_id">` is actually in the chapter `cue_id`, as described in its `<track kind="chapters">`
 
+
+<!-- {% include footer.html %} -->
