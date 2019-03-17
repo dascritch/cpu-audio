@@ -144,17 +144,53 @@ Variable name               | Description                                       
 `--cpu-popup-color`         | Text color for the time pointer                   | `#333`
 
 
-Added classes to host page
+Using classes on host page
 --------------------------
 
 The intention onto cpu-audio.js is to be configurable and usable without any javascript knwonledge. HTML attributes, CSS variables, and CSS selectors must be able to help integrators to hide some elements of their page without having to painly dig into javascript snippets.
 
 You can use some CSS features in the host page, as some classes are added to your host page `<body>` to reflect what is happening with the player :
 
-    - `.cpu-audio-without-webcomponents` : cpu.audio.js is launched but the interface cannot be displayed, due to incomplete WebComponent suppport by the browser. Only the hash links are interpreted.
-    - `.cpu-audio-with-webcomponents` : cpu.audio.js is launched and interfaces can be displayed.
-    - `.cpu_tag_«${audiotag_id}»_chaptered` : The `<audio id="audiotag_id">` has its `<track kind="chapters">` decoded and displayed. Warning, this flag wil be displayed even if the chapters list is set to be hidden.
-    - `.cpu_playing_tag_«${audiotag_id}»_cue_«${cue_id}»` : The `<audio id="audiotag_id">` is actually in the chapter `cue_id`, as described in its `<track kind="chapters">`
+### `.cpu-audio-without-webcomponents` and `.cpu-audio-with-webcomponents`
+
+`.cpu-audio-without-webcomponents` is set when cpu-audio.js is launched but the interface cannot be displayed, due to incomplete WebComponent suppport by the browser. Only the hash links are interpreted.
+
+`.cpu-audio-with-webcomponents` means that cpu-audio.js was able to build its graphic interface.
+
+Here is an example :
+
+```css
+    /* fallback style for browsers without webcomponents */
+    audio[control] {
+        display : block;
+        width : 100%;
+    }
+    .cpu-audio-without-webcomponents #no-player-interface {
+        display : block;
+    }
+    /* fully operative */
+    .cpu-audio-with-webcomponents #no-player-interface {
+        display : none;
+    }
+```
+
+```html
+<div id="no-player-interface">
+    Nothing wrong, but your browser seems a little old.
+</div>
+```
+
+### `.cpu_tag_«audiotag_id»_chaptered`
+
+The `<audio id="audiotag_id">` has its `<track kind="chapters">` decoded and displayed. 
+
+Ba aware that this class wil be set even if the chapters list is set to be hidden.
+
+### `.cpu_playing_tag_«audiotag_id»_cue_«cue_id»`
+
+The `<audio id="audiotag_id">` is actually playing the `cue_id` chapter. The `cue_id` is the chapter name described in the .VTT file in its `<track kind="chapters">` . 
+
+This function was meant to build effects as in [BBC Computer Literacy archive](https://computer-literacy-project.pilots.bbcconnectedstudio.co.uk/) : During a play of a show, each chapter is highlighting its text resumee.
 
 
 <!-- {% include footer.html %} -->
