@@ -40,12 +40,14 @@ Some methods are still not documented, for internal usage, as they may evolve
 
 `document.body.CPU.convert` sub-API methods :
 
-TimeInSeconds(string) | int | convert a string empty, with a number, with a colon-coded or an human-coded timecode in seconds
-SubunitTimeInSeconds(string) | int | convert a human-coded (`1h2m3s`) time in seconds 
-ColonTimeInSeconds(string) | int | convert a colon-coded (`01:02:03`) time in seconds 
-SecondsInTime(int) | string | convert a time in seconds in a human-coded time (`1h2m3s`). Zero is `0s`.
-SecondsInColonTime(int) | string | convert a time in seconds in a colon-coded time (`1:02:03s`). Zero is `0:00`.
-SecondsInPaddledColonTime(int) | string | same as `SecondsInColonTime`, but suited for `<input type="time" />`. Zero is `00:00:00`.
+name                                | returns                       | usage
+------------------------------------|-------------------------------|-----------------
+TimeInSeconds(string)               | int                           | convert a string empty, with a number, with a colon-coded or an human-coded timecode in seconds
+SubunitTimeInSeconds(string)        | int                           | convert a human-coded (`1h2m3s`) time in seconds 
+ColonTimeInSeconds(string)          | int                           | convert a colon-coded (`01:02:03`) time in seconds 
+SecondsInTime(int)                  | string                        | convert a time in seconds in a human-coded time (`1h2m3s`). Zero is `0s`.
+SecondsInColonTime(int)             | string                        | convert a time in seconds in a colon-coded time (`1:02:03s`). Zero is `0:00`.
+SecondsInPaddledColonTime(int)      | string                        | same as `SecondsInColonTime`, but suited for `<input type="time" />`. Zero is `00:00:00`.
 
 
 
@@ -57,26 +59,26 @@ Note that `CpuAudioElement.CPU` and `CpuControllerElement.CPU` have the same CPU
 
 Properties :
 
-name | default value | usage
------|---------------|------
-element | `<cpu-audio>` | The WebComponent hosting DOM element
-elements | object | ShadowDOM elements, keyed by their id attributes
-audiotag | `<audio>` | Media DOM element
+name        | default value | usage
+------------|---------------|------
+element     | `<cpu-audio>` | The WebComponent hosting DOM element
+elements    | object        | ShadowDOM elements, keyed by their id attributes
+audiotag    | `<audio>`     | Media DOM element
 
 
 Methods :
 
-name | returns | usage
------|---------------|------
-set_mode_container(string) | | Change the presentation mode, [used for `mode=""` attribute](./INSTALL#attributes-references)
-set_act_container(string) | | Change the presentation style between `'loading'`, `'pause'` or `'play'`, reflecting the media tag status
-set_hide_container(array) | | Array of strings, may contains `'actions'` or `'chapters'`, [used for `hide=""` attribute](./INSTALL#attributes-references)
-show_throbber_at(int) | | Display the throbber on the timeline at a given time in seconds.
-hide_throbber() | | Hide immediately the throbber.
-hide_throbber_later() | | Hide the throbber later (waiting 1 seconds). A newer call will delay later. News at 11.
-show_interface(string) | | Switch between `'main'`, `'share'` or `'error'` interfaces.
-build_chapters() | | Rebuild chapters list and time-line.
-build_playlist() | | Rebuild playlist. Should only be used  for `<cpu-controller>`
+name                        | usage
+----------------------------|------
+set_mode_container(string)  | Change the presentation mode, [used for `mode=""` attribute](./INSTALL#attributes-references)
+set_act_container(string)   | Change the presentation style between `'loading'`, `'pause'` or `'play'`, reflecting the media tag status
+set_hide_container(array)   | Array of strings, may contains `'actions'` or `'chapters'`, [used for `hide=""` attribute](./INSTALL#attributes-references)
+show_throbber_at(int)       | Display the throbber on the timeline at a given time in seconds.
+hide_throbber()             | Hide immediately the throbber.
+hide_throbber_later()       | Hide the throbber later (waiting 1 seconds). A newer call will delay later. News at 11.
+show_interface(string)      | Switch between `'main'`, `'share'` or `'error'` interfaces.
+build_chapters()            | Rebuild chapters list and time-line.
+build_playlist()            | Rebuild playlist. Should only be used  for `<cpu-controller>`
 
 
 Console messages
