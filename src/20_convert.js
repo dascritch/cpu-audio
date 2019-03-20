@@ -8,6 +8,17 @@ const convert = {
     _is_only_numeric : /^\d+$/,
     _any_not_numeric : /\D*/g,
 
+
+    /**
+     * @brief convert a string empty, with a number, with a colon-coded or an
+     * human-coded timecode in seconds
+     *
+     * @public
+     *
+     * @class      TimeInSeconds (name)
+     * @param      {string}  givenTime  The given time
+     * @return     {number}  time in seconds
+     */
     TimeInSeconds : function(givenTime) {
         let seconds = 0;
         if (givenTime !== '') {
@@ -21,6 +32,16 @@ const convert = {
         }
         return seconds;
     },
+
+    /**
+     * @brief convert a human-coded (`1h2m3s`) time in seconds
+     *
+     * @public
+     *
+     * @class      SubunitTimeInSeconds (name)
+     * @param      {string}  givenTime  The given time
+     * @return     {number}  seconds
+     */
     SubunitTimeInSeconds : function(givenTime) {
         let seconds = 0;
         for(let key in convert.units) {
@@ -32,6 +53,16 @@ const convert = {
         }
         return seconds;
     },
+
+    /**
+     * @brief convert a colon-coded (`01:02:03`) time in seconds 
+     *
+     * @public
+     * 
+     * @class      ColonTimeInSeconds (name)
+     * @param      {string}             givenTime  The given time
+     * @return     {number}  { seconds }
+     */
     ColonTimeInSeconds : function(givenTime) {
         let seconds = 0;
         let atoms = givenTime.split(':');
@@ -41,6 +72,16 @@ const convert = {
         }
         return seconds;
     },
+
+    /**
+     * @brief convert a time in seconds in a human-coded time (`1h2m3s`). Zero is `0s`.
+     * 
+     * @public
+     *
+     * @class      SecondsInTime (name)
+     * @param      {number}   givenSeconds  The given seconds
+     * @return     {boolean}  { description_of_the_return_value }
+     */
     SecondsInTime : function(givenSeconds) {
         let converted = '';
         let inned = false;
@@ -57,6 +98,17 @@ const convert = {
         }
         return converted === '' ? '0s' : converted;
     },
+
+    /**
+     * @brief convert a time in seconds in a colon-coded time (`1:02:03s`). Zero
+     * is `0:00`.
+     *
+     * @public
+     *
+     * @class      SecondsInColonTime (name)
+     * @param      {number}            givenSeconds  The given seconds
+     * @return     {(boolean|string)}  { description_of_the_return_value }
+     */
     SecondsInColonTime : function(givenSeconds) {
         let converted = '';
         let inned = false;
@@ -83,6 +135,17 @@ const convert = {
         
         return converted === '' ? '0:00' : converted;
     },
+
+    /**
+     * @brief same as `SecondsInColonTime`, but suited for `<input type="time"
+     * />`. Zero is `00:00:00`.
+     *
+     * @public
+     *
+     * @class      SecondsInPaddledColonTime (name)
+     * @param      {<type>}  givenSeconds  The given seconds
+     * @return     {string}  { description_of_the_return_value }
+     */
     SecondsInPaddledColonTime : function(givenSeconds) {
         // principaly needed by <input type="time"> whom needs a really precise HH:MM:SS format
         let colon_time = convert.SecondsInColonTime(givenSeconds);

@@ -193,4 +193,10 @@ The `<audio id="audiotag_id">` is actually playing the `cue_id` chapter. The `cu
 This function was meant to build effects as in [BBC Computer Literacy archive](https://computer-literacy-project.pilots.bbcconnectedstudio.co.uk/) : During a play of a show, each chapter is highlighting its text resumee.
 
 
+Using javascript API
+--------------------
+
+cpu-audio.js can be used only with HTML attributes and CSS variables, but javascript savvy developers can [use API features to get a more precise control](./API).
+
+
 <!-- {% include footer.html %} -->

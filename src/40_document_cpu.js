@@ -1,28 +1,30 @@
 document['CPU'] = document['CPU'] ? document['CPU'] : {
     // global object for global API
 
-    // parameters
+    // public, parameters
     'keymove' : 5,
     'only_play_one_audiotag' : true,
 
-    // actual active elements
+    // public, actual active elements
     'current_audiotag_playing' : null,
     'global_controller' : null,
+    // private, actual active elements
     previewed : null,
     body_className_playing_cue : null,
 
-    // to add attributes for unnamed <audio>
+    // private,to add attributes for unnamed <audio>
     dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
     count_element : 0,
 
-    // playlists
+    // public, playlists
     'playlists' : {},
     'advance_in_playlist' : true,
 
-    // Exposing internals needed for tests
+    // public, Exposing internals needed for tests
     'convert' : convert, 
     'trigger' : trigger,
 
+    // @private, not enough mature
     // NOTE : we will need to refresh this when the <head> of the host page changes
     default_dataset : {
         'title' : function () { 
@@ -61,6 +63,12 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
         'playlist' : null,
     },
 
+    /**
+     * @brief At start, will start the last playing <audio> tag at its last known position
+     * @private
+     *
+     * @param      {<type>}  event   The event
+     */
     recall_stored_play : function(event) {
         if (document.CPU.current_audiotag_playing !== null) {
             return;
@@ -73,6 +81,12 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
             trigger.play(undefined, audiotag);
         }
     },
+    // @private, because at start
+    //
+    // @brief attach events on a <audio> tag
+    //
+    // @param      {<type>}  audiotag  The audiotag
+    //
     recall_audiotag : function(audiotag) {
         audiotag.addEventListener('loadedmetadata', document.CPU.recall_stored_play);
         audiotag.addEventListener('play', trigger.play_once);
@@ -107,6 +121,12 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
         audiotag.load();
     },
 
+    // @private, because at start
+    //
+    // Brief : Connects an audiotag to CPU APIs
+    //
+    // @param      {<type>}  audiotag  The audiotag
+    //
     connect_audiotag : function(audiotag) {
 
         document.CPU.recall_audiotag(audiotag);
@@ -125,13 +145,37 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
             document.CPU.playlists[playlist_name].push(audiotag.id)
         }
     },
-    is_audiotag_playing : function(audiotag) {
+
+    // @public
+    //
+    // @brief Determines if audiotag is currently playing.
+    //
+    // @param      {<type>}   audiotag  The audiotag
+    // @return     {boolean}  True if audiotag playing, False otherwise.
+    //
+    'is_audiotag_playing' : function(audiotag) {
         return (document.CPU.current_audiotag_playing) && (audiotag.isEqualNode(document.CPU.current_audiotag_playing))
     },
-    is_audiotag_global : function(audiotag) {
+    // @public
+    //
+    // @brief Determines if audiotag is displayed in <cpu-controller>
+    //
+    // @param      {<type>}   audiotag  The audiotag
+    // @return     {boolean}  True if audiotag global, False otherwise.
+    //
+    'is_audiotag_global' : function(audiotag) {
         return this.global_controller === null ? this.is_audiotag_playing(audiotag) : audiotag.isEqualNode(this.global_controller.audiotag)
     },
 
+    // @public
+    //
+    // @brief Position a timecode to a named audio tag
+    //
+    // @param      {string}   hash         The id="" of an <audio> tag
+    // @param      {string}   timecode     The timecode, 
+    // @param      {function}   callback_fx  Function to be called afterwards, for ending tests
+    // @return     {boolean}  { description_of_the_return_value }
+    //
     'jumpIdAt' : function(hash, timecode, callback_fx) {
 
         function do_needle_move(event) {
@@ -176,25 +220,15 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
             do_needle_move({'target' : audiotag});
         }
         trigger.update({'target' : audiotag});
+        return true
     },
-
-    'find_interface' : function(child) {
-        return child.closest(selector_interface);
-    },
-    'find_container' : function(child) {
-        if ((child.tagName === CpuAudioTagName) 
-            || ( child.tagName === CpuControllerTagName)) {
-            return child.CPU
-        }
-
-        let closest_cpuaudio = child.closest(CpuAudioTagName);
-        if (closest_cpuaudio) {
-            return closest_cpuaudio.CPU
-        }
-
-        let _interface = document.CPU.find_interface(child);
-        return _interface.parentNode.host.CPU;
-    },
+    // @public
+    //
+    // @brief Position a <audio> element to a time position
+    //
+    // @param      {DOM element}  audiotag  The audiotag
+    // @param      {number}  seconds   The seconds
+    //
     'seekElementAt' : function (audiotag, seconds) {
 
         if (isNaN(seconds)) {
@@ -221,6 +255,45 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
             controller.update_loading(seconds);
         }
     },
+
+    // @public
+    // 
+    // @brief  For any ShadowDOM element, will returns its parent interface container
+    //
+    // @param      {DOMElement}  child   The child
+    // @return     {DOMElement}  The #interface element
+    //
+    'find_interface' : function(child) {
+        return child.closest(selector_interface);
+    },
+    // @public
+    //
+    // @brief For any `<audio>` tag or its child tag or shadowDOM element, will
+    // returns the element `CPU` API
+    //
+    // @param      {DOMElement}  child   The child
+    // @return     {class}       Element.CPU
+    //
+    'find_container' : function(child) {
+        if ((child.tagName === CpuAudioTagName) 
+            || ( child.tagName === CpuControllerTagName)) {
+            return child.CPU
+        }
+
+        let closest_cpuaudio = child.closest(CpuAudioTagName);
+        if (closest_cpuaudio) {
+            return closest_cpuaudio.CPU
+        }
+
+        let _interface = document.CPU.find_interface(child);
+        return _interface.parentNode.host.CPU;
+    },
+    // @public
+    //
+    // @brief Return the current playing playlist array
+    //
+    // @return     {<type>}  Array with named id
+    //
     'find_current_playlist' : function() {
         let current_audiotag = this.global_controller.audiotag;
         if (current_audiotag === null) {

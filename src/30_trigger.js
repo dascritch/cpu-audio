@@ -6,6 +6,7 @@ const trigger = {
     _timecode_start : false,
     _timecode_end : false,
 
+    // wrongly placed information. Should be in Element.CPU
     _remove_timecode_outofborders : function(at) {
         if ( ((trigger._timecode_start !== false) && (at < trigger._timecode_start)) 
             || ((trigger._timecode_end !== false) && (at > trigger._timecode_end)) ) {
@@ -14,6 +15,16 @@ const trigger = {
         }
     },
 
+
+    /**
+     * @brief Interprets the hash part of the URL, when loaded or changed
+     *
+     * @private
+     *
+     * @param      {string}   hashcode     Called hashcode
+     * @param      {function}   callback_fx  When done, call a function to end the tests
+     * @return     {boolean}  understood
+     */
     hashOrder : function(hashcode, callback_fx) {
 
         let at_start = true;
@@ -78,6 +89,12 @@ const trigger = {
         // window.location.hash = `#${hash}`;
         return true;
     },
+
+    /**
+     * Update throbber position when hovering the timeline interface
+     *
+     * @param      {<type>}  event   The event
+     */
     hover : function(event) {
         let target = event.target;
         let container = document.CPU.find_container(target);
@@ -89,6 +106,12 @@ const trigger = {
 
         container.show_throbber_at(seeked_time);
     },
+
+    /**
+     * Hide the throbber when leaving the timeline interface
+     *
+     * @param      {<type>}  event   The event
+     */
     out : function(event) {
         let container = document.CPU.find_container(event.target);
         container.hide_throbber();
@@ -97,6 +120,12 @@ const trigger = {
     preview_hover : function(event) {
 
     },
+
+    /**
+     * Highlight the playable positions when hovering a marked link
+     *
+     * @param      {<type>}  event   The event
+     */
     preview_container_hover : function(event) {
         let target = event.target;
         let container = document.CPU.find_container(target);
@@ -112,6 +141,12 @@ const trigger = {
         container.preview(start, end, link_element.dataset.cueId);
     },
 
+
+    /**
+     * Change play position of a audio tag
+     *
+     * @param      {<type>}  event   The event
+     */
     throbble : function(event) {
         let at = 0;
         let target = event.target;
@@ -130,6 +165,13 @@ const trigger = {
         document.CPU.seekElementAt(audiotag, at);
         trigger.play(event);
     },
+
+    /**
+     * Do pause
+     *
+     * @param      {<type>}  event     The event
+     * @param      {<type>}  audiotag  The audiotag
+     */
     pause : function(event, audiotag) {
         if (audiotag === undefined) {
             let target = event.target;
@@ -139,6 +181,12 @@ const trigger = {
         document.CPU.current_audiotag_playing = null;
         window.localStorage.removeItem(audiotag.currentSrc);
     },
+
+    /**
+     * Change referenced playing audio, pause the previous one
+     *
+     * @param      {<type>}  event   The event
+     */
     play_once : function(event) {
         let audiotag = event.target;
 
@@ -147,6 +195,13 @@ const trigger = {
         }
         document.CPU.current_audiotag_playing = audiotag;
     },
+
+    /**
+     * Do play an audio tag
+     *
+     * @param      {<type>}  event     The event
+     * @param      {<type>}  audiotag  The audiotag
+     */
     play : function(event, audiotag) {
         if (audiotag === undefined) {
             audiotag = document.CPU.find_container(event.target).audiotag;
@@ -167,6 +222,13 @@ const trigger = {
 
         }
     },
+
+    /**
+     * Interprets pressed key
+     *
+     * @param      {<type>}  event   The event
+     * @param      {number}  mult    Multiply the keypressed act
+     */
     key : function(event, mult) {
         mult = mult === undefined ? 1 : mult;
         let container = document.CPU.find_container(event.target);
@@ -207,6 +269,12 @@ const trigger = {
         }
         event.preventDefault();
     },
+
+    /**
+     * Interprets keypress on the play/pause button
+     *
+     * @param      {<type>}  event   The event
+     */
     keydownplay : function(event) {
         if (event.keyCode !== 13 ) {
             return;
@@ -220,14 +288,30 @@ const trigger = {
         
         event.preventDefault();
     },
+
+    /**
+     * Pressing restart button, Rewind at start the audio tag
+     *
+     * @param      {<type>}  event   The event
+     */
     restart : function(event) {
         let container = document.CPU.find_container(event.target);
         document.CPU.seekElementAt(container.audiotag, 0);
     },
+    /**
+     * Pressing reward button
+     *
+     * @param      {<type>}  event   The event
+     */
     reward : function(event) {
         event.keyCode = KEY_LEFT_ARROW;
         trigger.key(event);
     },
+    /**
+     * Pressing foward button
+     *
+     * @param      {<type>}  event   The event
+     */
     foward : function(event) {
         event.keyCode = KEY_RIGHT_ARROW;
         trigger.key(event);
@@ -240,6 +324,12 @@ const trigger = {
         event.keyCode = KEY_RIGHT_ARROW;
         trigger.key(event, 4);
     },
+
+    /**
+     * in fine-position handheld interface, changing the time field
+     *
+     * @param      {<type>}  event   The event
+     */
     input_time_change : function(event) {
         let target = event.target;
         let container = document.CPU.find_container(target);
@@ -248,6 +338,13 @@ const trigger = {
         document.CPU.seekElementAt(container.audiotag, seconds);
     },
 
+
+    /**
+     * Refresh the interface when changing chapter
+     *
+     * @param      {<type>}  event              The event
+     * @param      {<type>}  element_interface  The element interface
+     */
     cuechange : function(event, element_interface) {
         document.body.classList.remove(document.CPU.body_className_playing_cue);
         // when the position in a media element goes out of the current
@@ -295,6 +392,12 @@ const trigger = {
 
     },
 
+
+    /**
+     * Updatting time position. Pause if a end position is defined
+     *
+     * @param      {<type>}  event   The event
+     */
     update : function(event) {
         let audiotag = event.target;
 
@@ -307,6 +410,13 @@ const trigger = {
             window.localStorage.setItem(audiotag.currentSrc, String(audiotag.currentTime));
         }
     },
+
+    /**
+     * When an audiotag is ended, advance in playlist
+     *
+     * @param      {<type>}  event     The event
+     * @param      {string}  audiotag  The audiotag
+     */
     ended : function(event, audiotag) {
         // the media element reached its end 
         if (audiotag === undefined) {
@@ -341,6 +451,12 @@ const trigger = {
         document.CPU.seekElementAt(next_audiotag, 0);
         trigger.play(undefined, next_audiotag);
     },
+
+    /**
+     * Interprets if <cpu-audio> element is modified 
+     *
+     * @param      {<type>}  mutationsList  The mutations list
+     */
     observer_cpuaudio : function(mutationsList) {
         let container = document.CPU.find_container(mutationsList[0].target);
 
@@ -353,6 +469,12 @@ const trigger = {
         }
         container.element.copy_attributes_to_media_dataset();
     },
+    /**
+     * Interprets if <audio> element is modified or removed
+     * TODO : act when a child change as <source> or <track>
+     *
+     * @param      {<type>}  mutationsList  The mutations list
+     */
     observer_audio : function(mutationsList) {
         let container = document.CPU.find_container(mutationsList[0].target);
 
@@ -368,6 +490,12 @@ const trigger = {
             global_controller.complete_template();
         }
     },
+
+    /**
+     * Interprets navigator.share native API
+     *
+     * @param      {<type>}  event   The event
+     */
     native_share : function(event) {
         let dataset = document.CPU.find_container(event.target).fetch_audiotag_dataset();;
         navigator.share({
@@ -380,6 +508,11 @@ const trigger = {
 
     _show_alternate_nav : false,
 
+    /**
+     * Interprets long play on timeline for alternative fine position
+     *
+     * @param      {<type>}  event   The event
+     */
     touchstart : function(event) {
         let container = document.CPU.find_container(event.target);
         trigger._show_alternate_nav = setTimeout(container.show_alternate_nav, 500, container);
