@@ -101,6 +101,46 @@ Highlighting text amond chapters
 If you use a chapter track with name chapters, you can use a CSS rule to highlight a portion of your text with the playing audio.
 
 
+<cpu-audio
+    title="Ex0085 Le Mystère Enigma"
+    poster="https://cpu.dascritch.net/public/Images/Emissions/.1805-Ex0085-Enigma_m.jpg"
+    canonical="https://cpu.dascritch.net/post/2018/05/17/Ex0085-Histoires-de-la-cryptographie%2C-2%C3%A8me-partie-%3A-Le-myst%C3%A8re-d-Enigma"
+    twitter="@cpuprogramme"
+    hide="chapters">
+    <!-- Pour des raisons  de compatibilité arrière, il *faut* garder la balise <audio controls> dans la déclaration. -->
+    <audio controls id="highligts">
+        <source src="https://dascritch.net/vrac/Emissions/CPU/0085-CPU%2817-05-18%29.ogg" type="audio/ogg">
+        <source src="https://dascritch.net/vrac/Emissions/CPU/podcast/0085-CPU%2817-05-18%29.mp3" type="audio/mpeg">
+        <track kind="chapters" src="./tests-assets/chapters-ex0085.vtt" default>
+    </audio>
+    <!-- {% include no_component_message.html %} -->
+</cpu-audio>
+
+<div>
+    <style scoped>
+        .cpu_playing_tag_«highligts»_cue_«chap-1» #highlight_c1
+        .cpu_playing_tag_«highligts»_cue_«chap-2» #highlight_c2
+        .cpu_playing_tag_«highligts»_cue_«chap-4» #highlight_c4
+        .cpu_playing_tag_«highligts»_cue_«chap-5» #highlight_c5
+        .cpu_playing_tag_«highligts»_cue_«chap-7» #highlight_c7
+        .cpu_playing_tag_«highligts»_cue_«chap-8» #highlight_c8
+        .cpu_playing_tag_«highligts»_cue_«chap-10» #highlight_c10 {
+            background : #ddd;
+            outline : 1px solid black;
+        }
+    </style>
+    <ul>
+    <li id="highlight_c1"><a href="#highligts&t=1m17s">Bonjour à toi, Enfant du Futur Immédiat : Des chiffres et des lettres</a></li>
+    <li id="highlight_c2"><a href="#highligts&t=6m28s">Lexique : Casser un chiffrement</a></li>
+    <li id="highlight_c4"><a href="#highligts&t=12m45s">Plantage : La chute de l'Empire du chiffre Allemand</a></li>
+    <li id="highlight_c5"><a href="#highligts&t=20m45s">Artefact du passé : La machine Enigma</a></li>
+    <li id="highlight_c7"><a href="#highligts&t=33m19s">Histoire : Les génies du Biuro Szyfrów</a></li>
+    <li id="highlight_c8"><a href="#highligts&t=38m35s">Ainsi naquit : Bletchley Park, le premier campus technologique</a></li>
+    <li id="highlight_c10"><a href="#highligts&t=50m03s">Le Gourou : Alan Turing</a></li>
+    </ul>
+</div>
+
+
 Playlists
 ---------
 
