@@ -65,17 +65,17 @@ Aspect changes when page's width is under 640px, 480px and 320px wide. The eleme
 
 <div class="size_2" style="width:639px">
     Under 640px wide
-    <iframe src="./_iframe_for_dimension.html" ></iframe>
+    <iframe src="./iframe_for_dimension.html" ></iframe>
 </div>
 
 <div  class="size_3" style="width:479px">
     Under 480px wide
-    <iframe src="./_iframe_for_dimension.html" ></iframe>
+    <iframe src="./iframe_for_dimension.html" ></iframe>
 </div>
 
 <div  class="size_4" style="width:319px">
     Under 320px wide
-    <iframe src="./_iframe_for_dimension.html" ></iframe>
+    <iframe src="./iframe_for_dimension.html" ></iframe>
 </div>
 
 Modes
