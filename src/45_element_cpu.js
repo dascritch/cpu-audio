@@ -537,14 +537,12 @@ let CPU_element_api = class {
 
                         /* list */
 
-                        let line = document.createElement('li');
+                        let line = document.createElement('a');
                         line.id  = cue.id;
                         line.classList.add('cue');
-                        line.innerHTML = 
-                            `<a href="${href}" tabindex="0">`+
-                                `<strong>${cue.text}</strong>`+
-                                `<span>${cuetime}</span>`+
-                            `</a>`;
+                        line.href  = href;
+                        line.tabIndex = 0;
+                        line.innerHTML = `<strong>${cue.text}</strong><span>${cuetime}</span>`;
                         chapters_element.append(line);
 
                         line.dataset.cueId = cue.id; 
@@ -605,15 +603,15 @@ let CPU_element_api = class {
         for (let audiotag_id of current_playlist) {
             let audiotag = document.getElementById(audiotag_id);
             
-            let line = document.createElement('li');
+            let line = document.createElement('a');
             line.classList.add('cue');
 
             if (audiotag_id === this.audiotag.id) {
                 line.classList.add('active-cue');
             }
-            line.innerHTML = `<a href="#${audiotag.id}&t=0" tabindex="0">`+
-                                `<strong>${audiotag.dataset.title}</strong>`+
-                            `</a>`;
+            line.href = `#${audiotag.id}&t=0`;
+            line.tabIndex = 0;
+            line.innerHTML = `<strong>${audiotag.dataset.title}</strong>`;
             playlist_element.append(line);
         }
 

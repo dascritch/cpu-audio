@@ -1,16 +1,17 @@
 #interface {
-    font-family : var(--cpu-font-family);
-    font-size : var(--cpu-font-size);
     --cpu-timeline-height : 10px;
     /* transition : width var(--cpu-unfold); */
 }
 
 #interface, * {
+    font-family : var(--cpu-font-family);
+    font-size : var(--cpu-font-size);
+    font-weight: normal;
+    font-style: normal;
     line-height : 1.2;
     border : none;
     padding : 0;
     margin : 0;
-    transition : none;
     moz-user-select: none;
     ms-user-select: none;
     webkit-user-select: none;
@@ -18,8 +19,7 @@
     transition : color var(--cpu-color-transitions), background-color var(--cpu-background-transitions);
 }
 
-
-#principal {
+main {
     display : flex;
     overflow : hidden;
     background : var(--cpu-background);
@@ -108,8 +108,7 @@ a {
 }
 
 .show-share #pageshare,
-.show-main #pagemain,
-.share {
+.show-main #pagemain {
     flex : 1 1 100%;
     display : flex;
     align-items: center;
@@ -167,7 +166,7 @@ a {
     opacity: 1;
 }
 
-#loading svg, #play svg, #pause svg, #actions svg {
+#control svg, #actions svg {
     vertical-align : middle;
     max-width : 100%;
     max-height : 100%;
@@ -290,18 +289,18 @@ a {
     max-width : var(--cpu-min-padding);
 }
 
-.share {
+#pageshare {
     text-align : center;
 }
 
-.share a {
+#pageshare a {
     display: flex;
     align-items: center;
     justify-content: center;
     height : var(--cpu-height);
 }
 
-.share a, .share div {
+#pageshare a, #pageshare div {
     flex : 1 0;
     color : white;
     text-decoration : none;
@@ -309,26 +308,26 @@ a {
     text-overflow : clip;
 }
 
-.share a:hover, .share a:focus, .share div:hover {
+#pageshare a:hover, #pageshare a:focus, #pageshare div:hover {
     color : var(--cpu-background);
     background : var(--cpu-color);
 }
 
-.share svg {
+#pageshare svg {
     vertical-align : middle;
     width : 32px;
     height : 32px;
 }
 
-.share #nativeshare {
+#nativeshare {
     display : none;
 }
 
-.hasnativeshare .share #nativeshare {
+.hasnativeshare #nativeshare {
     display : flex;
 }
 
-.hasnativeshare .share .nonativeshare {
+.hasnativeshare .nonativeshare {
     display : none;
 }
 
@@ -392,13 +391,11 @@ a {
 }
 .cue {
     border-top : 1px solid black;
-}
-.cue a {
     display : flex;
     margin : 0px;
     padding : 2px
 }
-.active-cue a {
+.active-cue {
     background : var(--cpu-color);
     color : var(--cpu-background);
 }

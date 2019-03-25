@@ -21,7 +21,7 @@ window.addEventListener('load', function() {
 
 	window.location = '#';
 	let audiotag = document.getElementById('track');
-	let controlertag = document.getElementsByTagName('cpu-audio')[0].shadowRoot.querySelector('div');
+	let interfacetag = document.getElementsByTagName('cpu-audio')[0].shadowRoot.querySelector('div');
 	let playground = document.getElementById('playground');
 	audiotag.volume = 0;
 
@@ -60,27 +60,27 @@ window.addEventListener('load', function() {
 
 	QUnit.test( "Press play to start", function( assert ) {
 		assert.ok(audiotag.paused, "Player is paused at start" );
-		controlertag.querySelector('#pause').click();
+		interfacetag.querySelector('#pause').dispatchEvent(new Event('click'));
 		assert.ok(! audiotag.paused, "Player plays after clicking on the play/pause button" );
 	});
 
 	QUnit.test( "Press play to start", function( assert ) {
 		assert.ok(audiotag.paused, "Player is paused at start" );
-		controlertag.querySelector('#pause').click();
+		interfacetag.querySelector('#pause').dispatchEvent(new Event('click'));
 		assert.ok(! audiotag.paused, "Player plays after clicking on the play/pause button" );
 	});
 
 	QUnit.test( "Press pause to stop", function( assert ) {
 		audiotag.play();
 		assert.ok(! audiotag.paused, "Player is playing" );
-		controlertag.querySelector('#play').click();
+		interfacetag.querySelector('#play').dispatchEvent(new Event('click'));
 		assert.ok(audiotag.paused, "Player paused" );
 	});
 
 	QUnit.test( "Click at the middle of the timeline ", function( assert ) {
 		let done = assert.async();
 		assert.expect(3);
-		let time_element = controlertag.querySelector('#time');
+		let time_element = interfacetag.querySelector('#time');
 
 		function check_needle_moved(e) {
 			assert.ok(! audiotag.paused, 'Audio tag is playing');
@@ -107,8 +107,46 @@ window.addEventListener('load', function() {
 		//})
 	});
 
+
+	// check keys 
+/*
+	function trigger_key(keycode, play, time_position,  assert) {
+		let done = assert.async();
+		assert.expect(2);
+		let event = document.createEvent('CustomEvent');
+		event.initEvent('keydown', true, false);
+		event.keyCode = keycode;
+		interfacetag.dispatchEvent(event);
+
+		setTimeout(function() {
+			assert.ok( (audiotag.currentTime >= time_position) && (audiotag.currentTime < (time_position +2)), `nearly ${time_position} at ${audiotag.currentTime}`);
+			assert.ok(audiotag.paused != play, play?'playing':'paused');
+			done;	
+		}, 100);
+	}
+
+	QUnit.test( "Escape key pauses", function( assert ) {
+		cpu.trigger.hashOrder('track&t=0:20', function() {
+			trigger_key(27, false, 20,  assert);			
+		});
+	});
+
+	QUnit.test( "Left arrow key go backwards 5 seconds", function( assert ) {
+		cpu.trigger.hashOrder('track&t=0:20', function() {
+			trigger_key(37, true, 15,  assert);			
+		});
+	});
+
+	QUnit.test( "Right arrow key go fowards 5 seconds", function( assert ) {
+		cpu.trigger.hashOrder('track&t=0:20', function() {
+			trigger_key(39, true, 25, assert);
+			
+		});
+	});
+*/
+
 	let canonical = 'http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore';
-	let link_element = controlertag.querySelector('#elapse');
+	let link_element = interfacetag.querySelector('#elapse');
 
 	/*
 I still have an issue on this test, as the tested code works correctly, and i'm mad about it !
@@ -125,8 +163,8 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 			});
 		});
 	});
-	*/
 
+*/
 	QUnit.test( "Cannot start if no <audio> tag included", function( assert ) {
 		playground.innerHTML = '<cpu-audio id="no_check"></cpu-audio>';
 		let done = assert.async();
