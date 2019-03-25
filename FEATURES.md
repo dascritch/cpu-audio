@@ -41,7 +41,7 @@ Aspect changes when page's width is under 640px, 480px and 320px wide. The eleme
 
 <style scoped>
 #constrained div { border : 1px black solid;}
-#constrained iframe {width : 100%;}
+#constrained iframe {width : 100%;  height: 64px}
 @media (max-width: 640px) { #constrained .size_2 { display : none; } }
 @media (max-width: 480px) { #constrained .size_3 { display : none; } }
 @media (max-width: 320px) { #constrained .size_4 { display : none; } }
@@ -61,7 +61,7 @@ Under 480px wide
 Under 320px wide
 <iframe src="./iframe_for_dimension.html" ></iframe>
 </div>
-
+</div>
 
 Modes
 -----
@@ -203,7 +203,10 @@ You can create playlists on a page, one or more. When a player is ending, the ne
     </audio>
 </cpu-audio>
 
-Note that the global controller (see below) is able to show the current playlist, and highlight the playing media.
+Notes :
+
+ - The global controller (see below) is able to show the current playlist, and highlight the playing media.
+ - The playlist feature won't work among iframes.
 
 
 Global page controller
