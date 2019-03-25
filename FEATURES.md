@@ -21,7 +21,7 @@ An example with chapters.
 Size constraints
 ----------------
 
-Aspect changes when page's width is under 640px and 320px wide. The element must be able to insert itself in any width constraints, in liquid responsive web-design fashion.
+Aspect changes when page's width is under 640px, 480px and 320px wide. The element must be able to insert itself in any width constraints, in liquid responsive web-design fashion.
 
 <cpu-audio 
     title="Au carnaval avec Samba Résille (2003)"
@@ -33,6 +33,50 @@ Aspect changes when page's width is under 640px and 320px wide. The element must
     </audio>
 </cpu-audio>
 
+<p>
+    Some examples using <code>&lt;iframe&gt;</code>s :
+</p>
+
+<div id="constrained">
+
+<style scoped>
+    #constrained div {
+        border : 1px black solid;
+    }
+
+    @media (max-width: 640px) {
+        #constrained .size_2 {
+            display : none;
+        }
+    }
+
+    @media (max-width: 480px) {
+        #constrained .size_3 {
+            display : none;
+        }
+    }
+
+    @media (max-width: 320px) {
+        #constrained .size_4 {
+            display : none;
+        }
+    }
+</style>
+
+<div class="size_2" style="width:639px">
+    Under 640px wide
+    <iframe src="./_iframe_for_dimension.html" ></iframe>
+</div>
+
+<div  class="size_3" style="width:479px">
+    Under 480px wide
+    <iframe src="./_iframe_for_dimension.html" ></iframe>
+</div>
+
+<div  class="size_4" style="width:319px">
+    Under 320px wide
+    <iframe src="./_iframe_for_dimension.html" ></iframe>
+</div>
 
 Modes
 -----
