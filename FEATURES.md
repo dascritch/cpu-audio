@@ -38,9 +38,8 @@ Aspect changes when page's width is under 640px, 480px and 320px wide. The eleme
 </p>
 
 <div id="constrained">
-
 <style scoped>
-#constrained div { border : 1px black solid;}
+#constrained div { border : 1px black solid; padding : 4px;}
 #constrained iframe {width : 100%;  height: 64px}
 @media (max-width: 640px) { #constrained .size_2 { display : none; } }
 @media (max-width: 480px) { #constrained .size_3 { display : none; } }
@@ -48,17 +47,17 @@ Aspect changes when page's width is under 640px, 480px and 320px wide. The eleme
 </style>
 
 <div class="size_2" style="width:639px">
-Under 640px wide
+<strong>Under 640px wide</strong> : Height and font-size is reduced, image is hidden.
 <iframe src="./iframe_for_dimension.html" ></iframe>
 </div>
 
 <div  class="size_3" style="width:479px">
-Under 480px wide
+<strong>Under 480px wide</strong> : Total time is hidden.
 <iframe src="./iframe_for_dimension.html" ></iframe>
 </div>
 
 <div  class="size_4" style="width:319px">
-Under 320px wide
+<strong>Under 320px wide</strong> : Current time is currently hidden.
 <iframe src="./iframe_for_dimension.html" ></iframe>
 </div>
 </div>
