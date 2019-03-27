@@ -130,7 +130,7 @@ let CPU_element_api = class {
         } 
          
         let colon_time = convert.SecondsInColonTime(audiotag.currentTime);
-        elapse_element.innerHTML = `${colon_time}<span class="notiny"> / ${total_duration}</span>`;
+        elapse_element.innerHTML = `${colon_time}<span class="nosmaller"> / ${total_duration}</span>`;
 
         let inputtime_element = this.elements['inputtime'];
         // How to check a focused element ? document.activeElement respond the webcomponent tag :/ You must call shadowRoot.activeElement

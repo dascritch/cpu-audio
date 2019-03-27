@@ -195,7 +195,7 @@ a {
     font-style : italic;
 }
 #elapse {
-    flex : 1 0 var(--cpu-elapse-width);
+    flex : 0 1 var(--cpu-elapse-width);
     text-align : right;
     align-self: center;
 }
@@ -477,12 +477,8 @@ a {
         display : none;
     }
 
-    .mode-default .notiny {
-        display : none;
-    }
-
     .mode-default #elapse {
-        flex : 1 0 var(--cpu-elapse-width);
+        flex : 0 1 var(--cpu-elapse-width);
     }
 }
 @media (max-width: 320px) , @element #interface and (max-width: 320px) {

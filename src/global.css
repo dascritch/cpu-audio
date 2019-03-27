@@ -17,7 +17,7 @@ audio[controls] {
     --cpu-error-color : #ff7 ;
     --cpu-popup-background : #aaa;
     --cpu-popup-color : #333;
-    --cpu-elapse-width : 185px;
+    --cpu-elapse-width : 160px;
     --cpu-min-padding : 16px;
     --cpu-inner-shadow : inset 0px 5px 10px -5px black;
     --cpu-color-transitions : 0s;
@@ -31,13 +31,13 @@ audio[controls] {
     :root , .interface {
         --cpu-font-size : 13px;
         --cpu-height : 48px;
-        --cpu-elapse-width : 160px;
+        --cpu-elapse-width : 140px;
         --cpu-min-padding : 4px;
     }
 
 @media (max-width: 480px) , @element .interface and (max-width: 480px) {
     :root , .interface {
-        --cpu-elapse-width : 80px;
+        --cpu-elapse-width : 70px;
     }
 
 }
