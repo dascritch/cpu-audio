@@ -200,6 +200,11 @@ a {
     align-self: center;
 }
 
+.mode-compact #elapse {
+    flex : 0 0 calc(var(--cpu-elapse-width) + 32px);
+    text-align : center;
+}
+
 #time {
     background : black;
     width : 100%;
