@@ -101,7 +101,9 @@ var sound_element, list_element, edit_source_audio_element;
 var chapters = [];
 
 function set_source_audio() {
-    sound_element.src = edit_source_audio_element.value;
+    let url = edit_source_audio_element.value;
+    sound_element.src = url;
+    sound_element.dataset.title = decodeURIComponent(url.replace(/(^.*\/)([^\/]+)/,'$2'))
 }
 
 function check_configure(event) {
