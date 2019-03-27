@@ -21,14 +21,14 @@ Example :
     title="Au carnaval avec Samba Résille (2003)"
     poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
     canonical="https://dascritch.net/post/2014/04/08/Au-Carnaval-avec-Samba-R%C3%A9sille"
-    twitter="@dascritch"
     >
     <audio controls id="audiodemo">
-        <source src="https://dascritch.net/vrac/sonores/1404-SambaResille2003.mp3" type="audio/ogg">
-        <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
+        <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg" />
     </audio>
 </cpu-audio>
 ```
+
+**Important Note** : Put one and only one `<audio>` tag into `<cpu-audio>`, or you may have unexpected issues. We recommend to set an `id` attribute to the `<audio>` tag for the anchoring feature.
 
 You **must** put a `control` attribute to the included `<audio>` tag as a fallback in case of malfunction. Please also add this rule in your css :
 
@@ -38,11 +38,6 @@ audio[controls] {
     width : 100%;
 }
 ```
-
-**Important Note** : Put one and only one `<audio>` tag into `<cpu-audio>`, or you may have unexpected issues.
-
-It is recommended to set to the `<audio>` tag an `id` attribute for using anchoring feature.
-
 
 You can try playing with our [live configurator tool](LIVE.md), event it isn't perfect yet.
 
@@ -59,8 +54,8 @@ Some attributes enhance the component :
     * `default` : player with poster, timeline and chapters list,
     * `compact` : play/pause button and time indication,
     * `button` : play/pause button only,
-    * `button,default`, `button,compact` or `compact,default` : will unfold from a standby mode (`button` or `compact`) to another one when starting to play,
-    * `hidden` : nothing to show ;
+    * `button,default`, `button,compact` or `compact,default` : once playing, will unfold from a standby mode (`button` or `compact`) to a wider one,
+    * `hidden` : no interface ;
 * `hide="<string>"` : hide some features, comma-separated :
     * `actions` : the share button
     * `chapters` : the chapters list
@@ -71,13 +66,14 @@ Some attributes enhance the component :
 How to link
 -----------
 
-In the upper example, `<audio>` tag is ID-entified as `audiodemo`. Usually, you link to it with `#audiodemo`. Add a parameter `t=` with the expected timecode, with a `&` as separator. By example, for 5 minutes from the start, you should target `#audiodemo&t=5m` : 
+In the upper example, `<audio>` tag is ID-entified as `audiodemo`. Usually, you link to its anchor with `#audiodemo`. Add a parameter `t=` with the expected timecode, with a `&` as separator. By example, for 5 minutes from the start, you should target `#audiodemo&t=5m` : 
 
 ```html
 <p>
     Jump at <a href="#audiodemo&amp;t=5m">5 minutes</a> in the sound
 </p>
 ```
+
 
 Permitted hash notations
 ------------------------
@@ -92,7 +88,7 @@ For the timecode, you can use :
 
 A playable range can be indicated : `page.html#tagID&t=5m,5m5s` will <a href="#sound&t=5m,5m5s">play the sound starting at 5 minutes, and stops it at 5 minutes and 5 seconds</a>
 
-**Note** : if a timecode without any named anchor is given, as in `href="#t=2h4m2s"`, the very first `<audio controls>` element of the document will be started and placed at this time. If you are absolutely sure you will only have one audio tag in your page, you can omit the ID : `<a href="#t=5m">`
+**Note** : if a timecode without any named anchor is given, as in `href="#t=2h4m2s"`, the very first `<audio controls>` element of the document will be addressed. If you are absolutely sure you will only have one audio tag in your page, you can omit the ID : `<a href="#t=5m">`
 
 
 Cloned player
@@ -109,16 +105,14 @@ Chapters
 You can add a chapters track into the `<audio control>` tag : 
 
 ```html
-<track kind="chapters" src="chapters.vtt" default>
+<track kind="chapters" src="chapters.vtt" default />
 ```
 
 Note that `default` attribute **is really needed**.
 
 The chapter list will only appears with `mode="default"` settings in `<cpu-audio>`.
 
-You may edit a VTT file with [our online editor](https://dascritch.github.io/cpu-audio/LIVE).
-
-When there is a chapter track, the `<body>` of the hosting page will get a class among which cue is currently played. The naming scheme is `cpu_playing_tag_«audio_tag_id»_cue_«chapter_id»`, where `audio_tag_id` is the ID of the playing `<audio>`, and `chapter_id` the name of the cue.
+You can create the VTT file with [our online editor](https://dascritch.github.io/cpu-audio/LIVE).
 
 
 Personnalization via CSS variables
@@ -196,7 +190,7 @@ This function was meant to build effects as in [BBC Computer Literacy archive](h
 Using javascript API
 --------------------
 
-cpu-audio.js can be used only with HTML attributes and CSS variables, but javascript savvy developers can [use API features to get a more precise control](./API).
+cpu-audio.js can be used only with HTML attributes and CSS variables, but javascript savvy developers have [API features to get a more precise control](./API).
 
 
 <!-- {% include footer.html %} -->
