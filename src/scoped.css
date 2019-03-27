@@ -180,14 +180,16 @@ a {
     display : flex;
 }
 #about, #title {
-    flex : 1 1 100%;
+    flex : 1 1 auto;
     position : relative;
+}
+#title {
+    overflow: hidden;
+    text-overflow : '…';
 }
 #title a {
     display : block;
-    text-overflow : ellipsis;
-    max-height: calc(4px + calc(2 * var(--cpu-font-size)));
-    overflow: hidden;
+    max-height: calc(6px + calc(2 * var(--cpu-font-size)));
 }
 #canonical.untitled {
     font-style : italic;
@@ -195,6 +197,7 @@ a {
 #elapse {
     flex : 1 0 var(--cpu-elapse-width);
     text-align : right;
+    align-self: center;
 }
 
 #time {
