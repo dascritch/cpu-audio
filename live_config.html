@@ -3,13 +3,10 @@
 
 <div id="demo">
 <cpu-audio 
-    title="Au carnaval avec Samba Résille (2003)"
-    poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
-    canonical="https://dascritch.net/post/2014/04/08/Au-Carnaval-avec-Samba-R%C3%A9sille"
-    twitter="@dascritch"
-    >
+    title="Choose an URL for source and give it a title">
     <audio controls id="sound">
-        <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
+        <source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+        <track kind="chapters" src="" default />
     </audio>
     <!-- {% include no_component_message.html %} -->
 </cpu-audio>
@@ -128,7 +125,7 @@
 
 <fieldset>
     <label>
-        <span></span><span>Colour</span><span>Background</span>
+        <span>&nbsp;</span><div>Colour</div><div>Background</div>
     </label>
     <label>
         <span>Colours except playing or in error</span>
@@ -364,6 +361,7 @@ document.addEventListener('DOMContentLoaded', function(){
     form label {display : flex;}
     form label * {flex : 1 0 auto;}
     form label span {flex : 0 0 200px;}
+    form label div {text-align : center;}
     #style {display : block;}
 
     .pan { display :none ; }
