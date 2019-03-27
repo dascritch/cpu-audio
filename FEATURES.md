@@ -40,7 +40,7 @@ Aspect changes when page's width is under 640px, 480px and 320px wide. The eleme
 <div id="constrained">
 <style scoped>
 #constrained div { border : 1px black solid; padding : 4px;}
-#constrained iframe {width : 100%;  height: 64px}
+#constrained iframe {width : 100%;  height: 80px}
 @media (max-width: 640px) { #constrained .size_2 { display : none; } }
 @media (max-width: 480px) { #constrained .size_3 { display : none; } }
 @media (max-width: 320px) { #constrained .size_4 { display : none; } }
