@@ -216,5 +216,7 @@ Global page controller
 <cpu-controller>
 </cpu-controller>
 
+(except those included via `<iframe>`)
+
 
 <!-- {% include footer.html %} -->

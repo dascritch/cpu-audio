@@ -12,6 +12,8 @@
     border : none;
     padding : 0;
     margin : 0;
+    box-shadow: none;
+    text-shadow: none;
     moz-user-select: none;
     ms-user-select: none;
     webkit-user-select: none;

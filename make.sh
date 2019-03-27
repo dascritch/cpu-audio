@@ -23,10 +23,7 @@ HELP
 
 PROJECT_DIR=$(readlink -f $(dirname ${0}))
 
-# JS_COMPILATION_LEVEL='ADVANCED_OPTIMIZATIONS'
 JS_COMPILATION_LEVEL='SIMPLE_OPTIMIZATIONS'
-# JS_COMPILATION_LEVEL='WHITESPACE_ONLY'
-# JS_COMPILATION_LEVEL='BUNDLE'
 
 while [ '-' == "${1:0:1}" ] ; do
     case "${1}" in
@@ -77,7 +74,7 @@ function _build_template() {
         document.head.appendChild(style);
 
         let template = document.createElement('template');
-        template.id = 'template_cpu';
+        template.id = 'CPU__template';
         template.innerHTML = \`<style>${scoped_css}</style>${template_html}\`;
         document.head.appendChild(template);
     }
