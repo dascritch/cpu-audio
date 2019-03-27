@@ -2,10 +2,9 @@
 <script src="./dist/cpu-audio.js" async></script>
 
 <cpu-audio 
-    title="First, Choose an URL for source"
-    poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
-    >
-    <audio controls id="sound" src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0093-CPU%2818-10-18%29.mp3">
+    title="First, Choose an URL for source">
+    <audio controls id="sound">
+        <source src="./tests-assets/blank.mp3" type="audio/mpeg" />
         <track kind="chapters" src="" default />
     </audio>
     <!-- {% include no_component_message.html %} -->
