@@ -473,6 +473,10 @@ a {
     
 }
 @media (max-width: 480px) , @element #interface and (max-width: 480px) {
+    .nosmaller {
+        display : none;
+    }
+
     .mode-default .notiny {
         display : none;
     }
