@@ -186,7 +186,7 @@ a {
 #title a {
     display : block;
     text-overflow : ellipsis;
-    max-height: 48px;
+    max-height: calc(4px + calc(2 * var(--cpu-font-size)));
     overflow: hidden;
 }
 #canonical.untitled {
@@ -445,9 +445,6 @@ a {
 
     .nosmall {
         display : none;
-    }
-    #title a {
-        max-height : 16px;
     }
 
     #elapse {
