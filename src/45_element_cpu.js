@@ -494,7 +494,6 @@ let CPU_element_api = class {
     build_chapters(event) {
         let self = this;
 
-        let audiotag = this.audiotag;
         if (event !== undefined) {
             // Chrome load <track> afterwards, so an event is needed, and we need to recatch our CPU api to this event
             self = document.CPU.find_container(event.target);
@@ -504,6 +503,7 @@ let CPU_element_api = class {
             }
         }
 
+        let audiotag = self.audiotag;
         let chapters_element = self.elements['chapters'];
         chapters_element.innerHTML = '';
         let lines_element = self.elements['chaptersline'];
@@ -522,9 +522,6 @@ let CPU_element_api = class {
                     (tracks.cues !== null) /*&&
                     (!Object.is(self._chaptertracks, tracks))*/) {
 
-                    // window.console.log({ s: self._chaptertracks , t: tracks , l:tracks.cues.length ,c: Object.is(self._chaptertracks, tracks)})
-                    // self._chaptertracks = tracks;
-
                     let _cuechange_event = self._cuechange_event.bind(self);
                     tracks.removeEventListener('cuechange', _cuechange_event);
                     // adding chapter changing event
@@ -536,7 +533,6 @@ let CPU_element_api = class {
                         let href = `#${audiotag.id}&t=${cuepoint}`;
 
                         /* list */
-
                         let line = document.createElement('a');
                         line.id  = cue.id;
                         line.classList.add('cue');
@@ -553,8 +549,8 @@ let CPU_element_api = class {
                         let segment = document.createElement('a');
                         segment.id  = 'segment-'+cue.id;
                         segment.href  = href;
-                        segment.title  = cue.text;
-                        segment.tabIndex = '-1';
+                        segment.title  = line.querySelector('strong').innerText; // a simple way to go HTML → pure text , cf https://github.com/dascritch/cpu-audio/issues/53
+                        segment.tabIndex = -1;
                         segment.style.left = `${100 * (cue.startTime / audiotag.duration)}%`;
                         segment.style.right = `${100 - 100 *( cue.endTime / audiotag.duration)}%`;
                         lines_element.append(segment);
