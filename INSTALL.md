@@ -178,7 +178,7 @@ Here is an example :
 
 The `<audio id="audiotag_id">` has its `<track kind="chapters">` decoded and displayed. 
 
-Ba aware that this class wil be set even if the chapters list is set to be hidden.
+Be aware that this class wil be set even if the chapters list is set to be hidden.
 
 ### `.cpu_playing_tag_«audiotag_id»_cue_«cue_id»`
 

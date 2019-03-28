@@ -47,6 +47,6 @@ To make the `dist/` files, use `./make.sh`
 You will need :
 - sed
 - tr
-- [Google closure compiler](https://developers.google.com/closure/compiler/) (an so, Java, sigh). Don't forget to keep it up to date.
+- [Google closure compiler](https://github.com/google/closure-compiler/wiki/Binary-Downloads) (an so, Java, sigh). Don't forget to keep it up to date.
 
 <!-- {% include footer.html %} -->
