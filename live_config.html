@@ -94,6 +94,13 @@
         <span>Twitter handle</span>
         <input id="meta_twitter" name="meta_twitter" type="string" pattern="@[\d\w_]+" />
     </label>
+    
+    <p>
+        <span class="what">Hide</span>
+        <label for="meta_hide_0" class="inline_block"><input id="meta_hide_0" name="meta_hide[]" type="checkbox" value="poster" />Poster</label>
+        <label for="meta_hide_1" class="inline_block"><input id="meta_hide_1" name="meta_hide[]" type="checkbox" value="actions" />Actions</label>
+        <label for="meta_hide_2" class="inline_block"><input id="meta_hide_2" name="meta_hide[]" type="checkbox" value="chapters" />Chapters</label>
+    </p>
 </fieldset>
 
 <button type="reset">Reset values</button>
@@ -225,6 +232,15 @@ function configurator_html(event) {
             if (value) {
                 cpu_audio_attributes += ` ${attr}="${esc(value)}"`;
             }
+        }
+        values_hide = []
+        for (let checkbox of Array.from(document.querySelectorAll('[name="meta_hide[]"]'))) {
+            if (checkbox.checked) {
+                values_hide.push(checkbox.value);
+            }
+        }
+        if (values_hide.length > 0) {
+            cpu_audio_attributes += ` hide="${values_hide.join(',')}"`;
         }
     }
     function adjust_audio_sources() {
@@ -358,10 +374,13 @@ document.addEventListener('DOMContentLoaded', function(){
         border : 1px #ccc solid;
     }
 
-    form label {display : flex;}
-    form label * {flex : 1 0 auto;}
-    form label span {flex : 0 0 200px;}
-    form label div {text-align : center;}
+    fieldset > label, fieldset p {display : flex;}
+    fieldset > label * {flex : 1 0 auto;}
+    fieldset > label span, fieldset .what {flex : 0 0 200px;}
+    fieldset > label div {text-align : center;}
+
+    .inline_block { display : inline-block; }
+
     #style {display : block;}
 
     .pan { display :none ; }
