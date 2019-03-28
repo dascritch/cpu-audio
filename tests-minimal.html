@@ -5,7 +5,9 @@
 	<title>cpu-audio tests</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="tests/qunit.css">
-
+	<script>
+		window.localStorage.clear();
+	</script>
 	<script src="./dist/cpu-audio.js"></script>
 </head>
 <body>
@@ -21,7 +23,9 @@
 	</p>
 	<ul>
 		<li><a href="./tests-browser.html">Browser compliance and implementation tests</a></li>
+		<li><a href="./tests-minimal.html">Minimum services, as hash links</a></li>
 		<li><a href="./tests-interface.html">Graphic interface, if WebComponent fully supported</a></li>
+		<li><a href="./tests-api.html">API</a></li>
 	</ul>
 
 	<cpu-audio>
