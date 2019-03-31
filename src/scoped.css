@@ -168,6 +168,10 @@ a {
     opacity: 1;
 }
 
+.hide-poster #poster {
+    display : none;
+}
+
 #control svg, #actions svg {
     vertical-align : middle;
     max-width : 100%;

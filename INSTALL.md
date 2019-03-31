@@ -57,6 +57,7 @@ Some attributes enhance the component :
     * `button,default`, `button,compact` or `compact,default` : once playing, will unfold from a standby mode (`button` or `compact`) to a wider one,
     * `hidden` : no interface ;
 * `hide="<string>"` : hide some features, comma-separated :
+    * `poster` : the poster image
     * `actions` : the share button
     * `chapters` : the chapters list
 * `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page) ;
