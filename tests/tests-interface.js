@@ -9,15 +9,12 @@ check_focus();
 document.addEventListener('focus', check_focus)
 document.addEventListener('blur', check_focus)
 
-
 if (!document.hasFocus()) {
 	alert('Please click on the web view, giving focus, to autorize the audio tag. Else, numerous tests will fail. See issu 17 on our github for details : https://github.com/dascritch/cpu-audio/issues/17 .');
 }
 
-
-
-
 window.addEventListener('load', function() {
+	QUnit.config.autostart = false;
 
 	window.location = '#';
 	let audiotag = document.getElementById('track');
@@ -33,7 +30,10 @@ window.addEventListener('load', function() {
 	}
 
 	QUnit.testDone(stopPlayer);
+	stopPlayer();
 	QUnit.start();
+
+
 
 	QUnit.test( "default_dataset at default", function( assert ) {
 		assert.equal(cpu.default_dataset.title, document.title, "title is document title" );
@@ -365,7 +365,6 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		setTimeout(function() {
 			let audiotag = playground.querySelector('#change_show_on_play');
 			let interface = audiotag.closest('cpu-audio').CPU.container;
-			console.log(interface.classList)
 			assert.ok(interface.classList.contains('mode-button'), 'Interface appears as a button before playing');
 			audiotag.play();
 			setTimeout(function() {
@@ -375,6 +374,55 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 		}, 100);
 	});
+
+	QUnit.test( "Public API : Changing document.CPU.keymove value", function( assert ) {
+		let done = assert.async();
+		cpu.jumpIdAt('track', 0, function() {
+			cpu.keymove = 30;
+			cpu.trigger.foward({target : interfacetag, preventDefault:function(){} });
+			setTimeout(function() {
+				assert.ok(audiotag.currentTime > 30, 'Audio tag is now 30 seconds foward');
+				done();
+			}, 100);
+		});
+	});
+
+	QUnit.test( "Public API : disable no cacophony feature via document.CPU.only_play_one_audiotag", function( assert ) {
+		let done = assert.async();
+		document.CPU.only_play_one_audiotag = false;
+		assert.expect(2);
+		audiotag.play();
+		// Dynamic add a second audio player
+		playground.innerHTML = `
+		<cpu-audio>
+			<audio id="secondary" controls="controls" muted>
+				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+			</audio>
+		</cpu-audio>`;
+		let secondary_audiotag = document.getElementById('secondary');
+		secondary_audiotag.volume = 0;
+		let check_only_one_play_this;
+
+		function check_only_one_play() {
+			assert.ok(! secondary_audiotag.paused, 'Second player should play');
+			assert.ok(! audiotag.paused, 'First player should have NOT been paused');
+			done();
+		}
+		check_only_one_play_this = check_only_one_play.bind(this);
+		setTimeout(check_only_one_play_this, 100);
+		secondary_audiotag.play();
+	});
+
+	QUnit.test( "Public API : document.CPU.current_audiotag_playing", function( assert ) {
+		let done = assert.async();
+		assert.expect(2);
+		audiotag.pause();
+		assert.equal(document.CPU.current_audiotag_playing , null, 'Not playing, document.CPU.current_audiotag_playing is null');
+		audiotag.play();
+		assert.ok(audiotag.isEqualNode( document.CPU.current_audiotag_playing ), 'Playing, document.CPU.current_audiotag_playing is refering playing audio');
+	});
+
+
 
 
 });

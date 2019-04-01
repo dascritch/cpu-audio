@@ -23,19 +23,7 @@ Size constraints
 
 Aspect changes when page's width is under 640px, 480px and 320px wide. The element must be able to insert itself in any width constraints, in liquid responsive web-design fashion.
 
-<cpu-audio 
-    title="Au carnaval avec Samba Résille (2003)"
-    poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
-    canonical="https://dascritch.net/post/2014/04/08/Au-Carnaval-avec-Samba-R%C3%A9sille"
-    twitter="@dascritch">
-    <audio controls id="live">
-        <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
-    </audio>
-</cpu-audio>
-
-<p>
-    Some examples using <code>&lt;iframe&gt;</code>s :
-</p>
+Some examples using <code>&lt;iframe&gt;</code>s :
 
 <div id="constrained">
 <style scoped>
