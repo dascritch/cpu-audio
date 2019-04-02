@@ -260,11 +260,15 @@ function interpret_form(event) {
     // update tracklist in cpu-audio . To be done
     let f = new FileReader();
     f.addEventListener("load", function () {
-        document.querySelector('track').src = f.result;
+        document.querySelector('track').remove();
+        let track = document.createElement('track');
+        track.kind = 'chapters';
+        track.default = true;
+        track.src = f.result;
+        document.querySelector('audio').appendChild(track);
         document.querySelector('cpu-audio').CPU.build_chapters();
     }, false);
     f.readAsDataURL(data);
-    
     
 
     document.location.hash = '#generated_html';
