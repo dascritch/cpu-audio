@@ -295,6 +295,8 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
     // @return     {<type>}  Array with named id
     //
     'find_current_playlist' : function() {
+        if (this.global_controller === null)
+            return null;
         let current_audiotag = this.global_controller.audiotag;
         if (current_audiotag === null) {
             return null;

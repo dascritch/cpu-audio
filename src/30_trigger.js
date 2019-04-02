@@ -485,7 +485,7 @@ const trigger = {
         container.complete_template();
 
         let global_controller = document.CPU.global_controller;
-        if ((global_controller) && (container.audiotag.isEqualNode(global_controller.audiotag))) {
+        if ((global_controller !== null) && (container.audiotag.isEqualNode(global_controller.audiotag))) {
             global_controller.build_chapters();
             global_controller.complete_template();
         }
