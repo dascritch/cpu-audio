@@ -431,7 +431,7 @@ a {
     width : var(--cpu-height);
 }
 
-.mode-compact #poster,
+/*.mode-compact #poster,*/
 .mode-compact #title,
 .mode-compact #line,
 .mode-compact #actions,
