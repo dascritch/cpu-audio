@@ -128,17 +128,22 @@ const trigger = {
      */
     preview_container_hover : function(event) {
         let target = event.target;
+        if (!target.classList.contains('cue')) {
+            target = target.closest('a.cue');
+        }
+        if (target === null) {
+            return;
+        }
         let container = document.CPU.find_container(target);
-        let link_element = target.closest('li');
         // TODO : 
             // decode hash id, gets its container
             // use dataset.cueId  , derive startTime and endTime
             // use dataset.cueStartTime else try decode hash startTime
             // use dataset.cueEndTime else try decode hash endTime
 
-        let start = link_element.dataset.cueStartTime;
-        let end = link_element.dataset.cueEndTime;
-        container.preview(start, end, link_element.dataset.cueId);
+        let start = target.dataset.cueStartTime;
+        let end = target.dataset.cueEndTime;
+        container.preview(start, end, target.dataset.cueId);
     },
 
 
