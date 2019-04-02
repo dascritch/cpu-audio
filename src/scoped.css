@@ -337,7 +337,7 @@ a {
     display : none;
 }
 
-.hasnativeshare #nativeshare {
+.hasnativeshare #pageshare #nativeshare {
     display : flex;
 }
 
