@@ -489,7 +489,7 @@ let CPU_element_api = class {
     //
     // @param      {<type>}  event   The event
     //
-    build_chapters(event) {
+    build_chapters(event, _forced_track) {
         let self = this;
 
         if (event !== undefined) {
@@ -509,58 +509,71 @@ let CPU_element_api = class {
         
         let has = false;
 
-        if ((audiotag) && (audiotag.textTracks) && (audiotag.textTracks.length > 0)) {
-            for (let tracks of audiotag.textTracks) {
-                // TODO : we have here a singular problem : how to NOT rebuild the chapter lists, being sure to have the SAME cues and they are loaded, as we may have FOUR builds.
-                // Those multiple repaint events doesn't seem to have so much impact, but they are awful, unwanted and MAY have an impact
-                // We must find a way to clean it up or not rebuild for SAME tracks, AND remove associated events 
-                // AND clean up the chapter list if a new chapter list is loaded and really empty
-                if (
-                    (tracks.kind.toLowerCase() === 'chapters') &&
-                    (tracks.cues !== null) /*&&
-                    (!Object.is(self._chaptertracks, tracks))*/) {
+        function _build_from_track(tracks) {
+            let _cuechange_event = self._cuechange_event.bind(self);
+            tracks.removeEventListener('cuechange', _cuechange_event);
+            // adding chapter changing event
+            tracks.addEventListener('cuechange', _cuechange_event);
 
-                    let _cuechange_event = self._cuechange_event.bind(self);
-                    tracks.removeEventListener('cuechange', _cuechange_event);
-                    // adding chapter changing event
-                    tracks.addEventListener('cuechange', _cuechange_event);
+            for (let cue of tracks.cues) {
+                let cuepoint = Math.floor(cue.startTime);
+                let cuetime = convert.SecondsInColonTime(cue.startTime);
+                let href = `#${audiotag.id}&t=${cuepoint}`;
 
-                    for (let cue of tracks.cues) {
-                        let cuepoint = Math.floor(cue.startTime);
-                        let cuetime = convert.SecondsInColonTime(cue.startTime);
-                        let href = `#${audiotag.id}&t=${cuepoint}`;
+                /* list */
+                let line = document.createElement('a');
+                line.id  = cue.id;
+                line.classList.add('cue');
+                line.href  = href;
+                line.tabIndex = 0;
+                line.innerHTML = `<strong>${cue.text}</strong><span>${cuetime}</span>`;
+                chapters_element.append(line);
 
-                        /* list */
-                        let line = document.createElement('a');
-                        line.id  = cue.id;
-                        line.classList.add('cue');
-                        line.href  = href;
-                        line.tabIndex = 0;
-                        line.innerHTML = `<strong>${cue.text}</strong><span>${cuetime}</span>`;
-                        chapters_element.append(line);
+                line.dataset.cueId = cue.id; 
+                line.dataset.cueStartTime = cuepoint; 
+                line.dataset.cueEndTime = Math.floor(cue.endTime);
 
-                        line.dataset.cueId = cue.id; 
-                        line.dataset.cueStartTime = cuepoint; 
-                        line.dataset.cueEndTime = Math.floor(cue.endTime);
+                /* line */
+                let segment = document.createElement('a');
+                segment.id  = 'segment-'+cue.id;
+                segment.href  = href;
+                segment.title  = line.querySelector('strong').innerText; // a simple way to go HTML → pure text , cf https://github.com/dascritch/cpu-audio/issues/53
+                segment.tabIndex = -1;
+                segment.style.left = `${100 * (cue.startTime / audiotag.duration)}%`;
+                segment.style.right = `${100 - 100 *( cue.endTime / audiotag.duration)}%`;
+                lines_element.append(segment);
+            }
 
-                        /* line */
-                        let segment = document.createElement('a');
-                        segment.id  = 'segment-'+cue.id;
-                        segment.href  = href;
-                        segment.title  = line.querySelector('strong').innerText; // a simple way to go HTML → pure text , cf https://github.com/dascritch/cpu-audio/issues/53
-                        segment.tabIndex = -1;
-                        segment.style.left = `${100 * (cue.startTime / audiotag.duration)}%`;
-                        segment.style.right = `${100 - 100 *( cue.endTime / audiotag.duration)}%`;
-                        lines_element.append(segment);
-                    }
+            if (tracks.cues.length > 0) {
+                has = true;
+            }
+        }
 
-                    if (tracks.cues.length > 0) {
-                        has = true;
+
+
+        if (audiotag) {
+            if (_forced_track !== undefined) {
+                _build_from_track(_forced_track)
+            } else {
+
+                if ((audiotag.textTracks) && (audiotag.textTracks.length > 0)) {
+                    for (let tracks of audiotag.textTracks) {
+                        // TODO : we have here a singular problem : how to NOT rebuild the chapter lists, being sure to have the SAME cues and they are loaded, as we may have FOUR builds.
+                        // Those multiple repaint events doesn't seem to have so much impact, but they are awful, unwanted and MAY have an impact
+                        // We must find a way to clean it up or not rebuild for SAME tracks, AND remove associated events 
+                        // AND clean up the chapter list if a new chapter list is loaded and really empty
+                        if (
+                            (tracks.kind.toLowerCase() === 'chapters') &&
+                            (tracks.cues !== null) /*&&
+                            (!Object.is(self._chaptertracks, tracks))*/) {
+                                _build_from_track(tracks)
+                        }
                     }
                 }
             }
-
         }
+
+
 
         if (self.element.tagName === CpuAudioTagName) {
             if (has) {
