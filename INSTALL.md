@@ -52,7 +52,7 @@ Some attributes enhance the component :
 * `canonical="<url>"` : link to the original page of the sound ; 
 * `mode="<string>"` : kind of presentation :
     * `default` : player with poster, timeline and chapters list,
-    * `compact` : poster, play/pause button and time indication,
+    * `compact` : play/pause button and time indication,
     * `button` : play/pause button only,
     * `button,default`, `button,compact` or `compact,default` : once playing, will unfold from a standby mode (`button` or `compact`) to a wider one,
     * `hidden` : no interface ;
