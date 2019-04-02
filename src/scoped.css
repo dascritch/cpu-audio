@@ -425,14 +425,14 @@ a {
 
 
 .mode-compact {
-    width : calc(var(--cpu-elapse-width) + var(--cpu-height) + 32px);
+    width : calc(var(--cpu-elapse-width) + var(--cpu-height) * 2 + 32px);
 }
 
 .mode-button {
     width : var(--cpu-height);
 }
 
-.mode-compact #poster,
+/* .mode-compact #poster,*/
 .mode-compact #title,
 .mode-compact #line,
 .mode-compact #actions,
