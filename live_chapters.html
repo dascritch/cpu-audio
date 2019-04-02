@@ -104,6 +104,7 @@ var new_chapter_line;
 var sound_element, list_element, edit_source_audio_element;
 
 var chapters = [];
+var cues = [];
 
 function set_source_audio() {
     let url = edit_source_audio_element.value;
@@ -180,10 +181,11 @@ function check_for_actions(event) {
 
 function interpret_form(event) {
     let data;
+    let track = document.querySelector('audio').addTextTrack("chapters");
 
     function prepare_export_file(text) {
         data = new Blob([text], {type: 'text/plain'});
-        textFile = window.URL.createObjectURL(data);
+        let textFile = window.URL.createObjectURL(data);
         return textFile;
     }
 
@@ -203,8 +205,8 @@ function interpret_form(event) {
     }
 
     function build_html_source() {
-        out1=[];
-        out2=[];
+        let out1=[];
+        let out2=[];
         for(let line of chapters) {
            out1.push(`\n\t<li><a href="#t=${Math.floor(line.time)}">${line.text} (${document.CPU.convert.SecondsInColonTime(line.time)})</a></li>`) 
            out2.push(`\n\t<li>${line.text} (<a href="#t=${Math.floor(line.time)}">${document.CPU.convert.SecondsInColonTime(line.time)}</a>)</li>`) 
@@ -213,7 +215,7 @@ function interpret_form(event) {
     }
 
     function build_md_source() {
-        out =[];
+        let out =[];
         for(let line of chapters) {
            out.push(`\n * [${line.text}](#t=${Math.floor(line.time)})`) 
         }
@@ -221,7 +223,7 @@ function interpret_form(event) {
     }
 
     function build_wiki_source() {
-        out =[];
+        let out =[];
         for(let line of chapters) {
            out.push(`\n  - [[#t=${Math.floor(line.time)}|${line.text}]]`) 
         }
@@ -229,8 +231,8 @@ function interpret_form(event) {
     }
 
     function build_vtt_source() {
-        out =[];
-        number = 0;
+        let out =[];
+        let number = 0;
         for(let line of chapters) {
             number++;
             let start = document.CPU.convert.SecondsInPaddledColonTime(line.time);
@@ -238,6 +240,34 @@ function interpret_form(event) {
             out.push(`\n\nchapter-${number}\n${start}.000 --> ${end}.000\n${line.text}`) 
         }
         return `WEBVTT FILE\n${out.join('')}\n`;
+    }
+
+    function rebuild_track_and_display() {
+        /* Something is missing in the W3C spec... */
+
+        /*for(let cue of cues) {
+            console.log(cue);
+            track.removeCue(cue);
+        }*/
+        
+        /*
+        track.mode = "disabled";
+        track.kind = "trashed";
+        */
+        track = document.querySelector('audio').addTextTrack("chapters");
+
+        let number = 0;
+        cues = [];
+        for(let line of chapters) {
+            number++;
+            let start = line.time;
+            let end = number < chapters.length ? chapters[number].time : sound_element.duration;
+            let cue = new VTTCue(start, end, line.text);
+            cue.id = `chapter-${number}`;
+            track.addCue(cue);
+            cues.push(cue)
+        }
+        document.querySelector('cpu-audio').CPU.build_chapters(undefined, track);
     }
 
     event.preventDefault();
@@ -258,7 +288,7 @@ function interpret_form(event) {
     let vtt_virtual_file = prepare_export_file(vtt);
     document.getElementById('vtt_source_download').href = vtt_virtual_file;
     // update tracklist in cpu-audio . To be done
-    let f = new FileReader();
+    /*let f = new FileReader();
     f.addEventListener("load", function () {
         document.querySelector('track').remove();
         let track = document.createElement('track');
@@ -266,11 +296,11 @@ function interpret_form(event) {
         track.default = true;
         track.src = f.result;
         document.querySelector('audio').appendChild(track);
-        document.querySelector('cpu-audio').CPU.build_chapters();
+        
+       
     }, false);
-    f.readAsDataURL(data);
-    
-
+    f.readAsDataURL(data);*/
+    rebuild_track_and_display();
     document.location.hash = '#generated_html';
 }
 
