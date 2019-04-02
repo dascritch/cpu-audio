@@ -31,7 +31,9 @@
         </label>
     </fieldset>
 
-    <button type="submit">Go to editor</button>
+    <fieldset class="actions">
+        <button type="submit">Go to editor</button>
+    </fieldset>
 
 </form>
 
@@ -39,9 +41,11 @@
 
 <form id="edit_chapters" action="#generated_html" class="pan">
 
-    <button type="button" id="add"><strong>+</strong> Add a chapter</button>
-    <button type="button" id="reorder"><strong>↓</strong> Reorder chapters</button>
-    <button type="submit">See result</button>
+    <fieldset class="actions">
+        <button type="button" id="add"><strong>+</strong> Add a chapter</button>
+        <button type="button" id="reorder"><strong>↓</strong> Reorder chapters</button>
+        <button type="submit">See result</button>
+    </fieldset>
 
     <fieldset id="list">
         <p class="line">
@@ -286,6 +290,27 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 
 <style>
+    #configure label {
+        display: flex;
+    }
+
+    #configure label span {
+        flex : 0 0 150px;
+    }
+
+    #configure label input {
+        flex : 1 1 auto;
+    }
+
+    button {
+        padding : 6px;
+        border-radius: 4px;
+    }
+
+    button[type="submit"] {
+        color : white;
+        background : green;
+    }
 
     #steps {
         display: flex;
