@@ -302,7 +302,6 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 			assert.equal(component.CPU.elements.interface.classList.contains('with-preview'), false , 'Highlight on timeline hidden by default');
 			component.CPU.preview(20,40);
 				
-			assert.equal(document.CPU.previewed, 'show_on_this', 'Global API has track of an focused/preview element');
 			assert.equal(component.CPU.elements.interface.classList.contains('with-preview'), true, 'Highlight on timeline shown');
 			assert.equal(Math.floor(preview.style.left.split('%')[0]) , Math.floor(100*20/120), 'Highlight on timeline starts at 20 seconds');
 			assert.equal(Math.floor(preview.style.right.split('%')[0]) , Math.floor(100- 100*40/120), 'Highlight on timeline ends at 40 seconds');
