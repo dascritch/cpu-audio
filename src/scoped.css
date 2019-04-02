@@ -411,8 +411,9 @@ a {
 }
 .active-cue {
     background : var(--cpu-color);
-    color : var(--cpu-background);
+    color : var(--cpu-background) !important; /* ← drty but fastest */
 }
+
 .cue strong {
     flex : 1 1;
     font-weight : normal;

@@ -282,10 +282,8 @@ let CPU_element_api = class {
         }
         if (mode) {
             classlist.add(classname);
-            document.CPU.previewed = this.audiotag.id;
         } else {
             classlist.remove(classname);
-            document.CPU.previewed = null;
             return ;
         }
 

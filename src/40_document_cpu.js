@@ -9,7 +9,6 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
     'current_audiotag_playing' : null,
     'global_controller' : null,
     // private, actual active elements
-    previewed : null,
     body_className_playing_cue : null,
 
     // private,to add attributes for unnamed <audio>
