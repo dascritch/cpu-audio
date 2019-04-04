@@ -59,7 +59,7 @@
         <input id="source_3" name="source_3" type="url" />
     </label>
     <label for="source_vtt">
-        <span>Chapter VTT text file</span>
+        <span>Chapter VTT text file URL</span>
         <input id="source_vtt" name="source_vtt" type="url" />
     </label>
 </fieldset>
@@ -85,6 +85,10 @@
     <label for="meta_poster">
         <span>Cover image url</span>
         <input id="meta_poster" name="meta_poster" type="url" value="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg" />
+    </label>
+    <label for="meta_waveform">
+        <span>Waveform image URL</span>
+        <input id="meta_waveform" name="meta_waveform" type="url" />
     </label>
     <label for="meta_canonical">
         <span>Canonical page link</span>
@@ -227,7 +231,7 @@ function configurator_html(event) {
     }
 
     function adjust_attributes_cpu_audio() {
-        for (let attr of ['mode', 'title', 'poster', 'canonical', 'twitter']) {
+        for (let attr of ['mode', 'title', 'poster', 'waveform', 'canonical', 'twitter']) {
             let value = form_html.querySelector(`[name="meta_${attr}"]`).value;
             if (value) {
                 cpu_audio_attributes += ` ${attr}="${esc(value)}"`;
