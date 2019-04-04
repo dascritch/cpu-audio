@@ -31,6 +31,13 @@
         </label>
     </fieldset>
 
+    <fieldset>
+        <label for="source_waveform">
+            <span>(optional) : URL waveform image</span>
+            <input id="source_waveform" name="source_waveform" type="url" />
+        </label>
+    </fieldset>
+
     <fieldset class="actions">
         <button type="submit">Go to editor</button>
     </fieldset>
@@ -109,8 +116,9 @@ var cues = [];
 function set_source_audio() {
     let url = edit_source_audio_element.value;
     sound_element.src = url;
-    sound_element.dataset.title = decodeURIComponent(url.replace(/(^.*\/)([^\/]+)/,'$2'))
-}
+    sound_element.dataset.title = decodeURIComponent(url.replace(/(^.*\/)([^\/]+)/,'$2'));
+    sound_element.dataset.waveform = edit_source_waveform_element.value;
+ }
 
 function check_configure(event) {
     event.preventDefault();
@@ -308,9 +316,11 @@ document.addEventListener('DOMContentLoaded', function(){
     sound_element = document.getElementById('sound');
     list_element = document.getElementById('list');
     edit_source_audio_element = document.getElementById('source_audio');
+    edit_source_waveform_element = document.getElementById('source_waveform');
 
     /* Settings */
     edit_source_audio_element.addEventListener('change', set_source_audio);
+    edit_source_waveform_element.addEventListener('change', set_source_audio);
     document.getElementById('configure').addEventListener('submit', check_configure);
 
     /* Chapter editor */
