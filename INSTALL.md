@@ -49,6 +49,7 @@ Some attributes enhance the component :
 
 * `title="<string>"` : title of the sound ;
 * `poster="<url>"` : cover image, squared ratio recommended ;
+* `waveform="<url>"` : waveform image, will be displayed in the timeline ;
 * `canonical="<url>"` : link to the original page of the sound ; 
 * `mode="<string>"` : kind of presentation :
     * `default` : player with poster, timeline and chapters list,
@@ -60,8 +61,8 @@ Some attributes enhance the component :
     * `poster` : the poster image
     * `actions` : the share button
     * `chapters` : the chapters list
-* `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page) ;
-* `playlist="<string>"` : add this media in a named playlist, play the next one when ended.
+* `playlist="<string>"` : add this media in a named playlist, play the next one when ended ;
+* `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page).
 
 
 How to link

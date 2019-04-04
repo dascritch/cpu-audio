@@ -60,6 +60,7 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
                 return null;
             }(),
         'playlist' : null,
+        'waveform' : null,
     },
 
     /**

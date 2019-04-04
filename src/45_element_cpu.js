@@ -439,9 +439,10 @@ let CPU_element_api = class {
         }
         element_canonical.innerText = dataset.title; 
         this.elements['poster'].src = dataset.poster;
+        this.elements['time'].style.backgroundImage = (dataset.waveform === null) ? '' : `url(${dataset.waveform})`;
     }
     //
-    // @brief Attach the audiotaf to the API
+    // @brief Attach the audiotag to the API
     // @private
     //
     // @param      {<type>}  audiotag  The audiotag
