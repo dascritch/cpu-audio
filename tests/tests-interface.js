@@ -18,7 +18,8 @@ window.addEventListener('load', function() {
 
 	window.location = '#';
 	let audiotag = document.getElementById('track');
-	let interfacetag = document.getElementsByTagName('cpu-audio')[0].shadowRoot.querySelector('div');
+	let componenttag = document.getElementsByTagName('cpu-audio')[0];
+	let interfacetag = componenttag.shadowRoot.querySelector('div');
 	let playground = document.getElementById('playground');
 	audiotag.volume = 0;
 
@@ -422,6 +423,54 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.ok(audiotag.isEqualNode( document.CPU.current_audiotag_playing ), 'Playing, document.CPU.current_audiotag_playing is refering playing audio');
 	});
 	*/
+
+	QUnit.test( "Public API : add_aside won't accept void or out of /[a-zA-Z0-9\\-_]+/ range name ", function( assert ) {
+		playground.innerHTML = `
+		<cpu-audio>
+			<audio id="secondary" controls="controls" muted>
+				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+			</audio>
+		</cpu-audio>`;
+		let secondary_audiotag = document.getElementById('secondary');
+		let secondary_component = secondary_audiotag.closest('cpu-audio');
+		let secondary_API_CPU = secondary_component.CPU;
+		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
+		assert.ok(! secondary_API_CPU.add_aside(''), 'function refuse empty name');
+		assert.ok(! secondary_API_CPU.add_aside('*&0f'), 'function refuse invalid name');
+	});
+
+	QUnit.test( "Public API : add_aside should create an element", function( assert ) {
+		playground.innerHTML = `
+		<cpu-audio>
+			<audio id="secondary" controls="controls" muted>
+				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+			</audio>
+		</cpu-audio>`;
+		let secondary_audiotag = document.getElementById('secondary');
+		let secondary_component = secondary_audiotag.closest('cpu-audio');
+		let secondary_API_CPU = secondary_component.CPU;
+		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
+		assert.ok(secondary_API_CPU.add_aside('hello'), 'function accepts');
+		assert.ok(secondary_interfacetag.querySelector('aside#aside_hello') , 'Element aside added in shadowDom');
+		assert.ok(secondary_API_CPU.elements['aside_hello'] , 'Element registered in component API');
+	});
+
+	QUnit.test( "Public API : add_aside cannot create an element if a already existing same name exists", function( assert ) {
+		playground.innerHTML = `
+		<cpu-audio>
+			<audio id="secondary" controls="controls" muted>
+				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+			</audio>
+		</cpu-audio>`;
+		let secondary_audiotag = document.getElementById('secondary');
+		let secondary_component = secondary_audiotag.closest('cpu-audio');
+		let secondary_API_CPU = secondary_component.CPU;
+		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
+		assert.ok(secondary_API_CPU.add_aside('hello'), 'first call accepts');
+		assert.ok(! secondary_API_CPU.add_aside('hello'), 'second call refuses');
+		assert.ok(secondary_interfacetag.querySelector('aside#aside_hello') , 'Element aside added in shadowDom');
+		assert.ok(secondary_API_CPU.elements['aside_hello'] , 'Element registered in component API');
+	});
 
 
 });

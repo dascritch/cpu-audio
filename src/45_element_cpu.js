@@ -550,8 +550,6 @@ let CPU_element_api = class {
             }
         }
 
-
-
         if (audiotag) {
             if (_forced_track !== undefined) {
                 _build_from_track(_forced_track)
@@ -592,6 +590,31 @@ let CPU_element_api = class {
         }
 
     }
+
+    //
+    // @brief Add an <aside> annotation layer
+    // @public
+    //
+    // @param      {string}  name   A name in the range /[a-zA-Z0-9\-_]+/
+    //
+    add_aside(name) {
+        if (! name.match(/^[a-zA-Z0-9\-_]+$/)) {
+            return false;
+        }
+        let intented_name = `aside_${name}`;
+        let parent_element = this.elements['time'];
+        if (parent_element.querySelector(`#${intented_name}`)) {
+            return false;   
+        }
+
+        let aside = document.createElement('aside');
+        aside.id = intented_name;
+        parent_element.appendChild(aside);
+        this.elements[aside.id] = aside;
+        // clone to eventual <cpu-controller>
+        return true;
+    }
+
     //
     // @brief Builds or refresh the playlist panel. Should be called only for
     // <cpu-controller>
