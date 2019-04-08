@@ -598,7 +598,7 @@ let CPU_element_api = class {
      * @param      {string}  name   The name
      * @return     {HTMLElement}    The <aside> element from ShadowDom interface
      */
-    get_aside_track(name) {
+    get_plane_track(name) {
         return this.elements['time'].querySelector(`#aside_«${name}»`);
     }
 
@@ -608,7 +608,7 @@ let CPU_element_api = class {
      * @param      {string}  name   The name
      * @return     {HTMLElement}    The <nav> element from ShadowDom interface
      */
-    get_aside_panel(name) {
+    get_plane_panel(name) {
         return this.container.querySelector(`#panel_«${name}» > nav`);
     }
 
@@ -621,11 +621,11 @@ let CPU_element_api = class {
     // 
     // @return     {boolean} success
     //
-    add_aside(name, title) {
+    add_plane(name, title) {
         if (! name.match(valid_id)) {
             return false;
         }
-        if (this.get_aside_track(name)) {
+        if (this.get_plane_track(name)) {
             return false;   
         }
 
@@ -653,16 +653,16 @@ let CPU_element_api = class {
     // 
     // @return     {boolean} success
     //
-    remove_aside(name) {
+    remove_plane(name) {
         if (! name.match(valid_id)) {
             return false;
         }
-        let remove_element = this.get_aside_track(name);
+        let remove_element = this.get_plane_track(name);
         if (!remove_element) {
             return false;   
         }
         remove_element.remove()
-        remove_element = this.get_aside_panel(name);
+        remove_element = this.get_plane_panel(name);
         if (remove_element) {
             remove_element.remove();
         }
@@ -689,7 +689,7 @@ let CPU_element_api = class {
      * @param      {string}  name   The name
      * @return     {HTMLElement}    The <div> point element into <aside> from ShadowDom interface
      */
-    get_aside_point_track(aside_name, point_name) {
+    get_plane_point_track(aside_name, point_name) {
         return this.elements['time'].querySelector('#' + this.get_point_track_id(aside_name, point_name, false));
     }
 
@@ -699,7 +699,7 @@ let CPU_element_api = class {
      * @param      {string}  name   The name
      * @return     {HTMLElement}    The <li> point element into panel from ShadowDom interface
      */
-    get_aside_point_panel(aside_name, point_name) {
+    get_plane_point_panel(aside_name, point_name) {
         return this.container.querySelector('#' + this.get_point_track_id(aside_name, point_name, true));
     }
     //
@@ -713,10 +713,10 @@ let CPU_element_api = class {
     // 
     // @return     {boolean} success
     //
-    add_aside_point(aside_name, timecode_start, point_name, data) {
-        let aside = this.get_aside_track(aside_name);
-        let panel = this.get_aside_panel(aside_name);
-        if ( (!aside) || (timecode_start < 0) || (!point_name.match(valid_id)) || (this.get_aside_point_track(aside_name, point_name)) ) {
+    add_plane_point(aside_name, timecode_start, point_name, data) {
+        let aside = this.get_plane_track(aside_name);
+        let panel = this.get_plane_panel(aside_name);
+        if ( (!aside) || (timecode_start < 0) || (!point_name.match(valid_id)) || (this.get_plane_point_track(aside_name, point_name)) ) {
             return false;
         }
 
@@ -750,13 +750,13 @@ let CPU_element_api = class {
     // @param      {string}   point_name    A name in the range /[a-zA-Z0-9\-_]+/
     // @return     {boolean}  success
     //
-    remove_aside_point(aside_name, point_name) {
-        let point_track_element = this.get_aside_point_track(aside_name, point_name);
+    remove_plane_point(aside_name, point_name) {
+        let point_track_element = this.get_plane_point_track(aside_name, point_name);
         if (!point_track_element) {
             return false;
         }
         point_track_element.remove();
-        this.get_aside_point_panel(aside_name, point_name).remove();
+        this.get_plane_point_panel(aside_name, point_name).remove();
         // clone to eventual <cpu-controller>
 
         return true;
@@ -768,8 +768,8 @@ let CPU_element_api = class {
      *
      * @param      {string}  aside_name  The aside name
      */
-    clear_aside(aside_name) {
-        let remove_from_element = this.get_aside_track(aside_name);
+    clear_plane(aside_name) {
+        let remove_from_element = this.get_plane_track(aside_name);
         if (!remove_from_element) {
             return false;   
         }
@@ -778,7 +778,7 @@ let CPU_element_api = class {
 
         querySelector_apply('div',function (element) {
             let point_name = element.id.replace(motif, '$2');
-            self.remove_aside_point(aside_name, point_name);
+            self.remove_plane_point(aside_name, point_name);
         }, remove_from_element);
         
         return true;

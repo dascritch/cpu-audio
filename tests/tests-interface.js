@@ -424,7 +424,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 	});
 	*/
 
-	QUnit.test( "Public API : add_aside won't accept void or out of /[a-zA-Z0-9\\-_]+/ range name ", function( assert ) {
+	QUnit.test( "Public API : add_plane won't accept void or out of /[a-zA-Z0-9\\-_]+/ range name ", function( assert ) {
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
@@ -435,11 +435,11 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_component = secondary_audiotag.closest('cpu-audio');
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
-		assert.ok(! secondary_API_CPU.add_aside(''), 'function refuse empty name');
-		assert.ok(! secondary_API_CPU.add_aside('*&0f'), 'function refuse invalid name');
+		assert.ok(! secondary_API_CPU.add_plane(''), 'function refuse empty name');
+		assert.ok(! secondary_API_CPU.add_plane('*&0f'), 'function refuse invalid name');
 	});
 
-	QUnit.test( "Public API : add_aside should create elements", function( assert ) {
+	QUnit.test( "Public API : add_plane should create elements", function( assert ) {
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
@@ -450,18 +450,18 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_component = secondary_audiotag.closest('cpu-audio');
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
-		assert.ok(secondary_API_CPU.add_aside('hello', 'Hello<>&'), 'function accepts');
+		assert.ok(secondary_API_CPU.add_plane('hello', 'Hello<>&'), 'function accepts');
 		assert.ok(secondary_interfacetag.querySelector('aside#aside_«hello»') , 'DOM element aside added in the track line');
 		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello»') , 'DOM element div added as a panel');
 		assert.equal(secondary_interfacetag.querySelector('div.panel#panel_«hello» h6').innerText, 'Hello<>&', 'panel as a h6 with a properly escaped title');
-		secondary_API_CPU.add_aside('untitled');
+		secondary_API_CPU.add_plane('untitled');
 		assert.equal(secondary_interfacetag.querySelector('div.panel#panel_«untitled» h6'), null, 'Untitled panel doesn\'t have any h6');
 
-		assert.equal(secondary_API_CPU.get_aside_track('hello').tagName, 'ASIDE', 'get_aside_track() returns DOM element and is a <aside>');
-		assert.equal(secondary_API_CPU.get_aside_panel('hello').tagName, 'NAV', 'get_aside_panel() returns DOM element and is a <nav>');
+		assert.equal(secondary_API_CPU.get_plane_track('hello').tagName, 'ASIDE', 'get_plane_track() returns DOM element and is a <aside>');
+		assert.equal(secondary_API_CPU.get_plane_panel('hello').tagName, 'NAV', 'get_plane_panel() returns DOM element and is a <nav>');
 	});
 
-	QUnit.test( "Public API : add_aside cannot create an element if a already existing same name exists", function( assert ) {
+	QUnit.test( "Public API : add_plane cannot create an element if a already existing same name exists", function( assert ) {
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
@@ -472,12 +472,12 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_component = secondary_audiotag.closest('cpu-audio');
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
-		assert.ok(secondary_API_CPU.add_aside('hello'), 'first call accepts');
-		assert.ok(! secondary_API_CPU.add_aside('hello'), 'second call refuses');
-		assert.ok(secondary_API_CPU.get_aside_track('hello'), 'Element aside added in shadowDom');
+		assert.ok(secondary_API_CPU.add_plane('hello'), 'first call accepts');
+		assert.ok(! secondary_API_CPU.add_plane('hello'), 'second call refuses');
+		assert.ok(secondary_API_CPU.get_plane_track('hello'), 'Element aside added in shadowDom');
 	});
 
-	QUnit.test( "Public API : remove_aside", function( assert ) {
+	QUnit.test( "Public API : remove_plane", function( assert ) {
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
@@ -488,16 +488,16 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_component = secondary_audiotag.closest('cpu-audio');
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
-		assert.ok(! secondary_API_CPU.remove_aside(''), 'function refuse empty name');
-		assert.ok(! secondary_API_CPU.remove_aside('*&0f'), 'function refuse invalid name');
-		assert.ok(! secondary_API_CPU.remove_aside('a_girl_has_no_name'), 'function refuse inexisting plane');
+		assert.ok(! secondary_API_CPU.remove_plane(''), 'function refuse empty name');
+		assert.ok(! secondary_API_CPU.remove_plane('*&0f'), 'function refuse invalid name');
+		assert.ok(! secondary_API_CPU.remove_plane('a_girl_has_no_name'), 'function refuse inexisting plane');
 
-		assert.ok(secondary_API_CPU.add_aside('hello'), 'create aside')
-		assert.ok(secondary_API_CPU.remove_aside('hello'), 'remove created plane successfull');
-		assert.ok(!secondary_API_CPU.get_aside_track('hello'), 'Element aside removed in shadowDom');
+		assert.ok(secondary_API_CPU.add_plane('hello'), 'create plane')
+		assert.ok(secondary_API_CPU.remove_plane('hello'), 'remove created plane successfull');
+		assert.ok(!secondary_API_CPU.get_plane_track('hello'), 'Element aside removed in shadowDom');
 	});
 
-	QUnit.test( "Public API : add_aside_point", function( assert ) {
+	QUnit.test( "Public API : add_plane_point", function( assert ) {
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
@@ -508,21 +508,21 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_component = secondary_audiotag.closest('cpu-audio');
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
-		assert.ok(! secondary_API_CPU.add_aside_point('hello', 2, 'point'), 'function cannot works without a created aside');
-		secondary_API_CPU.add_aside('hello');
-		assert.ok(! secondary_API_CPU.add_aside_point('hello', -2, 'point'), 'function cannot works with a negative timecode');
-		assert.ok(! secondary_API_CPU.add_aside_point('hello', 2, ''), 'function cannot works with an empty name');
-		assert.ok(! secondary_API_CPU.add_aside_point('hello', 2, '*&0f'), 'function refuse invalid name');
-		assert.ok(secondary_API_CPU.add_aside_point('hello', 2, 'world'), 'function accept when parameters are valid');
-		assert.ok(!secondary_API_CPU.add_aside_point('hello', 10, 'world'), 'function refuse another name with the same point name in the same track');
+		assert.ok(! secondary_API_CPU.add_plane_point('hello', 2, 'point'), 'function cannot works without a created plane');
+		secondary_API_CPU.add_plane('hello');
+		assert.ok(! secondary_API_CPU.add_plane_point('hello', -2, 'point'), 'function cannot works with a negative timecode');
+		assert.ok(! secondary_API_CPU.add_plane_point('hello', 2, ''), 'function cannot works with an empty name');
+		assert.ok(! secondary_API_CPU.add_plane_point('hello', 2, '*&0f'), 'function refuse invalid name');
+		assert.ok(secondary_API_CPU.add_plane_point('hello', 2, 'world'), 'function accept when parameters are valid');
+		assert.ok(!secondary_API_CPU.add_plane_point('hello', 10, 'world'), 'function refuse another name with the same point name in the same track');
 
 		assert.ok(secondary_interfacetag.querySelector('aside#aside_«hello» > div#aside_«hello»_point_«world»') , 'DOM element point added in aside track');
 		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > li#panel_«hello»_point_«world»'), 'DOM element point added in panel');
 
-		let point_in_track = secondary_API_CPU.get_aside_point_track('hello', 'world');
-		let point_in_panel = secondary_API_CPU.get_aside_point_panel('hello', 'world');
-		assert.ok(point_in_track, 'get_aside_point_track() returns DOM element');
-		assert.ok(point_in_panel, 'get_aside_point_panel() returns DOM element');
+		let point_in_track = secondary_API_CPU.get_plane_point_track('hello', 'world');
+		let point_in_panel = secondary_API_CPU.get_plane_point_panel('hello', 'world');
+		assert.ok(point_in_track, 'get_plane_point_track() returns DOM element');
+		assert.ok(point_in_panel, 'get_plane_point_panel() returns DOM element');
 
 		let time_in_point = point_in_panel.querySelector('time');
 		assert.ok(time_in_point, 'point in panel has a <time> indication');
@@ -535,7 +535,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 	});
 
-	QUnit.test( "Public API : remove_aside_point", function( assert ) {
+	QUnit.test( "Public API : remove_plane_point", function( assert ) {
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
@@ -546,20 +546,20 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_component = secondary_audiotag.closest('cpu-audio');
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
-		secondary_API_CPU.add_aside('hello');
-		assert.ok(! secondary_API_CPU.remove_aside_point('pipo', 'point'), 'function cannot works with a non-existing aside');
-		assert.ok(! secondary_API_CPU.remove_aside_point('hello', 'point'), 'function cannot works with a non-existing point');
-		secondary_API_CPU.add_aside_point('hello', 2, 'point');
-		assert.ok(secondary_API_CPU.remove_aside_point('hello', 'point'), 'function accept when parameters are valid');
+		secondary_API_CPU.add_plane('hello');
+		assert.ok(! secondary_API_CPU.remove_plane_point('pipo', 'point'), 'function cannot works with a non-existing aside');
+		assert.ok(! secondary_API_CPU.remove_plane_point('hello', 'point'), 'function cannot works with a non-existing point');
+		secondary_API_CPU.add_plane_point('hello', 2, 'point');
+		assert.ok(secondary_API_CPU.remove_plane_point('hello', 'point'), 'function accept when parameters are valid');
 
-		assert.equal(secondary_API_CPU.get_aside_point_track('hello', 'point'), null , 'get_aside_point_track() returns null');
-		assert.equal(secondary_API_CPU.get_aside_point_panel('hello', 'point'), null, 'get_aside_point_panel() returns null');
+		assert.equal(secondary_API_CPU.get_plane_point_track('hello', 'point'), null , 'get_aside_point_track() returns null');
+		assert.equal(secondary_API_CPU.get_plane_point_panel('hello', 'point'), null, 'get_aside_point_panel() returns null');
 		assert.ok(! secondary_interfacetag.querySelector('aside#aside_«hello» > div#aside_«hello»_point_«point»') , 'DOM element point removed from aside track');
 		assert.ok(! secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > li#panel_«hello»_point_«point»') , 'DOM element point removed from panel');
 
 	});
 
-	QUnit.test( "Public API : clear_aside", function( assert ) {
+	QUnit.test( "Public API : clear_plane", function( assert ) {
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
@@ -570,17 +570,17 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_component = secondary_audiotag.closest('cpu-audio');
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
-		secondary_API_CPU.add_aside('hello');
-		secondary_API_CPU.add_aside_point('hello', 2, 'point');
-		secondary_API_CPU.add_aside_point('hello', 20, 'point2');
-		assert.ok(! secondary_API_CPU.clear_aside('point'), 'function return false when parameter is invalid');
-		assert.ok(secondary_API_CPU.clear_aside('hello'), 'function accept when parameter is valid');
+		secondary_API_CPU.add_plane('hello');
+		secondary_API_CPU.add_plane_point('hello', 2, 'point');
+		secondary_API_CPU.add_plane_point('hello', 20, 'point2');
+		assert.ok(! secondary_API_CPU.clear_plane('point'), 'function return false when parameter is invalid');
+		assert.ok(secondary_API_CPU.clear_plane('hello'), 'function accept when parameter is valid');
 
-		assert.equal(secondary_API_CPU.get_aside_point_track('hello', 'point'), null , 'get_aside_point_track() returns null');
-		assert.equal(secondary_API_CPU.get_aside_point_panel('hello', 'point'), null, 'get_aside_point_panel() returns null');
+		assert.equal(secondary_API_CPU.get_plane_point_track('hello', 'point'), null , 'get_plane_point_track() returns null');
+		assert.equal(secondary_API_CPU.get_plane_point_panel('hello', 'point'), null, 'get_plane_point_panel() returns null');
 		assert.ok(! secondary_interfacetag.querySelector('aside#aside_«hello» > div#aside_«hello»_point_«point»') , 'DOM element point removed from aside track');
 		assert.ok(! secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > li#panel_«hello»_point_«point»') , 'DOM element point removed from panel');
-		assert.equal(secondary_API_CPU.get_aside_point_track('hello', 'point2'), null , 'second point removed');
+		assert.equal(secondary_API_CPU.get_plane_point_track('hello', 'point2'), null , 'second point removed');
 
 	});
 
