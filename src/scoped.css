@@ -228,6 +228,17 @@ a {
     left : 0;
     pointer-events : none;
 }
+:host(:hover) #loadingline:after,
+:host(:focus) #loadingline:after {
+  content : '';
+  position: absolute;
+  right : 0px;
+  width : 0px;
+  height : var(--cpu-timeline-height);
+  display : block;
+  outline : var(--cpu-playing-color) 4px solid;
+}
+
 #elapsedline {
     z-index : 2;
 }
