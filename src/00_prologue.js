@@ -6,3 +6,4 @@ const CpuControllerTagName = 'CPU-CONTROLLER';
 const selector_interface = '#interface';
 const acceptable_selector = 'audio[controls]';
 const acceptable_hide_atttributes = ['poster', 'actions', 'chapters'];
+const valid_id = /^[a-zA-Z0-9\-_]+$/;

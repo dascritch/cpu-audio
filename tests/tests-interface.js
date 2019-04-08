@@ -472,5 +472,25 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.ok(secondary_API_CPU.elements['aside_hello'] , 'Element registered in component API');
 	});
 
+	QUnit.test( "Public API : remove_aside", function( assert ) {
+		playground.innerHTML = `
+		<cpu-audio>
+			<audio id="secondary" controls="controls" muted>
+				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+			</audio>
+		</cpu-audio>`;
+		let secondary_audiotag = document.getElementById('secondary');
+		let secondary_component = secondary_audiotag.closest('cpu-audio');
+		let secondary_API_CPU = secondary_component.CPU;
+		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
+		assert.ok(! secondary_API_CPU.remove_aside(''), 'function refuse empty name');
+		assert.ok(! secondary_API_CPU.remove_aside('*&0f'), 'function refuse invalid name');
+		assert.ok(! secondary_API_CPU.remove_aside('a_girl_has_no_name'), 'function refuse inexisting plane');
+
+		assert.ok(secondary_API_CPU.add_aside('hello'), 'create aside')
+		assert.ok(secondary_API_CPU.remove_aside('hello'), 'remove created plane successfull');
+		assert.ok(!secondary_interfacetag.querySelector('aside#aside_hello') , 'Element aside removed in shadowDom');
+		assert.ok(!secondary_API_CPU.elements['aside_hello'] , 'Element unregistered in component API');
+	});
 
 });

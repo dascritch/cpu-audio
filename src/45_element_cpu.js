@@ -598,7 +598,7 @@ let CPU_element_api = class {
     // @param      {string}  name   A name in the range /[a-zA-Z0-9\-_]+/
     //
     add_aside(name) {
-        if (! name.match(/^[a-zA-Z0-9\-_]+$/)) {
+        if (! name.match(valid_id)) {
             return false;
         }
         let intented_name = `aside_${name}`;
@@ -612,6 +612,29 @@ let CPU_element_api = class {
         parent_element.appendChild(aside);
         this.elements[aside.id] = aside;
         // clone to eventual <cpu-controller>
+        return true;
+    }
+    //
+    // @brief Remove an <aside> annotation layer
+    // @public
+    //
+    // @param      {string}  name   A name in the range /[a-zA-Z0-9\-_]+/
+    //
+    remove_aside(name) {
+        if (! name.match(valid_id)) {
+            return false;
+        }
+        let intented_name = `aside_${name}`;
+        let parent_element = this.elements['time'];
+        let remove_element = parent_element.querySelector(`#${intented_name}`);
+        if (!remove_element) {
+            return false;   
+        }
+        remove_element.remove()
+        this.elements[intented_name] = undefined;
+        /*
+        // clone to eventual <cpu-controller>
+        */
         return true;
     }
 
