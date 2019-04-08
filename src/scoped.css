@@ -393,7 +393,7 @@ a {
     border-right: 4px solid transparent;
 } 
 
-#chapters, #playlist {
+#chapters, #playlist, .panel {
     display : flex;
     overflow : scoll;
     background : var(--cpu-background);

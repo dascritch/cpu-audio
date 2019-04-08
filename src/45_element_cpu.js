@@ -237,6 +237,7 @@ let CPU_element_api = class {
         phylactere.style.opacity = 1;
         phylactere.style.left = (100 * seeked_time / this.audiotag.duration) +'%';
         phylactere.innerHTML = convert.SecondsInColonTime(seeked_time);
+        phylactere.dateTime = convert.SecondsInTime(seeked_time).toUpperCase();
     }
     //
     // @brief Hides immediately the throbber.
@@ -591,26 +592,52 @@ let CPU_element_api = class {
 
     }
 
+    /**
+     * Gets the aside track element
+     *
+     * @param      {string}  name   The name
+     * @return     {HTMLElement}    The <aside> element from ShadowDom interface
+     */
+    get_aside_track(name) {
+        return this.elements['time'].querySelector(`#aside_«${name}»`);
+    }
+
+    /**
+     * Gets the aside panel element
+     *
+     * @param      {string}  name   The name
+     * @return     {HTMLElement}    The <nav> element from ShadowDom interface
+     */
+    get_aside_panel(name) {
+        return this.container.querySelector(`#panel_«${name}» > nav`);
+    }
+
     //
     // @brief Add an <aside> annotation layer
     // @public
     //
     // @param      {string}  name   A name in the range /[a-zA-Z0-9\-_]+/
+    // @param      {string}  title  The displayed title for the panel
+    // 
+    // @return     {boolean} success
     //
-    add_aside(name) {
+    add_aside(name, title) {
         if (! name.match(valid_id)) {
             return false;
         }
-        let intented_name = `aside_${name}`;
-        let parent_element = this.elements['time'];
-        if (parent_element.querySelector(`#${intented_name}`)) {
+        if (this.get_aside_track(name)) {
             return false;   
         }
 
-        let aside = document.createElement('aside');
-        aside.id = intented_name;
-        parent_element.appendChild(aside);
-        this.elements[aside.id] = aside;
+        let aside_track = document.createElement('aside');
+        aside_track.id = `aside_«${name}»`;
+        this.elements['time'].appendChild(aside_track);
+
+        let aside_panel = document.createElement('div');
+        aside_panel.id = `panel_«${name}»`;
+        aside_panel.classList.add('panel')
+        aside_panel.innerHTML = `<h6>${escapeHTML(title)}</h6><nav></nav>`;
+        this.container.appendChild(aside_panel);
         // clone to eventual <cpu-controller>
         return true;
     }
@@ -619,22 +646,75 @@ let CPU_element_api = class {
     // @public
     //
     // @param      {string}  name   A name in the range /[a-zA-Z0-9\-_]+/
+    // 
+    // @return     {boolean} success
     //
     remove_aside(name) {
         if (! name.match(valid_id)) {
             return false;
         }
-        let intented_name = `aside_${name}`;
-        let parent_element = this.elements['time'];
-        let remove_element = parent_element.querySelector(`#${intented_name}`);
+        let remove_element = this.get_aside_track(name);
         if (!remove_element) {
             return false;   
         }
         remove_element.remove()
-        this.elements[intented_name] = undefined;
-        /*
+        remove_element = this.get_aside_panel(name);
+        if (remove_element) {
+            remove_element.remove();
+        }
         // clone to eventual <cpu-controller>
-        */
+        return true;
+    }
+
+    /**
+     * Gets the aside point element in the track
+     *
+     * @param      {string}  name   The name
+     * @return     {HTMLElement}    The <div> point element into <aside> from ShadowDom interface
+     */
+    get_aside_point_track(aside_name, point_name) {
+        return this.elements['time'].querySelector(`#aside_«${aside_name}»_point_«${point_name}»`);
+    }
+
+    /**
+     * Gets the aside point element in the panel
+     *
+     * @param      {string}  name   The name
+     * @return     {HTMLElement}    The <li> point element into panel from ShadowDom interface
+     */
+    get_aside_point_panel(aside_name, point_name) {
+        return this.container.querySelector(`#panel_«${aside_name}»_point_«${point_name}»`);
+    }
+    //
+    // @brief Add an annotation
+    // @public
+    //
+    // @param      {string}  aside_name      The existing aside name
+    // @param      {number}  timecode_start  The timecode start for this annotation
+    // @param      {<string} point_name      The point name, in the range /[a-zA-Z0-9\-_]+/
+    // @param      {<type>}  data            object : { 'image' : <url>, 'link' : <url>, 'text' : <text>, 'length' : <seconds> }
+    // 
+    // @return     {boolean} success
+    //
+    add_aside_point(aside_name, timecode_start, point_name, data) {
+        let aside = this.get_aside_track(aside_name);
+        if ( (!aside) || (timecode_start < 0) || (!point_name.match(valid_id)) || (this.get_aside_point_track(aside_name, point_name)) ) {
+            return false;
+        }
+        let intended_id = `aside_«${aside_name}»_point_«${point_name}»`
+        let point_element = document.createElement('div');
+        point_element.id = intended_id;
+        aside.appendChild(point_element);
+
+        let panel = this.get_aside_panel(aside_name);
+        if (panel) {
+            intended_id = `panel_«${aside_name}»_point_«${point_name}»`
+            let li = document.createElement('li');
+            li.id = intended_id;
+            // see valid duration time https://www.w3.org/TR/2014/REC-html5-20141028/infrastructure.html#valid-duration-string
+            li.innerHTML = `<time datetime="P${convert.SecondsInTime(timecode_start).toUpperCase()}">${convert.SecondsInColonTime(timecode_start)}</time>`; 
+            panel.appendChild(li);
+        }
         return true;
     }
 
