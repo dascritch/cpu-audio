@@ -636,7 +636,11 @@ let CPU_element_api = class {
         let aside_panel = document.createElement('div');
         aside_panel.id = `panel_«${name}»`;
         aside_panel.classList.add('panel')
-        aside_panel.innerHTML = `<h6>${escapeHTML(title)}</h6><nav></nav>`;
+        let inner = '<nav></nav>';
+        if (title !== undefined) {
+            inner = `<h6>${escapeHTML(title)}</h6>${inner}`;
+        }
+        aside_panel.innerHTML = inner;
         this.container.appendChild(aside_panel);
         // clone to eventual <cpu-controller>
         return true;
@@ -667,13 +671,26 @@ let CPU_element_api = class {
     }
 
     /**
+     * Gets the point track identifier.
+     * @private
+     *
+     * @param      {string}  aside_name  The aside name
+     * @param      {string}  point_name  The point name
+     * @param      {boolean} panel       Is panel (true) or track (false)
+     * @return     {string}  The point track identifier.
+     */
+    get_point_track_id(aside_name, point_name, panel) {
+        return `${panel?'panel':'aside'}_«${aside_name}»_point_«${point_name}»`;
+    }
+
+    /**
      * Gets the aside point element in the track
      *
      * @param      {string}  name   The name
      * @return     {HTMLElement}    The <div> point element into <aside> from ShadowDom interface
      */
     get_aside_point_track(aside_name, point_name) {
-        return this.elements['time'].querySelector(`#aside_«${aside_name}»_point_«${point_name}»`);
+        return this.elements['time'].querySelector('#' + this.get_point_track_id(aside_name, point_name, false));
     }
 
     /**
@@ -683,7 +700,7 @@ let CPU_element_api = class {
      * @return     {HTMLElement}    The <li> point element into panel from ShadowDom interface
      */
     get_aside_point_panel(aside_name, point_name) {
-        return this.container.querySelector(`#panel_«${aside_name}»_point_«${point_name}»`);
+        return this.container.querySelector('#' + this.get_point_track_id(aside_name, point_name, true));
     }
     //
     // @brief Add an annotation
@@ -698,19 +715,26 @@ let CPU_element_api = class {
     //
     add_aside_point(aside_name, timecode_start, point_name, data) {
         let aside = this.get_aside_track(aside_name);
+        let panel = this.get_aside_panel(aside_name);
         if ( (!aside) || (timecode_start < 0) || (!point_name.match(valid_id)) || (this.get_aside_point_track(aside_name, point_name)) ) {
             return false;
         }
-        let intended_id = `aside_«${aside_name}»_point_«${point_name}»`
+
+        let intended_aside_id = this.get_point_track_id(aside_name, point_name, false);
+        let intended_panel_id = this.get_point_track_id(aside_name, point_name, true);
         let point_element = document.createElement('div');
-        point_element.id = intended_id;
+        point_element.id = intended_aside_id;
+        let inner = '';
+        if (panel) {
+            inner = `<a href="#${intended_panel_id}">${inner}</a>`;
+        }
+        point_element.innerHTML = inner;
         aside.appendChild(point_element);
 
-        let panel = this.get_aside_panel(aside_name);
         if (panel) {
-            intended_id = `panel_«${aside_name}»_point_«${point_name}»`
+            
             let li = document.createElement('li');
-            li.id = intended_id;
+            li.id = intended_panel_id;
             // see valid duration time https://www.w3.org/TR/2014/REC-html5-20141028/infrastructure.html#valid-duration-string
             li.innerHTML = `<time datetime="P${convert.SecondsInTime(timecode_start).toUpperCase()}">${convert.SecondsInColonTime(timecode_start)}</time>`; 
             // si y'a u lien, englober
@@ -735,6 +759,28 @@ let CPU_element_api = class {
         this.get_aside_point_panel(aside_name, point_name).remove();
         // clone to eventual <cpu-controller>
 
+        return true;
+    }
+
+    /**
+     * Remove any points from an aside
+     * @public
+     *
+     * @param      {string}  aside_name  The aside name
+     */
+    clear_aside(aside_name) {
+        let remove_from_element = this.get_aside_track(aside_name);
+        if (!remove_from_element) {
+            return false;   
+        }
+        let motif = /^(.*_«)([a-zA-Z0-9\-_]+)(»)$/;
+        let self = this;
+
+        querySelector_apply('div',function (element) {
+            let point_name = element.id.replace(motif, '$2');
+            self.remove_aside_point(aside_name, point_name);
+        }, remove_from_element);
+        
         return true;
     }
 
