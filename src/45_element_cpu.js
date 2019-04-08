@@ -713,8 +713,28 @@ let CPU_element_api = class {
             li.id = intended_id;
             // see valid duration time https://www.w3.org/TR/2014/REC-html5-20141028/infrastructure.html#valid-duration-string
             li.innerHTML = `<time datetime="P${convert.SecondsInTime(timecode_start).toUpperCase()}">${convert.SecondsInColonTime(timecode_start)}</time>`; 
+            // si y'a u lien, englober
             panel.appendChild(li);
         }
+        return true;
+    }
+    //
+    // @brief Remove an point from an aside
+    // @public
+    //
+    // @param      {string}   aside_name    A name in the range /[a-zA-Z0-9\-_]+/
+    // @param      {string}   point_name    A name in the range /[a-zA-Z0-9\-_]+/
+    // @return     {boolean}  success
+    //
+    remove_aside_point(aside_name, point_name) {
+        let point_track_element = this.get_aside_point_track(aside_name, point_name);
+        if (!point_track_element) {
+            return false;
+        }
+        point_track_element.remove();
+        this.get_aside_point_panel(aside_name, point_name).remove();
+        // clone to eventual <cpu-controller>
+
         return true;
     }
 

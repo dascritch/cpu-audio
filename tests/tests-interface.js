@@ -525,7 +525,31 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 	});
 
+	QUnit.test( "Public API : remove_aside_point", function( assert ) {
+		playground.innerHTML = `
+		<cpu-audio>
+			<audio id="secondary" controls="controls" muted>
+				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+			</audio>
+		</cpu-audio>`;
+		let secondary_audiotag = document.getElementById('secondary');
+		let secondary_component = secondary_audiotag.closest('cpu-audio');
+		let secondary_API_CPU = secondary_component.CPU;
+		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
+		secondary_API_CPU.add_aside('hello');
+		assert.ok(! secondary_API_CPU.remove_aside_point('pipo', 'point'), 'function cannot works with a non-existing aside');
+		assert.ok(! secondary_API_CPU.remove_aside_point('hello', 'point'), 'function cannot works with a non-existing point');
+		secondary_API_CPU.add_aside_point('hello', 2, 'point');
+		assert.ok(secondary_API_CPU.remove_aside_point('hello', 'point'), 'function accept when parameters are valid');
+
+		assert.equal(secondary_API_CPU.get_aside_point_track('hello', 'point'), null , 'get_aside_point_track() returns null');
+		assert.equal(secondary_API_CPU.get_aside_point_panel('hello', 'point'), null, 'get_aside_point_panel() returns null');
+		assert.ok(! secondary_interfacetag.querySelector('aside#aside_«hello» > div#aside_«hello»_point_«point»') , 'DOM element point removed from aside track');
+		assert.ok(! secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > li#panel_«hello»_point_«point»') , 'DOM element point removed from panel');
+
+	});
+
 	// secondary_API_CPU.remove_aside_point
-	// secondary_API_CPU.remove_aside_points
+	// secondary_API_CPU.clear_aside
 
 });
