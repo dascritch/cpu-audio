@@ -18,7 +18,7 @@
     ms-user-select: none;
     webkit-user-select: none;
     user-select: none;
-    transition : color var(--cpu-color-transitions), background-color var(--cpu-background-transitions);
+    transition : color var(--cpu-color-transitions), background-color var(--cpu-background-transitions), opacity var(--cpu-background-transitions);
 }
 
 main {
@@ -51,6 +51,10 @@ a:hover, a:focus, button:hover, button:focus {
 }
 a:hover svg , a:focus svg {
     fill : currentColor;
+}
+
+em, i {
+    font-style: italic;
 }
 
 #loading circle {
@@ -228,39 +232,45 @@ a {
     left : 0;
     pointer-events : none;
 }
-:host(:hover) #loadingline:after,
-:host(:focus) #loadingline:after {
-  content : '';
-  position: absolute;
-  right : 0px;
-  width : 0px;
-  height : var(--cpu-timeline-height);
-  display : block;
-  outline : var(--cpu-playing-color) 4px solid;
+#loadingline:after {
+    content : '';
+    position: absolute;
+    right : 0px;
+    width : 0px;
+    height : var(--cpu-timeline-height);
+    display : block;
+    outline : var(--cpu-playing-color) 4px solid;
+    z-index : 127;
+    opacity : 0; 
+}
+
+main:hover #loadingline:after,
+main:focus #loadingline:after {
+    opacity : 1;
 }
 
 #elapsedline {
     z-index : 2;
 }
-#chaptersline {
+/*#chaptersline*/ #aside_«_chapters» {
     position : absolute;
     width : 100%;
     height : 2px;
     bottom : -2px;
 }
 
-#chaptersline a {
+/*#chaptersline*/ #aside_«_chapters» a {
     position : absolute;
     background : black;
     display : block;
     height : 2px;
     border : 1px solid var(--cpu-background);
 }
-#chaptersline a:hover, #chaptersline a.with-preview {
+/*#chaptersline*/ #aside_«_chapters» a:hover, /* #chaptersline*/ #aside_«_chapters» a.with-preview {
     background : white;
 }
 
-#chaptersline a.active-cue {
+/* #chaptersline */ #aside_«_chapters» a.active-cue {
     background : var(--cpu-color);
 }
 
@@ -414,6 +424,10 @@ a {
     padding : 0 var(--cpu-min-padding);
     box-shadow: var(--cpu-inner-shadow);
 }
+.panel h6 {
+    text-align : center;
+}
+
 .cue {
     border-top : 1px solid black;
     display : flex;
@@ -429,7 +443,7 @@ a {
     flex : 1 1;
     font-weight : normal;
 }
-.cue span {
+.cue time {
     flex : 0 0 var(--cpu-elapse-width);
     text-align : right;
 }
@@ -448,16 +462,19 @@ a {
 .mode-compact #line,
 .mode-compact #actions,
 .mode-compact #chapters,
+.mode-compact aside, .mode-compact .panel,
 .mode-button #poster,
 .mode-button #about,
 .mode-button #actions,
-.mode-button #chapters {
+.mode-button #chapters,
+.mode-button aside, .mode-button .panel {
     width : 0;
     display : none;
 }
 
 .mode-hidden,
-.hide-chapters #chapters {
+.hide-chapters #chapters,
+.hide-chapters #panel_«chapters» {
     display : none;
 }
 

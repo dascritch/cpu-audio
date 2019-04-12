@@ -16,6 +16,8 @@ const sources_i18n = {
         'download' : 'Télécharger',
         'back' : 'Annuler',
 
+        'chapters' : 'Chapitres',
+
         'media_err_aborted' : 'Vous avez annulé la lecture.',
         'media_err_network' : 'Une erreur réseau a causé l\'interruption du téléchargement.',
         'media_err_decode' : 'La lecture du sonore a été annulée suite à des problèmes de corruption ou de fonctionnalités non supportés par votre navigateur.',
@@ -39,6 +41,8 @@ const sources_i18n = {
         'download' : 'Download',
         'back' : 'Back',
 
+        'chapters' : 'Chapters',
+
         'media_err_aborted' : 'You have aborted the play.',
         'media_err_network' : 'A network error broke the download.',
         'media_err_decode' : 'Play was canceled due to file corruption or a not supported function in your browser.',
@@ -48,7 +52,7 @@ const sources_i18n = {
 };
 
 
-let prefered_language = 'fr';
+let prefered_language = 'en';
 let languages = window.navigator.languages ;
 languages = (languages !== undefined) ? 
             languages : 

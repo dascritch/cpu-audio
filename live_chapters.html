@@ -217,9 +217,9 @@ function interpret_form(event) {
         let out2=[];
         for(let line of chapters) {
            out1.push(`\n\t<li><a href="#t=${Math.floor(line.time)}">${line.text} (${document.CPU.convert.SecondsInColonTime(line.time)})</a></li>`) 
-           out2.push(`\n\t<li>${line.text} (<a href="#t=${Math.floor(line.time)}">${document.CPU.convert.SecondsInColonTime(line.time)}</a>)</li>`) 
+           out2.push(`\n\t<li>${line.text} — (<a href="#t=${Math.floor(line.time)}">${document.CPU.convert.SecondsInColonTime(line.time)}</a>)</li>`) 
         }
-        return `<ol>${out1.join('')}\n</ol>\n\n<ol>${out2.join('')}\n</ol>`;
+        return `<ol>${out1.join('')}\n</ol>\n<p>Alternate version :</p>\n<ol>${out2.join('')}\n</ol>`;
     }
 
     function build_md_source() {

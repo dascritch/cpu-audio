@@ -13,6 +13,10 @@ let CPU_element_api = class {
         this.audiotag = element._audiotag;
         this.container = container_interface;
         this.mode_when_play = null;
+        // record some related data on the <audio> tag, outside the dataset scheme
+        if (this.audiotag) {
+            this.audiotag._CPU_planes = {}
+        }
     }
 
     //
@@ -264,41 +268,6 @@ let CPU_element_api = class {
         phylactere._hider = window.setTimeout(this.hide_throbber, hide_throbber_delay, this);
     }
 
-    // @private not mature enough
-    //
-    // @brief preview a timecode on the lines, or a chapter
-    //
-    // @param      {number}  _timecode_start  The timecode start
-    // @param      {number}  _timecode_end    The timecode end
-    // @param      {string}  _chapter_id      The chapter identifier
-    //
-    preview(_timecode_start, _timecode_end, _chapter_id) {
-        let mode = !isNaN(_timecode_start);
-        let classlist = this.elements['interface'].classList;
-        let classname = 'with-preview';
-        let chaptersline = this.elements['chaptersline'];
-        let previous_segment = chaptersline.querySelector('.'+classname);
-        if (previous_segment) {
-            previous_segment.classList.remove(classname);
-        }
-        if (mode) {
-            classlist.add(classname);
-        } else {
-            classlist.remove(classname);
-            return ;
-        }
-
-        let audiotag_duration = this.audiotag.duration;
-        let element = this.elements['preview'];
-        element.style.left = `${100 * _timecode_start / audiotag_duration}%`;
-        _timecode_end = _timecode_end === undefined ? audiotag_duration : _timecode_end;
-        element.style.right = `${100- 100 *( _timecode_end / audiotag_duration) }%`;
-
-        let segment = chaptersline.querySelector('#segment-'+_chapter_id);
-        if (segment) {
-            segment.classList.add(classname);
-        }
-    }
 
     //
     // @brief will get presentation data from <audio> or from parent document
@@ -460,137 +429,8 @@ let CPU_element_api = class {
         // throw simplified event
         trigger.update({target : audiotag});
     }
-    //
-    // @brief Call when a chapter is changed, to trigger the changes
-    // @private
-    //
-    // @param      {<type>}  event   The event
-    //
-    _cuechange_event(event) {
-        // ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
-
-        // this junk to NOT repaint 4 times the same active chapter
-        try {
-
-            let activecue;
-            activecue = event.target.activeCues[0];
-            if (Object.is(activecue, this._activecue)) {
-                return ;
-            }
-            this._activecue = activecue;
-            // do NOT tell me this is ugly, i know this is ugly. I missed something better
-        } catch (error) {
-
-        }
-
-        trigger.cuechange(event, this.elements['interface']);
-    }
-    //
-    // @brief Builds or refresh chapters interface.
-    // @public
-    //
-    // @param      {<type>}  event   The event
-    //
-    build_chapters(event, _forced_track) {
-        let self = this;
-
-        if (event !== undefined) {
-            // Chrome load <track> afterwards, so an event is needed, and we need to recatch our CPU api to this event
-            self = document.CPU.find_container(event.target);
-            if (self === null) {
-                // not yet ready, should not occurs
-                error('Container CPU- not ready yet. WTF ?');
-            }
-        }
-
-        let audiotag = self.audiotag;
-        let chapters_element = self.elements['chapters'];
-        chapters_element.innerHTML = '';
-        let lines_element = self.elements['chaptersline'];
-        lines_element.innerHTML = '';
-        
-        let has = false;
-
-        function _build_from_track(tracks) {
-            let _cuechange_event = self._cuechange_event.bind(self);
-            tracks.removeEventListener('cuechange', _cuechange_event);
-            // adding chapter changing event
-            tracks.addEventListener('cuechange', _cuechange_event);
-
-            for (let cue of tracks.cues) {
-                let cuepoint = Math.floor(cue.startTime);
-                let cuetime = convert.SecondsInColonTime(cue.startTime);
-                let href = `#${audiotag.id}&t=${cuepoint}`;
-
-                /* list */
-                let line = document.createElement('a');
-                line.id  = cue.id;
-                line.classList.add('cue');
-                line.href  = href;
-                line.tabIndex = 0;
-                line.innerHTML = `<strong>${cue.text}</strong><span>${cuetime}</span>`;
-                chapters_element.append(line);
-
-                line.dataset.cueId = cue.id; 
-                line.dataset.cueStartTime = cuepoint; 
-                line.dataset.cueEndTime = Math.floor(cue.endTime);
-
-                /* line */
-                let segment = document.createElement('a');
-                segment.id  = 'segment-'+cue.id;
-                segment.href  = href;
-                segment.title  = line.querySelector('strong').innerText; // a simple way to go HTML → pure text , cf https://github.com/dascritch/cpu-audio/issues/53
-                segment.tabIndex = -1;
-                segment.style.left = `${100 * (cue.startTime / audiotag.duration)}%`;
-                segment.style.right = `${100 - 100 *( cue.endTime / audiotag.duration)}%`;
-                lines_element.append(segment);
-            }
-
-            if (tracks.cues.length > 0) {
-                has = true;
-            }
-        }
-
-        if (audiotag) {
-            if (_forced_track !== undefined) {
-                _build_from_track(_forced_track)
-            } else {
-
-                if ((audiotag.textTracks) && (audiotag.textTracks.length > 0)) {
-                    for (let tracks of audiotag.textTracks) {
-                        // TODO : we have here a singular problem : how to NOT rebuild the chapter lists, being sure to have the SAME cues and they are loaded, as we may have FOUR builds.
-                        // Those multiple repaint events doesn't seem to have so much impact, but they are awful, unwanted and MAY have an impact
-                        // We must find a way to clean it up or not rebuild for SAME tracks, AND remove associated events 
-                        // AND clean up the chapter list if a new chapter list is loaded and really empty
-                        if (
-                            (tracks.kind.toLowerCase() === 'chapters') &&
-                            (tracks.cues !== null) /*&&
-                            (!Object.is(self._chaptertracks, tracks))*/) {
-                                _build_from_track(tracks)
-                        }
-                    }
-                }
-            }
-        }
 
 
-
-        if (self.element.tagName === CpuAudioTagName) {
-            if (has) {
-                // indicate in host page that audio tag chapters are listed
-                // see https://github.com/dascritch/cpu-audio/issues/36
-                document.body.classList.add(`cpu_tag_«${audiotag.id}»_chaptered`);
-            }
-
-            if (
-                (document.CPU.global_controller !== null) &&
-                (audiotag.isEqualNode(document.CPU.global_controller.audiotag))
-                ) {
-                document.CPU.global_controller.build_chapters();
-            }
-        }
-
-    }
 
     /**
      * Gets the aside track element
@@ -599,7 +439,7 @@ let CPU_element_api = class {
      * @return     {HTMLElement}    The <aside> element from ShadowDom interface
      */
     get_plane_track(name) {
-        return this.elements['time'].querySelector(`#aside_«${name}»`);
+        return this.elements['line'].querySelector(`#aside_«${name}»`);
     }
 
     /**
@@ -621,7 +461,7 @@ let CPU_element_api = class {
     // 
     // @return     {boolean} success
     //
-    add_plane(name, title) {
+    add_plane(name, title, data) {
         if (! name.match(valid_id)) {
             return false;
         }
@@ -631,7 +471,7 @@ let CPU_element_api = class {
 
         let aside_track = document.createElement('aside');
         aside_track.id = `aside_«${name}»`;
-        this.elements['time'].appendChild(aside_track);
+        this.elements['line'].appendChild(aside_track);
 
         let aside_panel = document.createElement('div');
         aside_panel.id = `panel_«${name}»`;
@@ -690,7 +530,7 @@ let CPU_element_api = class {
      * @return     {HTMLElement}    The <div> point element into <aside> from ShadowDom interface
      */
     get_plane_point_track(aside_name, point_name) {
-        return this.elements['time'].querySelector('#' + this.get_point_track_id(aside_name, point_name, false));
+        return this.elements['line'].querySelector('#' + this.get_point_track_id(aside_name, point_name, false));
     }
 
     /**
@@ -709,11 +549,13 @@ let CPU_element_api = class {
     // @param      {string}  aside_name      The existing aside name
     // @param      {number}  timecode_start  The timecode start for this annotation
     // @param      {<string} point_name      The point name, in the range /[a-zA-Z0-9\-_]+/
-    // @param      {<type>}  data            object : { 'image' : <url>, 'link' : <url>, 'text' : <text>, 'length' : <seconds> }
+    // @param      {<type>}  data            object : { 'image' : <url>, 'link' : <url>/true (in audio/false (none), 'text' : <text>, 'end' : <seconds> }
     // 
     // @return     {boolean} success
-    //
+    //                        
     add_plane_point(aside_name, timecode_start, point_name, data) {
+        data = data === undefined ? {} : data;
+        let duration = this.audiotag.duration;
         let aside = this.get_plane_track(aside_name);
         let panel = this.get_plane_panel(aside_name);
         if ( (!aside) || (timecode_start < 0) || (!point_name.match(valid_id)) || (this.get_plane_point_track(aside_name, point_name)) ) {
@@ -722,22 +564,50 @@ let CPU_element_api = class {
 
         let intended_aside_id = this.get_point_track_id(aside_name, point_name, false);
         let intended_panel_id = this.get_point_track_id(aside_name, point_name, true);
-        let point_element = document.createElement('div');
+        let point_element = document.createElement('a');
         point_element.id = intended_aside_id;
+
+        if (data['link'] !== false) {
+            point_element.href = `#${this.audiotag.id}&t=${timecode_start}`;
+        }
+        point_element.title = data['text'];
         let inner = '';
-        if (panel) {
-            inner = `<a href="#${intended_panel_id}">${inner}</a>`;
+        if (data['image']) {
+            inner = `<img src="${data['image']}" alt="">`;
         }
         point_element.innerHTML = inner;
+
         aside.appendChild(point_element);
+        
+        point_element.style.left = `${100 * (timecode_start / duration)}%`;
+        if (data['end']) {
+            point_element.style.right = `${100 - 100 *( data['end'] / duration)}%`;
+        }
 
         if (panel) {
-            
             let li = document.createElement('li');
             li.id = intended_panel_id;
+                        
+            let inner = '';
+            if (data['text']) {
+                inner += `<strong>${data['text']}</strong>`;
+            }
+
             // see valid duration time https://www.w3.org/TR/2014/REC-html5-20141028/infrastructure.html#valid-duration-string
-            li.innerHTML = `<time datetime="P${convert.SecondsInTime(timecode_start).toUpperCase()}">${convert.SecondsInColonTime(timecode_start)}</time>`; 
-            // si y'a u lien, englober
+            inner += `<time datetime="P${convert.SecondsInTime(timecode_start).toUpperCase()}">${convert.SecondsInColonTime(timecode_start)}</time>`; 
+
+            if (data['link'] !== false) {
+                if (data['link'] === true) {
+                    // link to the audio tag.
+                    // if the parameter is a string, use it as a simple link
+                    data['link'] = `#${this.audiotag.id}&amp;t=${timecode_start}`;
+                }
+                inner = `<a href="${data['link']}" class="cue">${inner}</a>`;
+            } else {
+                // no link to refer, put a tag for consistency
+                inner = `<span class="cue">${inner}</span>`;
+            }
+            li.innerHTML = inner;
             panel.appendChild(li);
         }
         return true;
@@ -776,13 +646,199 @@ let CPU_element_api = class {
         let motif = /^(.*_«)([a-zA-Z0-9\-_]+)(»)$/;
         let self = this;
 
-        querySelector_apply('div',function (element) {
+        querySelector_apply('a',function (element) {
             let point_name = element.id.replace(motif, '$2');
             self.remove_plane_point(aside_name, point_name);
         }, remove_from_element);
         
         return true;
     }
+
+    //
+    // @brief Call when a chapter is changed, to trigger the changes
+    // @private
+    //
+    // @param      {<type>}  event   The event
+    //
+    _cuechange_event(event) {
+        // ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
+
+        // this junk to NOT repaint 4 times the same active chapter
+        try {
+
+            let activecue;
+            activecue = event.target.activeCues[0];
+            if (Object.is(activecue, this._activecue)) {
+                return ;
+            }
+            this._activecue = activecue;
+            // do NOT tell me this is ugly, i know this is ugly. I missed something better
+        } catch (error) {
+
+        }
+
+        trigger.cuechange(event, this.elements['interface']);
+    }
+    //
+    // @brief Builds or refresh chapters interface.
+    // @public
+    //
+    // @param      {<type>}  event   The event
+    //
+    build_chapters(event, _forced_track) {
+        let self = this;
+
+        if (event !== undefined) {
+            // Chrome load <track> afterwards, so an event is needed, and we need to recatch our CPU api to this event
+            self = document.CPU.find_container(event.target);
+            if (self === null) {
+                // not yet ready, should not occurs
+                error('Container CPU- not ready yet. WTF ?');
+            }
+        }
+
+        let audiotag = self.audiotag;
+
+        //let chapters_element = self.elements['chapters'];
+        //chapters_element.innerHTML = '';
+
+        //let lines_element = self.elements['chaptersline'];
+        //lines_element.innerHTML = '';
+        
+        let has = false;
+
+        function _build_from_track(tracks) {
+            let _cuechange_event = self._cuechange_event.bind(self);
+            tracks.removeEventListener('cuechange', _cuechange_event);
+            // adding chapter changing event
+            tracks.addEventListener('cuechange', _cuechange_event);
+
+            for (let cue of tracks.cues) {
+                let cuepoint = Math.floor(cue.startTime);
+                let cuetime = convert.SecondsInColonTime(cue.startTime);
+                let href = `#${audiotag.id}&t=${cuepoint}`;
+
+                /* list */
+
+                /*
+                let line = document.createElement('a');
+                line.id  = cue.id;
+                line.classList.add('cue');
+                line.href  = href;
+                line.tabIndex = 0;
+                line.innerHTML = `<strong>${cue.text}</strong><span>${cuetime}</span>`;
+                chapters_element.append(line);
+
+                line.dataset.cueId = cue.id; 
+                line.dataset.cueStartTime = cuepoint; 
+                line.dataset.cueEndTime = Math.floor(cue.endTime);
+                */
+                self.add_plane_point('_chapters', cuepoint, cue.id,  {
+                    'text' : cue.text,
+                    'link' : true,          // point the link to audio
+                    'end'  : cue.endTime    // end timecode of the cue
+                });
+
+                /* line */
+                /*
+                let segment = document.createElement('a');
+                segment.id  = 'segment-'+cue.id;
+                segment.href  = href;
+                segment.title  = escapeHTML(cue.text); // a simple way to go HTML → pure text , cf https://github.com/dascritch/cpu-audio/issues/53
+                segment.tabIndex = -1;
+                segment.style.left = `${100 * (cue.startTime / audiotag.duration)}%`;
+                segment.style.right = `${100 - 100 *( cue.endTime / audiotag.duration)}%`;
+                lines_element.append(segment);
+                */
+            }
+
+            if (tracks.cues.length > 0) {
+                has = true;
+            }
+
+        }
+
+        if (audiotag) {
+            if (_forced_track !== undefined) {
+                _build_from_track(_forced_track)
+            } else {
+
+                if ((audiotag.textTracks) && (audiotag.textTracks.length > 0)) {
+                    for (let tracks of audiotag.textTracks) {
+                        // TODO : we have here a singular problem : how to NOT rebuild the chapter lists, being sure to have the SAME cues and they are loaded, as we may have FOUR builds.
+                        // Those multiple repaint events doesn't seem to have so much impact, but they are awful, unwanted and MAY have an impact
+                        // We must find a way to clean it up or not rebuild for SAME tracks, AND remove associated events 
+                        // AND clean up the chapter list if a new chapter list is loaded and really empty
+                        if (
+                            (tracks.kind.toLowerCase() === 'chapters') &&
+                            (tracks.cues !== null) /*&&
+                            (!Object.is(self._chaptertracks, tracks))*/) {
+                                self.add_plane('_chapters', __['chapters']);
+                                self.clear_plane('_chapters');
+                                _build_from_track(tracks)
+                        }
+                    }
+                }
+            }
+        }
+
+        if (self.element.tagName === CpuAudioTagName) {
+            if (has) {
+                // indicate in host page that audio tag chapters are listed
+                // see https://github.com/dascritch/cpu-audio/issues/36
+                document.body.classList.add(`cpu_tag_«${audiotag.id}»_chaptered`);
+            } else {
+                self.remove_plane('_chapters');
+            }
+
+            if (
+                (document.CPU.global_controller !== null) &&
+                (audiotag.isEqualNode(document.CPU.global_controller.audiotag))
+                ) {
+                document.CPU.global_controller.build_chapters();
+            }
+        }
+
+    }
+
+    // @private not mature enough TO BE REDONE VIA plane/points
+    //
+    // @brief preview a timecode on the lines, or a chapter
+    //
+    // @param      {number}  _timecode_start  The timecode start
+    // @param      {number}  _timecode_end    The timecode end
+    // @param      {string}  _chapter_id      The chapter identifier
+    //
+    preview(_timecode_start, _timecode_end, _chapter_id) {
+        let mode = !isNaN(_timecode_start);
+        let classlist = this.elements['interface'].classList;
+        let classname = 'with-preview';
+        let chaptersline = this.elements['chaptersline'];
+        let previous_segment = chaptersline.querySelector('.'+classname);
+        if (previous_segment) {
+            previous_segment.classList.remove(classname);
+        }
+        if (mode) {
+            classlist.add(classname);
+        } else {
+            classlist.remove(classname);
+            return ;
+        }
+
+        let audiotag_duration = this.audiotag.duration;
+        let element = this.elements['preview'];
+        element.style.left = `${100 * _timecode_start / audiotag_duration}%`;
+        _timecode_end = _timecode_end === undefined ? audiotag_duration : _timecode_end;
+        element.style.right = `${100- 100 *( _timecode_end / audiotag_duration) }%`;
+
+        let segment = chaptersline.querySelector('#segment-'+_chapter_id);
+        if (segment) {
+            segment.classList.add(classname);
+        }
+    }
+
+
+
 
     //
     // @brief Builds or refresh the playlist panel. Should be called only for

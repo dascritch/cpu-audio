@@ -46,7 +46,9 @@ function escapeHTML(text) {
     // will truly escape HTML tags and entities. No hazardous regexes or replaces
     let burn_after_reading = document.createElement('span');
     burn_after_reading.innerText = text;
-    return burn_after_reading.innerHTML
+    let out = burn_after_reading.innerHTML;
+    burn_after_reading.remove();
+    return out;
 }
 
 

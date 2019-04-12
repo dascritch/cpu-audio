@@ -245,7 +245,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		setTimeout(function() {
 			let component = playground.querySelector('#track_will_disapear');
 			let chapters = component.shadowRoot.querySelector('#chapters');
-			chapters.innerHTML="<li>Hello</li><li>World</li>"
+			chapters.innerHTML="<li>Hello</li><li>World</li>";
 			component.querySelector('track').remove();
 			setTimeout(function() {
 				assert.equal(chapters.innerHTML, '', 'chapters purged');
@@ -508,15 +508,21 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_component = secondary_audiotag.closest('cpu-audio');
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
-		assert.ok(! secondary_API_CPU.add_plane_point('hello', 2, 'point'), 'function cannot works without a created plane');
-		secondary_API_CPU.add_plane('hello');
-		assert.ok(! secondary_API_CPU.add_plane_point('hello', -2, 'point'), 'function cannot works with a negative timecode');
-		assert.ok(! secondary_API_CPU.add_plane_point('hello', 2, ''), 'function cannot works with an empty name');
-		assert.ok(! secondary_API_CPU.add_plane_point('hello', 2, '*&0f'), 'function refuse invalid name');
-		assert.ok(secondary_API_CPU.add_plane_point('hello', 2, 'world'), 'function accept when parameters are valid');
-		assert.ok(!secondary_API_CPU.add_plane_point('hello', 10, 'world'), 'function refuse another name with the same point name in the same track');
+		let data = {
+			'text' : 'Here is some text',
+			'link' : true
+		};
 
-		assert.ok(secondary_interfacetag.querySelector('aside#aside_«hello» > div#aside_«hello»_point_«world»') , 'DOM element point added in aside track');
+		assert.ok(! secondary_API_CPU.add_plane_point('hello', 2, 'point', data), 'function cannot works without a created plane');
+		secondary_API_CPU.add_plane('hello');
+		assert.ok(! secondary_API_CPU.add_plane_point('hello', -2, 'point', data), 'function cannot works with a negative timecode');
+		assert.ok(! secondary_API_CPU.add_plane_point('hello', 2, '', data), 'function cannot works with an empty name');
+		assert.ok(! secondary_API_CPU.add_plane_point('hello', 2, '*&0f', data), 'function refuse invalid name');
+
+		assert.ok(secondary_API_CPU.add_plane_point('hello', 2, 'world', data), 'function accept when parameters are valid');
+		assert.ok(!secondary_API_CPU.add_plane_point('hello', 10, 'world', data), 'function refuse another name with the same point name in the same track');
+
+		assert.ok(secondary_interfacetag.querySelector('aside#aside_«hello» > a#aside_«hello»_point_«world»') , 'DOM element point added in aside track');
 		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > li#panel_«hello»_point_«world»'), 'DOM element point added in panel');
 
 		let point_in_track = secondary_API_CPU.get_plane_point_track('hello', 'world');
@@ -528,10 +534,11 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.ok(time_in_point, 'point in panel has a <time> indication');
 		assert.equal(time_in_point.innerText, '0:02', '<time> indicate timecode in colon coded text');
 		assert.equal(time_in_point.getAttribute('datetime'), 'P2S', '<time> has a datetime attribute in duration standard format');
+		assert.ok(point_in_panel.querySelector('a'), 'entry in panel has got link');
+		assert.equal(point_in_panel.querySelector('strong').innerText, data.text, '<strong> got data.text');
 
-		let link_in_point = point_in_track.querySelector('a');
-		assert.ok(link_in_point, 'point in track has a <a href>');
-		assert.equal(decodeURIComponent(link_in_point.href.split('#')[1]), 'panel_«hello»_point_«world»', '<a href> is pointing to point in panel');
+		assert.ok(point_in_track.tagName, 'A', 'point in track is a <a href>');
+		assert.equal(decodeURIComponent(point_in_track.href.split('#')[1]), 'secondary&t=2', '<a href> is pointing to timecode');
 
 	});
 
