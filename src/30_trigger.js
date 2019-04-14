@@ -117,9 +117,9 @@ const trigger = {
         container.hide_throbber();
     },
 
-    preview_hover : function(event) {
+    /*preview_hover : function(event) {
 
-    },
+    },*/
 
     /**
      * Highlight the playable positions when hovering a marked link
@@ -129,7 +129,7 @@ const trigger = {
     preview_container_hover : function(event) {
         let target = event.target;
         if (!target.classList.contains('cue')) {
-            target = target.closest('a.cue');
+            target = target.closest('.cue');
         }
         if (target === null) {
             return;

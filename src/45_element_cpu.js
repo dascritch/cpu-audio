@@ -462,11 +462,9 @@ let CPU_element_api = class {
     // @return     {boolean} success
     //
     add_plane(name, title, data) {
-        if (! name.match(valid_id)) {
+
+        if ( (this.element.tagName === CpuControllerTagName) || (! name.match(valid_id)) || (this.get_plane_track(name)) || (this.get_plane_panel(name))) {
             return false;
-        }
-        if (this.get_plane_track(name)) {
-            return false;   
         }
 
         let aside_track = document.createElement('aside');
@@ -558,7 +556,8 @@ let CPU_element_api = class {
         let duration = this.audiotag.duration;
         let aside = this.get_plane_track(aside_name);
         let panel = this.get_plane_panel(aside_name);
-        if ( (!aside) || (timecode_start < 0) || (!point_name.match(valid_id)) || (this.get_plane_point_track(aside_name, point_name)) ) {
+        let timecode_end;
+        if ( (this.element.tagName === CpuControllerTagName) || (!aside) || (timecode_start < 0) || (!point_name.match(valid_id)) || (this.get_plane_point_track(aside_name, point_name)) ) {
             return false;
         }
 
@@ -580,8 +579,13 @@ let CPU_element_api = class {
         aside.appendChild(point_element);
         
         point_element.style.left = `${100 * (timecode_start / duration)}%`;
+        point_element.dataset.cueStartTime = timecode_start;
+        point_element.dataset.cueId = point_name;
+
         if (data['end']) {
+            timecode_end = timecode_start + data['end'];
             point_element.style.right = `${100 - 100 *( data['end'] / duration)}%`;
+            point_element.dataset.cueEndTime = timecode_end;
         }
 
         if (panel) {
@@ -608,6 +612,14 @@ let CPU_element_api = class {
                 inner = `<span class="cue">${inner}</span>`;
             }
             li.innerHTML = inner;
+            // 
+            let cue = li.querySelector('.cue');
+            cue.dataset.cueStartTime = timecode_start;
+            cue.dataset.cueId = point_name;
+            if (data['end']) {
+                cue.dataset.cueEndTime = timecode_end;
+            }
+
             panel.appendChild(li);
         }
         return true;
@@ -698,13 +710,6 @@ let CPU_element_api = class {
         }
 
         let audiotag = self.audiotag;
-
-        //let chapters_element = self.elements['chapters'];
-        //chapters_element.innerHTML = '';
-
-        //let lines_element = self.elements['chaptersline'];
-        //lines_element.innerHTML = '';
-        
         let has = false;
 
         function _build_from_track(tracks) {
@@ -718,38 +723,11 @@ let CPU_element_api = class {
                 let cuetime = convert.SecondsInColonTime(cue.startTime);
                 let href = `#${audiotag.id}&t=${cuepoint}`;
 
-                /* list */
-
-                /*
-                let line = document.createElement('a');
-                line.id  = cue.id;
-                line.classList.add('cue');
-                line.href  = href;
-                line.tabIndex = 0;
-                line.innerHTML = `<strong>${cue.text}</strong><span>${cuetime}</span>`;
-                chapters_element.append(line);
-
-                line.dataset.cueId = cue.id; 
-                line.dataset.cueStartTime = cuepoint; 
-                line.dataset.cueEndTime = Math.floor(cue.endTime);
-                */
                 self.add_plane_point('_chapters', cuepoint, cue.id,  {
                     'text' : cue.text,
                     'link' : true,          // point the link to audio
                     'end'  : cue.endTime    // end timecode of the cue
                 });
-
-                /* line */
-                /*
-                let segment = document.createElement('a');
-                segment.id  = 'segment-'+cue.id;
-                segment.href  = href;
-                segment.title  = escapeHTML(cue.text); // a simple way to go HTML → pure text , cf https://github.com/dascritch/cpu-audio/issues/53
-                segment.tabIndex = -1;
-                segment.style.left = `${100 * (cue.startTime / audiotag.duration)}%`;
-                segment.style.right = `${100 - 100 *( cue.endTime / audiotag.duration)}%`;
-                lines_element.append(segment);
-                */
             }
 
             if (tracks.cues.length > 0) {
