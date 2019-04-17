@@ -72,5 +72,4 @@ class CpuControllerElement extends HTMLElement {
 
     disconnectedCallback() {
     }
-
 }

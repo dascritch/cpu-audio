@@ -268,7 +268,7 @@ a {
     width : 10px;
     height : 10px;
 }
- 
+
 #preview {
     display : none;
 }
@@ -351,7 +351,10 @@ a {
 #facebook, #nativeshare {
     background : #5974CC
 }
-#email {
+#mastodon, #nativeshare {
+    background : #3088d4
+}
+.email {
     background : #CC0000
 }
 #link {
@@ -480,7 +483,7 @@ a {
         pointer-events : none;
     }
 
-    
+
 }
 @media (max-width: 480px) , @element #interface and (max-width: 480px) {
     .nosmaller {

@@ -59,6 +59,13 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
                 }
                 return null;
             }(),
+        'mastodon' : function () {
+            // let header_element = window.document.querySelector('meta[name="mastodon:creator"]');
+            // if ((header_element !== null) && (header_element.content.length>1)) {
+            //     return header_element.content;
+            // }
+            return null;
+        }(),
         'playlist' : null,
     },
 

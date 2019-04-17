@@ -16,7 +16,7 @@ let CPU_element_api = class {
     }
 
     //
-    // @brief Used for `mode=""` attribute. 
+    // @brief Used for `mode=""` attribute.
     // @public
     //
     // @param      {string}  mode    Accepted are only in `/\w+/` format
@@ -322,6 +322,7 @@ let CPU_element_api = class {
         return dataset;
     }
 
+
     // @private
     //
     // @brief Update links for sharing
@@ -332,6 +333,44 @@ let CPU_element_api = class {
         function ahref(category, href) {
             container.elements[category].href = href;
         }
+        function onClickMastodon(category) {
+            container.elements[category].onclick = function shareOnMastodon() {
+                // Prefill the form with the user's previously-specified Mastodon instance, if applicable
+                let default_url = localStorage['mastodon_instance'];
+
+                // If there is no cached instance/domain, then insert a "https://" with no domain at the start of the prompt.
+                if (!default_url)
+                    default_url = "https://";
+
+                let instance = prompt("Enter your instance's address: (ex: https://mastodon.social)", default_url);
+                if (instance) {
+                    // Handle URL formats
+                    if (!instance.startsWith("https://") && !instance.startsWith("http://"))
+                        instance = "https://" + instance;
+
+                    let url = window.location.href;
+                    let title = "Have a look at this ";
+
+                    // Handle slash
+                    if (!instance.endsWith("/"))
+                        instance = instance + "/";
+
+                    // Cache the instance/domain for future requests
+                    localStorage['mastodon_instance'] = instance;
+
+                    // TODO retreive author from webcomponent attributes if any
+                    // let hashtags = "#cpu";
+                    // let author = "@cpu@mastodon.tetaneutral.net";
+
+                    let uriComponent = title + "\n\n" + url + "\n\n"; // + hashtags + " " + author;
+                    let mastodon_url = instance + "share?text=" + encodeURIComponent(uriComponent);
+
+                    // Open a new window at the share location
+                    console.debug("mastodon url", mastodon_url);
+                    window.open(mastodon_url, '_blank');
+                }
+            };
+        }
         function remove_hash(canonical) {
             let hash_at = canonical.indexOf('#');
             return hash_at === -1 ? canonical : canonical.substr(0,hash_at);
@@ -340,7 +379,7 @@ let CPU_element_api = class {
         let dataset = this.fetch_audiotag_dataset();
 
         let url = (dataset.canonical === null ? '' : remove_hash(dataset.canonical))
-                    + `#${this.audiotag.id}` 
+                    + `#${this.audiotag.id}`
                     + ( this.audiotag.currentTime === 0 
                             ? ''
                             : `&t=${Math.floor(this.audiotag.currentTime)}`
@@ -356,6 +395,7 @@ let CPU_element_api = class {
         }
         ahref('twitter', `https://twitter.com/share?text=${dataset.title}&url=${_url}${_twitter}`);
         ahref('facebook', `https://www.facebook.com/sharer.php?t=${dataset.title}&u=${_url}`);
+        onClickMastodon('mastodon');
         ahref('email', `mailto:?subject=${dataset.title}&body=${_url}`);
         ahref('link', this.audiotag.currentSrc);
     }
@@ -371,7 +411,7 @@ let CPU_element_api = class {
         this.container.classList.add('show-'+mode);
     }
     //
-    // @brief Shows the sharing panel, 
+    // @brief Shows the sharing panel,
     //
     // @private
     // @param      {<type>}  event   The event
@@ -437,7 +477,7 @@ let CPU_element_api = class {
         } else {
             element_canonical.classList.remove('untitled')
         }
-        element_canonical.innerText = dataset.title; 
+        element_canonical.innerText = dataset.title;
         this.elements['poster'].src = dataset.poster;
     }
     //
@@ -506,7 +546,7 @@ let CPU_element_api = class {
         chapters_element.innerHTML = '';
         let lines_element = self.elements['chaptersline'];
         lines_element.innerHTML = '';
-        
+
         let has = false;
 
         function _build_from_track(tracks) {
@@ -529,8 +569,8 @@ let CPU_element_api = class {
                 line.innerHTML = `<strong>${cue.text}</strong><span>${cuetime}</span>`;
                 chapters_element.append(line);
 
-                line.dataset.cueId = cue.id; 
-                line.dataset.cueStartTime = cuepoint; 
+                line.dataset.cueId = cue.id;
+                line.dataset.cueStartTime = cuepoint;
                 line.dataset.cueEndTime = Math.floor(cue.endTime);
 
                 /* line */
@@ -560,7 +600,7 @@ let CPU_element_api = class {
                     for (let tracks of audiotag.textTracks) {
                         // TODO : we have here a singular problem : how to NOT rebuild the chapter lists, being sure to have the SAME cues and they are loaded, as we may have FOUR builds.
                         // Those multiple repaint events doesn't seem to have so much impact, but they are awful, unwanted and MAY have an impact
-                        // We must find a way to clean it up or not rebuild for SAME tracks, AND remove associated events 
+                        // We must find a way to clean it up or not rebuild for SAME tracks, AND remove associated events
                         // AND clean up the chapter list if a new chapter list is loaded and really empty
                         if (
                             (tracks.kind.toLowerCase() === 'chapters') &&
@@ -638,7 +678,7 @@ let CPU_element_api = class {
             controller.elements[element.id] = element;
         }, this.element.shadowRoot);
         this.elements['poster'].addEventListener('load', function () {
-            controller.elements['interface'].classList.add('poster-loaded'); 
+            controller.elements['interface'].classList.add('poster-loaded');
         });
 
         let passive_ev = {passive: true};
@@ -694,12 +734,12 @@ let CPU_element_api = class {
         let this_build_chapters = this.build_chapters.bind(this);
         // sometimes, we MAY have loose loading
         this.audiotag.addEventListener('loadedmetadata', this_build_chapters, passive_ev);
-        
+
         let track_element = this.audiotag.querySelector('track[kind="chapters"]');
         if (track_element) {
             track_element.addEventListener('load', this_build_chapters, passive_ev);
         }
-        
+
 
         let chapters_element = this.elements['chapters'];
 

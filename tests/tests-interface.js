@@ -40,6 +40,7 @@ window.addEventListener('load', function() {
 		assert.equal(cpu.default_dataset.poster, null, "poster is null without social meta" );
 		assert.equal(cpu.default_dataset.canonical, window.location.href.split('#')[0], "canonical without social meta is actual address without hash" );
 		assert.equal(cpu.default_dataset.twitter, null, "twitter account is null without social meta" );
+		assert.equal(cpu.default_dataset.mastodon, null, "mastodon account is null without social meta" );
 		/*
 		playground.innerHTML = `
 			<meta property="og:title" content="facebook">
@@ -55,6 +56,9 @@ window.addEventListener('load', function() {
 		assert.equal(cpu.default_dataset.title, 'twitter', "title with twitter social meta" );
 		assert.equal(cpu.default_dataset.poster, 'https://twitter', "poster with twitter social meta" );
 		assert.equal(cpu.default_dataset.twitter, '@dascritch', "twitter account with twitter social meta" );
+
+
+		assert.equal(cpu.default_dataset.mastodon, '@dascritch', "mastodon account with mastodon social meta" );
 		*/
 	});
 
