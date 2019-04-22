@@ -295,6 +295,7 @@ function interpret_form(event) {
     document.getElementById('vtt_source').innerText = vtt;
     let vtt_virtual_file = prepare_export_file(vtt);
     document.getElementById('vtt_source_download').href = vtt_virtual_file;
+    document.getElementById('vtt_source_download').download = sound_element.dataset.title.replace(/(.*)(\.(ogg|mp3|wav|flac|mp4|aac))$/,'$1') + '.vtt';
     // update tracklist in cpu-audio . To be done
     /*let f = new FileReader();
     f.addEventListener("load", function () {
