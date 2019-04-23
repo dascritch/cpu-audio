@@ -456,7 +456,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.deepEqual(secondary_audiotag._CPU_planes, {}, 'empty audio._CPU_planes at start');
 		assert.equal(secondary_API_CPU.get_plane('zgou'), undefined, 'get_plane() returns undefined when nothing exists');
 		assert.ok(secondary_API_CPU.add_plane('hello', 'Hello<>&'), 'function accepts');
-		assert.ok(secondary_interfacetag.querySelector('aside#aside_«hello»') , 'DOM element aside added in the track line');
+		assert.ok(secondary_interfacetag.querySelector('aside#track_«hello»') , 'DOM element aside added in the track line');
 		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello»') , 'DOM element div added as a panel');
 		assert.deepEqual(Object.keys(secondary_audiotag._CPU_planes).length, 1, 'one audio._CPU_planes created');
 		assert.ok('hello' in secondary_audiotag._CPU_planes, 'audio._CPU_planes named “hello”');
@@ -538,8 +538,8 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.ok(!secondary_API_CPU.add_plane_point('hello', 10, 'world', data), 'function refuse another name with the same point name in the same track');
 
 		assert.notEqual(secondary_API_CPU.get_plane_point('hello', 'world'), undefined, 'get_plane_point() returns data');
-		assert.ok(secondary_interfacetag.querySelector('aside#aside_«hello» > a#aside_«hello»_point_«world»') , 'DOM element point added in aside track');
-		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > li#panel_«hello»_point_«world»'), 'DOM element point added in panel');
+		assert.ok(secondary_interfacetag.querySelector('aside#track_«hello» > a#track_«hello»_point_«world»') , 'DOM element point added in aside track');
+		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > li > a#panel_«hello»_point_«world»'), 'DOM element point added in panel');
 
 		let point_in_track = secondary_API_CPU.get_plane_point_track('hello', 'world');
 		let point_in_panel = secondary_API_CPU.get_plane_point_panel('hello', 'world');
@@ -550,7 +550,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.ok(time_in_point, 'point in panel has a <time> indication');
 		assert.equal(time_in_point.innerText, '0:02', '<time> indicate timecode in colon coded text');
 		assert.equal(time_in_point.getAttribute('datetime'), 'P2S', '<time> has a datetime attribute in duration standard format');
-		assert.ok(point_in_panel.querySelector('a'), 'entry in panel has got link');
+		assert.equal(point_in_panel.tagName, 'A', 'entry in panel has got link');
 		assert.equal(point_in_panel.querySelector('strong').innerText, data.text, '<strong> got data.text');
 
 		assert.ok(point_in_track.tagName, 'A', 'point in track is a <a href>');

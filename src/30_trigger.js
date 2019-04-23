@@ -136,8 +136,8 @@ const trigger = {
         }
 
         let container = document.CPU.find_container(target);
-        let names = container.get_aside_point_names_from_id(target.id)
-        container.set_preview_plane_point(names[0], names[1]);
+        let names = container.get_plane_point_names_from_id(target.id)
+        container.highlight_point(names[0], names[1]);
     },
 
 
@@ -354,7 +354,7 @@ const trigger = {
         let class_name = 'active-cue';
         let container = document.CPU.find_container(element_interface);
         let plane_name = '_chapters';
-        container.clear_previews(class_name);
+        container.remove_highlights_points(class_name);
 
         if (event.target.activeCues.length === 0) {
             // too early, we need to keep this case from Chrome
@@ -369,7 +369,7 @@ const trigger = {
             document.body.classList.add(document.CPU.body_className_playing_cue);
         }
 
-        container.set_preview_plane_point(plane_name, cue_id, class_name);
+        container.highlight_point(plane_name, cue_id, class_name);
     },
 
 
