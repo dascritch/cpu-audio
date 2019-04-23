@@ -842,7 +842,7 @@ let CPU_element_api = class {
         for (let aside_name of Object.keys(this.audiotag._CPU_planes)) {
             this.draw_plane(aside_name);
             for (let point_name of Object.keys(this.audiotag._CPU_planes[aside_name].points)) {
-                this.draw_plane(aside_name);
+                this.draw_plane_point(aside_name, point_name);
             }
         }
     }
@@ -852,6 +852,14 @@ let CPU_element_api = class {
         querySelector_apply(`.${class_name}`,function (element) {
                 element.classList.remove(class_name);
             },this.container);
+
+        if (
+            (this.element.tagName !== CpuControllerTagName) &&
+            (document.CPU.global_controller !== null) &&
+            (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
+            ) {
+            document.CPU.global_controller.clear_previews(class_name);
+        }
     }
 
     set_preview_plane_point(aside_name, point_name, class_name) {
@@ -873,7 +881,14 @@ let CPU_element_api = class {
                 point_panel.classList.add(class_name);
             }
         }
-        
+
+        if (
+            (this.element.tagName !== CpuControllerTagName) &&
+            (document.CPU.global_controller !== null) &&
+            (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
+            ) {
+            document.CPU.global_controller.set_preview_plane_point(aside_name, point_name, class_name);
+        }
     }
 
     //
