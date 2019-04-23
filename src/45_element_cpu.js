@@ -1034,6 +1034,7 @@ let CPU_element_api = class {
             return;
         }
 
+        playlist_element.innerHTML = `<h6>${__['playlist']}</h6>`;
         for (let audiotag_id of current_playlist) {
             let audiotag = document.getElementById(audiotag_id);
             

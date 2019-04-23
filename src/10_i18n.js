@@ -17,6 +17,7 @@ const sources_i18n = {
         'back' : 'Annuler',
 
         'chapters' : 'Chapitres',
+        'playlist' : 'Playlist',
 
         'media_err_aborted' : 'Vous avez annulé la lecture.',
         'media_err_network' : 'Une erreur réseau a causé l\'interruption du téléchargement.',
@@ -42,6 +43,7 @@ const sources_i18n = {
         'back' : 'Back',
 
         'chapters' : 'Chapters',
+        'playlist' : 'Playlist',
 
         'media_err_aborted' : 'You have aborted the play.',
         'media_err_network' : 'A network error broke the download.',

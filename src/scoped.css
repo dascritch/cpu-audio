@@ -427,7 +427,7 @@ aside.chapters a.active-cue {
     padding : 0 var(--cpu-min-padding);
     box-shadow: var(--cpu-inner-shadow);
 }
-.panel h6 {
+h6 {
     text-align : center;
 }
 
