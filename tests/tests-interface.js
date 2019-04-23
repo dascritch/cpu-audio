@@ -450,13 +450,20 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_component = secondary_audiotag.closest('cpu-audio');
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
+		assert.deepEqual(secondary_audiotag._CPU_planes, {}, 'empty audio._CPU_planes at start');
+		assert.equal(secondary_API_CPU.get_plane('zgou'), undefined, 'get_plane() returns undefined when nothing exists');
 		assert.ok(secondary_API_CPU.add_plane('hello', 'Hello<>&'), 'function accepts');
 		assert.ok(secondary_interfacetag.querySelector('aside#aside_«hello»') , 'DOM element aside added in the track line');
 		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello»') , 'DOM element div added as a panel');
+		assert.deepEqual(Object.keys(secondary_audiotag._CPU_planes).length, 1, 'one audio._CPU_planes created');
+		assert.ok('hello' in secondary_audiotag._CPU_planes, 'audio._CPU_planes named “hello”');
+		
+
 		assert.equal(secondary_interfacetag.querySelector('div.panel#panel_«hello» h6').innerText, 'Hello<>&', 'panel as a h6 with a properly escaped title');
 		secondary_API_CPU.add_plane('untitled');
 		assert.equal(secondary_interfacetag.querySelector('div.panel#panel_«untitled» h6'), null, 'Untitled panel doesn\'t have any h6');
 
+		assert.notEqual(secondary_API_CPU.get_plane('hello'), undefined, 'get_plane() returns object');
 		assert.equal(secondary_API_CPU.get_plane_track('hello').tagName, 'ASIDE', 'get_plane_track() returns DOM element and is a <aside>');
 		assert.equal(secondary_API_CPU.get_plane_panel('hello').tagName, 'NAV', 'get_plane_panel() returns DOM element and is a <nav>');
 	});
@@ -494,6 +501,8 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 		assert.ok(secondary_API_CPU.add_plane('hello'), 'create plane')
 		assert.ok(secondary_API_CPU.remove_plane('hello'), 'remove created plane successfull');
+		assert.ok(! ('hello' in secondary_audiotag._CPU_planes), 'audio._CPU_planes named “hello” is removed');
+		assert.equal(secondary_API_CPU.get_plane('hello'), undefined, 'get_plane() returns undefined');
 		assert.ok(!secondary_API_CPU.get_plane_track('hello'), 'Element aside removed in shadowDom');
 	});
 
@@ -519,9 +528,12 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.ok(! secondary_API_CPU.add_plane_point('hello', 2, '', data), 'function cannot works with an empty name');
 		assert.ok(! secondary_API_CPU.add_plane_point('hello', 2, '*&0f', data), 'function refuse invalid name');
 
+		assert.equal(secondary_API_CPU.get_plane_point('hello', 'world'), undefined, 'get_plane_point() returns undefined');
+
 		assert.ok(secondary_API_CPU.add_plane_point('hello', 2, 'world', data), 'function accept when parameters are valid');
 		assert.ok(!secondary_API_CPU.add_plane_point('hello', 10, 'world', data), 'function refuse another name with the same point name in the same track');
 
+		assert.notEqual(secondary_API_CPU.get_plane_point('hello', 'world'), undefined, 'get_plane_point() returns data');
 		assert.ok(secondary_interfacetag.querySelector('aside#aside_«hello» > a#aside_«hello»_point_«world»') , 'DOM element point added in aside track');
 		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > li#panel_«hello»_point_«world»'), 'DOM element point added in panel');
 
@@ -561,6 +573,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 		assert.equal(secondary_API_CPU.get_plane_point_track('hello', 'point'), null , 'get_aside_point_track() returns null');
 		assert.equal(secondary_API_CPU.get_plane_point_panel('hello', 'point'), null, 'get_aside_point_panel() returns null');
+		assert.equal(secondary_API_CPU.get_plane_point('hello', 'world'), undefined, 'get_plane_point() returns undefined');
 		assert.ok(! secondary_interfacetag.querySelector('aside#aside_«hello» > div#aside_«hello»_point_«point»') , 'DOM element point removed from aside track');
 		assert.ok(! secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > li#panel_«hello»_point_«point»') , 'DOM element point removed from panel');
 

@@ -14,7 +14,7 @@ let CPU_element_api = class {
         this.container = container_interface;
         this.mode_when_play = null;
         // record some related data on the <audio> tag, outside the dataset scheme
-        if (this.audiotag) {
+        if ( (this.audiotag) && (! this.audiotag._CPU_planes)) {
             this.audiotag._CPU_planes = {}
         }
     }
@@ -431,6 +431,15 @@ let CPU_element_api = class {
     }
 
 
+    /**
+     * Gets the aside info
+     *
+     * @param      {string}  name   The name
+     * @return     {HTMLElement}    The <aside> element from ShadowDom interface
+     */
+    get_plane(name) {
+        return this.audiotag._CPU_planes[name];
+    }
 
     /**
      * Gets the aside track element
@@ -463,8 +472,16 @@ let CPU_element_api = class {
     //
     add_plane(name, title, data) {
 
-        if ( (this.element.tagName === CpuControllerTagName) || (! name.match(valid_id)) || (this.get_plane_track(name)) || (this.get_plane_panel(name))) {
+        if ((this.element.tagName === CpuControllerTagName) || (! name.match(valid_id)) || (this.get_plane(name) !== undefined)) {
             return false;
+        }
+
+        if (this.audiotag._CPU_planes === undefined) {
+            this.audiotag._CPU_planes = {};
+        }
+        this.audiotag._CPU_planes[name] = {
+            title : title,
+            points : {}
         }
 
         let aside_track = document.createElement('aside');
@@ -495,6 +512,7 @@ let CPU_element_api = class {
         if (! name.match(valid_id)) {
             return false;
         }
+        delete this.audiotag._CPU_planes[name];
         let remove_element = this.get_plane_track(name);
         if (!remove_element) {
             return false;   
@@ -519,6 +537,16 @@ let CPU_element_api = class {
      */
     get_point_track_id(aside_name, point_name, panel) {
         return `${panel?'panel':'aside'}_«${aside_name}»_point_«${point_name}»`;
+    }
+
+    /**
+     * Gets the point info
+     *
+     * @param      {string}  name   The name
+     * @return     {HTMLElement}    The <aside> element from ShadowDom interface
+     */
+    get_plane_point(aside_name, point_name) {
+        return this.audiotag._CPU_planes[aside_name].points[point_name];
     }
 
     /**
@@ -554,12 +582,16 @@ let CPU_element_api = class {
     add_plane_point(aside_name, timecode_start, point_name, data) {
         data = data === undefined ? {} : data;
         let duration = this.audiotag.duration;
-        let aside = this.get_plane_track(aside_name);
-        let panel = this.get_plane_panel(aside_name);
         let timecode_end;
-        if ( (this.element.tagName === CpuControllerTagName) || (!aside) || (timecode_start < 0) || (!point_name.match(valid_id)) || (this.get_plane_point_track(aside_name, point_name)) ) {
+        if ( (this.element.tagName === CpuControllerTagName) || (this.get_plane(aside_name) === undefined) || (this.get_plane_point(aside_name, point_name) !== undefined) || (timecode_start < 0) || (!point_name.match(valid_id)) ) {
             return false;
         }
+
+        data.start = timecode_start;
+        this.audiotag._CPU_planes[aside_name].points[point_name] = data;
+
+        let aside = this.get_plane_track(aside_name);
+        let panel = this.get_plane_panel(aside_name);
 
         let intended_aside_id = this.get_point_track_id(aside_name, point_name, false);
         let intended_panel_id = this.get_point_track_id(aside_name, point_name, true);
