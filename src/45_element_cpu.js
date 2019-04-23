@@ -836,9 +836,12 @@ let CPU_element_api = class {
     }
 
     /**
-     * Clear and redraw all planes, mainly when cpu-controller is changing targeted audio tag
+     * Clear and redraw all planes, mainly when cpu-controller is changing
+     * targeted audio tag
+     * @public
      */
     redraw_all_planes() {
+        this.undraw_all_planes()
         for (let aside_name of Object.keys(this.audiotag._CPU_planes)) {
             this.draw_plane(aside_name);
             for (let point_name of Object.keys(this.audiotag._CPU_planes[aside_name].points)) {
@@ -847,6 +850,12 @@ let CPU_element_api = class {
         }
     }
 
+    /**
+     * Remove any previewes on plane points
+     * @public
+     *
+     * @param      {string}  class_name  Targeted class name, 'with-preview' by default
+     */
     clear_previews(class_name) {
         class_name = (typeof class_name === 'string') ? class_name : preview_classname;
         querySelector_apply(`.${class_name}`,function (element) {
@@ -862,6 +871,14 @@ let CPU_element_api = class {
         }
     }
 
+    /**
+     * Sets a preview on a plane point
+     * @public
+     *
+     * @param      {string}  aside_name  The aside name
+     * @param      {string}  point_name  The point name
+     * @param      {string}  class_name  class name, 'with-preview' by default
+     */
     set_preview_plane_point(aside_name, point_name, class_name) {
         class_name = (typeof class_name === 'string') ? class_name : preview_classname;
         this.clear_previews(class_name);
