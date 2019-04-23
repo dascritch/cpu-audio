@@ -434,69 +434,148 @@ let CPU_element_api = class {
     /**
      * Gets the aside info
      *
-     * @param      {string}  name   The name
+     * @param      {string}  aside_name   The name
      * @return     {HTMLElement}    The <aside> element from ShadowDom interface
      */
-    get_plane(name) {
-        return this.audiotag._CPU_planes[name];
+    get_plane(aside_name) {
+        return this.audiotag._CPU_planes[aside_name];
     }
 
     /**
      * Gets the aside track element
      *
-     * @param      {string}  name   The name
+     * @param      {string}  aside_name   The name
      * @return     {HTMLElement}    The <aside> element from ShadowDom interface
      */
-    get_plane_track(name) {
-        return this.elements['line'].querySelector(`#aside_«${name}»`);
+    get_plane_track(aside_name) {
+        return this.elements['line'].querySelector(`#aside_«${aside_name}»`);
     }
 
     /**
      * Gets the aside panel element
      *
-     * @param      {string}  name   The name
+     * @param      {string}  aside_name   The name
+     * @return     {HTMLElement}    The panel element from ShadowDom interface
+     */
+    get_plane_panel(aside_name) {
+        return this.container.querySelector(`#panel_«${aside_name}»`);
+    }
+
+    /**
+     * Gets the <nav> aside panel element
+     *
+     * @param      {string}  aside_name   The name
      * @return     {HTMLElement}    The <nav> element from ShadowDom interface
      */
-    get_plane_panel(name) {
-        return this.container.querySelector(`#panel_«${name}» > nav`);
+    get_plane_panel_nav(aside_name) {
+        return this.get_plane_panel(aside_name).querySelector(`nav`);
+    }
+
+    /**
+     * Draws a plane.
+     *
+     * @param      {<type>}  aside_name  The aside name
+     */
+    draw_plane(aside_name) {
+        let data = this.get_plane(aside_name);
+        let highlight_preview = trigger.preview_container_hover;
+        let clear_previews_bind = this.clear_previews.bind(this);
+        let aside_track = this.get_plane_track(aside_name);
+        function assign_events(element) {
+            element.addEventListener('mouseover', highlight_preview, passive_ev);
+            element.addEventListener('focusin', highlight_preview, passive_ev);
+            element.addEventListener('mouseleave', clear_previews_bind, passive_ev);
+            element.addEventListener('focusout', clear_previews_bind, passive_ev);            
+        }
+
+        if (aside_track) {
+            aside_track.remove();
+        }
+
+        if (data.aside !== false) {
+            aside_track = document.createElement('aside');
+            aside_track.id = `aside_«${aside_name}»`;
+            if (data.aside !== true) {
+                aside_track.classList.add(data.aside);
+            }
+            
+            this.elements['line'].appendChild(aside_track);
+            assign_events(aside_track);
+        }
+
+        let aside_panel = this.get_plane_panel(aside_name);
+        if (aside_panel) {
+            aside_panel.remove();
+        }
+
+        if (data.panel !== false) {
+            aside_panel = document.createElement('div');
+            aside_panel.id = `panel_«${aside_name}»`;
+            if (data.panel !== true) {
+                aside_panel.classList.add(data.panel);
+            }
+
+            aside_panel.classList.add('panel');
+            let inner = '<nav></nav>';
+
+            if (data['title'] !== undefined) {
+                inner = `<h6>${escapeHTML(data['title'])}</h6>${inner}`;
+            }
+            aside_panel.innerHTML = inner;
+            this.container.appendChild(aside_panel);
+
+            assign_events(aside_panel);
+        }
+
+        if (
+            (this.element.tagName !== CpuControllerTagName) &&
+            (document.CPU.global_controller !== null) &&
+            (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
+            ) {
+            document.CPU.global_controller.draw_plane(aside_name);
+        }
+
     }
 
     //
     // @brief Add an <aside> annotation layer
     // @public
     //
-    // @param      {string}  name   A name in the range /[a-zA-Z0-9\-_]+/
-    // @param      {string}  title  The displayed title for the panel
+    // @param      {string}  aside_name     A name in the range /[a-zA-Z0-9\-_]+/
+    // @param      {string}  title          The displayed title for the panel
+    // @param      {object}  data           { aside : true/false/classname , panel : true/false/classname }
     // 
     // @return     {boolean} success
     //
-    add_plane(name, title, data) {
+    add_plane(aside_name, title, data) {
 
-        if ((this.element.tagName === CpuControllerTagName) || (! name.match(valid_id)) || (this.get_plane(name) !== undefined)) {
+        if ((this.element.tagName === CpuControllerTagName) || (! aside_name.match(valid_id)) || (this.get_plane(aside_name) !== undefined)) {
             return false;
         }
 
         if (this.audiotag._CPU_planes === undefined) {
             this.audiotag._CPU_planes = {};
         }
-        this.audiotag._CPU_planes[name] = {
-            title : title,
-            points : {}
+        let default_values = {
+            'aside' : true,
+            'panel' : true,
+            'title' : title,
+            'points' : {}
+        }
+        if (data === undefined) {
+            data = default_values;
+        } else {
+            for (let key in default_values) {
+                if (data[key] === undefined) {
+                    data[key] = default_values[key];
+                }
+            }
         }
 
-        let aside_track = document.createElement('aside');
-        aside_track.id = `aside_«${name}»`;
-        this.elements['line'].appendChild(aside_track);
+        this.audiotag._CPU_planes[aside_name] = data;
 
-        let aside_panel = document.createElement('div');
-        aside_panel.id = `panel_«${name}»`;
-        aside_panel.classList.add('panel')
-        let inner = '<nav></nav>';
-        if (title !== undefined) {
-            inner = `<h6>${escapeHTML(title)}</h6>${inner}`;
-        }
-        aside_panel.innerHTML = inner;
-        this.container.appendChild(aside_panel);
+        this.draw_plane(aside_name);
+
         // clone to eventual <cpu-controller>
         return true;
     }
@@ -512,17 +591,27 @@ let CPU_element_api = class {
         if (! name.match(valid_id)) {
             return false;
         }
-        delete this.audiotag._CPU_planes[name];
-        let remove_element = this.get_plane_track(name);
-        if (!remove_element) {
-            return false;   
+        if (this.audiotag) {
+            // we are perhaps in <cpu-controller>
+            delete this.audiotag._CPU_planes[name];
         }
-        remove_element.remove()
+        let remove_element = this.get_plane_track(name);
+        if (remove_element) {
+            remove_element.remove()
+        }
         remove_element = this.get_plane_panel(name);
         if (remove_element) {
             remove_element.remove();
         }
-        // clone to eventual <cpu-controller>
+
+        if (
+            (this.element.tagName !== CpuControllerTagName) &&
+            (document.CPU.global_controller !== null) &&
+            (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
+            ) {
+            document.CPU.global_controller.remove_plane(name);
+        }
+
         return true;
     }
 
@@ -568,6 +657,104 @@ let CPU_element_api = class {
     get_plane_point_panel(aside_name, point_name) {
         return this.container.querySelector('#' + this.get_point_track_id(aside_name, point_name, true));
     }
+
+    /**
+     * Draws a plane point.
+     *
+     * @param      {<type>}  aside_name  The aside name
+     * @param      {<type>}  point_name  The point name
+     */
+    draw_plane_point(aside_name, point_name) {
+        let plane_point_panel = this.get_plane_point_panel(aside_name, point_name);
+        if (plane_point_panel) {
+            plane_point_panel.remove();
+        }
+        let plane_point_track = this.get_plane_point_track(aside_name, point_name);
+        if (plane_point_track) {
+            plane_point_track.remove();
+        }
+
+        let data = this.get_plane_point(aside_name, point_name);
+        let audiotag = this.audiotag ? this.audiotag : document.CPU.global_controller.audiotag;
+        let audio_duration = audiotag.duration;
+        let aside = this.get_plane_track(aside_name);
+        let panel = this.get_plane_panel_nav(aside_name);
+
+        let intended_aside_id = this.get_point_track_id(aside_name, point_name, false);
+        let intended_panel_id = this.get_point_track_id(aside_name, point_name, true);
+
+        if (aside) {
+            let point_element = document.createElement('a');
+            point_element.id = intended_aside_id;
+            point_element.tabIndex = -1;
+
+            if (data['link'] !== false) {
+                point_element.href = `#${audiotag.id}&t=${data['start']}`;
+            }
+            point_element.title = data['text'];
+            let inner = '';
+            if (data['image']) {
+                inner = `<img src="${data['image']}" alt="">`;
+            }
+            point_element.innerHTML = inner;
+
+            aside.appendChild(point_element);
+            
+            point_element.style.left = `${100 * (data['start'] / audio_duration)}%`;
+            point_element.dataset.cueStartTime = data['start'];
+            point_element.dataset.cueId = point_name;
+
+            if (data['end']) {
+                point_element.style.right = `${100 - 100 *( data['end'] / audio_duration)}%`;
+                point_element.dataset.cueEndTime = data['end'];
+            }
+        }
+        
+        if (panel) {
+            let li = document.createElement('li');
+            // li.id = intended_panel_id;
+                        
+            let inner = '';
+            if (data['text']) {
+                inner += `<strong>${data['text']}</strong>`;
+            }
+
+            // see valid duration time https://www.w3.org/TR/2014/REC-html5-20141028/infrastructure.html#valid-duration-string
+            inner += `<time datetime="P${convert.SecondsInTime(data['start']).toUpperCase()}">${convert.SecondsInColonTime(data['start'])}</time>`; 
+
+            if (data['link'] !== false) {
+                if (data['link'] === true) {
+                    // link to the audio tag.
+                    // if the parameter is a string, use it as a simple link
+                    data['link'] = `#${audiotag.id}&amp;t=${data['start']}`;
+                }
+                inner = `<a href="${data['link']}" class="cue" id="${intended_panel_id}">${inner}</a>`;
+            } else {
+                // no link to refer, put a tag for consistency
+                inner = `<span class="cue" id="${intended_panel_id}">${inner}</span>`;
+            }
+            li.innerHTML = inner;
+            // 
+            let cue = li.querySelector('.cue');
+            cue.dataset.cueStartTime = data['start'];
+            cue.dataset.cueId = point_name;
+
+            if (data['end']) {
+                cue.dataset.cueEndTime = data['end'];
+            }
+
+            panel.appendChild(li);
+        }
+
+        if (
+            (this.element.tagName !== CpuControllerTagName) &&
+            (document.CPU.global_controller !== null) &&
+            (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
+            ) {
+            document.CPU.global_controller.draw_plane_point(aside_name, point_name) 
+        }
+    }
+
     //
     // @brief Add an annotation
     // @public
@@ -581,79 +768,15 @@ let CPU_element_api = class {
     //                        
     add_plane_point(aside_name, timecode_start, point_name, data) {
         data = data === undefined ? {} : data;
-        let duration = this.audiotag.duration;
-        let timecode_end;
+        
         if ( (this.element.tagName === CpuControllerTagName) || (this.get_plane(aside_name) === undefined) || (this.get_plane_point(aside_name, point_name) !== undefined) || (timecode_start < 0) || (!point_name.match(valid_id)) ) {
             return false;
         }
 
         data.start = timecode_start;
         this.audiotag._CPU_planes[aside_name].points[point_name] = data;
+        this.draw_plane_point(aside_name, point_name);
 
-        let aside = this.get_plane_track(aside_name);
-        let panel = this.get_plane_panel(aside_name);
-
-        let intended_aside_id = this.get_point_track_id(aside_name, point_name, false);
-        let intended_panel_id = this.get_point_track_id(aside_name, point_name, true);
-        let point_element = document.createElement('a');
-        point_element.id = intended_aside_id;
-
-        if (data['link'] !== false) {
-            point_element.href = `#${this.audiotag.id}&t=${timecode_start}`;
-        }
-        point_element.title = data['text'];
-        let inner = '';
-        if (data['image']) {
-            inner = `<img src="${data['image']}" alt="">`;
-        }
-        point_element.innerHTML = inner;
-
-        aside.appendChild(point_element);
-        
-        point_element.style.left = `${100 * (timecode_start / duration)}%`;
-        point_element.dataset.cueStartTime = timecode_start;
-        point_element.dataset.cueId = point_name;
-
-        if (data['end']) {
-            timecode_end = timecode_start + data['end'];
-            point_element.style.right = `${100 - 100 *( data['end'] / duration)}%`;
-            point_element.dataset.cueEndTime = timecode_end;
-        }
-
-        if (panel) {
-            let li = document.createElement('li');
-            li.id = intended_panel_id;
-                        
-            let inner = '';
-            if (data['text']) {
-                inner += `<strong>${data['text']}</strong>`;
-            }
-
-            // see valid duration time https://www.w3.org/TR/2014/REC-html5-20141028/infrastructure.html#valid-duration-string
-            inner += `<time datetime="P${convert.SecondsInTime(timecode_start).toUpperCase()}">${convert.SecondsInColonTime(timecode_start)}</time>`; 
-
-            if (data['link'] !== false) {
-                if (data['link'] === true) {
-                    // link to the audio tag.
-                    // if the parameter is a string, use it as a simple link
-                    data['link'] = `#${this.audiotag.id}&amp;t=${timecode_start}`;
-                }
-                inner = `<a href="${data['link']}" class="cue">${inner}</a>`;
-            } else {
-                // no link to refer, put a tag for consistency
-                inner = `<span class="cue">${inner}</span>`;
-            }
-            li.innerHTML = inner;
-            // 
-            let cue = li.querySelector('.cue');
-            cue.dataset.cueStartTime = timecode_start;
-            cue.dataset.cueId = point_name;
-            if (data['end']) {
-                cue.dataset.cueEndTime = timecode_end;
-            }
-
-            panel.appendChild(li);
-        }
         return true;
     }
     //
@@ -669,11 +792,25 @@ let CPU_element_api = class {
         if (!point_track_element) {
             return false;
         }
+        delete this.audiotag._CPU_planes[aside_name].points[point_name];
         point_track_element.remove();
         this.get_plane_point_panel(aside_name, point_name).remove();
-        // clone to eventual <cpu-controller>
 
+        if (
+            (this.element.tagName !== CpuControllerTagName) &&
+            (document.CPU.global_controller !== null) &&
+            (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
+            ) {
+            document.CPU.global_controller.remove_plane_point(aside_name, point_name);
+        }
         return true;
+    }
+
+
+    get_aside_point_names_from_id(element_id) {
+        let aside_name = element_id.replace(aside_point_names_from_id,'$2');
+        let point_name = element_id.replace(aside_point_names_from_id,'$4');
+        return [aside_name, point_name];
     }
 
     /**
@@ -683,19 +820,44 @@ let CPU_element_api = class {
      * @param      {string}  aside_name  The aside name
      */
     clear_plane(aside_name) {
-        let remove_from_element = this.get_plane_track(aside_name);
-        if (!remove_from_element) {
+        let remove_from_data = this.get_plane(aside_name);
+        if (!this.get_plane(aside_name)) {
             return false;   
         }
-        let motif = /^(.*_«)([a-zA-Z0-9\-_]+)(»)$/;
-        let self = this;
 
-        querySelector_apply('a',function (element) {
-            let point_name = element.id.replace(motif, '$2');
-            self.remove_plane_point(aside_name, point_name);
-        }, remove_from_element);
-        
+        for (let point_name of Object.keys(remove_from_data.points)) {
+            this.remove_plane_point(aside_name, point_name);
+        }
         return true;
+    }
+
+    clear_previews(class_name) {
+        class_name = (typeof class_name === 'string') ? class_name : preview_classname;
+        querySelector_apply(`.${class_name}`,function (element) {
+                element.classList.remove(class_name);
+            },this.container);
+    }
+
+    set_preview_plane_point(aside_name, point_name, class_name) {
+        class_name = (typeof class_name === 'string') ? class_name : preview_classname;
+        this.clear_previews(class_name);
+
+        let track_element = this.get_plane_track(aside_name, point_name);
+        if (track_element) {
+            let point_track = this.get_plane_point_track(aside_name, point_name);
+            if (point_track) {
+                point_track.classList.add(class_name);
+            }
+        }
+
+        let panel_element = this.get_plane_panel(aside_name, point_name);
+        if (panel_element) {
+            let point_panel = this.get_plane_point_panel(aside_name, point_name);
+            if (point_panel) {
+                point_panel.classList.add(class_name);
+            }
+        }
+        
     }
 
     //
@@ -743,6 +905,7 @@ let CPU_element_api = class {
 
         let audiotag = self.audiotag;
         let has = false;
+        let plane_name = '_chapters';
 
         function _build_from_track(tracks) {
             let _cuechange_event = self._cuechange_event.bind(self);
@@ -752,10 +915,10 @@ let CPU_element_api = class {
 
             for (let cue of tracks.cues) {
                 let cuepoint = Math.floor(cue.startTime);
-                let cuetime = convert.SecondsInColonTime(cue.startTime);
-                let href = `#${audiotag.id}&t=${cuepoint}`;
+                // let cuetime = convert.SecondsInColonTime(cue.startTime);
+                // let href = `#${audiotag.id}&t=${cuepoint}`;
 
-                self.add_plane_point('_chapters', cuepoint, cue.id,  {
+                self.add_plane_point(plane_name, cuepoint, cue.id,  {
                     'text' : cue.text,
                     'link' : true,          // point the link to audio
                     'end'  : cue.endTime    // end timecode of the cue
@@ -783,8 +946,8 @@ let CPU_element_api = class {
                             (tracks.kind.toLowerCase() === 'chapters') &&
                             (tracks.cues !== null) /*&&
                             (!Object.is(self._chaptertracks, tracks))*/) {
-                                self.add_plane('_chapters', __['chapters']);
-                                self.clear_plane('_chapters');
+                                self.add_plane(plane_name, __['chapters'], {'aside' : 'chapters'});
+                                self.clear_plane(plane_name);
                                 _build_from_track(tracks)
                         }
                     }
@@ -793,62 +956,19 @@ let CPU_element_api = class {
         }
 
         if (self.element.tagName === CpuAudioTagName) {
+            let body_class = `cpu_tag_«${audiotag.id}»_chaptered`;
             if (has) {
                 // indicate in host page that audio tag chapters are listed
                 // see https://github.com/dascritch/cpu-audio/issues/36
-                document.body.classList.add(`cpu_tag_«${audiotag.id}»_chaptered`);
+                document.body.classList.add(body_class);
             } else {
-                self.remove_plane('_chapters');
+                self.remove_plane(plane_name);
+                document.body.classList.remove(body_class);
             }
 
-            if (
-                (document.CPU.global_controller !== null) &&
-                (audiotag.isEqualNode(document.CPU.global_controller.audiotag))
-                ) {
-                document.CPU.global_controller.build_chapters();
-            }
         }
 
     }
-
-    // @private not mature enough TO BE REDONE VIA plane/points
-    //
-    // @brief preview a timecode on the lines, or a chapter
-    //
-    // @param      {number}  _timecode_start  The timecode start
-    // @param      {number}  _timecode_end    The timecode end
-    // @param      {string}  _chapter_id      The chapter identifier
-    //
-    preview(_timecode_start, _timecode_end, _chapter_id) {
-        let mode = !isNaN(_timecode_start);
-        let classlist = this.elements['interface'].classList;
-        let classname = 'with-preview';
-        let chaptersline = this.elements['chaptersline'];
-        let previous_segment = chaptersline.querySelector('.'+classname);
-        if (previous_segment) {
-            previous_segment.classList.remove(classname);
-        }
-        if (mode) {
-            classlist.add(classname);
-        } else {
-            classlist.remove(classname);
-            return ;
-        }
-
-        let audiotag_duration = this.audiotag.duration;
-        let element = this.elements['preview'];
-        element.style.left = `${100 * _timecode_start / audiotag_duration}%`;
-        _timecode_end = _timecode_end === undefined ? audiotag_duration : _timecode_end;
-        element.style.right = `${100- 100 *( _timecode_end / audiotag_duration) }%`;
-
-        let segment = chaptersline.querySelector('#segment-'+_chapter_id);
-        if (segment) {
-            segment.classList.add(classname);
-        }
-    }
-
-
-
 
     //
     // @brief Builds or refresh the playlist panel. Should be called only for
@@ -889,7 +1009,6 @@ let CPU_element_api = class {
     build_controller() {
 
         this.element.classList.add(this.classname);
-        //this.tabIndex = 0 // see http://snook.ca/archives/accessibility_and_usability/elements_focusable_with_tabindex and http://www.456bereastreet.com/archive/201302/making_elements_keyboard_focusable_and_clickable/
 
         // the following mess is to simplify sub-element declaration and selection
         let controller = this;
@@ -899,8 +1018,6 @@ let CPU_element_api = class {
         this.elements['poster'].addEventListener('load', function () {
             controller.elements['interface'].classList.add('poster-loaded'); 
         });
-
-        let passive_ev = {passive: true};
 
         let cliquables = {
             'pause'     : trigger.play,
@@ -919,7 +1036,8 @@ let CPU_element_api = class {
         for (let that in cliquables) {
             this.elements[that].addEventListener('click', cliquables[that]);
         }
-        // key management
+
+        // keyboard management
         this.element.addEventListener('keydown', trigger.key);
 
         // not working correctly :/
@@ -958,14 +1076,6 @@ let CPU_element_api = class {
         if (track_element) {
             track_element.addEventListener('load', this_build_chapters, passive_ev);
         }
-        
 
-        let chapters_element = this.elements['chapters'];
-
-        chapters_element.addEventListener('mouseover', trigger.preview_container_hover, passive_ev);
-        chapters_element.addEventListener('focusin', trigger.preview_container_hover, passive_ev);
-        let preview_bind = this.preview.bind(this);
-        chapters_element.addEventListener('mouseleave', preview_bind, passive_ev);
-        chapters_element.addEventListener('focusout', preview_bind, passive_ev);
     }
 };

@@ -252,27 +252,30 @@ main:focus #loadingline:after {
 #elapsedline {
     z-index : 2;
 }
-/*#chaptersline*/ #aside_«_chapters» {
+aside.chapters {
     position : absolute;
     width : 100%;
     height : 2px;
     bottom : -2px;
 }
 
-/*#chaptersline*/ #aside_«_chapters» a {
+aside.chapters a {
     position : absolute;
     background : black;
     display : block;
     height : 2px;
     border : 1px solid var(--cpu-background);
 }
-/*#chaptersline*/ #aside_«_chapters» a:hover, /* #chaptersline*/ #aside_«_chapters» a.with-preview {
-    background : white;
-}
 
-/* #chaptersline */ #aside_«_chapters» a.active-cue {
+aside.chapters a.active-cue {
     background : var(--cpu-color);
 }
+
+.with-preview {
+    color: var(--cpu-background) !important;
+    background : white !important;
+}
+
 
 #points {
     display : block ;
@@ -461,19 +464,16 @@ main:focus #loadingline:after {
 .mode-compact #title,
 .mode-compact #line,
 .mode-compact #actions,
-.mode-compact #chapters,
 .mode-compact aside, .mode-compact .panel,
 .mode-button #poster,
 .mode-button #about,
 .mode-button #actions,
-.mode-button #chapters,
 .mode-button aside, .mode-button .panel {
     width : 0;
     display : none;
 }
 
 .mode-hidden,
-.hide-chapters #chapters,
 .hide-chapters #panel_«chapters» {
     display : none;
 }

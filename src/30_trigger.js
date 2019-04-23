@@ -128,22 +128,16 @@ const trigger = {
      */
     preview_container_hover : function(event) {
         let target = event.target;
-        if (!target.classList.contains('cue')) {
-            target = target.closest('.cue');
+        if (!target.id) {
+            target = target.closest('[id]');
         }
         if (target === null) {
             return;
         }
-        let container = document.CPU.find_container(target);
-        // TODO : 
-            // decode hash id, gets its container
-            // use dataset.cueId  , derive startTime and endTime
-            // use dataset.cueStartTime else try decode hash startTime
-            // use dataset.cueEndTime else try decode hash endTime
 
-        let start = target.dataset.cueStartTime;
-        let end = target.dataset.cueEndTime;
-        container.preview(start, end, target.dataset.cueId);
+        let container = document.CPU.find_container(target);
+        let names = container.get_aside_point_names_from_id(target.id)
+        container.set_preview_plane_point(names[0], names[1]);
     },
 
 
@@ -217,7 +211,8 @@ const trigger = {
             global_controller.attach_audiotag_to_controller(audiotag);
             global_controller.audiotag = audiotag;
             global_controller.show_main();
-            global_controller.build_chapters();
+            // global_controller.build_chapters();
+            global_controller.redraw_all_planes();
             global_controller.build_playlist();
         }
         try {
@@ -356,20 +351,17 @@ const trigger = {
         if (element_interface === undefined) {
             return;
         }
-        let chapters_element = element_interface.querySelector('#chapters');
-        let classname = 'active-cue';
-        
-        let previous = chapters_element.querySelector(`.${classname}`);
-        if (previous !== null) {
-            previous.classList.remove(classname);
-        }
+        let class_name = 'active-cue';
+        let container = document.CPU.find_container(element_interface);
+        let plane_name = '_chapters';
+        container.clear_previews(class_name);
+
         if (event.target.activeCues.length === 0) {
             // too early, we need to keep this case from Chrome
             return;
         }
 
         let cue_id = event.target.activeCues[0].id;
-
         // giving a class to document.body, with a syntax according to https://www.w3.org/TR/CSS21/syndata.html#characters
         let current_audiotag = document.CPU.current_audiotag_playing;
         if (current_audiotag !== null) {
@@ -377,24 +369,7 @@ const trigger = {
             document.body.classList.add(document.CPU.body_className_playing_cue);
         }
 
-        // indicate active chapter in chapter list
-        let new_active = chapters_element.querySelector(`#${cue_id}`)
-        if (new_active === null) {
-            return;
-        }
-        new_active.classList.add(classname);
-
-        // indicate active chapter in chapter timeline
-        let chaptersline = element_interface.querySelector('#chaptersline');
-        let last_preview = chaptersline.querySelector('.'+classname)
-        if (last_preview !== null) {
-            last_preview.classList.remove(classname);
-        }
-        let preview = chaptersline.querySelector('#segment-'+cue_id);
-        if (preview !== null) {
-            preview.classList.add(classname)
-        }
-
+        container.set_preview_plane_point(plane_name, cue_id, class_name);
     },
 
 

@@ -244,11 +244,11 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let done = assert.async();
 		setTimeout(function() {
 			let component = playground.querySelector('#track_will_disapear');
+			let secondary_audiotag = playground.querySelector('#will_lose_track');
 			let chapters = component.shadowRoot.querySelector('#chapters');
-			chapters.innerHTML="<li>Hello</li><li>World</li>";
 			component.querySelector('track').remove();
 			setTimeout(function() {
-				assert.equal(chapters.innerHTML, '', 'chapters purged');
+				assert.equal(secondary_audiotag._CPU_planes['_chapters'], undefined, 'chapters purged');
 				done();
 			}, 100);
 		}, 100);
@@ -292,6 +292,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 	// https://github.com/dascritch/cpu-audio/issues/47
 
 	QUnit.test( "API .preview(start, end) on cpu-audio", function( assert ) {
+		/*
 		playground.innerHTML = `<cpu-audio><audio id="show_on_this" controls muted>
 									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 								</audio>
@@ -309,9 +310,11 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 			done();
 
 		}, 100);
+		*/
 	});
 
 	QUnit.test( "API un- .preview() on cpu-audio", function( assert ) {
+		/*
 		playground.innerHTML = `<cpu-audio><audio id="show_on_this" controls muted>
 									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 								</audio>
@@ -327,7 +330,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 			assert.equal(component.CPU.elements.interface.classList.contains('with-preview'), false, 'Highlight on timeline hidden');
 			done();
 
-		}, 100);
+		}, 100);*/
 	});
 
 	/*
@@ -465,7 +468,8 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 		assert.notEqual(secondary_API_CPU.get_plane('hello'), undefined, 'get_plane() returns object');
 		assert.equal(secondary_API_CPU.get_plane_track('hello').tagName, 'ASIDE', 'get_plane_track() returns DOM element and is a <aside>');
-		assert.equal(secondary_API_CPU.get_plane_panel('hello').tagName, 'NAV', 'get_plane_panel() returns DOM element and is a <nav>');
+		assert.equal(secondary_API_CPU.get_plane_panel('hello').tagName, 'DIV', 'get_plane_panel() returns DOM element and is a <div>');
+		assert.equal(secondary_API_CPU.get_plane_panel_nav('hello').tagName, 'NAV', 'get_plane_panel_nav() returns DOM element and is a <nav>');
 	});
 
 	QUnit.test( "Public API : add_plane cannot create an element if a already existing same name exists", function( assert ) {
@@ -571,9 +575,9 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		secondary_API_CPU.add_plane_point('hello', 2, 'point');
 		assert.ok(secondary_API_CPU.remove_plane_point('hello', 'point'), 'function accept when parameters are valid');
 
+		assert.equal(secondary_API_CPU.get_plane_point('hello', 'world'), undefined, 'get_plane_point() returns undefined');
 		assert.equal(secondary_API_CPU.get_plane_point_track('hello', 'point'), null , 'get_aside_point_track() returns null');
 		assert.equal(secondary_API_CPU.get_plane_point_panel('hello', 'point'), null, 'get_aside_point_panel() returns null');
-		assert.equal(secondary_API_CPU.get_plane_point('hello', 'world'), undefined, 'get_plane_point() returns undefined');
 		assert.ok(! secondary_interfacetag.querySelector('aside#aside_«hello» > div#aside_«hello»_point_«point»') , 'DOM element point removed from aside track');
 		assert.ok(! secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > li#panel_«hello»_point_«point»') , 'DOM element point removed from panel');
 
