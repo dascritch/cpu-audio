@@ -831,6 +831,22 @@ let CPU_element_api = class {
         return true;
     }
 
+    undraw_all_planes() {
+        querySelector_apply('aside , .panel', function(element) { element.remove(); }, this.container);
+    }
+
+    /**
+     * Clear and redraw all planes, mainly when cpu-controller is changing targeted audio tag
+     */
+    redraw_all_planes() {
+        for (let aside_name of Object.keys(this.audiotag._CPU_planes)) {
+            this.draw_plane(aside_name);
+            for (let point_name of Object.keys(this.audiotag._CPU_planes[aside_name].points)) {
+                this.draw_plane(aside_name);
+            }
+        }
+    }
+
     clear_previews(class_name) {
         class_name = (typeof class_name === 'string') ? class_name : preview_classname;
         querySelector_apply(`.${class_name}`,function (element) {
