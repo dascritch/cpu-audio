@@ -61,6 +61,7 @@ Some attributes enhance the component :
     * `poster` : the poster image
     * `actions` : the share button
     * `chapters` : the chapters list
+    * `panels` : any panels as chapters or playlist
 * `playlist="<string>"` : add this media in a named playlist, play the next one when ended ;
 * `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page).
 

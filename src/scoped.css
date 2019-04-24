@@ -413,7 +413,7 @@ aside.chapters a.active-cue {
     border-right: 4px solid transparent;
 } 
 
-#chapters, #playlist, .panel {
+#playlist, .panel {
     display : flex;
     overflow : scoll;
     background : var(--cpu-background);
@@ -470,7 +470,8 @@ h6 {
 }
 
 .mode-hidden,
-.hide-chapters #panel_«chapters» {
+.hide-chapters #panel_«chapters»,
+.hide-panels .panel {
     display : none;
 }
 
