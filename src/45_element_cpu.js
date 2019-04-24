@@ -162,7 +162,8 @@ let CPU_element_api = class {
         }
         this.add_plane(plane,'',{ 
             track   : 'borders',
-            panel   : false
+            panel   : false,
+            highlight : false
         });
         this.add_plane_point(plane, trigger._timecode_start, 'play', {
             link    : false,
@@ -487,10 +488,21 @@ let CPU_element_api = class {
      * @param      {<type>}  plane_name  The plane name
      */
     draw_plane(plane_name) {
+        let plane_track = this.get_plane_track(plane_name);
+        if (plane_track) {
+            plane_track.remove();
+        }
+        let plane_panel = this.get_plane_panel(plane_name);
+        if (plane_panel) {
+            plane_panel.remove();
+        }
+
         let data = this.get_plane(plane_name);
+        if (!data) {
+            return ;
+        }
         let highlight_preview = trigger.preview_container_hover;
         let remove_highlights_points_bind = this.remove_highlights_points.bind(this);
-        let plane_track = this.get_plane_track(plane_name);
         function assign_events(element) {
             element.addEventListener('mouseover', highlight_preview, passive_ev);
             element.addEventListener('focusin', highlight_preview, passive_ev);
@@ -498,9 +510,7 @@ let CPU_element_api = class {
             element.addEventListener('focusout', remove_highlights_points_bind, passive_ev);            
         }
 
-        if (plane_track) {
-            plane_track.remove();
-        }
+
 
         if (data.track !== false) {
             plane_track = document.createElement('aside');
@@ -511,11 +521,6 @@ let CPU_element_api = class {
             
             this.elements['line'].appendChild(plane_track);
             assign_events(plane_track);
-        }
-
-        let plane_panel = this.get_plane_panel(plane_name);
-        if (plane_panel) {
-            plane_panel.remove();
         }
 
         if (data.panel !== false) {
@@ -567,10 +572,11 @@ let CPU_element_api = class {
             this.audiotag._CPU_planes = {};
         }
         let default_values = {
-            'track' : true,
-            'panel' : true,
-            'title' : title,
-            'points' : {}
+            'track'     : true,
+            'panel'     : true,
+            'title'     : title,
+            'highlight' : true,
+            'points'    : {}
         }
         if (data === undefined) {
             data = default_values;
@@ -583,10 +589,7 @@ let CPU_element_api = class {
         }
 
         this.audiotag._CPU_planes[plane_name] = data;
-
         this.draw_plane(plane_name);
-
-        // clone to eventual <cpu-controller>
         return true;
     }
     //
@@ -598,7 +601,7 @@ let CPU_element_api = class {
     // @return     {boolean} success
     //
     remove_plane(name) {
-        if ( (! name.match(valid_id)) || (this.audiotag._CPU_planes[name] === undefined)) {
+        if ( (this.element.tagName === CpuControllerTagName) || (! name.match(valid_id)) || (this.audiotag._CPU_planes[name] === undefined)) {
             return false;
         }
         if (this.audiotag) {
@@ -619,7 +622,8 @@ let CPU_element_api = class {
             (document.CPU.global_controller !== null) &&
             (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
             ) {
-            document.CPU.global_controller.remove_plane(name);
+            // as plane data is removed, it will remove its aside and track 
+            document.CPU.global_controller.draw_plane(name);
         }
 
         return true;
@@ -894,6 +898,10 @@ let CPU_element_api = class {
         class_name = (typeof class_name === 'string') ? class_name : preview_classname;
         this.remove_highlights_points(class_name);
 
+        if (!this.get_plane('_borders')['highlight']) {
+            return;
+        }
+
         let track_element = this.get_plane_track(plane_name, point_name);
         if (track_element) {
             let point_track = this.get_plane_point_track(plane_name, point_name);
@@ -1131,11 +1139,12 @@ let CPU_element_api = class {
         let this_build_chapters = this.build_chapters.bind(this);
         // sometimes, we MAY have loose loading
         this.audiotag.addEventListener('loadedmetadata', this_build_chapters, passive_ev);
-        
         let track_element = this.audiotag.querySelector('track[kind="chapters"]');
         if (track_element) {
             track_element.addEventListener('load', this_build_chapters, passive_ev);
         }
+
+        this.audiotag.addEventListener('loadedmetadata', this.redraw_all_planes.bind(this), passive_ev);
 
     }
 };
