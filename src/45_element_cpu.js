@@ -151,14 +151,22 @@ let CPU_element_api = class {
     //
     update_time_borders() {
         let audiotag = this.audiotag;
+        let plane = '_borders';
         if ((!document.CPU.is_audiotag_global(audiotag)) || (trigger._timecode_end === false)) {
-            this.elements['points'].style.opacity = 0;
+            this.remove_plane(plane);
             return;
         }
-        this.elements['points'].style.opacity = 1;
-        // UGLY to rewrite
-        this.elements['pointstart'].style.left = `calc(${100 * trigger._timecode_start / audiotag.duration}% - 4px)`;
-        this.elements['pointend'].style.left = `${100 * trigger._timecode_end / audiotag.duration}%`;
+        if (this.get_plane(plane)) {
+            return;
+        }
+        this.add_plane(plane,'',{ 
+            track   : 'borders',
+            panel   : false
+        });
+        this.add_plane_point(plane, trigger._timecode_start, 'play', {
+            link    : false,
+            end     : trigger._timecode_end
+        });
 
     }
     //
@@ -465,10 +473,11 @@ let CPU_element_api = class {
      * Gets the <nav> plane panel element
      *
      * @param      {string}  plane_name   The name
-     * @return     {HTMLElement}    The <nav> element from ShadowDom interface
+     * @return     {HTMLElement}    The <nav> element from ShadowDom interface, null if inexisting
      */
     get_plane_panel_nav(plane_name) {
-        return this.get_plane_panel(plane_name).querySelector(`nav`);
+        let panel = this.get_plane_panel(plane_name);
+        return panel ? panel.querySelector(`nav`) : null;
     }
 
     /**

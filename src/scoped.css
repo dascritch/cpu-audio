@@ -226,7 +226,7 @@ a {
 #loadingline,
 #elapsedline {
     background : white;
-    height : var(--cpu-timeline-height) ;
+    height : var(--cpu-timeline-height);
     display : block ;
     position : absolute;
     left : 0;
@@ -252,17 +252,24 @@ main:focus #loadingline:after {
 #elapsedline {
     z-index : 2;
 }
-aside.chapters {
+
+aside {
     position : absolute;
     width : 100%;
+}
+
+aside a {
+    position : absolute;
+    display : block;
+}
+
+aside.chapters {
     height : 2px;
     bottom : -2px;
 }
 
 aside.chapters a {
-    position : absolute;
     background : black;
-    display : block;
     height : 2px;
     border : 1px solid var(--cpu-background);
 }
@@ -271,26 +278,39 @@ aside.chapters a.active-cue {
     background : var(--cpu-color);
 }
 
+aside.borders {
+    height : var(--cpu-timeline-height);
+    z-index : 4;
+}
+
+aside.borders a {
+    height : var(--cpu-timeline-height);
+    background: transparent;
+}
+
+aside.borders a:before, aside.borders a:after {
+    pointer-events : none;
+    content:"";
+    position : absolute;
+    top : calc(- var(--cpu-timeline-height));
+    width : 2px;
+    height : var(--cpu-timeline-height);
+    border : 2px solid red;
+}
+
+aside.borders a:before {
+    border-right-width: 0px;
+    left : 0%;
+}
+
+aside.borders a:after {
+    border-left-width: 0px;
+    left : 100%;
+}
+
 .with-preview {
     color: var(--cpu-background) !important;
     background : white !important;
-}
-
-
-#points {
-    display : block ;
-    position : absolute;
-    left : 0;
-    width: 100%;
-    opacity : 0;
-}
-#points svg {
-    fill : red;
-    pointer-events : none;
-    position: absolute;
-    z-index : 126;
-    width : 10px;
-    height : 10px;
 }
 
 .act-loading #loadingline {
