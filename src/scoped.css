@@ -281,6 +281,7 @@ aside.chapters a.active-cue {
 aside.borders {
     height : var(--cpu-timeline-height);
     z-index : 4;
+    bottom : calc( var(--cpu-timeline-height) - 2*2 ); 
 }
 
 aside.borders a {
@@ -288,11 +289,14 @@ aside.borders a {
     background: transparent;
 }
 
+aside.borders a:hover {
+    background: transparent;   
+}
+
 aside.borders a:before, aside.borders a:after {
     pointer-events : none;
     content:"";
     position : absolute;
-    top : calc(- var(--cpu-timeline-height));
     width : 2px;
     height : var(--cpu-timeline-height);
     border : 2px solid red;

@@ -157,6 +157,7 @@ let CPU_element_api = class {
             return;
         }
         if (this.get_plane(plane)) {
+            // this.draw_plane(plane); /// bancal, ya surement mieux
             return;
         }
         this.add_plane(plane,'',{ 
