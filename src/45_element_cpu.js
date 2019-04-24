@@ -898,7 +898,7 @@ let CPU_element_api = class {
         class_name = (typeof class_name === 'string') ? class_name : preview_classname;
         this.remove_highlights_points(class_name);
 
-        if (!this.get_plane('_borders')['highlight']) {
+        if (!this.get_plane(plane_name)['highlight']) {
             return;
         }
 
