@@ -40,7 +40,7 @@ Some examples using <code>&lt;iframe&gt;</code>s :
 </div>
 
 <div  class="size_3" style="width:479px">
-<strong>Under 480px wide</strong> : Total time and chapters timeline are hidden.
+<strong>Under 480px wide</strong> : Total time is hidden, buttons are reduced, time-lines are under all the buttons using the full available width.
 <iframe src="./iframe_for_dimension.html" ></iframe>
 </div>
 
