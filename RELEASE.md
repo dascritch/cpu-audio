@@ -1,34 +1,27 @@
-RELEASE NOTES Version 5.4
+RELEASE NOTES Version 5.5
 =========================
 
 New features
 ------------
  
- * Expandable modes on first play [#50](https://github.com/dascritch/cpu-audio/issues/50)
- * Compact mode now shows poster
- * Poster is hideable
- * Configurable color transitions
- * Titles on the chapters line indicator (wide screens only)
- * Public API documented
- * Adding classes to `document.body`'s host
- * Chapter live editor now has a preview
+ * Add a [waveform in the time-line](#6)
+ * [Annotations API](#57)
+ * A handle on the time-line is apperaing when hovering with a pointer
+ * On small screens, time-line now goes out of button space, using the full WC width to [have more precisions on small screens](#58).
+ * Chapters time-line are displayed on small screens, but won't be clickable.
+ * All panels can be hidden via parameters, even future ones.
 
 Corrections
 -----------
 
- * Reducing DOM elements, use more explicit tag names
- * Request to use 48px instead of 32px on small width, in respect with your thumb surface
- * Fix title height, better title presentation
- * Better CSS reset
- * Chapters changing events, limiting repaints
- * Old bugs in tests due to new autoplay policy in browsers
- * Minimal public API tests
- * Indicate source url filename in chapters editor
- * Public methods should have javadoc [#49](https://github.com/dascritch/cpu-audio/issues/49)
- * Adding CSS breakpoint demos
- * Missing and imprecisions in doc are cleaned
+ * Timeline won't have any more round ends : Graphically inconsistent and not easy on small widths.
+ * Chapters now use [annotations API](#57).
+ * Boxed playing (with a end timecode) now uses [annotations API](#57)
+ * Simplified DOM
+ * Panels (chapters and playlist) have a title
+ * Functions renamed for constistancy
 
 Back-end
 --------
 
- * Use proper IIFE generator. Wrong side : Firefox doesn't read the map
+Nothing
