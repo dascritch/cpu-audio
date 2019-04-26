@@ -443,6 +443,7 @@ let CPU_element_api = class {
 
     /**
      * Gets the plane info
+     * @private
      *
      * @param      {string}  plane_name     The name
      * @return     {object}                 data of the plane
@@ -453,6 +454,7 @@ let CPU_element_api = class {
 
     /**
      * Gets the plane track element
+     * @private
      *
      * @param      {string}  plane_name   The name
      * @return     {HTMLElement}    The <aside> track element from ShadowDom interface
@@ -463,6 +465,7 @@ let CPU_element_api = class {
 
     /**
      * Gets the plane panel element
+     * @private
      *
      * @param      {string}  plane_name   The name
      * @return     {HTMLElement}    The panel element from ShadowDom interface
@@ -473,6 +476,7 @@ let CPU_element_api = class {
 
     /**
      * Gets the <nav> plane panel element
+     * @private
      *
      * @param      {string}  plane_name   The name
      * @return     {HTMLElement}    The <nav> element from ShadowDom interface, null if inexisting
@@ -483,7 +487,8 @@ let CPU_element_api = class {
     }
 
     /**
-     * Draws a plane.
+     * Draws a plane
+     * @private
      *
      * @param      {<type>}  plane_name  The plane name
      */
@@ -558,7 +563,7 @@ let CPU_element_api = class {
     //
     // @param      {string}  plane_name     A name in the range /[a-zA-Z0-9\-_]+/
     // @param      {string}  title          The displayed title for the panel
-    // @param      {object}  data           { track : true/false/classname , panel : true/false/classname }
+    // @param      {object}  data           { track : true/false/classname , panel : true/false/classname , highlight : true/false }
     // 
     // @return     {boolean} success
     //
@@ -644,6 +649,7 @@ let CPU_element_api = class {
 
     /**
      * Gets the point info
+     * @private
      *
      * @param      {string}  plane_name  The plane name
      * @param      {string}  point_name  The point name
@@ -655,6 +661,7 @@ let CPU_element_api = class {
 
     /**
      * Gets the point element in the track
+     * @private
      *
      * @param      {string}  name   The name
      * @return     {HTMLElement}    The <div> point element into <aside> from ShadowDom interface
@@ -665,6 +672,7 @@ let CPU_element_api = class {
 
     /**
      * Gets the point element in the panel
+     * @private
      *
      * @param      {string}  name   The name
      * @return     {HTMLElement}    The <li> point element into panel from ShadowDom interface
@@ -674,7 +682,8 @@ let CPU_element_api = class {
     }
 
     /**
-     * Draws a plane point.
+     * Draws a plane point
+     * @private
      *
      * @param      {<type>}  plane_name  The plane name
      * @param      {<type>}  point_name  The point name
@@ -821,6 +830,13 @@ let CPU_element_api = class {
         return true;
     }
 
+    /**
+     * Gets the plane point names from an id on a ShadowDOM element.
+     * @private
+     *
+     * @param      {string}  element_id  The element identifier
+     * @return     {[string, string]}    An array with two string : plane name and point name.
+     */
     get_plane_point_names_from_id(element_id) {
         let plane_name = element_id.replace(plane_point_names_from_id,'$2');
         let point_name = element_id.replace(plane_point_names_from_id,'$5');
@@ -845,6 +861,11 @@ let CPU_element_api = class {
         return true;
     }
 
+
+    /**
+     * Clean up DOM elements of any annotations, before rebuild them
+     * @private
+     */
     undraw_all_planes() {
         querySelector_apply('aside , .panel', function(element) { element.remove(); }, this.container);
     }
@@ -985,8 +1006,6 @@ let CPU_element_api = class {
 
             for (let cue of tracks.cues) {
                 let cuepoint = Math.floor(cue.startTime);
-                // let cuetime = convert.SecondsInColonTime(cue.startTime);
-                // let href = `#${audiotag.id}&t=${cuepoint}`;
 
                 self.add_plane_point(plane_name, cuepoint, cue.id,  {
                     'text' : cue.text,
