@@ -85,6 +85,9 @@ const trigger = {
         }
 
         document.CPU.jumpIdAt(hash, timecode_start, callback_fx);
+        if (document.CPU.global_controller) {
+            document.CPU.global_controller.build_playlist();
+        }
         // scroll to the audio element. Should be reworked, or parametrable
         // window.location.hash = `#${hash}`;
         return true;
@@ -211,7 +214,6 @@ const trigger = {
             global_controller.attach_audiotag_to_controller(audiotag);
             global_controller.audiotag = audiotag;
             global_controller.show_main();
-            // global_controller.build_chapters();
             global_controller.redraw_all_planes();
             global_controller.build_playlist();
         }

@@ -958,6 +958,10 @@ let CPU_element_api = class {
     // @param      {<type>}  event   The event
     //
     build_chapters(event, _forced_track) {
+        if (this.element.tagName === CpuControllerTagName) {
+            // not your job, CPUController
+            return;
+        }
         let self = this;
 
         if (event !== undefined) {
@@ -1042,7 +1046,10 @@ let CPU_element_api = class {
     // @public
     //
     build_playlist() {
-        // Note that ONLY the global controller will display the playlist. For now.
+        if (this.element.tagName !== CpuControllerTagName) {
+            // Note that ONLY the global controller will display the playlist. For now.
+            return;
+        }
 
         let playlist_element = this.elements['playlist'];
         playlist_element.innerHTML = '';
