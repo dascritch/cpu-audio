@@ -456,7 +456,7 @@ h6 {
 }
 .active-cue {
     background : var(--cpu-color);
-    color : var(--cpu-background) !important; /* ← drty but fastest */
+    color : var(--cpu-background) !important; /* dirty but fastest */
 }
 
 .cue strong {
@@ -464,7 +464,7 @@ h6 {
     font-weight : normal;
 }
 .cue time {
-    flex : 0 0 var(--cpu-elapse-width);
+    flex : 0 0 var(--cpu-elapse-width) 0px;
     text-align : right;
 }
 
