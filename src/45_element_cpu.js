@@ -821,10 +821,9 @@ let CPU_element_api = class {
         return true;
     }
 
-
     get_plane_point_names_from_id(element_id) {
         let plane_name = element_id.replace(plane_point_names_from_id,'$2');
-        let point_name = element_id.replace(plane_point_names_from_id,'$4');
+        let point_name = element_id.replace(plane_point_names_from_id,'$5');
         return [plane_name, point_name];
     }
 

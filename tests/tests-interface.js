@@ -85,10 +85,8 @@ window.addEventListener('load', function() {
 
 		function check_needle_moved(e) {
 			assert.ok(! audiotag.paused, 'Audio tag is playing');
-			console.log(`audiotag is expected at 60s but is at ${audiotag.currentTime}`)
-			// so i have to cheat the test :/
-			assert.ok(audiotag.currentTime > 55, 'Audio tag is now nearly half time');
-			assert.ok(audiotag.currentTime < 75, 'Audio tag is now nearly half time');
+			assert.ok(audiotag.currentTime > 58, 'Audio tag is now nearly half time');
+			assert.ok(audiotag.currentTime < 62, 'Audio tag is now nearly half time');
 			audiotag.removeEventListener('play', check_needle_moved);
 			done();
 		}
@@ -416,6 +414,14 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.ok(secondary_API_CPU.add_plane('hello'), 'first call accepts');
 		assert.ok(! secondary_API_CPU.add_plane('hello'), 'second call refuses');
 		assert.ok(secondary_API_CPU.get_plane_track('hello'), 'Element aside added in shadowDom');
+	});
+
+	QUnit.test("get_plane_point_names_from_id", function( assert ) {
+		assert.deepEqual(componenttag.CPU.get_plane_point_names_from_id(''), ["",""], 'on empty, returns ["",""]');
+		assert.deepEqual(componenttag.CPU.get_plane_point_names_from_id('track_«_chapters»'), ["_chapters",""], 'on track_«_chapters», returns ["_chapters",""]');
+		assert.deepEqual(componenttag.CPU.get_plane_point_names_from_id('track_«_chapters»_point_«chap-3»'), ["_chapters","chap-3"], 'on track_«_chapters», returns ["_chapters","chap-3"]');
+		assert.deepEqual(componenttag.CPU.get_plane_point_names_from_id('panel_«_chapters»'), ["_chapters",""], 'on panel_«_chapters», returns ["_chapters",""]');
+		assert.deepEqual(componenttag.CPU.get_plane_point_names_from_id('panel_«_chapters»_point_«chap-3»'), ["_chapters","chap-3"], 'on plane name panel_«_chapters»_point_«chap-3», returns ["_chapters","chap-3"]');
 	});
 
 	QUnit.test( "Public API : remove_plane", function( assert ) {
