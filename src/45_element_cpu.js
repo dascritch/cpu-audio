@@ -1051,16 +1051,21 @@ let CPU_element_api = class {
             return;
         }
 
+        let previous_playlist = this.current_playlist;
+        this.current_playlist = document.CPU.find_current_playlist();
+        if (previous_playlist === this.current_playlist) {
+            return;
+        }
+
         let playlist_element = this.elements['playlist'];
         playlist_element.innerHTML = '';
 
-        let current_playlist = document.CPU.find_current_playlist();
-        if (current_playlist === null) {
+        if (this.current_playlist === null) {
             return;
         }
 
         playlist_element.innerHTML = `<h6>${__['playlist']}</h6>`;
-        for (let audiotag_id of current_playlist) {
+        for (let audiotag_id of this.current_playlist) {
             let audiotag = document.getElementById(audiotag_id);
             
             let line = document.createElement('a');
