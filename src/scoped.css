@@ -186,6 +186,7 @@ a {
 }
 #titleline {
     display : flex;
+    align-items: center;
 }
 #about, #title {
     flex : 1 1 auto;
@@ -205,7 +206,6 @@ a {
 #elapse {
     flex : 0 1 var(--cpu-elapse-width);
     text-align : right;
-    align-self: center;
 }
 
 .mode-compact #elapse {
@@ -491,7 +491,7 @@ h6 {
 }
 
 .mode-hidden,
-.hide-chapters #panel_«chapters»,
+.hide-chapters .chapters,
 .hide-panels .panel {
     display : none;
 }
@@ -523,6 +523,29 @@ h6 {
     .mode-default #elapse {
         flex : 0 1 var(--cpu-elapse-width);
     }
+
+        #pagemain {
+             padding-bottom : 16px;
+        }
+        #titleline {
+            height : 32px;
+        }
+        #line {
+             position: absolute;
+             left: calc(0px - var(--cpu-height));
+             right: calc(0px - var(--cpu-height));
+             height: 16px;
+             top: 32px;
+        }
+        aside a {
+            pointer-events: none;
+        }
+        aside.borders {
+             top : -2px;
+        }
+        aside.chapters {
+             top : 8px;
+        }
 }
 @media (max-width: 320px) , @element #interface and (max-width: 320px) {
     .mode-default #elapse {
@@ -532,6 +555,7 @@ h6 {
     .nosmallest {
         display : none;
     }
+
 }
 
 @media print {
