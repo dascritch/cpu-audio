@@ -85,6 +85,7 @@ const trigger = {
         }
 
         document.CPU.jumpIdAt(hash, timecode_start, callback_fx);
+
         if (document.CPU.global_controller) {
             document.CPU.global_controller.build_playlist();
         }
@@ -218,8 +219,9 @@ const trigger = {
             global_controller.build_playlist();
         }
         try {
-            audiotag.play();
             trigger._remove_timecode_outofborders(audiotag.currentTime);            
+            audiotag.play();
+            trigger.update({target : audiotag});
         } catch (e) {
 
         }

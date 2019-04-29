@@ -544,6 +544,22 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 	});
 
-	// secondary_API_CPU.clear_aside
+	QUnit.skip( "hashorder end,start cleate a “private” plane", function (assert){
+		/* WHY THE SECOND TEST DOESN'T WORK ???? WHHYYYYY??????
+		assert.expect( 3 );
+		let done = assert.async();
+		assert.equal(componenttag.CPU.get_plane('_borders'), undefined, 'inexisting _borders plane on undefined end.');
+		cpu.trigger.hashOrder('track&t=20,100', function() {
+			audiotag.CPU_update(); // may not be fired fast enough 
+			console.log(componenttag.CPU.get_plane('_borders') , audiotag._CPU_planes)
+			assert.notEqual(componenttag.CPU.get_plane('_borders'), undefined, 'existing _borders plane on specified end.');
+			cpu.trigger.hashOrder('track&t=40', function() {
+				audiotag.CPU_update();
+				assert.equal(componenttag.CPU.get_plane('_borders'), undefined, '_borders removed out of previous bordered time.');
+				done();
+			});
+		});
+		*/
+	});
 
 });

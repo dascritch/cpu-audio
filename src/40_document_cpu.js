@@ -209,7 +209,7 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
         let audiotag = (hash !== '') ? document.getElementById(hash) : document.querySelector(selector_fallback);
 
         if ((audiotag === undefined) || (audiotag === null) || (audiotag.currentTime === undefined)) {
-            warn('jumpIdAt audiotag ', audiotag)
+            warn('jumpIdAt audiotag ', audiotag);
             return false;
         }
 
