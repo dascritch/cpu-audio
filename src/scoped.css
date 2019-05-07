@@ -269,13 +269,13 @@ aside.chapters a.active-cue {
 }
 
 aside.borders {
+    pointer-events : none;
     height : var(--cpu-timeline-height);
     z-index : 4;
     top : calc( var(--cpu-timeline-height) + 6px);
 }
 
 aside.borders a {
-    pointer-events : none;
     height : var(--cpu-timeline-height);
     background: transparent;
 }
