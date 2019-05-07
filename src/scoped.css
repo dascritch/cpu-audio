@@ -75,7 +75,7 @@ em, i {
     background : var(--cpu-playing-color);
 }
 
-.show-error {
+.show-error main {
     background : var(--cpu-error-background);
     color : var(--cpu-error-color);
 }
@@ -308,7 +308,7 @@ aside.borders a:after {
     animation: loadingline 500ms linear infinite;
 }
 @keyframes loadingline {
-  0% { background-position-x : -35px; }
+  0% { background-position-x : 35px; }
 }
 
 .show-handheld-nav #handheld-nav {

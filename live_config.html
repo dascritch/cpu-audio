@@ -17,6 +17,9 @@
     <a href="#generated_html">Generated html</a>
     <a href="#configurator_css">Configure css</a>
     <a href="#generated_css">Generated css</a>
+    <span id="spacer">&nbsp;</span>
+    <button type="button" id="do_waiting">Do waiting</button>
+    <button type="button" id="do_error">Do error</button>
 </p>
 
 <form id="configurator_html" action="#generated_html" class="pan" >
@@ -276,6 +279,7 @@ function configurator_html(event) {
 </cpu-audio>`;
     document.getElementById('demo').innerHTML = code;
     document.getElementById('code').innerText = code;
+    cpu_audio = document.querySelector('cpu-audio');
     
     if (event) {
         event.preventDefault();
@@ -363,6 +367,23 @@ document.addEventListener('DOMContentLoaded', function(){
     form_css.addEventListener('submit', noop);
     configurator_html();
     document.location.hash = '#'+form_html.id; 
+
+    document.querySelector('#do_waiting').addEventListener('click', function() {
+        cpu_audio.CPU.audiotag.pause();
+        cpu_audio.CPU.set_act_container('loading');
+    });
+    let in_error = false;
+    document.querySelector('#do_error').addEventListener('click', function() {
+        if (!in_error) {
+            cpu_audio.CPU.show_interface('error');
+            cpu_audio.CPU.elements.pageerror.innerText = 'This is an error message.';
+            in_error = true;
+        } else {
+            cpu_audio.CPU.show_interface('main');
+            cpu_audio.CPU.elements.pageerror.innerText = '';
+            in_error = false;
+        }
+    });
 }, false);
 
 </script>
@@ -378,6 +399,11 @@ document.addEventListener('DOMContentLoaded', function(){
         padding : 4px;
         border : 1px #ccc solid;
     }
+
+    #spacer {
+        flex : 1 1 auto;
+    }
+
 
     fieldset > label, fieldset p {display : flex;}
     fieldset > label * {flex : 1 0 auto;}
