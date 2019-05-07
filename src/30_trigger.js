@@ -140,7 +140,7 @@ const trigger = {
         }
 
         let container = document.CPU.find_container(target);
-        let names = container.get_plane_point_names_from_id(target.id)
+        let names = container.get_plane_point_names_from_id(target.id);
         container.highlight_point(names[0], names[1]);
     },
 

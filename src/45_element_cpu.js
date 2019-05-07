@@ -515,8 +515,6 @@ let CPU_element_api = class {
             element.addEventListener('focusout', remove_highlights_points_bind, passive_ev);            
         }
 
-
-
         if (data.track !== false) {
             plane_track = document.createElement('aside');
             plane_track.id = `track_«${plane_name}»`;
@@ -889,19 +887,25 @@ let CPU_element_api = class {
      * @public
      *
      * @param      {string}  class_name  Targeted class name, 'with-preview' by default
+     * @param      {boolean} bubble     Also act on linked cpu-controller/cpu-audio
      */
-    remove_highlights_points(class_name) {
+    remove_highlights_points(class_name, bubble) {
+        bubble = bubble === undefined ? true : bubble;
         class_name = (typeof class_name === 'string') ? class_name : preview_classname;
         querySelector_apply(`.${class_name}`,function (element) {
                 element.classList.remove(class_name);
             },this.container);
 
         if (
-            (this.element.tagName !== CpuControllerTagName) &&
+            (bubble) &&
             (document.CPU.global_controller !== null) &&
             (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
             ) {
-            document.CPU.global_controller.remove_highlights_points(class_name);
+            if (this.element.tagName !== CpuControllerTagName) {
+                document.CPU.global_controller.remove_highlights_points(class_name, false);
+            } else {
+                document.CPU.find_container(document.CPU.global_controller.audiotag).remove_highlights_points(class_name, false);
+            }
         }
     }
 
@@ -912,10 +916,12 @@ let CPU_element_api = class {
      * @param      {string}  plane_name  The plane name
      * @param      {string}  point_name  The point name
      * @param      {string}  class_name  class name, 'with-preview' by default
+     * @param      {boolean} bubble     Also act on linked cpu-controller/cpu-audio
      */
-    highlight_point(plane_name, point_name, class_name) {
+    highlight_point(plane_name, point_name, class_name, bubble) {
+        bubble = bubble === undefined ? true : bubble;
         class_name = (typeof class_name === 'string') ? class_name : preview_classname;
-        this.remove_highlights_points(class_name);
+        this.remove_highlights_points(class_name, bubble);
 
         if (!this.get_plane(plane_name)['highlight']) {
             return;
@@ -938,11 +944,15 @@ let CPU_element_api = class {
         }
 
         if (
-            (this.element.tagName !== CpuControllerTagName) &&
+            (bubble) &&
             (document.CPU.global_controller !== null) &&
             (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
             ) {
-            document.CPU.global_controller.highlight_point(plane_name, point_name, class_name);
+            if (this.element.tagName !== CpuControllerTagName) {
+                document.CPU.global_controller.highlight_point(plane_name, point_name, class_name, false);
+            } else {
+                document.CPU.find_container(document.CPU.global_controller.audiotag).highlight_point(plane_name, point_name, class_name, false);
+            }
         }
     }
 

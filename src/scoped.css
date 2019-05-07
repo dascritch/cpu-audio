@@ -18,7 +18,10 @@
     ms-user-select: none;
     webkit-user-select: none;
     user-select: none;
-    transition : color var(--cpu-color-transitions), background-color var(--cpu-background-transitions), opacity var(--cpu-background-transitions);
+    transition : 
+                color var(--cpu-color-transitions),
+                background-color var(--cpu-background-transitions),
+                opacity var(--cpu-background-transitions);
 }
 
 main {
@@ -57,9 +60,6 @@ em, i {
     font-style: italic;
 }
 
-#loading circle {
-    fill : #777;
-}
 
 .act-play {
     background : var(--cpu-playing-background);
@@ -121,6 +121,7 @@ a {
 }
 
 .act-loading #loading circle {
+    fill : #777;
     opacity : 1;
 }
 
@@ -402,11 +403,6 @@ aside.borders a:after {
     background : var(--cpu-popup-background);
     color : var(--cpu-popup-color);
     opacity : 0;
-    /* absolute pos, need to repeat it →  https://developer.mozilla.org/en-US/docs/Web/CSS/user-select */
-    moz-user-select: none;
-    ms-user-select: none;
-    webkit-user-select: none;
-    user-select: none;
 } 
 #popup:before {
     pointer-events : none;
