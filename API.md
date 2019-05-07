@@ -40,14 +40,14 @@ Some methods are still not documented, for internal usage, as they may evolve
 
 `document.body.CPU.convert` sub-API methods :
 
-name                                | returns                       | usage
-------------------------------------|-------------------------------|-----------------
-TimeInSeconds(string)               | int                           | Convert a string empty, with a number, with a colon-coded or an human-coded timecode in seconds
-SubunitTimeInSeconds(string)        | int                           | Convert a human-coded (`1h2m3s`) time in seconds 
-ColonTimeInSeconds(string)          | int                           | Convert a colon-coded (`01:02:03`) time in seconds 
-SecondsInTime(int)                  | string                        | Convert a time in seconds in a human-coded time (`1h2m3s`). Zero is `0s`.
-SecondsInColonTime(int)             | string                        | Convert a time in seconds in a colon-coded time (`1:02:03s`). Zero is `0:00`.
-SecondsInPaddledColonTime(int)      | string                        | Same as `SecondsInColonTime`, but suited for `<input type="time" />`. Zero is `00:00:00`.
+name                                | returns | usage
+------------------------------------|---------|-----------------
+TimeInSeconds(string)               | int     | Convert a string empty, with a number, with a colon-coded or an human-coded timecode in seconds
+SubunitTimeInSeconds(string)        | int     | Convert a human-coded (`1h2m3s`) time in seconds 
+ColonTimeInSeconds(string)          | int     | Convert a colon-coded (`01:02:03`) time in seconds 
+SecondsInTime(int)                  | string  | Convert a time in seconds in a human-coded time (`1h2m3s`). Zero is `0s`.
+SecondsInColonTime(int)             | string  | Convert a time in seconds in a colon-coded time (`1:02:03s`). Zero is `0:00`.
+SecondsInPaddledColonTime(int)      | string  | Same as `SecondsInColonTime`, but suited for `<input type="time" />`. Zero is `00:00:00`.
 
 
 CpuAudioElement.CPU and CpuControllerElement.CPU
@@ -78,17 +78,17 @@ hide_throbber_later()                                   |         | Hide the thr
 show_interface(string)                                  |         | Switch between `'main'`, `'share'` or `'error'` interfaces.
 build_chapters()                                        |         | Rebuild chapters list and time-line.
 build_playlist()                                        |         | Rebuild playlist. Should only be used  for `<cpu-controller>`
-add_plane(plane_name, title, data)                      | boolean | Create an annotation plane.
+add_plane(plane, title, data)                           | boolean | Create an annotation plane.
 remove_plane(name)                                      | boolean | Remove an annotation plane
-add_plane_point(plane_name, timecode, point_name, data) | boolean | Add an annotation point to a plane at a timecode.
-remove_plane_point(plane_name, point_name)              | boolean | Remove an annotation point
-clear_plane(plane_name)                                 |         | Remove any points from an annotation plane
+add_plane_point(plane, timecode, point, data)           | boolean | Add an annotation point to a plane at a timecode.
+remove_plane_point(plane, point)                        | boolean | Remove an annotation point
+clear_plane(plane)                                      |         | Remove any points from an annotation plane
 redraw_all_planes()                                     |         | Redraw any annotation planes and points
-highlight_point(plane_name, point_name, class_name)     |         | Highlight a perticuliar annotation point, class_name is `with-preview` by default
-remove_highlights_points(class_name)                    |         | Remove any highlights on any points, class_name is `with-preview` by default
+highlight_point(plane, point, class, mirror)            |         | Highlight a perticuliar annotation point, class is `with-preview` by default
+remove_highlights_points(class, mirror)                 |         | Remove any highlights on any points, class is `with-preview` by default
 
 
-`plane_name`, `point_name` and `class_name` accepts only alphanum (`/a-zA-Z0-9\_\-/`)
+`plane`, `point` and `class` accepts only alphanum (`/a-zA-Z0-9\_\-/`)
 
 Data structures for annotations :
 

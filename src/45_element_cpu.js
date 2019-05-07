@@ -887,17 +887,17 @@ let CPU_element_api = class {
      * @public
      *
      * @param      {string}  class_name  Targeted class name, 'with-preview' by default
-     * @param      {boolean} bubble     Also act on linked cpu-controller/cpu-audio
+     * @param      {boolean} mirror     Also act on linked cpu-controller/cpu-audio
      */
-    remove_highlights_points(class_name, bubble) {
-        bubble = bubble === undefined ? true : bubble;
+    remove_highlights_points(class_name, mirror) {
+        mirror = mirror === undefined ? true : mirror;
         class_name = (typeof class_name === 'string') ? class_name : preview_classname;
         querySelector_apply(`.${class_name}`,function (element) {
                 element.classList.remove(class_name);
             },this.container);
 
         if (
-            (bubble) &&
+            (mirror) &&
             (document.CPU.global_controller !== null) &&
             (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
             ) {
@@ -916,12 +916,12 @@ let CPU_element_api = class {
      * @param      {string}  plane_name  The plane name
      * @param      {string}  point_name  The point name
      * @param      {string}  class_name  class name, 'with-preview' by default
-     * @param      {boolean} bubble     Also act on linked cpu-controller/cpu-audio
+     * @param      {boolean} mirror     Also act on linked cpu-controller/cpu-audio
      */
-    highlight_point(plane_name, point_name, class_name, bubble) {
-        bubble = bubble === undefined ? true : bubble;
+    highlight_point(plane_name, point_name, class_name, mirror) {
+        mirror = mirror === undefined ? true : mirror;
         class_name = (typeof class_name === 'string') ? class_name : preview_classname;
-        this.remove_highlights_points(class_name, bubble);
+        this.remove_highlights_points(class_name, mirror);
 
         if (!this.get_plane(plane_name)['highlight']) {
             return;
@@ -944,7 +944,7 @@ let CPU_element_api = class {
         }
 
         if (
-            (bubble) &&
+            (mirror) &&
             (document.CPU.global_controller !== null) &&
             (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
             ) {
