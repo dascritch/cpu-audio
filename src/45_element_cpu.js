@@ -568,10 +568,13 @@ let CPU_element_api = class {
     // @return     {boolean} success
     //
     add_plane(plane_name, title, data) {
-
         if ((this.element.tagName === CpuControllerTagName) || (! plane_name.match(valid_id)) || (this.get_plane(plane_name) !== undefined)) {
             return false;
         }
+
+        if (data === undefined) {
+            data = {};
+        } 
 
         if (this.audiotag._CPU_planes === undefined) {
             this.audiotag._CPU_planes = {};
@@ -583,13 +586,10 @@ let CPU_element_api = class {
             'highlight' : true,
             'points'    : {}
         }
-        if (data === undefined) {
-            data = default_values;
-        } else {
-            for (let key in default_values) {
-                if (data[key] === undefined) {
-                    data[key] = default_values[key];
-                }
+
+        for (let key in default_values) {
+            if (data[key] === undefined) {
+                data[key] = default_values[key];
             }
         }
 
