@@ -96,8 +96,8 @@ plane data :
 
 key         | type              | default value | usage
 ------------|-------------------|---------------|-------
-track       | boolean or string | `true`        | Create a track in the time line, or precise the kind (`chapters`, `borders`)
-panel       | boolean           | `true`        | Create a panel under the player
+track       | boolean or string | `true`        | Create a track in the time line, or precise the kind (`chapters`, `borders`), or presentation restriction (`nosmall`, `nosmaller`, `nosmallest`)
+panel       | boolean or string | `true`        | Create a panel under the player, or precise presentation restriction (`nosmall`, `nosmaller`, `nosmallest`)
 highlight   | boolean           | `true`        | Points of this annotation plane can be highlighted with the mouse
 
 points data :

@@ -543,7 +543,6 @@ let CPU_element_api = class {
             }
             plane_panel.innerHTML = inner;
             this.container.appendChild(plane_panel);
-
             assign_events(plane_panel);
         }
 
