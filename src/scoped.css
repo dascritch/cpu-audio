@@ -120,6 +120,10 @@ a {
     align-items: center;
 }
 
+.act-loading #loading circle {
+    opacity : 1;
+}
+
 .act-loading #loading circle:nth-child(1) {
       animation: pulse0 2s infinite;
 }
@@ -133,30 +137,15 @@ a {
 }
 
 @keyframes pulse0 {
-    0%      {opacity : 1;}
-    50%     {opacity : 0;}
-    100%    {opacity : 1;}
+    0%     {opacity : 0;}
 }
 
 @keyframes pulse1 {
-    0%      {opacity : 0.75;}
-    12%     {opacity : 1;}
-    62%     {opacity : 0;}
-    100%    {opacity : 0.75;}
+    33%     {opacity : 0;}
 }
 
 @keyframes pulse2 {
-    0%      {opacity : 0.5;}
-    25%     {opacity : 1;}
-    75%     {opacity : 0;}
-    100%    {opacity : 0.5;}
-}
-
-@keyframes pulse3 {
-    0%      {opacity : 0.25;}
-    37%     {opacity : 1;}
-    87%     {opacity : 0;}
-    100%    {opacity : 0.25;}
+    66%     {opacity : 0;}
 }
 
 #poster {
@@ -325,11 +314,12 @@ aside.borders a:after {
 
 .show-handheld-nav #handheld-nav {
     display : flex;
+    max-height: calc(6px + calc(2 * var(--cpu-font-size))); /* → #title a */
 }
 
 #handheld-nav * {
   flex : 1 0 auto;
-  height : calc( var(--cpu-height) / 2 );
+  height : calc(2 * var(--cpu-font-size));
 }
 
 [type="time"] {
