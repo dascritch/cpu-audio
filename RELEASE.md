@@ -15,6 +15,7 @@ Corrections
 -----------
 
  * Timeline won't have any more round ends : Graphically inconsistent and not easy on small widths.
+ * Less visible [graphic glitch](#61) on the loading line.
  * Chapters now use [annotations API](#57).
  * titles in chapters panel should use more space.
  * Boxed playing (with a end timecode) now uses [annotations API](#57).
