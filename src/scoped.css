@@ -509,7 +509,7 @@ h6 {
         flex : 0 1 var(--cpu-elapse-width);
     }
 
-        #pagemain {
+        .mode-default #pagemain {
              padding-bottom : 16px;
         }
         #titleline {
