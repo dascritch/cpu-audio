@@ -312,9 +312,13 @@ aside.borders a:after {
   0% { background-position-x : 35px; }
 }
 
+#handheld-nav {
+    max-height: calc(6px + calc(2 * var(--cpu-font-size))); /* → #title a */
+    padding-bottom: 8px;
+}
+
 .show-handheld-nav #handheld-nav {
     display : flex;
-    max-height: calc(6px + calc(2 * var(--cpu-font-size))); /* → #title a */
 }
 
 #handheld-nav * {
@@ -499,6 +503,10 @@ h6 {
         --cpu-timeline-height : 8px ;
     }
     
+    #handheld-nav {
+        padding-bottom: 4px;
+    }
+
 }
 @media (max-width: 480px) , @element #interface and (max-width: 480px) {
     .nosmaller {
@@ -531,6 +539,10 @@ h6 {
         aside.chapters {
              top : 8px;
         }
+    #handheld-nav {
+        padding-bottom: 2px;
+    }
+
 }
 @media (max-width: 320px) , @element #interface and (max-width: 320px) {
     .mode-default #elapse {
