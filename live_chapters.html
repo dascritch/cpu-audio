@@ -210,6 +210,7 @@ function interpret_form(event) {
         chapters.push(this_line_data);
 
         /** TODO : Reordinate by timestamp **/
+        /** TODO : Add a .end **/
     }
 
     function build_html_source() {
@@ -252,30 +253,19 @@ function interpret_form(event) {
 
     function rebuild_track_and_display() {
         /* Something is missing in the W3C spec... */
-
-        /*for(let cue of cues) {
-            console.log(cue);
-            track.removeCue(cue);
-        }*/
-        
-        /*
-        track.mode = "disabled";
-        track.kind = "trashed";
-        */
-        track = document.querySelector('audio').addTextTrack("chapters");
-
+        let comp_cpu = document.querySelector('cpu-audio').CPU;
+        let plane = 'chapters';
+        comp_cpu.add_plane(plane,'Preview chapters', {'track' : 'chapters'});
+        comp_cpu.clear_plane(plane);
         let number = 0;
-        cues = [];
         for(let line of chapters) {
             number++;
-            let start = line.time;
-            let end = number < chapters.length ? chapters[number].time : sound_element.duration;
-            let cue = new VTTCue(start, end, line.text);
-            cue.id = `chapter-${number}`;
-            track.addCue(cue);
-            cues.push(cue)
+            let point = `chapter-${number}`;
+            comp_cpu.add_plane_point(plane, line.time, point, {
+                text : line.text,
+                end :  number < chapters.length ? chapters[number].time : sound_element.duration 
+            });
         }
-        document.querySelector('cpu-audio').CPU.build_chapters(undefined, track);
     }
 
     event.preventDefault();
@@ -297,18 +287,6 @@ function interpret_form(event) {
     document.getElementById('vtt_source_download').href = vtt_virtual_file;
     document.getElementById('vtt_source_download').download = sound_element.dataset.title.replace(/(.*)(\.(ogg|mp3|wav|flac|mp4|aac))$/,'$1') + '.vtt';
     // update tracklist in cpu-audio . To be done
-    /*let f = new FileReader();
-    f.addEventListener("load", function () {
-        document.querySelector('track').remove();
-        let track = document.createElement('track');
-        track.kind = 'chapters';
-        track.default = true;
-        track.src = f.result;
-        document.querySelector('audio').appendChild(track);
-        
-       
-    }, false);
-    f.readAsDataURL(data);*/
     rebuild_track_and_display();
     document.location.hash = '#generated_html';
 }
