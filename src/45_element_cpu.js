@@ -722,12 +722,8 @@ let CPU_element_api = class {
             track.appendChild(point_element);
             
             point_element.style.left = `${100 * (data['start'] / audio_duration)}%`;
-            point_element.dataset.cueStartTime = data['start'];
-            point_element.dataset.cueId = point_name;
-
             if (data['end']) {
                 point_element.style.right = `${100 - 100 *( data['end'] / audio_duration)}%`;
-                point_element.dataset.cueEndTime = data['end'];
             }
         }
         
@@ -755,15 +751,6 @@ let CPU_element_api = class {
                 inner = `<span class="cue" id="${intended_panel_id}">${inner}</span>`;
             }
             li.innerHTML = inner;
-            // 
-            let cue = li.querySelector('.cue');
-            cue.dataset.cueStartTime = data['start'];
-            cue.dataset.cueId = point_name;
-
-            if (data['end']) {
-                cue.dataset.cueEndTime = data['end'];
-            }
-
             panel.appendChild(li);
         }
 
