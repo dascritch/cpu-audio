@@ -851,7 +851,7 @@ let CPU_element_api = class {
      * @private
      */
     undraw_all_planes() {
-        querySelector_apply('aside , .panel', function(element) { element.remove(); }, this.container);
+        querySelector_apply('aside , div.panel', function(element) { element.remove(); }, this.container);
     }
 
     /**
