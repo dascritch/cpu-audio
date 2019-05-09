@@ -382,9 +382,10 @@ const trigger = {
 
     /**
      * in fine-position handheld interface, changing the time field
+     * INVALIDED, see https://github.com/dascritch/cpu-audio/issues/63
      *
      * @param      {<type>}  event   The event
-     */
+     *
     input_time_change : function(event) {
         let target = event.target;
         let container = document.CPU.find_container(target);
@@ -392,6 +393,7 @@ const trigger = {
         container.show_throbber_at(seconds);
         document.CPU.seekElementAt(container.audiotag, seconds);
     },
+    */
 
 
     /**

@@ -136,12 +136,14 @@ let CPU_element_api = class {
         let colon_time = convert.SecondsInColonTime(audiotag.currentTime);
         elapse_element.innerHTML = `${colon_time}<span class="nosmaller">\u00a0/\u00a0${total_duration}</span>`;
 
+        /* see https://github.com/dascritch/cpu-audio/issues/63
         let inputtime_element = this.elements['inputtime'];
         // How to check a focused element ? document.activeElement respond the webcomponent tag :/ You must call shadowRoot.activeElement
         if (!inputtime_element.isEqualNode(this.element.shadowRoot.activeElement)) {
             inputtime_element.value = convert.SecondsInPaddledColonTime( audiotag.currentTime );  // yes, this SHOULD be in HH:MM:SS format precisely
         }
         inputtime_element.max = convert.SecondsInPaddledColonTime(audiotag.duration);
+        */
         this.update_line('loading', audiotag.currentTime);
         this.update_buffered();
     }
@@ -1161,8 +1163,10 @@ let CPU_element_api = class {
             timeline_element.addEventListener('touchstart', trigger.touchstart, passive_ev);
             timeline_element.addEventListener('touchend', trigger.touchcancel, passive_ev);
             timeline_element.addEventListener('contextmenu', this.show_handheld_nav );
+            /* see https://github.com/dascritch/cpu-audio/issues/63
             this.elements['inputtime'].addEventListener('input', trigger.input_time_change);
             this.elements['inputtime'].addEventListener('change', trigger.input_time_change);
+            */
 
         this.show_main();
         this.build_chapters();
