@@ -363,6 +363,7 @@ const trigger = {
             preventDefault : onDebug
         };
         trigger._hand_on = window.setTimeout(trigger._repeat_button, 400, mini_event);
+        event.preventDefault();
     },
 
     /* Repeat during pressing handheld navigation button */
@@ -377,6 +378,7 @@ const trigger = {
     _release_button : function(event) {
         window.clearTimeout(trigger._hand_on);
         trigger._hand_on = null;
+        event.preventDefault();
     },
 
 

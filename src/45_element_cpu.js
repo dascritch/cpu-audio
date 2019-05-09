@@ -1128,12 +1128,23 @@ let CPU_element_api = class {
             this.elements[that].addEventListener('click', cliquables[that]);
         }
 
-        // handheld nav. To allow repetition , we will move it to keypress later
-        let handheld_buttons = ['fastreward', 'reward', 'foward', 'fastfoward'];
-        for (let that of handheld_buttons) {
-            this.elements[that].addEventListener('mousedown', trigger._press_button);
-            this.elements[that].addEventListener('mouseup', trigger._release_button);
-            this.elements[that].addEventListener('mouseleave', trigger._release_button);
+        // handheld nav to allow long press to repeat action
+        let _buttons = ['fastreward', 'reward', 'foward', 'fastfoward'];
+        let _actions = {
+            'touchstart'    : true,
+            'touchend'      : false,
+            'touchcancel'   : false,
+            /* PHRACKING IOS PHRACKING SAFARI PHRACKING APPLE */
+            'mousedown'     : true,
+            'mouseup'       : false,
+            'mouseleave'    : false
+        };
+        let _press = trigger._press_button;
+        let _release = trigger._release_button;
+        for (let that of _buttons) {
+            for (let _act in _actions) {
+                this.elements[that].addEventListener(_act, _actions[_act] ? trigger._press_button : trigger._release_button, passive_ev);
+            }
         }
 
 
