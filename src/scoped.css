@@ -211,7 +211,7 @@ a {
 }
 #loadingline,
 #elapsedline {
-    background : white;
+    background : currentColor;
     height : var(--cpu-timeline-height);
     display : block ;
     position : absolute;
@@ -419,9 +419,8 @@ aside.borders a:after {
     border-right: 4px solid transparent;
 } 
 
-#playlist, .panel {
+.panel {
     display : flex;
-    overflow : scoll;
     background : var(--cpu-background);
     color : var(--cpu-color);
     list-style: none;
