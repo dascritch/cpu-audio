@@ -61,7 +61,7 @@ em, i {
 }
 
 
-#interface.act-play, .act-play button {
+#interface.act-play, .act-play button , .act-play #playlist, .act-play .panel {
     background : var(--cpu-playing-background);
     color : var(--cpu-playing-color);
 }
