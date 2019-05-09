@@ -1,6 +1,8 @@
 #interface {
     --cpu-timeline-height : 10px;
     /* transition : width var(--cpu-unfold); */
+    background : var(--cpu-background);
+    color : var(--cpu-color);
 }
 
 #interface, * {
@@ -27,8 +29,6 @@
 main {
     display : flex;
     overflow : hidden;
-    background : var(--cpu-background);
-    color : var(--cpu-color);
     height : var(--cpu-height);
 }
 
@@ -38,11 +38,14 @@ main {
 }
 
 a, button {
-    background : var(--cpu-background);
-    color : var(--cpu-color);
+    color : currentColor;
     border : none;
     text-decoration : none;
 }
+button {
+    background : var(--cpu-background);
+}
+
 svg {
     fill : currentColor;
     width : var(--cpu-height);
@@ -52,21 +55,14 @@ a:hover, a:focus, button:hover, button:focus {
     color : var(--cpu-background);
     background : var(--cpu-color);
 }
-a:hover svg , a:focus svg {
-    fill : currentColor;
-}
 
 em, i {
     font-style: italic;
 }
 
 
-.act-play {
+#interface.act-play, .act-play button {
     background : var(--cpu-playing-background);
-    color : var(--cpu-playing-color);
-}
-
-.act-play a, .act-play button {
     color : var(--cpu-playing-color);
 }
 

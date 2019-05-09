@@ -23,6 +23,7 @@ Corrections
  * Titles in chapters panel should use more space.
  * Boxed playing (with a end timecode) now uses [annotations API](#57).
  * DOM and CSS cleanups.
+ * Regression in CSS, mainly on playing mode
  * Graphic corrections on the alternative handheld navigation : buttons are centered, some are skiped on smallest screens.
  * Buttons in alternative handheld navigation now support longpresses for repeat action.
  * Panels (chapters and playlist) have a title.
