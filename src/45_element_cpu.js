@@ -1120,16 +1120,20 @@ let CPU_element_api = class {
             'actions'   : this.show_actions,
             'back'      : this.show_main,
             'poster'    : this.show_main,
-            // handheld nav. To allow repetition , we will move it to keypress later
             'restart'   : trigger.restart,
-            'fastreward': trigger.fastreward,
-            'reward'    : trigger.reward,
-            'foward'    : trigger.foward,
-            'fastfoward': trigger.fastfoward,
         };
         for (let that in cliquables) {
             this.elements[that].addEventListener('click', cliquables[that]);
         }
+
+        // handheld nav. To allow repetition , we will move it to keypress later
+        let handheld_buttons = ['fastreward', 'reward', 'foward', 'fastfoward'];
+        for (let that of handheld_buttons) {
+            this.elements[that].addEventListener('mousedown', trigger._press_button);
+            this.elements[that].addEventListener('mouseup', trigger._release_button);
+            this.elements[that].addEventListener('mouseleave', trigger._release_button);
+        }
+
 
         // keyboard management
         this.element.addEventListener('keydown', trigger.key);

@@ -1,6 +1,7 @@
-function onDebug(callback_fx) {
-    // this is needed for testing, as we now run in async tests
+function onDebug(callback_fx) { 
+    // may be used as a noop(); 
     if (typeof callback_fx === 'function') {
+        // this is needed for testing, as we now run in async tests
         callback_fx();
     }
 }
@@ -54,13 +55,13 @@ function escapeHTML(text) {
 
 
 function info(message) {
-    window.console.info(`${CpuAudioTagName}: ${message}`)
+    window.console.info(`${CpuAudioTagName}: `,message);
 }
 
 function warn(message) {
-    window.console.warn(`${CpuAudioTagName}: ${message}`)
+    window.console.warn(`${CpuAudioTagName}: `,message);
 }
 
 function error(message) {
-    window.console.error(`${CpuAudioTagName}: ${message}`)
+    window.console.error(`${CpuAudioTagName}: `,message);
 }

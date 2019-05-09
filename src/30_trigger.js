@@ -313,6 +313,7 @@ const trigger = {
     },
     /**
      * Pressing foward button
+     * Function associated, see below, DO NOT RENAME
      *
      * @param      {<type>}  event   The event
      */
@@ -320,14 +321,64 @@ const trigger = {
         event.keyCode = KEY_RIGHT_ARROW;
         trigger.key(event);
     },
+    /**
+     * Pressing fastreward button
+     * Function associated, see below, DO NOT RENAME
+     *
+     * @param      {<type>}  event   The event
+     */
     fastreward : function(event) {
         event.keyCode = KEY_LEFT_ARROW;
         trigger.key(event, 4);
     },
+    /**
+     * Pressing fastfoward button
+     * Function associated, see below, DO NOT RENAME
+     *
+     * @param      {<type>}  event   The event
+     */
     fastfoward : function(event) {
         event.keyCode = KEY_RIGHT_ARROW;
         trigger.key(event, 4);
     },
+
+
+    _hand_on : null, // Repeated event allocation
+    /* Start handheld navigation button press */
+    _press_button : function(event) {
+        let target = event.target.id ? event.target : event.target.closest('button');
+        let acceptable_actions = ['fastreward', 'reward', 'foward', 'fastfoward'];
+        if ( (!target.id) || (acceptable_actions.indexOf(target.id) === -1)) {
+            // we have been misleaded
+            return;
+        }
+        // execute the associated function
+        trigger[target.id](event);
+        if (trigger._hand_on !== null) {
+            window.clearTimeout(trigger._hand_on);
+        }
+
+        let mini_event = {
+            target : target,
+            preventDefault : onDebug
+        };
+        trigger._hand_on = window.setTimeout(trigger._repeat_button, 400, mini_event);
+    },
+
+    /* Repeat during pressing handheld navigation button */
+    _repeat_button : function(event) {
+        // 
+        trigger[event.target.id](event);
+        // next call : repetition are closest
+        trigger._hand_on = window.setTimeout(trigger._repeat_button, 100, event);
+    },
+
+    /* Release handheld navigation button */
+    _release_button : function(event) {
+        window.clearTimeout(trigger._hand_on);
+        trigger._hand_on = null;
+    },
+
 
     /**
      * in fine-position handheld interface, changing the time field
