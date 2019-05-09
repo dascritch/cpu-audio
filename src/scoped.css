@@ -476,8 +476,13 @@ h6 {
 
 .mode-hidden,
 .hide-chapters .chapters,
-.hide-panels .panel {
+.hide-panels .panel,
+.hide-panels-except-play .panel {
     display : none;
+}
+
+.act-play.hide-panels-except-play .panel {
+    display : flex;
 }
 
 .mode-compact.show-main #pagemain {

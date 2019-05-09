@@ -62,6 +62,7 @@ Some attributes enhance the component :
     * `actions` : the share button
     * `chapters` : the chapters list
     * `panels` : any panels as chapters or playlist
+    * `panels-except-play` : any panels, except when the module is playing a media (do not use with `panels`)
 * `playlist="<string>"` : add this media in a named playlist, play the next one when ended ;
 * `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page).
 

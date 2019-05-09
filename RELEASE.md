@@ -10,6 +10,7 @@ New features
  * On small screens, time-line now goes out of between-buttons space, using the full WC width to [gain precision on small screens](#58).
  * Chapters time-line are displayed on small screens, but won't be clickable.
  * All panels can be hidden via parameters, even future ones.
+ * Panels can be displayed only if the media is playing.
  * [Live configurator](LIVE) can test waiting state and error state.
  * [Live chapters editor](CHAPTERS_ED) can preview edited chapers in the shown player.
 
