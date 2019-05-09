@@ -66,11 +66,11 @@ em, i {
     color : var(--cpu-playing-color);
 }
 
-.act-play a {
+.act-play a, .act-play button {
     color : var(--cpu-playing-color);
 }
 
-.act-play a:hover, .act-play a:focus {
+.act-play a:hover, .act-play a:focus , .act-play button:hover, .act-play button:focus {
     color : var(--cpu-playing-background);
     background : var(--cpu-playing-color);
 }
