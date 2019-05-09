@@ -1143,7 +1143,7 @@ let CPU_element_api = class {
         let _release = trigger._release_button;
         for (let that of _buttons) {
             for (let _act in _actions) {
-                this.elements[that].addEventListener(_act, _actions[_act] ? trigger._press_button : trigger._release_button, passive_ev);
+                this.elements[that].addEventListener(_act, _actions[_act] ? trigger._press_button : trigger._release_button);
             }
         }
 
