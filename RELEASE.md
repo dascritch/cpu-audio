@@ -24,6 +24,7 @@ Corrections
  * Boxed playing (with a end timecode) now uses [annotations API](#57).
  * DOM and CSS cleanups.
  * Graphic corrections on the alternative handheld navigation : buttons are centered, some are skiped on smallest screens.
+ * Buttons in alternative handheld navigation now support longpresses for repeat action.
  * Panels (chapters and playlist) have a title.
  * Functions renamed for constistancy.
 
