@@ -78,9 +78,12 @@ let CPU_element_api = class {
 
         this.set_act_container(audiotag.paused ? 'pause' : 'play');
 
-        if ((!audiotag.paused) && (this.mode_when_play !== null)) {
-            this.set_mode_container(this.mode_when_play);
-            this.mode_when_play = null;
+        if (!audiotag.paused) {
+            this.container.classList.remove('not-used');
+            if (this.mode_when_play !== null) {
+                this.set_mode_container(this.mode_when_play);
+                this.mode_when_play = null;
+            }
         }
     }
 
