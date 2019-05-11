@@ -77,12 +77,17 @@ let CPU_element_api = class {
         }
 
         this.set_act_container(audiotag.paused ? 'pause' : 'play');
+        let hide_panels_except_play_mark = 'last-used';
 
         if (!audiotag.paused) {
-            this.container.classList.remove('not-used');
+            this.container.classList.add(hide_panels_except_play_mark);
             if (this.mode_when_play !== null) {
                 this.set_mode_container(this.mode_when_play);
                 this.mode_when_play = null;
+            }
+        } else {
+            if (! this.audiotag.isEqualNode(document.CPU.last_used)) {
+                this.container.classList.remove(hide_panels_except_play_mark);
             }
         }
     }
@@ -125,8 +130,9 @@ let CPU_element_api = class {
         let canonical = audiotag.dataset.canonical;
         canonical = canonical === undefined ? '' : canonical;
         let link_to = absolutize_url(canonical)+'#';
-        link_to += ((canonical.indexOf('#') === -1) ? audiotag.id : canonical.substr(canonical.indexOf('#')+1) )+'&';
-        link_to += 't='+timecode;
+        let _is_at = canonical.indexOf('#'); 
+
+        link_to += ((_is_at === -1) ? audiotag.id : canonical.substr(_is_at+1) )+'&t='+timecode;
 
         let elapse_element = this.elements['elapse'];
         elapse_element.href = link_to;

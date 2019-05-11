@@ -19,6 +19,9 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
     dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
     count_element : 0,
 
+    // private, used fto indicate las used audiotag
+    last_used : null,
+
     // public, playlists
     'playlists' : {},
     'advance_in_playlist' : true,

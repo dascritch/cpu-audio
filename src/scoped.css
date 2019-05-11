@@ -477,11 +477,13 @@ h6 {
 .mode-hidden,
 .hide-chapters .chapters,
 .hide-panels .panel,
-.hide-panels-except-play.act-pause .panel,
-.hide-panels-except-play.not-used.act-loading .panel {
+.hide-panels-except-play .panel {
     display : none;
 }
 
+.hide-panels-except-play.last-used .panel {
+    display : flex;
+}
 
 .mode-compact.show-main #pagemain {
     flex : 0 0 auto;

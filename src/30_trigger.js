@@ -193,6 +193,8 @@ const trigger = {
     play_once : function(event) {
         let audiotag = event.target;
 
+        document.CPU.last_used = audiotag;
+
         if ( (document.CPU.only_play_one_audiotag) && (document.CPU.current_audiotag_playing) && (!document.CPU.is_audiotag_playing(audiotag)) ) {
             trigger.pause(undefined, document.CPU.current_audiotag_playing);
         }
@@ -218,6 +220,7 @@ const trigger = {
             global_controller.redraw_all_planes();
             global_controller.build_playlist();
         }
+
         try {
             trigger._remove_timecode_outofborders(audiotag.currentTime);            
             audiotag.play();
