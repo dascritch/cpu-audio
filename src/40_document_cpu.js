@@ -4,6 +4,10 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
     // public, parameters
     'keymove' : 5,
     'only_play_one_audiotag' : true,
+    'alternate_delay' : 500, // why 500ms ? Because Chrome will trigger a touchcancel event at 800ms to show a context menu
+    'fast_factor' : 4,
+    'repeat_delay' : 400,
+    'repeat_factor' : 100,
 
     // public, actual active elements
     'current_audiotag_playing' : null,

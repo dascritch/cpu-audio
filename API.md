@@ -14,6 +14,10 @@ Properties :
 name                     | default value | usage
 -------------------------|---------------|----------
 keymove                  | `5`           | Number of seconds skipped in the timeline when <kbd>←</kbd> or <kbd>→</kbd> keys are pressed in an interface
+alternate_delay          | `500`         | Delay for a long press on time-line (in milliseconds) to switch to the handheld alternate browsing interface
+fast_factor              | `4`           | Amplification ratio between <kbd>▸︎▸︎</kbd> and <kbd>▸︎▸︎▸︎</kbd> in handheld alternate browsing interface
+repeat_delay             | `400`         | First repetition delay when clicking a button in handheld alternate browsing interface
+repeat_factor            | `100`         | Next repetitions delay when clicking a button in handheld alternate browsing interface
 only_play_one_audiotag   | `true`        | When a cpu-audio starts to play, any other instances in the same page are paused.
 current_audiotag_playing | `null`        | Reference to the playing `<audio>` element, `null` if none
 global_controller        | `null`        | Reference to the `<cpu-controller>` in the page if any, `null` elsewhere

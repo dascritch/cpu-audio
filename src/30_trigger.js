@@ -329,7 +329,7 @@ const trigger = {
      */
     fastreward : function(event) {
         event.keyCode = KEY_LEFT_ARROW;
-        trigger.key(event, 4);
+        trigger.key(event, document.CPU.fast_factor);
     },
     /**
      * Pressing fastfoward button
@@ -339,7 +339,7 @@ const trigger = {
      */
     fastfoward : function(event) {
         event.keyCode = KEY_RIGHT_ARROW;
-        trigger.key(event, 4);
+        trigger.key(event, document.CPU.fast_factor);
     },
 
 
@@ -362,7 +362,7 @@ const trigger = {
             target : target,
             preventDefault : onDebug
         };
-        trigger._hand_on = window.setTimeout(trigger._repeat_button, 400, mini_event);
+        trigger._hand_on = window.setTimeout(trigger._repeat_button, document.CPU.repeat_delay, mini_event);
         event.preventDefault();
     },
 
@@ -371,7 +371,7 @@ const trigger = {
         // 
         trigger[event.target.id](event);
         // next call : repetition are closest
-        trigger._hand_on = window.setTimeout(trigger._repeat_button, 100, event);
+        trigger._hand_on = window.setTimeout(trigger._repeat_button, document.CPU.repeat_factor, event);
     },
 
     /* Release handheld navigation button */
@@ -554,8 +554,8 @@ const trigger = {
      */
     touchstart : function(event) {
         let container = document.CPU.find_container(event.target);
-        trigger._show_alternate_nav = setTimeout(container.show_alternate_nav, 500, container);
-        // why 500ms ? Because Chrome will trigger a touchcancel event at 800ms to show a context menu
+        trigger._show_alternate_nav = setTimeout(container.show_alternate_nav, document.CPU.alternate_delay, container);
+        
     },
 
     touchcancel : function(event) {
