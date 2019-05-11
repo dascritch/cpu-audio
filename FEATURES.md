@@ -77,7 +77,7 @@ No need to use `title=""`, `canonical=""` or `twitter=""` attributes for the two
 
 ↓ Unfoldable mode, by example : `mode="compact,default"`  , the component will be displayed in `compact` mode in stand-by, but will unfold to `default` once it plays.
 
-<cpu-audio mode="button">
+<cpu-audio mode="compact,default">
     <audio controls id="b2">
         <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
     </audio>
