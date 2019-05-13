@@ -71,7 +71,7 @@ let CPU_element_api = class {
     //
     update_playbutton() {
         let audiotag = this.audiotag;
-        if (audiotag.readyState < audiotag.HAVE_CURRENT_DATA ) {
+        if ( (audiotag.readyState < audiotag.HAVE_CURRENT_DATA ) && (audiotag.getAttribute('preload') === '')) {
             this.set_act_container('loading');
             return;
         }

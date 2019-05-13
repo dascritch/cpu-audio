@@ -122,10 +122,10 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
         }
   
         // ask ASAP metadata about media
-        if (audiotag.preload === '') {
+        if (audiotag.getAttribute('preload') === '') {
             audiotag.preload = 'metadata';
+            audiotag.load();
         }
-        audiotag.load();
     },
 
     // @private, because at start

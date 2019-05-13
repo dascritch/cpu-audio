@@ -29,6 +29,7 @@ Corrections
  * Buttons in alternative handheld navigation now support longpresses for repeat action.
  * Panels (chapters and playlist) have a title.
  * Functions renamed for constistancy.
+ * Can avoid to [not force preloading metadata](#70).
 
 Back-end
 --------
