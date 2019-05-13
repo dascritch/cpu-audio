@@ -58,7 +58,7 @@
         <p class="line">
             <button type="button" class="test">Test</button>
             <button type="button" class="set">Set</button>
-            <input type="time" step="1" placeholder="Chapter time" />
+            <input class="timecode_input" inputmode="numeric" pattern="^([0-5]?[0-9]:){0,2}[0-5]?[0-9]$" placeholder="00:00:00" size="8" />
             <input type="text" placeholder="Chapter name" />
             <button type="button" class="remove"><strong>×</strong> Remove</button>
         </p>
@@ -139,14 +139,15 @@ function reorder_lines() {
     let lines = Array.from(list_element.querySelectorAll('p'));
 
     function interpret_line(this_line_element) {
-        let time = this_line_element.querySelector('[type="time"]').value;
+        let time = this_line_element.querySelector('.timecode_input').value;
         if (time === '') {
             // no time code ? add a fake record for the end
             time = `99:99:${no_time_inc++}`;
         }
+        secs = document.CPU.convert.TimeInSeconds(time);
         out.push({
-            'secs' : document.CPU.convert.TimeInSeconds(time),
-            'time' : this_line_element.querySelector('[type="time"]').value,
+            'secs' : secs,
+            'time' : document.CPU.convert.SecondsInPaddledColonTime(secs),
             'text' : this_line_element.querySelector('[type="text"]').value,
         });
     }
@@ -154,7 +155,7 @@ function reorder_lines() {
     let nb = 0;
     function repopulate_line(this_line_element) {
         let line = out[nb++];
-        this_line_element.querySelector('[type="time"]').value = line.time;
+        this_line_element.querySelector('.timecode_input').value = line.time;
         this_line_element.querySelector('[type="text"]').value = line.text;
     }
 
@@ -169,11 +170,10 @@ function reorder_lines() {
 function check_for_actions(event) {
     if (event.target.tagName === 'BUTTON') {
         let this_line_element = event.target.closest('p');
-        let this_line_time_element = this_line_element.querySelector('[type="time"]');
+        let this_line_time_element = this_line_element.querySelector('.timecode_input');
         switch (event.target.className) {
             case 'test' : 
-                /* no yet*/
-                document.CPU.jumpIdAt('sound', this_line_time_element.value)
+                document.CPU.jumpIdAt('sound', document.CPU.convert.TimeInSeconds(this_line_time_element.value));
                 break ;
             case 'set' : 
                 this_line_time_element.value = document.CPU.convert.SecondsInPaddledColonTime(sound_element.currentTime);
@@ -198,13 +198,14 @@ function interpret_form(event) {
     }
 
     function interpret_line(this_line_element) {
-        let time = this_line_element.querySelector('[type="time"]').value;
+        let time = this_line_element.querySelector('.timecode_input').value;
         if (time === '') {
             // no time code ? do not record this one
             return ;
         }
         let this_line_data = {
-            time: document.CPU.convert.TimeInSeconds( time ),
+            code: time,
+            time: Math.floor(document.CPU.convert.TimeInSeconds( time )),
             text: this_line_element.querySelector('[type="text"]').value
         };
         chapters.push(this_line_data);
@@ -217,8 +218,8 @@ function interpret_form(event) {
         let out1=[];
         let out2=[];
         for(let line of chapters) {
-           out1.push(`\n\t<li><a href="#t=${Math.floor(line.time)}">${line.text} (${document.CPU.convert.SecondsInColonTime(line.time)})</a></li>`) 
-           out2.push(`\n\t<li>${line.text} — (<a href="#t=${Math.floor(line.time)}">${document.CPU.convert.SecondsInColonTime(line.time)}</a>)</li>`) 
+           out1.push(`\n\t<li><a href="#t=${line.time}">${line.text} (${document.CPU.convert.SecondsInColonTime(line.time)})</a></li>`) 
+           out2.push(`\n\t<li>${line.text} — (<a href="#t=${line.time}">${document.CPU.convert.SecondsInColonTime(line.time)}</a>)</li>`) 
         }
         return `<ol>${out1.join('')}\n</ol>\n<p>Alternate version :</p>\n<ol>${out2.join('')}\n</ol>`;
     }
@@ -226,7 +227,7 @@ function interpret_form(event) {
     function build_md_source() {
         let out =[];
         for(let line of chapters) {
-           out.push(`\n * [${line.text}](#t=${Math.floor(line.time)})`) 
+           out.push(`\n * [${line.text}](#t=${line.time})`) 
         }
         return `${out.join('')}`;
     }
@@ -234,7 +235,7 @@ function interpret_form(event) {
     function build_wiki_source() {
         let out =[];
         for(let line of chapters) {
-           out.push(`\n  - [[#t=${Math.floor(line.time)}|${line.text}]]`) 
+           out.push(`\n  - [[#t=${line.time}|${line.text}]]`) 
         }
         return `${out.join('')}`;
     }
