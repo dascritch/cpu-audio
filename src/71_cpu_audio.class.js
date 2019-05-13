@@ -7,9 +7,9 @@ class CpuAudioElement extends CpuControllerElement {
         for (let key in document.CPU.default_dataset) {
             let value = this.getAttribute(key);
             if (value !== null) {
-                this._audiotag.dataset[key.toLowerCase()] = value;
+                this._audiotag.dataset[key] = (key !== 'duration') ? value : convert.TimeInSeconds(value);
             }
-        }        
+        }
     }
 
     connectedCallback() {

@@ -138,9 +138,15 @@ let CPU_element_api = class {
         elapse_element.href = link_to;
 
         let total_duration = '…';
-        if (!isNaN(Math.round(audiotag.duration))){
-            total_duration = convert.SecondsInColonTime(Math.round(audiotag.duration));
-        } 
+        let _natural = Math.round(audiotag.duration);
+        if (!isNaN(_natural)){
+            total_duration = convert.SecondsInColonTime(_natural);
+        } else {
+            let _forced = Math.round(audiotag.dataset.duration);
+            if (_forced > 0) {
+                total_duration = convert.SecondsInColonTime(_forced);
+            }
+        }
          
         let colon_time = convert.SecondsInColonTime(audiotag.currentTime);
         elapse_element.innerHTML = `${colon_time}<span class="nosmaller">\u00a0/\u00a0${total_duration}</span>`;

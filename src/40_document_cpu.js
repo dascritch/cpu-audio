@@ -68,6 +68,7 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
             }(),
         'playlist' : null,
         'waveform' : null,
+        'duration' : null,
     },
 
     /**

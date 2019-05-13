@@ -58,12 +58,13 @@ Some attributes enhance the component :
     * `button,default`, `button,compact` or `compact,default` : once playing, will unfold from a standby mode (`button` or `compact`) to a wider one,
     * `hidden` : no interface ;
 * `hide="<string>"` : hide some features, comma-separated :
-    * `poster` : the poster image
-    * `actions` : the share button
-    * `chapters` : the chapters list
-    * `panels` : any panels as chapters or playlist
-    * `panels-except-play` : any panels, except when the module is playing a media (do not use with `panels`)
+    * `poster` : the poster image,
+    * `actions` : the share button,
+    * `chapters` : the chapters list,
+    * `panels` : any panels as chapters or playlist,
+    * `panels-except-play` : any panels, except when the module is playing a media (do not use with `panels`) ;
 * `playlist="<string>"` : add this media in a named playlist, play the next one when ended ;
+* `duration="<seconds|coloncoded|humanreadable>"` : force displayed duration instead to load it from the media resource before playing (add a `preload="none"` attribute to the `<audio>` tag);
 * `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page).
 
 

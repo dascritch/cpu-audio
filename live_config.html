@@ -35,7 +35,7 @@
                 <option value="audio/wav">WAV</option>
             </select> sound file
         </span>
-        <input id="source_1" name="source_1" type="url" value="https://dascritch.net/vrac/sonores/1404-SambaResille2003.ogg" />
+        <input id="source_1" name="source_1" type="url" value="https://dascritch.net/vrac/sonores/1404-SambaResille2003.ogg" placeholder="https://example.com/sound.ogg" />
     </label>
     <label for="source_2">
         <span>
@@ -47,7 +47,7 @@
                 <option value="audio/wav">WAV</option>
             </select> sound file
         </span>
-        <input id="source_2" name="source_2" type="url" value="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" />
+        <input id="source_2" name="source_2" type="url" value="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" placeholder="https://example.com/sound.mp4" />
     </label>
     <label for="source_3">
         <span>
@@ -59,11 +59,11 @@
                 <option value="audio/wav">WAV</option>
             </select> sound file
         </span>
-        <input id="source_3" name="source_3" type="url" />
+        <input id="source_3" name="source_3" type="url" placeholder="https://example.com/sound.mp3" />
     </label>
     <label for="source_vtt">
         <span>Chapter VTT text file URL</span>
-        <input id="source_vtt" name="source_vtt" type="url" />
+        <input id="source_vtt" name="source_vtt" type="url" placeholder="https://example.com/chapters.vtt" />
     </label>
 </fieldset>
 
@@ -83,23 +83,27 @@
     </label>
     <label for="meta_title">
         <span>Title</span>
-        <input id="meta_title" name="meta_title" type="text" value="Au carnaval avec Samba Résille (2003)" />
+        <input id="meta_title" name="meta_title" type="text" value="Au carnaval avec Samba Résille (2003)" placeholder="My wonderful sound" />
     </label>
     <label for="meta_poster">
         <span>Cover image url</span>
-        <input id="meta_poster" name="meta_poster" type="url" value="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg" />
+        <input id="meta_poster" name="meta_poster" type="url" value="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg" placeholder="https://example.com/cover.jpg" />
     </label>
     <label for="meta_waveform">
         <span>Waveform image URL</span>
-        <input id="meta_waveform" name="meta_waveform" type="url" />
+        <input id="meta_waveform" name="meta_waveform" type="url" placeholder="https://example.com/waveform.jpg" />
+    </label>
+    <label for="meta_duration">
+        <span>Estimated duration</span>
+        <input id="meta_duration" name="meta_duration" type="text" placeholder="100 or 1:40 or 1m40s" />
     </label>
     <label for="meta_canonical">
         <span>Canonical page link</span>
-        <input id="meta_canonical" name="meta_canonical" type="url" />
+        <input id="meta_canonical" name="meta_canonical" type="url" placeholder="https://example.com/page.html" />
     </label>
     <label for="meta_twitter">
         <span>Twitter handle</span>
-        <input id="meta_twitter" name="meta_twitter" type="string" pattern="@[\d\w_]+" />
+        <input id="meta_twitter" name="meta_twitter" type="string" pattern="@[\d\w_]+" placeholder="@cpuprogramme" />
     </label>
     
     <p>
@@ -236,7 +240,7 @@ function configurator_html(event) {
     }
 
     function adjust_attributes_cpu_audio() {
-        for (let attr of ['mode', 'title', 'poster', 'waveform', 'canonical', 'twitter']) {
+        for (let attr of ['mode', 'title', 'poster', 'waveform', 'canonical', 'duration', 'twitter']) {
             let value = form_html.querySelector(`[name="meta_${attr}"]`).value;
             if (value) {
                 cpu_audio_attributes += ` ${attr}="${esc(value)}"`;
@@ -274,8 +278,13 @@ function configurator_html(event) {
         // ajouter les erreurs
     }
 
+    let audio_attribs = '';
+    if (cpu_audio_attributes.indexOf(' duration="') > -1) {
+        audio_attribs = ' preload="none"';
+    }
+
     let code = `<cpu-audio${cpu_audio_attributes}>
-    <audio controls id="sound">${audio_sources}
+    <audio controls id="sound"${audio_attribs}>${audio_sources}
     </audio>
 </cpu-audio>`;
     document.getElementById('demo').innerHTML = code;

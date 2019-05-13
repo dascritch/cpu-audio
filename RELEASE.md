@@ -12,7 +12,9 @@ New features
  * All panels can be hidden via parameters, even future ones.
  * Panels can be displayed only if the media is playing.
  * [Live configurator](LIVE) can test waiting state and error state.
+ * [Live configurator](LIVE) have placeholders in attribute fields.
  * [Live chapters editor](CHAPTERS_ED) can preview edited chapers in the shown player.
+ * Can avoid to [not force preloading metadata](#70) and indicates an estimation instead.
 
 Corrections
 -----------
@@ -29,7 +31,6 @@ Corrections
  * Buttons in alternative handheld navigation now support longpresses for repeat action.
  * Panels (chapters and playlist) have a title.
  * Functions renamed for constistancy.
- * Can avoid to [not force preloading metadata](#70).
 
 Back-end
 --------
