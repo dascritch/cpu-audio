@@ -31,6 +31,7 @@ Corrections
  * Buttons in alternative handheld navigation now support longpresses for repeat action.
  * Panels (chapters and playlist) have a title.
  * Functions renamed for constistancy.
+ * Chapters live editor don't use anymore `<input type="time">` as [it is not a duration input, nor correctly working in 12-hours locale](#63) à la Américaine Way
 
 Back-end
 --------
