@@ -170,7 +170,7 @@ let CPU_element_api = class {
             panel   : false,
             highlight : false
         });
-        this.add_plane_point(plane, trigger._timecode_start, 'play', {
+        this.add_point(plane, trigger._timecode_start, 'play', {
             link    : false,
             end     : trigger._timecode_end
         });
@@ -486,7 +486,7 @@ let CPU_element_api = class {
      * @param      {string}  plane_name   The name
      * @return     {HTMLElement}    The <nav> element from ShadowDom interface, null if inexisting
      */
-    get_plane_panel_nav(plane_name) {
+    get_plane_nav(plane_name) {
         let panel = this.get_plane_panel(plane_name);
         return panel ? panel.querySelector(`nav`) : null;
     }
@@ -657,7 +657,7 @@ let CPU_element_api = class {
      * @param      {string}  point_name  The point name
      * @return     {object}  Data
      */
-    get_plane_point(plane_name, point_name) {
+    get_point(plane_name, point_name) {
         return this.audiotag._CPU_planes[plane_name].points[point_name];
     }
 
@@ -668,7 +668,7 @@ let CPU_element_api = class {
      * @param      {string}  name   The name
      * @return     {HTMLElement}    The <div> point element into <aside> from ShadowDom interface
      */
-    get_plane_point_track(plane_name, point_name) {
+    get_point_track(plane_name, point_name) {
         return this.elements['line'].querySelector('#' + this.get_point_id(plane_name, point_name, false));
     }
 
@@ -679,7 +679,7 @@ let CPU_element_api = class {
      * @param      {string}  name   The name
      * @return     {HTMLElement}    The <li> point element into panel from ShadowDom interface
      */
-    get_plane_point_panel(plane_name, point_name) {
+    get_point_panel(plane_name, point_name) {
         return this.container.querySelector('#' + this.get_point_id(plane_name, point_name, true));
     }
 
@@ -690,21 +690,21 @@ let CPU_element_api = class {
      * @param      {<type>}  plane_name  The plane name
      * @param      {<type>}  point_name  The point name
      */
-    draw_plane_point(plane_name, point_name) {
-        let plane_point_panel = this.get_plane_point_panel(plane_name, point_name);
+    draw_point(plane_name, point_name) {
+        let plane_point_panel = this.get_point_panel(plane_name, point_name);
         if (plane_point_panel) {
             plane_point_panel.remove();
         }
-        let plane_point_track = this.get_plane_point_track(plane_name, point_name);
+        let plane_point_track = this.get_point_track(plane_name, point_name);
         if (plane_point_track) {
             plane_point_track.remove();
         }
 
-        let data = this.get_plane_point(plane_name, point_name);
+        let data = this.get_point(plane_name, point_name);
         let audiotag = this.audiotag ? this.audiotag : document.CPU.global_controller.audiotag;
         let audio_duration = audiotag.duration;
         let track = this.get_plane_track(plane_name);
-        let panel = this.get_plane_panel_nav(plane_name);
+        let panel = this.get_plane_nav(plane_name);
 
         let intended_track_id = this.get_point_id(plane_name, point_name, false);
         let intended_panel_id = this.get_point_id(plane_name, point_name, true);
@@ -764,7 +764,7 @@ let CPU_element_api = class {
             (document.CPU.global_controller !== null) &&
             (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
             ) {
-            document.CPU.global_controller.draw_plane_point(plane_name, point_name) 
+            document.CPU.global_controller.draw_point(plane_name, point_name) 
         }
     }
 
@@ -779,16 +779,16 @@ let CPU_element_api = class {
     // 
     // @return     {boolean} success
     //                        
-    add_plane_point(plane_name, timecode_start, point_name, data) {
+    add_point(plane_name, timecode_start, point_name, data) {
         data = data === undefined ? {} : data;
         
-        if ( (this.element.tagName === CpuControllerTagName) || (this.get_plane(plane_name) === undefined) || (this.get_plane_point(plane_name, point_name) !== undefined) || (timecode_start < 0) || (!point_name.match(valid_id)) ) {
+        if ( (this.element.tagName === CpuControllerTagName) || (this.get_plane(plane_name) === undefined) || (this.get_point(plane_name, point_name) !== undefined) || (timecode_start < 0) || (!point_name.match(valid_id)) ) {
             return false;
         }
 
         data.start = timecode_start;
         this.audiotag._CPU_planes[plane_name].points[point_name] = data;
-        this.draw_plane_point(plane_name, point_name);
+        this.draw_point(plane_name, point_name);
 
         return true;
     }
@@ -800,21 +800,21 @@ let CPU_element_api = class {
     // @param      {string}   point_name    A name in the range /[a-zA-Z0-9\-_]+/
     // @return     {boolean}  success
     //
-    remove_plane_point(plane_name, point_name) {
-        let point_track_element = this.get_plane_point_track(plane_name, point_name);
+    remove_point(plane_name, point_name) {
+        let point_track_element = this.get_point_track(plane_name, point_name);
         if (!point_track_element) {
             return false;
         }
         delete this.audiotag._CPU_planes[plane_name].points[point_name];
         point_track_element.remove();
-        this.get_plane_point_panel(plane_name, point_name).remove();
+        this.get_point_panel(plane_name, point_name).remove();
 
         if (
             (this.element.tagName !== CpuControllerTagName) &&
             (document.CPU.global_controller !== null) &&
             (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
             ) {
-            document.CPU.global_controller.remove_plane_point(plane_name, point_name);
+            document.CPU.global_controller.remove_point(plane_name, point_name);
         }
         return true;
     }
@@ -826,7 +826,7 @@ let CPU_element_api = class {
      * @param      {string}  element_id  The element identifier
      * @return     {[string, string]}    An array with two string : plane name and point name.
      */
-    get_plane_point_names_from_id(element_id) {
+    get_point_names_from_id(element_id) {
         let plane_name = element_id.replace(plane_point_names_from_id,'$2');
         let point_name = element_id.replace(plane_point_names_from_id,'$5');
         return [plane_name, point_name];
@@ -845,7 +845,7 @@ let CPU_element_api = class {
         }
 
         for (let point_name of Object.keys(remove_from_data.points)) {
-            this.remove_plane_point(plane_name, point_name);
+            this.remove_point(plane_name, point_name);
         }
         return true;
     }
@@ -869,7 +869,7 @@ let CPU_element_api = class {
         for (let plane_name of Object.keys(this.audiotag._CPU_planes)) {
             this.draw_plane(plane_name);
             for (let point_name of Object.keys(this.audiotag._CPU_planes[plane_name].points)) {
-                this.draw_plane_point(plane_name, point_name);
+                this.draw_point(plane_name, point_name);
             }
         }
     }
@@ -921,7 +921,7 @@ let CPU_element_api = class {
 
         let track_element = this.get_plane_track(plane_name, point_name);
         if (track_element) {
-            let point_track = this.get_plane_point_track(plane_name, point_name);
+            let point_track = this.get_point_track(plane_name, point_name);
             if (point_track) {
                 point_track.classList.add(class_name);
             }
@@ -929,7 +929,7 @@ let CPU_element_api = class {
 
         let panel_element = this.get_plane_panel(plane_name, point_name);
         if (panel_element) {
-            let point_panel = this.get_plane_point_panel(plane_name, point_name);
+            let point_panel = this.get_point_panel(plane_name, point_name);
             if (point_panel) {
                 point_panel.classList.add(class_name);
             }
@@ -1008,7 +1008,7 @@ let CPU_element_api = class {
             for (let cue of tracks.cues) {
                 let cuepoint = Math.floor(cue.startTime);
 
-                self.add_plane_point(plane_name, cuepoint, cue.id,  {
+                self.add_point(plane_name, cuepoint, cue.id,  {
                     'text' : cue.text,
                     'link' : true,          // point the link to audio
                     'end'  : cue.endTime    // end timecode of the cue

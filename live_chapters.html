@@ -261,7 +261,7 @@ function interpret_form(event) {
         for(let line of chapters) {
             number++;
             let point = `chapter-${number}`;
-            comp_cpu.add_plane_point(plane, line.time, point, {
+            comp_cpu.add_point(plane, line.time, point, {
                 text : line.text,
                 end :  number < chapters.length ? chapters[number].time : sound_element.duration 
             });
