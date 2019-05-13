@@ -60,7 +60,7 @@ Some attributes enhance the component :
 * `hide="<string>"` : hide some features, comma-separated :
     * `poster` : the poster image,
     * `actions` : the share button,
-    * `chapters` : the chapters list,
+    * `chapters` : the chapters list (think to do not include a `<track kind="chapters">` file ^^;),
     * `panels` : any panels as chapters or playlist,
     * `panels-except-play` : any panels, except when the module is playing a media (do not use with `panels`) ;
 * `playlist="<string>"` : add this media in a named playlist, play the next one when ended ;
