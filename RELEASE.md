@@ -19,6 +19,7 @@ New features
 Corrections
 -----------
 
+ * Use SPACE instead of COMA as separators for the `hide=""` attribute (You may do changes in your previous installation)
  * Timeline won't have any more round ends : Graphically inconsistent and not easy on small widths.
  * Less visible [graphic glitch](#61) on the loading line.
  * Error mode style correction.

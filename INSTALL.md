@@ -57,7 +57,7 @@ Some attributes enhance the component :
     * `button` : play/pause button only,
     * `button,default`, `button,compact` or `compact,default` : once playing, will unfold from a standby mode (`button` or `compact`) to a wider one,
     * `hidden` : no interface ;
-* `hide="<string>"` : hide some features, comma-separated :
+* `hide="<string>"` : hide some features, space-separated :
     * `poster` : the poster image,
     * `actions` : the share button,
     * `chapters` : the chapters list (think to do not include a `<track kind="chapters">` file ^^;),

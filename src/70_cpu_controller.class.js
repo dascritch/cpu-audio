@@ -61,7 +61,7 @@ class CpuControllerElement extends HTMLElement {
 
         let hide_those = this.getAttribute('hide');
         if (hide_those !== null) {
-            this.CPU.set_hide_container(hide_those.split(','));
+            this.CPU.set_hide_container(hide_those.split(' '));
         }
 
         if (navigator.share) {

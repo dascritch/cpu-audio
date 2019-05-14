@@ -253,7 +253,7 @@ function configurator_html(event) {
             }
         }
         if (values_hide.length > 0) {
-            cpu_audio_attributes += ` hide="${values_hide.join(',')}"`;
+            cpu_audio_attributes += ` hide="${values_hide.join(' ')}"`;
         }
     }
     function adjust_audio_sources() {
