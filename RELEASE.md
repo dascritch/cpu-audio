@@ -15,22 +15,22 @@ New features
  * [Live configurator](LIVE) have placeholders in attribute fields.
  * [Live chapters editor](CHAPTERS_ED) can preview edited chapers in the shown player.
  * Can avoid to [not force preloading metadata](#70) and indicates an estimation instead.
+ * Panels (chapters and playlist) have a hide-able title.
 
 Corrections
 -----------
 
- * Use SPACE instead of COMA as separators for the `hide=""` attribute (You may do changes in your previous installation)
- * Timeline won't have any more round ends : Graphically inconsistent and not easy on small widths.
+ * Use SPACE instead of COMMA as separators for the `hide=""` attribute (You may do changes in your previous installation)
+ * Time-line won't have round ends anymore : Graphically inconsistent and not easy on small widths.
  * Less visible [graphic glitch](#61) on the loading line.
  * Error mode style correction.
  * Chapters now use [annotations API](#57).
- * Titles in chapters panel should use more space.
+ * Texts in chapters panel should use more space.
  * Boxed playing (with a end timecode) now uses [annotations API](#57).
  * DOM and CSS cleanups.
  * Regression in CSS, mainly on playing mode
  * Graphic corrections on the alternative handheld navigation : buttons are centered, some are skiped on smallest screens.
  * Buttons in alternative handheld navigation now support longpresses for repeat action.
- * Panels (chapters and playlist) have a title.
  * Functions renamed for constistancy.
  * Chapters live editor don't use anymore `<input type="time">` as [it is not a duration input, nor correctly working in 12-hours locale](#63) à la Américaine Way
 

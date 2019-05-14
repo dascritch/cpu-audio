@@ -2,7 +2,8 @@ How-to install
 ==============
 
 Copy [`dist/cpu-audio.js`](dist/cpu-audio.js) file on your website.
-Put in the head of your html page :
+
+Call it in the `<head>` of your html page :
 
 ```html
 <script src="./cpu-audio.js" async></script>
@@ -63,6 +64,7 @@ Some attributes enhance the component :
     * `actions` : the share button,
     * `chapters` : the chapters list (think to do not include a `<track kind="chapters">` file ^^;),
     * `panels` : any panels as chapters or playlist,
+    * `panels-title` : titles of the panels,
     * `panels-except-play` : any panels, except when the module is playing a media (do not use with `panels`) ;
 * `playlist="<string>"` : add this media in a named playlist, play the next one when ended ;
 * `duration="<seconds|coloncoded|humanreadable>"` : force displayed duration instead to load it from the media resource before playing (add a `preload="none"` attribute to the `<audio>` tag);

@@ -477,6 +477,7 @@ h6 {
 .mode-hidden,
 .hide-chapters .chapters,
 .hide-panels .panel,
+.hide-panels-title h6,
 .hide-panels-except-play .panel {
     display : none;
 }
