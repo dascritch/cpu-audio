@@ -8,6 +8,7 @@ Put in the head of your html page :
 <script src="./cpu-audio.js" async></script>
 ```
 
+Do not forget to add a `lang=""` attribute in the hosting `<html>` tag. Elsewhere, the component will try to guess user's language via the browser preferences.
 
 Invoking element
 ----------------

@@ -54,24 +54,31 @@ const sources_i18n = {
 };
 
 
-let prefered_language = 'en';
-let languages = window.navigator.languages ;
-languages = (languages !== undefined) ? 
-            languages : 
-            [(navigator.language || navigator.browserLanguage)];
-let added = false;
-for (let entry in languages) {
-    let line = languages[entry];
+// First, we'll try to guess the hosting page language
+let prefered_language = document.querySelector('html').lang;
+
+if ((!prefered_language.length) || (!(prefered_language in sources_i18n))) {
+
+    // Inexisting ?
+    prefered_language = 'en';
+    // We will use english in last resort
+
+    // trying to find the browser preferences
+    let languages = window.navigator.languages;
+    languages = (languages !== undefined) ? 
+                languages : 
+                [(navigator.language || navigator.browserLanguage)];
+    let added = false;
+    for (let entry in languages) {
+        // for each entry
+        let line = languages[entry];
         if (line.split) {
-            // on extrait le code générique xx de xx-YY 
+            // we will only look (yes, this is bad) at the first level xx of any locale xx-YY code
             let code = line.split('-')[0];
-            if (
-                (!added) && 
-                (typeof i18n_source === 'object') && 
-                (i18n_source !== null) && 
-                (i18n_source[code] !== undefined)
-                ) {
-            prefered_language = code;
+            if ( (!added) && (code in sources_i18n)) {
+                // we still don't have a locale selected and this one is in our register, we can use it
+                prefered_language = code;
+            }
         }
     }
 }
