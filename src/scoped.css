@@ -453,6 +453,7 @@ h6 {
 .cue time {
     flex : 0 0 var(--cpu-elapse-width) 0px;
     text-align : right;
+    font-size : smaller;
 }
 
 

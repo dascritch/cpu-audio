@@ -17,7 +17,6 @@ New features
  * Can avoid to [not force preloading metadata](#70) and indicates an estimation instead.
  * Panels (chapters and playlist) have a hide-able title.
  * [Translating specific VTT markup into HTML tags](#59)
- * Media title is now in bold
 
 Corrections
 -----------
@@ -36,6 +35,9 @@ Corrections
  * Buttons in alternative handheld navigation now support longpresses for repeat action.
  * Functions renamed for constistancy.
  * Chapters live editor don't use anymore `<input type="time">` as [it is not a duration input, nor correctly working in 12-hours locale](#63) à la Américaine Way
+ * Media title is now in bold
+ * Time position indication in panels is now smaller than text, to distinguish them when they are closer
+
 
 Back-end
 --------
