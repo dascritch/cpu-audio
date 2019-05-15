@@ -56,10 +56,9 @@ a:hover, a:focus, button:hover, button:focus {
     background : var(--cpu-color);
 }
 
-em, i {
+i, em {
     font-style: italic;
 }
-
 
 #interface.act-play, .act-play button , .act-play #playlist, .act-play .panel {
     background : var(--cpu-playing-background);
@@ -461,7 +460,6 @@ h6 {
     width : var(--cpu-height);
 }
 
-/* .mode-compact #poster,*/
 .mode-compact #title,
 .mode-compact #line,
 .mode-compact #actions,

@@ -696,6 +696,54 @@ let CPU_element_api = class {
     }
 
     /**
+     * Transform VTT tag langage into HTML tags, filtering out some
+     *
+     * @param      {string}            vtt_taged  The vtt tagged
+     * @return     string                         HTML tagged string
+     */
+    translate_vtt(vtt_taged) {
+        // NEVER EVER BELIEVE you can parse HTML with regexes ! This function works because we just do minimalistic changes
+
+        let acceptables = {
+            'i'     : 'i',
+            'em'    : 'em', // (not in the standard but used in legacy CPU.pm show)
+            'b'     : 'b', 
+            'bold'  : 'strong', // (declared in the MDN page, but never seen in standards pages)
+            'u'     : 'u',
+            'lang'  : 'i' // emphasis for typographic convention
+        };
+
+        function not_acceptable_tag(name) {
+            return !(name in acceptables);
+        }
+
+        function opentag(tag, name, class_name, attribute) {
+            name = name.toLowerCase();
+            if (not_acceptable_tag(name)) {
+                return '';
+            }
+            let $_attr = '';
+            if (name === 'lang') {
+                $_attr = ` lang="${attribute.trim()}"`;
+            }
+            return `<${acceptables[name]}${$_attr}>`;
+        }
+
+        function closetag(tag, name) {
+            name = name.toLowerCase();
+            if (not_acceptable_tag(name)) {
+                return '';
+            }
+            return `</${acceptables[name]}>`;
+        }
+
+        return vtt_taged.
+                replace(/<(\w+)(\.[^>]+)?( [^>]+)?>/gi, opentag).
+                replace(/<\/(\w+)(\W?.*)>/gi, closetag).
+                replace(/\n/g, '<br/>');
+    }
+
+    /**
      * Draws a plane point
      * @private
      *
@@ -1021,7 +1069,7 @@ let CPU_element_api = class {
                 let cuepoint = Math.floor(cue.startTime);
 
                 self.add_point(plane_name, cuepoint, cue.id,  {
-                    'text' : cue.text,
+                    'text' : self.translate_vtt(cue.text),
                     'link' : true,          // point the link to audio
                     'end'  : cue.endTime    // end timecode of the cue
                 });

@@ -541,10 +541,9 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.ok(! secondary_interfacetag.querySelector('aside#aside_«hello» > div#aside_«hello»_point_«point»') , 'DOM element point removed from aside track');
 		assert.ok(! secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > li#panel_«hello»_point_«point»') , 'DOM element point removed from panel');
 		assert.equal(secondary_API_CPU.get_point_track('hello', 'point2'), null , 'second point removed');
-
 	});
 
-	QUnit.skip( "hashorder end,start cleate a “private” plane", function (assert){
+	QUnit.skip( "hashorder end,start create a “private” plane", function (assert){
 		/* WHY THE SECOND TEST DOESN'T WORK ???? WHHYYYYY??????
 		assert.expect( 3 );
 		let done = assert.async();
@@ -561,5 +560,31 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		});
 		*/
 	});
+
+	QUnit.test( "Public API : translate_vtt", function( assert ) {
+		assert.equal(componenttag.CPU.translate_vtt('Hello, World !'), 'Hello, World !', 'translate_vtt() bypass simple text');
+		assert.equal(componenttag.CPU.translate_vtt('Hello <i>World</i>'), 'Hello <i>World</i>', 'bypass simple <i> tag');
+		assert.equal(componenttag.CPU.translate_vtt('Hello <I>World</I>'), 'Hello <i>World</i>', 'Accept capitalized tags');
+		assert.equal(componenttag.CPU.translate_vtt('Hello <i.classname>World</i>'), 'Hello <i>World</i>', 'remove classnames');
+		assert.equal(componenttag.CPU.translate_vtt('Hello <em>World</em>'), 'Hello <em>World</em>', 'bypass <em>, used in some legacy CPU shows');
+		assert.equal(componenttag.CPU.translate_vtt('Hello <b>World</b>'), 'Hello <b>World</b>', 'bypass <b>');
+		assert.equal(componenttag.CPU.translate_vtt('Hello <bold>World</bold>'), 'Hello <strong>World</strong>', 'transform <bold> → <strong> (declared in the MDN page, but never seen in standards pages)');
+		assert.equal(componenttag.CPU.translate_vtt('Hello <u>World</u>'), 'Hello <u>World</u>', 'bypass <u>');
+		assert.equal(componenttag.CPU.translate_vtt('Hello <lang fr>Monde</lang>'), 'Hello <i lang="fr">Monde</i>', 'transform <lang xx> into <i lang="xx">, emphasis for typographic convention');
+		assert.equal(componenttag.CPU.translate_vtt('Hello <a href=".">World</a>'), 'Hello World', 'remove <a href>');
+		assert.equal(componenttag.CPU.translate_vtt('Hello\nWorld'), 'Hello<br/>World', 'transform CR into <br>');
+
+
+		/*
+<em> → <em> (not in the standard but used in legacy CPU show)
+<b> → <b>
+<bold> → <strong> (declared in the MDN page, but never seen in standards pages)
+<u> → <u>
+<lang en> → <i lang="en">
+<a href> → `` (suppress any hyperlink)
+Check that multi-lines is completed with <br />
+		*/
+	});
+
 
 });
