@@ -35,12 +35,12 @@ Some examples using <code>&lt;iframe&gt;</code>s :
 </style>
 
 <div class="size_2" style="width:639px">
-<strong>Under 640px wide</strong> : Height and font-size is reduced, image is hidden.
+<strong>Under 640px wide</strong> : Height and font-size are reduced, image is hidden.
 <iframe src="./iframe_for_dimension.html" ></iframe>
 </div>
 
 <div  class="size_3" style="width:479px">
-<strong>Under 480px wide</strong> : Total time is hidden, buttons are reduced, time-lines are under all the buttons using the full available width.
+<strong>Under 480px wide</strong> : Total time is hidden, buttons are reduced, time-line is using the full available width under all the buttons.
 <iframe src="./iframe_for_dimension.html" ></iframe>
 </div>
 
