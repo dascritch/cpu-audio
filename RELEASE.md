@@ -16,7 +16,8 @@ New features
  * [Live chapters editor](CHAPTERS_ED) can preview edited chapers in the shown player.
  * Can avoid to [not force preloading metadata](#70) and indicates an estimation instead.
  * Panels (chapters and playlist) have a hide-able title.
- * Translating specific VTT markup into HTML tags
+ * [Translating specific VTT markup into HTML tags](#59)
+ * Media title is now in bold
 
 Corrections
 -----------
@@ -27,6 +28,7 @@ Corrections
  * Error mode style correction.
  * Chapters now use [annotations API](#57).
  * Texts in chapters panel should use more space.
+ * Texts in chapters panel [should not accept embeded links](#59)
  * Boxed playing (with a end timecode) now uses [annotations API](#57).
  * DOM and CSS cleanups.
  * Regression in CSS, mainly on playing mode

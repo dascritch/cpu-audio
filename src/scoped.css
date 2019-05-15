@@ -60,6 +60,10 @@ i, em {
     font-style: italic;
 }
 
+b, strong, h5 a {
+    font-weight: bold;
+}
+
 #interface.act-play, .act-play button , .act-play #playlist, .act-play .panel {
     background : var(--cpu-playing-background);
     color : var(--cpu-playing-color);
