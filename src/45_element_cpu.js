@@ -71,7 +71,10 @@ let CPU_element_api = class {
     //
     update_playbutton() {
         let audiotag = this.audiotag;
-        if ( (audiotag.readyState < audiotag.HAVE_CURRENT_DATA ) && (audiotag.getAttribute('preload') === '')) {
+        let _attr = audiotag.getAttribute('preload');
+        let _preload = _attr ? (_attr.toLowerCase() !== 'none') : true ;
+        if ( (audiotag.readyState < audiotag.HAVE_CURRENT_DATA ) && 
+                ((_preload) || (audiotag._CPU_played)) ) {
             this.set_act_container('loading');
             return;
         }
@@ -80,6 +83,7 @@ let CPU_element_api = class {
         let hide_panels_except_play_mark = 'last-used';
 
         if (!audiotag.paused) {
+            audiotag._CPU_played = true;
             this.container.classList.add(hide_panels_except_play_mark);
             if (this.mode_when_play !== null) {
                 this.set_mode_container(this.mode_when_play);
