@@ -743,7 +743,7 @@ let CPU_element_api = class {
 
         return vtt_taged.
                 replace(/<(\w+)(\.[^>]+)?( [^>]+)?>/gi, opentag).
-                replace(/<\/(\w+)(\W?.*)>/gi, closetag).
+                replace(/<\/(\w+)( [^>]*)?>/gi, closetag).
                 replace(/\n/g, '<br/>');
     }
 

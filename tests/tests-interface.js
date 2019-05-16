@@ -573,7 +573,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.equal(componenttag.CPU.translate_vtt('Hello <lang fr>Monde</lang>'), 'Hello <i lang="fr">Monde</i>', 'transform <lang xx> into <i lang="xx">, emphasis for typographic convention');
 		assert.equal(componenttag.CPU.translate_vtt('Hello <a href=".">World</a>'), 'Hello World', 'remove <a href>');
 		assert.equal(componenttag.CPU.translate_vtt('Hello\nWorld'), 'Hello<br/>World', 'transform CR into <br>');
-
+		assert.equal(componenttag.CPU.translate_vtt('♪ Johnny Mercer, Robert Emmet Dolan <em lang="en">featuring</em> Hedy Lamarr - <em>Just a moment more</em>'), '♪ Johnny Mercer, Robert Emmet Dolan <em>featuring</em> Hedy Lamarr - <em>Just a moment more</em>', 'An example with 2 consecutives <em> tags')
 
 		/*
 <em> → <em> (not in the standard but used in legacy CPU show)
