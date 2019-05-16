@@ -741,6 +741,11 @@ let CPU_element_api = class {
             return `</${acceptables[name]}>`;
         }
 
+        if ((vtt_taged.match(/</g)||[]).length !== (vtt_taged.match(/>/g)||[]).length) {
+            // unmatching < and >, probably badly written tags, or in full text
+            return escapeHTML(vtt_taged);
+        }
+
         return vtt_taged.
                 replace(/<(\w+)(\.[^>]+)?( [^>]+)?>/gi, opentag).
                 replace(/<\/(\w+)( [^>]*)?>/gi, closetag).
