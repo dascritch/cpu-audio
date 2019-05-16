@@ -182,6 +182,7 @@ const trigger = {
         }
         audiotag.pause();
         document.CPU.current_audiotag_playing = null;
+        trigger.update({target : audiotag});
         window.localStorage.removeItem(audiotag.currentSrc);
     },
 
@@ -197,6 +198,7 @@ const trigger = {
 
         if ( (document.CPU.only_play_one_audiotag) && (document.CPU.current_audiotag_playing) && (!document.CPU.is_audiotag_playing(audiotag)) ) {
             trigger.pause(undefined, document.CPU.current_audiotag_playing);
+
         }
         document.CPU.current_audiotag_playing = audiotag;
     },

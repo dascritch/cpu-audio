@@ -82,6 +82,8 @@ let CPU_element_api = class {
         this.set_act_container(audiotag.paused ? 'pause' : 'play');
         let hide_panels_except_play_mark = 'last-used';
 
+        let previous_audiotag = document.CPU.last_used;
+
         if (!audiotag.paused) {
             audiotag._CPU_played = true;
             this.container.classList.add(hide_panels_except_play_mark);
@@ -90,7 +92,7 @@ let CPU_element_api = class {
                 this.mode_when_play = null;
             }
         } else {
-            if (! this.audiotag.isEqualNode(document.CPU.last_used)) {
+            if (! this.audiotag.isEqualNode(previous_audiotag)) {
                 this.container.classList.remove(hide_panels_except_play_mark);
             }
         }
