@@ -433,6 +433,7 @@ aside.borders a:after {
 }
 h6 {
     text-align : center;
+    font-size : smaller;
 }
 
 .cue {
