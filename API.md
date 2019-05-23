@@ -1,7 +1,7 @@
 API
 ===
 
-cpu-audio.js can be used only with HTML attributes and CSS variables, but javascript savvy developers can use API features to get a more precise control.
+cpu-audio.js can be used only with HTML attributes and CSS variables, but javascript-savvy developers can use API features to get more precise controls or extend possibilities.
 
 
 document.body.CPU
@@ -57,7 +57,7 @@ SecondsInPaddledColonTime(int) | string  | Same as `SecondsInColonTime`, but sui
 CpuAudioElement.CPU and CpuControllerElement.CPU
 ------------------------------------------------
 
-Note that `CpuAudioElement.CPU` and `CpuControllerElement.CPU` have the same CPU object, with same methods and properties
+Note that `CpuAudioElement.CPU` and `CpuControllerElement.CPU` share the same CPU object, with same methods and properties, except those noted (¹) below.
 
 
 Properties :
@@ -77,26 +77,24 @@ set_mode_container(string)                   |         | Change the presentation
 set_act_container(string)                    |         | Change the presentation style between `'loading'`, `'pause'` or `'play'`, reflecting the media tag status
 set_hide_container(array)                    |         | Array of strings, may contains `'actions'` or `'chapters'`, [used for `hide=""` attribute](./INSTALL#attributes-references)
 show_throbber_at(int)                        |         | Display the throbber on the timeline at a given time in seconds.
-hide_throbber()                              |         | Hide immediately the throbber.
-hide_throbber_later()                        |         | Hide the throbber later (waiting 1 seconds). A newer call will delay later. News at 11.
+hide_throbber()                              |         | Hide immediately the throbber
+hide_throbber_later()                        |         | Hide the throbber later (waiting 1 seconds). A newer call will delay later. News at 11
 show_interface(string)                       |         | Switch between `'main'`, `'share'` or `'error'` interfaces.
 build_chapters()                             |         | Rebuild chapters list and time-line.
 build_playlist()                             |         | Rebuild playlist. Should only be used  for `<cpu-controller>`
-add_plane(plane, title, data)                | boolean | Create an annotation plane.
-remove_plane(name)                           | boolean | Remove an annotation plane
-add_point(plane, timecode, point, data)      | boolean | Add an annotation point to a plane at a timecode.
-remove_point(plane, point)                   | boolean | Remove an annotation point
-clear_plane(plane)                           |         | Remove any points from an annotation plane
+add_plane(plane, title, data)                | boolean | Create an annotation plane (¹)(²)(³)
+remove_plane(plane)                          | boolean | Remove an annotation plane (¹)(²)
+add_point(plane, timecode, point, data)      | boolean | Add an annotation point to a plane at a timecode (¹)(²)(⁴)
+remove_point(plane, point)                   | boolean | Remove an annotation point (¹)(²)
+clear_plane(plane)                           |         | Remove any points from an annotation plane (¹)(²)
 redraw_all_planes()                          |         | Redraw any annotation planes and points
-highlight_point(plane, point, class, mirror) |         | Highlight a perticuliar annotation point, class is `with-preview` by default
-remove_highlights_points(class, mirror)      |         | Remove any highlights on any points, class is `with-preview` by default
+highlight_point(plane, point, class, mirror) |         | Highlight a perticuliar annotation point, class is `with-preview` by default (²)
+remove_highlights_points(class, mirror)      |         | Remove any highlights on any points, class is `with-preview` by default (²)
 
 
-`plane`, `point` and `class` accepts only alphanum (`/a-zA-Z0-9\_\-/`)
-
-Data structures for annotations :
-
-plane data :
+(¹) Only available via `CpuAudioElement.CPU`
+(²) `plane`, `point` and `class` accepts only alphanum (`/a-zA-Z0-9\_\-/`)
+(³) `data` is an object, with detailled keys for planes :
 
 key         | type              | default value | usage
 ------------|-------------------|---------------|-------
@@ -104,7 +102,7 @@ track       | boolean or string | `true`        | Create a track in the time lin
 panel       | boolean or string | `true`        | Create a panel under the player, or precise presentation restriction (`nosmall`, `nosmaller`, `nosmallest`)
 highlight   | boolean           | `true`        | Points of this annotation plane can be highlighted with the mouse
 
-points data :
+(⁴) `data` is an object, with detailled keys for points :
 
 key         | type              | default value | usage
 ------------|-------------------|---------------|-------
@@ -112,6 +110,7 @@ image       | boolean or string | `false`       | Add an image
 link        | boolean or string | `true`        | Points to this moment, or elsewhere (any URL)
 text        | string            |               | Legend
 end         | float             |               | The anotation point ends at this timecode
+
 
 Console messages
 ----------------
