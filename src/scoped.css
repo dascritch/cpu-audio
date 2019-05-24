@@ -320,7 +320,7 @@ aside.ticker a.active-cue {
     color : inherit !important; /* I know */
 }
 
-aside a.active-cue span {
+aside.ticker a.active-cue span {
     display : inline-block;
 }
 

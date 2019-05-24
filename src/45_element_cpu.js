@@ -1108,8 +1108,8 @@ let CPU_element_api = class {
                             (tracks.kind.toLowerCase() === 'chapters') &&
                             (tracks.cues !== null) /*&&
                             (!Object.is(self._chaptertracks, tracks))*/) {
-                                // self.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
-                                self.add_plane(plane_name, __['chapters'], {'track' : 'ticker'});
+                                self.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
+                                // self.add_plane(plane_name, __['chapters'], {'track' : 'ticker'});
                                 self.clear_plane(plane_name);
                                 _build_from_track(tracks)
                         }
