@@ -793,6 +793,7 @@ let CPU_element_api = class {
             if (data['image']) {
                 inner = `<img src="${data['image']}" alt="">`;
             }
+            inner += `<span>${data['text']}</span>`;
             point_element.innerHTML = inner;
 
             track.appendChild(point_element);
@@ -1107,7 +1108,8 @@ let CPU_element_api = class {
                             (tracks.kind.toLowerCase() === 'chapters') &&
                             (tracks.cues !== null) /*&&
                             (!Object.is(self._chaptertracks, tracks))*/) {
-                                self.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
+                                // self.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
+                                self.add_plane(plane_name, __['chapters'], {'track' : 'ticker'});
                                 self.clear_plane(plane_name);
                                 _build_from_track(tracks)
                         }

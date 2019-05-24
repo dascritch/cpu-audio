@@ -26,6 +26,10 @@
                 opacity var(--cpu-background-transitions);
 }
 
+b, strong, i, em, span {
+    font-size : inherit;
+}
+
 main {
     display : flex;
     overflow : hidden;
@@ -250,7 +254,13 @@ aside {
 aside a {
     position : absolute;
     display : block;
+    font-size: smaller;
 }
+
+aside a span {
+    display : none;
+}
+
 
 aside.chapters {
     height : 2px;
@@ -296,6 +306,22 @@ aside.borders a:before {
 aside.borders a:after {
     border-left-width: 0px;
     left : 100%;
+}
+
+aside.ticker {
+    height : 16px;
+    top : 30px; /* var(--cpu-timeline-height) + var(--cpu-font-size) - diff-small */
+}
+
+aside.ticker a.active-cue {
+    left : 0px !important;
+    right : 0px !important;
+    background : inherit !important;
+    color : inherit !important; /* I know */
+}
+
+aside a.active-cue span {
+    display : inline-block;
 }
 
 .with-preview {
@@ -510,6 +536,10 @@ h6 {
     
     #handheld-nav {
         padding-bottom: 4px;
+    }
+
+    aside.ticker {
+        top: 22px;
     }
 
 }
