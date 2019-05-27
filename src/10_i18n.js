@@ -38,7 +38,7 @@ const sources_i18n = {
         'share' : 'Share',
         'twitter' : 'Share on Twitter',
         'facebook' : 'Share on Facebook',
-        'e-mail' : 'Share via e-mail',
+        'e_mail' : 'Share via e-mail',
         'download' : 'Download',
         'back' : 'Back',
 
