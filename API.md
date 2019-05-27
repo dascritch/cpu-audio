@@ -93,7 +93,9 @@ remove_highlights_points(class, mirror)      |         | Remove any highlights o
 
 
 (¹) Only available via `CpuAudioElement.CPU`
-(²) `plane`, `point` and `class` accepts only alphanum (`/a-zA-Z0-9\_\-/`)
+
+(²) `plane`, `point` and `class` accepts only alphanum (`/a-zA-Z0-9\_\-/`). Planes starting with a `_` are reserved for system usage, try avoid creating one or messing too much with them.
+
 (³) `data` is an object, with detailled keys for planes :
 
 key         | type              | default value | usage
