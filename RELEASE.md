@@ -17,6 +17,8 @@ New features
  * Can avoid to [not force preloading metadata](#70) and indicates an estimation instead.
  * Panels (chapters and playlist) have a hide-able title.
  * [Translating specific VTT markup into HTML tags](#59)
+ * Automatic small font size, parametrable
+
 
 Corrections
 -----------

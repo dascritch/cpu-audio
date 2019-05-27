@@ -9,6 +9,7 @@ audio[controls] {
     --cpu-height : 64px;
     --cpu-font-family : Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
     --cpu-font-size : 15px;
+    --cpu-font-small-size : calc(var(--cpu-font-size) * 0.8);
     --cpu-background : #555;
     --cpu-color : #ddd;
     --cpu-playing-background : #444;

@@ -201,6 +201,12 @@
                 <td colspan="2"><input name="css_font-size[2]" type="text" value="" /></td>
             </tr>
             <tr>
+                <th scope="row" colspan="2">Font small size</th>
+                <td colspan="2"><input name="css_font-small-size[0]" type="text" value="12px" /></td>
+                <td colspan="2"><input name="css_font-small-size[1]" type="text" value="10.4px" /></td>
+                <td colspan="2"><input name="css_font-small-size[2]" type="text" value="" /></td>
+            </tr>
+            <tr>
                 <th scope="row" colspan="2">Height and width of the square buttons</th>
                 <td colspan="2"><input name="css_height[0]" type="text" value="64px" /></td>
                 <td colspan="2"><input name="css_height[1]" type="text" value="32px" /></td>
@@ -331,7 +337,7 @@ function configurator_css(event) {
 
     for (let level of ['0', '1', '2']) {
         let rules_breakpoint = '';
-        for(let attr of ['elapse-width', 'font-size', 'height']) {
+        for(let attr of ['elapse-width', 'font-size', 'font-small-size', 'height']) {
             let element = form_css.querySelector(`[name="css_${attr}[${level}]"]`);
             let value = element.value;
             if ((input_changed(element)) && (value !== '')) {

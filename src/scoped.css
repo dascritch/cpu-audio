@@ -254,7 +254,6 @@ aside {
 aside a {
     position : absolute;
     display : block;
-    font-size: smaller;
 }
 
 aside a span {
@@ -459,7 +458,6 @@ aside.ticker a.active-cue span {
 }
 h6 {
     text-align : center;
-    font-size : smaller;
 }
 
 .cue {
@@ -480,9 +478,12 @@ h6 {
 .cue time {
     flex : 0 0 var(--cpu-elapse-width) 0px;
     text-align : right;
-    font-size : smaller;
 }
 
+aside a, h6, .cue time
+{
+    font-size : var(--cpu-font-small-size);
+}
 
 .mode-compact {
     width : calc(var(--cpu-elapse-width) + var(--cpu-height) * 2 + 32px);
