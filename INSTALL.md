@@ -9,7 +9,8 @@ Call it in the `<head>` of your html page :
 <script src="./cpu-audio.js" async></script>
 ```
 
-Do not forget to add a `lang=""` attribute in the hosting `<html>` tag. Elsewhere, the component will try to guess user's language via the browser preferences.
+Do not forget to add a `lang=""` attribute in the hosting `<html>` tag. Elsewhere, the component will try to guess user's language via the browser preferences. Actual version only have english and french locales, [may be can you help us ?](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
+
 
 Invoking element
 ----------------
@@ -50,8 +51,8 @@ Attributes references
 Some attributes enhance the component :
 
 * `title="<string>"` : title of the sound ;
-* `poster="<url>"` : cover image, squared ratio recommended ;
-* `waveform="<url>"` : waveform image, will be displayed in the timeline ;
+* `poster="<url>"` : cover image, squared ratio recommended, only in `default` and `compact` modes ;
+* `waveform="<url>"` : waveform image, will be displayed in the timeline, only in `default` mode ;
 * `canonical="<url>"` : link to the original page of the sound ; 
 * `mode="<string>"` : kind of presentation :
     * `default` : player with poster, timeline and chapters list,
@@ -67,7 +68,7 @@ Some attributes enhance the component :
     * `panels-title` : titles of the panels,
     * `panels-except-play` : any panels, except when the module is playing a media (do not use with `panels`) ;
 * `playlist="<string>"` : add this media in a named playlist, play the next one when ended ;
-* `duration="<seconds|coloncoded|humanreadable>"` : force displayed duration instead to load it from the media resource before playing (add a `preload="none"` attribute to the `<audio>` tag);
+* `duration="<seconds|coloncoded|humanreadable>"` : force displayed duration instead to load it from the media resource before playing (add a `preload="none"` attribute to the `<audio>` tag) ;
 * `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page).
 
 
@@ -116,11 +117,11 @@ You can add a chapters track into the `<audio control>` tag :
 <track kind="chapters" src="chapters.vtt" default />
 ```
 
-Note that `default` attribute **is really needed**.
+Note that `default` attribute **is really needed**. In case you've got more than one `<track kind="chapters" default>` declared in a `<audio>` tag, only the very first one will be interpreted by the browser (blocking us to catch the one according to its `srclang=""` [see #69](#69) )
 
-The chapter list will only appears with `mode="default"` settings in `<cpu-audio>`.
+You can create VTT files with [our online editor](https://dascritch.github.io/cpu-audio/LIVE).
 
-You can create the VTT file with [our online editor](https://dascritch.github.io/cpu-audio/LIVE).
+**Note** : The chapters info will only appears with `mode="default"` settings in `<cpu-audio>`.
 
 
 Personnalization via CSS variables
@@ -145,6 +146,8 @@ Variable name               | Description                                       
 `--cpu-playing-color`       | Color while playing                               | `#fff`
 `--cpu-popup-background`    | Background for the time pointer                   | `#aaa`
 `--cpu-popup-color`         | Text color for the time pointer                   | `#333`
+
+Some color/background values are not recommended, as `currentColor` and `transparent`.
 
 
 Using classes on host page
@@ -187,11 +190,11 @@ Here is an example :
 
 The `<audio id="audiotag_id">` has its `<track kind="chapters">` decoded and displayed. 
 
-Be aware that this class wil be set even if the chapters list is set to be hidden.
+**Note** : This class will be set even if the chapters list is set to be hidden.
 
 ### `.cpu_playing_tag_«audiotag_id»_cue_«cue_id»`
 
-The `<audio id="audiotag_id">` is actually playing the `cue_id` chapter. The `cue_id` is the chapter name described in the .VTT file in its `<track kind="chapters">` . 
+The `<audio id="audiotag_id">` is actually playing the `cue_id` chapter. The `cue_id` is the cue (chapter) name described in the .VTT file in its `<track kind="chapters">` . 
 
 This function was meant to build effects as in [BBC Computer Literacy archive](https://computer-literacy-project.pilots.bbcconnectedstudio.co.uk/) : During a play of a show, each chapter is highlighting its text resumee.
 

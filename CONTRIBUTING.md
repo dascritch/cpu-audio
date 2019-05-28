@@ -4,7 +4,7 @@ If you are not a developer
 - My english is a pity. You may help me to correct it.
 - You may test on some platforms. Mainly MacOS, iOS and Edge; and see some problems when comparing to Firefox or Chrome.
 - You can re-read my doc, and ask me some precisions.
-- You may be have a disability and you're using some accessibility tools… You're super useful ! I surely missed something important for you.
+- You may be have a disability and you're using some accessibility tools… You're super useful ! For sure, I missed something important for you.
 - Perhaps you can help me on the design or the logos.
 - Install in your own website, test, note the bugs, [report them in the issues section of the repo](https://github.com/dascritch/cpu-audio/issues). If you're not enough GitHub savvy, you can [write me via this page](https://cpu.dascritch.net/pages/CPU-Audio-Player)
 
@@ -27,22 +27,24 @@ As I'm not perfect, some tests were written for non-regressions, conformity and 
  * [Browser compliance, feature detections and implementation tests](./tests-browser.html)
  * [Minimum services available even without webcomponent part, as hash links](./tests-minimal.html)
  * [Graphic interface and webcomponents-dependant features](./tests-interface.html)
+ * [API method names](./tests-api.html)
 
 
 Hygiene
 -------
 
 - Always prefer any W3C standards instead of create something.
-- Think about clean code, small parts, expressive variables and functions
-- Try to write a test, even for the UI. I know, the last part is hard, but it helps so much
-- Categorize the tests
+- Think about clean code, small parts, expressive variables and functions.
+- Try to write a test, even for the UI. I know, the last part is hard, but it helps so much.
+- Categorize the tests.
+- If you add parameters, attributes, CSS variables,… keep the web component able to run without.
 - Document everything, even dead-ends. Someone can find interestings your regrets.
 
 
 Development
 -----------
 
-To make the `dist/` files, use `./make.sh`
+To make the `dist/` files, run `./make.sh`
 
 You will need :
 - sed
