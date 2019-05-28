@@ -1100,6 +1100,8 @@ let CPU_element_api = class {
             } else {
 
                 if ((audiotag.textTracks) && (audiotag.textTracks.length > 0)) {
+                    let chapter_track = null;
+
                     for (let tracks of audiotag.textTracks) {
                         // TODO : we have here a singular problem : how to NOT rebuild the chapter lists, being sure to have the SAME cues and they are loaded, as we may have FOUR builds.
                         // Those multiple repaint events doesn't seem to have so much impact, but they are awful, unwanted and MAY have an impact
@@ -1107,13 +1109,18 @@ let CPU_element_api = class {
                         // AND clean up the chapter list if a new chapter list is loaded and really empty
                         if (
                             (tracks.kind.toLowerCase() === 'chapters') &&
-                            (tracks.cues !== null) /*&&
-                            (!Object.is(self._chaptertracks, tracks))*/) {
-                                self.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
-                                //self.add_plane(plane_name, __['chapters'], {'track' : 'ticker'});
-                                self.clear_plane(plane_name);
-                                _build_from_track(tracks)
+                            (tracks.cues !== null) &&  // linked to default="" attribute, only one per set !
+                            ( (chapter_track === null) /* still no active track */ || (tracks.language.toLowerCase() === prefered_language) /* correspond to <html lang> */ )
+                                ) {
+                            chapter_track = tracks;
                         }
+                    }
+
+                    if (chapter_track) {
+                        self.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
+                        //self.add_plane(plane_name, __['chapters'], {'track' : 'ticker'});
+                        self.clear_plane(plane_name);
+                        _build_from_track(chapter_track)
                     }
                 }
             }
