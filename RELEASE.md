@@ -32,6 +32,7 @@ Corrections
  * Texts in chapters panel [should not accept embeded links](#59)
  * Boxed playing (with a end timecode) now uses [annotations API](#57).
  * DOM and CSS cleanups.
+ * A11y corrections in `<svg>` tags
  * Regression in CSS, mainly on playing mode
  * Graphic corrections on the alternative handheld navigation : buttons are centered, some are skiped on smallest screens.
  * Buttons in alternative handheld navigation now support longpresses for repeat action.
@@ -39,6 +40,7 @@ Corrections
  * Chapters live editor don't use anymore `<input type="time">` as [it is not a duration input, nor correctly working in 12-hours locale](#63) à la Américaine Way
  * Media title is now in bold
  * Time position indication in panels is now smaller than text, to distinguish them when they are closer
+ * Download button should trigger download, not a new page
 
 
 Back-end

@@ -118,6 +118,7 @@ Participate
 Versions
 --------
 
+* June 2019 : 6 , plane and points, public API stabilization
 * April 2018 : 5 , [forking to cpu-audio, WebComponent version](https://github.com/dascritch/ondemiroir-audio-tag/issues/7#issuecomment-382043789)
 * August 2017 : 4 , i18n, modularization, clone
 * August 2015 : 3 , forking to ondemiroir-audio-tag, for launching [CPU radio show](http://cpu.pm)

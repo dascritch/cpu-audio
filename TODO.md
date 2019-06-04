@@ -7,11 +7,6 @@ Bugs
 * A media error is not correctly triggered and unseen from its  `<cpu-audio>`. Chrome needs to be asked to go inside (click on the timeline), Firefox never gets it.
 * Firefox versions 63 and upper seems to still have a focus trap into the WebComponent
 
-Resolved standards issues
--------------------------
-
-* [Middle click on canonical not working on Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1476302)
-* [Key browsing focus is trapped inside the webcomponent on Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1476301)
 
 Planned evolutions
 ------------------
@@ -29,17 +24,13 @@ Planned evolutions
     - [ ] wordpress
 - [ ] `<video>` support
 - [ ] `<track>` support for subtitles 
+	- [ ] better `srclang=""` support
 - [ ] [Put a soundwave form image alongside the timeline, server precalculated](https://github.com/dascritch/cpu-audio/issues/6)
 - [ ] Sharing service companion
     - [ ] [Create a real playlist service](https://github.com/dascritch/cpu-audio/issues/8)
     - [ ] [Supporting annotations à la SoundCloud](https://github.com/dascritch/cpu-audio/issues/10)
 - [ ] [Prepare design and key bindings for RTL localizations](https://github.com/dascritch/cpu-audio/issues/26)
+- [ ] Finish `ticker` plane track mode
 
-
-Retired functions from v4
--------------------------
-
-- offline cross-sites playlist
-- ability to use another format than `&t=`
 
 <!-- {% include footer.html %} -->
