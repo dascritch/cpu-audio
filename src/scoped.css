@@ -1,3 +1,13 @@
+.act-play {
+    --cpu-background : var(--cpu-playing-background);
+    --cpu-color : var(--cpu-playing-color);
+}
+
+.show-error {
+    --cpu-background : var(--cpu-error-background);
+    --cpu-color : var(--cpu-error-color);
+}
+
 #interface {
     --cpu-timeline-height : 10px;
     /* transition : width var(--cpu-unfold); */
@@ -36,11 +46,6 @@ main {
     height : var(--cpu-height);
 }
 
-.act-error {
-    background : var(--cpu-error-background);
-    color : var(--cpu-error-color);
-}
-
 a, button {
     color : currentColor;
     border : none;
@@ -68,20 +73,6 @@ b, strong, h5 a {
     font-weight: bold;
 }
 
-#interface.act-play, .act-play button , .act-play #playlist, .act-play .panel {
-    background : var(--cpu-playing-background);
-    color : var(--cpu-playing-color);
-}
-
-.act-play a:hover, .act-play a:focus , .act-play button:hover, .act-play button:focus {
-    color : var(--cpu-playing-background);
-    background : var(--cpu-playing-color);
-}
-
-.show-error main {
-    background : var(--cpu-error-background);
-    color : var(--cpu-error-color);
-}
 
 #pageerror {
     padding: 0px 4px;
@@ -232,7 +223,7 @@ a {
     width : 0px;
     height : var(--cpu-timeline-height);
     display : block;
-    outline : var(--cpu-playing-color) 4px solid;
+    outline : var(--cpu-color) 4px solid;
     z-index : 127;
     opacity : 0; 
 }
