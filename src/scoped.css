@@ -440,8 +440,6 @@ aside.ticker a.active-cue span {
 
 .panel {
     display : flex;
-    background : var(--cpu-background);
-    color : var(--cpu-color);
     list-style: none;
     flex-direction: column; 
     padding : 0 var(--cpu-min-padding);
