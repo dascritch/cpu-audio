@@ -52,7 +52,7 @@ a, button {
     text-decoration : none;
 }
 button {
-    background : var(--cpu-background);
+    background : transparent;
 }
 
 svg {
