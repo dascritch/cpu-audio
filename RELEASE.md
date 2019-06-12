@@ -12,6 +12,7 @@ Corrections
 
  * Strange behaviour with `nth-child` into CSS prevented 3rd `<circle>` to blink correctly
  * Optimized CSS styles
+ * Waiting line with a more convenient graphic glitch [#61](#61)
 
 
 Back-end
