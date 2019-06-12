@@ -320,11 +320,12 @@ aside.ticker a.active-cue span {
 }
 
 .act-loading #loadingline {
-    background : #fff7 url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='black' fill-opacity='0.5' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
-    animation: loadingline 500ms linear infinite;
+    background : repeating-linear-gradient(45deg, var(--cpu-color) 0, var(--cpu-background) 15px, var(--cpu-color) 30px);
+      background-size: 200% 200%;
+    animation: loadingline 1s linear infinite;
 }
 @keyframes loadingline {
-  0% { background-position-x : -40px; }
+  0% { background-position-y : var(--cpu-timeline-height); }
 }
 
 #handheld-nav {
