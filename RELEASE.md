@@ -14,7 +14,8 @@ Corrections
  * Optimized CSS styles
  * Waiting line with a more convenient graphic glitch [#61](#61)
  * Better, but more verbose, svg icon for share, via [Icons8](https://icons8.com/icons/set/share)
-
+ * Removing again poster in chapter editor (parameters are space separated instead of previously comma separated) 
+  
 
 Back-end
 --------
