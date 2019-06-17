@@ -23,7 +23,7 @@ Some links :
     * [Live configuration](https://dascritch.github.io/cpu-audio/LIVE)
 * [JS installable code](https://dascritch.github.io/cpu-audio/dist/cpu-audio.js) 
 * [Code repository](https://github.com/dascritch/cpu-audio/), [Latest stable release](https://github.com/dascritch/cpu-audio/releases/latest)
-* Informations (in french) : [Reconstruire son lecteur audio pour le web](https://dascritch.net/post/2018/11/06/Reconstruire-son-lecteur-audio-pour-le-web)
+* Blog posts about its creation and development : [Série cpu-audio sur dascritch.net](https://dascritch.net/serie/cpu-audio)
 * Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 * [How to participate to this project](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
 
