@@ -41,6 +41,10 @@ window.addEventListener('load', function() {
 		// those public values are assumed to have a constant name
 		let expected = {
 		    'keymove' : 5,
+		    'alternate_delay' : 500,
+		    'fast_factor' : 4,
+		    'repeat_delay' : 400,
+		    'repeat_factor' : 100,
 		    'only_play_one_audiotag' : true,
 		    'current_audiotag_playing' : null,
 		    'global_controller' : null,
@@ -101,7 +105,15 @@ window.addEventListener('load', function() {
 			'hide_throbber_later',
 			'show_interface',
 			'build_chapters',
-			'build_playlist'
+			'build_playlist',
+			'add_plane',
+			'remove_plane',
+			'add_point',
+			'remove_point',
+			'clear_plane',
+			'redraw_all_planes',
+			'highlight_point',
+			'remove_highlights_points'
 		];
 		for(let name of expected) {
 			assert.equal(typeof cpuaudio_tag.CPU[name] , 'function', `CpuAudioElement.CPU.${name} method is still a function`);
