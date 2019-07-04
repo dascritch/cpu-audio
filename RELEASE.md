@@ -1,4 +1,4 @@
-RELEASE NOTES Version 6.1
+RELEASE NOTES Version 6.2
 =========================
 
 New features
@@ -10,17 +10,13 @@ Nothing
 Corrections
 -----------
 
- * Strange behaviour with `nth-child` into CSS prevented 3rd `<circle>` to blink correctly
- * Optimized CSS styles
- * Waiting line with a more convenient graphic glitch [#61](#61)
- * Better, but more verbose, svg icon for share, via [Icons8](https://icons8.com/icons/set/share)
- * Removing again poster in chapter editor (parameters are space separated instead of previously comma separated) 
-  
+Nothing
+
 
 Back-end
 --------
 
-Nothing
+ * Code converted back to tabs, [this is a real accessibility issue](https://www.reddit.com/r/javascript/comments/c8drjo/nobody_talks_about_the_real_reason_to_use_tabs/)
 
 
 Making of

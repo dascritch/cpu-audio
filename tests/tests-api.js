@@ -40,16 +40,16 @@ window.addEventListener('load', function() {
 	QUnit.test( "Public API document.CPU default properties values", function( assert ) {
 		// those public values are assumed to have a constant name
 		let expected = {
-		    'keymove' : 5,
-		    'alternate_delay' : 500,
-		    'fast_factor' : 4,
-		    'repeat_delay' : 400,
-		    'repeat_factor' : 100,
-		    'only_play_one_audiotag' : true,
-		    'current_audiotag_playing' : null,
-		    'global_controller' : null,
-		    'playlists' : {},
-		    'advance_in_playlist' : true
+			'keymove' : 5,
+			'alternate_delay' : 500,
+			'fast_factor' : 4,
+			'repeat_delay' : 400,
+			'repeat_factor' : 100,
+			'only_play_one_audiotag' : true,
+			'current_audiotag_playing' : null,
+			'global_controller' : null,
+			'playlists' : {},
+			'advance_in_playlist' : true
 		};
 		for(let key in expected) {
 			let expected_prop = document.CPU[key];
@@ -86,7 +86,7 @@ window.addEventListener('load', function() {
 		let expected = [
 			'element', 
 			'elements',
-		    'audiotag'
+			'audiotag'
 		];
 		for(let key of expected) {
 			let expected_prop = cpuaudio_tag.CPU[key];
