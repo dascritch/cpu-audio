@@ -179,10 +179,6 @@ let CPU_element_api = class {
 			this.remove_plane(plane);
 			return;
 		}
-		if (this.get_plane(plane)) {
-			// this.draw_plane(plane); /// bancal, ya surement mieux
-			return;
-		}
 		this.add_plane(plane,'',{ 
 			track   : 'borders',
 			panel   : false,
@@ -281,7 +277,7 @@ let CPU_element_api = class {
 	//
 	// @public
 	//
-	// @param      {object}  that    "this" callback
+	// @param      {Object}  that    "this" callback
 	//
 	hide_throbber(that) {
 		that = that === undefined ? this : that;
@@ -307,7 +303,7 @@ let CPU_element_api = class {
 	//
 	// @private
 	//
-	// @return     {object}  dataset
+	// @return     {Object}  dataset
 	//
 	fetch_audiotag_dataset() {
 		let dataset = {} 
@@ -377,7 +373,7 @@ let CPU_element_api = class {
 	// @brief Shows the sharing panel, 
 	//
 	// @private
-	// @param      {object}  event   The event
+	// @param      {Object}  event   The event
 	//
 	show_actions(event) {
 		let container = (event !== undefined) ?
@@ -391,7 +387,7 @@ let CPU_element_api = class {
 	//
 	// @private
 	//
-	// @param      {object}  event   The event
+	// @param      {Object}  event   The event
 	//
 	show_main(event = undefined) {
 		let container = (event !== undefined) ?
@@ -404,7 +400,7 @@ let CPU_element_api = class {
 	//
 	// @brief Shows the handheld fine navigation.
 	//
-	// @param      {object}  event   The event
+	// @param      {Object}  event   The event
 	//
 	show_handheld_nav(event) {
 		let container = (event !== undefined) ?
@@ -448,7 +444,7 @@ let CPU_element_api = class {
 	// @brief Attach the audiotag to the API
 	// @private
 	//
-	// @param      {object}  audiotag  The audiotag
+	// @param      {Object}  audiotag  The audiotag
 	//
 	attach_audiotag_to_controller(audiotag) {
 		if (!audiotag) {
@@ -469,7 +465,7 @@ let CPU_element_api = class {
 	 * @private
 	 *
 	 * @param      {string}  plane_name     The name
-	 * @return     {object}                 data of the plane
+	 * @return     {Object}                 data of the plane
 	 */
 	get_plane(plane_name) {
 		return this.audiotag._CPU_planes[plane_name];
@@ -513,7 +509,7 @@ let CPU_element_api = class {
 	 * Draws a plane
 	 * @private
 	 *
-	 * @param      {object}  plane_name  The plane name
+	 * @param      {Object}  plane_name  The plane name
 	 */
 	draw_plane(plane_name) {
 		let plane_track = this.get_plane_track(plane_name);
@@ -583,7 +579,7 @@ let CPU_element_api = class {
 	//
 	// @param      {string}  plane_name     A name in the range /[a-zA-Z0-9\-_]+/
 	// @param      {string}  title          The displayed title for the panel
-	// @param      {object}  data           { track : true/false/classname , panel : true/false/classname , highlight : true/false }
+	// @param      {Object}  data           { track : true/false/classname , panel : true/false/classname , highlight : true/false }
 	// 
 	// @return     {boolean} success
 	//
@@ -673,7 +669,7 @@ let CPU_element_api = class {
 	 *
 	 * @param      {string}  plane_name  The plane name
 	 * @param      {string}  point_name  The point name
-	 * @return     {object}  Data
+	 * @return     {Object}  Data
 	 */
 	get_point(plane_name, point_name) {
 		return this.audiotag._CPU_planes[plane_name].points[point_name];
@@ -758,8 +754,8 @@ let CPU_element_api = class {
 	 * Draws a plane point
 	 * @private
 	 *
-	 * @param      {object}  plane_name  The plane name
-	 * @param      {object}  point_name  The point name
+	 * @param      {string}  plane_name  The plane name
+	 * @param      {string}  point_name  The point name
 	 */
 	draw_point(plane_name, point_name) {
 		let plane_point_panel = this.get_point_panel(plane_name, point_name);
@@ -807,7 +803,6 @@ let CPU_element_api = class {
 		
 		if (panel) {
 			let li = document.createElement('li');
-			// li.id = intended_panel_id;
 						
 			let inner = '';
 			if (data['text']) {
@@ -845,10 +840,10 @@ let CPU_element_api = class {
 	// @brief Add an annotation
 	// @public
 	//
-	// @param      {string}  plane_name      The existing plane name
-	// @param      {number}  timecode_start  The timecode start for this annotation
-	// @param      {<string} point_name      The point name, in the range /[a-zA-Z0-9\-_]+/
-	// @param      {object}  data            object : { 'image' : <url>, 'link' : <url>/true (in audio/false (none), 'text' : <text>, 'end' : <seconds> }
+	// @param      {string}	plane_name		The existing plane name
+	// @param      {number}	timecode_start	The timecode start for this annotation
+	// @param      {string}	point_name		The point name, in the range /[a-zA-Z0-9\-_]+/
+	// @param      {Object}	data			object : { 'image' : <url>, 'link' : <url>/true (in audio/false (none), 'text' : <text>, 'end' : <seconds> }
 	// 
 	// @return     {boolean} success
 	//                        
@@ -1025,7 +1020,7 @@ let CPU_element_api = class {
 	// @brief Call when a chapter is changed, to trigger the changes
 	// @private
 	//
-	// @param      {object}  event   The event
+	// @param      {Object}  event   The event
 	//
 	_cuechange_event(event) {
 		// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
@@ -1050,9 +1045,10 @@ let CPU_element_api = class {
 	// @brief Builds or refresh chapters interface.
 	// @public
 	//
-	// @param      {object}  event   The event
+	// @param      {Object|undefined}  event   The event
+	// @param      {string|undefined}  _forced_track   Forcing the track to a style
 	//
-	build_chapters(event, _forced_track) {
+	build_chapters(event = undefined, _forced_track = undefined) {
 		if (this.element.tagName === CpuControllerTagName) {
 			// not your job, CPUController
 			return;
