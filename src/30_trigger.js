@@ -227,14 +227,17 @@ const trigger = {
 			trigger._remove_timecode_outofborders(audiotag.currentTime);
 			let promised = audiotag.play();
 			if (promised !== undefined) {
-				promised.then(_ => {
-				  // Automatic playback started!
-				})
-				.catch(error => {
-				  // Auto-play was prevented
+				promised.catch(error => {
+					switch (error.name) {
+						case 'NotAllowedError':
+							warn('Auto-play prevented : Browser requires a manual interaction first.');
+							break;
+						case 'NotSupportedError':
+							error('The browser refuses the audio source, probably due to audio format.');
+							break;
+					}
 				});
 			  }
-
 			// trigger.update({target : audiotag});
 		} catch (e) {
 
