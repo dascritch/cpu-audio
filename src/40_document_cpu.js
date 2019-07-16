@@ -95,7 +95,7 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
 	//
 	// @param      {<type>}  audiotag  The audiotag
 	//
-	recall_audiotag : function(audiotag) {
+	attach_events_audiotag : function(audiotag) {
 		audiotag.addEventListener('loadedmetadata', document.CPU.recall_stored_play);
 		audiotag.addEventListener('play', trigger.play_once);
 		audiotag.addEventListener('ended', trigger.ended);
@@ -136,8 +136,12 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
 	// @param      {<type>}  audiotag  The audiotag
 	//
 	connect_audiotag : function(audiotag) {
+		if (audiotag.CPU_connected) {
+			return;
+		}
+		audiotag.CPU_connected = true;
 
-		document.CPU.recall_audiotag(audiotag);
+		document.CPU.attach_events_audiotag(audiotag);
 
 		// hide native controls
 		audiotag.hidden = true;

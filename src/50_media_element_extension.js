@@ -1,5 +1,7 @@
 // Extension on media element
 
+HTMLAudioElement.prototype.CPU_connected = false;
+
 HTMLAudioElement.prototype.CPU_controller = function() {
 	return this.closest(CpuAudioTagName);
 }
