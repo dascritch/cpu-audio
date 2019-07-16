@@ -8,7 +8,6 @@ const convert = {
 	_is_only_numeric : /^\d+$/,
 	_any_not_numeric : /\D*/g,
 
-
 	/**
 	 * @brief convert a string empty, with a number, with a colon-coded or an
 	 * human-coded timecode in seconds
@@ -26,8 +25,8 @@ const convert = {
 				seconds = Number(givenTime);
 			} else {
 				seconds = (givenTime.indexOf(':') === -1) ? 
-					this.SubunitTimeInSeconds(givenTime) : 
-					this.ColonTimeInSeconds(givenTime) ;
+					convert.SubunitTimeInSeconds(givenTime) : 
+					convert.ColonTimeInSeconds(givenTime) ;
 			}
 		}
 		return seconds;

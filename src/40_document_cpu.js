@@ -1,4 +1,5 @@
-document['CPU'] = document['CPU'] ? document['CPU'] : {
+if (!document.CPU) {
+HTMLDocument.prototype.CPU = {
 	// global object for global API
 
 	// public, parameters
@@ -321,4 +322,5 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
 		return null;
 	}
 
+}
 }

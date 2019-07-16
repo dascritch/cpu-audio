@@ -12,7 +12,7 @@ Corrections
 
  * Tests are now compliant on some [browsers' interaction-first policies](#17)
  * `connect_audiotag()`, renamed `attach_events_audiotag()`, was called to many times
-
+ * Google Closure used in ADVANCED to cleanse code and better annotations
 
 Back-end
 --------

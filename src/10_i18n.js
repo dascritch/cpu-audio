@@ -69,9 +69,7 @@ if ((!prefered_language.length) || (!(prefered_language in sources_i18n))) {
 				languages : 
 				[(navigator.language || navigator.browserLanguage)];
 	let added = false;
-	for (let entry in languages) {
-		// for each entry
-		let line = languages[entry];
+	for (let line of languages) {
 		if (line.split) {
 			// we will only look (yes, this is bad) at the first level xx of any locale xx-YY code
 			let code = line.split('-')[0];

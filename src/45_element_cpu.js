@@ -13,6 +13,9 @@ let CPU_element_api = class {
 		this.audiotag = element._audiotag;
 		this.container = container_interface;
 		this.mode_when_play = null;
+		this.current_playlist = null;
+		this._activecue = null;
+		this.mode_was = null;
 		// record some related data on the <audio> tag, outside the dataset scheme
 		if ( (this.audiotag) && (! this.audiotag._CPU_planes)) {
 			this.audiotag._CPU_planes = {}
@@ -128,9 +131,7 @@ let CPU_element_api = class {
 	// @brief
 	// @private
 	//
-	// @param      {event object}  event   The event
-	//
-	update_time(event) {
+	update_time() {
 		let audiotag = this.audiotag;
 		let timecode = Math.floor(audiotag.currentTime);
 		let canonical = audiotag.dataset.canonical;
@@ -157,14 +158,6 @@ let CPU_element_api = class {
 		let colon_time = convert.SecondsInColonTime(audiotag.currentTime);
 		elapse_element.innerHTML = `${colon_time}<span class="nosmaller">\u00a0/\u00a0${total_duration}</span>`;
 
-		/* see https://github.com/dascritch/cpu-audio/issues/63
-		let inputtime_element = this.elements['inputtime'];
-		// How to check a focused element ? document.activeElement respond the webcomponent tag :/ You must call shadowRoot.activeElement
-		if (!inputtime_element.isEqualNode(this.element.shadowRoot.activeElement)) {
-			inputtime_element.value = convert.SecondsInPaddledColonTime( audiotag.currentTime );  // yes, this SHOULD be in HH:MM:SS format precisely
-		}
-		inputtime_element.max = convert.SecondsInPaddledColonTime(audiotag.duration);
-		*/
 		this.update_line('loading', audiotag.currentTime);
 		this.update_buffered();
 	}
@@ -440,12 +433,12 @@ let CPU_element_api = class {
 		this.elements['poster'].src = dataset.poster === null ? '' : dataset.poster;
 		this.elements['time'].style.backgroundImage = (dataset.waveform === null) ? '' : `url(${dataset.waveform})`;
 	}
-	//
-	// @brief Attach the audiotag to the API
-	// @private
-	//
-	// @param      {Object}  audiotag  The audiotag
-	//
+	/**
+	 * @brief Attach the audiotag to the API
+	 * @package
+	 *
+	 * @param      {Element}  audiotag  The audiotag
+	 */
 	attach_audiotag_to_controller(audiotag) {
 		if (!audiotag) {
 			return;
@@ -476,7 +469,7 @@ let CPU_element_api = class {
 	 * @private
 	 *
 	 * @param      {string}  plane_name   The name
-	 * @return     {HTMLElement}    The <aside> track element from ShadowDom interface
+	 * @return     {Element}    The <aside> track element from ShadowDom interface
 	 */
 	get_plane_track(plane_name) {
 		return this.elements['line'].querySelector(`#track_«${plane_name}»`);
@@ -487,7 +480,7 @@ let CPU_element_api = class {
 	 * @private
 	 *
 	 * @param      {string}  plane_name   The name
-	 * @return     {HTMLElement}    The panel element from ShadowDom interface
+	 * @return     {Element}    The panel element from ShadowDom interface
 	 */
 	get_plane_panel(plane_name) {
 		return this.container.querySelector(`#panel_«${plane_name}»`);
@@ -498,7 +491,7 @@ let CPU_element_api = class {
 	 * @private
 	 *
 	 * @param      {string}  plane_name   The name
-	 * @return     {HTMLElement}    The <nav> element from ShadowDom interface, null if inexisting
+	 * @return     {Element}    The <nav> element from ShadowDom interface, null if inexisting
 	 */
 	get_plane_nav(plane_name) {
 		let panel = this.get_plane_panel(plane_name);
@@ -509,7 +502,7 @@ let CPU_element_api = class {
 	 * Draws a plane
 	 * @private
 	 *
-	 * @param      {Object}  plane_name  The plane name
+	 * @param      {string}  plane_name  The plane name
 	 */
 	draw_plane(plane_name) {
 		let plane_track = this.get_plane_track(plane_name);
@@ -679,8 +672,9 @@ let CPU_element_api = class {
 	 * Gets the point element in the track
 	 * @private
 	 *
-	 * @param      {string}  name   The name
-	 * @return     {HTMLElement}    The <div> point element into <aside> from ShadowDom interface
+	 * @param      {string}  plane_name   The plane
+	 * @param      {string}  point_name   The point
+	 * @return     {Element}    The <div> point element into <aside> from ShadowDom interface
 	 */
 	get_point_track(plane_name, point_name) {
 		return this.elements['line'].querySelector('#' + this.get_point_id(plane_name, point_name, false));
@@ -690,8 +684,9 @@ let CPU_element_api = class {
 	 * Gets the point element in the panel
 	 * @private
 	 *
-	 * @param      {string}  name   The name
-	 * @return     {HTMLElement}    The <li> point element into panel from ShadowDom interface
+	 * @param      {string}  plane_name   The plane
+	 * @param      {string}  point_name   The point
+	 * @return     {Element}    The <li> point element into panel from ShadowDom interface
 	 */
 	get_point_panel(plane_name, point_name) {
 		return this.container.querySelector('#' + this.get_point_id(plane_name, point_name, true));
@@ -892,7 +887,7 @@ let CPU_element_api = class {
 	 * @private
 	 *
 	 * @param      {string}  element_id  The element identifier
-	 * @return     {[string, string]}    An array with two string : plane name and point name.
+	 * @return     {Array<string>}    An array with two strings : plane name and point name.
 	 */
 	get_point_names_from_id(element_id) {
 		let plane_name = element_id.replace(plane_point_names_from_id,'$2');
@@ -987,7 +982,7 @@ let CPU_element_api = class {
 			return;
 		}
 
-		let track_element = this.get_plane_track(plane_name, point_name);
+		let track_element = this.get_plane_track(plane_name);
 		if (track_element) {
 			let point_track = this.get_point_track(plane_name, point_name);
 			if (point_track) {
@@ -995,7 +990,7 @@ let CPU_element_api = class {
 			}
 		}
 
-		let panel_element = this.get_plane_panel(plane_name, point_name);
+		let panel_element = this.get_plane_panel(plane_name);
 		if (panel_element) {
 			let point_panel = this.get_point_panel(plane_name, point_name);
 			if (point_panel) {
@@ -1024,10 +1019,8 @@ let CPU_element_api = class {
 	//
 	_cuechange_event(event) {
 		// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
-
 		// this junk to NOT repaint 4 times the same active chapter
 		try {
-
 			let activecue;
 			activecue = event.target.activeCues[0];
 			if (Object.is(activecue, this._activecue)) {

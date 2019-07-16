@@ -3,8 +3,9 @@
 class CpuControllerElement extends HTMLElement {
 
 	constructor() {
-		// Always call super first in constructor
 		super();
+		/** @public */
+		this.CPU = null;
 
 		if (not_screen_context()) {
 			// I'm not in a screen context, as a braille surface

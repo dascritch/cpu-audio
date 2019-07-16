@@ -21,9 +21,9 @@ const trigger = {
 	 *
 	 * @package
 	 *
-	 * @param      {string|Object}  		hashcode     Called hashcode
-	 * @param      {function|undefined}		callback_fx  When done, call a function to end the tests (optional).
-	 * @return     {boolean}  				understood
+	 * @param      {string|Object}  	hashcode     Called hashcode
+	 * @param      {Function}			callback_fx  When done, call a function to end the tests (optional).
+	 * @return     {boolean}  			understood
 	 */
 	hashOrder : function(hashcode, callback_fx=undefined) {
 
@@ -37,8 +37,7 @@ const trigger = {
 		let segments = hashcode.split('&');
 		let autoplay = false;
 
-		for (let _id in segments) {
-			let parameter = segments[_id];
+		for (let parameter of segments) {
 			if ((parameter.indexOf('=') === -1) && (hash === '')) {
 				// should reference to the ID of the element
 				hash = parameter;
@@ -173,7 +172,7 @@ const trigger = {
 	 * Do pause
 	 *
 	 * @param      {Object}  event     The event
-	 * @param      {HTMLAudioElement}  audiotag  The audiotag
+	 * @param      {Element}  audiotag  The audiotag
 	 */
 	pause : function(event=undefined, audiotag=undefined) {
 		if (audiotag === undefined) {
@@ -206,7 +205,7 @@ const trigger = {
 	 * Do play an audio tag
 	 *
 	 * @param      {Object|undefined}  event     The event
-	 * @param      {HTMLAudioElement|undefined}  audiotag  The audiotag
+	 * @param      {Element|undefined}  audiotag  The audiotag
 	 */
 	play : function(event, audiotag=undefined) {
 		if (audiotag === undefined) {
@@ -237,7 +236,6 @@ const trigger = {
 					}
 				});
 			  }
-			// trigger.update({target : audiotag});
 		} catch (e) {
 
 		}
@@ -247,9 +245,9 @@ const trigger = {
 	 * Interprets pressed key
 	 *
 	 * @param      {Object}  event   The event
-	 * @param      {number}  mult    Multiply the keypressed act
+	 * @param      {number}  mult    Multiply the keypressed act, 1 by default
 	 */
-	key : function(event, mult) {
+	key : function(event, mult=undefined) {
 		mult = mult === undefined ? 1 : mult;
 		let container = document.CPU.find_container(event.target);
 		let audiotag = container.audiotag;
@@ -561,7 +559,7 @@ const trigger = {
 		});
 	},
 
-	_show_alternate_nav : false,
+	_show_alternate_nav : null,
 
 	/**
 	 * Interprets long play on timeline for alternative fine position
@@ -575,7 +573,7 @@ const trigger = {
 	},
 
 	touchcancel : function(event) {
-		clearTimeout(trigger._show_handheld_nav);
+		clearTimeout(trigger._show_alternate_nav);
 	},
 
 }
