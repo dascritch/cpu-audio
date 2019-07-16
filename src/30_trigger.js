@@ -182,7 +182,7 @@ const trigger = {
 		}
 		audiotag.pause();
 		document.CPU.current_audiotag_playing = null;
-		trigger.update({target : audiotag});
+		// trigger.update({target : audiotag});
 		window.localStorage.removeItem(audiotag.currentSrc);
 	},
 
@@ -224,7 +224,7 @@ const trigger = {
 		}
 
 		try {
-			trigger._remove_timecode_outofborders(audiotag.currentTime);            
+			trigger._remove_timecode_outofborders(audiotag.currentTime);
 			audiotag.play();
 			trigger.update({target : audiotag});
 		} catch (e) {
