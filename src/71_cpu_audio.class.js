@@ -2,6 +2,12 @@
 // Controller with assigned audio element
 class CpuAudioElement extends CpuControllerElement {
 
+	constructor() {
+		super();
+		this._audiotag = null;
+
+	}
+
 	copy_attributes_to_media_dataset() {
 		// copying personalized data to audio tag
 		for (let key in document.CPU.default_dataset) {
