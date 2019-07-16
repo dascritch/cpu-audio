@@ -74,6 +74,10 @@ b, strong, h5 a {
 }
 
 
+[src=''] {
+    visibility: hidden;
+}
+
 #pageerror {
 	padding: 0px 4px;
 	align-self: center;
@@ -511,7 +515,7 @@ aside a, h6, .cue time
 	flex : 0 0 auto;
 }
 
-@media (max-width: 640px) , @element #interface and (max-width: 640px) {
+@media (max-width: 640px) /* , @element #interface and (max-width: 640px) */{
 
 	.nosmall {
 		display : none;
@@ -534,7 +538,7 @@ aside a, h6, .cue time
 	}
 
 }
-@media (max-width: 480px) , @element #interface and (max-width: 480px) {
+@media (max-width: 480px)/* , @element #interface and (max-width: 480px) */{
 	.nosmaller {
 		display : none;
 	}
@@ -570,7 +574,7 @@ aside a, h6, .cue time
 	}
 
 }
-@media (max-width: 320px) , @element #interface and (max-width: 320px) {
+@media (max-width: 320px) /*, @element #interface and (max-width: 320px) */ {
 	.mode-default #elapse {
 		display : none;
 	}

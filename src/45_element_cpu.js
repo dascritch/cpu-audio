@@ -441,7 +441,7 @@ let CPU_element_api = class {
 			element_canonical.classList.remove('untitled')
 		}
 		element_canonical.innerText = dataset.title; 
-		this.elements['poster'].src = dataset.poster;
+		this.elements['poster'].src = dataset.poster === null ? '' : dataset.poster;
 		this.elements['time'].style.backgroundImage = (dataset.waveform === null) ? '' : `url(${dataset.waveform})`;
 	}
 	//
