@@ -225,7 +225,16 @@ const trigger = {
 
 		try {
 			trigger._remove_timecode_outofborders(audiotag.currentTime);
-			audiotag.play();
+			let promised = audiotag.play();
+			if (promised !== undefined) {
+				promised.then(_ => {
+				  // Automatic playback started!
+				})
+				.catch(error => {
+				  // Auto-play was prevented
+				});
+			  }
+
 			// trigger.update({target : audiotag});
 		} catch (e) {
 
