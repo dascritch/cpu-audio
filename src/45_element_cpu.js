@@ -1188,8 +1188,6 @@ let CPU_element_api = class {
 	//
 	build_controller() {
 
-		this.element.classList.add(this.classname);
-
 		// the following mess is to simplify sub-element declaration and selection
 		let controller = this;
 		querySelector_apply('[id]', function (element) {
