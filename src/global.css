@@ -28,7 +28,7 @@ audio[controls] {
 
 /* If css element queries not available, fallback to media queries */
 
-@media (max-width: 640px) , @element .interface and (max-width: 640px) {
+@media (max-width: 640px) /*, @element .interface and (max-width: 640px) */ {
 	:root , .interface {
 		--cpu-font-size : 13px;
 		--cpu-height : 48px;
@@ -36,7 +36,7 @@ audio[controls] {
 		--cpu-min-padding : 4px;
 	}
 
-@media (max-width: 480px) , @element .interface and (max-width: 480px) {
+@media (max-width: 480px) /*, @element .interface and (max-width: 480px) */ {
 	:root , .interface {
 		--cpu-elapse-width : 70px;
 	}
