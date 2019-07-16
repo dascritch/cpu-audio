@@ -196,12 +196,12 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
 			let secs = convert.TimeInSeconds(timecode);
 			document.CPU.seekElementAt(audiotag, secs);
 
-			if (audiotag.readyState >= audiotag.HAVE_FUTURE_DATA)  {
-				do_element_play({ target : audiotag });
+			if (audiotag.readyState >= audiotag.HAVE_FUTURE_DATA) {
+				do_element_play({'target' : audiotag });
 			} else {
 				audiotag.addEventListener('canplay', do_element_play, true);
 			}
-			trigger.update({target : audiotag});
+			trigger.update({'target' : audiotag});
 		}
 
 		function do_element_play(event) {
@@ -224,10 +224,10 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
 		if (audiotag.readyState < audiotag.HAVE_CURRENT_DATA ) {
 			audiotag.addEventListener('loadedmetadata', do_needle_move , true);
 			audiotag.load();
+			trigger.update({'target' : audiotag});
 		} else {
 			do_needle_move({'target' : audiotag});
 		}
-		trigger.update({'target' : audiotag});
 		return true
 	},
 	// @public
