@@ -30,7 +30,7 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
 	'convert' : convert, 
 	'trigger' : trigger,
 
-	// @private, not enough mature
+	// @package, not enough mature
 	// NOTE : we will need to refresh this when the <head> of the host page changes
 	default_dataset : {
 		'title' : function () { 
@@ -73,9 +73,9 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
 
 	/**
 	 * @brief At start, will start the last playing <audio> tag at its last known position
-	 * @private
+	 * @package
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 */
 	recall_stored_play : function(event) {
 		if (document.CPU.current_audiotag_playing !== null) {
@@ -93,7 +93,7 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
 	//
 	// @brief attach events on a <audio> tag
 	//
-	// @param      {<type>}  audiotag  The audiotag
+	// @param      {Object}  audiotag  The audiotag
 	//
 	attach_events_audiotag : function(audiotag) {
 		audiotag.addEventListener('loadedmetadata', document.CPU.recall_stored_play);
@@ -133,7 +133,7 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
 	//
 	// Brief : Connects an audiotag to CPU APIs
 	//
-	// @param      {<type>}  audiotag  The audiotag
+	// @param      {Object}  audiotag  The audiotag
 	//
 	connect_audiotag : function(audiotag) {
 		if (audiotag.CPU_connected) {
@@ -162,7 +162,7 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
 	//
 	// @brief Determines if audiotag is currently playing.
 	//
-	// @param      {<type>}   audiotag  The audiotag
+	// @param      {Object}   audiotag  The audiotag
 	// @return     {boolean}  True if audiotag playing, False otherwise.
 	//
 	'is_audiotag_playing' : function(audiotag) {
@@ -172,7 +172,7 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
 	//
 	// @brief Determines if audiotag is displayed in <cpu-controller>
 	//
-	// @param      {<type>}   audiotag  The audiotag
+	// @param      {Object}   audiotag  The audiotag
 	// @return     {boolean}  True if audiotag global, False otherwise.
 	//
 	'is_audiotag_global' : function(audiotag) {
@@ -221,7 +221,7 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
 		let audiotag = (hash !== '') ? document.getElementById(hash) : document.querySelector(selector_fallback);
 
 		if ((audiotag === undefined) || (audiotag === null) || (audiotag.currentTime === undefined)) {
-			warn('jumpIdAt audiotag ', audiotag);
+			warn('jumpIdAt unkonw audiotag');
 			return false;
 		}
 
@@ -304,7 +304,7 @@ document['CPU'] = document['CPU'] ? document['CPU'] : {
 	//
 	// @brief Return the current playing playlist array
 	//
-	// @return     {<type>}  Array with named id
+	// @return     {Object}  Array with named id
 	//
 	'find_current_playlist' : function() {
 		if (this.global_controller === null)

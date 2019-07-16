@@ -6,7 +6,7 @@ function onDebug(callback_fx) {
 	}
 }
 
-function querySelector_apply(selector, callback, subtree) {
+function querySelector_apply(selector, callback, subtree=undefined) {
 	subtree = subtree === undefined ? document : subtree;
 	Array.from(
 		subtree.querySelectorAll(selector)

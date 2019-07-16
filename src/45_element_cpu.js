@@ -3,8 +3,8 @@ let CPU_element_api = class {
 	// @brief Constructs the object.
 	// @public
 	//
-	// @param      {<type>}  element              The DOMelement
-	// @param      {<type>}  container_interface  The container interface
+	// @param      {DOMelement}  element              The DOMelement
+	// @param      {DOMelement}  container_interface  The container interface
 	//
 	constructor(element, container_interface) {
 		// I hate this style. I rather prefer the object notation
@@ -281,7 +281,7 @@ let CPU_element_api = class {
 	//
 	// @public
 	//
-	// @param      {<type>}  that    The that
+	// @param      {object}  that    "this" callback
 	//
 	hide_throbber(that) {
 		that = that === undefined ? this : that;
@@ -307,7 +307,7 @@ let CPU_element_api = class {
 	//
 	// @private
 	//
-	// @return     {<type>}  { description_of_the_return_value }
+	// @return     {object}  dataset
 	//
 	fetch_audiotag_dataset() {
 		let dataset = {} 
@@ -377,7 +377,7 @@ let CPU_element_api = class {
 	// @brief Shows the sharing panel, 
 	//
 	// @private
-	// @param      {<type>}  event   The event
+	// @param      {object}  event   The event
 	//
 	show_actions(event) {
 		let container = (event !== undefined) ?
@@ -391,9 +391,9 @@ let CPU_element_api = class {
 	//
 	// @private
 	//
-	// @param      {<type>}  event   The event
+	// @param      {object}  event   The event
 	//
-	show_main(event) {
+	show_main(event = undefined) {
 		let container = (event !== undefined) ?
 				document.CPU.find_container(event.target) :
 				this;
@@ -404,7 +404,7 @@ let CPU_element_api = class {
 	//
 	// @brief Shows the handheld fine navigation.
 	//
-	// @param      {<type>}  event   The event
+	// @param      {object}  event   The event
 	//
 	show_handheld_nav(event) {
 		let container = (event !== undefined) ?
@@ -448,7 +448,7 @@ let CPU_element_api = class {
 	// @brief Attach the audiotag to the API
 	// @private
 	//
-	// @param      {<type>}  audiotag  The audiotag
+	// @param      {object}  audiotag  The audiotag
 	//
 	attach_audiotag_to_controller(audiotag) {
 		if (!audiotag) {
@@ -513,7 +513,7 @@ let CPU_element_api = class {
 	 * Draws a plane
 	 * @private
 	 *
-	 * @param      {<type>}  plane_name  The plane name
+	 * @param      {object}  plane_name  The plane name
 	 */
 	draw_plane(plane_name) {
 		let plane_track = this.get_plane_track(plane_name);
@@ -758,8 +758,8 @@ let CPU_element_api = class {
 	 * Draws a plane point
 	 * @private
 	 *
-	 * @param      {<type>}  plane_name  The plane name
-	 * @param      {<type>}  point_name  The point name
+	 * @param      {object}  plane_name  The plane name
+	 * @param      {object}  point_name  The point name
 	 */
 	draw_point(plane_name, point_name) {
 		let plane_point_panel = this.get_point_panel(plane_name, point_name);
@@ -848,7 +848,7 @@ let CPU_element_api = class {
 	// @param      {string}  plane_name      The existing plane name
 	// @param      {number}  timecode_start  The timecode start for this annotation
 	// @param      {<string} point_name      The point name, in the range /[a-zA-Z0-9\-_]+/
-	// @param      {<type>}  data            object : { 'image' : <url>, 'link' : <url>/true (in audio/false (none), 'text' : <text>, 'end' : <seconds> }
+	// @param      {object}  data            object : { 'image' : <url>, 'link' : <url>/true (in audio/false (none), 'text' : <text>, 'end' : <seconds> }
 	// 
 	// @return     {boolean} success
 	//                        
@@ -1025,7 +1025,7 @@ let CPU_element_api = class {
 	// @brief Call when a chapter is changed, to trigger the changes
 	// @private
 	//
-	// @param      {<type>}  event   The event
+	// @param      {object}  event   The event
 	//
 	_cuechange_event(event) {
 		// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
@@ -1050,7 +1050,7 @@ let CPU_element_api = class {
 	// @brief Builds or refresh chapters interface.
 	// @public
 	//
-	// @param      {<type>}  event   The event
+	// @param      {object}  event   The event
 	//
 	build_chapters(event, _forced_track) {
 		if (this.element.tagName === CpuControllerTagName) {

@@ -19,13 +19,13 @@ const trigger = {
 	/**
 	 * @brief Interprets the hash part of the URL, when loaded or changed
 	 *
-	 * @private
+	 * @package
 	 *
-	 * @param      {string}   hashcode     Called hashcode
-	 * @param      {function}   callback_fx  When done, call a function to end the tests
-	 * @return     {boolean}  understood
+	 * @param      {string|Object}  		hashcode     Called hashcode
+	 * @param      {function|undefined}		callback_fx  When done, call a function to end the tests (optional).
+	 * @return     {boolean}  				understood
 	 */
-	hashOrder : function(hashcode, callback_fx) {
+	hashOrder : function(hashcode, callback_fx=undefined) {
 
 		let at_start = true;
 		if (typeof hashcode !== 'string') {
@@ -97,7 +97,7 @@ const trigger = {
 	/**
 	 * Update throbber position when hovering the timeline interface
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 */
 	hover : function(event) {
 		let target = event.target;
@@ -114,7 +114,7 @@ const trigger = {
 	/**
 	 * Hide the throbber when leaving the timeline interface
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 */
 	out : function(event) {
 		let container = document.CPU.find_container(event.target);
@@ -128,7 +128,7 @@ const trigger = {
 	/**
 	 * Highlight the playable positions when hovering a marked link
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 */
 	preview_container_hover : function(event) {
 		let target = event.target;
@@ -148,7 +148,7 @@ const trigger = {
 	/**
 	 * Change play position of a audio tag
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 */
 	throbble : function(event) {
 		let at = 0;
@@ -172,24 +172,23 @@ const trigger = {
 	/**
 	 * Do pause
 	 *
-	 * @param      {<type>}  event     The event
-	 * @param      {<type>}  audiotag  The audiotag
+	 * @param      {Object}  event     The event
+	 * @param      {HTMLAudioElement}  audiotag  The audiotag
 	 */
-	pause : function(event, audiotag) {
+	pause : function(event=undefined, audiotag=undefined) {
 		if (audiotag === undefined) {
 			let target = event.target;
 			audiotag = (target.tagName === 'AUDIO') ? target : document.CPU.find_container(target).audiotag;
 		}
 		audiotag.pause();
 		document.CPU.current_audiotag_playing = null;
-		// trigger.update({target : audiotag});
 		window.localStorage.removeItem(audiotag.currentSrc);
 	},
 
 	/**
 	 * Change referenced playing audio, pause the previous one
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 */
 	play_once : function(event) {
 		let audiotag = event.target;
@@ -206,10 +205,10 @@ const trigger = {
 	/**
 	 * Do play an audio tag
 	 *
-	 * @param      {<type>}  event     The event
-	 * @param      {<type>}  audiotag  The audiotag
+	 * @param      {Object|undefined}  event     The event
+	 * @param      {HTMLAudioElement|undefined}  audiotag  The audiotag
 	 */
-	play : function(event, audiotag) {
+	play : function(event, audiotag=undefined) {
 		if (audiotag === undefined) {
 			audiotag = document.CPU.find_container(event.target).audiotag;
 		}
@@ -247,7 +246,7 @@ const trigger = {
 	/**
 	 * Interprets pressed key
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 * @param      {number}  mult    Multiply the keypressed act
 	 */
 	key : function(event, mult) {
@@ -294,7 +293,7 @@ const trigger = {
 	/**
 	 * Interprets keypress on the play/pause button
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 */
 	keydownplay : function(event) {
 		if (event.keyCode !== 13 ) {
@@ -313,7 +312,7 @@ const trigger = {
 	/**
 	 * Pressing restart button, Rewind at start the audio tag
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 */
 	restart : function(event) {
 		let container = document.CPU.find_container(event.target);
@@ -322,7 +321,7 @@ const trigger = {
 	/**
 	 * Pressing reward button
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 */
 	reward : function(event) {
 		event.keyCode = KEY_LEFT_ARROW;
@@ -332,7 +331,7 @@ const trigger = {
 	 * Pressing foward button
 	 * Function associated, see below, DO NOT RENAME
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 */
 	foward : function(event) {
 		event.keyCode = KEY_RIGHT_ARROW;
@@ -342,7 +341,7 @@ const trigger = {
 	 * Pressing fastreward button
 	 * Function associated, see below, DO NOT RENAME
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 */
 	fastreward : function(event) {
 		event.keyCode = KEY_LEFT_ARROW;
@@ -352,7 +351,7 @@ const trigger = {
 	 * Pressing fastfoward button
 	 * Function associated, see below, DO NOT RENAME
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 */
 	fastfoward : function(event) {
 		event.keyCode = KEY_RIGHT_ARROW;
@@ -403,7 +402,7 @@ const trigger = {
 	 * in fine-position handheld interface, changing the time field
 	 * INVALIDED, see https://github.com/dascritch/cpu-audio/issues/63
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 *
 	input_time_change : function(event) {
 		let target = event.target;
@@ -418,8 +417,8 @@ const trigger = {
 	/**
 	 * Refresh the interface when changing chapter
 	 *
-	 * @param      {<type>}  event              The event
-	 * @param      {<type>}  element_interface  The element interface
+	 * @param      {Object}  event              The event
+	 * @param      {Object}  element_interface  The element interface
 	 */
 	cuechange : function(event, element_interface) {
 		document.body.classList.remove(document.CPU.body_className_playing_cue);
@@ -452,7 +451,7 @@ const trigger = {
 	/**
 	 * Updatting time position. Pause if a end position is defined
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 */
 	update : function(event) {
 		let audiotag = event.target;
@@ -470,7 +469,7 @@ const trigger = {
 	/**
 	 * When an audiotag is ended, advance in playlist
 	 *
-	 * @param      {<type>}  event     The event
+	 * @param      {Object}  event     The event
 	 * @param      {string}  audiotag  The audiotag
 	 */
 	ended : function(event, audiotag) {
@@ -511,7 +510,7 @@ const trigger = {
 	/**
 	 * Interprets if <cpu-audio> element is modified 
 	 *
-	 * @param      {<type>}  mutationsList  The mutations list
+	 * @param      {Object}  mutationsList  The mutations list
 	 */
 	observer_cpuaudio : function(mutationsList) {
 		let container = document.CPU.find_container(mutationsList[0].target);
@@ -529,7 +528,7 @@ const trigger = {
 	 * Interprets if <audio> element is modified or removed
 	 * TODO : act when a child change as <source> or <track>
 	 *
-	 * @param      {<type>}  mutationsList  The mutations list
+	 * @param      {Object}  mutationsList  The mutations list
 	 */
 	observer_audio : function(mutationsList) {
 		let container = document.CPU.find_container(mutationsList[0].target);
@@ -550,7 +549,7 @@ const trigger = {
 	/**
 	 * Interprets navigator.share native API
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 */
 	native_share : function(event) {
 		let dataset = document.CPU.find_container(event.target).fetch_audiotag_dataset();;
@@ -567,7 +566,7 @@ const trigger = {
 	/**
 	 * Interprets long play on timeline for alternative fine position
 	 *
-	 * @param      {<type>}  event   The event
+	 * @param      {Object}  event   The event
 	 */
 	touchstart : function(event) {
 		let container = document.CPU.find_container(event.target);

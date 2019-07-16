@@ -19,7 +19,7 @@ const convert = {
 	 * @param      {string}  givenTime  The given time
 	 * @return     {number}  time in seconds
 	 */
-	TimeInSeconds : function(givenTime) {
+	'TimeInSeconds' : function(givenTime) {
 		let seconds = 0;
 		if (givenTime !== '') {
 			if (convert._is_only_numeric.test(givenTime)) {
@@ -42,7 +42,7 @@ const convert = {
 	 * @param      {string}  givenTime  The given time
 	 * @return     {number}  seconds
 	 */
-	SubunitTimeInSeconds : function(givenTime) {
+	'SubunitTimeInSeconds' : function(givenTime) {
 		let seconds = 0;
 		for(let key in convert.units) {
 			if ( (convert.units.hasOwnProperty(key)) && (givenTime.indexOf(key) !== -1) ) {
@@ -63,7 +63,7 @@ const convert = {
 	 * @param      {string}             givenTime  The given time
 	 * @return     {number}  { seconds }
 	 */
-	ColonTimeInSeconds : function(givenTime) {
+	'ColonTimeInSeconds' : function(givenTime) {
 		let seconds = 0;
 		let atoms = givenTime.split(':');
 		let convert = [1, 60, 3600, 86400];
@@ -80,9 +80,9 @@ const convert = {
 	 *
 	 * @class      SecondsInTime (name)
 	 * @param      {number}   givenSeconds  The given seconds
-	 * @return     {boolean}  { description_of_the_return_value }
+	 * @return     {string}  { description_of_the_return_value }
 	 */
-	SecondsInTime : function(givenSeconds) {
+	'SecondsInTime' : function(givenSeconds) {
 		let converted = '';
 		let inned = false;
 		for(let key in convert.units) {
@@ -107,9 +107,9 @@ const convert = {
 	 *
 	 * @class      SecondsInColonTime (name)
 	 * @param      {number}            givenSeconds  The given seconds
-	 * @return     {(boolean|string)}  { description_of_the_return_value }
+	 * @return     {boolean|string}  { description_of_the_return_value }
 	 */
-	SecondsInColonTime : function(givenSeconds) {
+	'SecondsInColonTime' : function(givenSeconds) {
 		let converted = '';
 		let inned = false;
 		for (let key in convert.units) {
@@ -143,10 +143,10 @@ const convert = {
 	 * @public
 	 *
 	 * @class      SecondsInPaddledColonTime (name)
-	 * @param      {<type>}  givenSeconds  The given seconds
+	 * @param      {number}  givenSeconds  The given seconds
 	 * @return     {string}  { description_of_the_return_value }
 	 */
-	SecondsInPaddledColonTime : function(givenSeconds) {
+	'SecondsInPaddledColonTime' : function(givenSeconds) {
 		// principaly needed by <input type="time"> whom needs a really precise HH:MM:SS format
 		let colon_time = convert.SecondsInColonTime(givenSeconds);
 		return '00:00:00'.substr(0, 8 - colon_time.length ) + colon_time; 
