@@ -6,22 +6,22 @@ function check_focus() {
 }
 
 check_focus();
-document.addEventListener('focus', check_focus)
-document.addEventListener('blur', check_focus)
-
-if (!document.hasFocus()) {
-	alert('Please click on the web view, giving focus, to autorize the audio tag. Else, numerous tests will fail. See issu 17 on our github for details : https://github.com/dascritch/cpu-audio/issues/17 .');
-}
+document.addEventListener('focus', check_focus);
+document.addEventListener('blur', check_focus);
 
 window.addEventListener('load', function() {
 	QUnit.config.autostart = false;
-
 	window.location = '#';
+});
+
+document.getElementById('get_focus').addEventListener('click', function() {
+
+	document.getElementById('get_focus').closest('p').remove();
+
 	let audiotag = document.getElementById('track');
 	let componenttag = document.getElementsByTagName('cpu-audio')[0];
 	let interfacetag = componenttag.shadowRoot.querySelector('div');
 	let playground = document.getElementById('playground');
-	audiotag.volume = 0;
 
 	let cpu = document.CPU;
 
@@ -91,7 +91,7 @@ window.addEventListener('load', function() {
 			done();
 		}
 
-		//cpu.jumpIdAt('track', 0, function() {
+		cpu.jumpIdAt('track', 0, function() {
 			audiotag.pause()
 			audiotag.addEventListener('play', check_needle_moved);
 			let pos = time_element.getClientRects()[0];
@@ -103,7 +103,7 @@ window.addEventListener('load', function() {
 					clientY: pos.top + 1
 				})
 			);
-		//})
+		})
 	});
 
 

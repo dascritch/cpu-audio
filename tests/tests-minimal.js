@@ -16,14 +16,18 @@ if (!document.hasFocus()) {
 
 
 window.addEventListener('load', function() {
+	QUnit.config.autostart = false;
+	window.location = '#';
+});
+
+document.getElementById('get_focus').addEventListener('click', function() {
+
+	document.getElementById('get_focus').closest('p').remove();
 
 	let cpu = document.CPU;
 	let convert = cpu.convert;
-
-	window.location = '#';
 	let audiotag = document.getElementById('track');
 	let playground = document.getElementById('playground');
-	audiotag.volume = 0;
 
 	function stopPlayer() {
 		audiotag.pause();
