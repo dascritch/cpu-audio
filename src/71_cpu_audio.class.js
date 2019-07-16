@@ -5,7 +5,8 @@ class CpuAudioElement extends CpuControllerElement {
 	constructor() {
 		super();
 		this._audiotag = null;
-
+		this.observer_cpuaudio = null;
+		this.observer_audio = null;
 	}
 
 	copy_attributes_to_media_dataset() {
