@@ -226,7 +226,7 @@ const trigger = {
 		try {
 			trigger._remove_timecode_outofborders(audiotag.currentTime);
 			audiotag.play();
-			trigger.update({target : audiotag});
+			// trigger.update({target : audiotag});
 		} catch (e) {
 
 		}
