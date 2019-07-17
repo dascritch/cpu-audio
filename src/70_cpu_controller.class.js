@@ -1,10 +1,12 @@
-// Controller without assigned audio element, i.e. global page controller
-
+/**
+ * Controller without assigned audio element, i.e. global page controller
+ *
+ * @class      CpuControllerElement (name)
+ */
 class CpuControllerElement extends HTMLElement {
 
 	constructor() {
 		super();
-		/** @public */
 		this.CPU = null;
 
 		if (not_screen_context()) {

@@ -2,7 +2,7 @@
 function launch() {
 
 	if (!is_decent_browser_for_webcomponents()) {
-		error(`WebComponent may NOT behave correctly on this browser. Only timecode hash links are activated.\nSee https://github.com/dascritch/cpu-audio/blob/master/index.html for details`);
+		warn(`WebComponent may NOT behave correctly on this browser. Only timecode hash links are activated.\nSee https://github.com/dascritch/cpu-audio/blob/master/index.html for details`);
 		querySelector_apply(acceptable_selector, document.CPU.attach_events_audiotag);
 		document.body.classList.add('cpu-audio-without-webcomponents');
 	} else {

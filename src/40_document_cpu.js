@@ -73,8 +73,8 @@ HTMLDocument.prototype.CPU = {
 	},
 
 	/**
-	 * @brief At start, will start the last playing <audio> tag at its last known position
 	 * @package
+	 * @brief At start, will start the last playing <audio> tag at its last known position
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -90,12 +90,12 @@ HTMLDocument.prototype.CPU = {
 			trigger.play(undefined, audiotag);
 		}
 	},
-	// @private, because at start
-	//
-	// @brief attach events on a <audio> tag
-	//
-	// @param      {Object}  audiotag  The audiotag
-	//
+	/**
+	 * @package, because at start
+	 * @brief attach events on a <audio> tag
+	 *
+	 * @param      {Object}  audiotag  The audiotag
+	 */
 	attach_events_audiotag : function(audiotag) {
 		audiotag.addEventListener('loadedmetadata', document.CPU.recall_stored_play);
 		audiotag.addEventListener('play', trigger.play_once);
@@ -130,12 +130,13 @@ HTMLDocument.prototype.CPU = {
 		}
 	},
 
-	// @private, because at start
-	//
-	// Brief : Connects an audiotag to CPU APIs
-	//
-	// @param      {Object}  audiotag  The audiotag
-	//
+	/**
+	 * @package, launched at start or when the webcomponent appears
+	 *
+	 * Brief : Connects an audiotag to CPU APIs
+	 *
+	 * @param      {Object}  audiotag  The audiotag
+	 */
 	connect_audiotag : function(audiotag) {
 		if (audiotag.CPU_connected) {
 			return;
@@ -159,37 +160,40 @@ HTMLDocument.prototype.CPU = {
 		}
 	},
 
-	// @public
-	//
-	// @brief Determines if audiotag is currently playing.
-	//
-	// @param      {Object}   audiotag  The audiotag
-	// @return     {boolean}  True if audiotag playing, False otherwise.
-	//
+	/**
+	 * @public
+	 *
+	 * @brief Determines if audiotag is currently playing.
+	 *
+	 * @param      {Object}   audiotag  The audiotag
+	 * @return     {boolean}  True if audiotag playing, False otherwise.
+	 */
 	'is_audiotag_playing' : function(audiotag) {
 		return (document.CPU.current_audiotag_playing) && (audiotag.isEqualNode(document.CPU.current_audiotag_playing))
 	},
-	// @public
-	//
-	// @brief Determines if audiotag is displayed in <cpu-controller>
-	//
-	// @param      {Object}   audiotag  The audiotag
-	// @return     {boolean}  True if audiotag global, False otherwise.
-	//
+	/**
+	 * @public
+	 *
+	 * @brief Determines if audiotag is displayed in <cpu-controller>
+	 *
+	 * @param      {Object}   audiotag  The audiotag
+	 * @return     {boolean}  True if audiotag global, False otherwise.
+	 */
 	'is_audiotag_global' : function(audiotag) {
 		return this.global_controller === null ? this.is_audiotag_playing(audiotag) : audiotag.isEqualNode(this.global_controller.audiotag)
 	},
 
-	// @public
-	//
-	// @brief Position a timecode to a named audio tag
-	//
-	// @param      {string}   hash         The id="" of an <audio> tag
-	// @param      {string}   timecode     The timecode, 
-	// @param      {function}   callback_fx  Function to be called afterwards, for ending tests
-	// @return     {boolean}  { description_of_the_return_value }
-	//
-	'jumpIdAt' : function(hash, timecode, callback_fx) {
+	/**
+	 * @public
+	 *
+	 * @brief Position a timecode to a named audio tag
+	 *
+	 * @param      {string}   hash         The id="" of an <audio> tag
+	 * @param      {string}   timecode     The timecode, 
+	 * @param      {Function|null|undefined}   callback_fx  Function to be called afterwards, for ending tests
+	 * @return     {boolean}  { description_of_the_return_value }
+	 */
+	'jumpIdAt' : function(hash, timecode, callback_fx=undefined) {
 
 		function do_needle_move(event) {
 			let audiotag = event.target;
@@ -235,13 +239,14 @@ HTMLDocument.prototype.CPU = {
 		}
 		return true
 	},
-	// @public
-	//
-	// @brief Position a <audio> element to a time position
-	//
-	// @param      {DOM element}  audiotag  The audiotag
-	// @param      {number}  seconds   The seconds
-	//
+	/**
+	 * @public
+	 *
+	 * @brief Position a <audio> element to a time position
+	 *
+	 * @param      {HTMLAudioElement}  audiotag  <audio> DOM element
+	 * @param      {number}  seconds   	Wanted position, in seconds
+	 */
 	'seekElementAt' : function (audiotag, seconds) {
 
 		if (isNaN(seconds)) {
@@ -251,10 +256,9 @@ HTMLDocument.prototype.CPU = {
 
 		if (audiotag.fastSeek !== undefined) {
 			audiotag.fastSeek(seconds);
-			// Firefox doesn't see fastSeek
 		} else {
 			try {
-				// but can set currentTime
+				// Browsers may not have fastSeek but can set currentTime
 				audiotag.currentTime = seconds;
 			} catch(e) {
 				// exept sometimes, so you must use standard media fragment
@@ -269,24 +273,26 @@ HTMLDocument.prototype.CPU = {
 		}
 	},
 
-	// @public
-	// 
-	// @brief  For any ShadowDOM element, will returns its parent interface container
-	//
-	// @param      {DOMElement}  child   The child
-	// @return     {DOMElement}  The #interface element
-	//
+	/**
+	 * @public
+	 * 
+	 * @brief  For any ShadowDOM element, will returns its parent interface container
+	 *
+	 * @param      {Element}  child   The ShadowDOM child
+	 * @return     {Element}  The #interface element
+	 */
 	'find_interface' : function(child) {
 		return child.closest(selector_interface);
 	},
-	// @public
-	//
-	// @brief For any `<audio>` tag or its child tag or shadowDOM element, will
-	// returns the element `CPU` API
-	//
-	// @param      {DOMElement}  child   The child
-	// @return     {class}       Element.CPU
-	//
+	/**
+	 * @public
+	 *
+	 * @brief For any `<audio>` tag or its child tag or shadowDOM element, will
+	 * returns the element `CPU` API
+	 *
+	 * @param      {Element}  child   The child
+	 * @return     {CPU_element_api}       Element.CPU
+	 */
 	'find_container' : function(child) {
 		if ((child.tagName === CpuAudioTagName) 
 			|| ( child.tagName === CpuControllerTagName)) {
@@ -301,12 +307,13 @@ HTMLDocument.prototype.CPU = {
 		let _interface = document.CPU.find_interface(child);
 		return _interface.parentNode.host.CPU;
 	},
-	// @public
-	//
-	// @brief Return the current playing playlist array
-	//
-	// @return     {Object}  Array with named id
-	//
+	/**
+	 * @public
+	 *
+	 * @brief Return the current playing playlist array
+	 *
+	 * @return     {Object}  Array with named id
+	 */
 	'find_current_playlist' : function() {
 		if (this.global_controller === null)
 			return null;

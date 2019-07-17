@@ -3,14 +3,15 @@ const KEY_RIGHT_ARROW = 39;
 
 const trigger = {
 
-	_timecode_start : false,
+	_timecode_start : 0,
 	_timecode_end : false,
 
 	// wrongly placed information. Should be in Element.CPU
 	_remove_timecode_outofborders : function(at) {
-		if ( ((trigger._timecode_start !== false) && (at < trigger._timecode_start)) 
+		if ( 
+			(at < trigger._timecode_start)
 			|| ((trigger._timecode_end !== false) && (at > trigger._timecode_end)) ) {
-			trigger._timecode_start = false;
+			trigger._timecode_start = 0;
 			trigger._timecode_end = false;
 		}
 	},
@@ -119,10 +120,6 @@ const trigger = {
 		let container = document.CPU.find_container(event.target);
 		container.hide_throbber();
 	},
-
-	/*preview_hover : function(event) {
-
-	},*/
 
 	/**
 	 * Highlight the playable positions when hovering a marked link
@@ -358,7 +355,11 @@ const trigger = {
 
 
 	_hand_on : null, // Repeated event allocation
-	/* Start handheld navigation button press */
+	/*
+	 * Start handheld navigation button press
+	 *
+	 * @param      {Object}  event   The event
+	 */
 	_press_button : function(event) {
 		let target = event.target.id ? event.target : event.target.closest('button');
 		let acceptable_actions = ['fastreward', 'reward', 'foward', 'fastfoward'];
@@ -380,7 +381,11 @@ const trigger = {
 		event.preventDefault();
 	},
 
-	/* Repeat during pressing handheld navigation button */
+	/*
+	 * Repeat during pressing handheld navigation button
+	 *
+	 * @param      {Object}  event   The event
+	 */
 	_repeat_button : function(event) {
 		// 
 		trigger[event.target.id](event);
@@ -388,35 +393,22 @@ const trigger = {
 		trigger._hand_on = window.setTimeout(trigger._repeat_button, document.CPU.repeat_factor, event);
 	},
 
-	/* Release handheld navigation button */
+	/*
+	 * Release handheld navigation button
+	 *
+	 * @param      {Object}  event   The event
+	 */
 	_release_button : function(event) {
 		window.clearTimeout(trigger._hand_on);
 		trigger._hand_on = null;
 		event.preventDefault();
 	},
 
-
-	/**
-	 * in fine-position handheld interface, changing the time field
-	 * INVALIDED, see https://github.com/dascritch/cpu-audio/issues/63
-	 *
-	 * @param      {Object}  event   The event
-	 *
-	input_time_change : function(event) {
-		let target = event.target;
-		let container = document.CPU.find_container(target);
-		let seconds = convert.ColonTimeInSeconds(target.value);
-		container.show_throbber_at(seconds);
-		document.CPU.seekElementAt(container.audiotag, seconds);
-	},
-	*/
-
-
 	/**
 	 * Refresh the interface when changing chapter
 	 *
 	 * @param      {Object}  event              The event
-	 * @param      {Object}  element_interface  The element interface
+	 * @param      {Element}  element_interface  The element interface
 	 */
 	cuechange : function(event, element_interface) {
 		document.body.classList.remove(document.CPU.body_className_playing_cue);
@@ -568,7 +560,7 @@ const trigger = {
 	 */
 	touchstart : function(event) {
 		let container = document.CPU.find_container(event.target);
-		trigger._show_alternate_nav = setTimeout(container.show_alternate_nav, document.CPU.alternate_delay, container);
+		trigger._show_alternate_nav = setTimeout(container.show_handheld_nav, document.CPU.alternate_delay, container);
 		
 	},
 

@@ -1,10 +1,15 @@
 
-// Controller with assigned audio element
+/**
+ * Controller with assigned audio element
+ *
+ * @class      CpuAudioElement (name)
+ */
 class CpuAudioElement extends CpuControllerElement {
 
 	constructor() {
 		super();
 		this._audiotag = null;
+		this.audiotag = null;
 		this.observer_cpuaudio = null;
 		this.observer_audio = null;
 	}

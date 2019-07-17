@@ -1,11 +1,12 @@
-let CPU_element_api = class {
-	//
-	// @brief Constructs the object.
-	// @public
-	//
-	// @param      {DOMelement}  element              The DOMelement
-	// @param      {DOMelement}  container_interface  The container interface
-	//
+class CPU_element_api {
+	/**
+	 *
+	 * @brief Constructs the object.
+	 * @public
+	 *
+	 * @param      {Element}  element              The DOMelement
+	 * @param      {Element}  container_interface  The container interface
+	 */
 	constructor(element, container_interface) {
 		// I hate this style. I rather prefer the object notation
 		this.element = element;
@@ -22,24 +23,24 @@ let CPU_element_api = class {
 		}
 	}
 
-	//
-	// @brief Used for `mode=""` attribute. 
-	// @public
-	//
-	// @param      {string}  mode    Accepted are only in `/\w+/` format
-	//
-	set_mode_container(mode) {
+	/**
+	 * @brief Used for `mode=""` attribute. 
+	 * @public
+	 *
+	 * @param      {string|null}  mode    Accepted are only in `/\w+/` format, 'default' by default
+	 */
+	set_mode_container(mode=null) {
 		mode = mode !== null ? mode : 'default';
 		this.container.classList.remove(`mode-${this.mode_was}`);
 		this.mode_was = mode;
 		this.container.classList.add(`mode-${mode}`);
 	}
-	//
-	// @brief Change the presentation style reflecting the media tag status
-	// @public
-	//
-	// @param      {string}  act     can be 'loading', 'pause' or 'play'
-	//
+	/**
+	 * @brief Change the presentation style reflecting the media tag status
+	 * @public
+	 *
+	 * @param      {string}  act     can be 'loading', 'pause' or 'play'
+	 */
 	set_act_container(act) {
 		this.container.classList.remove(
 			'act-loading',
@@ -48,13 +49,13 @@ let CPU_element_api = class {
 			);
 		this.container.classList.add(`act-${act}`);
 	}
-	//
-	// @brief Hide some blocks in the interface, used for `hide=""` attribute
-	// @public
-	//
-	// @param      {<string>}  hide_elements  Array of strings, may contains
-	//                                        'actions' or 'chapters'
-	//
+	/**
+	 * @brief Hide some blocks in the interface, used for `hide=""` attribute
+	 * @public
+	 *
+	 * @param      {Array<string>}  hide_elements  Array of strings, may contains
+	 *                                        'actions' or 'chapters'
+	 */
 	set_hide_container(hide_elements) {
 		for (let hide_this of acceptable_hide_atttributes) {
 			this.container.classList.remove(`hide-${hide_this}`)
@@ -68,16 +69,18 @@ let CPU_element_api = class {
 		}
 	}
 
-	//
-	// @brief update play/pause button according to media status
-	// @private
-	//
+	/**
+	 * @brief update play/pause button according to media status
+	 * @private
+	 */
 	update_playbutton() {
 		let audiotag = this.audiotag;
 		let _attr = audiotag.getAttribute('preload');
 		let _preload = _attr ? (_attr.toLowerCase() !== 'none') : true ;
-		if ( (audiotag.readyState < audiotag.HAVE_CURRENT_DATA ) && 
-				((_preload) || (audiotag._CPU_played)) ) {
+		if ( 
+				(audiotag.readyState < audiotag.HAVE_CURRENT_DATA ) && 
+				((_preload) || (audiotag._CPU_played)) 
+			) {
 			this.set_act_container('loading');
 			return;
 		}
@@ -101,13 +104,13 @@ let CPU_element_api = class {
 		}
 	}
 
-	//
-	// @brief
-	// @private
-	//
-	// @param      {string}  type     line to impact
-	// @param      {number}  seconds  The seconds
-	//
+	/**
+	 * @brief	update time-line length
+	 * @private
+	 *
+	 * @param      {string}  type     line to impact
+	 * @param      {number}  seconds  The seconds
+	 */
 	update_line(type, seconds) {
 		// type = 'elapsed', 'loading'
 		let duration = this.audiotag.duration;
@@ -115,10 +118,10 @@ let CPU_element_api = class {
 												? 0
 												: `${100*seconds / duration}%`;
 	}
-	//
-	// @brief
-	// @private
-	//
+	/**
+	 * @brief	update time-line of pre-buffered length
+	 * @private
+	 */
 	update_buffered() {
 		let end = 0;
 		let buffered  = this.audiotag.buffered ;
@@ -127,10 +130,10 @@ let CPU_element_api = class {
 		}
 		this.update_line('elapsed', end);
 	}
-	//
-	// @brief
-	// @private
-	//
+	/**
+	 * @brief	update current timecode and related links
+	 * @private
+	 */
 	update_time() {
 		let audiotag = this.audiotag;
 		let timecode = Math.floor(audiotag.currentTime);
@@ -161,10 +164,10 @@ let CPU_element_api = class {
 		this.update_line('loading', audiotag.currentTime);
 		this.update_buffered();
 	}
-	//
-	// @brief  Shows indicators for the limits of the playing position
-	// @private
-	//
+	/**
+	 * @brief  Shows indicators for the limits of the playing position
+	 * @private
+	 */
 	update_time_borders() {
 		let audiotag = this.audiotag;
 		let plane = '_borders';
@@ -183,44 +186,45 @@ let CPU_element_api = class {
 		});
 
 	}
-	//
-	// @brief Show that the media is loading
-	//
-	// @private
-	//
-	// @param      {number}  seconds  The seconds
-	//
+	/**
+	 * @brief Show that the media is loading
+	 *
+	 * @private
+	 *
+	 * @param      {number}  seconds  The seconds
+	 */
 	update_loading(seconds) {
 		this.update_line('loading', seconds);
 		this.set_act_container('loading');
 	}
-	//
-	// @brief Show the current media error status
-	//
-	// @private
-	//
-	// @return     {boolean}  { description_of_the_return_value }
-	//
+	/**
+	 * @brief Show the current media error status
+	 *
+	 * @private
+	 *
+	 * @return     {boolean}  True if an error is displayed
+	 */
 	update_error() {
 		// NOTE : this is not working, even on non supported media type
 		// Chrome logs an error « Uncaught (in promise) DOMException: Failed to load because no supported source was found. »
 		// but don't update message
 		let audiotag = this.audiotag;
-		if (audiotag.error !== null) {
+		let error = audiotag.error;
+		if (error !== null) {
 			let error_message;
 			let pageerror = this.elements['pageerror'];
 			this.show_interface('error');
-			switch (audiotag.error.code) {
-				case audiotag.error.MEDIA_ERR_ABORTED:
+			switch (error.code) {
+				case error.MEDIA_ERR_ABORTED:
 					error_message = __.media_err_aborted;
 					break;
-				case audiotag.error.MEDIA_ERR_NETWORK:
+				case error.MEDIA_ERR_NETWORK:
 					error_message = __.media_err_network;
 					break;
-				case audiotag.error.MEDIA_ERR_DECODE:
+				case error.MEDIA_ERR_DECODE:
 					error_message = __.media_err_decode;
 					break;
-				case audiotag.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+				case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
 					error_message = __.media_err_src_not_supported;
 					break;
 				default:
@@ -232,11 +236,11 @@ let CPU_element_api = class {
 		}
 		return false;
 	}
-	//
-	// @brief Will refresh player interface at each time change (a lot)
-	//
-	// @private
-	//
+	/**
+	 * @brief Will refresh player interface at each time change (a lot)
+	 *
+	 * @private
+	 */
 	update() {
 		if (!this.update_error()) {
 			this.update_playbutton();
@@ -245,13 +249,13 @@ let CPU_element_api = class {
 		}
 	}
 
-	//
-	// @brief Shows the throbber at.
-	//
-	// @public
-	//
-	// @param      {number}  seeked_time  The seeked time
-	//
+	/**
+	 * @brief Shows the throbber at.
+	 *
+	 * @public
+	 *
+	 * @param      {number}  seeked_time  The seeked time
+	 */
 	show_throbber_at(seeked_time) {
 		if (this.audiotag.duration < 1) {
 			// do not try to show if no metadata
@@ -265,22 +269,22 @@ let CPU_element_api = class {
 		phylactere.innerHTML = convert.SecondsInColonTime(seeked_time);
 		phylactere.dateTime = convert.SecondsInTime(seeked_time).toUpperCase();
 	}
-	//
-	// @brief Hides immediately the throbber.
-	//
-	// @public
-	//
-	// @param      {Object}  that    "this" callback
-	//
-	hide_throbber(that) {
+	/**
+	 * @brief Hides immediately the throbber.
+	 *
+	 * @public
+	 *
+	 * @param      {Object|undefined}  that    "this" callback
+	 */
+	hide_throbber(that=undefined) {
 		that = that === undefined ? this : that;
 		let phylactere = that.elements['popup'];
 		phylactere.style.opacity = 0;
 	}
-	//
-	// @brief Hides the throbber later. Will delay the hiding if recalled.
-	// @public
-	//
+	/**
+	 * @brief Hides the throbber later. Will delay the hiding if recalled.
+	 * @public
+	 */
 	hide_throbber_later() {
 		let hide_throbber_delay = 1000
 		let phylactere = this.elements['popup'];
@@ -290,14 +294,13 @@ let CPU_element_api = class {
 		phylactere._hider = window.setTimeout(this.hide_throbber, hide_throbber_delay, this);
 	}
 
-
-	//
-	// @brief will get presentation data from <audio> or from parent document
-	//
-	// @private
-	//
-	// @return     {Object}  dataset
-	//
+	/**
+	 * @brief will get presentation data from <audio> or from parent document
+	 *
+	 * @package
+	 *
+	 * @return     {Object}  dataset
+	 */
 	fetch_audiotag_dataset() {
 		let dataset = {} 
 		for (let key in document.CPU.default_dataset) {
@@ -314,11 +317,11 @@ let CPU_element_api = class {
 		return dataset;
 	}
 
-	// @private
-	//
-	// @brief Update links for sharing
-	//
-	//
+	/**
+	 * @private
+	 *
+	 * @brief Update links for sharing
+	 */
 	update_links() {
 		let container = this;
 		function ahref(category, href) {
@@ -352,22 +355,22 @@ let CPU_element_api = class {
 		ahref('link', this.audiotag.currentSrc);
 	}
 
-	//
-	// @brief Shows the interface.
-	//
-	// @public
-	// @param      {string}  mode    The mode, can be 'main', 'share' or 'error'
-	//
+	/**
+	 * @brief Shows the interface.
+	 *
+	 * @public
+	 * @param      {string}  mode    The mode, can be 'main', 'share' or 'error'
+	 */
 	show_interface(mode) {
 		this.container.classList.remove('show-main', 'show-share', 'show-error');
 		this.container.classList.add('show-'+mode);
 	}
-	//
-	// @brief Shows the sharing panel, 
-	//
-	// @private
-	// @param      {Object}  event   The event
-	//
+	/**
+	 * @brief Shows the sharing panel,
+	 *
+	 * @private
+	 * @param      {Object}  event   The event
+	 */
 	show_actions(event) {
 		let container = (event !== undefined) ?
 				document.CPU.find_container(event.target) :
@@ -375,13 +378,13 @@ let CPU_element_api = class {
 		container.show_interface('share');
 		container.update_links();
 	}
-	//
-	// @brief Shows the main manel.
-	//
-	// @private
-	//
-	// @param      {Object}  event   The event
-	//
+	/**
+	 * @brief Shows the main manel.
+	 *
+	 * @private
+	 *
+	 * @param      {Object}  event   The event
+	 */
 	show_main(event = undefined) {
 		let container = (event !== undefined) ?
 				document.CPU.find_container(event.target) :
@@ -389,12 +392,13 @@ let CPU_element_api = class {
 		container.show_interface('main');
 	}
 
-	// @private not mature enough
-	//
-	// @brief Shows the handheld fine navigation.
-	//
-	// @param      {Object}  event   The event
-	//
+	/**
+	 * @package not mature enough
+	 *
+	 * @brief Shows the handheld fine navigation.
+	 *
+	 * @param      {Object}  event   The event
+	 */
 	show_handheld_nav(event) {
 		let container = (event !== undefined) ?
 				document.CPU.find_container(event.target) :
@@ -403,20 +407,20 @@ let CPU_element_api = class {
 		event.preventDefault();
 	}
 
-	//
-	// @brief Adds an identifier to audiotag at build time.
-	// @private
-	//
+	/**
+	 * @brief Adds an identifier to audiotag at build time.
+	 * @private
+	 */
 	add_id_to_audiotag() {
 		if (this.audiotag.id === '') {
 			this.audiotag.id = document.CPU.dynamicallyAllocatedIdPrefix + String(document.CPU.count_element++);
 		}
 	}
 
-	//
-	// @brief Complete the interface at build time
-	// @private
-	//
+	/**
+	 * @brief Complete the interface at build time
+	 * @package
+	 */
 	complete_template() {
 		let dataset = this.fetch_audiotag_dataset();
 		let element_canonical = this.elements['canonical'];
@@ -566,16 +570,18 @@ let CPU_element_api = class {
 
 	}
 
-	//
-	// @brief Add an annotation plane layer
-	// @public
-	//
-	// @param      {string}  plane_name     A name in the range /[a-zA-Z0-9\-_]+/
-	// @param      {string}  title          The displayed title for the panel
-	// @param      {Object}  data           { track : true/false/classname , panel : true/false/classname , highlight : true/false }
-	// 
-	// @return     {boolean} success
-	//
+	/**
+	 * @brief Add an annotation plane layer
+	 * @public
+	 *
+	 * @param      {string}   plane_name  A name in the range /[a-zA-Z0-9\-_]+/
+	 * @param      {string}   title       The displayed title for the panel
+	 * @param      {Object}   data        { track : true/false/classname , 
+	 * 										panel : true/false/classname , 
+	 * 										highlight : true/false }
+	 *
+	 * @return     {boolean}  success
+	 */
 	add_plane(plane_name, title, data) {
 		if ((this.element.tagName === CpuControllerTagName) || (! plane_name.match(valid_id)) || (this.get_plane(plane_name) !== undefined)) {
 			return false;
@@ -606,14 +612,14 @@ let CPU_element_api = class {
 		this.draw_plane(plane_name);
 		return true;
 	}
-	//
-	// @brief Remove an annotation plane layer
-	// @public
-	//
-	// @param      {string}  name   A name in the range /[a-zA-Z0-9\-_]+/
-	// 
-	// @return     {boolean} success
-	//
+	/**
+	 * @brief Remove an annotation plane layer
+	 * @public
+	 *
+	 * @param      {string}   name    A name in the range /[a-zA-Z0-9\-_]+/
+	 *
+	 * @return     {boolean}  success
+	 */
 	remove_plane(name) {
 		if ( (this.element.tagName === CpuControllerTagName) || (! name.match(valid_id)) || (this.audiotag._CPU_planes[name] === undefined)) {
 			return false;
@@ -831,17 +837,20 @@ let CPU_element_api = class {
 		}
 	}
 
-	//
-	// @brief Add an annotation
-	// @public
-	//
-	// @param      {string}	plane_name		The existing plane name
-	// @param      {number}	timecode_start	The timecode start for this annotation
-	// @param      {string}	point_name		The point name, in the range /[a-zA-Z0-9\-_]+/
-	// @param      {Object}	data			object : { 'image' : <url>, 'link' : <url>/true (in audio/false (none), 'text' : <text>, 'end' : <seconds> }
-	// 
-	// @return     {boolean} success
-	//                        
+	/**
+	 * @brief Add an annotation
+	 * @public
+	 *
+	 * @param      {string}   plane_name      The existing plane name
+	 * @param      {number}   timecode_start  The timecode start for this annotation
+	 * @param      {string}   point_name      The point name, should conform to /^[a-zA-Z0-9\-_]+$/
+	 * @param      {Object}   data            { 'image' : <url>, 
+	 * 											'link' : <url>/true (in audio)/false (none), 
+	 * 											'text' : <text>, 
+	 * 											'end'  : <seconds> }
+	 *
+	 * @return     {boolean}  success
+	 */
 	add_point(plane_name, timecode_start, point_name, data) {
 		data = data === undefined ? {} : data;
 		
@@ -855,14 +864,14 @@ let CPU_element_api = class {
 
 		return true;
 	}
-	//
-	// @brief Remove an point from an annotation plane
-	// @public
-	//
-	// @param      {string}   plane_name    A name in the range /[a-zA-Z0-9\-_]+/
-	// @param      {string}   point_name    A name in the range /[a-zA-Z0-9\-_]+/
-	// @return     {boolean}  success
-	//
+	/**
+	 * @brief Remove an point from an annotation plane
+	 * @public
+	 *
+	 * @param      {string}   plane_name  A name in the range /^[a-zA-Z0-9\-_$]+/
+	 * @param      {string}   point_name  A name in the range /^[a-zA-Z0-9\-_$]+/
+	 * @return     {boolean}  success
+	 */
 	remove_point(plane_name, point_name) {
 		let point_track_element = this.get_point_track(plane_name, point_name);
 		if (!point_track_element) {
@@ -884,7 +893,7 @@ let CPU_element_api = class {
 
 	/**
 	 * Gets the plane point names from an id on a ShadowDOM element.
-	 * @private
+	 * @package
 	 *
 	 * @param      {string}  element_id  The element identifier
 	 * @return     {Array<string>}    An array with two strings : plane name and point name.
@@ -944,7 +953,7 @@ let CPU_element_api = class {
 	 * @param      {string}  class_name  Targeted class name, 'with-preview' by default
 	 * @param      {boolean} mirror     Also act on linked cpu-controller/cpu-audio
 	 */
-	remove_highlights_points(class_name, mirror) {
+	remove_highlights_points(class_name=undefined, mirror=undefined) {
 		mirror = mirror === undefined ? true : mirror;
 		class_name = (typeof class_name === 'string') ? class_name : preview_classname;
 		querySelector_apply(`.${class_name}`,function (element) {
@@ -971,9 +980,9 @@ let CPU_element_api = class {
 	 * @param      {string}  plane_name  The plane name
 	 * @param      {string}  point_name  The point name
 	 * @param      {string}  class_name  class name, 'with-preview' by default
-	 * @param      {boolean} mirror     Also act on linked cpu-controller/cpu-audio
+	 * @param      {boolean} mirror     Also act on linked cpu-controller/cpu-audio, true by default
 	 */
-	highlight_point(plane_name, point_name, class_name, mirror) {
+	highlight_point(plane_name, point_name, class_name=undefined, mirror=undefined) {
 		mirror = mirror === undefined ? true : mirror;
 		class_name = (typeof class_name === 'string') ? class_name : preview_classname;
 		this.remove_highlights_points(class_name, mirror);
@@ -1011,12 +1020,12 @@ let CPU_element_api = class {
 		}
 	}
 
-	//
-	// @brief Call when a chapter is changed, to trigger the changes
-	// @private
-	//
-	// @param      {Object}  event   The event
-	//
+	/**
+	 * @brief Call when a chapter is changed, to trigger the changes
+	 * @private
+	 *
+	 * @param      {Object}  event   The event
+	 */
 	_cuechange_event(event) {
 		// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
 		// this junk to NOT repaint 4 times the same active chapter
@@ -1034,13 +1043,13 @@ let CPU_element_api = class {
 
 		trigger.cuechange(event, this.elements['interface']);
 	}
-	//
-	// @brief Builds or refresh chapters interface.
-	// @public
-	//
-	// @param      {Object|undefined}  event   The event
-	// @param      {string|undefined}  _forced_track   Forcing the track to a style
-	//
+	/**
+	 * @brief Builds or refresh chapters interface.
+	 * @public
+	 *
+	 * @param      {Object|undefined}  event          The event
+	 * @param      {string|undefined}  _forced_track  Forcing the track to a style
+	 */
 	build_chapters(event = undefined, _forced_track = undefined) {
 		if (this.element.tagName === CpuControllerTagName) {
 			// not your job, CPUController
@@ -1092,15 +1101,24 @@ let CPU_element_api = class {
 					let chapter_track = null;
 
 					for (let tracks of audiotag.textTracks) {
-						// TODO : we have here a singular problem : how to NOT rebuild the chapter lists, being sure to have the SAME cues and they are loaded, as we may have FOUR builds.
-						// Those multiple repaint events doesn't seem to have so much impact, but they are awful, unwanted and MAY have an impact
-						// We must find a way to clean it up or not rebuild for SAME tracks, AND remove associated events 
-						// AND clean up the chapter list if a new chapter list is loaded and really empty
+						/**
+						 * TODO : we have here a singular problem : how to NOT rebuild the
+						 * chapter lists, being sure to have the SAME cues and they are
+						 * loaded, as we may have FOUR builds. Those multiple repaint events
+						 * doesn't seem to have so much impact, but they are awful, unwanted
+						 * and MAY have an impact We must find a way to clean it up or not
+						 * rebuild for SAME tracks, AND remove associated events AND clean
+						 * up the chapter list if a new chapter list is loaded and really
+						 * empty 
+						 */
 						if (
-							(tracks.kind.toLowerCase() === 'chapters') &&
-							(tracks.cues !== null) &&  // linked to default="" attribute, only one per set !
-							( (chapter_track === null) /* still no active track */ || (tracks.language.toLowerCase() === prefered_language) /* correspond to <html lang> */ )
-								) {
+								(tracks.kind.toLowerCase() === 'chapters') &&
+								(tracks.cues !== null) &&  // linked to default="" attribute, only one per set !
+								( 
+									(chapter_track === null) /* still no active track */ 
+									|| (tracks.language.toLowerCase() === prefered_language) /* correspond to <html lang> */ 
+								)
+							) {
 							chapter_track = tracks;
 						}
 					}
@@ -1118,8 +1136,10 @@ let CPU_element_api = class {
 		if (self.element.tagName === CpuAudioTagName) {
 			let body_class = `cpu_tag_«${audiotag.id}»_chaptered`;
 			if (has) {
-				// indicate in host page that audio tag chapters are listed
-				// see https://github.com/dascritch/cpu-audio/issues/36
+				/**
+				 * indicate in host page that audio tag chapters are listed see
+				 * https://github.com/dascritch/cpu-audio/issues/36 
+				 */
 				document.body.classList.add(body_class);
 			} else {
 				self.remove_plane(plane_name);
@@ -1130,11 +1150,11 @@ let CPU_element_api = class {
 
 	}
 
-	//
-	// @brief Builds or refresh the playlist panel. Should be called only for
-	// <cpu-controller>
-	// @public
-	//
+	/**
+	 * @brief Builds or refresh the playlist panel. Should be called only for
+	 * <cpu-controller>
+	 * @public
+	 */
 	build_playlist() {
 		if (this.element.tagName !== CpuControllerTagName) {
 			// Note that ONLY the global controller will display the playlist. For now.
@@ -1171,10 +1191,11 @@ let CPU_element_api = class {
 		}
 
 	}
-	// @private, because at start
-	//
-	// @brief Builds the controller.
-	//
+	/**
+	 * @package, because at start
+	 *
+	 * @brief Builds the controller.
+	 */
 	build_controller() {
 
 		// the following mess is to simplify sub-element declaration and selection
@@ -1218,7 +1239,6 @@ let CPU_element_api = class {
 			}
 		}
 
-
 		// keyboard management
 		this.element.addEventListener('keydown', trigger.key);
 
@@ -1241,14 +1261,10 @@ let CPU_element_api = class {
 				event_name,
 				do_events[event_name] ? trigger.hover : trigger.out, passive_ev);
 		}
-		// alternative ime navigation for handhelds
-			timeline_element.addEventListener('touchstart', trigger.touchstart, passive_ev);
-			timeline_element.addEventListener('touchend', trigger.touchcancel, passive_ev);
-			timeline_element.addEventListener('contextmenu', this.show_handheld_nav );
-			/* see https://github.com/dascritch/cpu-audio/issues/63
-			this.elements['inputtime'].addEventListener('input', trigger.input_time_change);
-			this.elements['inputtime'].addEventListener('change', trigger.input_time_change);
-			*/
+		// alternative fine navigation for handhelds
+		timeline_element.addEventListener('touchstart', trigger.touchstart, passive_ev);
+		timeline_element.addEventListener('touchend', trigger.touchcancel, passive_ev);
+		timeline_element.addEventListener('contextmenu', this.show_handheld_nav );
 
 		this.show_main();
 		this.build_chapters();

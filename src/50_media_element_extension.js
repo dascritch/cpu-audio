@@ -2,10 +2,21 @@
 
 HTMLAudioElement.prototype.CPU_connected = false;
 
+/**
+ * Return the parent <cpu-audio> DOM element
+ *
+ * @class      CPU_controller (name)
+ * @return     {Element}  <cpu-audio> DOM element
+ */
 HTMLAudioElement.prototype.CPU_controller = function() {
 	return this.closest(CpuAudioTagName);
 }
 
+/**
+ * Trigger display updates in the interface
+ *
+ * @class      CPU_update (name)
+ */
 HTMLAudioElement.prototype.CPU_update = function() {
 	let controller = this.CPU_controller();
 	if (controller) {
