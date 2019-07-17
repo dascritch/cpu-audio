@@ -13,6 +13,7 @@ Corrections
  * [Streamed media gave an confusing duration of `Infinity:NaN:NaN:NaN`](#80)
  * `connect_audiotag()`, renamed `attach_events_audiotag()`, was called to many times
  * handheld alternate navigation was not appearing correctly due to a rename
+ * Message about an aging browser is now a warning, as not breaking application
 
 Back-end
 --------
