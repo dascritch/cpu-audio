@@ -10,14 +10,15 @@ Nothing
 Corrections
 -----------
 
- * Tests are now compliant on some [browsers' interaction-first policies](#17)
+ * [Streamed media gave an confusing duration of `Infinity:NaN:NaN:NaN`](#80)
  * `connect_audiotag()`, renamed `attach_events_audiotag()`, was called to many times
- * Google Closure used in ADVANCED to cleanse code and better annotations
 
 Back-end
 --------
 
  * Code converted back to tabs, [this is a real accessibility issue](https://www.reddit.com/r/javascript/comments/c8drjo/nobody_talks_about_the_real_reason_to_use_tabs/)
+ * Tests are now compliant on some [browsers' interaction-first policies](#17)
+ * Google Closure used in ADVANCED to cleanse code and better annotations
 
 
 Making of

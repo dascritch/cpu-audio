@@ -7,6 +7,7 @@ const convert = {
 	},
 	_is_only_numeric : /^\d+$/,
 	_any_not_numeric : /\D*/g,
+	Infinity : '?',
 
 	/**
 	 * @brief convert a string empty, with a number, with a colon-coded or an
@@ -82,6 +83,9 @@ const convert = {
 	 * @return     {string}  { description_of_the_return_value }
 	 */
 	'SecondsInTime' : function(givenSeconds) {
+		if (givenSeconds == Infinity) {
+			return convert.Infinity;
+		}
 		let converted = '';
 		let inned = false;
 		for(let key in convert.units) {
@@ -109,6 +113,9 @@ const convert = {
 	 * @return     {boolean|string}  { description_of_the_return_value }
 	 */
 	'SecondsInColonTime' : function(givenSeconds) {
+		if (givenSeconds == Infinity) {
+			return convert.Infinity;
+		}
 		let converted = '';
 		let inned = false;
 		for (let key in convert.units) {
@@ -146,6 +153,9 @@ const convert = {
 	 * @return     {string}  { description_of_the_return_value }
 	 */
 	'SecondsInPaddledColonTime' : function(givenSeconds) {
+		if (givenSeconds == Infinity) {
+			return convert.Infinity;
+		}
 		// principaly needed by <input type="time"> whom needs a really precise HH:MM:SS format
 		let colon_time = convert.SecondsInColonTime(givenSeconds);
 		return '00:00:00'.substr(0, 8 - colon_time.length ) + colon_time; 
