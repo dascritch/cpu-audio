@@ -11,6 +11,7 @@ Projet repo
 
 Options:
   -h, --help            Display this message.
+  -a, --advanced        Tries 'ADVANCED_OPTIMIZATIONS' for Google Closure. ONLY FOR LINT/VERIFICATIONS, NOT PRODUCTION ! (yet) 
 
 DESTINATION is a sftp URL where to copy the builded files
 
@@ -24,13 +25,16 @@ HELP
 PROJECT_DIR=$(readlink -f $(dirname ${0}))
 
 JS_COMPILATION_LEVEL='SIMPLE_OPTIMIZATIONS'
-# JS_COMPILATION_LEVEL='ADVANCED_OPTIMIZATIONS' # ONLY FOR LINT/VERIFICATIONS, NOT PRODUCTION ! (yet)
 
 while [ '-' == "${1:0:1}" ] ; do
 	case "${1}" in
 		-h|--help)
 			echo "${HELP}"
 			exit 0
+		;;
+		-a|--advanced)
+			JS_COMPILATION_LEVEL='ADVANCED_OPTIMIZATIONS'
+			break
 		;;
 		--)
 			shift
