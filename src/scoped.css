@@ -1,96 +1,100 @@
 .act-play {
-    --cpu-background : var(--cpu-playing-background);
-    --cpu-color : var(--cpu-playing-color);
+	--cpu-background : var(--cpu-playing-background);
+	--cpu-color : var(--cpu-playing-color);
 }
 
 .show-error {
-    --cpu-background : var(--cpu-error-background);
-    --cpu-color : var(--cpu-error-color);
+	--cpu-background : var(--cpu-error-background);
+	--cpu-color : var(--cpu-error-color);
 }
 
 #interface {
-    --cpu-timeline-height : 10px;
-    /* transition : width var(--cpu-unfold); */
-    background : var(--cpu-background);
-    color : var(--cpu-color);
+	--cpu-timeline-height : 10px;
+	/* transition : width var(--cpu-unfold); */
+	background : var(--cpu-background);
+	color : var(--cpu-color);
 }
 
 #interface, * {
-    font-family : var(--cpu-font-family);
-    font-size : var(--cpu-font-size);
-    font-weight: normal;
-    font-style: normal;
-    line-height : 1.2;
-    border : none;
-    padding : 0;
-    margin : 0;
-    box-shadow: none;
-    text-shadow: none;
-    moz-user-select: none;
-    ms-user-select: none;
-    webkit-user-select: none;
-    user-select: none;
-    transition : 
-                color var(--cpu-color-transitions),
-                background-color var(--cpu-background-transitions),
-                opacity var(--cpu-background-transitions);
+	font-family : var(--cpu-font-family);
+	font-size : var(--cpu-font-size);
+	font-weight: normal;
+	font-style: normal;
+	line-height : 1.2;
+	border : none;
+	padding : 0;
+	margin : 0;
+	box-shadow: none;
+	text-shadow: none;
+	moz-user-select: none;
+	ms-user-select: none;
+	webkit-user-select: none;
+	user-select: none;
+	transition : 
+				color var(--cpu-color-transitions),
+				background-color var(--cpu-background-transitions),
+				opacity var(--cpu-background-transitions);
 }
 
 b, strong, i, em, span {
-    font-size : inherit;
+	font-size : inherit;
 }
 
 main {
-    display : flex;
-    overflow : hidden;
-    height : var(--cpu-height);
+	display : flex;
+	overflow : hidden;
+	height : var(--cpu-height);
 }
 
 a, button {
-    color : currentColor;
-    border : none;
-    text-decoration : none;
+	color : currentColor;
+	border : none;
+	text-decoration : none;
 }
 button {
-    background : transparent;
+	background : transparent;
 }
 
 svg {
-    fill : currentColor;
-    width : var(--cpu-height);
-    height : var(--cpu-height);
+	fill : currentColor;
+	width : var(--cpu-height);
+	height : var(--cpu-height);
 }
 a:hover, a:focus, button:hover, button:focus {
-    color : var(--cpu-background);
-    background : var(--cpu-color);
+	color : var(--cpu-background);
+	background : var(--cpu-color);
 }
 
 i, em {
-    font-style: italic;
+	font-style: italic;
 }
 
 b, strong, h5 a {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 
+[src=''] {
+    visibility: hidden;
+}
+
 #pageerror {
-    padding: 0px 4px;
-    align-self: center;
+	padding: 0px 4px;
+	align-self: center;
 }
 
 #control,
 #actions {
-    flex : 0 0 var(--cpu-height);
-    width : var(--cpu-height);
-    max-height : var(--cpu-height);
-    height : 100%;
-    text-align : center;
-    vertical-align : middle;
+	flex : 0 0 var(--cpu-height);
+	width : var(--cpu-height);
+	max-height : var(--cpu-height);
+	height : 100%;
+	text-align : center;
+	vertical-align : middle;
 }
 
 a {
-    cursor : pointer;
+	cursor : pointer;
 }
 
 #loading, #play, #pause,
@@ -98,243 +102,243 @@ a {
 .show-share #pagemain, .show-share #pageerror,
 .show-error #pagemain, .show-error #pageshare , .show-error #poster,
 #handheld-nav , .show-handheld-nav #titleline {
-    display : none;
+	display : none;
 }
 
 .act-loading #loading,
 .act-play #play,
 .act-pause #pause {
-    display : block;
+	display : block;
 }
 
 .show-share #pageshare,
 .show-main #pagemain {
-    flex : 1 1 100%;
-    display : flex;
-    align-items: center;
+	flex : 1 1 100%;
+	display : flex;
+	align-items: center;
 }
 
 .act-loading #loading circle {
-    fill : #777;
-    opacity : 1;
+	fill : #777;
+	opacity : 1;
 }
 
 .act-loading #loading circle:nth-child(1) {
-      animation: pulse0 2s infinite;
+	  animation: pulse0 2s infinite;
 }
 
 .act-loading #loading circle:nth-child(2) {
-      animation: pulse1 2s infinite;
+	  animation: pulse1 2s infinite;
 }
 
 .act-loading #loading circle:nth-child(3) {
-      animation: pulse2 2s infinite;
+	  animation: pulse2 2s infinite;
 }
 
 @keyframes pulse0 {
-    0%     {opacity : 0;}
+	0%     {opacity : 0;}
 }
 
 @keyframes pulse1 {
-    33%     {opacity : 0;}
+	33%     {opacity : 0;}
 }
 
 @keyframes pulse2 {
-    66%     {opacity : 0;}
+	66%     {opacity : 0;}
 }
 
 #poster {
-    max-width : var(--cpu-height);
-    min-width : var(--cpu-height);
-    max-height : var(--cpu-height);
-    min-height : var(--cpu-height);
-    object-fit: contain;
-    opacity : 0;
+	max-width : var(--cpu-height);
+	min-width : var(--cpu-height);
+	max-height : var(--cpu-height);
+	min-height : var(--cpu-height);
+	object-fit: contain;
+	opacity : 0;
 }
 
 .poster-loaded #poster {
-    opacity: 1;
+	opacity: 1;
 }
 
 .hide-poster #poster {
-    display : none;
+	display : none;
 }
 
 #control svg, #actions svg {
-    vertical-align : middle;
-    max-width : 100%;
-    max-height : 100%;
+	vertical-align : middle;
+	max-width : 100%;
+	max-height : 100%;
 }
 #loading {
-    background : var(--cpu-background) !important;
+	background : var(--cpu-background) !important;
 }
 #titleline {
-    display : flex;
-    align-items: center;
+	display : flex;
+	align-items: center;
 }
 #about, #title {
-    flex : 1 1 auto;
-    position : relative;
+	flex : 1 1 auto;
+	position : relative;
 }
 #title {
-    overflow: hidden;
-    text-overflow : '…';
+	overflow: hidden;
+	text-overflow : '…';
 }
 #title a {
-    display : block;
-    max-height: calc(6px + calc(2 * var(--cpu-font-size)));
+	display : block;
+	max-height: calc(6px + calc(2 * var(--cpu-font-size)));
 }
 #canonical.untitled {
-    font-style : italic;
+	font-style : italic;
 }
 #elapse {
-    flex : 0 1 var(--cpu-elapse-width);
-    text-align : right;
+	flex : 0 1 var(--cpu-elapse-width);
+	text-align : right;
 }
 
 .mode-compact #elapse {
-    flex : 0 0 calc(var(--cpu-elapse-width) + 32px);
-    text-align : center;
+	flex : 0 0 calc(var(--cpu-elapse-width) + 32px);
+	text-align : center;
 }
 
 #time {
-    background-color : black;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    width : 100%;
-    height : var(--cpu-timeline-height);
-    display : block;
-    position : relative;
-    cursor:none;
+	background-color : black;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	width : 100%;
+	height : var(--cpu-timeline-height);
+	display : block;
+	position : relative;
+	cursor:none;
 }
 #loadingline,
 #elapsedline {
-    background : currentColor;
-    height : var(--cpu-timeline-height);
-    display : block ;
-    position : absolute;
-    left : 0;
-    pointer-events : none;
+	background : currentColor;
+	height : var(--cpu-timeline-height);
+	display : block ;
+	position : absolute;
+	left : 0;
+	pointer-events : none;
 }
 #loadingline:after {
-    content : '';
-    position: absolute;
-    right : 0px;
-    width : 0px;
-    height : var(--cpu-timeline-height);
-    display : block;
-    outline : var(--cpu-color) 4px solid;
-    z-index : 127;
-    opacity : 0; 
+	content : '';
+	position: absolute;
+	right : 0px;
+	width : 0px;
+	height : var(--cpu-timeline-height);
+	display : block;
+	outline : var(--cpu-color) 4px solid;
+	z-index : 127;
+	opacity : 0; 
 }
 
 main:hover #loadingline:after,
 main:focus #loadingline:after {
-    opacity : 1;
+	opacity : 1;
 }
 
 #elapsedline {
-    z-index : 2;
+	z-index : 2;
 }
 
 aside {
-    position : absolute;
-    width : 100%;
+	position : absolute;
+	width : 100%;
 }
 
 aside a {
-    position : absolute;
-    display : block;
+	position : absolute;
+	display : block;
 }
 
 aside a span {
-    display : none;
+	display : none;
 }
 
 
 aside.chapters {
-    height : 2px;
-    bottom : -2px;
+	height : 2px;
+	bottom : -2px;
 }
 
 aside.chapters a {
-    background : black;
-    height : 2px;
-    border : 1px solid var(--cpu-background);
+	background : black;
+	height : 2px;
+	border : 1px solid var(--cpu-background);
 }
 
 aside.chapters a.active-cue {
-    background : var(--cpu-color);
+	background : var(--cpu-color);
 }
 
 aside.borders {
-    pointer-events : none;
-    height : var(--cpu-timeline-height);
-    z-index : 4;
-    top : calc( var(--cpu-timeline-height) + 6px);
+	pointer-events : none;
+	height : var(--cpu-timeline-height);
+	z-index : 4;
+	top : calc( var(--cpu-timeline-height) + 6px);
 }
 
 aside.borders a {
-    height : var(--cpu-timeline-height);
-    background: transparent;
+	height : var(--cpu-timeline-height);
+	background: transparent;
 }
 
 aside.borders a:before, aside.borders a:after {
-    pointer-events : none;
-    content:"";
-    position : absolute;
-    width : 2px;
-    height : var(--cpu-timeline-height);
-    border : 2px solid red;
+	pointer-events : none;
+	content:"";
+	position : absolute;
+	width : 2px;
+	height : var(--cpu-timeline-height);
+	border : 2px solid red;
 }
 
 aside.borders a:before {
-    border-right-width: 0px;
-    left : 0%;
+	border-right-width: 0px;
+	left : 0%;
 }
 
 aside.borders a:after {
-    border-left-width: 0px;
-    left : 100%;
+	border-left-width: 0px;
+	left : 100%;
 }
 
 aside.ticker {
-    height : 16px;
-    top : 30px; /* var(--cpu-timeline-height) + var(--cpu-font-size) - diff-small */
+	height : 16px;
+	top : 30px; /* var(--cpu-timeline-height) + var(--cpu-font-size) - diff-small */
 }
 
 aside.ticker a.active-cue {
-    left : 0px !important;
-    right : 0px !important;
-    background : inherit !important;
-    color : inherit !important; /* I know */
+	left : 0px !important;
+	right : 0px !important;
+	background : inherit !important;
+	color : inherit !important; /* I know */
 }
 
 aside.ticker a.active-cue span {
-    display : inline-block;
+	display : inline-block;
 }
 
 .with-preview {
-    color: var(--cpu-background) !important;
-    background : white !important;
+	color: var(--cpu-background) !important;
+	background : white !important;
 }
 
 .act-loading #loadingline {
-    background : repeating-linear-gradient(45deg, var(--cpu-color) 0, var(--cpu-background) 15px, var(--cpu-color) 30px);
-      background-size: 200% 200%;
-    animation: loadingline 1s linear infinite;
+	background : repeating-linear-gradient(45deg, var(--cpu-color) 0, var(--cpu-background) 15px, var(--cpu-color) 30px);
+	  background-size: 200% 200%;
+	animation: loadingline 1s linear infinite;
 }
 @keyframes loadingline {
   0% { background-position-y : var(--cpu-timeline-height); }
 }
 
 #handheld-nav {
-    max-height: calc(6px + calc(2 * var(--cpu-font-size))); /* → #title a */
-    padding-bottom: 8px;
+	max-height: calc(6px + calc(2 * var(--cpu-font-size))); /* → #title a */
+	padding-bottom: 8px;
 }
 
 .show-handheld-nav #handheld-nav {
-    display : flex;
+	display : flex;
 }
 
 #handheld-nav * {
@@ -343,144 +347,144 @@ aside.ticker a.active-cue span {
 }
 
 [type="time"] {
-    text-align : center;
+	text-align : center;
 }
 
 .hide-actions #actions {
-    /* we won't display:none, as we need a padding on the right */
-    visibility : hidden;
-    pointer-events: none;
-    min-width : var(--cpu-min-padding);
-    max-width : var(--cpu-min-padding);
+	/* we won't display:none, as we need a padding on the right */
+	visibility : hidden;
+	pointer-events: none;
+	min-width : var(--cpu-min-padding);
+	max-width : var(--cpu-min-padding);
 }
 
 #pageshare {
-    text-align : center;
+	text-align : center;
 }
 
 #pageshare a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height : var(--cpu-height);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height : var(--cpu-height);
 }
 
 #pageshare a, #pageshare div {
-    flex : 1 0;
-    color : white;
-    text-decoration : none;
-    overflow : hidden;
-    text-overflow : clip;
+	flex : 1 0;
+	color : white;
+	text-decoration : none;
+	overflow : hidden;
+	text-overflow : clip;
 }
 
 #pageshare a:hover, #pageshare a:focus, #pageshare div:hover {
-    color : var(--cpu-background);
-    background : var(--cpu-color);
+	color : var(--cpu-background);
+	background : var(--cpu-color);
 }
 
 #pageshare svg {
-    vertical-align : middle;
-    width : 32px;
-    height : 32px;
+	vertical-align : middle;
+	width : 32px;
+	height : 32px;
 }
 
 #pageshare #nativeshare {
-    display : none;
+	display : none;
 }
 
 .hasnativeshare #pageshare #nativeshare {
-    display : flex;
+	display : flex;
 }
 
 .hasnativeshare #pageshare .nonativeshare {
-    display : none;
+	display : none;
 }
 
 #twitter {
-    background : #4DB5F4
+	background : #4DB5F4
 }
 #facebook, #nativeshare {
-    background : #5974CC
+	background : #5974CC
 }
 #email {
-    background : #CC0000
+	background : #CC0000
 }
 #link {
-    background : #77F
+	background : #77F
 }
 
 #popup {
-    pointer-events : none;
-    position: absolute;
-    transform: translate(-25px, -19px);
-    z-index : 127;
-    min-width : 50px;
-    font-size : 11px;
-    text-align : center;
-    padding : 2px;
-    border-radius: 4px;
-    box-shadow: black 2px 2px;
-    background : var(--cpu-popup-background);
-    color : var(--cpu-popup-color);
-    opacity : 0;
+	pointer-events : none;
+	position: absolute;
+	transform: translate(-25px, -19px);
+	z-index : 127;
+	min-width : 50px;
+	font-size : 11px;
+	text-align : center;
+	padding : 2px;
+	border-radius: 4px;
+	box-shadow: black 2px 2px;
+	background : var(--cpu-popup-background);
+	color : var(--cpu-popup-color);
+	opacity : 0;
 } 
 #popup:before {
-    pointer-events : none;
-    content:"";
-    position: absolute;
-    z-index : 127;
-    left: 20px;
-    bottom: -8px;
-    width: 0;
-    height : 0;
-    /* arrow form */
-    border-top: 8px solid var(--cpu-popup-background);
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
+	pointer-events : none;
+	content:"";
+	position: absolute;
+	z-index : 127;
+	left: 20px;
+	bottom: -8px;
+	width: 0;
+	height : 0;
+	/* arrow form */
+	border-top: 8px solid var(--cpu-popup-background);
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
 } 
 
 .panel {
-    display : flex;
-    list-style: none;
-    flex-direction: column; 
-    padding : 0 var(--cpu-min-padding);
-    box-shadow: var(--cpu-inner-shadow);
+	display : flex;
+	list-style: none;
+	flex-direction: column; 
+	padding : 0 var(--cpu-min-padding);
+	box-shadow: var(--cpu-inner-shadow);
 }
 h6 {
-    text-align : center;
+	text-align : center;
 }
 
 .cue {
-    border-top : 1px solid black;
-    display : flex;
-    margin : 0px;
-    padding : 2px
+	border-top : 1px solid black;
+	display : flex;
+	margin : 0px;
+	padding : 2px
 }
 .active-cue {
-    background : var(--cpu-color);
-    color : var(--cpu-background) !important; /* dirty but fastest */
+	background : var(--cpu-color);
+	color : var(--cpu-background) !important; /* dirty but fastest */
 }
 
 .cue strong {
-    flex : 1 1;
-    font-weight : normal;
+	flex : 1 1;
+	font-weight : normal;
 }
 .cue time {
-    flex : 0 0 var(--cpu-elapse-width) 0px;
-    text-align : right;
+	flex : 0 0 var(--cpu-elapse-width) 0px;
+	text-align : right;
 }
 
 aside a, h6, .cue time
 {
-    font-size : var(--cpu-font-small-size);
+	font-size : var(--cpu-font-small-size);
 }
 
 .mode-compact {
-    width : calc(var(--cpu-elapse-width) + var(--cpu-height) * 2 + 32px);
+	width : calc(var(--cpu-elapse-width) + var(--cpu-height) * 2 + 32px);
 }
 
 .mode-button {
-    width : var(--cpu-height);
+	width : var(--cpu-height);
 }
 
 .mode-compact #title,
@@ -491,8 +495,8 @@ aside a, h6, .cue time
 .mode-button #about,
 .mode-button #actions,
 .mode-button aside, .mode-button .panel {
-    width : 0;
-    display : none;
+	width : 0;
+	display : none;
 }
 
 .mode-hidden,
@@ -500,89 +504,89 @@ aside a, h6, .cue time
 .hide-panels .panel,
 .hide-panels-title h6,
 .hide-panels-except-play .panel {
-    display : none;
+	display : none;
 }
 
 .hide-panels-except-play.last-used .panel {
-    display : flex;
+	display : flex;
 }
 
 .mode-compact.show-main #pagemain {
-    flex : 0 0 auto;
+	flex : 0 0 auto;
 }
 
-@media (max-width: 640px) , @element #interface and (max-width: 640px) {
+@media (max-width: 640px) /* , @element #interface and (max-width: 640px) */{
 
-    .nosmall {
-        display : none;
-    }
+	.nosmall {
+		display : none;
+	}
 
-    #elapse {
-        max-height : 16px;
-    }
+	#elapse {
+		max-height : 16px;
+	}
 
-    #interface {
-        --cpu-timeline-height : 8px ;
-    }
-    
-    #handheld-nav {
-        padding-bottom: 4px;
-    }
+	#interface {
+		--cpu-timeline-height : 8px ;
+	}
+	
+	#handheld-nav {
+		padding-bottom: 4px;
+	}
 
-    aside.ticker {
-        top: 22px;
-    }
-
-}
-@media (max-width: 480px) , @element #interface and (max-width: 480px) {
-    .nosmaller {
-        display : none;
-    }
-
-    .mode-default #elapse {
-        flex : 0 1 var(--cpu-elapse-width);
-    }
-
-        .mode-default #pagemain {
-             padding-bottom : 16px;
-        }
-        #titleline {
-            height : 32px;
-        }
-        #line {
-             position: absolute;
-             left: calc(0px - var(--cpu-height));
-             right: calc(0px - var(--cpu-height));
-             height: 16px;
-             top: 32px;
-        }
-        aside a {
-            pointer-events: none;
-        }
-        aside.borders {
-             top : -2px;
-        }
-        aside.chapters {
-             top : 8px;
-        }
-    #handheld-nav {
-        padding-bottom: 2px;
-    }
+	aside.ticker {
+		top: 22px;
+	}
 
 }
-@media (max-width: 320px) , @element #interface and (max-width: 320px) {
-    .mode-default #elapse {
-        display : none;
-    }
+@media (max-width: 480px)/* , @element #interface and (max-width: 480px) */{
+	.nosmaller {
+		display : none;
+	}
 
-    .nosmallest {
-        display : none;
-    }
+	.mode-default #elapse {
+		flex : 0 1 var(--cpu-elapse-width);
+	}
+
+		.mode-default #pagemain {
+			 padding-bottom : 16px;
+		}
+		#titleline {
+			height : 32px;
+		}
+		#line {
+			 position: absolute;
+			 left: calc(0px - var(--cpu-height));
+			 right: calc(0px - var(--cpu-height));
+			 height: 16px;
+			 top: 32px;
+		}
+		aside a {
+			pointer-events: none;
+		}
+		aside.borders {
+			 top : -2px;
+		}
+		aside.chapters {
+			 top : 8px;
+		}
+	#handheld-nav {
+		padding-bottom: 2px;
+	}
+
+}
+@media (max-width: 320px) /*, @element #interface and (max-width: 320px) */ {
+	.mode-default #elapse {
+		display : none;
+	}
+
+	.nosmallest {
+		display : none;
+	}
 
 }
 
 @media print {
-    #interface {
-        display : none;
-    }
+	#interface {
+		display : none;
+	}
 }

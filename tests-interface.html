@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="tests/qunit.css">
 	<script>
+		// needed to avoid a unwanted hot start
 		window.localStorage.clear();
 	</script>
 	<script src="./dist/cpu-audio.js"></script>
@@ -16,6 +17,7 @@
 	<p>
 		This is the graphic interface, working only web the webcomponent is fully supported by the browser.
 	</p>
+	
 	<p>
 		See also :
 	</p>
@@ -31,6 +33,13 @@
 			<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 		</audio>
 	</cpu-audio>
+
+	<p>
+		<button type="button" id="get_focus">
+			To launch the tests, <strong>please click on this button</strong>, giving focus, to autorize auto-play and click events.
+		</button>
+		Elsewhere, numerous tests will fail. See <a href="https://github.com/dascritch/cpu-audio/issues/17">issue #17 on our github for details</a>.
+	</p>
 
 	<div id="playground"></div>	
 

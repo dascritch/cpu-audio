@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="tests/qunit.css">
 	<script>
+		// needed to avoid a unwanted hot start
 		window.localStorage.clear();
 	</script>
 	<script src="./dist/cpu-audio.js"></script>
@@ -18,6 +19,7 @@
 		This is the minimal service tests. Your browser should be able to use the hash links, even if the graphical interface don't show up, and the audio player still show the native controls.<br />
 		Manual test : <a href="#track&t=1m">named jump at 1mn</a>, <a href="#&t=30s">unnamed jump at 30</a>, <a href="#&t=1m30s,1m40s">unnamed jump at 1mn30 and stops at 1mn40</a>
 	</p>
+
 	<p>
 		See also :
 	</p>
@@ -29,10 +31,18 @@
 	</ul>
 
 	<cpu-audio>
-		<audio id="track" controls="controls"  preload="auto" muted="muted">
+		<audio id="track" controls="controls" preload="auto" muted="muted">
 			<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
 		</audio>
 	</cpu-audio>
+
+	<p>
+		<button type="button" id="get_focus">
+			To launch the tests, <strong>please click on this button</strong>, giving focus, to autorize auto-play and click events.
+		</button>
+		Elsewhere, numerous tests will fail. See <a href="https://github.com/dascritch/cpu-audio/issues/17">issue #17 on our github for details</a>.
+	</p>
+
 
 	<div id="playground"></div>	
 
