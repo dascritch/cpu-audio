@@ -503,7 +503,8 @@ aside a, h6, .cue time
 .hide-chapters .chapters,
 .hide-panels .panel,
 .hide-panels-title h6,
-.hide-panels-except-play .panel {
+.hide-panels-except-play .panel,
+.media-streamed #link {
 	display : none;
 }
 

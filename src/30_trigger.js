@@ -451,7 +451,7 @@ const trigger = {
 		}
 
 		audiotag.CPU_update();
-		if (!audiotag.paused) {
+		if ((!audiotag.paused) && (!document.CPU.is_audiotag_streamed(audiotag))) {
 			window.localStorage.setItem(audiotag.currentSrc, String(audiotag.currentTime));
 		}
 	},

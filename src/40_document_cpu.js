@@ -74,15 +74,26 @@ HTMLDocument.prototype.CPU = {
 
 	/**
 	 * @package
+	 * Determines if audiotag source is streamed, and so unactivate reposition, position memory, length display…
+	 *
+	 * @param      {Object}   audiotag  The audiotag
+	 * @return     {boolean}  True if audiotag streamed, False otherwise.
+	 */
+	is_audiotag_streamed : function(audiotag) {
+		return audiotag.duration === Infinity;
+	},
+
+	/**
+	 * @package
 	 * @brief At start, will start the last playing <audio> tag at its last known position
 	 *
 	 * @param      {Object}  event   The event
 	 */
 	recall_stored_play : function(event) {
-		if (document.CPU.current_audiotag_playing !== null) {
+		let audiotag = event.target;
+		if ((document.CPU.current_audiotag_playing !== null) || (document.CPU.is_audiotag_streamed(audiotag))) {
 			return;
 		} 
-		let audiotag = event.target;
 		let lasttimecode = Number(window.localStorage.getItem(audiotag.currentSrc));
 		// TODO and no hashed time
 		if (lasttimecode > 0) {
@@ -249,8 +260,8 @@ HTMLDocument.prototype.CPU = {
 	 */
 	'seekElementAt' : function (audiotag, seconds) {
 
-		if (isNaN(seconds)) {
-			// may happens, if the audio track is not loaded/loadable
+		if ((isNaN(seconds)) || // may happens, if the audio track is not loaded/loadable
+			(document.CPU.is_audiotag_streamed(audiotag))) { // never try to set a position on a streamed media
 			return;
 		}
 

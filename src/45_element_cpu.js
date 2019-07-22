@@ -136,7 +136,7 @@ class CPU_element_api {
 	 */
 	update_time() {
 		let audiotag = this.audiotag;
-		let timecode = Math.floor(audiotag.currentTime);
+		let timecode = document.CPU.is_audiotag_streamed(audiotag) ? 0 : Math.floor(audiotag.currentTime);
 		let canonical = audiotag.dataset.canonical;
 		canonical = canonical === undefined ? '' : canonical;
 		let link_to = absolutize_url(canonical)+'#';
@@ -159,7 +159,7 @@ class CPU_element_api {
 		}
 		 
 		let colon_time = convert.SecondsInColonTime(audiotag.currentTime);
-		elapse_element.innerHTML = `${colon_time}<span class="nosmaller">\u00a0/\u00a0${total_duration}</span>`;
+		elapse_element.innerHTML = document.CPU.is_audiotag_streamed(audiotag) ? colon_time :`${colon_time}<span class="nosmaller">\u00a0/\u00a0${total_duration}</span>`;
 
 		this.update_line('loading', audiotag.currentTime);
 		this.update_buffered();
@@ -362,7 +362,10 @@ class CPU_element_api {
 	 * @param      {string}  mode    The mode, can be 'main', 'share' or 'error'
 	 */
 	show_interface(mode) {
-		this.container.classList.remove('show-main', 'show-share', 'show-error');
+		this.container.classList.remove('show-main', 'show-share', 'show-error', 'media-streamed');
+		if (('share' === mode) && (document.CPU.is_audiotag_streamed(this.audiotag)) ) {
+			this.container.classList.add('media-streamed');
+		}
 		this.container.classList.add('show-'+mode);
 	}
 	/**
@@ -403,6 +406,9 @@ class CPU_element_api {
 		let container = (event !== undefined) ?
 				document.CPU.find_container(event.target) :
 				this;
+		if (document.CPU.is_audiotag_streamed(container.audiotag)) {
+			return;
+		}
 		container.container.classList.toggle('show-handheld-nav');
 		event.preventDefault();
 	}
