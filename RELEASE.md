@@ -1,4 +1,4 @@
-RELEASE NOTES Version 6.3pre
+RELEASE NOTES Version 6.4pre
 =========================
 
 New features
@@ -10,18 +10,16 @@ Nothing
 Corrections
 -----------
 
- * [Streamed media gave an confusing duration of `Infinity:NaN:NaN:NaN`](#80)
- * `connect_audiotag()`, renamed `attach_events_audiotag()`, was called to many times
- * handheld alternate navigation was not appearing correctly due to a rename
- * Message about an aging browser is now a warning, as not breaking application
+ * [Do not show total duration on streaming media](#83)
+ * [Do not permit time navigation via keys, timeline or handheld navigation on streaming media](#83)
+ * [Do not store time position in browser on streaming media](#83)
+ * [Do not recall a position from a stored information in browser on streaming media](#83)
+ * [No timecode > 0 in links but still 0 to autoplay on streaming media](#83)
+ * [Forbid direct download on streaming media](#83)
+
 
 Back-end
 --------
-
- * Code converted back to tabs, [this is a real accessibility issue](https://www.reddit.com/r/javascript/comments/c8drjo/nobody_talks_about_the_real_reason_to_use_tabs/)
- * Tests are now compliant on some [browsers' interaction-first policies](#17)
- * Comments cleaned, annotations reformated
- * Google Closure callable in ADVANCED to cleanse code and better annotations. NOT YET FOR PRODUCTION.
 
 
 Making of
