@@ -519,7 +519,7 @@ aside a, h6, .cue time
 @media (max-width: 640px) /* , @element #interface and (max-width: 640px) */{
 
 	.nosmall {
-		display : none;
+		display : none !important;
 	}
 
 	#elapse {
@@ -541,7 +541,7 @@ aside a, h6, .cue time
 }
 @media (max-width: 480px)/* , @element #interface and (max-width: 480px) */{
 	.nosmaller {
-		display : none;
+		display : none  !important;
 	}
 
 	.mode-default #elapse {
@@ -576,12 +576,9 @@ aside a, h6, .cue time
 
 }
 @media (max-width: 320px) /*, @element #interface and (max-width: 320px) */ {
+	.nosmallest,
 	.mode-default #elapse {
-		display : none;
-	}
-
-	.nosmallest {
-		display : none;
+		display : none  !important;
 	}
 
 }
