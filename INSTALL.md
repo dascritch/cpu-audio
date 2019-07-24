@@ -144,7 +144,7 @@ When you put a streamed media as an audio source, some functions in the player w
 Some recommendations :
  - Avoid using the default mode, use `compact` instead, or hide the share panel.
  - Add a `preload="none"` attribute to your `<audio>` tag, to avoid unuseful buffering.
- - Add a `data-streamed` attribute to your `<audio>` tag, some browsers on some codecs cannot detect correctly if a media is streamed (Firefox Linux for mp3, by example), and the player may interact not nicely with it.
+ - Add a `data-streamed` attribute to your `<audio>` tag, some browsers on some codecs [cannot detect correctly](https://bugzilla.mozilla.org/show_bug.cgi?id=1568527) if a media is streamed and the player may interact not nicely with it.
 
 Here is a nice example :
 
