@@ -23,6 +23,7 @@ Corrections
 Back-end
 --------
 
+ * Some precisions in documentation about contributions
  * [Firefox Nightly will fire lot of errors on media](https://bugzilla.mozilla.org/show_bug.cgi?id=1507193), tests aren't reliable as we need
 
 
