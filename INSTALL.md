@@ -64,6 +64,7 @@ Some attributes enhance the component :
     * `poster` : the poster image,
     * `actions` : the share button,
     * `chapters` : the chapters list (think to do not include a `<track kind="chapters">` file ^^;),
+    * `timeline` : the time-line element, including chapter marks,
     * `panels` : any panels as chapters or playlist,
     * `panels-title` : titles of the panels,
     * `panels-except-play` : any panels, except when the module is playing a media (do not use with `panels`) ;
