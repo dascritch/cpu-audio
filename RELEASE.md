@@ -16,10 +16,14 @@ Corrections
  * [Do not recall a position from a stored information in browser on streaming media](#83)
  * [No timecode > 0 in links but still 0 to autoplay on streaming media](#83)
  * [Forbid direct download on streaming media](#83)
+ * Reduced `svg:path` precision : we don't have 10000 dpi screens (yet)
+ * Some `.nosmall` elements weren't hidden
 
 
 Back-end
 --------
+
+ * [Firefox Nightly will fire lot of errors on media](https://bugzilla.mozilla.org/show_bug.cgi?id=1507193), tests aren't reliable as we need
 
 
 Making of
