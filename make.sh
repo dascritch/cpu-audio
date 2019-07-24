@@ -11,7 +11,8 @@ Projet repo
 
 Options:
   -h, --help            Display this message.
-  -a, --advanced        Tries 'ADVANCED_OPTIMIZATIONS' for Google Closure. ONLY FOR LINT/VERIFICATIONS, NOT PRODUCTION ! (yet) 
+  -c, --clean        	Clean dist/ directory
+  -a, --advanced        Tries 'ADVANCED_OPTIMIZATIONS' for Google Closure. ONLY FOR LINT/VERIFICATIONS, NOT PRODUCTION ! (yet)
 
 DESTINATION is a sftp URL where to copy the builded files
 
@@ -23,6 +24,7 @@ HELP
 )
 
 PROJECT_DIR=$(readlink -f $(dirname ${0}))
+component_file_js="./dist/cpu-audio.js" 
 
 JS_COMPILATION_LEVEL='SIMPLE_OPTIMIZATIONS'
 
@@ -32,9 +34,13 @@ while [ '-' == "${1:0:1}" ] ; do
 			echo "${HELP}"
 			exit 0
 		;;
+		-c|--clean)
+			echo 'cleaning dist/*'
+			rm ${PROJECT_DIR}/dist/*
+		;;
 		-a|--advanced)
 			JS_COMPILATION_LEVEL='ADVANCED_OPTIMIZATIONS'
-			break
+			component_file_js="./dist/cpu-audio.EXPERIMENTAL.js"
 		;;
 		--)
 			shift
@@ -52,8 +58,7 @@ DESTINATION=${1}
 
 function _clean() {
 	mkdir -p ${PROJECT_DIR}/tmp
-	rm ${PROJECT_DIR}/dist/*
-	rm ${PROJECT_DIR}/tmp/*    
+	rm ${PROJECT_DIR}/tmp/*
 }
 
 function _remove_spaces() {
@@ -101,8 +106,6 @@ $(cat ${PROJECT_DIR}/src/license.txt)
 "
 
 function _build_component_js() {
-
-	component_file_js="./dist/cpu-audio.js" # ${PROJECT_DIR}
 
 	java -jar /usr/share/java/closure-compiler.jar \
 		--compilation_level ${JS_COMPILATION_LEVEL} \
