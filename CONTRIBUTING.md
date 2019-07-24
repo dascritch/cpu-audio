@@ -5,12 +5,19 @@ If you are not a developer
 - You may test on some platforms. Mainly MacOS, iOS and Edge; and see some problems when comparing to Firefox or Chrome.
 - You can re-read my doc, and ask me some precisions.
 - You may be have a disability and you're using some accessibility tools… You're super useful ! For sure, I missed something important for you.
-- Perhaps you can help me on the design or the logos.
+- Perhaps you can help me on translations, the design or the logos.
 - Install in your own website, test, note the bugs, [report them in the issues section of the repo](https://github.com/dascritch/cpu-audio/issues). If you're not enough GitHub savvy, you can [write me via this page](https://cpu.dascritch.net/pages/CPU-Audio-Player)
 
 
 If you are a developer
 ----------------------
+
+- Always prefer any W3C standards instead of create something.
+- Think about clean code, minimalism, small parts, expressive variables and functions.
+- Try to write a test, even for the UI. I know, the last part is hard, but it helps so much.
+- Categorize the tests.
+- If you add parameters, attributes, CSS variables,… keep the web component able to run without.
+- Document everything, even dead-ends. Someone can find interesting your regrets.
 
 Work by cloning the `preprod` branch. We merge in `master` when everything is alright.
 
@@ -19,6 +26,20 @@ Check first in [TODO.md](TODO.md) which lists some priorities and objectives. I 
 I'm sorry but due to draft rewrites and refactoring, I've lost most of the git history. Git blaming won't help for the code before September 2018.
 
 Most of functions and methods are now javadoc-style commented, be kind about it.
+
+
+If you are integrating HTML
+---------------------------
+
+ - The WebComponent **should always be** autonomous, never use a external reference (font, image, etc).
+ - Avoid to create HTML tags unwisely : try to have a minimum footprint, use specific tag names for what they mean.
+ - Any image should be in SVG format included in the HTML source, we won't accept bitmap formats.
+ - Due to CSP restrictions we cannot control, avoid fonts, images inlined into css, etc… 
+ - Do **not** inline styles, never `style=""`, `background=""` in HTML or `fill=""` in SVG.
+ - Do **not** inline javascript, any event should be in a named function, and bound it via a DOMelement`.addEventListener()`, and nothing else.
+ - Try to group CSS properties into CSS varables, and document them : it helps to not repeat yourself, and someone may need to change them.
+ - Be wise : SVG path can be declared as symbols to reuse them.
+ - Simplify your path in SVG:`<path d="">` : we don't have 10000 dpi screens yet. Use preferably `viewport="0 0 32 32"`, have only one digit precision after decimal point and reduce number of points if your path.
 
 
 Tests
@@ -31,17 +52,6 @@ As I'm not perfect, some tests were written for non-regressions, conformity and 
  - [Graphic interface and webcomponents-dependant features](./tests-interface.html)
  - [API method names](./tests-api.html)
  - You can check more lint tests with `./make.sh -a`, but please, **never commit** resulting `dist/*` files.
-
-
-Hygiene
--------
-
-- Always prefer any W3C standards instead of create something.
-- Think about clean code, minimalism, small parts, expressive variables and functions.
-- Try to write a test, even for the UI. I know, the last part is hard, but it helps so much.
-- Categorize the tests.
-- If you add parameters, attributes, CSS variables,… keep the web component able to run without.
-- Document everything, even dead-ends. Someone can find interesting your regrets.
 
 
 Development
