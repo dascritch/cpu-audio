@@ -61,6 +61,10 @@
 		</span>
 		<input id="source_3" name="source_3" type="url" placeholder="https://example.com/sound.mp3" />
 	</label>
+	<p>
+		<span class="what"></span>
+		<label for="is_stream">Is a stream</label> <input id="is_stream" name="is_stream" type="checkbox" value="stream" />, see  <a href="./INSTALL.md#special-case-for-streamed-media"><i>Special case for streamed media</i> in <i>INSTALL.md</i></a>
+	</p>
 	<label for="source_vtt">
 		<span>Chapter VTT text file URL</span>
 		<input id="source_vtt" name="source_vtt" type="url" placeholder="https://example.com/chapters.vtt" />
@@ -243,8 +247,12 @@ function configurator_html(event) {
 	let audio_sources = '';
 	let has_one_source = false;
 
-	function esc(chain) {
-		return chain.replace('&','&amp;').replace('"','&quot;').replace('<','&lt;').replace('>','&gt;');
+	function esc(text) {
+		let burn_after_reading = document.createElement('span');
+		burn_after_reading.innerText = text;
+		let out = burn_after_reading.innerHTML;
+		burn_after_reading.remove();
+		return out;
 	}
 
 	function adjust_attributes_cpu_audio() {
@@ -289,6 +297,9 @@ function configurator_html(event) {
 	let audio_attribs = '';
 	if (cpu_audio_attributes.indexOf(' duration="') > -1) {
 		audio_attribs = ' preload="none"';
+	}
+	if (form_html.querySelector(`[name="is_stream"]`).checked) {
+		audio_attribs = ' data-streamed';
 	}
 
 	let code = `<cpu-audio${cpu_audio_attributes}>

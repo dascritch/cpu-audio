@@ -139,6 +139,7 @@ When you put a streamed media as an audio source, some functions in the player w
      - chapter time-lines,
      - chapter panels.
  - Direct download link is hidden.
+ - Some `<cpu-audio>` attributes will be unuseful : `waveform=""` and `duration=""`.
 
 Some recommendations :
  - Avoid using the default mode, use `compact` instead, or hide the share panel.

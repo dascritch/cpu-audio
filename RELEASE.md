@@ -4,7 +4,8 @@ RELEASE NOTES Version 6.4pre
 New features
 ------------
 
-Nothing
+ * Time-line can be hidden via `hide="timeline"`
+ * Streamed media can be indicated in `<audio>` with `data-streamed` attribute
 
  
 Corrections
@@ -18,13 +19,17 @@ Corrections
  * [Forbid direct download on streaming media](#83)
  * Reduced `svg:path` precision : we don't have 10000 dpi screens (yet)
  * Some `.nosmall` elements weren't hidden
+ * Streamed media won't display their time-line
 
 
 Back-end
 --------
 
  * Some precisions in documentation about contributions
+ * You can `./make.sh` an experimental ADVANCED_OPTIMIZATION, option `--advanced`
+ * `./make.sh` can clean `dist/*` but onw on demand, option `--clean`
  * [Firefox Nightly will fire lot of errors on media](https://bugzilla.mozilla.org/show_bug.cgi?id=1507193), tests aren't reliable as we need
+ * [MP3 streamed media are not correctly detected](https://bugzilla.mozilla.org/show_bug.cgi?id=1568527), may probably occurs on others media formats, browsers and OSes
 
 
 Making of
