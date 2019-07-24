@@ -80,7 +80,7 @@ HTMLDocument.prototype.CPU = {
 	 * @return     {boolean}  True if audiotag streamed, False otherwise.
 	 */
 	is_audiotag_streamed : function(audiotag) {
-		return audiotag.duration === Infinity;
+		return ((audiotag.duration === Infinity) || (audiotag.dataset.streamed !== undefined));
 	},
 
 	/**

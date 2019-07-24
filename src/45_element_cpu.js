@@ -363,7 +363,7 @@ class CPU_element_api {
 	 */
 	show_interface(mode) {
 		this.container.classList.remove('show-main', 'show-share', 'show-error', 'media-streamed');
-		if (('share' === mode) && (document.CPU.is_audiotag_streamed(this.audiotag)) ) {
+		if (document.CPU.is_audiotag_streamed(this.audiotag)) {
 			this.container.classList.add('media-streamed');
 		}
 		this.container.classList.add('show-'+mode);

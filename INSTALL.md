@@ -124,6 +124,37 @@ You can create VTT files with [our online editor](https://dascritch.github.io/cp
 **Note** : The chapters info will only appears with `mode="default"` settings in `<cpu-audio>`.
 
 
+Special case for streamed media
+-------------------------------
+
+When you put a streamed media as an audio source, some functions in the player will be disabled :
+
+ - Any time-related position service won't work on this instance :
+     - total time indication (obviously),
+     - timecoded links,
+     - stored positions and replay,
+     - time-line,
+     - fine handheld navigation panel,
+     - chapter time-lines,
+     - chapter panels.
+ - Direct download link is hidden.
+
+Some recommendations :
+ - Avoid using the default mode, use `compact` instead, or hide the share panel.
+ - Add a `preload="none"` attribute to your `<audio>` tag, to avoid unuseful buffering.
+ - Add a `data-streamed` attribute to your `<audio>` tag, some browsers on some codecs cannot detect correctly if a media is streamed (Firefox Linux for mp3, by example), and the player may interact not nicely with it.
+
+Here is a nice example :
+
+```html
+<cpu-audio title="Radio &lt;FMR&gt;, live from Toulouse France on 89.1 FM" mode="compact" poster="http://radio-fmr.net/param/pix/shared/logofmr.png">
+    <audio controls preload="none" data-streamed>
+        <source src="http://stream.radio-fmr.net:8000/radio-fmr.mp3">
+    </audio>
+</cpu-audio>
+```
+
+
 Personnalization via CSS variables
 ----------------------------------
 
