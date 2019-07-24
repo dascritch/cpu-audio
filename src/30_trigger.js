@@ -222,7 +222,7 @@ const trigger = {
 			trigger._remove_timecode_outofborders(audiotag.currentTime);
 			let promised = audiotag.play();
 			if (promised !== undefined) {
-				promised.catch(error => {
+				promised.catch( function(error) {
 					switch (error.name) {
 						case 'NotAllowedError':
 							warn('Auto-play prevented : Browser requires a manual interaction first.');
