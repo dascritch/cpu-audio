@@ -11,6 +11,7 @@ New features
 Corrections
 -----------
 
+ * Regression in playlist panel in `<cpu-controller>`
  * [Do not show total duration on streaming media](#83)
  * [Do not permit time navigation via keys, timeline or handheld navigation on streaming media](#83)
  * [Do not store time position in browser on streaming media](#83)

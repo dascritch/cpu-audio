@@ -1169,9 +1169,10 @@ class CPU_element_api {
 
 		let previous_playlist = this.current_playlist;
 		this.current_playlist = document.CPU.find_current_playlist();
+		/*
 		if (previous_playlist === this.current_playlist) {
 			return;
-		}
+		}*/
 
 		let playlist_element = this.elements['playlist'];
 		playlist_element.innerHTML = '';
