@@ -228,14 +228,16 @@ const trigger = {
 
 		}
 
-		if ((document.CPU.global_controller) && (!audiotag.isEqualNode(document.CPU.global_controller.audiotag))) {
+		if (document.CPU.global_controller) {
 			let global_controller = document.CPU.global_controller;
-			global_controller.attach_audiotag_to_controller(audiotag);
-			global_controller.audiotag = audiotag;
-			global_controller.show_main();
-			global_controller.redraw_all_planes();
+			if  (!audiotag.isEqualNode(global_controller.audiotag)) {
+				global_controller.attach_audiotag_to_controller(audiotag);
+				global_controller.audiotag = audiotag;
+				global_controller.show_main();
+				global_controller.redraw_all_planes();
+				global_controller.set_mode_container(); 	// to switch back the display between streamed/not-str medias
+			}
 			global_controller.build_playlist();
-			global_controller.set_mode_container(); 	// to switch back the display between streamed/not-str medias
 		}
 	},
 
