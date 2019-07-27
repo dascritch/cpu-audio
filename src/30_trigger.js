@@ -209,15 +209,6 @@ const trigger = {
 			audiotag = document.CPU.find_container(event.target).audiotag;
 		}
 
-		if ((document.CPU.global_controller) && (!audiotag.isEqualNode(document.CPU.global_controller.audiotag))) {
-			let global_controller = document.CPU.global_controller;
-			global_controller.attach_audiotag_to_controller(audiotag);
-			global_controller.audiotag = audiotag;
-			global_controller.show_main();
-			global_controller.redraw_all_planes();
-			global_controller.build_playlist();
-		}
-
 		try {
 			trigger._remove_timecode_outofborders(audiotag.currentTime);
 			let promised = audiotag.play();
@@ -235,6 +226,16 @@ const trigger = {
 			  }
 		} catch (e) {
 
+		}
+
+		if ((document.CPU.global_controller) && (!audiotag.isEqualNode(document.CPU.global_controller.audiotag))) {
+			let global_controller = document.CPU.global_controller;
+			global_controller.attach_audiotag_to_controller(audiotag);
+			global_controller.audiotag = audiotag;
+			global_controller.show_main();
+			global_controller.redraw_all_planes();
+			global_controller.build_playlist();
+			global_controller.set_mode_container(); 	// to switch back the display between streamed/not-str medias
 		}
 	},
 
