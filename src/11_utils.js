@@ -42,7 +42,7 @@ function is_decent_browser_for_webcomponents() {
  */
 function absolutize_url(url) {
 	let test_element = document.createElement('a');
-	test_element.href = typeof url !== 'string' ? url : url.split('#')[0];
+	test_element.href = (typeof url !== 'string') ? url : url.split('#')[0];
 	return test_element.href;
 }
 
