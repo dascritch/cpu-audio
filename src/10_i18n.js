@@ -57,7 +57,7 @@ const sources_i18n = {
 // First, we'll try to guess the hosting page language
 let prefered_language = document.querySelector('html').lang;
 
-if ((!prefered_language.length) || (!(prefered_language in sources_i18n))) {
+if ((!prefered_language.length) || (!(prefered_language.toLowerCase() in sources_i18n))) {
 
 	// Inexisting ?
 	prefered_language = 'en';

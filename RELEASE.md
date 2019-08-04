@@ -21,6 +21,7 @@ Corrections
  * Reduced `svg:path` precision : we don't have 10000 dpi screens (yet)
  * Some `.nosmall` elements weren't hidden
  * Streamed media won't display their time-line
+ * Should accept a declared `lang` in `<html>` even in caps-lock
 
 
 Back-end
