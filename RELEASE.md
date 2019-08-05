@@ -22,6 +22,7 @@ Corrections
  * Some `.nosmall` elements weren't hidden
  * Streamed media won't display their time-line
  * Should accept a declared `lang` in `<html>` even in caps-lock
+ * A warning message for too-old browsers got a bad link
 
 
 Back-end
