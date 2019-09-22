@@ -1,3 +1,9 @@
+:host {
+  all: initial;
+  display: block;
+  contain: content; 
+}
+
 .act-play {
 	--cpu-background : var(--cpu-playing-background);
 	--cpu-color : var(--cpu-playing-color);
@@ -24,8 +30,6 @@
 	border : none;
 	padding : 0;
 	margin : 0;
-	box-shadow: none;
-	text-shadow: none;
 	moz-user-select: none;
 	ms-user-select: none;
 	webkit-user-select: none;
@@ -34,10 +38,6 @@
 				color var(--cpu-color-transitions),
 				background-color var(--cpu-background-transitions),
 				opacity var(--cpu-background-transitions);
-}
-
-b, strong, i, em, span {
-	font-size : inherit;
 }
 
 main {
@@ -60,6 +60,7 @@ svg {
 	width : var(--cpu-height);
 	height : var(--cpu-height);
 }
+
 a:hover, a:focus, button:hover, button:focus {
 	color : var(--cpu-background);
 	background : var(--cpu-color);
