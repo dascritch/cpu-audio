@@ -170,9 +170,6 @@ a {
 	max-width : 100%;
 	max-height : 100%;
 }
-#loading {
-	background : var(--cpu-background) !important;
-}
 #titleline {
 	display : flex;
 	align-items: center;
