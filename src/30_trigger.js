@@ -158,8 +158,22 @@ const trigger = {
 			return ;
 		}
 
+		if ((document.CPU.current_audiotag_playing) && (!document.CPU.is_audiotag_playing(audiotag))) {
+			// Chrome needs to STOP any other playing tag before seeking
+			//  Very slow seeking on Chrome #89 
+			trigger.pause(undefined, document.CPU.current_audiotag_playing);
+		}
+
+
 		if (isNaN(audiotag.duration)) {
 			// Correct play from position on the timeline when metadata not preloaded #88
+
+			// indicate we are loading something
+			let controller = audiotag.CPU_controller();
+			if ((controller !== null) && (controller.update_loading)) {
+				controller.update_loading(undefined, 100 * event.offsetX  / target.clientWidth);
+			}
+
 			let expected_event = 'loadedmetadata';
 			let recreated_event = {
 				// we are losing offsetX information
