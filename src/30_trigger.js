@@ -151,18 +151,43 @@ const trigger = {
 		let target = event.target;
 		let container = document.CPU.find_container(target);
 		let audiotag = container.audiotag;
+
+		if (audiotag.duration === Infinity) {
+			// CAVEAT : we may have improper duration due to a streamed media
+			trigger.play(event);
+			return ;
+		}
+
+		if (isNaN(audiotag.duration)) {
+			// Correct play from position on the timeline when metadata not preloaded #88
+			let expected_event = 'loadedmetadata';
+			let recreated_event = {
+				// we are losing offsetX information
+				'offsetX' : event.offsetX,
+				'target'  : event.target
+			};
+			let recall_me = function(){ 
+					trigger.throbble(recreated_event); 
+				audiotag.removeEventListener(expected_event, recall_me); 
+			};
+			audiotag.addEventListener(expected_event, recall_me);
+			// loading metadata. May not work on Apples
+			audiotag.setAttribute('preload', 'metadata'); 
+			return ;
+		}
+
+		// We know the media length, normal execution
 		if (event.at !== undefined) {
 			at = event.at;
 		} else {
-			// normal usage
+			// normal usage, via an event
 			let ratio = event.offsetX  / target.clientWidth;
 			at = ratio * audiotag.duration;
 		}
-
 		trigger._remove_timecode_outofborders(at);
-
 		document.CPU.seekElementAt(audiotag, at);
 		trigger.play(event);
+
 	},
 
 	/**

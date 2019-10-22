@@ -1210,6 +1210,8 @@ class CPU_element_api {
 		querySelector_apply('[id]', function (element) {
 			controller.elements[element.id] = element;
 		}, this.element.shadowRoot);
+
+		// hide broken image when not loaded
 		this.elements['poster'].addEventListener('load', function () {
 			controller.elements['interface'].classList.add('poster-loaded'); 
 		});
