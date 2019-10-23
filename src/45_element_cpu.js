@@ -55,6 +55,7 @@ class CPU_element_api {
 	 *
 	 * @param      {Array<string>}  hide_elements  Array of strings, may contains
 	 *                                        'actions' or 'chapters'
+	 * For an unknown reason, Google Closure estimates that hide_elements can be null ??? 
 	 */
 	set_hide_container(hide_elements) {
 		for (let hide_this of acceptable_hide_atttributes) {

@@ -262,7 +262,7 @@ HTMLDocument.prototype.CPU = {
 	 * @param      {number}  seconds   	Wanted position, in seconds
 	 *
 	 * HTMLAudioElement.fastSeek() is an experimental but really fast function. Google Closure doesn't like it in ADVANCED mode
-	 * @suppress {undefinedNames} */
+	 * @suppress {missingProperties} */
 	'seekElementAt' : function (audiotag, seconds) {
 
 		if ((isNaN(seconds)) || // may happens, if the audio track is not loaded/loadable
