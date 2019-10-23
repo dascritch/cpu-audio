@@ -11,7 +11,7 @@ class CPU_element_api {
 		// I hate this style. I rather prefer the object notation
 		this.element = element;
 		this.elements = {};
-		this.audiotag = element._audiotag;
+		this.audiotag =  /** @type {HTMLAudioElement} */ (element._audiotag);
 		this.container = container_interface;
 		this.mode_when_play = null;
 		this.current_playlist = [];
@@ -62,7 +62,7 @@ class CPU_element_api {
 			this.container.classList.remove(`hide-${hide_this}`)
 		}
 
-		for (let hide_this of hide_elements) {
+		for (let hide_this of /** @type {!null} */ (hide_elements)) {
 			hide_this = hide_this.toLowerCase();
 			if (acceptable_hide_atttributes.indexOf(hide_this)>-1) {
 				this.container.classList.add(`hide-${hide_this}`)
@@ -79,7 +79,7 @@ class CPU_element_api {
 		let _attr = audiotag.getAttribute('preload');
 		let _preload = _attr ? (_attr.toLowerCase() !== 'none') : true ;
 		if ( 
-				(audiotag.readyState < audiotag.HAVE_CURRENT_DATA ) && 
+				(audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA ) && 
 				((_preload) || (audiotag._CPU_played)) 
 			) {
 			this.set_act_container('loading');
@@ -219,16 +219,16 @@ class CPU_element_api {
 			let pageerror = this.elements['pageerror'];
 			this.show_interface('error');
 			switch (error.code) {
-				case error.MEDIA_ERR_ABORTED:
+				case MediaError.MEDIA_ERR_ABORTED:
 					error_message = __.media_err_aborted;
 					break;
-				case error.MEDIA_ERR_NETWORK:
+				case MediaError.MEDIA_ERR_NETWORK:
 					error_message = __.media_err_network;
 					break;
-				case error.MEDIA_ERR_DECODE:
+				case MediaError.MEDIA_ERR_DECODE:
 					error_message = __.media_err_decode;
 					break;
-				case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+				case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
 					error_message = __.media_err_src_not_supported;
 					break;
 				default:

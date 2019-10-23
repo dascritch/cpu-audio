@@ -328,7 +328,7 @@ HTMLDocument.prototype.CPU = {
 	 *
 	 * @brief Return the current playing playlist array
 	 *
-	 * @return     {Object}  Array with named id
+	 * @return     {Array}  Array with named id
 	 */
 	'find_current_playlist' : function() {
 		if (this.global_controller === null)
