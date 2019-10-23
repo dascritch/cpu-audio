@@ -19,6 +19,8 @@ Back-end
 
  * [Firefox Nightly will fire lot of errors on media](https://bugzilla.mozilla.org/show_bug.cgi?id=1507193), tests aren't reliable as we need
  * [MP3 streamed media are not correctly detected](https://bugzilla.mozilla.org/show_bug.cgi?id=1568527), may probably occurs on others media formats, browsers and OSes
+ * Bug found in Google Closure : [Error on a constant declaration for HTMLAudioElement #3488](https://github.com/google/closure-compiler/issues/3488). Thanks a lot to Myagoo for helping me to find it.
+
 
 
 Making of

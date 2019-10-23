@@ -451,6 +451,9 @@ const trigger = {
 	 *
 	 * @param      {Object}  event              The event
 	 * @param      {Element}  element_interface  The element interface
+	 * 
+	 * To not warns on classList.remove()
+	 * @suppress {checkTypes} 
 	 */
 	cuechange : function(event, element_interface) {
 		document.body.classList.remove(document.CPU.body_className_playing_cue);
@@ -529,7 +532,8 @@ const trigger = {
 			return;
 		}
 		let next_id = playlist[playlist_index+1];
-		let next_audiotag = document.getElementById(next_id);
+
+		let next_audiotag = /** @type {HTMLAudioElement} */ (document.getElementById(next_id));
 		if (next_audiotag === null) {
 			warn(`Audiotag #${next_id} doesn't exists. WTF ?`);
 			return;

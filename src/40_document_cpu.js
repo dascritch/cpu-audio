@@ -235,7 +235,8 @@ HTMLDocument.prototype.CPU = {
 		}
 
 		let selector_fallback = 'cpu-audio audio'; // should be 'audio[controls]' but PHRACK APPLE !
-		let audiotag = (hash !== '') ? document.getElementById(hash) : document.querySelector(selector_fallback);
+
+		let audiotag = /** @type {HTMLAudioElement} */ ( (hash !== '') ? document.getElementById(hash)  :  document.querySelector(selector_fallback) );
 
 		if ((audiotag === undefined) || (audiotag === null) || (audiotag.currentTime === undefined)) {
 			warn(`Unknow audiotag ${hash}`);
@@ -243,7 +244,7 @@ HTMLDocument.prototype.CPU = {
 		}
 
 		let mocked_event = {'target' : audiotag};
-		if (audiotag.readyState < audiotag.HAVE_CURRENT_DATA) {
+		if (audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {  /*  WHHYYYY ?????? */
 			audiotag.addEventListener('loadedmetadata', do_needle_move , true);
 			audiotag.load();
 			trigger.update(mocked_event);
@@ -259,7 +260,9 @@ HTMLDocument.prototype.CPU = {
 	 *
 	 * @param      {HTMLAudioElement}  audiotag  <audio> DOM element
 	 * @param      {number}  seconds   	Wanted position, in seconds
-	 */
+	 *
+	 * HTMLAudioElement.fastSeek() is an experimental but really fast function. Google Closure doesn't like it in ADVANCED mode
+	 * @suppress {undefinedNames} */
 	'seekElementAt' : function (audiotag, seconds) {
 
 		if ((isNaN(seconds)) || // may happens, if the audio track is not loaded/loadable
@@ -329,17 +332,17 @@ HTMLDocument.prototype.CPU = {
 	 */
 	'find_current_playlist' : function() {
 		if (this.global_controller === null)
-			return null;
+			return [];
 		let current_audiotag = this.global_controller.audiotag;
 		if (current_audiotag === null) {
-			return null;
+			return [];
 		}
 		for (let playlist_name in this.playlists) {
 			if (this.playlists[playlist_name].indexOf(current_audiotag.id) >= 0) {
 				return this.playlists[playlist_name];
 			}
 		}
-		return null;
+		return [];
 	}
 
 }

@@ -14,7 +14,7 @@ class CPU_element_api {
 		this.audiotag = element._audiotag;
 		this.container = container_interface;
 		this.mode_when_play = null;
-		this.current_playlist = null;
+		this.current_playlist = [];
 		this._activecue = null;
 		this.mode_was = null;
 		// record some related data on the <audio> tag, outside the dataset scheme
@@ -110,7 +110,7 @@ class CPU_element_api {
 	 *
 	 * @param      {string}  type     line to impact
 	 * @param      {number}  seconds  The seconds
-	 * @param      {number}  ratio    ratio position in case time position are still unknown
+	 * @param      {number|undefined=}  ratio    ratio position in case time position are still unknown
 	 */
 	update_line(type, seconds, ratio) {
 		// type = 'elapsed', 'loading'
@@ -1172,15 +1172,11 @@ class CPU_element_api {
 
 		let previous_playlist = this.current_playlist;
 		this.current_playlist = document.CPU.find_current_playlist();
-		/*
-		if (previous_playlist === this.current_playlist) {
-			return;
-		}*/
 
 		let playlist_element = this.elements['playlist'];
 		playlist_element.innerHTML = '';
 
-		if (this.current_playlist === null) {
+		if (this.current_playlist.length === 0) {
 			return;
 		}
 
