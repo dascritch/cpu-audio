@@ -115,24 +115,11 @@ class CPU_element_api {
 	 */
 	update_line(type, seconds, ratio) {
 		// type = 'elapsed', 'loading'
-		let duration;
 		if (ratio === undefined) {
-			duration = this.audiotag.duration;
-			ratio = duration === 0 ? 0 : 100*seconds / duration;
+			let duration = this.audiotag.duration;
+			ratio = duration === 0 ? 0 : (100*seconds / duration);
 		}
 		this.elements[`${type}line`].style.width = `${ratio}%`;
-	}
-	/**
-	 * @brief	update time-line of pre-buffered length
-	 * @private
-	 */
-	update_buffered() {
-		let end = 0;
-		let buffered  = this.audiotag.buffered ;
-		for (let segment=0 ; segment < buffered.length ; segment++) {
-			end = buffered.end(segment);
-		}
-		this.update_line('elapsed', end);
 	}
 	/**
 	 * @brief	update current timecode and related links
@@ -166,7 +153,6 @@ class CPU_element_api {
 		elapse_element.innerHTML = document.CPU.is_audiotag_streamed(audiotag) ? colon_time :`${colon_time}<span class="nosmaller">\u00a0/\u00a0${total_duration}</span>`;
 
 		this.update_line('loading', audiotag.currentTime);
-		this.update_buffered();
 	}
 	/**
 	 * @brief  Shows indicators for the limits of the playing position

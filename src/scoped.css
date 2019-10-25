@@ -209,8 +209,7 @@ a {
 	position : relative;
 	cursor:none;
 }
-#loadingline,
-#elapsedline {
+#loadingline {
 	background : currentColor;
 	height : var(--cpu-timeline-height);
 	display : block ;
@@ -233,10 +232,6 @@ a {
 main:hover #loadingline:after,
 main:focus #loadingline:after {
 	opacity : 1;
-}
-
-#elapsedline {
-	z-index : 2;
 }
 
 aside {
