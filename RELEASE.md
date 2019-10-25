@@ -4,7 +4,7 @@ RELEASE NOTES Version 6.5pre
 New features
 ------------
 
-Nothing
+ * [Native lazy-loading](https://web.dev/native-lazy-loading) of the feature picture (Chrome only, as today).
 
 
 Corrections
