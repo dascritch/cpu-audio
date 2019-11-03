@@ -14,6 +14,7 @@ Corrections
  * Correct play from position on the timeline when metadata not preloaded ([#88](#88))
  * Stop playing an audiotag when scrobbing another one (mainly for Chrome, [#89](#89))
  * Removed vestigial elements : Unuseful “elapsed” progress bar and element.CPU.update_buffered() were re-activated during beta and did graphic glitch.
+ * Document ways to generate pictures for `waveform=""` attribute.
 
 
 Back-end
