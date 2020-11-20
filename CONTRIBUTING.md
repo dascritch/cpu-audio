@@ -12,6 +12,7 @@ If you are not a developer
 If you are a developer
 ----------------------
 
+- Clone the project, use the `preprod` branch and merge into it
 - Always prefer any W3C standards instead of create something.
 - Think about clean code, minimalism, small parts, expressive variables and functions.
 - Try to write a test, even for the UI. I know, the last part is hard, but it helps so much.
