@@ -1,10 +1,15 @@
 const KEY_LEFT_ARROW = 37;
 const KEY_RIGHT_ARROW = 39;
 
+let NotAllowedError = 'Auto-play prevented : Browser requires a manual interaction first.';
+let NotSupportedError = 'The browser refuses the audio source, probably due to audio format.';
+
 const trigger = {
 
 	_timecode_start : 0,
 	_timecode_end : false,
+
+	_last_play_error : false,
 
 	// wrongly placed information. Should be in Element.CPU
 	_remove_timecode_outofborders : function(at) {
@@ -27,7 +32,6 @@ const trigger = {
 	 * @return     {boolean}  			understood
 	 */
 	hashOrder : function(hashcode, callback_fx=undefined) {
-
 		let at_start = true;
 		if (typeof hashcode !== 'string') {
 			at_start = 'at_start' in hashcode;
@@ -198,7 +202,7 @@ const trigger = {
 			let ratio = event.offsetX  / target.clientWidth;
 			at = ratio * audiotag.duration;
 		}
-		trigger._remove_timecode_outofborders(at);
+		// trigger._remove_timecode_outofborders(at); // unuseful : called in trigger.play()
 		document.CPU.seekElementAt(audiotag, at);
 		trigger.play(event);
 
@@ -244,29 +248,48 @@ const trigger = {
 	 * @param      {Element|undefined}  audiotag  The audiotag
 	 */
 	play : function(event, audiotag=undefined) {
+		function unlock(_e) {
+			trigger._last_play_error = false;
+			trigger.play(_e, audiotag);
+			document.removeEventListener('focus', unlock);
+			document.removeEventListener('click', unlock);
+		}
+
 		if (audiotag === undefined) {
 			audiotag = document.CPU.find_container(event.target).audiotag;
 		}
 
-		try {
-			trigger._remove_timecode_outofborders(audiotag.currentTime);
-			let promised = audiotag.play();
-			if (promised !== undefined) {
-				promised.catch( function(error) {
-					switch (error.name) {
-						case 'NotAllowedError':
-							warn('Auto-play prevented : Browser requires a manual interaction first.');
-							break;
-						case 'NotSupportedError':
-							error('The browser refuses the audio source, probably due to audio format.');
-							break;
-					}
-				});
-			  }
-		} catch (e) {
-
+		if ( (event === undefined) && (trigger._last_play_error)) {
+			error(`play() prevented because already waiting for focus`);
+			window.console.trace();
+			return;
 		}
 
+		trigger._last_play_error = false;
+		trigger._remove_timecode_outofborders(audiotag.currentTime);
+
+		let promised = audiotag.play();
+
+		if (promised !== undefined) {
+			promised.then(
+				_ => {} // noop
+			).catch(
+				error => {
+					trigger._last_play_error = true;
+					switch (error.name) {
+						case 'NotAllowedError':
+							warn(NotAllowedError);
+							document.addEventListener('focus', unlock, {once:true});
+							document.addEventListener('click', unlock, {once:true});
+							# TODO ADD special mode "wait"
+							break;
+						case 'NotSupportedError':
+							error(NotSupportedError);
+							break;
+					}
+				}
+			);
+		}
 		if (document.CPU.global_controller) {
 			let global_controller = document.CPU.global_controller;
 			if  (!audiotag.isEqualNode(global_controller.audiotag)) {
@@ -312,7 +335,7 @@ const trigger = {
 				break;
 			case 32 : // space
 				audiotag.paused ?
-					trigger.play(undefined, audiotag) :
+					trigger.play(event, audiotag) :
 					trigger.pause(undefined, audiotag);
 				break;
 			case 35 : // end
@@ -546,7 +569,7 @@ const trigger = {
 		}
 		// Play the next media in playlist, starting at zero
 		document.CPU.seekElementAt(next_audiotag, 0);
-		trigger.play(undefined, next_audiotag);
+		trigger.play({}, next_audiotag);
 	},
 
 	/**

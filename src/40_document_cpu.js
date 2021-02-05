@@ -20,7 +20,7 @@ HTMLDocument.prototype.CPU = {
 	dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
 	count_element : 0,
 
-	// private, used fto indicate las used audiotag
+	// private, indicate last used audiotag
 	last_used : null,
 
 	// public, playlists
@@ -97,7 +97,7 @@ HTMLDocument.prototype.CPU = {
 		} 
 		let lasttimecode = Number(window.localStorage.getItem(audiotag.currentSrc));
 		// TODO and no hashed time
-		if (lasttimecode > 0) {
+		if ((lasttimecode > 0) && (!trigger._last_play_error)) {
 			document.CPU.seekElementAt(audiotag, lasttimecode);
 			trigger.play(undefined, audiotag);
 		}
@@ -247,7 +247,7 @@ HTMLDocument.prototype.CPU = {
 		let mocked_event = {'target' : audiotag};
 		if (audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {  /*  WHHYYYY ?????? */
 			audiotag.addEventListener('loadedmetadata', do_needle_move , true);
-			audiotag.load();
+			audiotag.load(mocked_event);
 			trigger.update(mocked_event);
 		} else {
 			do_needle_move(mocked_event);
