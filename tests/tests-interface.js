@@ -517,7 +517,6 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.equal(secondary_API_CPU.get_point_panel('hello', 'point'), null, 'get_aside_point_panel() returns null');
 		assert.ok(! secondary_interfacetag.querySelector('aside#aside_«hello» > div#aside_«hello»_point_«point»') , 'DOM element point removed from aside track');
 		assert.ok(! secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > li#panel_«hello»_point_«point»') , 'DOM element point removed from panel');
-
 	});
 
 	QUnit.test( "Public API : clear_plane", function( assert ) {
@@ -586,6 +585,60 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 <a href> → `` (suppress any hyperlink)
 Check that multi-lines is completed with <br />
 		*/
+	});
+
+
+	QUnit.test( "Download audio link ", function( assert ) {
+		let done = assert.async();
+		assert.expect(3);
+		let third_source = 'tests-assets/void';
+		playground.innerHTML = `
+		<cpu-audio>
+			<audio id="secondary" controls="controls" muted>
+				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+			</audio>
+		</cpu-audio>
+		<cpu-audio>
+			<audio id="third" controls="controls" muted>
+				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+				<source src="./${third_source}" data-downloadable />
+			</audio>
+		</cpu-audio>
+		<cpu-audio download="./${third_source}">
+			<audio id="fourth" controls="controls" muted>
+				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+			</audio>
+		</cpu-audio>
+		`;
+
+		function checks() {
+			let secondary_audiotag = document.getElementById('secondary');
+			let secondary_component = secondary_audiotag.closest('cpu-audio');
+			let secondary_API_CPU = secondary_component.CPU;
+			let secondary_download_link = secondary_component.shadowRoot.querySelector('a[download]');
+			secondary_API_CPU.update_links();
+
+			assert.ok(secondary_download_link.href === secondary_audiotag.currentSrc , `By default, download link ( ${secondary_download_link.href} ) is the <audio>.currentSrc ( ${secondary_audiotag.currentSrc} )`);
+
+			let third_audiotag = document.getElementById('third');
+			let third_component = third_audiotag.closest('cpu-audio');
+			let third_API_CPU = third_component.CPU;
+			let third_download_link = third_component.shadowRoot.querySelector('a[download]');
+			third_API_CPU.update_links();
+
+			assert.ok(third_download_link.href.indexOf(third_source) >= 0 , `If indicated, download link ( ${third_download_link.href} ) is taking the prefered <source data-downloadable> ( ${third_source} )`);
+
+			let fourth_component = document.getElementById('fourth').closest('cpu-audio');
+			let fourth_API_CPU = fourth_component.CPU;
+			let fourth_download_link = fourth_component.shadowRoot.querySelector('a[download]');
+			fourth_API_CPU.update_links();
+
+			assert.ok(fourth_download_link.href.indexOf(third_source) >= 0 , `If indicated, download link ( ${fourth_download_link.href} ) is taking the <cpu-audio download="<url>"> ( ${third_source} )`);
+
+			done();
+		}
+		setTimeout(checks, 100);
+		
 	});
 
 

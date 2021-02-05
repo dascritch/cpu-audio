@@ -70,6 +70,7 @@ HTMLDocument.prototype.CPU = {
 		'playlist' : null,
 		'waveform' : null,
 		'duration' : null,
+		'download' : null,
 	},
 
 	/**

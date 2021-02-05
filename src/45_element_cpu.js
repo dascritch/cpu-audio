@@ -343,7 +343,15 @@ class CPU_element_api {
 		ahref('twitter', `https://twitter.com/share?text=${dataset.title}&url=${_url}${_twitter}`);
 		ahref('facebook', `https://www.facebook.com/sharer.php?t=${dataset.title}&u=${_url}`);
 		ahref('email', `mailto:?subject=${dataset.title}&body=${_url}`);
-		ahref('link', this.audiotag.currentSrc);
+		let download_link = this.audiotag.currentSrc
+		if (dataset.download) {
+			download_link = dataset.download;
+		}
+		let prerefed_audio_src = this.audiotag.querySelector('source[data-downloadable]');
+		if (prerefed_audio_src) {
+			download_link = prerefed_audio_src.src;
+		}
+		ahref('link', download_link);
 	}
 
 	/**
