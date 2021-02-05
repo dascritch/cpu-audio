@@ -312,7 +312,8 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 			cpu.keymove = 30;
 			cpu.trigger.foward({target : interfacetag, preventDefault:function(){} });
 			setTimeout(function() {
-				assert.ok(audiotag.currentTime > 30, 'Audio tag is now 30 seconds foward');
+				// Yes, the magic value 29.5s may suprise you, but, if I compare to 30s, Firefox goes sometimes at 29.992729s , and it fall the test !
+				assert.ok(audiotag.currentTime > 29.5, `Audio tag is now 30 seconds foward  (at ${audiotag.currentTime})`);
 				done();
 			}, 100);
 		});
