@@ -6,6 +6,7 @@ New features
 
  * [Native lazy-loading](https://web.dev/native-lazy-loading) of the feature picture.
  * You can [explicitly indicate the downloadable resource](INSTALL.md#Indicate-a-prefered-downloadable-audio-resource) in case you've got DASH or HLS source ([#96](#96)).
+ * Blink to engage to click, for continue an interrupted play ([#93](#93))
 
 
 Corrections

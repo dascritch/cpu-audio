@@ -112,7 +112,7 @@ a {
 }
 
 .act-standby #pause {
-	animation : pulseW 2s infinite;
+	animation : pulse1 2s infinite;
 }
 
 .show-share #pageshare,
@@ -140,21 +140,16 @@ a {
 }
 
 @keyframes pulse0 {
-	0%     {opacity : 0;}
+	17%     {opacity : 0;}
 }
 
 @keyframes pulse1 {
-	33%     {opacity : 0;}
+	50%     {opacity : 0;}
 }
 
 @keyframes pulse2 {
-	66%     {opacity : 0;}
+	83%     {opacity : 0;}
 }
-
-@keyframes pulseW {
-	50%     {opacity : 0.5;}
-}
-
 
 #poster {
 	max-width : var(--cpu-height);

@@ -260,8 +260,7 @@ const trigger = {
 		}
 
 		if ( (event === undefined) && (trigger._last_play_error)) {
-			error(`play() prevented because already waiting for focus`);
-			window.console.trace();
+			warn(`play() prevented because already waiting for focus`);
 			return;
 		}
 
@@ -279,12 +278,10 @@ const trigger = {
 					switch (error.name) {
 						case 'NotAllowedError':
 							warn(NotAllowedError);
-							document.addEventListener('focus', unlock, {once:true});
-							document.addEventListener('click', unlock, {once:true});
-							// TODO ADD special mode "wait"
-							//set_act_container('standby')
+							document.addEventListener('focus', unlock);
+							document.addEventListener('click', unlock);
+
 							if (audiotag.CPU_connected) {
-								warn('audiotag.CPU_controller.CPU.set_act_container')
 								audiotag.CPU_controller().CPU.set_act_container('standby');
 							}
 							break;

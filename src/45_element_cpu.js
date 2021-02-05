@@ -43,7 +43,6 @@ class CPU_element_api {
 	 * @param      {string}  act     can be 'loading', 'pause' or 'play'
 	 */
 	set_act_container(act) {
-		info(`set_act_container(${act})`)
 		this.container.classList.remove(
 			'act-loading',
 			'act-pause',
