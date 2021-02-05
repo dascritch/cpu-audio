@@ -13,13 +13,14 @@ Corrections
 -----------
 
  * Blocked autoplay may do loop on events and stressing reloading audio source ([#93](#93))
- * Use css contain to help browser perfs [#85](#85)
+ * Use css contain to help browser perfs ([#85](#85))
  * Correct play from position on the timeline when metadata not preloaded ([#88](#88))
- * Stop playing an audiotag when scrobbing another one (mainly for Chrome, [#89](#89))
+ * Stop playing an audiotag when scrobbing another one (mainly for Chrome, ([#89](#89)))
  * Removed vestigial elements : Unuseful “elapsed” progress bar and element.CPU.update_buffered() were re-activated during beta and did graphic glitch.
  * Document ways to generate pictures for `waveform=""` attribute.
  * Do not intercept keys when modified (as in <kbd>Alt</kbd>+<kbd>←</kbd> [#98](#98))
  * Have a proper chapters list : <code>nav > ul > li</code>
+ * Some CSS tweaks to help browser perfs ([#85](#85))
 
 
 Back-end
