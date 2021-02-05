@@ -287,6 +287,12 @@ const trigger = {
 	 * @param      {number}  mult    Multiply the keypressed act, 1 by default
 	 */
 	key : function(event, mult=undefined) {
+
+		// do not interpret key when there is a modifier, for not preventing browsers shortcurs
+		if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
+			return;
+		}
+
 		mult = mult === undefined ? 1 : mult;
 		let container = document.CPU.find_container(event.target);
 		let audiotag = container.audiotag;
