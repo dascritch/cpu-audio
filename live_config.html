@@ -63,7 +63,7 @@
 	</label>
 	<p>
 		<span class="what"></span>
-		<label for="is_stream">Is a stream</label> <input id="is_stream" name="is_stream" type="checkbox" value="stream" />, see  <a href="./INSTALL.md#special-case-for-streamed-media"><i>Special case for streamed media</i> in <i>INSTALL.md</i></a>
+		<label for="is_stream">Is a stream</label> <input id="is_stream" name="is_stream" type="checkbox" value="stream" />, see <a href="./INSTALL.md#special-case-for-live-streamed-media"><i>Special case for live streamed media</i> in <i>INSTALL.md</i></a>. Also check how to <a href="./INSTALL.mdiIndicate-a-prefered-downloadable-audio-resource">indicate a prefered downloadable audio resource.</a>
 	</p>
 	<label for="source_vtt">
 		<span>Chapter VTT text file URL</span>
@@ -104,6 +104,10 @@
 	<label for="meta_canonical">
 		<span>Canonical page link</span>
 		<input id="meta_canonical" name="meta_canonical" type="url" placeholder="https://example.com/page.html" />
+	</label>
+	<label for="meta_download">
+		<span>Downloadable audio link</span>
+		<input id="meta_download" name="meta_download" type="url" placeholder="https://example.com/audio.mp3" />
 	</label>
 	<label for="meta_twitter">
 		<span>Twitter handle</span>
@@ -256,7 +260,7 @@ function configurator_html(event) {
 	}
 
 	function adjust_attributes_cpu_audio() {
-		for (let attr of ['mode', 'title', 'poster', 'waveform', 'canonical', 'duration', 'twitter']) {
+		for (let attr of ['mode', 'title', 'poster', 'waveform', 'canonical', 'duration', 'download', 'twitter']) {
 			let value = form_html.querySelector(`[name="meta_${attr}"]`).value;
 			if (value) {
 				cpu_audio_attributes += ` ${attr}="${esc(value)}"`;
