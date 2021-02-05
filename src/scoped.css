@@ -30,9 +30,8 @@
 	border : none;
 	padding : 0;
 	margin : 0;
-	moz-user-select: none;
-	ms-user-select: none;
-	webkit-user-select: none;
+	text-indent: 0;
+	list-style-type: none;
 	user-select: none;
 	transition : 
 				color var(--cpu-color-transitions),
@@ -72,13 +71,6 @@ i, em {
 
 b, strong, h5 a {
 	font-weight: bold;
-}
-
-ul, li {
-   margin:0;
-   padding: 0;
-   text-indent: 0;
-   list-style-type: none;
 }
 
 [src=''] {
