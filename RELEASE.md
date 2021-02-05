@@ -4,7 +4,8 @@ RELEASE NOTES Version 6.5pre
 New features
 ------------
 
- * [Native lazy-loading](https://web.dev/native-lazy-loading) of the feature picture (Chrome only, as today).
+ * [Native lazy-loading](https://web.dev/native-lazy-loading) of the feature picture.
+ * You can explicitly indicate the downloadable resource in case you've got DASH or HLS source ([#96](#96)).
 
 
 Corrections
@@ -17,6 +18,7 @@ Corrections
  * Document ways to generate pictures for `waveform=""` attribute.
  * Do not intercept keys when modified (as in <kbd>Alt</kbd>+<kbd>←</kbd> [#98](#98))
  * Have a proper chapters list : <code>nav > ul > li</code>
+
 
 Back-end
 --------

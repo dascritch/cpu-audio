@@ -53,6 +53,7 @@ Some attributes enhance the component :
 * `title="<string>"` : title of the sound ;
 * `poster="<url>"` : cover image, squared ratio recommended, only in `default` and `compact` modes ;
 * `canonical="<url>"` : link to the original page of the sound ; 
+* `download="<url>"` : link to a downloadable resource for the sound ; 
 * `mode="<string>"` : kind of presentation :
     * `default` : player with poster, timeline and chapters list,
     * `compact` : poster, play/pause button and time indication,
@@ -125,10 +126,47 @@ You can create VTT files with [our online editor](https://dascritch.github.io/cp
 **Note** : The chapters info will only appears with `mode="default"` settings in `<cpu-audio>`.
 
 
-Special case for streamed media
--------------------------------
+Indicate a prefered downloadable audio resource
+-----------------------------------------------
 
-When you put a streamed media as an audio source, some functions in the player will be disabled :
+In case you offer multiple `<source>` to you `<audio>` tag, with DASH or HLS sources alternatives, but there is still downloadable one-file source, you can indicate to the component which link can be downloaded for listening in any app. We have two methods : `download` attribute on `<cpu-audio>`, or add a `data-downloadable` on a `<source>`.
+
+Please note that you **SHOULD NOT** put a `data-streamed` attribute in this case : It would be unuseful.
+
+Here is an example with the `<cpu-audio download="<url>">` method :
+
+```html
+<cpu-audio title="Ex0155 Cyberpunk" canonical="https://cpu.dascritch.net/post/2020/12/17/Ex0155-Cyberpunk" download="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0155-CPU%2817-12-20%29.mp3">
+    <audio controls>
+        <!-- Here is our “streamed” HLS source, linking to a playlist of files -->
+        <source src="https://cpu.dascritch.net/public/Sonores/Emissions/hls/0155-CPU%2817-12-20%29/index.m3u8" type="application/x-mpegurl" />
+        <!-- Here are our conventional, one-file sources -->
+        <source src="https://cpu.dascritch.net/public/Sonores/Emissions/0155-CPU%2817-12-20%29.ogg" type="audio/ogg" />
+        <source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0155-CPU%2817-12-20%29.mp3" type="audio/mp3" />
+    </audio>
+</cpu-audio>
+```
+
+Here is the `<source data-downloadable>` method. It is recommended for dynamic source changes, and will take priority on `<cpu-audio download="<url>">`. Only the first indicated `<source>` will be used :
+
+```html
+<cpu-audio title="Ex0155 Cyberpunk" canonical="https://cpu.dascritch.net/post/2020/12/17/Ex0155-Cyberpunk">
+    <audio controls>
+        <!-- Here is the HLS source -->
+        <source src="https://cpu.dascritch.net/public/Sonores/Emissions/hls/0155-CPU%2817-12-20%29/index.m3u8" type="application/x-mpegurl" />
+        <!-- There, a high-quality ogg source -->
+        <source src="https://cpu.dascritch.net/public/Sonores/Emissions/0155-CPU%2817-12-20%29.ogg" type="audio/ogg" />
+        <!-- And the usual and downloadable mp3 -->
+        <source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0155-CPU%2817-12-20%29.mp3" data-downloadable />
+    </audio>
+</cpu-audio>
+```
+
+
+Special case for live streamed media
+------------------------------------
+
+When you put a live streamed media as an audio source, some functions in the player will be disabled :
 
  - Any time-related position service won't work on this instance :
      - total time indication (obviously),
@@ -146,12 +184,12 @@ Some recommendations :
  - Add a `preload="none"` attribute to your `<audio>` tag, to avoid unuseful buffering.
  - Add a `data-streamed` attribute to your `<audio>` tag, some browsers on some codecs [cannot detect correctly](https://bugzilla.mozilla.org/show_bug.cgi?id=1568527) if a media is streamed and the player may interact not nicely with it.
 
-Here is a nice example :
+Here is a nice example, with a pure streamed source :
 
 ```html
 <cpu-audio title="Radio &lt;FMR&gt;, live from Toulouse France on 89.1 FM" mode="compact" poster="http://radio-fmr.net/param/pix/shared/logofmr.png">
     <audio controls preload="none" data-streamed>
-        <source src="http://stream.radio-fmr.net:8000/radio-fmr.mp3">
+        <source src="http://stream.radio-fmr.net:8000/radio-fmr.mp3" />
     </audio>
 </cpu-audio>
 ```
