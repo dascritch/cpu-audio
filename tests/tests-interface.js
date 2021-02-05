@@ -398,7 +398,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.notEqual(secondary_API_CPU.get_plane('hello'), undefined, 'get_plane() returns object');
 		assert.equal(secondary_API_CPU.get_plane_track('hello').tagName, 'ASIDE', 'get_plane_track() returns DOM element and is a <aside>');
 		assert.equal(secondary_API_CPU.get_plane_panel('hello').tagName, 'DIV', 'get_plane_panel() returns DOM element and is a <div>');
-		assert.equal(secondary_API_CPU.get_plane_nav('hello').tagName, 'NAV', 'get_plane_nav() returns DOM element and is a <nav>');
+		assert.equal(secondary_API_CPU.get_plane_nav('hello').tagName, 'UL', 'get_plane_nav() returns DOM element and is a <ul>');
 	});
 
 	QUnit.test( "Public API : add_plane cannot create an element if a already existing same name exists", function( assert ) {
@@ -476,7 +476,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 		assert.notEqual(secondary_API_CPU.get_point('hello', 'world'), undefined, 'get_point() returns data');
 		assert.ok(secondary_interfacetag.querySelector('aside#track_«hello» > a#track_«hello»_point_«world»') , 'DOM element point added in aside track');
-		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > li > a#panel_«hello»_point_«world»'), 'DOM element point added in panel');
+		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > ul > li > a#panel_«hello»_point_«world»'), 'DOM element point added in panel');
 
 		let point_in_track = secondary_API_CPU.get_point_track('hello', 'world');
 		let point_in_panel = secondary_API_CPU.get_point_panel('hello', 'world');

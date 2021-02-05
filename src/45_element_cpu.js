@@ -488,15 +488,15 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Gets the <nav> plane panel element
+	 * Gets the <nav><ul> plane panel element
 	 * @private
 	 *
 	 * @param      {string}  plane_name   The name
-	 * @return     {Element}    The <nav> element from ShadowDom interface, null if inexisting
+	 * @return     {Element}    The <ul> element from ShadowDom interface, null if inexisting
 	 */
 	get_plane_nav(plane_name) {
 		let panel = this.get_plane_panel(plane_name);
-		return panel ? panel.querySelector(`nav`) : null;
+		return panel ? panel.querySelector(`ul`) : null;
 	}
 
 	/**
@@ -547,7 +547,7 @@ class CPU_element_api {
 			}
 
 			plane_panel.classList.add('panel');
-			let inner = '<nav></nav>';
+			let inner = '<nav><ul></ul></nav>';
 
 			if (data['title'] !== undefined) {
 				inner = `<h6>${escapeHTML(data['title'])}</h6>${inner}`;
@@ -916,6 +916,12 @@ class CPU_element_api {
 		for (let point_name of Object.keys(remove_from_data.points)) {
 			this.remove_point(plane_name, point_name);
 		}
+		// need to repass in case of badly removed / malformed entries
+		let nav = this.get_plane_nav(plane_name);
+		if (nav !== null) {
+			nav.innerHTML = '';	
+		} 
+
 		return true;
 	}
 
