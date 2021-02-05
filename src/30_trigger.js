@@ -281,7 +281,12 @@ const trigger = {
 							warn(NotAllowedError);
 							document.addEventListener('focus', unlock, {once:true});
 							document.addEventListener('click', unlock, {once:true});
-							# TODO ADD special mode "wait"
+							// TODO ADD special mode "wait"
+							//set_act_container('standby')
+							if (audiotag.CPU_connected) {
+								warn('audiotag.CPU_controller.CPU.set_act_container')
+								audiotag.CPU_controller().CPU.set_act_container('standby');
+							}
 							break;
 						case 'NotSupportedError':
 							error(NotSupportedError);

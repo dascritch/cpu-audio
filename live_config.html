@@ -19,6 +19,7 @@
 	<a href="#generated_css">Generated css</a>
 	<span id="spacer">&nbsp;</span>
 	<button type="button" id="do_waiting">Do waiting</button>
+	<button type="button" id="do_standby">Do standby</button>
 	<button type="button" id="do_error">Do error</button>
 </p>
 
@@ -405,6 +406,10 @@ document.addEventListener('DOMContentLoaded', function(){
 		cpu_audio.CPU.audiotag.pause();
 		cpu_audio.CPU.set_act_container('loading');
 	});
+	document.querySelector('#do_standby').addEventListener('click', function() {
+		cpu_audio.CPU.audiotag.pause();
+		cpu_audio.CPU.set_act_container('standby');
+	});	
 	let in_error = false;
 	document.querySelector('#do_error').addEventListener('click', function() {
 		if (!in_error) {

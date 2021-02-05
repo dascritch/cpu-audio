@@ -43,10 +43,12 @@ class CPU_element_api {
 	 * @param      {string}  act     can be 'loading', 'pause' or 'play'
 	 */
 	set_act_container(act) {
+		info(`set_act_container(${act})`)
 		this.container.classList.remove(
 			'act-loading',
 			'act-pause',
-			'act-play'
+			'act-play',
+			'act-standby'
 			);
 		this.container.classList.add(`act-${act}`);
 	}
@@ -87,7 +89,9 @@ class CPU_element_api {
 			return;
 		}
 
-		this.set_act_container(audiotag.paused ? 'pause' : 'play');
+		if (! ((trigger._last_play_error) && (audiotag.paused))) {
+			this.set_act_container(audiotag.paused ? 'pause' : 'play');
+		}
 		let hide_panels_except_play_mark = 'last-used';
 
 		let previous_audiotag = document.CPU.last_used;

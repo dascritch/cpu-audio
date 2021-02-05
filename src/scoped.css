@@ -106,8 +106,13 @@ a {
 
 .act-loading #loading,
 .act-play #play,
+.act-standby #pause,
 .act-pause #pause {
 	display : block;
+}
+
+.act-standby #pause {
+	animation : pulseW 2s infinite;
 }
 
 .show-share #pageshare,
@@ -145,6 +150,11 @@ a {
 @keyframes pulse2 {
 	66%     {opacity : 0;}
 }
+
+@keyframes pulseW {
+	50%     {opacity : 0.5;}
+}
+
 
 #poster {
 	max-width : var(--cpu-height);

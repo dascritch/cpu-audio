@@ -11,6 +11,7 @@ New features
 Corrections
 -----------
 
+ * Blocked autoplay may do loop on events and stressing reloading audio source ([#93](#93))
  * Use css contain to help browser perfs [#85](#85)
  * Correct play from position on the timeline when metadata not preloaded ([#88](#88))
  * Stop playing an audiotag when scrobbing another one (mainly for Chrome, [#89](#89))
