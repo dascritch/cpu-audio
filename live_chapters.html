@@ -36,6 +36,10 @@
             <span>(optional) : URL waveform image</span>
             <input id="source_waveform" name="source_waveform" type="url" />
         </label>
+        <label for="source_webvtt">
+            <span>(optional) : URL WebVTT track to re-edit</span>
+            <input id="source_webvtt" name="source_webvtt" type="url" />
+        </label>
     </fieldset>
 
     <fieldset class="actions">
@@ -109,16 +113,37 @@
 document.location.hash = '#configure'; 
 
 var new_chapter_line;
-var sound_element, list_element, edit_source_audio_element;
+var sound_element, list_element, edit_source_audio_element, edit_source_waveform_element, edit_source_webvtt_element;
+var sound_CPU;
 
 var chapters = [];
 var cues = [];
 
 function set_source_audio() {
     let url = edit_source_audio_element.value;
+    let is_track = sound_element.querySelector('track');
+    sound_CPU = sound_element.CPU_controller().CPU;
     sound_element.src = url;
     sound_element.dataset.title = decodeURIComponent(url.replace(/(^.*\/)([^\/]+)/,'$2'));
     sound_element.dataset.waveform = edit_source_waveform_element.value;
+    if ( (edit_source_webvtt_element.value !== '') && ((is_track === null) || (is_track.src !== edit_source_webvtt_element.value)) ) {
+        for(let t of sound_element.textTracks) {
+            t.mode = 'disabled';
+        }
+        if (is_track !== null) {
+            is_track.remove();
+        }
+        sound_CPU.clear_plane('_chapters');
+
+        let track_element = document.createElement('track');
+        track_element.default = true;
+        track_element.kind = 'chapters';
+        track_element.mode = '';
+        sound_element.appendChild(track_element);
+        track_element.src = edit_source_webvtt_element.value;
+        console.log(edit_source_webvtt_element.value, track_element.src, track_element);
+        sound_CPU.build_chapters_loader();
+    }
  }
 
 function check_configure(event) {
@@ -298,10 +323,12 @@ document.addEventListener('DOMContentLoaded', function(){
     list_element = document.getElementById('list');
     edit_source_audio_element = document.getElementById('source_audio');
     edit_source_waveform_element = document.getElementById('source_waveform');
+    edit_source_webvtt_element = document.getElementById('source_webvtt');
 
     /* Settings */
     edit_source_audio_element.addEventListener('change', set_source_audio);
     edit_source_waveform_element.addEventListener('change', set_source_audio);
+    edit_source_webvtt_element.addEventListener('change', set_source_audio);
     document.getElementById('configure').addEventListener('submit', check_configure);
 
     /* Chapter editor */

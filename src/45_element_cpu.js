@@ -17,6 +17,7 @@ class CPU_element_api {
 		this.current_playlist = [];
 		this._activecue = null;
 		this.mode_was = null;
+		this._loadedmetadata_ev = false;
 		// record some related data on the <audio> tag, outside the dataset scheme
 		if ( (this.audiotag) && (! this.audiotag._CPU_planes)) {
 			this.audiotag._CPU_planes = {}
@@ -983,7 +984,9 @@ class CPU_element_api {
 		class_name = (typeof class_name === 'string') ? class_name : preview_classname;
 		this.remove_highlights_points(class_name, mirror);
 
-		if (!this.get_plane(plane_name)['highlight']) {
+		let check_plane = this.get_plane(plane_name);
+
+		if ((!check_plane) || (!check_plane['highlight'])) {
 			return;
 		}
 
@@ -1146,6 +1149,22 @@ class CPU_element_api {
 
 	}
 
+	build_chapters_loader() {
+		this.build_chapters();
+		let this_build_chapters = this.build_chapters.bind(this);
+		// sometimes, we MAY have loose loading
+
+		if (!this._loadedmetadata_ev) {
+			this.audiotag.addEventListener('loadedmetadata', this_build_chapters, passive_ev);
+			this._loadedmetadata_ev = true;
+		}
+
+		let track_element = this.audiotag.querySelector('track[kind="chapters"]');
+		if ((track_element) && (!track_element._CPU_load_ev)) {
+			track_element._CPU_load_ev = track_element.addEventListener('load', this_build_chapters, passive_ev);
+		}
+	}
+
 	/**
 	 * @brief Builds or refresh the playlist panel. Should be called only for
 	 * <cpu-controller>
@@ -1262,14 +1281,7 @@ class CPU_element_api {
 		timeline_element.addEventListener('contextmenu', this.show_handheld_nav );
 
 		this.show_main();
-		this.build_chapters();
-		let this_build_chapters = this.build_chapters.bind(this);
-		// sometimes, we MAY have loose loading
-		this.audiotag.addEventListener('loadedmetadata', this_build_chapters, passive_ev);
-		let track_element = this.audiotag.querySelector('track[kind="chapters"]');
-		if (track_element) {
-			track_element.addEventListener('load', this_build_chapters, passive_ev);
-		}
+		this.build_chapters_loader();
 
 		this.audiotag.addEventListener('loadedmetadata', this.redraw_all_planes.bind(this), passive_ev);
 

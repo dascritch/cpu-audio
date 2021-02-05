@@ -52,7 +52,6 @@ Some attributes enhance the component :
 
 * `title="<string>"` : title of the sound ;
 * `poster="<url>"` : cover image, squared ratio recommended, only in `default` and `compact` modes ;
-* `waveform="<url>"` : waveform image, will be displayed in the timeline, only in `default` mode ;
 * `canonical="<url>"` : link to the original page of the sound ; 
 * `mode="<string>"` : kind of presentation :
     * `default` : player with poster, timeline and chapters list,
@@ -68,6 +67,7 @@ Some attributes enhance the component :
     * `panels` : any panels as chapters or playlist,
     * `panels-title` : titles of the panels,
     * `panels-except-play` : any panels, except when the module is playing a media (do not use with `panels`) ;
+* `waveform="<url>"` : waveform image, will be displayed in the timeline, only in `default` mode (may be generated with [sox spectrogram](http://sox.sourceforge.net/sox.html) or [audiowaveform](https://github.com/bbc/audiowaveform)) ;
 * `playlist="<string>"` : add this media in a named playlist, play the next one when ended ;
 * `duration="<seconds|coloncoded|humanreadable>"` : force displayed duration instead to load it from the media resource before playing (add a `preload="none"` attribute to the `<audio>` tag) ;
 * `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page).
