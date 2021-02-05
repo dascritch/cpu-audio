@@ -27,7 +27,7 @@ Some links :
 * Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 * [How to participate to this project](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
 
-Version : 6.2 [Licence GPL 3](LICENSE)
+Version : 6.5 [Licence GPL 3](LICENSE)
 
 
 Purpose
@@ -73,13 +73,10 @@ It could have been done via polyfills or frameworks, but I wanted a plain standa
 WebComponents will work mainly on : 
 
 * Google Chrome
-* Firefox (63 +)
-* Safari Mac
+* Firefox
+* Safari 
 * Safari iOS
-
-WebComponent standard won't be implemented, the hash links will work but without the interface :
-
-* Edge
+* Edge (version > 80) 
 
 
 Keyboard functions
