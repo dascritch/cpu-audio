@@ -39,6 +39,10 @@
 				opacity var(--cpu-background-transitions);
 }
 
+.show-no main {
+	visibility : hidden;
+}
+
 main {
 	display : flex;
 	overflow : hidden;

@@ -203,6 +203,9 @@ class CPU_element_api {
 		// Chrome logs an error « Uncaught (in promise) DOMException: Failed to load because no supported source was found. »
 		// but don't update message
 		let audiotag = this.audiotag;
+		if (audiotag === null) {
+			return true;
+		}
 		let error = audiotag.error;
 		if (error !== null) {
 			let error_message;
@@ -364,7 +367,7 @@ class CPU_element_api {
 	 * @param      {string}  mode    The mode, can be 'main', 'share' or 'error'
 	 */
 	show_interface(mode) {
-		this.container.classList.remove('show-main', 'show-share', 'show-error', 'media-streamed');
+		this.container.classList.remove('show-no', 'show-main', 'show-share', 'show-error', 'media-streamed');
 		if (document.CPU.is_audiotag_streamed(this.audiotag)) {
 			this.container.classList.add('media-streamed');
 		}
@@ -1297,7 +1300,15 @@ class CPU_element_api {
 		timeline_element.addEventListener('touchend', trigger.touchcancel, passive_ev);
 		timeline_element.addEventListener('contextmenu', this.show_handheld_nav );
 
+		if (!this.audiotag)  {
+			// <cpu-controller> without <cpu-audio> , see https://github.com/dascritch/cpu-audio/issues/91
+			return;
+		}
+
 		this.show_main();
+		// TODO if mode set to "glow"
+		// this.set_act_container('glow');
+
 		this.build_chapters_loader();
 
 		this.audiotag.addEventListener('loadedmetadata', this.redraw_all_planes.bind(this), passive_ev);

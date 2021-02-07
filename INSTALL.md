@@ -109,6 +109,7 @@ You can invoke a global media controller by creating a `<cpu-controller>` withou
 
 It may be useful if, as [in the CPU website](http://cpu.pm), you have a player in the main content and a cloned one in a fixed element.
 
+Note that a `<cpu-controller>` invoked without any valid `<cpu-audio>` player will just display a plain placeholder, until a vali `<cpu-audio>` is created in the page.
 
 Chapters
 --------
