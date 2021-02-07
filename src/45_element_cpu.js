@@ -47,7 +47,7 @@ class CPU_element_api {
 			'act-loading',
 			'act-pause',
 			'act-play',
-			'act-standby'
+			'act-glow'
 			);
 		this.container.classList.add(`act-${act}`);
 	}

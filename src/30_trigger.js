@@ -282,7 +282,7 @@ const trigger = {
 							document.addEventListener('click', unlock);
 
 							if (audiotag.CPU_connected) {
-								audiotag.CPU_controller().CPU.set_act_container('standby');
+								audiotag.CPU_controller().CPU.set_act_container('glow');
 							}
 							break;
 						case 'NotSupportedError':
