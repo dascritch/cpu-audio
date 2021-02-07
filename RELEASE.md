@@ -21,6 +21,7 @@ Corrections
  * Do not intercept keys when modified (as in <kbd>Alt</kbd>+<kbd>←</kbd> [#98](#98))
  * Have a proper chapters list : <code>nav > ul > li</code>
  * Some CSS tweaks to help browser perfs ([#85](#85))
+ * “wait” animation is now more consistent ([#93](#93))
 
 
 Back-end
