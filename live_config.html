@@ -125,6 +125,12 @@
 		<label for="meta_hide_5" class="inline_block"><input id="meta_hide_5" name="meta_hide[]" type="checkbox" value="panels-title" />Panels' title</label>
 		<label for="meta_hide_6" class="inline_block"><input id="meta_hide_6" name="meta_hide[]" type="checkbox" value="panels-except-play" />Panels except playing</label>
 	</p>
+
+	<p>
+		<span class="what">Glow</span>
+		<label for="meta_glow" class="inline_block"><input id="meta_glow" name="meta_glow" type="checkbox" value="glow" />Glow play button before first play</label>
+	</p>
+
 </fieldset>
 
 <button type="reset">Reset values</button>
@@ -276,6 +282,11 @@ function configurator_html(event) {
 		if (values_hide.length > 0) {
 			cpu_audio_attributes += ` hide="${values_hide.join(' ')}"`;
 		}
+		for (let attr of ['glow']) {
+			if (form_html.querySelector(`[name="meta_${attr}"]`).checked) {
+				cpu_audio_attributes += ` ${attr}`;
+			}
+		} 
 	}
 	function adjust_audio_sources() {
 		for (let attr of ['1', '2', '3', 'vtt']) {

@@ -72,6 +72,7 @@ Some attributes enhance the component :
 * `playlist="<string>"` : add this media in a named playlist, play the next one when ended ;
 * `duration="<seconds|coloncoded|humanreadable>"` : force displayed duration instead to load it from the media resource before playing (add a `preload="none"` attribute to the `<audio>` tag) ;
 * `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page).
+* `glow` : will make the play button glowing before the first play, even if autoplay is not prevented.
 
 
 How to link

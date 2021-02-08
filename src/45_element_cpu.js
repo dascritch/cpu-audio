@@ -14,6 +14,7 @@ class CPU_element_api {
 		this.audiotag =  /** @type {HTMLAudioElement} */ (element._audiotag);
 		this.container = container_interface;
 		this.mode_when_play = null;
+		this.glow_before_play = false;
 		this.current_playlist = [];
 		this._activecue = null;
 		this.mode_was = null;
@@ -40,7 +41,7 @@ class CPU_element_api {
 	 * @brief Change the presentation style reflecting the media tag status
 	 * @public
 	 *
-	 * @param      {string}  act     can be 'loading', 'pause' or 'play'
+	 * @param      {string}  act     can be 'loading', 'pause', 'glow' or 'play'
 	 */
 	set_act_container(act) {
 		this.container.classList.remove(
@@ -105,6 +106,10 @@ class CPU_element_api {
 		} else {
 			if (! this.audiotag.isEqualNode(previous_audiotag)) {
 				this.container.classList.remove(hide_panels_except_play_mark);
+			}
+			// TODO check option
+			if ((!audiotag._CPU_played) && (this.glow_before_play)) {
+				this.set_act_container('glow');
 			}
 		}
 	}
@@ -1306,8 +1311,6 @@ class CPU_element_api {
 		}
 
 		this.show_main();
-		// TODO if mode set to "glow"
-		// this.set_act_container('glow');
 
 		this.build_chapters_loader();
 

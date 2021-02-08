@@ -119,9 +119,9 @@ HTMLDocument.prototype.CPU = {
 		// see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events for list of events
 		[
 			'ready', 'load', 'loadeddata', 'canplay', 'abort', 
-			'error', /*'stalled',*/ /*'suspend',*/ 'emptied',
+			'error', 'emptied',
 			'play', 'playing', 'pause', 'ended',
-			'durationchange',  'loadedmetadata', /*'progress',*/ 'timeupdate', 'waiting'
+			'durationchange',  'loadedmetadata', 'timeupdate', 'waiting'
 		].forEach( function(on){ 
 			audiotag.addEventListener(on, trigger.update); 
 		});

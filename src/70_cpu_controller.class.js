@@ -71,6 +71,12 @@ class CpuControllerElement extends HTMLElement {
 			interface_classlist.add('hasnativeshare');
 			this.CPU.elements['nativeshare'].addEventListener('click', trigger.native_share);
 		}
+
+		if (this.getAttribute('glow') !== null) {
+			this.CPU.glow_before_play=true;
+			this.CPU.update_playbutton();
+		}
+
 	}
 
 	disconnectedCallback() {

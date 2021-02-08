@@ -520,6 +520,7 @@ const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	update : function(event) {
+		// info(`update ${event.type}`)
 		let audiotag = event.target;
 
 		if ((trigger._timecode_end !== false) && (audiotag.currentTime > trigger._timecode_end)) {
