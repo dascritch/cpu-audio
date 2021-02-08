@@ -23,9 +23,10 @@ Some links :
     * [Live configuration](https://dascritch.github.io/cpu-audio/LIVE)
 * [JS installable code](https://dascritch.github.io/cpu-audio/dist/cpu-audio.js) 
 * [Code repository](https://github.com/dascritch/cpu-audio/), [Latest stable release](https://github.com/dascritch/cpu-audio/releases/latest)
-* Blog posts about its creation and development : [Série cpu-audio sur dascritch.net](https://dascritch.net/serie/cpu-audio)
-* Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 * [How to participate to this project](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
+* Blog posts about its creation and development : [Série cpu-audio sur dascritch.net](https://dascritch.net/serie/cpu-audio)
+* [How to cite a podcast](https://www.buzzsprout.com/blog/cite-podcast), now you can support time positions URL
+* Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 
 Version : 6.5 [Licence GPL 3](LICENSE)
 
@@ -70,12 +71,11 @@ Features
 
 It could have been done via polyfills or frameworks, but I wanted a plain standard, vanilla javascript, easy to install and configure.
 
-WebComponents will work mainly on : 
+WebComponents will work on : 
 
-* Google Chrome
+* Chrome
 * Firefox
-* Safari 
-* Safari iOS
+* Safari
 * Edge (version > 80) 
 
 
