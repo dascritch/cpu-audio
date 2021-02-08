@@ -133,11 +133,11 @@ Indicate a prefered downloadable audio resource
 
 The player will check which audio source is used, to link it as downloadable. By example, if you set a source in `.mp3` format and another one in `.ogg` format, the browsers will get the `.ogg` files as source, except Safari who can only play the `.mp3` one. So the “*download*” link in the player will be `.ogg` except for Safari, getting the `.mp3` instead.
 
-In case you offer multiple `<source>` to your `<audio>` tag (by example, you can offer DASH or HLS sources alternatives), but there is still a downloadable one-file source, you can indicate to the component which link can be downloaded for listening in any app. 
+In case you offer multiple `<source>` to your `<audio>` tag (by example, you can offer DASH or HLS “streamed” sources alternatives, but your `index.mpd` or `index.m3u8` won't be useful to your visitors), but there is still a downloadable one-file source, you can indicate to the component which link can be downloaded for listening in any app. 
 
 We have two methods : `download` attribute on `<cpu-audio>`, or add a `data-downloadable` on a `<source>`.
 
-Please note that you **SHOULD NOT** put a `data-streamed` attribute in this case : It would be unuseful.
+Please note that you **SHOULD NOT** put a `data-streamed` attribute in this case : It would be unuseful, as it blocks access to the download link.
 
 Here is an example with the `<cpu-audio download="<url>">` method :
 
