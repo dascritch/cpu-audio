@@ -22,6 +22,7 @@ Corrections
  * Have a proper chapters list : <code>nav > ul > li</code>
  * Some CSS tweaks to help browser perfs ([#85](#85))
  * “wait” animation is now more consistent ([#93](#93))
+ * Reducing repaint calls ([#28](#28))
 
 
 Back-end
