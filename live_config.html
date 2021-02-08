@@ -299,11 +299,11 @@ function configurator_html(event) {
 			let value = form_html.querySelector(`[name="source_${attr}"]`).value;
 			if (value) {
 				if (attr === 'vtt') {
-					audio_sources += `\n      <track src="${esc(value)}" kind="chapters" default />`;
+					audio_sources += `\n\t\t<track src="${esc(value)}" kind="chapters" default />`;
 				} else {
 					let kind = form_html.querySelector(`[for="source_${attr}"] select`);
 					has_one_source = true;
-					audio_sources += `\n      <source src="${esc(value)}" type="${esc(kind.value)}" />`;
+					audio_sources += `\n\t\t<source src="${esc(value)}" type="${esc(kind.value)}" />`;
 				}
 			}
 		}
@@ -326,7 +326,7 @@ function configurator_html(event) {
 
 	let code = `<cpu-audio${cpu_audio_attributes}>
 	<audio controls id="sound"${audio_attribs}>${audio_sources}
-	</audio>
+\t</audio>
 </cpu-audio>`;
 	document.getElementById('demo').innerHTML = code;
 	document.getElementById('code').innerText = code;
