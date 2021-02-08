@@ -1,6 +1,8 @@
 Troubleshoots
 -------------
 
+- [Chrome, Chromium and Safari aren't firing any error messages](https://github.com/dascritch/cpu-audio/issues/24) if the audio source cannot be loaded (bad declaration, CSP/CORS). If your player stays indefinetively in "loading" mode, please try with Firefox.
+
 - Audio and track files may not be able to download if served from another server : See your CORS, or [add a `crossorigin=""` attribute on `<audio>`](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes)
 
 - Hide an element only if the chapter track of a player is properly displayed. This one is tricky.
