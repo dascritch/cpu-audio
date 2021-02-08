@@ -1244,7 +1244,7 @@ class CPU_element_api {
 		// hide broken image when not loaded
 		this.elements['poster'].addEventListener('load', function () {
 			controller.elements['interface'].classList.add('poster-loaded'); 
-		});
+		}, passive_ev);
 
 		let cliquables = {
 			'pause'     : trigger.play,
@@ -1256,7 +1256,7 @@ class CPU_element_api {
 			'restart'   : trigger.restart,
 		};
 		for (let that in cliquables) {
-			this.elements[that].addEventListener('click', cliquables[that]);
+			this.elements[that].addEventListener('click', cliquables[that], passive_ev);
 		}
 
 		// handheld nav to allow long press to repeat action
