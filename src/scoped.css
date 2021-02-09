@@ -37,8 +37,6 @@
 				color var(--cpu-color-transitions),
 				background-color var(--cpu-background-transitions),
 				opacity var(--cpu-background-transitions);
-	--focus-bg : var(--cpu-focus-background, var(--cpu-color));
-	--focus-cl : var(--cpu-focus-color, var(--cpu-background));
 }
 
 .show-no main {
@@ -66,10 +64,6 @@ svg {
 	height : var(--cpu-height);
 }
 
-a:hover, a:focus, button:hover, button:focus {
-	color : var(--focus-cl);
-	background : var(--focus-bg);
-}
 
 i, em {
 	font-style: italic;
@@ -315,10 +309,6 @@ aside.ticker a.active-cue span {
 	display : inline-block;
 }
 
-.with-preview {
-	color: var(--focus-cl) !important;
-	background : white !important;
-}
 
 .act-loading #loadingline {
 	background : repeating-linear-gradient(45deg, var(--cpu-color) 0, var(--cpu-background) 15px, var(--cpu-color) 30px);
@@ -374,10 +364,6 @@ aside.ticker a.active-cue span {
 	text-overflow : clip;
 }
 
-#pageshare a:hover, #pageshare a:focus, #pageshare div:hover {
-	color : var(--focus-cl);
-	background : var(--focus-bg);
-}
 
 #pageshare svg {
 	vertical-align : middle;
@@ -456,10 +442,6 @@ h6 {
 	display : flex;
 	margin : 0px;
 	padding : 2px
-}
-.active-cue {
-	background : var(--focus-cl);
-	color : var(--focus-bg) !important; /* dirty but fastest */
 }
 
 .cue strong {
@@ -586,4 +568,12 @@ aside a, h6, .cue time
 	#interface {
 		display : none;
 	}
+}
+
+a:hover, a:focus, button:hover, button:focus,
+#pageshare div:hover ,
+.active-cue, /* can now ride off its !important on color */
+.with-preview /* !important still needed to simplify css */ {
+	background: var(--cpu-focus-background, var(--cpu-color)) !important;
+	color : var(--cpu-focus-color, var(--cpu-background)) !important;
 }
