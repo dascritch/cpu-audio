@@ -1,5 +1,5 @@
-RELEASE NOTES Version 6.5
-=========================
+RELEASE NOTES Version 6.5.1
+===========================
 
 New features
 ------------

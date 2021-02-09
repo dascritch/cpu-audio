@@ -1,7 +1,7 @@
 (function(){/*
 
 Cpu-Audio: an extension to the hash system to address timecode into audio/video elements.
-Version 6.5
+Version 6.5.1
 Copyright (C) 2014-2021 Xavier "dascritch" Mouton-Dubosc & contributors.
 License GNU GPL 3
 
