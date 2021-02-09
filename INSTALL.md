@@ -206,25 +206,27 @@ Personnalization via CSS variables
 
 You can change some presentation features of the interface [with CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables). Check their effects [with the live editor](https://dascritch.github.io/cpu-audio/LIVE)
 
-Variable name               | Description                                       | Default value 
-----------------------------|---------------------------------------------------|---------------------------------------------------------------------------------
-`--cpu-background`          | Background, except playing or in error            | `#555`
-`--cpu-color`               | Color, except playing                             | `#ddd`
-`--cpu-color-transitions`   | Colors (text and background) transitions duration | `0s`
-`--cpu-elapse-width`        | Time indicator width                              | `185px` (`160px` under 640px width, `80px` under 480px, `0` under 320px)
-`--cpu-error-background`    | Background when there is a media error            | `#a00`
-`--cpu-error-color`         | Color when there is a media error                 | `#ff7`
-`--cpu-font-family`         | Font families                                     | `Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif`
-`--cpu-font-size`           | Font size                                         | `15px`
-`--cpu-font-small-size`     | Small font size                                   | `calc(var(--cpu-font-size) * 0.8)`
-`--cpu-height`              | Height and width of the square buttons            | `64px` (`48px` under 640px width)
-`--cpu-inner-shadow`        | Shadow between horizontal panels                  | `inset 0px 5px 10px -5px black`
-`--cpu-playing-background`  | Background while playing                          | `#444`
-`--cpu-playing-color`       | Color while playing                               | `#fff`
-`--cpu-popup-background`    | Background for the time pointer                   | `#aaa`
-`--cpu-popup-color`         | Text color for the time pointer                   | `#333`
+Variable name               | Description                                        | Default value 
+----------------------------|----------------------------------------------------|---------------------------------------------------------------------------------
+`--cpu-background`          | Background, except playing or in error             | `#555`
+`--cpu-color`               | Color, except playing                              | `#ddd`
+`--cpu-color-transitions`   | Colors (text and background) transitions duration  | `0s`
+`--cpu-elapse-width`        | Time indicator width                               | `185px` (`160px` under 640px width, `80px` under 480px, `0` under 320px)
+`--cpu-error-background`    | Background when there is a media error             | `#a00`
+`--cpu-error-color`         | Color when there is a media error                  | `#ff7`
+`--cpu-font-family`         | Font families                                      | `Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif`
+`--cpu-font-size`           | Font size                                          | `15px`
+`--cpu-font-small-size`     | Small font size                                    | `calc(var(--cpu-font-size) * 0.8)`
+`--cpu-height`              | Height and width of the square buttons             | `64px` (`48px` under 640px width)
+`--cpu-inner-shadow`        | Shadow between horizontal panels                   | `inset 0px 5px 10px -5px black`
+`--cpu-playing-background`  | Background while playing                           | `#444`
+`--cpu-playing-color`       | Color while playing                                | `#fff`
+`--cpu-focus-background`    | Background when an active element is hover/focused | Current color definition
+`--cpu-focus-color`         | Color when an active element is hover/focused      | Current background definition
+`--cpu-popup-background`    | Background for the time pointer                    | `#aaa`
+`--cpu-popup-color`         | Text color for the time pointer                    | `#333`
 
-Some color/background values are not recommended, as `currentColor` and `transparent`.
+Some color/background values are not recommended, as `currentColor` and `transparent` ([explained here in French](https://dascritch.net/post/2019/11/13/Deux-couleurs-bizarres-en-CSS)), except if you also define `--cpu-focus-background` and `--cpu-focus-color` to address accessibility issues.
 
 
 Using classes on host page
