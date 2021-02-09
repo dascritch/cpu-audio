@@ -18,6 +18,8 @@ class CPU_element_api {
 		this.current_playlist = [];
 		this._activecue = null;
 		this.mode_was = null;
+		this.act_was = null;
+		this.elapse_was = null;
 		this._loadedmetadata_ev = false;
 		// record some related data on the <audio> tag, outside the dataset scheme
 		if ( (this.audiotag) && (! this.audiotag._CPU_planes)) {
@@ -33,9 +35,12 @@ class CPU_element_api {
 	 */
 	set_mode_container(mode=null) {
 		mode = mode !== null ? mode : 'default';
+		if (this.mode_was === mode) {
+			return;
+		}
 		this.container.classList.remove(`mode-${this.mode_was}`);
-		this.mode_was = mode;
 		this.container.classList.add(`mode-${mode}`);
+		this.mode_was = mode;
 	}
 	/**
 	 * @brief Change the presentation style reflecting the media tag status
@@ -44,6 +49,9 @@ class CPU_element_api {
 	 * @param      {string}  act     can be 'loading', 'pause', 'glow' or 'play'
 	 */
 	set_act_container(act) {
+		if (this.act_was === act) {
+			return;
+		}
 		this.container.classList.remove(
 			'act-loading',
 			'act-pause',
@@ -51,6 +59,7 @@ class CPU_element_api {
 			'act-glow'
 			);
 		this.container.classList.add(`act-${act}`);
+		this.act_was = act;
 	}
 	/**
 	 * @brief Hide some blocks in the interface, used for `hide=""` attribute
@@ -159,7 +168,12 @@ class CPU_element_api {
 		}
 		 
 		let colon_time = convert.SecondsInColonTime(audiotag.currentTime);
-		elapse_element.innerHTML = document.CPU.is_audiotag_streamed(audiotag) ? colon_time :`${colon_time}<span class="nosmaller">\u00a0/\u00a0${total_duration}</span>`;
+		let innerHTML = document.CPU.is_audiotag_streamed(audiotag) ? colon_time :`${colon_time}<span class="nosmaller">\u00a0/\u00a0${total_duration}</span>`;
+
+		if (this.elapse_was !== innerHTML) {
+			elapse_element.innerHTML = innerHTML;
+			this.elapse_was = innerHTML;
+		}
 
 		this.update_line('loading', audiotag.currentTime);
 	}
