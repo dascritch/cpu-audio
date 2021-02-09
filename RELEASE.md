@@ -7,6 +7,7 @@ New features
  * [Native lazy-loading](https://web.dev/native-lazy-loading) of the feature picture.
  * You can [explicitly indicate the downloadable resource](INSTALL.md#Indicate-a-prefered-downloadable-audio-resource) in case you've got DASH or HLS source ([#12](#12) and [#96](#96)).
  * Blink to engage to click, optional or to continue an interrupted play ([#93](#93))
+ * Color and background on `hover:`/`focus:` may be declared, overruled with `--cpu-focus-color` and `--cpu-focus-background` ([#99](#99))
 
 
 Corrections
