@@ -12,6 +12,7 @@ New features
 Corrections
 -----------
 
+ * Action icon is a three-dots instead of a share ([#92](#92))
  * Blocked autoplay may do loop on events and stressing reloading audio source ([#93](#93))
  * Use css contain to help browser perfs ([#85](#85))
  * Correct play from position on the timeline when metadata not preloaded ([#88](#88))
