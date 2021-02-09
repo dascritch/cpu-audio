@@ -621,12 +621,12 @@ const trigger = {
 	 */
 	native_share : function(event) {
 		let dataset = document.CPU.find_container(event.target).fetch_audiotag_dataset();;
-		event.preventDefault();
 		navigator.share({
 			'title': dataset.title,
 			'text': dataset.title,
 			'url': dataset.canonical
 		});
+		event.preventDefault();
 	},
 
 	_show_alternate_nav : null,
