@@ -185,6 +185,11 @@
 		<input name="css_playing-color" type="color" value="#ffffff" />
 		<input name="css_playing-background" type="color" value="#444444" />
 	</label>
+	<label for="css_playing-background">
+		<span>Alternate focus colours</span>
+		<input name="css_focus-color" type="color" value="#555555" />
+		<input name="css_focus-background" type="color" value="#dddddd" />
+	</label>
 	<label for="css_popup-background">
 		<span>Colours for the time pointer</span>
 		<input name="css_popup-color" type="color" value="#aaaaaa" />
@@ -345,7 +350,7 @@ function configurator_css(event) {
 
 	let css = '';
 	let attrs = ['font-family', 'inner-shadow' ,'color-transitions','background-transitions' ];
-	for (let key of ['','error-','playing-','popup-']) {
+	for (let key of ['','error-','playing-','focus-','popup-']) {
 		for (let attr of ['color','background']) {
 			attrs.push(`${key}${attr}`);
 		}
