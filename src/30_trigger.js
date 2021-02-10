@@ -184,8 +184,8 @@ const trigger = {
 				'offsetX' : event.offsetX,
 				'target'  : event.target
 			};
-			let recall_me = function(){ 
-					trigger.throbble(recreated_event); 
+			let recall_me = function() { 
+				trigger.throbble(recreated_event); 
 				audiotag.removeEventListener(expected_event, recall_me); 
 			};
 			audiotag.addEventListener(expected_event, recall_me);

@@ -964,7 +964,7 @@ class CPU_element_api {
 	 * @private
 	 */
 	undraw_all_planes() {
-		querySelector_apply('aside , div.panel', function(element) { element.remove(); }, this.container);
+		querySelector_apply('aside, div.panel', (element) => { element.remove(); }, this.container);
 	}
 
 	/**
@@ -992,10 +992,7 @@ class CPU_element_api {
 	remove_highlights_points(class_name=undefined, mirror=undefined) {
 		mirror = mirror === undefined ? true : mirror;
 		class_name = (typeof class_name === 'string') ? class_name : preview_classname;
-		querySelector_apply(`.${class_name}`,function (element) {
-				element.classList.remove(class_name);
-			},this.container);
-
+		querySelector_apply(`.${class_name}`,(element) => { element.classList.remove(class_name); },this.container);
 		if (
 			(mirror) &&
 			(document.CPU.global_controller !== null) &&
@@ -1251,12 +1248,10 @@ class CPU_element_api {
 
 		// the following mess is to simplify sub-element declaration and selection
 		let controller = this;
-		querySelector_apply('[id]', function (element) {
-			controller.elements[element.id] = element;
-		}, this.element.shadowRoot);
+		querySelector_apply('[id]', (element) => { controller.elements[element.id] = element; }, this.element.shadowRoot);
 
 		// hide broken image when not loaded
-		this.elements['poster'].addEventListener('load', function () {
+		this.elements['poster'].addEventListener('load', () => {
 			controller.elements['interface'].classList.add('poster-loaded'); 
 		}, passive_ev);
 
