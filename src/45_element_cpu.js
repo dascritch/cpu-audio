@@ -510,6 +510,17 @@ class CPU_element_api {
 	}
 
 	/**
+	 * Gets the plane ticker element
+	 * @private
+	 *
+	 * @param      {string}  plane_name   The name
+	 * @return     {Element}    The <aside class="ticker"> track element from ShadowDom interface
+	 */
+	get_plane_ticker(plane_name) {
+		return this.elements['line'].querySelector(`#ticker_«${plane_name}»`);
+	}
+
+	/**
 	 * Gets the plane panel element
 	 * @private
 	 *
@@ -543,6 +554,10 @@ class CPU_element_api {
 		if (plane_track) {
 			plane_track.remove();
 		}
+		let plane_ticker = this.get_plane_ticker(plane_name);
+		if (plane_ticker) {
+			plane_ticker.remove();
+		}
 		let plane_panel = this.get_plane_panel(plane_name);
 		if (plane_panel) {
 			plane_panel.remove();
@@ -567,9 +582,19 @@ class CPU_element_api {
 			if (data.track !== true) {
 				plane_track.classList.add(data.track);
 			}
-			
 			this.elements['line'].appendChild(plane_track);
 			assign_events(plane_track);
+		}
+
+		if (data.ticker !== false) {
+			plane_ticker = document.createElement('aside');
+			plane_ticker.id = `ticker_«${plane_name}»`;
+			plane_ticker.classList.add('ticker', 'nosmaller');
+			if (data.track !== true) {
+				plane_ticker.classList.add(data.track);
+			}
+			this.elements['line'].appendChild(plane_ticker);
+			// assign_events(plane_track);
 		}
 
 		if (data.panel !== false) {
@@ -627,6 +652,7 @@ class CPU_element_api {
 		let default_values = {
 			'track'     : true,
 			'panel'     : true,
+			'ticker'    : false,
 			'title'     : title,
 			'highlight' : true,
 			'points'    : {}
@@ -1042,6 +1068,22 @@ class CPU_element_api {
 			}
 		}
 
+		let ticker_element = this.get_plane_ticker(plane_name);
+		if (ticker_element) {
+			let data = this.get_point(plane_name, point_name);
+			ticker_element.innerHTML = '';
+			let spanned = document.createElement('span');
+			// I KNOW this part is really ugly
+			spanned.style.position = 'absolute';
+			ticker_element.appendChild(spanned);
+			spanned.innerHTML = data['text'];
+			let pos = 50 * (data['end'] + data['start']) / this.audiotag.duration;
+			spanned.style.left = `calc(${pos}% - ${spanned.clientWidth/2}px)`;
+			// if we're under 0 , then min at 0
+			// if we're upper than 100%,etc ... good luck !
+			// TODO if we have a callback function, we call it for drawing
+		}
+
 		if (
 			(mirror) &&
 			(document.CPU.global_controller !== null) &&
@@ -1159,8 +1201,7 @@ class CPU_element_api {
 					}
 
 					if (chapter_track) {
-						self.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
-						//self.add_plane(plane_name, __['chapters'], {'track' : 'ticker'});
+						self.add_plane(plane_name, __['chapters'], {'track' : 'chapters', 'ticker' : true});
 						self.clear_plane(plane_name);
 						_build_from_track(chapter_track)
 					}
