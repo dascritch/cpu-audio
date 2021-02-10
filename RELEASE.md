@@ -4,7 +4,7 @@ RELEASE NOTES Version 6.6pre
 New features
 ------------
 
- * ([#99](#99))
+ * Colour of the chapter lines under the time-line in now configurable (`--cpu-cue`)
 
 
 Corrections

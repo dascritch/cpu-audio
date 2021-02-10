@@ -225,6 +225,7 @@ Variable name               | Description                                       
 `--cpu-focus-color`         | Color when an active element is hover/focused      | Current background definition
 `--cpu-popup-background`    | Background for the time pointer                    | `#aaa`
 `--cpu-popup-color`         | Text color for the time pointer                    | `#333`
+`--cpu-cue`                 | Color for the chapter lines under the time-line    | `#000`
 
 Some color/background values are not recommended, as `currentColor` and `transparent` ([explained here in French](https://dascritch.net/post/2019/11/13/Deux-couleurs-bizarres-en-CSS)), except if you also define `--cpu-focus-background` and `--cpu-focus-color` to address accessibility issues.
 

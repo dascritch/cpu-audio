@@ -253,7 +253,7 @@ aside.chapters {
 }
 
 aside.chapters a {
-	background : black;
+	background : var(--cpu-cue);
 	height : 2px;
 	border : 1px solid var(--cpu-background);
 }
