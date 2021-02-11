@@ -565,7 +565,7 @@ class CPU_element_api {
 			plane_track = document.createElement('aside');
 			plane_track.id = `track_«${plane_name}»`;
 			if (data.track !== true) {
-				plane_track.classList.add(data.track);
+				plane_track.classList.add(data.track.split(' '));
 			}
 			
 			this.elements['line'].appendChild(plane_track);
@@ -576,7 +576,7 @@ class CPU_element_api {
 			plane_panel = document.createElement('div');
 			plane_panel.id = `panel_«${plane_name}»`;
 			if (data.panel !== true) {
-				plane_panel.classList.add(data.panel);
+				plane_panel.classList.add(data.panel.split(' '));
 			}
 
 			plane_panel.classList.add('panel');
@@ -606,8 +606,8 @@ class CPU_element_api {
 	 *
 	 * @param      {string}   plane_name  A name in the range /[a-zA-Z0-9\-_]+/
 	 * @param      {string}   title       The displayed title for the panel
-	 * @param      {Object}   data        { track : true/false/classname , 
-	 * 										panel : true/false/classname , 
+	 * @param      {Object}   data        { track : true/false/classnames , 
+	 * 										panel : true/false/classnames , 
 	 * 										highlight : true/false }
 	 *
 	 * @return     {boolean}  success
@@ -1159,8 +1159,8 @@ class CPU_element_api {
 					}
 
 					if (chapter_track) {
-						self.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
-						//self.add_plane(plane_name, __['chapters'], {'track' : 'ticker'});
+						// self.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
+						self.add_plane(plane_name, __['chapters'], {'track' : 'ticker nosmaller'});  // 
 						self.clear_plane(plane_name);
 						_build_from_track(chapter_track)
 					}
