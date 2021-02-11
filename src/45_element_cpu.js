@@ -127,12 +127,11 @@ class CPU_element_api {
 	 * @brief	update time-line length
 	 * @private
 	 *
-	 * @param      {string}  type     line to impact
+	 * @param      {string}  type     line to impact. Can be 'elapsed' or 'loading'
 	 * @param      {number}  seconds  The seconds
 	 * @param      {number|undefined=}  ratio    ratio position in case time position are still unknown
 	 */
-	update_line(type, seconds, ratio) {
-		// type = 'elapsed', 'loading'
+	update_line(type, seconds, ratio=undefined) {
 		if (ratio === undefined) {
 			let duration = this.audiotag.duration;
 			ratio = duration === 0 ? 0 : (100*seconds / duration);
@@ -253,6 +252,10 @@ class CPU_element_api {
 		return false;
 	}
 
+	has_ticker_planes() {
+		return this.elements['about'].querySelector('.ticker')
+	}
+
 	/**
 	 * Displays a text in the infoline and covers the ticker line. Or hide it
 	 * @public
@@ -260,12 +263,14 @@ class CPU_element_api {
 	 * @param      {string} 			text     	HTML text to display. Or hide it if empty
 
 	**/
-	ticker_flash(text) {
+	ticker_flash(text='') {
 		let indication_classname = 'flash';
 		let indicate_on = this.elements['about'];
 		if (text) {
 			indicate_on.classList.add(indication_classname);
-			window.setTimeout(() => {this.ticker_flash()}, 2000, this);
+			if (this.has_ticker_planes()) {
+				window.setTimeout(() => {this.ticker_flash()}, 2000, this);
+			}
 		} else {
 			indicate_on.classList.remove(indication_classname);
 			text = '';
@@ -294,7 +299,7 @@ class CPU_element_api {
 	 * @param      {float|undefined}   	seconds_begin   Starts position in seconds, do not apply if undefined
 	 * @param      {float|undefined}   	seconds_end     Ends position in seconds, do not apply if undefined
 	 */	
-	timeline_position(element, seconds_begin, seconds_end) {
+	timeline_position(element, seconds_begin=undefined, seconds_end=undefined) {
 		function is_seconds(sec) {
 			// completely ugly... « WAT » as in https://www.destroyallsoftware.com/talks/wat
 			return ((sec !== undefined) && (sec !== false));
@@ -1034,6 +1039,7 @@ class CPU_element_api {
 		mirror = mirror === undefined ? true : mirror;
 		class_name = (typeof class_name === 'string') ? class_name : preview_classname;
 		querySelector_apply(`.${class_name}`,(element) => { element.classList.remove(class_name); },this.container);
+		this.ticker_flash('');
 		if (
 			(mirror) &&
 			(document.CPU.global_controller !== null) &&
@@ -1108,8 +1114,7 @@ class CPU_element_api {
 		// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
 		// this junk to NOT repaint 4 times the same active chapter
 		try {
-			let activecue;
-			activecue = event.target.activeCues[0];
+			let activecue = event.target.activeCues[0];
 			if (Object.is(activecue, this._activecue)) {
 				return ;
 			}
