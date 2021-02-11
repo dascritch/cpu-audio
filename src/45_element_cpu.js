@@ -490,6 +490,21 @@ class CPU_element_api {
 		event.preventDefault();
 	}
 
+	inject_css(style_key, css) {
+		this.remove_css(style_key);
+		let element = document.createElement('style');
+		element.id = `style_${style_key}`;
+		element.innerHTML = css;
+		this.container.appendChild(element);
+	}
+
+	remove_css(style_key) {
+		let element = this.container.querySelector(`#style_${style_key}`);
+		if (element) {
+			element.remove();
+		}
+	}
+
 	/**
 	 * @brief Adds an identifier to audiotag at build time.
 	 * @private

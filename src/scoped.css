@@ -176,11 +176,12 @@ a {
 	flex : 1 1 auto;
 	position : relative;
 }
+/*
 #about {
 	overflow : hidden;
 	display:flex;
 	flex-direction : column;
-}
+}*/
 #title {
 	overflow: hidden;
 	text-overflow : '…';

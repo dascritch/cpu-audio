@@ -123,6 +123,23 @@ function set_source_audio() {
     let url = edit_source_audio_element.value;
     let is_track = sound_element.querySelector('track');
     sound_CPU = sound_element.CPU_controller().CPU;
+    sound_CPU.add_plane('cursors', 'MODE PREVIEW', {track   : 'cursors', panel   : true});
+    sound_CPU.inject_css('cursors', `
+        .cursors {
+            left: -6px;
+        }
+        .cursors a {
+            height: 12px;
+            width: 12px;
+            position: relative;
+            display : inline-block;
+        }
+        .cursors img {
+            height: 12px;
+            width: 12px;
+        }
+    `);
+
     sound_element.src = url;
     sound_element.dataset.title = decodeURIComponent(url.replace(/(^.*\/)([^\/]+)/,'$2'));
     sound_element.dataset.waveform = edit_source_waveform_element.value;
@@ -141,7 +158,6 @@ function set_source_audio() {
         track_element.mode = '';
         sound_element.appendChild(track_element);
         track_element.src = edit_source_webvtt_element.value;
-        console.log(edit_source_webvtt_element.value, track_element.src, track_element);
         sound_CPU.build_chapters_loader();
     }
  }
@@ -156,6 +172,7 @@ function add_line() {
     let line = document.createElement('p');
     line.innerHTML = new_chapter_line;
     document.getElementById('list').appendChild(line);
+    // set time to the current audio time 
 }
 
 
@@ -229,12 +246,21 @@ function interpret_form(event) {
             // no time code ? do not record this one
             return ;
         }
+        let seconds = Math.floor(document.CPU.convert.TimeInSeconds( time ));
+        let text = this_line_element.querySelector('[type="text"]').value;
         let this_line_data = {
             code: time,
-            time: Math.floor(document.CPU.convert.TimeInSeconds( time )),
-            text: this_line_element.querySelector('[type="text"]').value
+            time: seconds,
+            text: text
         };
         chapters.push(this_line_data);
+
+        sound_CPU.add_point('cursors', seconds, `id${seconds}`,{  
+                // arrow credit : https://thenounproject.com/search/?q=arrow+up&i=3523491 
+                'image' : 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9JzMwMHB4JyB3aWR0aD0nMzAwcHgnICBmaWxsPSIjMDAwMDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTAwIDEwMCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PGc+PHBhdGggZD0iTTUwLjMzNiwzMS44MTZDNDkuNDMsMzEuODIsNDguNiwzMi4yLDQ4LjAyNSwzMi44OEwyNC4yMDgsNjEuMDYzYy0xLjA2OSwxLjI2Ni0wLjkxLDMuMTU4LDAuMzU1LDQuMjI4ICAgYzEuMjY2LDEuMDcxLDMuMTU5LDAuOTEsNC4yMjgtMC4zNTRsMjEuNDk0LTI1LjQzNmwyMC44OTgsMjUuNDA1QzcxLjc3Niw2NS42MjcsNzIuNjM2LDY2LDczLjUwMiw2NiAgIGMwLjY3LDAsMS4zNDYtMC4yMjQsMS45MDQtMC42ODRjMS4yOC0xLjA1MiwxLjQ2NC0yLjk0MiwwLjQxMS00LjIyM0w1Mi42MzMsMzIuOTFDNTIuMDY4LDMyLjIyNCw1MS4yMjcsMzEuODIyLDUwLjMzNiwzMS44MTZ6Ij48L3BhdGg+PC9nPjwvc3ZnPg==',
+                'text' : text,
+                // 'link' : function(){} ? 
+                 });
 
         /** TODO : Reordinate by timestamp **/
         /** TODO : Add a .end **/
@@ -298,6 +324,7 @@ function interpret_form(event) {
     event.preventDefault();
     reorder_lines();
     chapters = [];
+    sound_CPU.clear_plane('cursors');
     Array.from(list_element.querySelectorAll('p')).forEach(interpret_line);
     let html_source =  build_html_source();
     if (chapters.length === 0) {
