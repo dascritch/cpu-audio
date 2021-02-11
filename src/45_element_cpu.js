@@ -252,6 +252,27 @@ class CPU_element_api {
 		}
 		return false;
 	}
+
+	/**
+	 * Displays a text in the infoline and covers the ticker line. Or hide it
+	 * @public
+	 *
+	 * @param      {string} 			text     	HTML text to display. Or hide it if empty
+
+	**/
+	ticker_flash(text) {
+		let indication_classname = 'flash';
+		let indicate_on = this.elements['about'];
+		if (text) {
+			indicate_on.classList.add(indication_classname);
+			window.setTimeout(() => {this.ticker_flash()}, 2000, this);
+		} else {
+			indicate_on.classList.remove(indication_classname);
+			text = '';
+		}
+		this.elements['infoline'].innerHTML = text;
+	}
+
 	/**
 	 * @brief Will refresh player interface at each time change (a lot)
 	 *
@@ -1062,6 +1083,8 @@ class CPU_element_api {
 			}
 		}
 
+		this.ticker_flash(this.get_point(plane_name, point_name)['text']);
+
 		if (
 			(mirror) &&
 			(document.CPU.global_controller !== null) &&
@@ -1091,12 +1114,14 @@ class CPU_element_api {
 				return ;
 			}
 			this._activecue = activecue;
+			this.ticker_flash(activecue['text']);
 			// do NOT tell me this is ugly, i know this is ugly. I missed something better
 		} catch (error) {
 
 		}
 
 		trigger.cuechange(event, this.elements['interface']);
+		
 	}
 	/**
 	 * @brief Builds or refresh chapters interface.
@@ -1180,7 +1205,6 @@ class CPU_element_api {
 
 					if (chapter_track) {
 						self.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
-						// self.add_plane(plane_name+'-2', __['chapters'], {'track' : 'ticker nosmaller'});  // 
 						self.clear_plane(plane_name);
 						_build_from_track(chapter_track)
 					}

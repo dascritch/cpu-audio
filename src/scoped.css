@@ -232,7 +232,7 @@ main:focus #loadingline:after {
 	opacity : 1;
 }
 
-aside {
+aside, #infoline {
 	position : absolute;
 	width : 100%;
 }
@@ -245,7 +245,6 @@ aside a {
 aside a span {
 	display : none;
 }
-
 
 aside.chapters {
 	height : 2px;
@@ -295,7 +294,7 @@ aside.borders a:after {
 
 aside.ticker {
 	height : 16px;
-	top : 30px; /* var(--cpu-timeline-height) + var(--cpu-font-size) - diff-small */
+	top : 30px; 
 }
 
 aside.ticker a.active-cue {
@@ -309,6 +308,14 @@ aside.ticker a.active-cue span {
 	display : inline-block;
 }
 
+#infoline {
+	height : 0px;
+	top : 14px;
+}
+
+.flash #infoline {
+	height : 16px;
+}
 
 .act-loading #loadingline {
 	background : repeating-linear-gradient(45deg, var(--cpu-color) 0, var(--cpu-background) 15px, var(--cpu-color) 30px);
@@ -453,7 +460,7 @@ h6 {
 	text-align : right;
 }
 
-aside a, h6, .cue time , aside.ticker *
+aside a, h6, .cue time , aside.ticker *, #infoline, #infoline *
 {
 	font-size : var(--cpu-font-small-size);
 }
