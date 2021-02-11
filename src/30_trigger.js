@@ -199,7 +199,7 @@ const trigger = {
 			at = event.at;
 		} else {
 			// normal usage, via an event
-			let ratio = event.offsetX  / target.clientWidth;
+			let ratio = event.offsetX / target.clientWidth;
 			at = ratio * audiotag.duration;
 		}
 		// trigger._remove_timecode_outofborders(at); // unuseful : called in trigger.play()

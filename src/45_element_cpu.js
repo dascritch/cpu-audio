@@ -266,6 +266,29 @@ class CPU_element_api {
 	}
 
 	/**
+	 * Position an element in the timeline, on its time
+	 * @private
+	 *
+	 * @param      {element} 			element     	Element to impact, should be in #time
+	 * @param      {float|undefined}   	seconds_begin   Starts position in seconds, do not apply if undefined
+	 * @param      {float|undefined}   	seconds_end     Ends position in seconds, do not apply if undefined
+	 */	
+	timeline_position(element, seconds_begin, seconds_end) {
+		function is_seconds(sec) {
+			// completely ugly... « WAT » as in https://www.destroyallsoftware.com/talks/wat
+			return ((sec !== undefined) && (sec !== false));
+		}
+		let duration = this.audiotag.duration;
+		if (is_seconds(seconds_begin)) {
+			element.style.left =  `${100 * (seconds_begin / duration)}%`;
+		}
+		if (is_seconds(seconds_end)) {
+			element.style.right = `${100 - 100 * (seconds_end / duration)}%`;
+		}
+		
+	}
+
+	/**
 	 * @brief Shows the throbber at.
 	 *
 	 * @public
@@ -281,7 +304,7 @@ class CPU_element_api {
 		let elapse_element = this.elements['line'];
 
 		phylactere.style.opacity = 1;
-		phylactere.style.left = (100 * seeked_time / this.audiotag.duration) +'%';
+		this.timeline_position(phylactere, seeked_time);
 		phylactere.innerHTML = convert.SecondsInColonTime(seeked_time);
 		phylactere.dateTime = convert.SecondsInTime(seeked_time).toUpperCase();
 	}
@@ -826,10 +849,7 @@ class CPU_element_api {
 
 			track.appendChild(point_element);
 			
-			point_element.style.left = `${100 * (data['start'] / audio_duration)}%`;
-			if (data['end']) {
-				point_element.style.right = `${100 - 100 *( data['end'] / audio_duration)}%`;
-			}
+			this.timeline_position(point_element, data['start'], data['end']);
 		}
 		
 		if (panel) {
@@ -1159,8 +1179,8 @@ class CPU_element_api {
 					}
 
 					if (chapter_track) {
-						// self.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
-						self.add_plane(plane_name, __['chapters'], {'track' : 'ticker nosmaller'});  // 
+						self.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
+						// self.add_plane(plane_name+'-2', __['chapters'], {'track' : 'ticker nosmaller'});  // 
 						self.clear_plane(plane_name);
 						_build_from_track(chapter_track)
 					}
