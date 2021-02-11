@@ -176,6 +176,11 @@ a {
 	flex : 1 1 auto;
 	position : relative;
 }
+#about {
+	overflow : hidden;
+	display:flex;
+	flex-direction : column;
+}
 #title {
 	overflow: hidden;
 	text-overflow : '…';
@@ -232,7 +237,7 @@ main:focus #loadingline:after {
 	opacity : 1;
 }
 
-aside, #infoline {
+aside {
 	position : absolute;
 	width : 100%;
 }
@@ -248,7 +253,7 @@ aside a span {
 
 aside.chapters {
 	height : 2px;
-	bottom : -2px;
+	/* bottom : -2px; */
 }
 
 aside.chapters a {
@@ -308,14 +313,12 @@ aside.ticker a.active-cue span {
 	display : inline-block;
 }
 
+/*
 #infoline {
-	height : 0px;
-	top : 14px;
+	flex: 0 0 auto;
+	min-height : 14px;
 }
-
-.flash #infoline {
-	height : 16px;
-}
+*/
 
 .act-loading #loadingline {
 	background : repeating-linear-gradient(45deg, var(--cpu-color) 0, var(--cpu-background) 15px, var(--cpu-color) 30px);
@@ -460,7 +463,7 @@ h6 {
 	text-align : right;
 }
 
-aside a, h6, .cue time , aside.ticker *, #infoline, #infoline *
+aside a, h6, .cue time , aside.ticker * /*, #infoline, #infoline * */
 {
 	font-size : var(--cpu-font-small-size);
 }

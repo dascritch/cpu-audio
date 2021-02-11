@@ -257,19 +257,22 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Displays a text in the infoline and covers the ticker line. Or hide it
+	 * Displays a text in the infoline or hide it
 	 * @public
 	 *
 	 * @param      {string} 			text     	HTML text to display. Or hide it if empty
+	 * @param      {boolean} 			priority   	If set to true, will hide any track, else, will not be displayed if there is a track
 
 	**/
-	ticker_flash(text='') {
+	/*
+	flash(text='') {
+		// I still need to complete https://codepen.io/GoOz/pen/QWGGgOo
 		let indication_classname = 'flash';
 		let indicate_on = this.elements['about'];
 		if (text) {
 			indicate_on.classList.add(indication_classname);
 			if (this.has_ticker_planes()) {
-				window.setTimeout(() => {this.ticker_flash()}, 2000, this);
+				// window.setTimeout(() => {this.flash()}, 2000, this);
 			}
 		} else {
 			indicate_on.classList.remove(indication_classname);
@@ -277,6 +280,7 @@ class CPU_element_api {
 		}
 		this.elements['infoline'].innerHTML = text;
 	}
+	*/
 
 	/**
 	 * @brief Will refresh player interface at each time change (a lot)
@@ -1039,7 +1043,7 @@ class CPU_element_api {
 		mirror = mirror === undefined ? true : mirror;
 		class_name = (typeof class_name === 'string') ? class_name : preview_classname;
 		querySelector_apply(`.${class_name}`,(element) => { element.classList.remove(class_name); },this.container);
-		this.ticker_flash('');
+		// this.flash(''); // we have a change : redisplay the playing cue text. Not so easy
 		if (
 			(mirror) &&
 			(document.CPU.global_controller !== null) &&
@@ -1089,7 +1093,12 @@ class CPU_element_api {
 			}
 		}
 
-		this.ticker_flash(this.get_point(plane_name, point_name)['text']);
+		/* we need to keep the actual flash message, to recall it
+		let point = this.get_point(plane_name, point_name);
+		if (point) {
+			this.flash(point['text']); 
+		}
+		*/
 
 		if (
 			(mirror) &&
@@ -1119,7 +1128,7 @@ class CPU_element_api {
 				return ;
 			}
 			this._activecue = activecue;
-			this.ticker_flash(activecue['text']);
+			//this.flash(activecue['text']);
 			// do NOT tell me this is ugly, i know this is ugly. I missed something better
 		} catch (error) {
 
