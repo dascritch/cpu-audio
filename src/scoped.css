@@ -453,7 +453,7 @@ h6 {
 	text-align : right;
 }
 
-aside a, h6, .cue time
+aside a, h6, .cue time , aside.ticker *
 {
 	font-size : var(--cpu-font-small-size);
 }
