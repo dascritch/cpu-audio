@@ -711,18 +711,11 @@ class CPU_element_api {
 	 *
 	 * @param      {string}  plane_name  The plane name
 	 * @param      {string}  point_name  The point name
-	 * @param      {boolean} type        Is panel (0), track (1) or ticker (2)
+	 * @param      {boolean} panel       Is panel (true) or track (false)
 	 * @return     {string}  The point track identifier.
 	 */
-	get_point_id(plane_name, point_name, type) {
-		let mode = 'panel';
-		if (type === 1) {
-			mode = 'track';
-		}
-		if (type === 2) {
-			mode = 'ticker';
-		}
-		return `${mode}_«${plane_name}»_point_«${point_name}»`;
+	get_point_id(plane_name, point_name, panel) {
+		return `${panel?'panel':'track'}_«${plane_name}»_point_«${point_name}»`;
 	}
 
 	/**
@@ -746,19 +739,7 @@ class CPU_element_api {
 	 * @return     {Element}    The <div> point element into <aside> from ShadowDom interface
 	 */
 	get_point_track(plane_name, point_name) {
-		return this.elements['line'].querySelector('#' + this.get_point_id(plane_name, point_name, 1));
-	}
-
-	/**
-	 * Gets the point element in the ticker
-	 * @private
-	 *
-	 * @param      {string}  plane_name   The plane
-	 * @param      {string}  point_name   The point
-	 * @return     {Element}    The <div> point element into <aside.ticker> from ShadowDom interface
-	 */
-	get_point_ticker(plane_name, point_name) {
-		return this.elements['line'].querySelector('#' + this.get_point_id(plane_name, point_name, 2));
+		return this.elements['line'].querySelector('#' + this.get_point_id(plane_name, point_name, false));
 	}
 
 	/**
@@ -770,7 +751,7 @@ class CPU_element_api {
 	 * @return     {Element}    The <li> point element into panel from ShadowDom interface
 	 */
 	get_point_panel(plane_name, point_name) {
-		return this.container.querySelector('#' + this.get_point_id(plane_name, point_name, 0));
+		return this.container.querySelector('#' + this.get_point_id(plane_name, point_name, true));
 	}
 
 	/**
@@ -847,17 +828,15 @@ class CPU_element_api {
 		let audiotag = this.audiotag ? this.audiotag : document.CPU.global_controller.audiotag;
 		let audio_duration = audiotag.duration;
 		let track = this.get_plane_track(plane_name);
-		let ticker = this.get_plane_ticker(plane_name);
 		let panel = this.get_plane_nav(plane_name);
 
-		let intended_ticker_id = this.get_point_id(plane_name, point_name, 2);
-		let intended_track_id = this.get_point_id(plane_name, point_name, 1);
-		let intended_panel_id = this.get_point_id(plane_name, point_name, 0);
+		let intended_track_id = this.get_point_id(plane_name, point_name, false);
+		let intended_panel_id = this.get_point_id(plane_name, point_name, true);
 
 		if (track) {
 			let point_element = document.createElement('a');
-			point_element.tabIndex = -1;
 			point_element.id = intended_track_id;
+			point_element.tabIndex = -1;
 
 			if (data['link'] !== false) {
 				point_element.href = `#${audiotag.id}&t=${data['start']}`;
@@ -870,7 +849,6 @@ class CPU_element_api {
 			inner += `<span>${data['text']}</span>`;
 			point_element.innerHTML = inner;
 			point_element.title = point_element.innerText;
-			point_element.classList.add('trac');
 
 			track.appendChild(point_element);
 			
@@ -878,32 +856,6 @@ class CPU_element_api {
 			if (data['end']) {
 				point_element.style.right = `${100 - 100 *( data['end'] / audio_duration)}%`;
 			}
-		}
-
-		if (ticker) {
-			let point_element = document.createElement('a');
-			point_element.tabIndex = -1;
-			point_element.id = intended_ticker_id;
- 
- 			let inner = '';
-			if (data['image']) {
-				inner = `<img src="${data['image']}" alt="">`;
-			}
-			inner += `<span>${data['text']}</span>`;
-			point_element.innerHTML = inner;
-			ticker.appendChild(point_element);
-			let anchor = 'at_start';
-			if (data['start'] < (audio_duration/2)) {
-				point_element.style.left = `${100 *( data['start'] / audio_duration)}%`;
-			} else {
-				anchor = 'at_stop';
-				let pos = '0';
-				if (data['end']) {
-					pos = `${100 - 100 *( data['end'] / audio_duration)}%`;
-				}
-				point_element.style.right = pos;
-			}
-			point_element.classList.add('tick', anchor);
 		}
 		
 		if (panel) {
@@ -1118,10 +1070,18 @@ class CPU_element_api {
 
 		let ticker_element = this.get_plane_ticker(plane_name);
 		if (ticker_element) {
-			let point_panel = this.get_point_ticker(plane_name, point_name);
-			if (point_panel) {
-				point_panel.classList.add(class_name);
-			}
+			let data = this.get_point(plane_name, point_name);
+			ticker_element.innerHTML = '';
+			let spanned = document.createElement('span');
+			// I KNOW this part is really ugly
+			spanned.style.position = 'absolute';
+			ticker_element.appendChild(spanned);
+			spanned.innerHTML = data['text'];
+			let pos = 50 * (data['end'] + data['start']) / this.audiotag.duration;
+			spanned.style.left = `calc(${pos}% - ${spanned.clientWidth/2}px)`;
+			// if we're under 0 , then min at 0
+			// if we're upper than 100%,etc ... good luck !
+			// TODO if we have a callback function, we call it for drawing
 		}
 
 		if (

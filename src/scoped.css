@@ -252,7 +252,7 @@ aside.chapters {
 	bottom : -2px;
 }
 
-/*aside.chapters a*/.trac {
+aside.chapters a {
 	background : var(--cpu-cue);
 	height : 2px;
 	border : 1px solid var(--cpu-background);
@@ -298,32 +298,14 @@ aside.ticker {
 	top : 30px; /* var(--cpu-timeline-height) + var(--cpu-font-size) - diff-small */
 }
 
-.tick {
-	width : 50%;
-	display : block;
-	position : absolute;
-	opacity : 0;
-	padding : 0 4px;
-}
-
-.tick.at_start {
-	border-left: var(--cpu-color) 2px solid;
-}
-
-.tick.at_stop {
-	text-align : right;
-	border-right: var(--cpu-color) 2px solid;
-}
-
-.tick.active-cue {
-	opacity : 1;
-	/*left : 0px !important;
-	right : 0px !important;*/
+aside.ticker a.active-cue {
+	left : 0px !important;
+	right : 0px !important;
 	background : inherit !important;
 	color : inherit !important; /* I know */
 }
 
-.tick.active-cue span {
+aside.ticker a.active-cue span {
 	display : inline-block;
 }
 
