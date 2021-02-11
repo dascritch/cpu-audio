@@ -101,7 +101,6 @@ remove_highlights_points(class, mirror)      |         | Remove any highlights o
 key         | type              | default value | usage
 ------------|-------------------|---------------|-------
 track       | boolean or string | `true`        | Create a track in the time line, or precise the kind (`chapters`, `borders`, `ticker` (⁵)), or presentation restriction (`nosmall`, `nosmaller`, `nosmallest`)
-ticker      | boolean or string | `false`       | Create a ticker in the band under time-line, or precise the kind (`chapters`, `borders`, `ticker` (⁵)), or presentation restriction (`nosmall`, `nosmaller`, `nosmallest`)
 panel       | boolean or string | `true`        | Create a panel under the player, or precise presentation restriction (`nosmall`, `nosmaller`, `nosmallest`)
 highlight   | boolean           | `true`        | Points of this annotation plane can be highlighted with the mouse
 

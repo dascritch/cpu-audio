@@ -65,7 +65,6 @@ Some attributes enhance the component :
     * `actions` : the share button,
     * `chapters` : the chapters list (think to do not include a `<track kind="chapters">` file ^^;),
     * `timeline` : the time-line element, including chapter marks,
-    * `tickers` : the tickers band just under the time-line,
     * `panels` : any panels as chapters or playlist,
     * `panels-title` : titles of the panels,
     * `panels-except-play` : any panels, except when the module is playing a media (do not use with `panels`) ;
