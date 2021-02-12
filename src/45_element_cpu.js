@@ -959,6 +959,34 @@ class CPU_element_api {
 
 		return true;
 	}
+
+	/**
+	 * @brief Add an annotation
+	 * @public
+	 *
+	 * @param      {string}   plane_name      The existing plane name
+	 * @param      {string}   point_name      The existing point name
+	 * @param      {Object}   data            { 'image' : <url>, 
+	 * 											'link' : <url>/true (in audio)/false (none), 
+	 * 											'text' : <text>, 
+	 * 											'start'  : <seconds>, 
+	 * 											'end'  : <seconds> }
+	 *										  will only change keys in the list
+	 *
+	 * @return     {boolean}  success
+	 */
+	edit_point(plane_name, point_name, data) {
+		let original_data = this.get_point(plane_name, point_name);
+		for (let key in original_data) {
+			if (key in data) {
+				original_data[key] = data[key];
+			}
+		}
+		
+		this.audiotag._CPU_planes[plane_name].points[point_name] = data;
+		this.draw_point(plane_name, point_name);
+	}
+
 	/**
 	 * @brief Remove an point from an annotation plane
 	 * @public

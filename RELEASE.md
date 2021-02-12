@@ -5,7 +5,7 @@ New features
 ------------
 
  * Colour of the chapter lines under the time-line in now configurable (`--cpu-cue`)
-
+ * Live chapter editor has been revised
 
 Corrections
 -----------

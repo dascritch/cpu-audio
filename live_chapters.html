@@ -59,11 +59,11 @@
     </fieldset>
 
     <fieldset id="list">
-        <p class="line">
+        <p class="line" id="line-0">
             <button type="button" class="test">Test</button>
             <button type="button" class="set">Set</button>
             <input class="timecode_input" inputmode="numeric" pattern="^([0-5]?[0-9]:){0,2}[0-5]?[0-9]$" placeholder="00:00:00" size="8" />
-            <input type="text" placeholder="Chapter name" />
+            <input class="text_input" type="text" placeholder="Chapter name" />
             <button type="button" class="remove"><strong>×</strong> Remove</button>
         </p>
     </fieldset>
@@ -115,6 +115,7 @@ document.location.hash = '#configure';
 var new_chapter_line;
 var sound_element, list_element, edit_source_audio_element, edit_source_waveform_element, edit_source_webvtt_element;
 var sound_CPU;
+var line_number = 1;
 
 var chapters = [];
 var cues = [];
@@ -122,7 +123,7 @@ var cues = [];
 function set_source_audio() {
     let url = edit_source_audio_element.value;
     let is_track = sound_element.querySelector('track');
-    sound_CPU = sound_element.CPU_controller().CPU;
+    
     sound_CPU.add_plane('cursors', 'MODE PREVIEW', {track   : 'cursors', panel   : true});
     sound_CPU.inject_css('cursors', `
         .cursors {
@@ -174,8 +175,11 @@ function currentTime_in_colon() {
 
 function add_line() {
     let line = document.createElement('p');
+    line.id = `line-${line_number++}`;
     line.innerHTML = new_chapter_line;
+    line.classList.add('line');
     line.querySelector('.timecode_input').value = currentTime_in_colon();
+    add_events_line(line);
     document.getElementById('list').appendChild(line);
     // set time to the current audio time 
 }
@@ -234,6 +238,57 @@ function check_for_actions(event) {
     }
 }
 
+function interpret_line(this_line_element) {
+    let time = this_line_element.querySelector('.timecode_input').value;
+    if (time === '') {
+        // no time code ? do not record this one
+        return ;
+    }
+    let seconds = Math.floor(document.CPU.convert.TimeInSeconds( time ));
+    let text = this_line_element.querySelector('[type="text"]').value;
+    let this_line_data = {
+        code: time,
+        time: seconds,
+        text: text
+    };
+    chapters.push(this_line_data);
+
+    let data = {  
+            // arrow credit : https://thenounproject.com/search/?q=arrow+up&i=3523491 
+            'image' : 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9JzMwMHB4JyB3aWR0aD0nMzAwcHgnICBmaWxsPSIjMDAwMDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTAwIDEwMCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PGc+PHBhdGggZD0iTTUwLjMzNiwzMS44MTZDNDkuNDMsMzEuODIsNDguNiwzMi4yLDQ4LjAyNSwzMi44OEwyNC4yMDgsNjEuMDYzYy0xLjA2OSwxLjI2Ni0wLjkxLDMuMTU4LDAuMzU1LDQuMjI4ICAgYzEuMjY2LDEuMDcxLDMuMTU5LDAuOTEsNC4yMjgtMC4zNTRsMjEuNDk0LTI1LjQzNmwyMC44OTgsMjUuNDA1QzcxLjc3Niw2NS42MjcsNzIuNjM2LDY2LDczLjUwMiw2NiAgIGMwLjY3LDAsMS4zNDYtMC4yMjQsMS45MDQtMC42ODRjMS4yOC0xLjA1MiwxLjQ2NC0yLjk0MiwwLjQxMS00LjIyM0w1Mi42MzMsMzIuOTFDNTIuMDY4LDMyLjIyNCw1MS4yMjcsMzEuODIyLDUwLjMzNiwzMS44MTZ6Ij48L3BhdGg+PC9nPjwvc3ZnPg==',
+            'text' : text,
+            // 'link' : function(){} ? 
+    }
+
+    if ((! sound_CPU.get_plane('cursors')) || (! sound_CPU.get_point('cursors', this_line_element.id))) {
+        sound_CPU.add_point('cursors', seconds, this_line_element.id, data);
+    } else {
+        data.start = seconds;
+        sound_CPU.edit_point('cursors', this_line_element.id, data);
+    }
+
+    
+
+    /** TODO : Reordinate by timestamp **/
+    /** TODO : Add a .end **/
+}
+
+function event_line(event) {
+    let this_line_element = event.target;
+    if (this_line_element.tagName !== 'P' ) {
+        this_line_element = this_line_element.closest('p');
+    }
+    interpret_line(this_line_element);
+    sound_CPU.draw_point('cursors', this_line_element.id)
+
+}
+
+function add_events_line(line) {
+
+    line.addEventListener('input', event_line);
+    // line.querySelector('.timecode_input').addEventListener('input', event_line);
+    // line.querySelector('.text_input').addEventListener('input', event_line);
+}
 
 function interpret_form(event) {
     let data;
@@ -243,32 +298,6 @@ function interpret_form(event) {
         data = new Blob([text], {type: 'text/plain'});
         let textFile = window.URL.createObjectURL(data);
         return textFile;
-    }
-
-    function interpret_line(this_line_element) {
-        let time = this_line_element.querySelector('.timecode_input').value;
-        if (time === '') {
-            // no time code ? do not record this one
-            return ;
-        }
-        let seconds = Math.floor(document.CPU.convert.TimeInSeconds( time ));
-        let text = this_line_element.querySelector('[type="text"]').value;
-        let this_line_data = {
-            code: time,
-            time: seconds,
-            text: text
-        };
-        chapters.push(this_line_data);
-
-        sound_CPU.add_point('cursors', seconds, `id${seconds}`,{  
-                // arrow credit : https://thenounproject.com/search/?q=arrow+up&i=3523491 
-                'image' : 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9JzMwMHB4JyB3aWR0aD0nMzAwcHgnICBmaWxsPSIjMDAwMDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTAwIDEwMCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PGc+PHBhdGggZD0iTTUwLjMzNiwzMS44MTZDNDkuNDMsMzEuODIsNDguNiwzMi4yLDQ4LjAyNSwzMi44OEwyNC4yMDgsNjEuMDYzYy0xLjA2OSwxLjI2Ni0wLjkxLDMuMTU4LDAuMzU1LDQuMjI4ICAgYzEuMjY2LDEuMDcxLDMuMTU5LDAuOTEsNC4yMjgtMC4zNTRsMjEuNDk0LTI1LjQzNmwyMC44OTgsMjUuNDA1QzcxLjc3Niw2NS42MjcsNzIuNjM2LDY2LDczLjUwMiw2NiAgIGMwLjY3LDAsMS4zNDYtMC4yMjQsMS45MDQtMC42ODRjMS4yOC0xLjA1MiwxLjQ2NC0yLjk0MiwwLjQxMS00LjIyM0w1Mi42MzMsMzIuOTFDNTIuMDY4LDMyLjIyNCw1MS4yMjcsMzEuODIyLDUwLjMzNiwzMS44MTZ6Ij48L3BhdGg+PC9nPjwvc3ZnPg==',
-                'text' : text,
-                // 'link' : function(){} ? 
-                 });
-
-        /** TODO : Reordinate by timestamp **/
-        /** TODO : Add a .end **/
     }
 
     function build_html_source() {
@@ -310,6 +339,8 @@ function interpret_form(event) {
     }
 
     function rebuild_track_and_display() {
+        // no more need to rebuild it
+        return;
         /* Something is missing in the W3C spec... */
         let comp_cpu = document.querySelector('cpu-audio').CPU;
         let plane = 'chapters';
@@ -345,14 +376,15 @@ function interpret_form(event) {
     let vtt_virtual_file = prepare_export_file(vtt);
     document.getElementById('vtt_source_download').href = vtt_virtual_file;
     document.getElementById('vtt_source_download').download = sound_element.dataset.title.replace(/(.*)(\.(ogg|mp3|wav|flac|mp4|aac))$/,'$1') + '.vtt';
-    // update tracklist in cpu-audio . To be done
-    rebuild_track_and_display();
+    // update emuled tracklist in cpu-audio 
+    // rebuild_track_and_display();
     document.location.hash = '#generated_html';
 }
 
 document.addEventListener('DOMContentLoaded', function(){
     sound_element = document.getElementById('sound');
     list_element = document.getElementById('list');
+    sound_CPU = sound_element.CPU_controller().CPU;
     edit_source_audio_element = document.getElementById('source_audio');
     edit_source_waveform_element = document.getElementById('source_waveform');
     edit_source_webvtt_element = document.getElementById('source_webvtt');
@@ -364,6 +396,7 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('configure').addEventListener('submit', check_configure);
 
     /* Chapter editor */
+    add_events_line(document.querySelector('p.line'));
     new_chapter_line = document.querySelector('p.line').innerHTML;
     document.getElementById('add').addEventListener('click', add_line);
     document.getElementById('reorder').addEventListener('click', reorder_lines);

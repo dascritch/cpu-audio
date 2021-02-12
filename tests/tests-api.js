@@ -109,6 +109,8 @@ window.addEventListener('load', function() {
 			'add_plane',
 			'remove_plane',
 			'add_point',
+			'get_point',
+			'edit_point',
 			'remove_point',
 			'clear_plane',
 			'redraw_all_planes',
