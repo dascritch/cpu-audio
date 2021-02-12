@@ -168,9 +168,14 @@ function check_configure(event) {
     document.location.hash = '#edit_chapters';
 }
 
+function currentTime_in_colon() {
+    return document.CPU.convert.SecondsInPaddledColonTime(sound_element.currentTime);
+}
+
 function add_line() {
     let line = document.createElement('p');
     line.innerHTML = new_chapter_line;
+    line.querySelector('.timecode_input').value = currentTime_in_colon();
     document.getElementById('list').appendChild(line);
     // set time to the current audio time 
 }
@@ -219,7 +224,7 @@ function check_for_actions(event) {
                 document.CPU.jumpIdAt('sound', document.CPU.convert.TimeInSeconds(this_line_time_element.value));
                 break ;
             case 'set' : 
-                this_line_time_element.value = document.CPU.convert.SecondsInPaddledColonTime(sound_element.currentTime);
+                this_line_time_element.value = currentTime_in_colon();
                 break ;
             case 'remove' :
                 this_line_element.remove();
