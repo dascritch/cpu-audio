@@ -850,6 +850,20 @@ class CPU_element_api {
 	}
 
 	/**
+	 * Resort points of a plane by start-time
+	 * @private
+	 */
+	plane_resort(plane_name) {
+		// ok, i found it on https://stackoverflow.com/questions/1069666/sorting-object-property-by-values#answer-1069840
+		function compare_points_start(point_a, point_b) {
+			return point_a[1].start - point_b[1].start;
+		}
+		this.audiotag._CPU_planes[plane_name].points = Object.fromEntries(
+		    Object.entries(this.audiotag._CPU_planes[plane_name].points).sort(compare_points_start)
+		);
+	}
+
+	/**
 	 * Draws a plane point
 	 * @private
 	 *
@@ -1051,6 +1065,19 @@ class CPU_element_api {
 		return true;
 	}
 
+	/**
+	 * Refresh a plane
+	 * @public
+	 *
+	 * @param      {string}  plane_name  The plane name
+	 */
+	refresh_plane(plane_name) {
+		this.plane_resort(plane_name);
+		for (let point_name of Object.keys(this.audiotag._CPU_planes[plane_name].points)) {
+			this.draw_point(plane_name, point_name);
+		}
+	}
+
 
 	/**
 	 * Clean up DOM elements of any annotations, before rebuild them
@@ -1069,9 +1096,7 @@ class CPU_element_api {
 		this.undraw_all_planes()
 		for (let plane_name of Object.keys(this.audiotag._CPU_planes)) {
 			this.draw_plane(plane_name);
-			for (let point_name of Object.keys(this.audiotag._CPU_planes[plane_name].points)) {
-				this.draw_point(plane_name, point_name);
-			}
+			this.refresh_plane(plane_name);
 		}
 	}
 
