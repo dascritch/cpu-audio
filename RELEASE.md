@@ -6,17 +6,19 @@ New features
 
  * Colour of the chapter lines under the time-line in now configurable (`--cpu-cue`)
  * Live chapter editor has been revised
+ * New public API functions, mainly on planes and points editions
+ * API has a inject specific styles feature. Very useful for specific annotations presentations. (Preparatory works for [#76](#76)) 
 
 Corrections
 -----------
 
- * 
+ * Reducing repaints on panels point draws
+ * Annotations points are sorted by timecode ([#68](#68))
 
 Back-end
 --------
 
  * Using arrow functions, modernizing code
-
 
 Making of
 ---------
