@@ -46,7 +46,7 @@
         <button type="submit">Go to editor</button>
     </fieldset>
 
-    <p>Todo : a button "repeal previous edition"</p>
+    <p>Please note : this editor is difficult to use on small screens. Sorry.</p>
     <p>Think my editor is ugly ? You're right ! <a href="https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md">Just help us !</a></p>
 
 </form>
@@ -226,12 +226,12 @@ function check_for_actions(event) {
 
 function interpret_line(this_line_element) {
     let time = this_line_element.querySelector('.timecode_input').value;
-    if (time === '') {
-        // no time code ? do not record this one
+    let text = this_line_element.querySelector('[type="text"]').value;
+    if ( (time === '') || (text === '') ) {
+        // no time code ? no text ? do not record it yet
         return ;
     }
     let seconds = Math.floor(document.CPU.convert.TimeInSeconds( time ));
-    let text = this_line_element.querySelector('[type="text"]').value;
     // TODO : clean HTML , perhaps via a innerHTML ?
     let this_line_data = {
         code: time,
@@ -244,12 +244,8 @@ function interpret_line(this_line_element) {
             // arrow credit : https://thenounproject.com/search/?q=arrow+up&i=3523491 
             'image' : 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9JzMwMHB4JyB3aWR0aD0nMzAwcHgnICBmaWxsPSIjMDAwMDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTAwIDEwMCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PGc+PHBhdGggZD0iTTUwLjMzNiwzMS44MTZDNDkuNDMsMzEuODIsNDguNiwzMi4yLDQ4LjAyNSwzMi44OEwyNC4yMDgsNjEuMDYzYy0xLjA2OSwxLjI2Ni0wLjkxLDMuMTU4LDAuMzU1LDQuMjI4ICAgYzEuMjY2LDEuMDcxLDMuMTU5LDAuOTEsNC4yMjgtMC4zNTRsMjEuNDk0LTI1LjQzNmwyMC44OTgsMjUuNDA1QzcxLjc3Niw2NS42MjcsNzIuNjM2LDY2LDczLjUwMiw2NiAgIGMwLjY3LDAsMS4zNDYtMC4yMjQsMS45MDQtMC42ODRjMS4yOC0xLjA1MiwxLjQ2NC0yLjk0MiwwLjQxMS00LjIyM0w1Mi42MzMsMzIuOTFDNTIuMDY4LDMyLjIyNCw1MS4yMjcsMzEuODIyLDUwLjMzNiwzMS44MTZ6Ij48L3BhdGg+PC9nPjwvc3ZnPg==',
             'text' : text,
-            // 'link' : function(){} ? 
-    }
-
-    if (! sound_CPU.get_plane('cursors')) {
-        alert('sounds like problems')
-
+            'link' : false // TODO : when cliqued, should put focus onto the input[type=text]
+            // 'link' : function(CPU_controler, plane_name, point_name){} ? 
     }
 
     if (! sound_CPU.get_point('cursors', this_line_element.id)) {
@@ -258,10 +254,6 @@ function interpret_line(this_line_element) {
         data.start = seconds;
         sound_CPU.edit_point('cursors', this_line_element.id, data);
     }
-   
-
-    /** TODO : Reordinate by timestamp **/
-    /** TODO : Add a .end **/
 }
 
 function event_line(event) {
@@ -270,18 +262,14 @@ function event_line(event) {
         this_line_element = this_line_element.closest('p');
     }
     interpret_line(this_line_element);
-    sound_CPU.refresh_plane('cursors');
-    //sound_CPU.draw_point('cursors', this_line_element.id)
+    //sound_CPU.refresh_plane('cursors');
 
 }
 
 function add_events_line(line) {
-
-    line.addEventListener('input', event_line);
-    line.addEventListener('change', event_line);
-    line.addEventListener('click', event_line);
-    // line.querySelector('.timecode_input').addEventListener('input', event_line);
-    // line.querySelector('.text_input').addEventListener('input', event_line);
+    for (let event_name of ['input', 'change', 'click']) {
+        line.addEventListener(event_name, event_line);
+    }
 }
 
 function interpret_form(event) {
@@ -390,16 +378,12 @@ window.addEventListener('load', function(){
         .cursors a {
             height: 12px;
             width: 12px;
-            position: relative;
-            display : inline-block;
+            position: absolute;
+            display : block;
         }
         .cursors img {
             height: 12px;
             width: 12px;
-        }
-        .cursors a:focus span {
-            display : block;
-            max-width : 50%;
         }
     `);
 

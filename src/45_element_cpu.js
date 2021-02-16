@@ -871,55 +871,50 @@ class CPU_element_api {
 	 * @param      {string}  point_name  The point name
 	 */
 	draw_point(plane_name, point_name) {
-		let plane_point_panel = this.get_point_panel(plane_name, point_name);
-		if (plane_point_panel) {
-			plane_point_panel.remove();
-		}
-		let plane_point_track = this.get_point_track(plane_name, point_name);
-		if (plane_point_track) {
-			plane_point_track.remove();
-		}
-
 		let data = this.get_point(plane_name, point_name);
 		let audiotag = this.audiotag ? this.audiotag : document.CPU.global_controller.audiotag;
 		let audio_duration = audiotag.duration;
+
 		let track = this.get_plane_track(plane_name);
-		let panel = this.get_plane_nav(plane_name);
-
-		let intended_track_id = this.get_point_id(plane_name, point_name, false);
-		let intended_panel_id = this.get_point_id(plane_name, point_name, true);
-
 		if (track) {
-			let point_element = document.createElement('a');
-			point_element.id = intended_track_id;
-			point_element.tabIndex = -1;
+			let plane_point_track = this.get_point_track(plane_name, point_name);
+			let intended_track_id = this.get_point_id(plane_name, point_name, false);
+			if (!plane_point_track) {
+				plane_point_track = document.createElement('a');
+				plane_point_track.id = intended_track_id;
+				plane_point_track.tabIndex = -1;
+				track.appendChild(plane_point_track);
+			}
 
 			if (data['link'] !== false) {
-				point_element.href = `#${audiotag.id}&t=${data['start']}`;
+				plane_point_track.href = `#${audiotag.id}&t=${data['start']}`;
 			}
-			point_element.title = data['text'];
+			plane_point_track.title = data['text'];
 			let inner = '';
 			if (data['image']) {
 				inner = `<img src="${data['image']}" alt="">`;
 			}
 			inner += `<span>${data['text']}</span>`;
-			point_element.innerHTML = inner;
-			point_element.title = point_element.innerText;
-
-			track.appendChild(point_element);
-			
-			this.timeline_position(point_element, data['start'], data['end']);
+			plane_point_track.innerHTML = inner;
+			plane_point_track.title = plane_point_track.innerText;
+			this.timeline_position(plane_point_track, data['start'], data['end']);
 		}
-		
+
+		let panel = this.get_plane_nav(plane_name);
 		if (panel) {
-			let li = document.createElement('li');
-						
+			let plane_point_panel = this.get_point_panel(plane_name, point_name);
+			let intended_panel_id = this.get_point_id(plane_name, point_name, true);
+			if (!plane_point_panel) {
+				plane_point_panel = document.createElement('li');
+				plane_point_panel.id = intended_panel_id;
+				panel.appendChild(plane_point_panel);
+			}
+
 			let inner = '';
 			if (data['text']) {
 				inner += `<strong>${data['text']}</strong>`;
 			}
-
-			// see valid duration time https://www.w3.org/TR/2014/REC-html5-20141028/infrastructure.html#valid-duration-string
+			// see string format for valid duration time https://www.w3.org/TR/2014/REC-html5-20141028/infrastructure.html#valid-duration-string
 			inner += `<time datetime="P${convert.SecondsInTime(data['start']).toUpperCase()}">${convert.SecondsInColonTime(data['start'])}</time>`; 
 
 			if (data['link'] !== false) {
@@ -928,13 +923,12 @@ class CPU_element_api {
 					// if the parameter is a string, use it as a simple link
 					data['link'] = `#${audiotag.id}&amp;t=${data['start']}`;
 				}
-				inner = `<a href="${data['link']}" class="cue" id="${intended_panel_id}">${inner}</a>`;
+				inner = `<a href="${data['link']}" class="cue">${inner}</a>`;
 			} else {
 				// no link to refer, put a tag for consistency
-				inner = `<span class="cue" id="${intended_panel_id}">${inner}</span>`;
+				inner = `<span class="cue">${inner}</span>`;
 			}
-			li.innerHTML = inner;
-			panel.appendChild(li);
+			plane_point_panel.innerHTML = inner;
 		}
 
 		if (
@@ -969,6 +963,7 @@ class CPU_element_api {
 
 		data.start = timecode_start;
 		this.audiotag._CPU_planes[plane_name].points[point_name] = data;
+		this.plane_resort(plane_name);
 		this.draw_point(plane_name, point_name);
 
 		return true;
@@ -998,6 +993,9 @@ class CPU_element_api {
 		}
 		
 		this.audiotag._CPU_planes[plane_name].points[point_name] = data;
+		if ('start' in data) {
+			this.plane_resort(plane_name);
+		}
 		this.draw_point(plane_name, point_name);
 	}
 
