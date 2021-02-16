@@ -247,7 +247,7 @@ HTMLDocument.prototype.CPU = {
 		let mocked_event = {'target' : audiotag};
 		if (audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {  /*  WHHYYYY ?????? */
 			audiotag.addEventListener('loadedmetadata', do_needle_move , true);
-			audiotag.load(mocked_event);
+			audiotag.load();
 			trigger.update(mocked_event);
 		} else {
 			do_needle_move(mocked_event);

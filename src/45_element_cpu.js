@@ -84,7 +84,7 @@ class CPU_element_api {
 
 	/**
 	 * @brief update play/pause button according to media status
-	 * @private
+	 * @public
 	 */
 	update_playbutton() {
 		let audiotag = this.audiotag;
@@ -299,9 +299,9 @@ class CPU_element_api {
 	 * Position an element in the timeline, on its time
 	 * @private
 	 *
-	 * @param      {element} 			element     	Element to impact, should be in #time
-	 * @param      {float|undefined}   	seconds_begin   Starts position in seconds, do not apply if undefined
-	 * @param      {float|undefined}   	seconds_end     Ends position in seconds, do not apply if undefined
+	 * @param      {Element} 			element     	Element to impact, should be in #time
+	 * @param      {number|undefined}   	seconds_begin   Starts position in seconds, do not apply if undefined
+	 * @param      {number|undefined}   	seconds_end     Ends position in seconds, do not apply if undefined
 	 */	
 	timeline_position(element, seconds_begin=undefined, seconds_end=undefined) {
 		function is_seconds(sec) {
@@ -981,8 +981,6 @@ class CPU_element_api {
 	 * 											'start'  : <seconds>, 
 	 * 											'end'  : <seconds> }
 	 *										  will only change keys in the list
-	 *
-	 * @return     {boolean}  success
 	 */
 	edit_point(plane_name, point_name, data) {
 		let original_data = this.get_point(plane_name, point_name);
