@@ -24,6 +24,7 @@ Back-end
    * Moved to ECMAScript 2019 as source
    * Annotations updated
    * Erroneous `@brief` annotations changed to `@summary`
+   * ... but a lot of bugs in Closure, as TextTracks objects aren't declared as iterable, and so on...
 
 Making of
 ---------

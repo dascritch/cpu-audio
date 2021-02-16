@@ -77,8 +77,8 @@ HTMLDocument.prototype.CPU = {
 	 * @package
 	 * @summary Determines if audiotag source is streamed, and so unactivate reposition, position memory, length display…
 	 *
-	 * @param      {HTMLAudioElement}   audiotag  The audiotag
-	 * @return     {boolean}            True if audiotag streamed, False otherwise.
+	 * @param      {HTMLAudioElement|null}  audiotag  The audiotag
+	 * @return     {boolean}            	True if audiotag streamed, False otherwise.
 	 */
 	is_audiotag_streamed : function(audiotag) {
 		return ((audiotag === null) || (audiotag.duration === Infinity) || (audiotag.dataset.streamed !== undefined));

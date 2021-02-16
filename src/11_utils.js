@@ -1,4 +1,10 @@
 /**
+ * @summary Do litteraly nothing
+ */
+function noop() {
+}
+
+/**
  * @summary If run in debug context, launch a function for calback
  *
  * @param      {Function|null|undefined}  callback_fx  The function to call
@@ -58,7 +64,7 @@ function not_screen_context() {
 /**
  * @summary Will prevent a link in a page if linked to the same absolute URL
  *
- * @param      {Object}  event   The event
+ * @param      {Event}  event   The event
  */
 function prevent_link_on_same_page(event) {
 	if (absolutize_url(window.location.href) !== absolutize_url(event.target.href)) {
@@ -79,7 +85,7 @@ function element_prevent_link_on_same_page(element) {
 /**
  * @summary Determines if event is really an event, and not a faked one
  *
- * @param      {Object}   event   The supposed event
+ * @param      {Event|Object}   event   The supposed event
  * @return     {boolean}  True if event, False otherwise.
  */
 function _isEvent(event) {

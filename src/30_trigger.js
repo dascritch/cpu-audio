@@ -23,13 +23,13 @@ const trigger = {
 
 
 	/**
-	 * @summary Interprets the hash part of the URL, when loaded or changed
+	 * @summary    Interprets the hash part of the URL, when loaded or changed
 	 *
 	 * @package
 	 *
-	 * @param      {string|Object}  	hashcode     Called hashcode
-	 * @param      {Function}			callback_fx  When done, call a function to end the tests (optional).
-	 * @return     {boolean}  			understood
+	 * @param      {string|Object}  hashcode     Called hashcode
+	 * @param      {Function}       callback_fx  When done, call a function to end the tests (optional).
+	 * @return     {boolean}        understood
 	 */
 	hashOrder : function(hashcode, callback_fx=undefined) {
 		let at_start = true;
@@ -126,7 +126,7 @@ const trigger = {
 	},
 
 	/**
-	 * @summary Highlight the playable positions when hovering a marked link
+	 * @summary    Highlight the playable positions when hovering a marked link
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -148,7 +148,7 @@ const trigger = {
 	/**
 	 * @summary Change play position of a audio tag
 	 *
-	 * @param      {Object}  event   The event
+	 * @param      {Object}  event   The event, may be mocked
 	 */
 	throbble : function(event) {
 		let at = 0;
@@ -208,10 +208,10 @@ const trigger = {
 	},
 
 	/**
-	 * @summary Do pause
+	 * @summary    Do pause
 	 *
-	 * @param      {Object}  event     The event
-	 * @param      {Element}  audiotag  The audiotag
+	 * @param      {Object|undefined}   event     The event, may be omitted
+	 * @param      {Element|undefined}  audiotag  The audiotag, may be omitted
 	 */
 	pause : function(event=undefined, audiotag=undefined) {
 		if (audiotag === undefined) {
@@ -224,7 +224,7 @@ const trigger = {
 	},
 
 	/**
-	 * @summary Change referenced playing audio, pause the previous one
+	 * @summary    Change referenced playing audio, pause the previous one
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -241,14 +241,16 @@ const trigger = {
 	},
 
 	/**
-	 * @summary Do play an audio tag
+	 * @summary    Do play an audio tag
 	 *
-	 * @param      {Object|undefined}  event     The event
+	 * @param      {Object|undefined}   event     The event, may be mocked or ommitted
 	 * @param      {Element|undefined}  audiotag  The audiotag
 	 */
-	play : function(event, audiotag=undefined) {
+	play : function(event=undefined, audiotag=undefined) {
 
-		/* @param      {Object|undefined}  event     The event */
+		/*
+		 * @param      {Object|undefined}  _e   The event
+		 */
 		function unlock(_e) {
 			trigger._last_play_error = false;
 			trigger.play(_e, audiotag);
