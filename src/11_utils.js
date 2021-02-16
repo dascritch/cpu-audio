@@ -1,5 +1,5 @@
 /**
- * If run in debug context, launch a function for calback
+ * @summary If run in debug context, launch a function for calback
  *
  * @param      {Function|null|undefined}  callback_fx  The function to call
  */
@@ -12,7 +12,7 @@ function onDebug(callback_fx) {
 }
 
 /**
- * Process a function on each matched CSS selector found in a DOM tree
+ * @summary Process a function on each matched CSS selector found in a DOM tree
  *
  * @param      {string}                selector             The css selector
  * @param      {Function}              callback             The callback function, its 1st parameter will be the matching DOM element
@@ -26,7 +26,7 @@ function querySelector_apply(selector, callback, subtree=undefined) {
 }
 
 /**
- * Determines if the hosting browser can use webcomponents.
+ * @summary Determines if the hosting browser can use webcomponents.
  *
  * @return     {boolean}  True if decent browser for webcomponents, False otherwise.
  */
@@ -35,7 +35,7 @@ function is_decent_browser_for_webcomponents() {
 }
 
 /**
- * Transform a possibily relative URL to an absolute URL, including server name
+ * @summary Transform a possibily relative URL to an absolute URL, including server name
  *
  * @param      {string}  url     The url
  * @return     {string}  url     Absolute url
@@ -47,7 +47,7 @@ function absolutize_url(url) {
 }
 
 /**
- * Checks if we are in a screen context, and not a vocal or braille interface
+ * @summary Checks if we are in a screen context, and not a vocal or braille interface
  *
  * @return     {boolean}  False if have a screen
  */
@@ -56,7 +56,7 @@ function not_screen_context() {
 }
 
 /**
- * Will prevent a link in a page if linked to the same absolute URL
+ * @summary Will prevent a link in a page if linked to the same absolute URL
  *
  * @param      {Object}  event   The event
  */
@@ -68,7 +68,7 @@ function prevent_link_on_same_page(event) {
 }
 
 /**
- * Cancel any action on this link if its href is in this page
+ * @summary Cancel any action on this link if its href is in this page
  *
  * @param      {Element}  element  The <A> DOM element
  */
@@ -77,7 +77,7 @@ function element_prevent_link_on_same_page(element) {
 }
 
 /**
- * Determines if event is really an event, and not a faked one
+ * @summary Determines if event is really an event, and not a faked one
  *
  * @param      {Object}   event   The supposed event
  * @return     {boolean}  True if event, False otherwise.
@@ -88,7 +88,7 @@ function _isEvent(event) {
 }
 
 /**
- * Escape a text. Will truly escape HTML tags and entities. No hazardous regexes or replaces
+ * @summary Escape a text. Will truly escape HTML tags and entities. No hazardous regexes or replaces
  *
  * @param      {string}  text    The text
  * @return     {string}  HTML escaped text
@@ -102,8 +102,9 @@ function escapeHTML(text) {
 }
 
 
+
 /**
- * Shortcut for console info
+ * @summary Shortcut for console info
  *
  * @param      {string}  message  The message
  */
@@ -112,7 +113,7 @@ function info(message) {
 }
 
 /**
- * Shortcut for console warning
+ * @summary Shortcut for console warning
  *
  * @param      {string}  message  The message
  */
@@ -121,7 +122,7 @@ function warn(message) {
 }
 
 /**
- * Shortcut for console error
+ * @summary Shortcut for console error
  *
  * @param      {string}  message  The message
  */

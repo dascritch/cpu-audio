@@ -641,5 +641,12 @@ Check that multi-lines is completed with <br />
 		
 	});
 
+	QUnit.test( "Style injection", function( assert ) {
+		let css = `#interface { background : yellow; }`;
+		componenttag.CPU.inject_css('injection',css);
+		assert.ok(componenttag.shadowRoot.querySelector('style#style_injection'), 'inject_css injected <style>');
+		componenttag.CPU.remove_css('injection');
+		assert.ok(!componenttag.shadowRoot.querySelector('style#style_injection'), 'remove_css destroyed <style>');
+	});
 
 });

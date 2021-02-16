@@ -34,7 +34,7 @@ HTMLDocument.prototype.CPU = {
 	// @package, not enough mature
 	// NOTE : we need to refresh this when the <head> of the host page changes
 	default_dataset : {
-		'title' : function () { 
+		'title' : /* @type {string|null} */ function () { 
 				for(let domain of ['og', 'twitter']){
 					let header_element = document.querySelector(`meta[property="${domain}:title"]`);
 					if (header_element !== null) {
@@ -44,7 +44,7 @@ HTMLDocument.prototype.CPU = {
 				let title = document.title;
 				return title === '' ? null : title;
 			}(), 
-		'poster' : function () {
+		'poster' : /* @type {string|null} */ function () {
 				for(let attr of ['property="og:image"', 'name="twitter:image:src"']){
 					let header_element = document.querySelector(`meta[${attr}]`);
 					if (header_element !== null) {
@@ -53,14 +53,14 @@ HTMLDocument.prototype.CPU = {
 				}
 				return null;
 			}(),
-		'canonical' : function () {
+		'canonical' : /* @type {string|null} */ function () {
 				let header_element = document.querySelector('link[rel="canonical"]');
 				if (header_element !== null) {
 					return header_element.href;
 				}
 				return location.href.split('#')[0];
 			}(),
-		'twitter' : function () {
+		'twitter' : /* @type {string|null} */ function () {
 				let header_element = document.querySelector('meta[name="twitter:creator"]');
 				if ((header_element !== null) && (header_element.content.length>1)) {
 					return header_element.content;
@@ -77,8 +77,8 @@ HTMLDocument.prototype.CPU = {
 	 * @package
 	 * @summary Determines if audiotag source is streamed, and so unactivate reposition, position memory, length display…
 	 *
-	 * @param      {Object}   audiotag  The audiotag
-	 * @return     {boolean}  True if audiotag streamed, False otherwise.
+	 * @param      {HTMLAudioElement}   audiotag  The audiotag
+	 * @return     {boolean}            True if audiotag streamed, False otherwise.
 	 */
 	is_audiotag_streamed : function(audiotag) {
 		return ((audiotag === null) || (audiotag.duration === Infinity) || (audiotag.dataset.streamed !== undefined));
@@ -106,7 +106,7 @@ HTMLDocument.prototype.CPU = {
 	 * @package, because at start
 	 * @summary Attach events on a <audio> tag
 	 *
-	 * @param      {Object}  audiotag  The audiotag
+	 * @param      {HTMLAudioElement}  audiotag  The audiotag
 	 */
 	attach_events_audiotag : function(audiotag) {
 		audiotag.addEventListener('loadedmetadata', document.CPU.recall_stored_play);
@@ -122,7 +122,7 @@ HTMLDocument.prototype.CPU = {
 			'error', 'emptied',
 			'play', 'playing', 'pause', 'ended',
 			'durationchange',  'loadedmetadata', 'timeupdate', 'waiting'
-		].forEach( function(on){ 
+		].forEach( (on) => { 
 			audiotag.addEventListener(on, trigger.update); 
 		});
 
@@ -130,8 +130,8 @@ HTMLDocument.prototype.CPU = {
 			// in case we are in legacy mode
 			[
 				'pause', 'ended'
-			].forEach( function(on){ 
-				audiotag.addEventListener(on, trigger.pause);
+			].forEach( (on) => { 
+				audiotag.addEventListener(on, trigger.pause); 
 			});
 		}
   
@@ -146,7 +146,7 @@ HTMLDocument.prototype.CPU = {
 	 * @package, launched at start or when the webcomponent appears
 	 * @summary Connects an audiotag to CPU APIs
 	 *
-	 * @param      {Object}  audiotag  The audiotag
+	 * @param      {HTMLAudioElement}  audiotag  The audiotag
 	 */
 	connect_audiotag : function(audiotag) {
 		if (audiotag.CPU_connected) {
@@ -175,7 +175,7 @@ HTMLDocument.prototype.CPU = {
 	 * @public
 	 * @summary Determines if audiotag is currently playing.
 	 *
-	 * @param      {Object}   audiotag  The audiotag
+	 * @param      {HTMLAudioElement}   audiotag  The audiotag
 	 * @return     {boolean}  True if audiotag playing, False otherwise.
 	 */
 	'is_audiotag_playing' : function(audiotag) {
@@ -185,7 +185,7 @@ HTMLDocument.prototype.CPU = {
 	 * @public
 	 * @summary Determines if audiotag is displayed in <cpu-controller>
 	 *
-	 * @param      {Object}   audiotag  The audiotag
+	 * @param      {HTMLAudioElement}   audiotag  The audiotag
 	 * @return     {boolean}  True if audiotag global, False otherwise.
 	 */
 	'is_audiotag_global' : function(audiotag) {
@@ -203,6 +203,9 @@ HTMLDocument.prototype.CPU = {
 	 */
 	'jumpIdAt' : function(hash, timecode, callback_fx=undefined) {
 
+		/**
+		 * @param 	{Object}	event 	triggered event, or mockup
+		 */
 		function do_needle_move(event) {
 			let audiotag = event.target;
 
@@ -222,6 +225,9 @@ HTMLDocument.prototype.CPU = {
 			trigger.update(mocked_event);
 		}
 
+		/**
+		 * @param 	{Object}	event 	triggered event, or mockup
+		 */
 		function do_element_play(event) {
 			let tag = event.target;
 			trigger.play(undefined, tag)

@@ -11,7 +11,8 @@ class CPU_element_api {
 		// I hate this style. I rather prefer the object notation
 		this.element = element;
 		this.elements = {};
-		this.audiotag =  /** @type {HTMLAudioElement} */ (element._audiotag);
+		/** \@ type {HTMLAudioElement} NOT WORKING AT ALL due to Google Closure bugs */
+		this.audiotag = element._audiotag;
 		this.container = container_interface;
 		this.mode_when_play = null;
 		this.glow_before_play = false;
@@ -1263,7 +1264,7 @@ class CPU_element_api {
 			// not your job, CPUController
 			return;
 		}
-		let self = this;
+		let self = this; // needed later by _build_from_track() , may be .bind(this) ?
 
 		if (event !== undefined) {
 			// Chrome load <track> afterwards, so an event is needed, and we need to recatch our CPU api to this event
@@ -1279,7 +1280,7 @@ class CPU_element_api {
 		let plane_name = '_chapters';
 
 		/**
-		 * * @param      {Object}  tracks TextTrack object  
+		 * * @param      {Object|TextTrackCueList}  tracks TextTrack object  
 		 */
 		function _build_from_track(tracks) {
 			let _cuechange_event = self._cuechange_event.bind(self);

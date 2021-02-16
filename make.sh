@@ -27,6 +27,7 @@ PROJECT_DIR=$(readlink -f $(dirname ${0}))
 component_file_js="./dist/cpu-audio.js" 
 
 JS_COMPILATION_LEVEL='SIMPLE_OPTIMIZATIONS'
+OTHER_OPTIONS=''
 
 while [ '-' == "${1:0:1}" ] ; do
 	case "${1}" in
@@ -41,6 +42,11 @@ while [ '-' == "${1:0:1}" ] ; do
 		-a|--advanced)
 			JS_COMPILATION_LEVEL='ADVANCED_OPTIMIZATIONS'
 			component_file_js="./dist/cpu-audio.EXPERIMENTAL.js"
+		;;
+		-d|--debug)
+			JS_COMPILATION_LEVEL='BUNDLE'
+			OTHER_OPTIONS=' --debug '
+			component_file_js="./dist/cpu-audio.js"
 		;;
 		--)
 			shift
@@ -123,7 +129,8 @@ function _build_component_js() {
 		--js_output_file "${component_file_js}" \
 			--language_out ECMASCRIPT_2017 \
 		--create_source_map "${component_file_js}.map" \
-		--warning_level VERBOSE
+		--warning_level VERBOSE \
+		${OTHER_OPTIONS}
 }
 
 function _copy_to_server() {

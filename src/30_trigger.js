@@ -247,6 +247,8 @@ const trigger = {
 	 * @param      {Element|undefined}  audiotag  The audiotag
 	 */
 	play : function(event, audiotag=undefined) {
+
+		/* @param      {Object|undefined}  event     The event */
 		function unlock(_e) {
 			trigger._last_play_error = false;
 			trigger.play(_e, audiotag);
@@ -321,6 +323,7 @@ const trigger = {
 		let container = document.CPU.find_container(event.target);
 		let audiotag = container.audiotag;
 
+		/* @param      {number}  seconds    Relative position fowards */
 		function seek_relative(seconds) {
 			event.at = container.audiotag.currentTime + seconds;
 			container.show_throbber_at(event.at);
@@ -535,10 +538,10 @@ const trigger = {
 	/**
 	 * @summary When an audiotag is ended, advance in playlist
 	 *
-	 * @param      {Object}  event     The event
-	 * @param      {string}  audiotag  The audiotag
+	 * @param      {Object}  			event     The event
+	 * @param      {HTMLAudioElement}  	audiotag  The audiotag
 	 */
-	ended : function(event, audiotag) {
+	ended : function(event, audiotag=undefined) {
 		// the media element reached its end 
 		if (audiotag === undefined) {
 			audiotag = event.target;
