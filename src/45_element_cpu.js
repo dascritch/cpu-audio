@@ -301,11 +301,16 @@ class CPU_element_api {
 	 * @summary Position an element in the timeline, on its time
 	 * @private
 	 *
-	 * @param      {Element} 			element     	Element to impact, should be in #time
-	 * @param      {number|undefined}   	seconds_begin   Starts position in seconds, do not apply if undefined
-	 * @param      {number|undefined}   	seconds_end     Ends position in seconds, do not apply if undefined
+	 * @param      {Element} 			      element         Element to impact, should be in #time
+	 * @param      {number|undefined}   	  seconds_begin   Starts position in seconds, do not apply if undefined
+	 * @param      {number|undefined|boolean} seconds_end     Ends position in seconds, do not apply if undefined or false
 	 */	
 	timeline_position(element, seconds_begin=undefined, seconds_end=undefined) {
+
+		/**
+          * @param  {number|undefined|boolean} sec  Is it a "seconds" value ?
+          * @return {boolean}
+          */
 		function is_seconds(sec) {
 			// completely ugly... « WAT » as in https://www.destroyallsoftware.com/talks/wat
 			return ((sec !== undefined) && (sec !== false));
@@ -648,6 +653,10 @@ class CPU_element_api {
 		}
 		let highlight_preview = trigger.preview_container_hover;
 		let remove_highlights_points_bind = this.remove_highlights_points.bind(this);
+
+		/*
+		 * @param      {Element}  element  Impacted element
+		 */
 		function assign_events(element) {
 			element.addEventListener('mouseover', highlight_preview, passive_ev);
 			element.addEventListener('focusin', highlight_preview, passive_ev);
@@ -840,10 +849,21 @@ class CPU_element_api {
 			'lang'  : 'i' // emphasis for typographic convention
 		};
 
+		/**
+		 * @param      {string}            name  Attribute name
+		 * @return     {boolean}
+		 */
 		function not_acceptable_tag(name) {
 			return !(name in acceptables);
 		}
 
+		/**
+		 * @param      {string}   		   tag 			Unused regex capture
+		 * @param      {string}   		   name 		Name of the tag
+		 * @param      {string}   		   class_name 	attribute key, unused
+		 * @param      {string}   		   attribute 	attribute value, may be language code
+		 * @return     {string}
+		 */
 		function opentag(tag, name, class_name, attribute) {
 			name = name.toLowerCase();
 			if (not_acceptable_tag(name)) {
@@ -856,6 +876,11 @@ class CPU_element_api {
 			return `<${acceptables[name]}${$_attr}>`;
 		}
 
+		/**
+		 * @param      {string}   		   tag 			Unused regex capture
+		 * @param      {string}   		   name 		Name of the tag
+		 * @return     {string}
+		 */
 		function closetag(tag, name) {
 			name = name.toLowerCase();
 			if (not_acceptable_tag(name)) {
@@ -1232,9 +1257,8 @@ class CPU_element_api {
 	 * @public
 	 *
 	 * @param      {Object|undefined}  event          The event
-	 * @param      {string|undefined}  _forced_track  Forcing the track to a style
 	 */
-	build_chapters(event = undefined, _forced_track = undefined) {
+	build_chapters(event = undefined) {
 		if (this.element.tagName === CpuControllerTagName) {
 			// not your job, CPUController
 			return;
@@ -1254,6 +1278,9 @@ class CPU_element_api {
 		let has = false;
 		let plane_name = '_chapters';
 
+		/**
+		 * * @param      {Object}  tracks TextTrack object  
+		 */
 		function _build_from_track(tracks) {
 			let _cuechange_event = self._cuechange_event.bind(self);
 			tracks.removeEventListener('cuechange', _cuechange_event);
@@ -1277,41 +1304,36 @@ class CPU_element_api {
 		}
 
 		if (audiotag) {
-			if (_forced_track !== undefined) {
-				_build_from_track(_forced_track)
-			} else {
+			if ((audiotag.textTracks) && (audiotag.textTracks.length > 0)) {
+				let chapter_track = null;
 
-				if ((audiotag.textTracks) && (audiotag.textTracks.length > 0)) {
-					let chapter_track = null;
-
-					for (let tracks of audiotag.textTracks) {
-						/**
-						 * TODO : we have here a singular problem : how to NOT rebuild the
-						 * chapter lists, being sure to have the SAME cues and they are
-						 * loaded, as we may have FOUR builds. Those multiple repaint events
-						 * doesn't seem to have so much impact, but they are awful, unwanted
-						 * and MAY have an impact We must find a way to clean it up or not
-						 * rebuild for SAME tracks, AND remove associated events AND clean
-						 * up the chapter list if a new chapter list is loaded and really
-						 * empty 
-						 */
-						if (
-								(tracks.kind.toLowerCase() === 'chapters') &&
-								(tracks.cues !== null) &&  // linked to default="" attribute, only one per set !
-								( 
-									(chapter_track === null) /* still no active track */ 
-									|| (tracks.language.toLowerCase() === prefered_language) /* correspond to <html lang> */ 
-								)
-							) {
-							chapter_track = tracks;
-						}
+				for (let tracks of audiotag.textTracks) {
+					/**
+					 * TODO : we have here a singular problem : how to NOT rebuild the
+					 * chapter lists, being sure to have the SAME cues and they are
+					 * loaded, as we may have FOUR builds. Those multiple repaint events
+					 * doesn't seem to have so much impact, but they are awful, unwanted
+					 * and MAY have an impact We must find a way to clean it up or not
+					 * rebuild for SAME tracks, AND remove associated events AND clean
+					 * up the chapter list if a new chapter list is loaded and really
+					 * empty 
+					 */
+					if (
+							(tracks.kind.toLowerCase() === 'chapters') &&
+							(tracks.cues !== null) &&  // linked to default="" attribute, only one per set !
+							( 
+								(chapter_track === null) /* still no active track */ 
+								|| (tracks.language.toLowerCase() === prefered_language) /* correspond to <html lang> */ 
+							)
+						) {
+						chapter_track = tracks;
 					}
+				}
 
-					if (chapter_track) {
-						self.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
-						self.clear_plane(plane_name);
-						_build_from_track(chapter_track)
-					}
+				if (chapter_track) {
+					self.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
+					self.clear_plane(plane_name);
+					_build_from_track(chapter_track)
 				}
 			}
 		}
