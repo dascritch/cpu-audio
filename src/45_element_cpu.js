@@ -501,10 +501,15 @@ class CPU_element_api {
 	 *
 	 * @public
 	 *
-	 * @param 	{string}  style_key   	a key to tag the created <style> , [\w\d\_\-]+ recommended
+	 * @param 	{string}  style_key   	A name in the range /[a-zA-Z0-9\-_]+/, key to tag the created <style>
 	 * @param 	{string}  css 			inline CSS to inject
 	 */
 	inject_css(style_key, css) {
+		if (!style_key.match(valid_id)) {
+			error(`inject_css invalid key "${style_key}"`);
+			return
+		}
+
 		this.remove_css(style_key);
 		let element = document.createElement('style');
 		element.id = `style_${style_key}`;
@@ -517,7 +522,7 @@ class CPU_element_api {
 	 *
 	 * @public
 	 *
-	 * @param 	{string}  style_key   	a key of the created <style> , [\w\d\_\-]+ recommended
+	 * @param 	{string}  style_key   	Key of the created <style> , /[a-zA-Z0-9\-_]+/
 	 */
 	remove_css(style_key) {
 		let element = this.container.querySelector(`#style_${style_key}`);
