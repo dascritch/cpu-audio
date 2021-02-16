@@ -476,7 +476,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 		assert.notEqual(secondary_API_CPU.get_point('hello', 'world'), undefined, 'get_point() returns data');
 		assert.ok(secondary_interfacetag.querySelector('aside#track_«hello» > a#track_«hello»_point_«world»') , 'DOM element point added in aside track');
-		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > ul > li > a#panel_«hello»_point_«world»'), 'DOM element point added in panel');
+		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > ul > li#panel_«hello»_point_«world»'), 'DOM element point added in panel');
 
 		let point_in_track = secondary_API_CPU.get_point_track('hello', 'world');
 		let point_in_panel = secondary_API_CPU.get_point_panel('hello', 'world');
@@ -487,7 +487,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.ok(time_in_point, 'point in panel has a <time> indication');
 		assert.equal(time_in_point.innerText, '0:02', '<time> indicate timecode in colon coded text');
 		assert.equal(time_in_point.getAttribute('datetime'), 'P2S', '<time> has a datetime attribute in duration standard format');
-		assert.equal(point_in_panel.tagName, 'A', 'entry in panel has got link');
+		assert.ok(point_in_panel.querySelector('a[href]'), 'entry in panel has got link');
 		assert.equal(point_in_panel.querySelector('strong').innerText, data.text, '<strong> got data.text');
 
 		assert.ok(point_in_track.tagName, 'A', 'point in track is a <a href>');
