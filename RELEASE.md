@@ -7,7 +7,7 @@ New features
  * Colour of the chapter lines under the time-line in now configurable (`--cpu-cue`)
  * Live chapter editor has been revised
  * New public API functions, mainly on planes and points editions
- * API has a inject specific styles feature. Very useful for specific annotations presentations. (Preparatory works for [#76](#76)) 
+ * API get inject specific styles features. Very useful for specific annotations presentations. (Preparatory works for [#76](#76)) 
 
 Corrections
 -----------
@@ -21,6 +21,7 @@ Back-end
  * Using arrow functions, modernizing code
  * Updating [Google Closure to v20200719](https://dl.google.com/closure-compiler/compiler-20200719.tar.gz)
    * Removing `--jscomp_off internetExplorerChecks`
+   * Annotations updated
 
 Making of
 ---------

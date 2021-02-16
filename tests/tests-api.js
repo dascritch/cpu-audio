@@ -115,7 +115,9 @@ window.addEventListener('load', function() {
 			'clear_plane',
 			'redraw_all_planes',
 			'highlight_point',
-			'remove_highlights_points'
+			'remove_highlights_points',
+			'inject_css',
+			'remove_css'
 		];
 		for(let name of expected) {
 			assert.equal(typeof cpuaudio_tag.CPU[name] , 'function', `CpuAudioElement.CPU.${name} method is still a function`);

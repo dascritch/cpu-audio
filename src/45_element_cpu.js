@@ -138,6 +138,7 @@ class CPU_element_api {
 		}
 		this.elements[`${type}line`].style.width = `${ratio}%`;
 	}
+
 	/**
 	 * @brief	update current timecode and related links
 	 * @private
@@ -176,6 +177,7 @@ class CPU_element_api {
 
 		this.update_line('loading', audiotag.currentTime);
 	}
+
 	/**
 	 * @brief  Shows indicators for the limits of the playing position
 	 * @private
@@ -209,6 +211,7 @@ class CPU_element_api {
 		this.update_line('loading', seconds, ratio);
 		this.set_act_container('loading');
 	}
+
 	/**
 	 * @brief Show the current media error status
 	 *
@@ -263,8 +266,6 @@ class CPU_element_api {
 	 * @param      {string} 			text     	HTML text to display. Or hide it if empty
 	 * @param      {boolean} 			priority   	If set to true, will hide any track, else, will not be displayed if there is a track
 
-	**/
-	/*
 	flash(text='') {
 		// I still need to complete https://codepen.io/GoOz/pen/QWGGgOo
 		let indication_classname = 'flash';
@@ -338,6 +339,7 @@ class CPU_element_api {
 		phylactere.innerHTML = convert.SecondsInColonTime(seeked_time);
 		phylactere.dateTime = convert.SecondsInTime(seeked_time).toUpperCase();
 	}
+
 	/**
 	 * @brief Hides immediately the throbber.
 	 *
@@ -350,6 +352,7 @@ class CPU_element_api {
 		let phylactere = that.elements['popup'];
 		phylactere.style.opacity = 0;
 	}
+
 	/**
 	 * @brief Hides the throbber later. Will delay the hiding if recalled.
 	 * @public
@@ -445,6 +448,7 @@ class CPU_element_api {
 		}
 		this.container.classList.add('show-'+mode);
 	}
+
 	/**
 	 * @brief Shows the sharing panel,
 	 *
@@ -458,6 +462,7 @@ class CPU_element_api {
 		container.show_interface('share');
 		container.update_links();
 	}
+
 	/**
 	 * @brief Shows the main manel.
 	 *
@@ -490,6 +495,14 @@ class CPU_element_api {
 		event.preventDefault();
 	}
 
+	/**
+	 * @brief Inject a <style> into the shadowDom
+	 *
+	 * @public
+	 *
+	 * @param 	{string}  style_key   	a key to tag the created <style> , [\w\d\_\-]+ recommended
+	 * @param 	{string}  css 			inline CSS to inject
+	 */
 	inject_css(style_key, css) {
 		this.remove_css(style_key);
 		let element = document.createElement('style');
@@ -498,6 +511,13 @@ class CPU_element_api {
 		this.container.appendChild(element);
 	}
 
+	/**
+	 * @brief Remove an injected <style> into the shadowDom
+	 *
+	 * @public
+	 *
+	 * @param 	{string}  style_key   	a key of the created <style> , [\w\d\_\-]+ recommended
+	 */
 	remove_css(style_key) {
 		let element = this.container.querySelector(`#style_${style_key}`);
 		if (element) {
