@@ -118,7 +118,7 @@ function _build_component_js() {
 		--entry_point "./src/90_main.js" \
 		   --language_in ECMASCRIPT_2017 \
 				--module_resolution BROWSER \
-				--js_module_root src --jscomp_off internetExplorerChecks \
+				--js_module_root src \
 				--strict_mode_input \
 		--js_output_file "${component_file_js}" \
 			--language_out ECMASCRIPT_2017 \
