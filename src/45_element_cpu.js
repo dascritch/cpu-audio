@@ -927,6 +927,29 @@ class CPU_element_api {
 		let audiotag = this.audiotag ? this.audiotag : document.CPU.global_controller.audiotag;
 		let audio_duration = audiotag.duration;
 
+		let start = data['start'];
+		let data_link = data['link'];
+		let link = '#';
+		let onclick = noop;
+		let time_url = `#${audiotag.id}&t=${start}`;
+
+		if (data_link === true) {
+			// automated link to the audio tag.
+			// if the parameter is a string, use it as a simple link
+			link = time_url;
+		}
+		if (typeof(data_link) === 'string') {
+			// Author of the page wants a specific url (hoping he know what he do with a "javascript:")
+			link = data_link;
+		}
+		if (typeof(data_link) === 'function') {
+			let CPU_controler = this;
+			onclick = (event) => { 
+				data_link(CPU_controler, plane_name, point_name);
+				event.preventDefault();
+			};
+		}
+
 		let track = this.get_plane_track(plane_name);
 		if (track) {
 			let plane_point_track = this.get_point_track(plane_name, point_name);
@@ -938,9 +961,7 @@ class CPU_element_api {
 				track.appendChild(plane_point_track);
 			}
 
-			if (data['link'] !== false) {
-				plane_point_track.href = `#${audiotag.id}&t=${data['start']}`;
-			}
+			plane_point_track.href = time_url;
 			plane_point_track.title = data['text'];
 			let inner = '';
 			if (data['image']) {
@@ -949,7 +970,7 @@ class CPU_element_api {
 			inner += `<span>${data['text']}</span>`;
 			plane_point_track.innerHTML = inner;
 			plane_point_track.title = plane_point_track.innerText;
-			this.timeline_position(plane_point_track, data['start'], data['end']);
+			this.timeline_position(plane_point_track, start, data['end']);
 		}
 
 		let panel = this.get_plane_nav(plane_name);
@@ -959,28 +980,25 @@ class CPU_element_api {
 			if (!plane_point_panel) {
 				plane_point_panel = document.createElement('li');
 				plane_point_panel.id = intended_panel_id;
+				plane_point_panel.innerHTML='<a href="#" class="cue"><strong></strong><time></time></a>';
 				panel.appendChild(plane_point_panel);
 			}
 
-			let inner = '';
+			let innerStrong = '';
 			if (data['text']) {
-				inner += `<strong>${data['text']}</strong>`;
+				innerStrong = data['text'];
 			}
-			// see string format for valid duration time https://www.w3.org/TR/2014/REC-html5-20141028/infrastructure.html#valid-duration-string
-			inner += `<time datetime="P${convert.SecondsInTime(data['start']).toUpperCase()}">${convert.SecondsInColonTime(data['start'])}</time>`; 
 
-			if (data['link'] !== false) {
-				if (data['link'] === true) {
-					// link to the audio tag.
-					// if the parameter is a string, use it as a simple link
-					data['link'] = `#${audiotag.id}&amp;t=${data['start']}`;
-				}
-				inner = `<a href="${data['link']}" class="cue">${inner}</a>`;
-			} else {
-				// no link to refer, put a tag for consistency
-				inner = `<span class="cue">${inner}</span>`;
-			}
-			plane_point_panel.innerHTML = inner;
+			plane_point_panel.querySelector('strong').innerHTML = innerStrong;
+			// see string format for valid duration time https://www.w3.org/TR/2014/REC-html5-20141028/infrastructure.html#valid-duration-string
+			let time_element = plane_point_panel.querySelector('time');
+			time_element.dateTime = `P${convert.SecondsInTime(start).toUpperCase()}`;
+			time_element.innerText = convert.SecondsInColonTime(start);
+
+			let action_element = plane_point_panel.querySelector('a');
+			action_element.href = link;
+			// we use a direct DOM0 .onclick, to be able to painless modify it, without listener and handlers revocations or conflicts
+			action_element.onclick = onclick;
 		}
 
 		if (

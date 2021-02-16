@@ -37,7 +37,7 @@
             <input id="source_waveform" name="source_waveform" type="url" />
         </label>
         <label for="source_webvtt">
-            <span>(optional) : URL WebVTT track to re-edit</span>
+            <span>(optional) : URL WebVTT track to re-edit NEED REWORK TO WORK AGAIN</span>
             <input id="source_webvtt" name="source_webvtt" type="url" />
         </label>
     </fieldset>
@@ -57,17 +57,16 @@
 
     <fieldset class="actions">
         <button type="button" id="add"><strong>+</strong> Add a chapter</button>
-        <button type="button" id="reorder"><strong>↓</strong> Reorder chapters</button>
         <button type="submit">See result</button>
     </fieldset>
 
     <fieldset id="list">
-        <p class="line" id="line-0">
+        <p class="line editing" id="line-0">
             <button type="button" class="test">Test</button>
             <button type="button" class="set">Set</button>
             <input class="timecode_input" inputmode="numeric" pattern="^([0-5]?[0-9]:){0,2}[0-5]?[0-9]$" placeholder="00:00:00" size="8" />
             <input class="text_input" type="text" placeholder="Chapter name" />
-            <button type="button" class="remove"><strong>×</strong> Remove</button>
+            <button type="button" class="remove"><strong>×</strong>Remove this chapter</button>
         </p>
     </fieldset>
 
@@ -150,6 +149,7 @@ function set_source_audio() {
 }
 
 function check_configure(event) {
+    set_source_audio();
     event.preventDefault();
     // test if audio is correctly loaded
     document.location.hash = '#edit_chapters';
@@ -167,9 +167,9 @@ function add_line() {
     line.querySelector('.timecode_input').value = currentTime_in_colon();
     add_events_line(line);
     document.getElementById('list').appendChild(line);
+    show_only_line(line.id);
     // set time to the current audio time 
 }
-
 
 function reorder_lines() {
     let out = [];
@@ -215,6 +215,7 @@ function check_for_actions(event) {
                 break ;
             case 'set' : 
                 this_line_time_element.value = currentTime_in_colon();
+                interpret_line(this_line_element);
                 break ;
             case 'remove' :
                 this_line_element.remove();
@@ -222,6 +223,22 @@ function check_for_actions(event) {
                 break ;
         }
     }
+}
+
+function show_only_line(point_name) {
+    Array.from(
+        document.querySelectorAll('p.line')
+        ).forEach( (element) => {
+            element.classList.remove('editing');
+        });
+    let active_line = document.getElementById(point_name) ;
+    active_line.classList.add('editing');
+    active_line.querySelector('input[type="text"]').focus();
+}
+
+function focus_on_point(CPU_controler, plane_name, point_name) {
+    // click on the Chapters preview panel
+    show_only_line(point_name);
 }
 
 function interpret_line(this_line_element) {
@@ -244,8 +261,8 @@ function interpret_line(this_line_element) {
             // arrow credit : https://thenounproject.com/search/?q=arrow+up&i=3523491 
             'image' : 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9JzMwMHB4JyB3aWR0aD0nMzAwcHgnICBmaWxsPSIjMDAwMDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTAwIDEwMCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PGc+PHBhdGggZD0iTTUwLjMzNiwzMS44MTZDNDkuNDMsMzEuODIsNDguNiwzMi4yLDQ4LjAyNSwzMi44OEwyNC4yMDgsNjEuMDYzYy0xLjA2OSwxLjI2Ni0wLjkxLDMuMTU4LDAuMzU1LDQuMjI4ICAgYzEuMjY2LDEuMDcxLDMuMTU5LDAuOTEsNC4yMjgtMC4zNTRsMjEuNDk0LTI1LjQzNmwyMC44OTgsMjUuNDA1QzcxLjc3Niw2NS42MjcsNzIuNjM2LDY2LDczLjUwMiw2NiAgIGMwLjY3LDAsMS4zNDYtMC4yMjQsMS45MDQtMC42ODRjMS4yOC0xLjA1MiwxLjQ2NC0yLjk0MiwwLjQxMS00LjIyM0w1Mi42MzMsMzIuOTFDNTIuMDY4LDMyLjIyNCw1MS4yMjcsMzEuODIyLDUwLjMzNiwzMS44MTZ6Ij48L3BhdGg+PC9nPjwvc3ZnPg==',
             'text' : text,
-            'link' : false // TODO : when cliqued, should put focus onto the input[type=text]
-            // 'link' : function(CPU_controler, plane_name, point_name){} ? 
+            // 'link' : false // TODO : when clicked, should put focus onto the input[type=text]
+            'link' : focus_on_point
     }
 
     if (! sound_CPU.get_point('cursors', this_line_element.id)) {
@@ -262,8 +279,6 @@ function event_line(event) {
         this_line_element = this_line_element.closest('p');
     }
     interpret_line(this_line_element);
-    //sound_CPU.refresh_plane('cursors');
-
 }
 
 function add_events_line(line) {
@@ -365,7 +380,6 @@ window.addEventListener('load', function(){
     add_events_line(document.querySelector('p.line'));
     new_chapter_line = document.querySelector('p.line').innerHTML;
     document.getElementById('add').addEventListener('click', add_line);
-    document.getElementById('reorder').addEventListener('click', reorder_lines);
     list_element.addEventListener('click', check_for_actions);
 
     document.getElementById('edit_chapters').addEventListener('submit' , interpret_form);
@@ -440,8 +454,12 @@ window.addEventListener('load', function(){
     }
 
     #list p {
-        display : flex;
+        display : none;
         width : 100%;
+    }
+
+    #list p.editing {
+        display : flex;
     }
 
     #list p span {
