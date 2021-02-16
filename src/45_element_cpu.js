@@ -1,7 +1,7 @@
 class CPU_element_api {
 	/**
 	 *
-	 * @brief Constructs the object.
+	 * @summary Constructs the object.
 	 * @public
 	 *
 	 * @param      {Element}  element              The DOMelement
@@ -28,7 +28,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Used for `mode=""` attribute. 
+	 * @summary Used for `mode=""` attribute. 
 	 * @public
 	 *
 	 * @param      {string|null}  mode    Accepted are only in `/\w+/` format, 'default' by default
@@ -43,7 +43,7 @@ class CPU_element_api {
 		this.mode_was = mode;
 	}
 	/**
-	 * @brief Change the presentation style reflecting the media tag status
+	 * @summary Change the presentation style reflecting the media tag status
 	 * @public
 	 *
 	 * @param      {string}  act     can be 'loading', 'pause', 'glow' or 'play'
@@ -62,8 +62,9 @@ class CPU_element_api {
 		this.act_was = act;
 	}
 	/**
-	 * @brief Hide some blocks in the interface, used for `hide=""` attribute
 	 * @public
+	 * @summary Hide some blocks in the interface
+	 * used for `hide=""` attribute
 	 *
 	 * @param      {Array<string>}  hide_elements  Array of strings, may contains
 	 *                                        'actions' or 'chapters'
@@ -83,8 +84,8 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief update play/pause button according to media status
 	 * @public
+	 * @summary update play/pause button according to media status
 	 */
 	update_playbutton() {
 		let audiotag = this.audiotag;
@@ -124,7 +125,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief	update time-line length
+	 * @summary Update time-line length
 	 * @private
 	 *
 	 * @param      {string}  type     line to impact. Can be 'elapsed' or 'loading'
@@ -140,7 +141,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief	update current timecode and related links
+	 * @summary update current timecode and related links
 	 * @private
 	 */
 	update_time() {
@@ -179,7 +180,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief  Shows indicators for the limits of the playing position
+	 * @summary Shows indicators for the limits of the playing position
 	 * @private
 	 */
 	update_time_borders() {
@@ -201,8 +202,7 @@ class CPU_element_api {
 
 	}
 	/**
-	 * @brief Show that the media is loading
-	 *
+	 * @summary Show that the media is loading
 	 * @private
 	 *
 	 * @param      {number}  seconds  The seconds
@@ -213,7 +213,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Show the current media error status
+	 * @summary Show the current media error status
 	 *
 	 * @private
 	 *
@@ -255,12 +255,13 @@ class CPU_element_api {
 		return false;
 	}
 
+	/**
+
 	has_ticker_planes() {
 		return this.elements['about'].querySelector('.ticker')
 	}
 
-	/**
-	 * Displays a text in the infoline or hide it
+	 @summary Displays a text in the infoline or hide it
 	 * @public
 	 *
 	 * @param      {string} 			text     	HTML text to display. Or hide it if empty
@@ -284,7 +285,7 @@ class CPU_element_api {
 	*/
 
 	/**
-	 * @brief Will refresh player interface at each time change (a lot)
+	 * @summary Will refresh player interface at each time change (a lot)
 	 *
 	 * @private
 	 */
@@ -297,7 +298,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Position an element in the timeline, on its time
+	 * @summary Position an element in the timeline, on its time
 	 * @private
 	 *
 	 * @param      {Element} 			element     	Element to impact, should be in #time
@@ -320,7 +321,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Shows the throbber at.
+	 * @summary Shows the throbber
 	 *
 	 * @public
 	 *
@@ -341,7 +342,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Hides immediately the throbber.
+	 * @summary Hides immediately the throbber.
 	 *
 	 * @public
 	 *
@@ -354,7 +355,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Hides the throbber later. Will delay the hiding if recalled.
+	 * @summary Hides the throbber later. Will delay the hiding if recalled.
 	 * @public
 	 */
 	hide_throbber_later() {
@@ -367,7 +368,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief will get presentation data from <audio> or from parent document
+	 * @summary Will get presentation data from <audio> or from parent document
 	 *
 	 * @package
 	 *
@@ -392,7 +393,7 @@ class CPU_element_api {
 	/**
 	 * @private
 	 *
-	 * @brief Update links for sharing
+	 * @summary Update links for sharing
 	 */
 	update_links() {
 		let container = this;
@@ -436,7 +437,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Shows the interface.
+	 * @summary Shows the interface
 	 *
 	 * @public
 	 * @param      {string}  mode    The mode, can be 'main', 'share' or 'error'
@@ -450,7 +451,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Shows the sharing panel,
+	 * @summary Shows the sharing panel
 	 *
 	 * @private
 	 * @param      {Object}  event   The event
@@ -464,7 +465,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Shows the main manel.
+	 * @summary Shows the main manel
 	 *
 	 * @private
 	 *
@@ -480,7 +481,7 @@ class CPU_element_api {
 	/**
 	 * @package not mature enough
 	 *
-	 * @brief Shows the handheld fine navigation.
+	 * @summary Shows the handheld fine navigation
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -496,7 +497,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Inject a <style> into the shadowDom
+	 * @summary Inject a <style> into the shadowDom
 	 *
 	 * @public
 	 *
@@ -512,7 +513,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Remove an injected <style> into the shadowDom
+	 * @summary Remove an injected <style> into the shadowDom
 	 *
 	 * @public
 	 *
@@ -526,7 +527,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Adds an identifier to audiotag at build time.
+	 * @summary Adds an identifier to audiotag at build time.
 	 * @private
 	 */
 	add_id_to_audiotag() {
@@ -536,7 +537,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Complete the interface at build time
+	 * @summary Complete the interface at build time
 	 * @package
 	 */
 	complete_template() {
@@ -556,7 +557,7 @@ class CPU_element_api {
 		this.elements['time'].style.backgroundImage = (dataset.waveform === null) ? '' : `url(${dataset.waveform})`;
 	}
 	/**
-	 * @brief Attach the audiotag to the API
+	 * @summary Attach the audiotag to the API
 	 * @package
 	 *
 	 * @param      {Element}  audiotag  The audiotag
@@ -576,7 +577,7 @@ class CPU_element_api {
 
 
 	/**
-	 * Gets the plane info
+	 * @summary Gets the plane info
 	 * @private
 	 *
 	 * @param      {string}  plane_name     The name
@@ -587,7 +588,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Gets the plane track element
+	 * @summary Gets the plane track element
 	 * @private
 	 *
 	 * @param      {string}  plane_name   The name
@@ -598,7 +599,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Gets the plane panel element
+	 * @summary Gets the plane panel element
 	 * @private
 	 *
 	 * @param      {string}  plane_name   The name
@@ -609,7 +610,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Gets the <nav><ul> plane panel element
+	 * @summary Gets the <nav><ul> plane panel element
 	 * @private
 	 *
 	 * @param      {string}  plane_name   The name
@@ -621,7 +622,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Draws a plane
+	 * @summary Draws a plane
 	 * @private
 	 *
 	 * @param      {string}  plane_name  The plane name
@@ -689,7 +690,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Add an annotation plane layer
+	 * @summary Add an annotation plane layer
 	 * @public
 	 *
 	 * @param      {string}   plane_name  A name in the range /[a-zA-Z0-9\-_]+/
@@ -731,7 +732,7 @@ class CPU_element_api {
 		return true;
 	}
 	/**
-	 * @brief Remove an annotation plane layer
+	 * @summary Remove an annotation plane layer
 	 * @public
 	 *
 	 * @param      {string}   name    A name in the range /[a-zA-Z0-9\-_]+/
@@ -768,7 +769,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Gets the point track identifier.
+	 * @summary Gets the point track identifier
 	 * @private
 	 *
 	 * @param      {string}  plane_name  The plane name
@@ -781,7 +782,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Gets the point info
+	 * @summary Gets the point info
 	 * @private
 	 *
 	 * @param      {string}  plane_name  The plane name
@@ -793,7 +794,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Gets the point element in the track
+	 * @summary Gets the point element in the track
 	 * @private
 	 *
 	 * @param      {string}  plane_name   The plane
@@ -805,7 +806,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Gets the point element in the panel
+	 * @summary Gets the point element in the panel
 	 * @private
 	 *
 	 * @param      {string}  plane_name   The plane
@@ -817,7 +818,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Transform VTT tag langage into HTML tags, filtering out some
+	 * @summary Transform VTT tag langage into HTML tags, filtering out some
 	 *
 	 * @param      {string}            vtt_taged  The vtt tagged
 	 * @return     string                         HTML tagged string
@@ -870,7 +871,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Resort points of a plane by start-time
+	 * @summary Resort points of a plane by start-time
 	 * @private
 	 */
 	plane_resort(plane_name) {
@@ -884,7 +885,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Draws a plane point
+	 * @summary Draws a plane point
 	 * @private
 	 *
 	 * @param      {string}  plane_name  The plane name
@@ -961,7 +962,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Add an annotation
+	 * @summary Add an annotation point
 	 * @public
 	 *
 	 * @param      {string}   plane_name      The existing plane name
@@ -990,7 +991,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Add an annotation
+	 * @summary Edit an annotation point
 	 * @public
 	 *
 	 * @param      {string}   plane_name      The existing plane name
@@ -1018,7 +1019,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Remove an point from an annotation plane
+	 * @summary Remove an annotation point
 	 * @public
 	 *
 	 * @param      {string}   plane_name  A name in the range /^[a-zA-Z0-9\-_$]+/
@@ -1045,7 +1046,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Gets the plane point names from an id on a ShadowDOM element.
+	 * @summary Gets the plane point names from an id on a ShadowDOM element.
 	 * @package
 	 *
 	 * @param      {string}  element_id  The element identifier
@@ -1058,7 +1059,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Remove any points from an annotation plane
+	 * @summary Remove any points from an annotation plane
 	 * @public
 	 *
 	 * @param      {string}  plane_name  The plane name
@@ -1082,7 +1083,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Refresh a plane
+	 * @summary Refresh a plane
 	 * @public
 	 *
 	 * @param      {string}  plane_name  The plane name
@@ -1096,7 +1097,7 @@ class CPU_element_api {
 
 
 	/**
-	 * Clean up DOM elements of any annotations, before rebuild them
+	 * @summary Clean up DOM elements of any annotations, before rebuild them
 	 * @private
 	 */
 	undraw_all_planes() {
@@ -1104,8 +1105,8 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Clear and redraw all planes, mainly when cpu-controller is changing
-	 * targeted audio tag
+	 * @summary Clear and redraw all planes
+	 * Mainly when cpu-controller is changing targeted audio tag
 	 * @public
 	 */
 	redraw_all_planes() {
@@ -1117,7 +1118,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Remove any previewes on plane points
+	 * @summary Remove any previewes on plane points
 	 * @public
 	 *
 	 * @param      {string}  class_name  Targeted class name, 'with-preview' by default
@@ -1142,7 +1143,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * Sets a preview on a plane point
+	 * @summary Sets a preview on a plane point
 	 * @public
 	 *
 	 * @param      {string}  plane_name  The plane name
@@ -1198,7 +1199,7 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Call when a chapter is changed, to trigger the changes
+	 * @summary Call when a chapter is changed, to trigger the changes
 	 * @private
 	 *
 	 * @param      {Object}  event   The event
@@ -1222,7 +1223,7 @@ class CPU_element_api {
 		
 	}
 	/**
-	 * @brief Builds or refresh chapters interface.
+	 * @summary Builds or refresh chapters interface.
 	 * @public
 	 *
 	 * @param      {Object|undefined}  event          The event
@@ -1327,6 +1328,10 @@ class CPU_element_api {
 
 	}
 
+	/**
+	 * @summary Add listeners on tracks to build chapters when loaded
+	 * @private
+	 */
 	build_chapters_loader() {
 		this.build_chapters();
 		let this_build_chapters = this.build_chapters.bind(this);
@@ -1344,8 +1349,8 @@ class CPU_element_api {
 	}
 
 	/**
-	 * @brief Builds or refresh the playlist panel. Should be called only for
-	 * <cpu-controller>
+	 * @summary Builds or refresh the playlist panel. 
+	 Should be called only for <cpu-controller>
 	 * @public
 	 */
 	build_playlist() {
@@ -1384,7 +1389,7 @@ class CPU_element_api {
 	/**
 	 * @package, because at start
 	 *
-	 * @brief Builds the controller.
+	 * @summary Builds the controller.
 	 */
 	build_controller() {
 

@@ -23,7 +23,7 @@ const trigger = {
 
 
 	/**
-	 * @brief Interprets the hash part of the URL, when loaded or changed
+	 * @summary Interprets the hash part of the URL, when loaded or changed
 	 *
 	 * @package
 	 *
@@ -99,7 +99,7 @@ const trigger = {
 	},
 
 	/**
-	 * Update throbber position when hovering the timeline interface
+	 * @summary Update throbber position when hovering the timeline interface
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -116,7 +116,7 @@ const trigger = {
 	},
 
 	/**
-	 * Hide the throbber when leaving the timeline interface
+	 * @summary Hide the throbber when leaving the timeline interface
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -126,7 +126,7 @@ const trigger = {
 	},
 
 	/**
-	 * Highlight the playable positions when hovering a marked link
+	 * @summary Highlight the playable positions when hovering a marked link
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -146,7 +146,7 @@ const trigger = {
 
 
 	/**
-	 * Change play position of a audio tag
+	 * @summary Change play position of a audio tag
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -202,14 +202,13 @@ const trigger = {
 			let ratio = event.offsetX / target.clientWidth;
 			at = ratio * audiotag.duration;
 		}
-		// trigger._remove_timecode_outofborders(at); // unuseful : called in trigger.play()
 		document.CPU.seekElementAt(audiotag, at);
 		trigger.play(event);
 
 	},
 
 	/**
-	 * Do pause
+	 * @summary Do pause
 	 *
 	 * @param      {Object}  event     The event
 	 * @param      {Element}  audiotag  The audiotag
@@ -225,7 +224,7 @@ const trigger = {
 	},
 
 	/**
-	 * Change referenced playing audio, pause the previous one
+	 * @summary Change referenced playing audio, pause the previous one
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -242,7 +241,7 @@ const trigger = {
 	},
 
 	/**
-	 * Do play an audio tag
+	 * @summary Do play an audio tag
 	 *
 	 * @param      {Object|undefined}  event     The event
 	 * @param      {Element|undefined}  audiotag  The audiotag
@@ -306,7 +305,7 @@ const trigger = {
 	},
 
 	/**
-	 * Interprets pressed key
+	 * @summary Interprets pressed key
 	 *
 	 * @param      {Object}  event   The event
 	 * @param      {number}  mult    Multiply the keypressed act, 1 by default
@@ -359,7 +358,7 @@ const trigger = {
 	},
 
 	/**
-	 * Interprets keypress on the play/pause button
+	 * @summary Interprets keypress on the play/pause button
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -378,7 +377,7 @@ const trigger = {
 	},
 
 	/**
-	 * Pressing restart button, Rewind at start the audio tag
+	 * @summary Pressing restart button, Rewind at start the audio tag
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -387,7 +386,7 @@ const trigger = {
 		document.CPU.seekElementAt(container.audiotag, 0);
 	},
 	/**
-	 * Pressing reward button
+	 * @summary Pressing reward button
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -396,7 +395,7 @@ const trigger = {
 		trigger.key(event);
 	},
 	/**
-	 * Pressing foward button
+	 * @summary Pressing foward button
 	 * Function associated, see below, DO NOT RENAME
 	 *
 	 * @param      {Object}  event   The event
@@ -406,7 +405,7 @@ const trigger = {
 		trigger.key(event);
 	},
 	/**
-	 * Pressing fastreward button
+	 * @summary Pressing fastreward button
 	 * Function associated, see below, DO NOT RENAME
 	 *
 	 * @param      {Object}  event   The event
@@ -416,7 +415,7 @@ const trigger = {
 		trigger.key(event, document.CPU.fast_factor);
 	},
 	/**
-	 * Pressing fastfoward button
+	 * @summary Pressing fastfoward button
 	 * Function associated, see below, DO NOT RENAME
 	 *
 	 * @param      {Object}  event   The event
@@ -429,7 +428,7 @@ const trigger = {
 
 	_hand_on : null, // Repeated event allocation
 	/*
-	 * Start handheld navigation button press
+	 * @summary Start handheld navigation button press
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -455,7 +454,7 @@ const trigger = {
 	},
 
 	/*
-	 * Repeat during pressing handheld navigation button
+	 * @summary Repeat during pressing handheld navigation button
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -467,7 +466,7 @@ const trigger = {
 	},
 
 	/*
-	 * Release handheld navigation button
+	 * @summary Release handheld navigation button
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -478,7 +477,7 @@ const trigger = {
 	},
 
 	/**
-	 * Refresh the interface when changing chapter
+	 * @summary Refresh the interface when changing chapter
 	 *
 	 * @param      {Object}  event              The event
 	 * @param      {Element}  element_interface  The element interface
@@ -515,7 +514,7 @@ const trigger = {
 
 
 	/**
-	 * Updatting time position. Pause if a end position is defined
+	 * @summary Updatting time position. Pause if a end position is defined
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -534,7 +533,7 @@ const trigger = {
 	},
 
 	/**
-	 * When an audiotag is ended, advance in playlist
+	 * @summary When an audiotag is ended, advance in playlist
 	 *
 	 * @param      {Object}  event     The event
 	 * @param      {string}  audiotag  The audiotag
@@ -576,7 +575,7 @@ const trigger = {
 	},
 
 	/**
-	 * Interprets if <cpu-audio> element is modified 
+	 * @summary Interprets if <cpu-audio> element is modified 
 	 *
 	 * @param      {Object}  mutationsList  The mutations list
 	 */
@@ -593,7 +592,7 @@ const trigger = {
 		container.element.copy_attributes_to_media_dataset();
 	},
 	/**
-	 * Interprets if <audio> element is modified or removed
+	 * @summary Interprets if <audio> element is modified or removed
 	 * TODO : act when a child change as <source> or <track>
 	 *
 	 * @param      {Object}  mutationsList  The mutations list
@@ -615,7 +614,7 @@ const trigger = {
 	},
 
 	/**
-	 * Interprets navigator.share native API
+	 * @summary Interprets `navigator.share` native API
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -632,7 +631,7 @@ const trigger = {
 	_show_alternate_nav : null,
 
 	/**
-	 * Interprets long play on timeline for alternative fine position
+	 * @summary Interprets long play on timeline for alternative fine position
 	 *
 	 * @param      {Object}  event   The event
 	 */

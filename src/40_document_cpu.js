@@ -32,7 +32,7 @@ HTMLDocument.prototype.CPU = {
 	'trigger' : trigger,
 
 	// @package, not enough mature
-	// NOTE : we will need to refresh this when the <head> of the host page changes
+	// NOTE : we need to refresh this when the <head> of the host page changes
 	default_dataset : {
 		'title' : function () { 
 				for(let domain of ['og', 'twitter']){
@@ -75,7 +75,7 @@ HTMLDocument.prototype.CPU = {
 
 	/**
 	 * @package
-	 * Determines if audiotag source is streamed, and so unactivate reposition, position memory, length display…
+	 * @summary Determines if audiotag source is streamed, and so unactivate reposition, position memory, length display…
 	 *
 	 * @param      {Object}   audiotag  The audiotag
 	 * @return     {boolean}  True if audiotag streamed, False otherwise.
@@ -86,7 +86,7 @@ HTMLDocument.prototype.CPU = {
 
 	/**
 	 * @package
-	 * @brief At start, will start the last playing <audio> tag at its last known position
+	 * @summary At start, will start the last playing <audio> tag at its last known position
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -104,7 +104,7 @@ HTMLDocument.prototype.CPU = {
 	},
 	/**
 	 * @package, because at start
-	 * @brief attach events on a <audio> tag
+	 * @summary Attach events on a <audio> tag
 	 *
 	 * @param      {Object}  audiotag  The audiotag
 	 */
@@ -144,8 +144,7 @@ HTMLDocument.prototype.CPU = {
 
 	/**
 	 * @package, launched at start or when the webcomponent appears
-	 *
-	 * Brief : Connects an audiotag to CPU APIs
+	 * @summary Connects an audiotag to CPU APIs
 	 *
 	 * @param      {Object}  audiotag  The audiotag
 	 */
@@ -174,8 +173,7 @@ HTMLDocument.prototype.CPU = {
 
 	/**
 	 * @public
-	 *
-	 * @brief Determines if audiotag is currently playing.
+	 * @summary Determines if audiotag is currently playing.
 	 *
 	 * @param      {Object}   audiotag  The audiotag
 	 * @return     {boolean}  True if audiotag playing, False otherwise.
@@ -185,8 +183,7 @@ HTMLDocument.prototype.CPU = {
 	},
 	/**
 	 * @public
-	 *
-	 * @brief Determines if audiotag is displayed in <cpu-controller>
+	 * @summary Determines if audiotag is displayed in <cpu-controller>
 	 *
 	 * @param      {Object}   audiotag  The audiotag
 	 * @return     {boolean}  True if audiotag global, False otherwise.
@@ -197,8 +194,7 @@ HTMLDocument.prototype.CPU = {
 
 	/**
 	 * @public
-	 *
-	 * @brief Position a timecode to a named audio tag
+	 * @summary Position a timecode to a named audio tag
 	 *
 	 * @param      {string}   hash         The id="" of an <audio> tag
 	 * @param      {string}   timecode     The timecode, 
@@ -257,7 +253,7 @@ HTMLDocument.prototype.CPU = {
 	/**
 	 * @public
 	 *
-	 * @brief Position a <audio> element to a time position
+	 * @summary Position a <audio> element to a time position
 	 *
 	 * @param      {HTMLAudioElement}  audiotag  <audio> DOM element
 	 * @param      {number}  seconds   	Wanted position, in seconds
@@ -293,7 +289,7 @@ HTMLDocument.prototype.CPU = {
 	/**
 	 * @public
 	 * 
-	 * @brief  For any ShadowDOM element, will returns its parent interface container
+	 * @summary For any ShadowDOM element, will returns its parent interface container
 	 *
 	 * @param      {Element}  child   The ShadowDOM child
 	 * @return     {Element}  The #interface element
@@ -304,8 +300,7 @@ HTMLDocument.prototype.CPU = {
 	/**
 	 * @public
 	 *
-	 * @brief For any `<audio>` tag or its child tag or shadowDOM element, will
-	 * returns the element `CPU` API
+	 * @summary For any <audio> tag or its child tag or shadowDOM element, returns the element `CPU` API
 	 *
 	 * @param      {Element}  child   The child
 	 * @return     {CPU_element_api}       Element.CPU
@@ -327,7 +322,7 @@ HTMLDocument.prototype.CPU = {
 	/**
 	 * @public
 	 *
-	 * @brief Return the current playing playlist array
+	 * @summary Return the current playing playlist array
 	 *
 	 * @return     {Array}  Array with named id
 	 */

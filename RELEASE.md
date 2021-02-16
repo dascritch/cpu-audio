@@ -21,7 +21,9 @@ Back-end
  * Using arrow functions, modernizing code
  * Updating [Google Closure to v20200719](https://dl.google.com/closure-compiler/compiler-20200719.tar.gz)
    * Removing `--jscomp_off internetExplorerChecks`
+   * Moved to ECMAScript 2019 as source
    * Annotations updated
+   * Erroneous `@brief` annotations changed to `@summary`
 
 Making of
 ---------

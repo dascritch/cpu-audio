@@ -3,7 +3,7 @@
 HTMLAudioElement.prototype.CPU_connected = false;
 
 /**
- * Return the parent <cpu-audio> DOM element
+ * @summary Return the parent <cpu-audio> DOM element
  *
  * @class      CPU_controller (name)
  * @return     {Element}  <cpu-audio> DOM element
@@ -13,7 +13,7 @@ HTMLAudioElement.prototype.CPU_controller = function() {
 }
 
 /**
- * Trigger display updates in the interface
+ * @summary Trigger display updates in the interface
  *
  * @class      CPU_update (name)
  */

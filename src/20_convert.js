@@ -10,8 +10,7 @@ const convert = {
 	Infinity : '?',
 
 	/**
-	 * @brief convert a string empty, with a number, with a colon-coded or an
-	 * human-coded timecode in seconds
+	 * @summary convert a string empty, with a number, with a colon-coded or an human-coded timecode in seconds
 	 *
 	 * @public
 	 *
@@ -34,7 +33,7 @@ const convert = {
 	},
 
 	/**
-	 * @brief convert a human-coded (`1h2m3s`) time in seconds
+	 * @summary convert a human-coded (`1h2m3s`) time in seconds
 	 *
 	 * @public
 	 *
@@ -55,7 +54,7 @@ const convert = {
 	},
 
 	/**
-	 * @brief convert a colon-coded (`01:02:03`) time in seconds 
+	 * @summary convert a colon-coded (`01:02:03`) time in seconds 
 	 *
 	 * @public
 	 * 
@@ -74,7 +73,7 @@ const convert = {
 	},
 
 	/**
-	 * @brief convert a time in seconds in a human-coded time (`1h2m3s`). Zero is `0s`.
+	 * @summary convert a time in seconds in a human-coded time (`1h2m3s`). Zero is `0s`.
 	 * 
 	 * @public
 	 *
@@ -103,7 +102,7 @@ const convert = {
 	},
 
 	/**
-	 * @brief convert a time in seconds in a colon-coded time (`1:02:03s`). Zero
+	 * @summary convert a time in seconds in a colon-coded time (`1:02:03s`). Zero
 	 * is `0:00`.
 	 *
 	 * @public
@@ -143,7 +142,7 @@ const convert = {
 	},
 
 	/**
-	 * @brief same as `SecondsInColonTime`, but suited for `<input type="time"
+	 * @summary same as `SecondsInColonTime`, but suited for `<input type="time"
 	 * />`. Zero is `00:00:00`.
 	 *
 	 * @public
