@@ -52,7 +52,6 @@
 
         <fieldset class="actions">
             <button type="button" id="add"><strong>+</strong> Add a chapter</button>
-            <button type="submit">See result</button>
         </fieldset>
 
         <fieldset id="list">
@@ -241,7 +240,6 @@ function show_only_line(point_name) {
 }
 
 function focus_on_point(CPU_controler, plane_name, point_name) {
-    console.log('focus_on_point(',CPU_controler, plane_name, point_name)
     // click on the Chapters preview panel
     show_only_line(point_name);
 }
@@ -263,10 +261,8 @@ function interpret_line(this_line_element) {
     chapters.push(this_line_data);
 
     let data = {  
-            // arrow credit : https://thenounproject.com/search/?q=arrow+up&i=3523491 
-            'image' : 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9JzMwMHB4JyB3aWR0aD0nMzAwcHgnICBmaWxsPSIjMDAwMDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTAwIDEwMCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PGc+PHBhdGggZD0iTTUwLjMzNiwzMS44MTZDNDkuNDMsMzEuODIsNDguNiwzMi4yLDQ4LjAyNSwzMi44OEwyNC4yMDgsNjEuMDYzYy0xLjA2OSwxLjI2Ni0wLjkxLDMuMTU4LDAuMzU1LDQuMjI4ICAgYzEuMjY2LDEuMDcxLDMuMTU5LDAuOTEsNC4yMjgtMC4zNTRsMjEuNDk0LTI1LjQzNmwyMC44OTgsMjUuNDA1QzcxLjc3Niw2NS42MjcsNzIuNjM2LDY2LDczLjUwMiw2NiAgIGMwLjY3LDAsMS4zNDYtMC4yMjQsMS45MDQtMC42ODRjMS4yOC0xLjA1MiwxLjQ2NC0yLjk0MiwwLjQxMS00LjIyM0w1Mi42MzMsMzIuOTFDNTIuMDY4LDMyLjIyNCw1MS4yMjcsMzEuODIyLDUwLjMzNiwzMS44MTZ6Ij48L3BhdGg+PC9nPjwvc3ZnPg==',
+            'image' : './assets/pointer.png',
             'text' : text,
-            // 'link' : false // TODO : when clicked, should put focus onto the input[type=text]
             'link' : focus_on_point
     }
 
@@ -284,6 +280,7 @@ function event_line(event) {
         this_line_element = this_line_element.closest('p');
     }
     interpret_line(this_line_element);
+    interpret_form();
 }
 
 function add_events_line(line) {
@@ -292,7 +289,7 @@ function add_events_line(line) {
     }
 }
 
-function interpret_form(event) {
+function interpret_form(_event) {
     let data;
     let track = document.querySelector('audio').addTextTrack("chapters");
 
@@ -340,7 +337,9 @@ function interpret_form(event) {
         return `WEBVTT FILE\n${out.join('')}\n`;
     }
 
-    event.preventDefault();
+    if (_event) {
+        _event.preventDefault();
+    }
     reorder_lines();
     chapters = [];
     sound_CPU.clear_plane('cursors');
@@ -361,8 +360,6 @@ function interpret_form(event) {
     document.getElementById('vtt_source_download').href = vtt_virtual_file;
     document.getElementById('vtt_source_download').download = sound_element.dataset.title.replace(/(.*)(\.(ogg|mp3|wav|flac|mp4|aac))$/,'$1') + '.vtt';
     document.querySelector('#vtt_source').open = true;
-
-    document.location.hash = '#generated_html';
 }
 
 window.addEventListener('load', function(){
@@ -388,12 +385,14 @@ window.addEventListener('load', function(){
     document.getElementById('add').addEventListener('click', add_line);
     list_element.addEventListener('click', check_for_actions);
 
-    document.getElementById('edit_chapters').addEventListener('submit' , interpret_form);
-
     sound_CPU.add_plane('cursors', 'Chapters preview', {track   : 'cursors', panel   : true});
     sound_CPU.inject_css('cursors', `
         .cursors {
             left: -6px;
+        }
+        .cursors .with-preview {
+            outline : white 4px solid;
+            z-index : 10;
         }
         .cursors a {
             height: 12px;
