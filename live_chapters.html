@@ -280,6 +280,7 @@ function focus_on_point(CPU_controler, plane_name, point_name) {
 function interpret_line(this_line_element) {
     let time = this_line_element.querySelector('.timecode_input').value; 
     let text = this_line_element.querySelector('.text_input').value; // TODO : clean HTML , perhaps via a innerHTML ?
+    this_line_element.dataset.time = document.CPU.convert.TimeInSeconds(time);
     if ( (time === '') || (text === '') ) {
         // no time code ? no text ? do not record it yet
         return ;
@@ -397,7 +398,7 @@ function interpret_form(_event) {
     // this segment is a bit tricky : we sort lines per their timecode, without moving them from the DOM
     // If we move them, we lose focus and cursor positions, very annoying
     function seconds_from_input(p){
-        return document.CPU.convert.TimeInSeconds(p.querySelector('.timecode_input').value)
+        return p.dataset.time;
     }
     function compare_lines(a, b){
         return seconds_from_input(a) - seconds_from_input(b)

@@ -979,12 +979,7 @@ class CPU_element_api {
 		if (panel) {
 			let plane_point_panel = this.get_point_panel(plane_name, point_name);
 			let data_start = Number(data['start'])
-			// it seems that numbers stored in dataset are converted in strings
-			if ((plane_point_panel) && (Number(plane_point_panel.dataset.start) !== data_start)) {
-				// force a redraw, to get the correct position in panel if start time changed
-				plane_point_panel.remove();
-				plane_point_panel = false;
-			}
+			
 			let intended_panel_id = this.get_point_id(plane_name, point_name, true);
 			if (!plane_point_panel) {
 				plane_point_panel = document.createElement('li');
@@ -992,8 +987,7 @@ class CPU_element_api {
 				plane_point_panel.innerHTML='<a href="#" class="cue"><strong></strong><time></time></a>';
 				panel.appendChild(plane_point_panel);
 			}
-			plane_point_panel.dataset.start = data_start;
-
+			
 			let innerStrong = '';
 			if (data['text']) {
 				innerStrong = data['text'];
@@ -1110,14 +1104,14 @@ class CPU_element_api {
 		if (!point_track_element) {
 			return false;
 		}
-		delete this.audiotag._CPU_planes[plane_name].points[point_name];
 		point_track_element.remove();
 		this.get_point_panel(plane_name, point_name).remove();
+		delete this.audiotag._CPU_planes[plane_name].points[point_name];
 
 		//  recalc _start_max for caching repaints
 		let _st_max = 0;
 		for (let s of Object.entries(this.audiotag._CPU_planes[plane_name].points)) {
-			let that_start = Number(s.start);
+			let that_start = Number(s['start']);
 			_st_max = _st_max < that_start ? that_start : _st_max;
 		}
 		this.audiotag._CPU_planes[plane_name]._st_max = _st_max;
