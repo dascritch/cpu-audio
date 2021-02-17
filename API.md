@@ -86,8 +86,8 @@ build_playlist()                             |         | Rebuild playlist. Shoul
 add_plane(plane, title, data)                | boolean | Create an annotation plane (¹)(²)(³)
 remove_plane(plane)                          | boolean | Remove an annotation plane (¹)(²)
 add_point(plane, timecode, point, data)      | boolean | Add an annotation point to a plane at a timecode (¹)(²)(⁴)
-get_point(plane, point)						 | object  | Return data for a point
-edit_point(plane, point, data)				 |         | Modify data for a point. Only existing keys from get_point() are updated
+get_point(plane, point)						 | object  | Return data for a point (³)
+edit_point(plane, point, data)				 |         | Modify data for a point (³). Only existing keys from get_point() are updated
 remove_point(plane, point)                   | boolean | Remove an annotation point (¹)(²)
 clear_plane(plane)                           |         | Remove any points from an annotation plane (¹)(²)
 redraw_all_planes()                          |         | Redraw any annotation planes and points

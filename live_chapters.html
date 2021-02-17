@@ -1,9 +1,6 @@
 <!--
 
 TODO
-- import VTT déjà existant
-- pourquoi quand j'ai input text en focus, faut que je clique deux fois pour changer de chapitre ?
-- correct order of editing chapters
 - draggable cursor
 - export .csv 
 
@@ -29,13 +26,13 @@ TODO
                 <input id="source_waveform" name="source_waveform" type="url" />
             </label>
             <label for="source_webvtt">
-                <span>(optional) : URL WebVTT track to re-edit NEED REWORK TO WORK AGAIN</span>
+                <span>(optional) : URL WebVTT track to re-edit</span>
                 <input id="source_webvtt" name="source_webvtt" type="url" />
             </label>
         </fieldset>
 
         <fieldset class="actions">
-            <button type="submit">Go to editor</button>
+            <button type="submit" class="validate">Go to editor</button>
         </fieldset>
 
         <p>Think my editor is ugly ? You're right ! <a href="https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md">Just help us !</a></p>
@@ -49,7 +46,7 @@ TODO
     hide="poster actions">
     <audio controls id="sound">
         <source src="./tests-assets/blank.mp3" type="audio/mpeg" />
-        <track kind="chapters" src="" default />
+        <track kind="metadata" src="" default />
     </audio>
     <!-- {% include no_component_message.html %} -->
 </cpu-audio>
@@ -61,19 +58,19 @@ TODO
     <form id="edit_chapters" action="#generated_html" method="post">
 
         <fieldset class="actions">
-            <button type="button" id="add"><strong>+</strong> Add a new chapter</button>
+            <button type="button" class="validate" id="add"><strong>+</strong> Add a new chapter</button>
         </fieldset>
 
         <fieldset id="list">
             <p class="line editing" id="line-0">
                 
                 <input class="timecode_input" inputmode="numeric" pattern="^([0-5]?[0-9]:){0,2}[0-5]?[0-9]$" placeholder="00:00:00" valu="0:00" size="8" />
-                <button type="button" class="set">Set position to now</button>
-                <button type="button" class="test">Test time position</button>
                 <br />
                 <input class="text_input" type="text" placeholder="Chapter name" />
                 <br />
-                <button type="button" class="remove"><strong>×</strong> Remove this chapter</button>
+                <button type="button" class="set">Set position to now</button>
+                <button type="button" class="test">Test time position</button>
+                <button type="button" class="remove dangerous"><strong>×</strong> Remove this chapter</button>
             </p>
         </fieldset>
 
@@ -121,7 +118,7 @@ TODO
 
         <pre id="vtt_source"></pre>
 
-        <p>Then insert a &lt;track kind="chapters" default src="…"&gt; tag reffering it in your &lt;audio control&gt; tag</p>
+        <p>Then insert a <code>&lt;track kind="chapters" default src="…"&gt;</code> tag reffering it into your <code>&lt;audio control&gt;</code> tag</p>
 
     </fieldset>
 </details>
@@ -136,99 +133,93 @@ var line_number = 1;
 var chapters = [];
 var cues = [];
 
+
+/**
+ * Fired once <track> is loaded
+ * 
+ * @param      {Event}  event   "Load" event on <track>
+ */
+function interpret_loaded_tracks(event) {
+    for(let t of sound_element.textTracks[0].cues) {
+        interpret_line(add_line(t.startTime, t.text));
+    }
+    show_only_line();
+}
+
+/**
+ * Fired on any configuration field changed. Mainly for setting audio source, ev, timeline and track source
+ */
 function set_source_audio() {
     let url = edit_source_audio_element.value;
-    let is_track = sound_element.querySelector('track');
+    let track_element = sound_element.querySelector('track');
     document.body.classList.add('loaded');
+
+    track_element.addEventListener('load', interpret_loaded_tracks);
     
     sound_element.src = url;
     sound_element.dataset.title = decodeURIComponent(url.replace(/(^.*\/)([^\/]+)/,'$2'));
     sound_element.dataset.waveform = edit_source_waveform_element.value;
-    if ( (edit_source_webvtt_element.value !== '') && ((is_track === null) || (is_track.src !== edit_source_webvtt_element.value)) ) {
-        /*
-        for(let t of sound_element.textTracks) {
-            t.mode = 'disabled';
-        }*/
-        /*
-        if (is_track !== null) {
-            is_track.remove();
-        }
 
-        sound_CPU.clear_plane('_chapters');
-        */
-/*
-        let track_element = document.createElement('track');
-        track_element.default = true;
-        track_element.kind = 'chapters';
-        track_element.mode = '';
-        sound_element.appendChild(track_element);
+    if ( (edit_source_webvtt_element.value !== '') && (track_element.src !== edit_source_webvtt_element.value) )  {
         track_element.src = edit_source_webvtt_element.value;
-        sound_CPU.build_chapters_loader();
-*/
-        // sound_element._CPU_planes['_chapters'].points
-        // redraw 'chapters'
-
     }
 }
 
+/**
+ * Fired once configuration form is  validated
+ *
+ * @param      {<type>}  event   The event
+ */
 function check_configure(event) {
     set_source_audio();
     event.preventDefault();
     // test if audio is correctly loaded
     document.querySelector('#at_start').open = false;
     document.querySelector('#chapters').open = true;
+    show_only_line();
 }
 
+/**
+ * Present the currently elapsed time in <audio> in a 00:00 form
+ *
+ * @return     {string}  Timecode colon-separated, zero-paded
+ */
 function currentTime_in_colon() {
     return document.CPU.convert.SecondsInPaddledColonTime(sound_element.currentTime);
 }
 
-function add_line() {
+/**
+ * Adds a line in chapter editor
+ *
+ * @param      {number}  [time_value=undefined]  Time position 
+ * @param      {string}  [text_value='']         Text title
+ * @return     {Element} Resulting created <p> element
+ */
+function add_line(time_value=undefined , text_value='') {
+    if (time_value.preventDefault) {
+        // we have an event, we don't want to badly interpret it
+        time_value = false;
+    }
     let line = document.createElement('p');
     line.id = `line-${line_number++}`;
     line.innerHTML = new_chapter_line;
     line.classList.add('line');
-    line.querySelector('.timecode_input').value = currentTime_in_colon();
+    line.querySelector('.timecode_input').value = time_value ? document.CPU.convert.SecondsInPaddledColonTime(time_value) : currentTime_in_colon();
+    line.querySelector('.text_input').value = text_value;
     add_events_line(line);
     document.getElementById('list').appendChild(line);
     show_only_line(line.id);
-    // set time to the current audio time 
-}
-
-function reorder_lines() {
-    let out = [];
-    let no_time_inc = 0;
-    let lines = Array.from(list_element.querySelectorAll('p'));
-
-    function interpret_line(this_line_element) {
-        let time = this_line_element.querySelector('.timecode_input').value;
-        if (time === '') {
-            // no time code ? add a fake record for the end
-            time = `99:99:${no_time_inc++}`;
-        }
-        secs = document.CPU.convert.TimeInSeconds(time);
-        out.push({
-            'secs' : secs,
-            'time' : document.CPU.convert.SecondsInPaddledColonTime(secs),
-            'text' : this_line_element.querySelector('[type="text"]').value,
-        });
-    }
-
-    let nb = 0;
-    function repopulate_line(this_line_element) {
-        let line = out[nb++];
-        this_line_element.querySelector('.timecode_input').value = line.time;
-        this_line_element.querySelector('[type="text"]').value = line.text;
-    }
-
-    lines.forEach(interpret_line);
-    out.sort(function(a, b){
-        return a.secs - b.secs;
-    })
-    lines.forEach(repopulate_line);
+    return line;
 }
 
 
+
+
+/**
+ * Special operations on <button type="button">
+ *
+ * @param      {Event}  event   "change", "input" or "submit" onto <p>
+ */
 function check_for_actions(event) {
     if (event.target.tagName === 'BUTTON') {
         let this_line_element = event.target.closest('p');
@@ -249,6 +240,11 @@ function check_for_actions(event) {
     }
 }
 
+/**
+ * Hide all lines of the chapters editor, show only the one focused
+ *
+ * @param      {string}  point_name  The point name to show
+ */
 function show_only_line(point_name) {
     Array.from(
         document.querySelectorAll('p.line')
@@ -256,24 +252,41 @@ function show_only_line(point_name) {
             element.classList.remove('editing');
         });
     let active_line = document.getElementById(point_name) ;
-    active_line.classList.add('editing');
-    active_line.querySelector('input[type="text"]').focus();
+    if (active_line) {
+        active_line.classList.add('editing');
+        active_line.querySelector('input[type="text"]').focus();
+    }
 }
 
+/**
+ * Callback function when the player panel is clicked
+ *
+ * @param      {CPU_controler}  CPU_controler  The cpu controler
+ * @param      {string}         plane_name     The plane name
+ * @param      {string}         point_name     The point name
+ */
 function focus_on_point(CPU_controler, plane_name, point_name) {
     // click on the Chapters preview panel
     show_only_line(point_name);
+    // position audio at time
+    document.CPU.seekElementAt(CPU_controler.audiotag, CPU_controler.get_point(plane_name, point_name)['start']);
 }
 
+/**
+ * Interpret a chapter line edited
+ *
+ * @param      {Element}  this_line_element  The this line element
+ */
 function interpret_line(this_line_element) {
-    let time = this_line_element.querySelector('.timecode_input').value;
-    let text = this_line_element.querySelector('[type="text"]').value;
+    let time = this_line_element.querySelector('.timecode_input').value; 
+    let text = this_line_element.querySelector('.text_input').value; // TODO : clean HTML , perhaps via a innerHTML ?
     if ( (time === '') || (text === '') ) {
         // no time code ? no text ? do not record it yet
         return ;
     }
+
     let seconds = Math.floor(document.CPU.convert.TimeInSeconds( time ));
-    // TODO : clean HTML , perhaps via a innerHTML ?
+    
     let this_line_data = {
         code: time,
         time: seconds,
@@ -284,7 +297,8 @@ function interpret_line(this_line_element) {
     let data = {  
             'image' : './assets/pointer.png',
             'text' : text,
-            'link' : focus_on_point
+            'link' : focus_on_point,
+            'start' : seconds
     }
 
     if (! sound_CPU.get_point('cursors', this_line_element.id)) {
@@ -295,6 +309,11 @@ function interpret_line(this_line_element) {
     }
 }
 
+/**
+ * Event into a chapter editor line
+ *
+ * @param      {Event}  event   The event
+ */
 function event_line(event) {
     let this_line_element = event.target;
     if (this_line_element.tagName !== 'P' ) {
@@ -304,12 +323,22 @@ function event_line(event) {
     interpret_form();
 }
 
+/**
+ * Adds events listeners to a newly created <p> element in chapter editor
+ *
+ * @param      {<type>}  line    The line
+ */
 function add_events_line(line) {
     for (let event_name of ['input', 'change', 'click']) {
         line.addEventListener(event_name, event_line);
     }
 }
 
+/**
+ * Render chapters in different formats : HTML, MarkDown, WikiDoku and WebVTT
+ *
+ * @param      {<type>}   _event  The event
+ */
 function interpret_form(_event) {
     let data;
     let track = document.querySelector('audio').addTextTrack("chapters");
@@ -318,6 +347,7 @@ function interpret_form(_event) {
         data = new Blob([text], {type: 'text/plain'});
         let textFile = window.URL.createObjectURL(data);
         return textFile;
+
     }
 
     function build_html_source() {
@@ -361,10 +391,19 @@ function interpret_form(_event) {
     if (_event) {
         _event.preventDefault();
     }
-    reorder_lines();
     chapters = [];
     sound_CPU.clear_plane('cursors');
-    Array.from(list_element.querySelectorAll('p')).forEach(interpret_line);
+
+    // this segment is a bit tricky : we sort lines per their timecode, without moving them from the DOM
+    // If we move them, we lose focus and cursor positions, very annoying
+    function seconds_from_input(p){
+        return document.CPU.convert.TimeInSeconds(p.querySelector('.timecode_input').value)
+    }
+    function compare_lines(a, b){
+        return seconds_from_input(a) - seconds_from_input(b)
+    }
+    Array.from(list_element.querySelectorAll('p')).sort(compare_lines).forEach(interpret_line);
+
     let html_source =  build_html_source();
     if (chapters.length === 0) {
         // empty list
@@ -443,14 +482,23 @@ window.addEventListener('load', function(){
         flex : 1 1 auto;
     }
 
-    button {
+    button, summary {
+        font-family: sans-serif;
+        color : black;
         padding : 6px;
         border-radius: 4px;
+        border: 2px outset gray;
+        background: #AAA;
+        display: inline-block;
     }
 
-    button[type="submit"] {
+    button.validate {
         color : white;
-        background : green;
+        background : #070;
+    }
+    button.dangerous {
+        color : white;
+        background : #F00;
     }
 
     #steps {
