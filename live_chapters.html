@@ -1,16 +1,16 @@
+<!--
+
+TODO
+- import VTT déjà existant
+- pourquoi quand j'ai input text en focus, faut que je clique deux fois pour changer de chapitre ?
+- correct order of editing chapters
+- draggable cursor
+- export .csv 
+
+-->
+
 <meta charset="UTF-8" />
 <script src="./dist/cpu-audio.js" async></script>
-
-<cpu-audio 
-    title="First, Choose an URL for source"
-    hide="poster actions">
-    <audio controls id="sound">
-        <source src="./tests-assets/blank.mp3" type="audio/mpeg" />
-        <track kind="chapters" src="" default />
-    </audio>
-    <!-- {% include no_component_message.html %} -->
-</cpu-audio>
-
 
 <details id="at_start" open>
     <summary>Configure editor</summary>
@@ -38,11 +38,21 @@
             <button type="submit">Go to editor</button>
         </fieldset>
 
-        <p>Please note : this editor is difficult to use on small screens. Sorry.</p>
         <p>Think my editor is ugly ? You're right ! <a href="https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md">Just help us !</a></p>
 
     </form>
 </details>
+
+
+<cpu-audio 
+    title="First, Choose an URL for source"
+    hide="poster actions">
+    <audio controls id="sound">
+        <source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+        <track kind="chapters" src="" default />
+    </audio>
+    <!-- {% include no_component_message.html %} -->
+</cpu-audio>
 
 <!-- -->
 
@@ -51,16 +61,19 @@
     <form id="edit_chapters" action="#generated_html" method="post">
 
         <fieldset class="actions">
-            <button type="button" id="add"><strong>+</strong> Add a chapter</button>
+            <button type="button" id="add"><strong>+</strong> Add a new chapter</button>
         </fieldset>
 
         <fieldset id="list">
             <p class="line editing" id="line-0">
-                <button type="button" class="test">Test</button>
-                <button type="button" class="set">Set</button>
-                <input class="timecode_input" inputmode="numeric" pattern="^([0-5]?[0-9]:){0,2}[0-5]?[0-9]$" placeholder="00:00:00" size="8" />
+                
+                <input class="timecode_input" inputmode="numeric" pattern="^([0-5]?[0-9]:){0,2}[0-5]?[0-9]$" placeholder="00:00:00" valu="0:00" size="8" />
+                <button type="button" class="set">Set position to now</button>
+                <button type="button" class="test">Test time position</button>
+                <br />
                 <input class="text_input" type="text" placeholder="Chapter name" />
-                <button type="button" class="remove"><strong>×</strong>Remove this chapter</button>
+                <br />
+                <button type="button" class="remove"><strong>×</strong> Remove this chapter</button>
             </p>
         </fieldset>
 
@@ -132,14 +145,18 @@ function set_source_audio() {
     sound_element.dataset.title = decodeURIComponent(url.replace(/(^.*\/)([^\/]+)/,'$2'));
     sound_element.dataset.waveform = edit_source_waveform_element.value;
     if ( (edit_source_webvtt_element.value !== '') && ((is_track === null) || (is_track.src !== edit_source_webvtt_element.value)) ) {
+        /*
         for(let t of sound_element.textTracks) {
             t.mode = 'disabled';
-        }
+        }*/
+        /*
         if (is_track !== null) {
             is_track.remove();
         }
-        sound_CPU.clear_plane('_chapters');
 
+        sound_CPU.clear_plane('_chapters');
+        */
+/*
         let track_element = document.createElement('track');
         track_element.default = true;
         track_element.kind = 'chapters';
@@ -147,6 +164,10 @@ function set_source_audio() {
         sound_element.appendChild(track_element);
         track_element.src = edit_source_webvtt_element.value;
         sound_CPU.build_chapters_loader();
+*/
+        // sound_element._CPU_planes['_chapters'].points
+        // redraw 'chapters'
+
     }
 }
 
@@ -401,8 +422,8 @@ window.addEventListener('load', function(){
             display : block;
         }
         .cursors img {
-            height: 12px;
-            width: 12px;
+            width: 11px;
+            height: 21px;
         }
     `);
 
@@ -456,17 +477,16 @@ window.addEventListener('load', function(){
     }
 
     #list p.editing {
-        display : flex;
+        display : block;
     }
 
-    #list p span {
-        user-select: none;
-        cursor: move;
-        flex : 0 0 auto;
+    .text_input {
+        width : 100%;
     }
 
-    #list p input[type="text"] {
-        flex : 1 0 auto;
+    .remove {
+        float : right;
     }
+
 
 </style>
