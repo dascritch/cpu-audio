@@ -11,69 +11,67 @@
     <!-- {% include no_component_message.html %} -->
 </cpu-audio>
 
-<p id="steps">
-    <a href="#configure">Configure</a>
-    <a href="#edit_chapters">Edit chapters</a>
-    <a href="#generated_html">Generated HTML</a>
-    <a href="#generated_md">Generated MarkDown</a>
-    <a href="#generated_wiki">Generated DokuWiki</a>
-    <a href="#generated_vtt">Generated WebVTT</a>
-</p>
+
+<details id="at_start" open>
+    <summary>Configure editor</summary>
+    <form id="configure" action="#edit_chapters" method="post">
+
+        <fieldset>
+            <label for="source_audio">
+                <span>URL source audio</span>
+                <input id="source_audio" name="source_audio" type="url" />
+            </label>
+        </fieldset>
+
+        <fieldset>
+            <label for="source_waveform">
+                <span>(optional) : URL waveform image</span>
+                <input id="source_waveform" name="source_waveform" type="url" />
+            </label>
+            <label for="source_webvtt">
+                <span>(optional) : URL WebVTT track to re-edit NEED REWORK TO WORK AGAIN</span>
+                <input id="source_webvtt" name="source_webvtt" type="url" />
+            </label>
+        </fieldset>
+
+        <fieldset class="actions">
+            <button type="submit">Go to editor</button>
+        </fieldset>
+
+        <p>Please note : this editor is difficult to use on small screens. Sorry.</p>
+        <p>Think my editor is ugly ? You're right ! <a href="https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md">Just help us !</a></p>
+
+    </form>
+</details>
 
 <!-- -->
 
-<form id="configure" action="#edit_chapters" class="pan" method="post">
+<details id="chapters">
+    <summary>Chapters editor</summary>
+    <form id="edit_chapters" action="#generated_html" method="post">
 
-    <fieldset>
-        <label for="source_audio">
-            <span>URL source audio</span>
-            <input id="source_audio" name="source_audio" type="url" />
-        </label>
-    </fieldset>
+        <fieldset class="actions">
+            <button type="button" id="add"><strong>+</strong> Add a chapter</button>
+            <button type="submit">See result</button>
+        </fieldset>
 
-    <fieldset>
-        <label for="source_waveform">
-            <span>(optional) : URL waveform image</span>
-            <input id="source_waveform" name="source_waveform" type="url" />
-        </label>
-        <label for="source_webvtt">
-            <span>(optional) : URL WebVTT track to re-edit NEED REWORK TO WORK AGAIN</span>
-            <input id="source_webvtt" name="source_webvtt" type="url" />
-        </label>
-    </fieldset>
+        <fieldset id="list">
+            <p class="line editing" id="line-0">
+                <button type="button" class="test">Test</button>
+                <button type="button" class="set">Set</button>
+                <input class="timecode_input" inputmode="numeric" pattern="^([0-5]?[0-9]:){0,2}[0-5]?[0-9]$" placeholder="00:00:00" size="8" />
+                <input class="text_input" type="text" placeholder="Chapter name" />
+                <button type="button" class="remove"><strong>×</strong>Remove this chapter</button>
+            </p>
+        </fieldset>
 
-    <fieldset class="actions">
-        <button type="submit">Go to editor</button>
-    </fieldset>
-
-    <p>Please note : this editor is difficult to use on small screens. Sorry.</p>
-    <p>Think my editor is ugly ? You're right ! <a href="https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md">Just help us !</a></p>
-
-</form>
+    </form>
+</details>
 
 <!-- -->
+<details id="generated_html">
+    <summary>Generated HTML</summary>
 
-<form id="edit_chapters" action="#generated_html" class="pan" method="post">
-
-    <fieldset class="actions">
-        <button type="button" id="add"><strong>+</strong> Add a chapter</button>
-        <button type="submit">See result</button>
-    </fieldset>
-
-    <fieldset id="list">
-        <p class="line editing" id="line-0">
-            <button type="button" class="test">Test</button>
-            <button type="button" class="set">Set</button>
-            <input class="timecode_input" inputmode="numeric" pattern="^([0-5]?[0-9]:){0,2}[0-5]?[0-9]$" placeholder="00:00:00" size="8" />
-            <input class="text_input" type="text" placeholder="Chapter name" />
-            <button type="button" class="remove"><strong>×</strong>Remove this chapter</button>
-        </p>
-    </fieldset>
-
-</form>
-
-
-<div class="pan" id="generated_html">
     <fieldset id="html_out">
     </fieldset>    
 
@@ -82,25 +80,30 @@
 
         <pre id="html_source"></pre>
     </fieldset>
-</div>
+</details>
 
-<div class="pan" id="generated_md">
+<details id="generated_md">
+    <summary>Generated MarkDown</summary>
     <fieldset>
         <p>Copy and paste this MarkDown code :</p>
 
         <pre id="md_source"></pre>
     </fieldset>
-</div>
+</details>
 
-<div class="pan" id="generated_wiki">
+<details id="generated_wiki">
+    <summary>Generated DokuWiki</summary>
+
     <fieldset>
         <p>Copy and paste this Wiki code :</p>
 
         <pre id="wiki_source"></pre>
     </fieldset>
-</div>
+</details>
 
-<div class="pan" id="generated_vtt">
+<details id="generated_vtt">
+    <summary>Generated WebVTT</summary>
+
     <fieldset>
         <p><a id="vtt_source_download" download="chapter.vtt">Save this in a .vtt file</a> :</p>
 
@@ -109,7 +112,7 @@
         <p>Then insert a &lt;track kind="chapters" default src="…"&gt; tag reffering it in your &lt;audio control&gt; tag</p>
 
     </fieldset>
-</div>
+</details>
 
 <script>
 
@@ -152,7 +155,8 @@ function check_configure(event) {
     set_source_audio();
     event.preventDefault();
     // test if audio is correctly loaded
-    document.location.hash = '#edit_chapters';
+    document.querySelector('#at_start').open = false;
+    document.querySelector('#chapters').open = true;
 }
 
 function currentTime_in_colon() {
@@ -237,6 +241,7 @@ function show_only_line(point_name) {
 }
 
 function focus_on_point(CPU_controler, plane_name, point_name) {
+    console.log('focus_on_point(',CPU_controler, plane_name, point_name)
     // click on the Chapters preview panel
     show_only_line(point_name);
 }
@@ -335,7 +340,6 @@ function interpret_form(event) {
         return `WEBVTT FILE\n${out.join('')}\n`;
     }
 
-
     event.preventDefault();
     reorder_lines();
     chapters = [];
@@ -348,6 +352,7 @@ function interpret_form(event) {
     }
     document.getElementById('html_out').innerHTML = html_source;
     document.getElementById('html_source').innerText =  html_source;
+    document.querySelector('#html_source').open = true;
     document.getElementById('md_source').innerText = build_md_source();
     document.getElementById('wiki_source').innerText = build_wiki_source();
     let vtt = build_vtt_source();
@@ -355,6 +360,7 @@ function interpret_form(event) {
     let vtt_virtual_file = prepare_export_file(vtt);
     document.getElementById('vtt_source_download').href = vtt_virtual_file;
     document.getElementById('vtt_source_download').download = sound_element.dataset.title.replace(/(.*)(\.(ogg|mp3|wav|flac|mp4|aac))$/,'$1') + '.vtt';
+    document.querySelector('#vtt_source').open = true;
 
     document.location.hash = '#generated_html';
 }
@@ -374,7 +380,7 @@ window.addEventListener('load', function(){
     edit_source_audio_element.addEventListener('change', set_source_audio);
     edit_source_waveform_element.addEventListener('change', set_source_audio);
     edit_source_webvtt_element.addEventListener('change', set_source_audio);
-    document.getElementById('configure').addEventListener('submit', check_configure);
+    document.querySelector('#configure').addEventListener('submit', check_configure);
 
     /* Chapter editor */
     add_events_line(document.querySelector('p.line'));
@@ -439,14 +445,6 @@ window.addEventListener('load', function(){
     #steps a {
         padding : 4px;
         border : 1px #ccc solid;
-    }
-
-    .pan {
-        display :none ;
-    }
-
-    .pan:target {
-        display :block ;
     }
 
     fieldset {
