@@ -122,12 +122,12 @@ function _build_component_js() {
 		--js ./src/license.txt \
 		--js ./src/{00_prologue,10_i18n,../tmp/insert_template,11_utils,20_convert,30_trigger,40_document_cpu,45_element_cpu,50_media_element_extension,70_cpu_controller.class,71_cpu_audio.class,90_main}.js \
 		--entry_point "./src/90_main.js" \
-		   --language_in ECMASCRIPT_2019 \
+		   --language_in ECMASCRIPT_2020 \
 				--module_resolution BROWSER \
 				--js_module_root src \
 				--strict_mode_input \
 		--js_output_file "${component_file_js}" \
-			--language_out ECMASCRIPT_2017 \
+			--language_out ECMASCRIPT_2019 \
 		--create_source_map "${component_file_js}.map" \
 		--warning_level VERBOSE \
 		${OTHER_OPTIONS}
