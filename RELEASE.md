@@ -5,8 +5,8 @@ New features
 ------------
 
  * Colour of the chapter lines under the time-line in now configurable (`--cpu-cue`)
- * Live chapter editor has been revised
- * New public API functions, mainly on planes and points editions
+ * Live chapter editor has been deeply revised
+ * New [public API functions](./API.md), mainly on planes and points editions
  * API get inject specific styles features. Very useful for specific annotations presentations. (Preparatory works for [#76](#76)) 
  * Adding a `convert.IsoDuration` public method, `datetime=""` attribute in `<time>` needing a specific duration format in ISO 8601
 

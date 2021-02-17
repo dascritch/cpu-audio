@@ -1,13 +1,13 @@
 API
 ===
 
-cpu-audio.js can be used only with HTML attributes and CSS variables, but javascript-savvy developers can use API features to get more precise controls or extend possibilities.
+cpu-audio.js can be fine-tuned only with HTML attributes and CSS variables, but javascript-savvy developers can use API features to get more precise controls or extend possibilities.
 
 
 document.body.CPU
 -----------------
 
-This is a global configuration tool.
+This object is a global configuration interface.
 
 Properties :
 
@@ -24,7 +24,7 @@ global_controller        | `null`        | Reference to the `<cpu-controller>` i
 playlists                | `{}`          | Collection of audio tag by playlists (named by the `<cpu-audio playlist="">` attribute). [See playlist feature](./FEATURES#playlists).
 advance_in_playlist      | `true`        | When an audio is ended in a playlist, starts immediatly the next one.
 
-Some preoperties are still not documented, for internal usage, as they may evolve
+Some properties are still not documented, for internal usage, as they may evolve.
 
 
 Methods :
@@ -39,7 +39,7 @@ find_interface(child)            | HTMLElement or null           | For any Shado
 find_container(child)            | CpuAudioElement.`CPU` or null | For any `<audio>` tag or its child tag, will returns the element `CPU` API
 find_current_playlist()          | array                         | Returns an array of the current playing playlist
 
-Some methods are still not documented, for internal usage, as they may evolve
+Some methods are still not documented, for internal usage, as they may evolve.
 
 
 `document.body.CPU.convert` sub-API methods :
@@ -75,11 +75,11 @@ Methods :
 name                                         | returns | usage
 ---------------------------------------------|---------|------
 set_mode_container(string)                   |         | Change the presentation mode, [used for `mode=""` attribute](./INSTALL#attributes-references)
-set_act_container(string)                    |         | Change the presentation style between `'loading'`, `'pause'` or `'play'`, reflecting the media tag status
+set_act_container(string)                    |         | Change the presentation style between `'loading'`, `'glow'`, `'pause'` or `'play'`, reflecting the media tag status
 set_hide_container(array)                    |         | Array of strings, may contains `'actions'` or `'chapters'`, [used for `hide=""` attribute](./INSTALL#attributes-references)
-show_throbber_at(int)                        |         | Display the throbber on the timeline at a given time in seconds.
+show_throbber_at(number)                     |         | Display the throbber on the timeline at a given time in seconds.
 hide_throbber()                              |         | Hide immediately the throbber
-hide_throbber_later()                        |         | Hide the throbber later (waiting 1 seconds). A newer call will delay later. News at 11
+hide_throbber_later()                        |         | Hide the throbber later (waiting 1 seconds). A newer call will delay the hiding later. News at 11.
 show_interface(string)                       |         | Switch between `'main'`, `'share'` or `'error'` interfaces.
 build_chapters()                             |         | Rebuild chapters list and time-line.
 build_playlist()                             |         | Rebuild playlist. Should only be used  for `<cpu-controller>`
@@ -96,7 +96,6 @@ remove_highlights_points(class, mirror)      |         | Remove any highlights o
 inject_css(style_key, css)					 |		   | Inject a `<style>` tag into the shadowDom of the component. (²)
 remove_css(style_key)						 |		   | Remove an inject `<style>` from the shadowDom. (²)
 
-
 (¹) Only available via `CpuAudioElement.CPU`
 
 (²) `plane`, `point`, `class` and `style_key` accepts only alphanum (`/a-zA-Z0-9\_\-/`). Planes starting with a `_` are reserved for system usage, try avoid creating one or messing too much with them.
@@ -105,23 +104,23 @@ remove_css(style_key)						 |		   | Remove an inject `<style>` from the shadowDo
 
 key         | type              | default value | usage
 ------------|-------------------|---------------|-------
-track       | boolean or string | `true`        | Create a track in the time line, or precise the kind (`chapters`, `borders`, `ticker` (⁵)), or presentation restriction (`nosmall`, `nosmaller`, `nosmallest`), space separated
+track       | boolean or string | `true`        | Create a track in the time line, string to precise the kind (`chapters`, `borders`, same naming convention than upper (²)), or presentation restriction (`nosmall`, `nosmaller`, `nosmallest`), space separated
 panel       | boolean or string | `true`        | Create a panel under the player, or precise presentation restriction (`nosmall`, `nosmaller`, `nosmallest`), space separated
 highlight   | boolean           | `true`        | Points of this annotation plane can be highlighted with the mouse
 
 (⁴) `data` is an object, with detailled keys for points :
 
-key         | type              | default value | usage
-------------|-------------------|---------------|-------
-image       | boolean or string | `false`       | Add an image
-link        | boolean or string | `true`        | Points to this moment, or elsewhere (any URL)
-text        | string            |               | Legend
-start       | float             |               | The anotation point begins at this timecode (not used in add_point)
-end         | float             | `undefined`   | The anotation point ends at this timecode
+key         | type                        | default value | usage
+------------|-----------------------------|---------------|-------
+image       | boolean or string           | `false`       | Url of an image, `false` elsewhere
+link        | boolean, string of function | `true`        | Click behaviour in panel :  `false` for nothing, `true` to link moment, url string for an external link, or a function (⁵)
+text        | string                      |               | Legend
+start       | number                      |               | The anotation point begins at this timecode (not used in add_point)
+end         | number                      | `undefined`   | The anotation point ends at this timecode
 
-(⁵) `"track":"ticker"` is actually experimental and not finalized. Any CSS specialist, here ?
+(⁵) Parameters of the called function are `(CpuAudioElement.CPU, plane_name, point_name)`. See [live_chapters.html](./live_chapters.html) source code for an example.
 
 Console messages
 ----------------
 
-Any technical messages for cpu-audio.js will begin with `CPU-AUDIO: `. All messages are in English, there is no translation for console messages. Except if you want to help, but those messages may vary a lot between versions.
+Any technical messages for cpu-audio.js will begin with `CPU-AUDIO: `. All messages are in English, there is no translation for console messages.

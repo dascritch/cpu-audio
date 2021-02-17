@@ -42,7 +42,7 @@ audio[controls] {
 }
 ```
 
-You can try playing with our [live configurator tool](LIVE.md), event it isn't perfect yet.
+You can try playing with our [live configurator tool](LIVE.md), to build a HTML and CSS canvas.
 
 
 Attributes references
@@ -71,7 +71,7 @@ Some attributes enhance the component :
 * `waveform="<url>"` : waveform image, will be displayed in the timeline, only in `default` mode (may be generated with [sox spectrogram](http://sox.sourceforge.net/sox.html) or [audiowaveform](https://github.com/bbc/audiowaveform)) ;
 * `playlist="<string>"` : add this media in a named playlist, play the next one when ended ;
 * `duration="<seconds|coloncoded|humanreadable>"` : force displayed duration instead to load it from the media resource before playing (add a `preload="none"` attribute to the `<audio>` tag) ;
-* `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page).
+* `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page) ;
 * `glow` : will make the play button glowing before the first play, even if autoplay is not prevented.
 
 
@@ -121,7 +121,7 @@ You can add a chapters track into the `<audio control>` tag :
 <track kind="chapters" src="chapters.vtt" default />
 ```
 
-Note that `default` attribute **is really needed**. In case you've got more than one `<track kind="chapters" default>` declared in a `<audio>` tag, only the very first one will be interpreted by the browser (blocking us to catch the one according to its `srclang=""` [see #69](#69) )
+Note that `default` attribute **is really needed**. In case you've got more than one `<track kind="chapters" default />` declared in a `<audio>` tag, only the very first one will be interpreted by the browser (blocking us to catch the one according to its `srclang=""` [see #69](#69) ).
 
 You can create VTT files with [our online editor](https://dascritch.github.io/cpu-audio/LIVE).
 
@@ -282,7 +282,7 @@ This function was meant to build effects as in [BBC Computer Literacy archive](h
 Using javascript API
 --------------------
 
-cpu-audio.js can be used only with HTML attributes and CSS variables, but javascript savvy developers have [API features to get a more precise control](./API).
+cpu-audio.js can be used only with HTML attributes and CSS variables, but javascript savvy developers have [API features to get a more precise control or even extend functionnalities](./API).
 
 
 <!-- {% include footer.html %} -->
