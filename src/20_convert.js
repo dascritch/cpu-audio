@@ -54,13 +54,13 @@ const convert = {
 	},
 
 	/**
-	 * @summary convert a colon-coded (`01:02:03`) time in seconds 
+	 * @summary    convert a colon-coded (`01:02:03`) time in seconds
 	 *
 	 * @public
-	 * 
+	 *
 	 * @class      ColonTimeInSeconds (name)
-	 * @param      {string}             givenTime  The given time
-	 * @return     {number}  { seconds }
+	 * @param      {string}  givenTime  The given time
+	 * @return     {number}  Time in seconds
 	 */
 	'ColonTimeInSeconds' : function(givenTime) {
 		let seconds = 0;
@@ -79,7 +79,7 @@ const convert = {
 	 *
 	 * @class      SecondsInTime (name)
 	 * @param      {number}   givenSeconds  The given seconds
-	 * @return     {string}  { description_of_the_return_value }
+	 * @return     {string}   Converted time
 	 */
 	'SecondsInTime' : function(givenSeconds) {
 		if (givenSeconds == Infinity) {
@@ -102,14 +102,13 @@ const convert = {
 	},
 
 	/**
-	 * @summary convert a time in seconds in a colon-coded time (`1:02:03s`). Zero
-	 * is `0:00`.
+	 * @summary    convert a time in seconds in a colon-coded time (`1:02:03s`). Zero is `0:00`.
 	 *
 	 * @public
 	 *
 	 * @class      SecondsInColonTime (name)
-	 * @param      {number}            givenSeconds  The given seconds
-	 * @return     {boolean|string}  { description_of_the_return_value }
+	 * @param      {number}          givenSeconds  The given seconds
+	 * @return     {string}  Converted time
 	 */
 	'SecondsInColonTime' : function(givenSeconds) {
 		if (givenSeconds == Infinity) {
@@ -149,7 +148,7 @@ const convert = {
 	 *
 	 * @class      SecondsInPaddledColonTime (name)
 	 * @param      {number}  givenSeconds  The given seconds
-	 * @return     {string}  { description_of_the_return_value }
+	 * @return     {string}  Converted time
 	 */
 	'SecondsInPaddledColonTime' : function(givenSeconds) {
 		if (givenSeconds == Infinity) {
@@ -158,5 +157,19 @@ const convert = {
 		// principaly needed by <input type="time"> whom needs a really precise HH:MM:SS format
 		let colon_time = convert.SecondsInColonTime(givenSeconds);
 		return '00:00:00'.substr(0, 8 - colon_time.length ) + colon_time; 
+	},
+
+	/**
+	 * @summary convert a duration in an ISO 8601 string suitable for `datetime=""` attribute in <time>
+	 * See spec in https://www.w3.org/TR/html51/infrastructure.html#durations
+	 * 
+	 * @public
+	 *
+	 * @class      IsoDuration (name)
+	 * @param      {number}  givenSeconds  Duration, in seconds
+	 * @return     {string}  Converted duration
+	 */
+	'IsoDuration' : function(givenSeconds) {
+		return `P${convert.SecondsInTime(givenSeconds).toUpperCase()}`;
 	}
 }

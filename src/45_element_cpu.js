@@ -992,7 +992,7 @@ class CPU_element_api {
 			plane_point_panel.querySelector('strong').innerHTML = innerStrong;
 			// see string format for valid duration time https://www.w3.org/TR/2014/REC-html5-20141028/infrastructure.html#valid-duration-string
 			let time_element = plane_point_panel.querySelector('time');
-			time_element.dateTime = `P${convert.SecondsInTime(start).toUpperCase()}`;
+			time_element.dateTime = convert.IsoDuration(start);
 			time_element.innerText = convert.SecondsInColonTime(start);
 
 			let action_element = plane_point_panel.querySelector('a');

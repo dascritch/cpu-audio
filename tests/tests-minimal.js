@@ -92,6 +92,10 @@ document.getElementById('get_focus').addEventListener('click', function() {
 		assert.equal(convert.SecondsInPaddledColonTime(Infinity), convert.Infinity, `Infinity got convert.Infinity aka “${convert.Infinity}”` );
 	});
 	
+	QUnit.test( "document.CPU.convert.IsoDuration", function( assert ) {
+		assert.equal(convert.IsoDuration(61), 'P1M1S', 'got P1M1S' );
+		assert.equal(convert.IsoDuration(7442), 'P2H4M2S', 'got P2H4M2S' );
+	});
 
 	QUnit.test( "document.CPU.jumpIdAt existing at start", function( assert ) {
 		assert.expect( 2 );

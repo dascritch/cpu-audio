@@ -44,14 +44,15 @@ Some methods are still not documented, for internal usage, as they may evolve
 
 `document.body.CPU.convert` sub-API methods :
 
-name                           | returns | usage
--------------------------------|---------|-----------------
-TimeInSeconds(string)          | int     | Convert a string empty, with a number, with a colon-coded or an human-coded timecode in seconds
-SubunitTimeInSeconds(string)   | int     | Convert a human-coded (`1h2m3s`) time in seconds 
-ColonTimeInSeconds(string)     | int     | Convert a colon-coded (`01:02:03`) time in seconds 
-SecondsInTime(int)             | string  | Convert a time in seconds in a human-coded time (`1h2m3s`). Zero is `0s`.
-SecondsInColonTime(int)        | string  | Convert a time in seconds in a colon-coded time (`1:02:03s`). Zero is `0:00`.
-SecondsInPaddledColonTime(int) | string  | Same as `SecondsInColonTime`, but suited for `<input type="time" />`. Zero is `00:00:00`.
+name                              | returns | usage
+----------------------------------|---------|-----------------
+TimeInSeconds(string)             | number  | Convert a string empty, with a number, with a colon-coded or an human-coded timecode in seconds
+SubunitTimeInSeconds(string)      | number  | Convert a human-coded (`1h2m3s`) time in seconds 
+ColonTimeInSeconds(string)        | number  | Convert a colon-coded (`01:02:03`) time in seconds 
+SecondsInTime(number)             | string  | Convert a time in seconds in a human-coded time (`1h2m3s`). Zero is `0s`.
+SecondsInColonTime(number)        | string  | Convert a time in seconds in a colon-coded time (`1:02:03s`). Zero is `0:00`.
+SecondsInPaddledColonTime(number) | string  | Same as `SecondsInColonTime`, but suited for `<input type="time" />`. Zero is `00:00:00`.
+IsoDuration(number)               | string  | Convert a duration in an ISO 8601 string suitable for `datetime=""` attribute in `<time>`
 
 
 CpuAudioElement.CPU and CpuControllerElement.CPU
