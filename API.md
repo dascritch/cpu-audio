@@ -113,7 +113,7 @@ highlight   | boolean           | `true`        | Points of this annotation plan
 key         | type                        | default value | usage
 ------------|-----------------------------|---------------|-------
 image       | boolean or string           | `false`       | Url of an image, `false` elsewhere
-link        | boolean, string of function | `true`        | Click behaviour in panel :  `false` for nothing, `true` to link moment, url string for an external link, or a function (⁵)
+link        | boolean, string of function | `true`        | Click action :  `false` for nothing, `true` to link moment, url string for an external link, or a function (⁵)
 text        | string                      |               | Legend
 start       | number                      |               | The anotation point begins at this timecode (not used in add_point)
 end         | number                      | `undefined`   | The anotation point ends at this timecode

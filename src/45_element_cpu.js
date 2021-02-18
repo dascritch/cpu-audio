@@ -963,7 +963,10 @@ class CPU_element_api {
 				track.appendChild(plane_point_track);
 			}
 
-			plane_point_track.href = time_url;
+			plane_point_track.href = link;
+			// we use a direct DOM0 .onclick, to be able to painless modify it, without listener and handlers revocations or conflicts
+			plane_point_track.onclick = onclick;
+
 			plane_point_track.title = data['text'];
 			let inner = '';
 			if (data['image']) {
@@ -1111,7 +1114,7 @@ class CPU_element_api {
 		//  recalc _start_max for caching repaints
 		let _st_max = 0;
 		for (let s of Object.entries(this.audiotag._CPU_planes[plane_name].points)) {
-			let that_start = Number(s['start']);
+			let that_start = Number(s.start);
 			_st_max = _st_max < that_start ? that_start : _st_max;
 		}
 		this.audiotag._CPU_planes[plane_name]._st_max = _st_max;

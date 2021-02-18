@@ -3,7 +3,6 @@
 TODO
 - draggable cursor
 - export .csv 
-
 -->
 
 <meta charset="UTF-8" />
@@ -141,7 +140,7 @@ var cues = [];
  */
 function interpret_loaded_tracks(event) {
     for(let t of sound_element.textTracks[0].cues) {
-        interpret_line(add_line(t.startTime, t.text));
+        interpret_line(add_line(t.startTime, t.text), true);
     }
     show_only_line();
 }
@@ -277,9 +276,15 @@ function focus_on_point(CPU_controler, plane_name, point_name) {
  *
  * @param      {Element}  this_line_element  The this line element
  */
-function interpret_line(this_line_element) {
+function interpret_line(this_line_element, from_interpret_form=false) {
     let time = this_line_element.querySelector('.timecode_input').value; 
     let text = this_line_element.querySelector('.text_input').value; // TODO : clean HTML , perhaps via a innerHTML ?
+
+    if ((!from_interpret_form) && (Number(this_line_element.dataset.time) !== Number(document.CPU.convert.TimeInSeconds(time)))) {
+        interpret_form();
+        return ;
+    }
+
     this_line_element.dataset.time = document.CPU.convert.TimeInSeconds(time);
     if ( (time === '') || (text === '') ) {
         // no time code ? no text ? do not record it yet
@@ -321,7 +326,7 @@ function event_line(event) {
         this_line_element = this_line_element.closest('p');
     }
     interpret_line(this_line_element);
-    interpret_form();
+    //interpret_form();
 }
 
 /**
@@ -330,8 +335,9 @@ function event_line(event) {
  * @param      {<type>}  line    The line
  */
 function add_events_line(line) {
-    for (let event_name of ['input', 'change', 'click']) {
-        line.addEventListener(event_name, event_line);
+    line.addEventListener('input', event_line);
+    for (let event_name of ['change', 'click']) {
+        line.addEventListener(event_name, interpret_form);
     }
 }
 
@@ -403,7 +409,7 @@ function interpret_form(_event) {
     function compare_lines(a, b){
         return seconds_from_input(a) - seconds_from_input(b)
     }
-    Array.from(list_element.querySelectorAll('p')).sort(compare_lines).forEach(interpret_line);
+    Array.from(list_element.querySelectorAll('p')).sort(compare_lines).forEach((l) => { interpret_line(l, true); });
 
     let html_source =  build_html_source();
     if (chapters.length === 0) {
