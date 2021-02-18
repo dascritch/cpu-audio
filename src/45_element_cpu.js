@@ -890,7 +890,7 @@ class CPU_element_api {
 			return `</${acceptables[name]}>`;
 		}
 
-		if ((vtt_taged.match(/</g)||[]).length !== (vtt_taged.match(/>/g)||[]).length) {
+		if ((vtt_taged.split('<').length) !== (vtt_taged.split('>').length)) {
 			// unmatching < and >, probably badly written tags, or in full text
 			return escapeHTML(vtt_taged);
 		}
