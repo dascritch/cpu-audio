@@ -151,11 +151,13 @@ const trigger = {
 	 * @param      {Object}  event   The event, may be mocked
 	 */
 	throbble : function(event) {
+		info('throbble')
 		let at = 0;
 		let target = event.target;
 		let container = document.CPU.find_container(target);
 		let audiotag = container.audiotag;
 
+		info(`audiotag.duration  ${audiotag.duration}`)
 		if (audiotag.duration === Infinity) {
 			// CAVEAT : we may have improper duration due to a streamed media
 			trigger.play(event);
@@ -167,7 +169,6 @@ const trigger = {
 			//  Very slow seeking on Chrome #89 
 			trigger.pause(undefined, document.CPU.current_audiotag_playing);
 		}
-
 
 		if (isNaN(audiotag.duration)) {
 			// Correct play from position on the timeline when metadata not preloaded #88
@@ -188,7 +189,7 @@ const trigger = {
 				trigger.throbble(recreated_event); 
 				audiotag.removeEventListener(expected_event, recall_me); 
 			};
-			audiotag.addEventListener(expected_event, recall_me);
+			audiotag.addEventListener(expected_event, recall_me, passive_ev);
 			// loading metadata. May not work on Apples
 			audiotag.setAttribute('preload', 'metadata'); 
 			return ;
@@ -202,9 +203,9 @@ const trigger = {
 			let ratio = event.offsetX / target.clientWidth;
 			at = ratio * audiotag.duration;
 		}
+		info(`throbber at ${at} event.at ${event.at} `)
 		document.CPU.seekElementAt(audiotag, at);
 		trigger.play(event);
-
 	},
 
 	/**

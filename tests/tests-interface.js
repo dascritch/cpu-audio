@@ -80,13 +80,12 @@ document.getElementById('get_focus').addEventListener('click', function() {
 
 	QUnit.test( "Click at the middle of the timeline ", function( assert ) {
 		let done = assert.async();
-		assert.expect(3);
+		assert.expect(2);
 		let time_element = interfacetag.querySelector('#time');
 
 		function check_needle_moved(e) {
 			assert.ok(! audiotag.paused, 'Audio tag is playing');
-			assert.ok(audiotag.currentTime > 58, 'Audio tag is now nearly half time');
-			assert.ok(audiotag.currentTime < 62, 'Audio tag is now nearly half time');
+			assert.ok((audiotag.currentTime > 58) && (audiotag.currentTime < 62), `Audio tag is now nearly half time, 58 >  ${audiotag.currentTime}  > 62  `);
 			audiotag.removeEventListener('play', check_needle_moved);
 			done();
 		}
@@ -138,10 +137,11 @@ document.getElementById('get_focus').addEventListener('click', function() {
 
 	QUnit.test( "Right arrow key go fowards 5 seconds", function( assert ) {
 		cpu.trigger.hashOrder('track&t=0:20', function() {
-			trigger_key(39, true, 25, assert);
-			
+			trigger_key(39, true, 25, assert);	
 		});
 	});
+
+	// should also check that arrows with modifiers (shift, ctrl and alt) aren't interpreted
 */
 
 	let canonical = 'http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore';
@@ -572,19 +572,9 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.equal(componenttag.CPU.translate_vtt('Hello <u>World</u>'), 'Hello <u>World</u>', 'bypass <u>');
 		assert.equal(componenttag.CPU.translate_vtt('Hello <lang fr>Monde</lang>'), 'Hello <i lang="fr">Monde</i>', 'transform <lang xx> into <i lang="xx">, emphasis for typographic convention');
 		assert.equal(componenttag.CPU.translate_vtt('Hello <a href=".">World</a>'), 'Hello World', 'remove <a href>');
-		assert.equal(componenttag.CPU.translate_vtt('Hello\nWorld'), 'Hello<br/>World', 'transform CR into <br>');
+		assert.equal(componenttag.CPU.translate_vtt('Hello\nWorld\nHow are you ?'), 'Hello<br/>World<br/>How are you ?', 'transform CR into <br>');
 		assert.equal(componenttag.CPU.translate_vtt('♪ Johnny Mercer, Robert Emmet Dolan <em lang="en">featuring</em> Hedy Lamarr - <em>Just a moment more</em>'), '♪ Johnny Mercer, Robert Emmet Dolan <em>featuring</em> Hedy Lamarr - <em>Just a moment more</em>', 'A valid example with 2 consecutives <em> tags')
 		assert.equal(componenttag.CPU.translate_vtt('♪ Johnny Mercer, Robert Emmet Dolan <em lang="en"<featuring</em> Hedy Lamarr - <em>Just a moment more</em>'), '♪ Johnny Mercer, Robert Emmet Dolan &lt;em lang="en"&lt;featuring&lt;/em&gt; Hedy Lamarr - &lt;em&gt;Just a moment more&lt;/em&gt;', 'An invalid example with unmatching < and >, replaced by html escapes')
-
-		/*
-<em> → <em> (not in the standard but used in legacy CPU show)
-<b> → <b>
-<bold> → <strong> (declared in the MDN page, but never seen in standards pages)
-<u> → <u>
-<lang en> → <i lang="en">
-<a href> → `` (suppress any hyperlink)
-Check that multi-lines is completed with <br />
-		*/
 	});
 
 

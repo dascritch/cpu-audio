@@ -898,7 +898,7 @@ class CPU_element_api {
 		return vtt_taged.
 				replace(regex_vtt.opentag, opentag).
 				replace(regex_vtt.closetag, closetag).
-				replaceAll('\n', '<br/>');
+				replaceAll('\n', '<br/>');   // JSC_INEXISTENT_PROPERTY ? The property exists, you're drunk Closure !
 	}
 
 	/**
@@ -1107,7 +1107,7 @@ class CPU_element_api {
 
 		//  recalc _start_max for caching repaints
 		let _st_max = 0;
-		for (let s of Object.entries(this.audiotag._CPU_planes[plane_name].points)) {
+		for (let s of Object.values(this.audiotag._CPU_planes[plane_name].points)) {
 			let that_start = Number(s.start);
 			_st_max = _st_max < that_start ? that_start : _st_max;
 		}
