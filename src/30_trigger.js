@@ -281,8 +281,8 @@ const trigger = {
 					switch (error.name) {
 						case 'NotAllowedError':
 							warn(NotAllowedError);
-							document.addEventListener('focus', unlock);
-							document.addEventListener('click', unlock);
+							document.addEventListener('focus', unlock, passive_ev);
+							document.addEventListener('click', unlock, passive_ev);
 
 							if (audiotag.CPU_connected) {
 								audiotag.CPU_controller().CPU.set_act_container('glow');

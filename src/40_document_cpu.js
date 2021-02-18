@@ -109,12 +109,12 @@ HTMLDocument.prototype.CPU = {
 	 * @param      {HTMLAudioElement}  audiotag  The audiotag
 	 */
 	attach_events_audiotag : function(audiotag) {
-		audiotag.addEventListener('loadedmetadata', document.CPU.recall_stored_play);
-		audiotag.addEventListener('play', trigger.play_once);
-		audiotag.addEventListener('ended', trigger.ended);
+		audiotag.addEventListener('loadedmetadata', document.CPU.recall_stored_play, passive_ev);
+		audiotag.addEventListener('play', trigger.play_once, passive_ev);
+		audiotag.addEventListener('ended', trigger.ended, passive_ev);
 		// those ↓ for PHRACKING SAFARI
-		audiotag.addEventListener('ready', document.CPU.recall_stored_play);
-		audiotag.addEventListener('canplay', document.CPU.recall_stored_play);
+		audiotag.addEventListener('ready', document.CPU.recall_stored_play, passive_ev);
+		audiotag.addEventListener('canplay', document.CPU.recall_stored_play, passive_ev);
 
 		// see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events for list of events
 		[
@@ -210,7 +210,7 @@ HTMLDocument.prototype.CPU = {
 			let audiotag = event.target;
 
 			if (_isEvent(event)) {
-				audiotag.removeEventListener('loadedmetadata', do_needle_move, true);
+				audiotag.removeEventListener('loadedmetadata', do_needle_move);
 			}
 
 			let secs = convert.TimeInSeconds(timecode);
@@ -220,7 +220,7 @@ HTMLDocument.prototype.CPU = {
 			if (audiotag.readyState >= audiotag.HAVE_FUTURE_DATA) {
 				do_element_play(mocked_event);
 			} else {
-				audiotag.addEventListener('canplay', do_element_play, true);
+				audiotag.addEventListener('canplay', do_element_play, passive_ev);
 			}
 			trigger.update(mocked_event);
 		}
@@ -232,7 +232,7 @@ HTMLDocument.prototype.CPU = {
 			let tag = event.target;
 			trigger.play(undefined, tag)
 			if (_isEvent(event)) {
-				tag.removeEventListener('canplay', do_element_play, true);
+				tag.removeEventListener('canplay', do_element_play);
 			}
 			onDebug(callback_fx);
 		}
@@ -248,7 +248,7 @@ HTMLDocument.prototype.CPU = {
 
 		let mocked_event = {'target' : audiotag};
 		if (audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {  /*  WHHYYYY ?????? */
-			audiotag.addEventListener('loadedmetadata', do_needle_move , true);
+			audiotag.addEventListener('loadedmetadata', do_needle_move , passive_ev);
 			audiotag.load();
 			trigger.update(mocked_event);
 		} else {
