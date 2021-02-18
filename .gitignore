@@ -1,3 +1,4 @@
-audio.mp3
-webcomponentsjs/
+dist/cpu-audio.EXPERIMENTAL.*
+tests-assets/*
 tmp/
+__TEST.html
