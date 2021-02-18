@@ -267,8 +267,6 @@ HTMLDocument.prototype.CPU = {
 	 * HTMLAudioElement.fastSeek() is an experimental but really fast function. Google Closure doesn't like it in ADVANCED mode
 	 * @suppress {missingProperties} */
 	'seekElementAt' : function (audiotag, seconds) {
-		info(`seekElementAt ${audiotag}, ${seconds}  fastSeek ${audiotag.fastSeek} `)
-
 		if ((isNaN(seconds)) || // may happens, if the audio track is not loaded/loadable
 			(document.CPU.is_audiotag_streamed(audiotag))) { // never try to set a position on a streamed media
 			return;
@@ -281,7 +279,6 @@ HTMLDocument.prototype.CPU = {
 				// Browsers may not have fastSeek but can set currentTime
 				audiotag.currentTime = seconds;
 			} catch(e) {
-				info(`   seekElementAt : currentTime catched ${e}`)
 				// exept sometimes, so you must use standard media fragment
 				audiotag.src = `${audiotag.currentSrc.split('#')[0]}#t=${seconds}`;
 			}

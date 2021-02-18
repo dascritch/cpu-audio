@@ -40,6 +40,9 @@
 		</button>
 		Elsewhere, numerous tests will fail. See <a href="https://github.com/dascritch/cpu-audio/issues/17">issue #17 on our github for details</a>.
 	</p>
+	<p>
+		We also have a <a href="https://stackoverflow.com/questions/52620284/make-html5-video-start-at-specified-currenttime-in-chrome">surprising bug in Chrome that avoid to use <code>audiotag.currentTime={number}</code> ONLY if the source is hosted on localhost</a> if your local server doesn't support HTTP response 206 (partial content). If you need to local test on Chrome, please use file:/// protocol or a complete web server.
+	</p>
 
 	<div id="playground"></div>	
 

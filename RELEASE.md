@@ -27,6 +27,7 @@ Back-end
    * Annotations updated
    * Erroneous `@brief` annotations changed to `@summary`
    * ... but a lot of bugs in Closure, as TextTracks objects aren't declared as iterable, and so on...
+ * We have a [surprising bug in Chrome that avoid to use `audiotag.currentTime=<number>` ONLY if the source is hosted on localhost](https://stackoverflow.com/questions/52620284/make-html5-video-start-at-specified-currenttime-in-chrome), if your local server doesn't support HTTP response 206 (partial content). If you need to local test on Chrome, please user file:/// protocol or a complete web server.
 
 Making of
 ---------

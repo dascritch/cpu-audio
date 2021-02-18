@@ -151,13 +151,11 @@ const trigger = {
 	 * @param      {Object}  event   The event, may be mocked
 	 */
 	throbble : function(event) {
-		info('throbble')
 		let at = 0;
 		let target = event.target;
 		let container = document.CPU.find_container(target);
 		let audiotag = container.audiotag;
 
-		info(`audiotag.duration  ${audiotag.duration}`)
 		if (audiotag.duration === Infinity) {
 			// CAVEAT : we may have improper duration due to a streamed media
 			trigger.play(event);
@@ -203,7 +201,6 @@ const trigger = {
 			let ratio = event.offsetX / target.clientWidth;
 			at = ratio * audiotag.duration;
 		}
-		info(`throbber at ${at} event.at ${event.at} `)
 		document.CPU.seekElementAt(audiotag, at);
 		trigger.play(event);
 	},
