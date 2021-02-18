@@ -1550,10 +1550,6 @@ class CPU_element_api {
 		}
 
 		this.show_main();
-
 		this.build_chapters_loader();
-
-		this.audiotag.addEventListener('loadedmetadata', this.redraw_all_planes.bind(this), passive_ev);
-
 	}
 };
