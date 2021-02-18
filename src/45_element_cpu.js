@@ -898,7 +898,7 @@ class CPU_element_api {
 		return vtt_taged.
 				replace(regex_vtt.opentag, opentag).
 				replace(regex_vtt.closetag, closetag).
-				replace(regex_vtt.br, '<br/>');
+				replaceAll('\n', '<br/>');
 	}
 
 	/**

@@ -22,8 +22,7 @@ const plane_point_names_from_id = /^([a-zA-Z0-9\-_]+_«)([a-zA-Z0-9\-_]+)((»_.*
 // @private
 const regex_vtt = {
 	opentag : /<(\w+)(\.[^>]+)?( [^>]+)?>/gi,
-	closetag : /<\/(\w+)( [^>]*)?>/gi,
-	br : /\n/g
+	closetag : /<\/(\w+)( [^>]*)?>/gi
 };
 
 // should be put in CPU-controller ?
