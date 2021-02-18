@@ -974,7 +974,6 @@ class CPU_element_api {
 			}
 			inner += `<span>${data['text']}</span>`;
 			plane_point_track.innerHTML = inner;
-			plane_point_track.title = plane_point_track.innerText;
 			this.timeline_position(plane_point_track, start, data['end']);
 		}
 
@@ -990,13 +989,8 @@ class CPU_element_api {
 				plane_point_panel.innerHTML='<a href="#" class="cue"><strong></strong><time></time></a>';
 				panel.appendChild(plane_point_panel);
 			}
-			
-			let innerStrong = '';
-			if (data['text']) {
-				innerStrong = data['text'];
-			}
 
-			plane_point_panel.querySelector('strong').innerHTML = innerStrong;
+			plane_point_panel.querySelector('strong').innerHTML = data['text'];
 			// see string format for valid duration time https://www.w3.org/TR/2014/REC-html5-20141028/infrastructure.html#valid-duration-string
 			let time_element = plane_point_panel.querySelector('time');
 			time_element.dateTime = convert.IsoDuration(start);
