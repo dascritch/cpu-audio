@@ -48,10 +48,10 @@ Tests
 
 As I'm not perfect, some tests were written for non-regressions, conformity and check feature support by browsers. Please contribute also in tests, we really need a rock solid players with a few regressions as possible.
 
- - [Browser compliance, feature detections and implementation tests](./tests-browser.html)
- - [Minimum services available even without webcomponent part, as hash links](./tests-minimal.html)
- - [Graphic interface and webcomponents-dependant features](./tests-interface.html)
- - [API method names](./tests-api.html)
+ - [Browser compliance, feature detections and implementation tests](./tests/tests-browser.html)
+ - [Minimum services available even without webcomponent part, as hash links](./tests/tests-minimal.html)
+ - [Graphic interface and webcomponents-dependant features](./tests/tests-interface.html)
+ - [API method names](./tests/tests-api.html)
  - You can check more lint tests with `./make.sh -a`, but please, **never commit** resulting `dist/*` files.
 
 
