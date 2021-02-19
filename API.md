@@ -122,14 +122,16 @@ end         | number                      | `undefined`   | The anotation point 
 Events
 ------
 
-`<CPU-audio>` and `<CPU-controller>` elements fire events about their interface. For disambiguation, events created by our webcomponent is `CPU_` prefixed
+`<CPU-audio>` and `<CPU-controller>` elements fire events about their interface. For disambiguation, events created by our webcomponent are `CPU_` prefixed
 
-event_name     | description                                          | detail, see next table (⁵)
----------------|------------------------------------------------------|-------------------------
-CPU_ready	   | fired when the interface is ready                    |
-CPU_add_point  | fired during `add_point` methods, even private ones  | plane, point, data_point
-CPU_draw_point | fired when a point is drawn or redrawn               | plane, point, data_point, element_point_track, element_point_panel
-CPU_chapter_changed | fired when a cue event defined in WebVTT occured | cue
+event_name          | description                                          | detail, see next table (⁵)
+--------------------|------------------------------------------------------|------------------------------------------
+CPU_ready	        | The interface is ready                               |
+CPU_add_point       | During `add_point` method, even private ones         | plane, point, data_point
+CPU_draw_point      | A point is drawn or redrawn                          | plane, point, data_point, element_point_track, element_point_panel
+CPU_edit_point      | During `edit_point` method                           | plane, point, data_point
+CPU_remove_point    | During `remove_point` method, even private ones      | plane, point
+CPU_chapter_changed | A cue event defined in WebVTT occured                | cue
 
 
 (⁵) Returned object informations usually have a `detail` object, that may contains :

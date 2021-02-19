@@ -40,18 +40,18 @@ class CPU_element_api {
 	async _fire_event(event_name, detail = undefined) {
 		/**
 		 * Events to be created :
-		 *  - cpu-audio tag build
 		 *  - plane CRUD
 		 *  - point CRUD
 		 */
-		let event = new CustomEvent(`CPU_${event_name}`, {
-			target : this.element,
-			bubbles : true,
-			cancelable : false,
-			composed : false,
-			detail : detail
-		});
-		this.element.dispatchEvent(event);
+		this.element.dispatchEvent(
+			new CustomEvent(`CPU_${event_name}`, {
+				target : this.element,
+				bubbles : true,
+				cancelable : false,
+				composed : false,
+				detail : detail
+			})
+		);
 	}
 
 	/**
@@ -860,27 +860,26 @@ class CPU_element_api {
 
 	/**
 	 * @summary Transform VTT tag langage into HTML tags, filtering out some
+	 * 
+	 * NEVER EVER BELIEVE you can parse HTML with regexes ! This function works because we just do minimalistic changes
+	 * By the way, regexes are really time consuming, both for you and your computer.
+	 * And, sincerely, I love playing on https://regexcrossword.com/
 	 *
 	 * @param      {string}            vtt_taged  The vtt tagged
 	 * @return     string                         HTML tagged string
 	 */
 	translate_vtt(vtt_taged) {
-		// NEVER EVER BELIEVE you can parse HTML with regexes ! This function works because we just do minimalistic changes
 
 		let acceptables = {
 			'i'     : 'i',
 			'em'    : 'em', // (not in the standard but used in legacy CPU.pm show)
 			'b'     : 'b', 
-			'bold'  : 'strong', // (declared in the MDN page, but never seen in standards pages)
+			'bold'  : 'strong', // (declared in the MDN page, but never saw it in standard pages)
 			'u'     : 'u',
 			'lang'  : 'i' // emphasis for typographic convention
 		};
 
-		/**
-		 * @param      {string}            name  Attribute name
-		 * @return     {boolean}
-		 */
-		function not_acceptable_tag(name) {
+		function not_acceptable_tag(/* @param {string} */ name) {
 			return !(name in acceptables);
 		}
 
@@ -918,7 +917,7 @@ class CPU_element_api {
 
 		if ((vtt_taged.split('<').length) !== (vtt_taged.split('>').length)) {
 			// unmatching < and >, probably badly written tags, or in full text
-			// unsurprisingly, (vtt_taged.split('<').length) is a lot faster than using regex. But JS need a standard property for counting substring occurences in a string
+			// unsurprisingly, (vtt_taged.split('<').length) is a lot faster than using regex. JS needs a standard property for counting substring occurences in a string
 			return escapeHTML(vtt_taged);
 		}
 
@@ -931,11 +930,12 @@ class CPU_element_api {
 	/**
 	 * @summary    Resort points of a plane by start-time
 	 * @private
+	 * 
+	 * ok, i found it on https://stackoverflow.com/questions/1069666/sorting-object-property-by-values#answer-1069840
 	 *
 	 * @param      {string}   plane_name     The plane name
 	 */
 	plane_resort(plane_name) {
-		// ok, i found it on https://stackoverflow.com/questions/1069666/sorting-object-property-by-values#answer-1069840
 		this.audiotag._CPU_planes[plane_name].points = Object.fromEntries(
 		    Object.entries(this.audiotag._CPU_planes[plane_name].points).sort(
 		    	(point_a, point_b) => {
@@ -1095,10 +1095,10 @@ class CPU_element_api {
 	 * @param      {string}   plane_name      The existing plane name
 	 * @param      {string}   point_name      The existing point name
 	 * @param      {Object}   data            { 'image' : <url>, 
-	 * 											'link' : <url>/true (in audio)/false (none), 
-	 * 											'text' : <text>, 
-	 * 											'start'  : <seconds>, 
-	 * 											'end'  : <seconds> }
+	 * 											'link'  : <url>/true (in audio)/false (none), 
+	 * 											'text'  : <text>, 
+	 * 											'start' : <seconds>, 
+	 * 											'end'   : <seconds> }
 	 *										  will only change keys in the list
 	 */
 	edit_point(plane_name, point_name, data) {
@@ -1123,7 +1123,11 @@ class CPU_element_api {
 			this.draw_point(plane_name, point_name);
 		}
 
-		// TODO Fire Event on_edit_point
+		this._fire_event('edit_point', {
+			plane : plane_name,
+			point : point_name,
+			data_point :  data
+		});
 
 		let start = Number(data['start']);
 		if (this.audiotag._CPU_planes[plane_name]._st_max < start) {
@@ -1146,7 +1150,10 @@ class CPU_element_api {
 			return false;
 		}
 
-		// TODO Fire Event on_remove_point
+		this._fire_event('remove_point', {
+			plane : plane_name,
+			point : point_name
+		});
 
 		point_track_element.remove();
 		this.get_point_panel(plane_name, point_name).remove();
@@ -1393,7 +1400,7 @@ class CPU_element_api {
 
 				self.add_point(plane_name, cuepoint, cue.id,  {
 					'text' : self.translate_vtt(cue.text),
-					'link' : true,          // point the link to audio
+					'link' : true,          // point the link to start time position
 					'end'  : cue.endTime    // end timecode of the cue
 				});
 			}
@@ -1597,6 +1604,6 @@ class CPU_element_api {
 		this.show_main();
 		this.build_chapters_loader();
 
-		this._fire_event('ready', undefined)
+		this._fire_event('ready');
 	}
 };
