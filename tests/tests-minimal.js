@@ -231,7 +231,7 @@ document.getElementById('get_focus').addEventListener('click', function() {
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
-				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+				<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 			</audio>
 		</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
@@ -256,7 +256,7 @@ document.getElementById('get_focus').addEventListener('click', function() {
 		playground.innerHTML = `
 			<cpu-audio>
 				<audio id="secondary" controls="controls" muted>
-					<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+					<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
@@ -286,7 +286,7 @@ document.getElementById('get_focus').addEventListener('click', function() {
 		playground.innerHTML = `
 			<cpu-audio>
 				<audio id="secondary" controls="controls" muted>
-					<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+					<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
@@ -316,7 +316,7 @@ document.getElementById('get_focus').addEventListener('click', function() {
 		playground.innerHTML = `
 			<cpu-audio>
 				<audio id="secondary" controls="controls" muted>
-					<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+					<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
@@ -350,12 +350,12 @@ document.getElementById('get_focus').addEventListener('click', function() {
 		playground.innerHTML = `
 			<cpu-audio playlist="plname">
 				<audio id="pl1" controls="controls" muted>
-					<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+					<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>
 			<cpu-audio playlist="plname">
 				<audio id="pl2" controls="controls" muted>
-					<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+					<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>
 			`;

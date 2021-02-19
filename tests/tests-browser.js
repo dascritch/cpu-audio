@@ -24,4 +24,6 @@ QUnit.test( "<audio> tag API, fallback suite for seekElementAt()", function( ass
 	assert.ok( audiotag.currentTime !== undefined, "seekElementAt can use audiotag.currentTime" );
 });
 
+// Check ECMA 2019 : Object.from*
 
+// Check ECMA 2020

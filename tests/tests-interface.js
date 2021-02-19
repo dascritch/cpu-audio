@@ -176,7 +176,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 	QUnit.test( "Media tag without controls attribute. The component must not start", function( assert ) {
 		playground.innerHTML = `<cpu-audio id="no_check"><audio id="emission_fail" muted>
-									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+									<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 								</audio>
 							</cpu-audio>`;
 		let done = assert.async();
@@ -202,7 +202,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 	QUnit.test( "Audio without an ID gets an ID", function( assert ) {
 		playground.innerHTML = `<cpu-audio id="tag_without_id"><audio controls muted>
-									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+									<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 									<track />
 								</audio>
 							</cpu-audio>`;
@@ -217,7 +217,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 	QUnit.test( "Canonical with an ID keeps the ID", function( assert ) {
 		playground.innerHTML = `<cpu-audio id="canonical_with_id" canonical="./canonical.html#id"><audio controls muted>
-									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+									<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 									<track />
 								</audio>
 							</cpu-audio>`;
@@ -235,7 +235,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 	QUnit.test( "Dynamically change elements, as removing track", function( assert ) {
 		playground.innerHTML = `<cpu-audio id="track_will_disapear"><audio id="will_lose_track" controls muted>
-									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+									<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 									<track />
 								</audio>
 							</cpu-audio>`;
@@ -254,7 +254,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 	QUnit.test( "Dynamically change attribute, as component title", function( assert ) {
 		playground.innerHTML = `<cpu-audio title="hello" id="will_change"><audio id="void" controls muted>
-									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+									<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 								</audio>
 							</cpu-audio>`;
 		let done = assert.async();
@@ -271,7 +271,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 	QUnit.test( "Dynamically change attribute, as audio tag dataset", function( assert ) {
 		playground.innerHTML = `<cpu-audio title="hello" id="will_change"><audio id="void" controls muted>
-									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+									<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 								</audio>
 							</cpu-audio>`;
 		let done = assert.async();
@@ -289,7 +289,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 	QUnit.test( 'mode="button,default" makes cpu-audio changing mode on first play', function( assert ) {
 		playground.innerHTML = `<cpu-audio mode="button,default">
 								<audio id="change_show_on_play" controls muted>
-									<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+									<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 								</audio>
 							</cpu-audio>`;
 		let done = assert.async();
@@ -328,7 +328,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
-				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+				<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 			</audio>
 		</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
@@ -360,7 +360,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
-				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+				<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 			</audio>
 		</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
@@ -375,7 +375,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
-				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+				<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 			</audio>
 		</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
@@ -405,7 +405,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
-				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+				<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 			</audio>
 		</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
@@ -429,7 +429,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
-				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+				<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 			</audio>
 		</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
@@ -451,7 +451,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
-				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+				<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 			</audio>
 		</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
@@ -499,7 +499,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
-				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+				<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 			</audio>
 		</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
@@ -523,7 +523,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
-				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+				<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 			</audio>
 		</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
@@ -585,18 +585,18 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
-				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+				<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 			</audio>
 		</cpu-audio>
 		<cpu-audio>
 			<audio id="third" controls="controls" muted>
-				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
-				<source src="./${third_source}" data-downloadable />
+				<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
+				<source src="../${third_source}" data-downloadable />
 			</audio>
 		</cpu-audio>
-		<cpu-audio download="./${third_source}">
+		<cpu-audio download="../${third_source}">
 			<audio id="fourth" controls="controls" muted>
-				<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+				<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 			</audio>
 		</cpu-audio>
 		`;
@@ -623,7 +623,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 			let fourth_download_link = fourth_component.shadowRoot.querySelector('a[download]');
 			fourth_API_CPU.update_links();
 
-			assert.ok(fourth_download_link.href.indexOf(third_source) >= 0 , `If indicated, download link ( ${fourth_download_link.href} ) is taking the <cpu-audio download="<url>"> ( ${third_source} )`);
+			assert.ok(fourth_download_link.href.indexOf(third_source) >= 0 , `If indicated, download link ( ${fourth_download_link.href} ) is taking the <cpu-audio download="<url>"> ( ${third_source} ) `);
 
 			done();
 		}

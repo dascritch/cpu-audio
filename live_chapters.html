@@ -3,7 +3,6 @@
 TODO
 - draggable cursor . Continue https://www.kirupa.com/html5/drag.htm . 
 - click on the timeline to create a point
-- remove the function system on link parameter
 - export .csv 
 -->
 
@@ -322,6 +321,7 @@ function CPU_draw_point(event) {
     element_point_track.removeEventListener('mousedown', drag_start);
     element_point_track.removeEventListener('mousemove', drag);
     element_point_track.removeEventListener('mouseup', drag_end);
+
 
     // When you click on a point, we show the line editing interface
     // we bind() the function to pass its arguments. First one, "event", is not event useful, and your current event will be replaced by the created event. It's just a placeholder for Event object ;)

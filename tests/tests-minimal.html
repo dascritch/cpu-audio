@@ -4,12 +4,12 @@
 	<meta charset="utf-8">
 	<title>cpu-audio tests</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="tests/qunit.css">
+	<link rel="stylesheet" href="./qunit.css">
 	<script>
 		// needed to avoid a unwanted hot start
 		window.localStorage.clear();
 	</script>
-	<script src="./dist/cpu-audio.js"></script>
+	<script src="../dist/cpu-audio.js"></script>
 </head>
 <body>
 
@@ -32,7 +32,7 @@
 
 	<cpu-audio>
 		<audio id="track" controls="controls" preload="auto" muted="muted">
-			<source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+			<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 		</audio>
 	</cpu-audio>
 
@@ -52,7 +52,7 @@
 
 	<div id="qunit"></div>
 	<div id="qunit-fixture"></div>
-	<script src="tests/qunit.js"></script>
-	<script src="tests/tests-minimal.js"></script>
+	<script src="./qunit.js"></script>
+	<script src="./tests-minimal.js"></script>
 </body>
 </html>
