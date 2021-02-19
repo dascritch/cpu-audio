@@ -248,6 +248,7 @@ function check_for_actions(event) {
  * Hide all lines of the chapters editor, show only the one focused
  *
  * @param      {string}  point_name  The point name to show
+ * note : a second parameter (event) is added due to eventListener, but is ignored
  */
 function show_only_line(point_name) {
     Array.from(
@@ -262,6 +263,42 @@ function show_only_line(point_name) {
     }
 }
 
+
+let initial_x;
+let x_offset = 0;
+let clicked_a
+let clicked_track
+function drag_start(event) {
+    initial_x = ((event.type === 'touchstart') ? event.touches[0].clientX : event.clientX) - x_offset;
+    console.log(event, initial_x);
+    let clicked_point = event.originalTarget;
+    clicked_a = clicked_point.tagName === 'A' ? clicked_point : clicked_point.closest('a');
+    clicked_track = clicked_point.closest('aside');
+    let relative_x = initial_x - clicked_track.offsetLeft;
+
+    let ratio = relative_x / clicked_track.clientWidth;
+    let seeked_time = ratio * sound_element.duration;
+    component_element.CPU.show_throbber_at(seeked_time);
+    console.log(seeked_time)
+}
+
+function drag(event) {
+    if (!clicked_track) {
+        return ;
+    }
+    current_x = ((event.type === 'touchmove') ? event.touches[0].clientX : event.clientX ) - initial_x;
+    let relative_x = current_x - clicked_track.offsetLeft;
+
+    let ratio = relative_x / clicked_track.clientWidth;
+    let seeked_time = ratio * sound_element.duration;
+    component_element.CPU.show_throbber_at(seeked_time);
+}
+
+function drag_end(event) {
+    clicked_track = false;
+    component_element.CPU.hide_throbber();
+}
+
 /**
  * When a repaint occurs on a cpu-audio component point element, we add our events
  *
@@ -273,15 +310,31 @@ function CPU_draw_point(event) {
     // let  CPU_controler = event.target.CPU;
 
     let detail = event.detail;
+    let element_point_track = detail.element_point_track;
+    let element_point_panel = detail.element_point_panel;
 
     // first, we remove pre-existing events
-    detail.element_point_track.removeEventListener('click', show_only_line);
-    detail.element_point_panel.removeEventListener('click', show_only_line);
+    element_point_track.removeEventListener('click', show_only_line);
+    element_point_panel.removeEventListener('click', show_only_line);
+    element_point_track.removeEventListener('touchstart', drag_start);
+    element_point_track.removeEventListener('touchmove', drag);
+    element_point_track.removeEventListener('touchend', drag_end);
+    element_point_track.removeEventListener('mousedown', drag_start);
+    element_point_track.removeEventListener('mousemove', drag);
+    element_point_track.removeEventListener('mouseup', drag_end);
 
     // When you click on a point, we show the line editing interface
     // we bind() the function to pass its arguments. First one, "event", is not event useful, and your current event will be replaced by the created event. It's just a placeholder for Event object ;)
-    detail.element_point_track.addEventListener('click', show_only_line.bind(event, detail.point));
-    detail.element_point_panel.addEventListener('click', show_only_line.bind(event, detail.point));
+    element_point_track.addEventListener('click', show_only_line.bind(event, detail.point));
+    element_point_panel.addEventListener('click', show_only_line.bind(event, detail.point));
+
+    element_point_track.addEventListener('touchstart', drag_start);
+    element_point_track.addEventListener('touchmove', drag);
+    element_point_track.addEventListener('touchend', drag_end);
+    // still needed
+    element_point_track.addEventListener('mousedown', drag_start);
+    element_point_track.addEventListener('mousemove', drag);
+    element_point_track.addEventListener('mouseup', drag_end);
 }
 
 /**
@@ -443,11 +496,11 @@ function interpret_form(_event) {
 }
 
 document.addEventListener('DOMContentLoaded', e => {
+    console.log('DOMContentLoaded');
     document.location.hash = '#configure';
 
     sound_element = document.getElementById('sound');
     list_element = document.getElementById('list');
-    component_element = sound_element.closest('cpu-audio');
 
     edit_source_audio_element = document.getElementById('source_audio');
     edit_source_waveform_element = document.getElementById('source_waveform');
@@ -470,7 +523,12 @@ document.addEventListener('DOMContentLoaded', e => {
 });
 
 document.addEventListener('CPU_ready', e => {
+    console.log('CPU_ready');
     // sometimes not fired, so we needed a "ready" event
+    component_element = e.target;
+
+    let sound_element = document.getElementById('sound'); // We may have DOMContentLoaded after CPU_ready :/
+
     sound_CPU = sound_element.CPU_controller().CPU;
     sound_CPU.add_plane('cursors', 'Chapters preview', {track   : 'cursors', panel   : true});
     sound_CPU.inject_css('cursors', `
