@@ -127,7 +127,7 @@ TODO
 <script>
 
 var new_chapter_line;
-var sound_element, list_element, edit_source_audio_element, edit_source_waveform_element, edit_source_webvtt_element;
+var sound_element, component_element, list_element, edit_source_audio_element, edit_source_waveform_element, edit_source_webvtt_element;
 var sound_CPU;
 var line_number = 1;
 
@@ -274,17 +274,25 @@ function show_only_line(point_name) {
 }
 
 /**
- * Callback function when the player panel is clicked
+ * When a repaint occurs on a cpu-audio component point element, we add our events
  *
- * @param      {CPU_controler}  CPU_controler  The cpu controler
- * @param      {string}         plane_name     The plane name
- * @param      {string}         point_name     The point name
+ * @class      CPU_draw_point (name)
+ * @param      {<type>}  event   The event
  */
-function focus_on_point(CPU_controler, plane_name, point_name) {
-    // click on the Chapters preview panel
-    show_only_line(point_name);
-    // position audio at time
-    document.CPU.seekElementAt(CPU_controler.audiotag, CPU_controler.get_point(plane_name, point_name)['start']);
+function CPU_draw_point(event) {
+    // I show how you can reach CPU API from an event. Not used here, but it may helps someone digging into it
+    // let  CPU_controler = event.target.CPU;
+
+    let detail = event.detail;
+
+    // first, we remove pre-existing events
+    detail.element_point_track.removeEventListener('click', show_only_line);
+    detail.element_point_panel.removeEventListener('click', show_only_line);
+
+    // When you click on a point, we show the line editing interface
+    // we bind() the function to pass its arguments. First one, "event", is not event useful, and your current event will be replaced by the created event. It's just a placeholder for Event object ;)
+    detail.element_point_track.addEventListener('click', show_only_line.bind(event, detail.point));
+    detail.element_point_panel.addEventListener('click', show_only_line.bind(event, detail.point));
 }
 
 /**
@@ -319,7 +327,7 @@ function interpret_line(this_line_element, from_interpret_form=false) {
     let data = {  
             'image' : './assets/pointer.png',
             'text' : text,
-            'link' : focus_on_point,
+            'link' : true, // on click, should both repoint the player and trigger an action (delegated to event) 
             'start' : seconds
     }
 
@@ -450,6 +458,7 @@ window.addEventListener('load', function(){
 
     sound_element = document.getElementById('sound');
     list_element = document.getElementById('list');
+    component_element = sound_element.closest('cpu-audio');
     // sometimes not fired at time, perhaps we need a CPULoaded event ?
     sound_CPU = sound_element.CPU_controller().CPU;
     edit_source_audio_element = document.getElementById('source_audio');
@@ -461,6 +470,9 @@ window.addEventListener('load', function(){
     edit_source_waveform_element.addEventListener('change', set_source_audio);
     edit_source_webvtt_element.addEventListener('change', set_source_audio);
     document.querySelector('#configure').addEventListener('submit', check_configure);
+
+    /* Building addedd events into CPU-audio panels */
+    component_element.addEventListener('CPU_draw_point', CPU_draw_point);
 
     /* Chapter editor */
     add_events_line(document.querySelector('p.line'));
@@ -479,8 +491,8 @@ window.addEventListener('load', function(){
             z-index : 10;
         }
         .cursors a {
-            height: 12px;
-            width: 12px;
+            width: 11px;
+            height: 21px;
             position: absolute;
             display : block;
             touch-action: none;

@@ -959,7 +959,6 @@ class CPU_element_api {
 		let start = data['start'];
 		let data_link = data['link'];
 		let link = '#';
-		let onclick = noop; // TODO will be removed, as _fire_event will be A LOT more cleaner way
 		let time_url = `#${audiotag.id}&t=${start}`;
 
 		if (data_link === true) {
@@ -970,14 +969,6 @@ class CPU_element_api {
 		if (typeof(data_link) === 'string') {
 			// Author of the page wants a specific url (hoping he know what he do with a "javascript:")
 			link = data_link;
-		}
-		if (typeof(data_link) === 'function') {
-			// TODO will be removed, as _fire_event will be A LOT more cleaner way
-			let CPU_controler = this;
-			onclick = (event) => { 
-				data_link(CPU_controler, plane_name, point_name);
-				event.preventDefault();
-			};
 		}
 
 		let track = this.get_plane_track(plane_name);
@@ -991,9 +982,7 @@ class CPU_element_api {
 				plane_point_track.tabIndex = -1;
 				track.appendChild(plane_point_track);
 			}
-
 			plane_point_track.href = link;
-			plane_point_track.onclick = onclick; // TODO will be removed, as _fire_event will be A LOT more cleaner way
 
 			plane_point_track.title = data['text'];
 			let inner = '';
@@ -1027,7 +1016,6 @@ class CPU_element_api {
 
 			let action_element = plane_point_panel.querySelector('a');
 			action_element.href = link;
-			action_element.onclick = onclick; // TODO will be removed, as _fire_event will be A LOT more cleaner way
 		}
 
 		this._fire_event('draw_point', {
@@ -1084,7 +1072,7 @@ class CPU_element_api {
 			this.draw_point(plane_name, point_name);
 			this.audiotag._CPU_planes[plane_name]._st_max = timecode_start;
 		}
-		
+
 		return true;
 	}
 
