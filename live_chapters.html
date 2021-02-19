@@ -472,7 +472,7 @@ window.addEventListener('load', function(){
     document.querySelector('#configure').addEventListener('submit', check_configure);
 
     /* Building addedd events into CPU-audio panels */
-    component_element.addEventListener('CPU_draw_point', CPU_draw_point);
+    document.addEventListener('CPU_draw_point', CPU_draw_point);
 
     /* Chapter editor */
     add_events_line(document.querySelector('p.line'));
