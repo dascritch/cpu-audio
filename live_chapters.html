@@ -71,7 +71,7 @@ TODO
                 <br />
                 <button type="button" class="set">Set position to now</button>
                 <button type="button" class="test">Test time position</button>
-                <button type="button" class="remove dangerous"><strong>×</strong> Remove this chapter</button>
+                <button type="button" class="remove">× Remove this chapter</button>
             </p>
         </fieldset>
 
@@ -248,6 +248,8 @@ function check_for_actions(event) {
                 interpret_line(this_line_element);
                 break ;
             case 'remove' :
+                console.log('remove')
+                sound_CPU.remove_point('cursors', this_line_element.id);
                 this_line_element.remove();
                 event.preventDefault();
                 break ;
@@ -310,7 +312,7 @@ function interpret_line(this_line_element, from_interpret_form=false) {
     }
 
     this_line_element.dataset.time = document.CPU.convert.TimeInSeconds(time);
-    if ( (time === '') || (text === '') ) {
+    if ( (time === '') && (text === '') ) {
         // no time code ? no text ? do not record it yet
         return ;
     }
@@ -481,7 +483,6 @@ window.addEventListener('load', function(){
     list_element.addEventListener('click', check_for_actions);
 
     sound_CPU.add_plane('cursors', 'Chapters preview', {track   : 'cursors', panel   : true});
-      // on_add_point , on_remove_point
     sound_CPU.inject_css('cursors', `
         .cursors {
             left: -6px;
@@ -534,7 +535,7 @@ window.addEventListener('load', function(){
         color : white;
         background : #070;
     }
-    button.dangerous {
+    button.remove {
         color : white;
         background : #F00;
     }
