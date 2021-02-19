@@ -4,7 +4,8 @@ RELEASE NOTES Version 6.6pre
 New features
 ------------
 
- * Colour of the chapter lines under the time-line in now configurable (`--cpu-cue`)
+ * Colour of the chapter lines under the time-line is now configurable (`--cpu-cue`)
+ * Colour of the border points in timeline, when you play a end-specified segment (as in `#0,60`), is now configurable (`--cpu-timeline-limits`)
  * Live chapter editor has been deeply revised
  * New [public API functions](./API.md), mainly on planes and points editions
  * Custom events are fired, (documented in [API page](./API.md)). They are `CPU_` prefixed

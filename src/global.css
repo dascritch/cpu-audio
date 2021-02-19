@@ -19,6 +19,7 @@ audio[controls] {
 	--cpu-popup-background : #aaa;
 	--cpu-popup-color : #333;
 	--cpu-cue : #000;
+	--cpu-timeline-limits : #f00;
 	--cpu-elapse-width : 160px;
 	--cpu-min-padding : 16px;
 	--cpu-inner-shadow : inset 0px 5px 10px -5px black;

@@ -285,7 +285,7 @@ aside.borders a:before, aside.borders a:after {
 	position : absolute;
 	width : 2px;
 	height : var(--cpu-timeline-height);
-	border : 2px solid red;
+	border : 2px solid var(--cpu-timeline-limits);
 }
 
 aside.borders a:before {
