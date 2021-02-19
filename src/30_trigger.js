@@ -184,10 +184,9 @@ const trigger = {
 				'target'  : event.target
 			};
 			let recall_me = function() { 
-				trigger.throbble(recreated_event); 
-				audiotag.removeEventListener(expected_event, recall_me); 
+				trigger.throbble(recreated_event);
 			};
-			audiotag.addEventListener(expected_event, recall_me, passive_ev);
+			audiotag.addEventListener(expected_event, recall_me, {passive:true, once:true});
 			// loading metadata. May not work on Apples
 			audiotag.setAttribute('preload', 'metadata'); 
 			return ;
@@ -252,8 +251,6 @@ const trigger = {
 		function unlock(_e) {
 			trigger._last_play_error = false;
 			trigger.play(_e, audiotag);
-			document.removeEventListener('focus', unlock);
-			document.removeEventListener('click', unlock);
 		}
 
 		if (audiotag === undefined) {
@@ -279,8 +276,9 @@ const trigger = {
 					switch (error.name) {
 						case 'NotAllowedError':
 							warn(NotAllowedError);
-							document.addEventListener('focus', unlock, passive_ev);
-							document.addEventListener('click', unlock, passive_ev);
+							let just_one = {passive:true, once:true};
+							document.addEventListener('focus', unlock, just_one);
+							document.addEventListener('click', unlock, just_one);
 
 							if (audiotag.CPU_connected) {
 								audiotag.CPU_controller().CPU.set_act_container('glow');
