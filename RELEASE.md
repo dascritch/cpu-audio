@@ -15,6 +15,7 @@ New features
 Corrections
 -----------
 
+ * Interface may be stucked in loading state. Now, we cannot display "wait" mode if a first play didn't occured first.
  * Annotations points are sorted by timecode ([#68](#68))
  * Reducing repaints on panels point draws
  * Some events are passive, others are better once-called

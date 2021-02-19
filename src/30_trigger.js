@@ -269,7 +269,12 @@ const trigger = {
 
 		if (promised !== undefined) {
 			promised.then(
-				_ => {} // noop
+				_ => {
+					if (audiotag.CPU_connected) {
+						// we have a successful play occured, we can display wait event later
+						audiotag.CPU_controller().CPU.first_played = true;
+					}
+				} 
 			).catch(
 				error => {
 					trigger._last_play_error = true;

@@ -16,6 +16,7 @@ class CPU_element_api {
 		this.container = container_interface;
 		this.mode_when_play = null;
 		this.glow_before_play = false;
+		this.first_played = false;
 		this.current_playlist = [];
 		this._activecue = null;
 		this.mode_was = null;
@@ -77,6 +78,9 @@ class CPU_element_api {
 	 */
 	set_act_container(act) {
 		if (this.act_was === act) {
+			return;
+		}
+		if ( (!this.first_played) && (act === 'loading') ){
 			return;
 		}
 		this.container.classList.remove(
