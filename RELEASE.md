@@ -17,7 +17,7 @@ Corrections
 
  * Annotations points are sorted by timecode ([#68](#68))
  * Reducing repaints on panels point draws
- * Some events are passive, now
+ * Some events are passive, others are better once-called
 
 Back-end
 --------
