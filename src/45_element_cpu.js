@@ -1071,6 +1071,12 @@ class CPU_element_api {
 		data['start'] = timecode_start;
 		this.audiotag._CPU_planes[plane_name].points[point_name] = data;
 
+		this._fire_event('add_point', {
+			plane : plane_name,
+			point : point_name,
+			data_point :  data
+		});
+
 		if (this.audiotag._CPU_planes[plane_name]._st_max > timecode_start) {
 			// we need to redraw the plane 
 			this.refresh_plane(plane_name);
@@ -1078,13 +1084,7 @@ class CPU_element_api {
 			this.draw_point(plane_name, point_name);
 			this.audiotag._CPU_planes[plane_name]._st_max = timecode_start;
 		}
-
-		this._fire_event('add_point', {
-			plane : plane_name,
-			point : point_name,
-			data_point :  data
-		});
-
+		
 		return true;
 	}
 
