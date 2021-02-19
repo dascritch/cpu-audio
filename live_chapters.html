@@ -1,7 +1,9 @@
 <!--
 
 TODO
-- draggable cursor
+- draggable cursor . Continue https://www.kirupa.com/html5/drag.htm . Must have CPU fire standards event "createplane", "removeplane", "editplane", "clickplane" , "createpoint", "removepoint", "editpoint", "clickpoint"
+    let event = new Event('create_point',{ plane_name, point_name, shadowTarget  });
+- remove the function system on link parameter
 - export .csv 
 -->
 
@@ -132,6 +134,20 @@ var line_number = 1;
 var chapters = [];
 var cues = [];
 
+
+/// NOOOOOOOO ! We should use standardd Events and fire ones !
+
+function on_add_point(CPU, plane_name, point_name, track_element) {
+
+}
+
+function on_edit_point(CPU, plane_name, point_name, track_element) {
+    
+}
+
+function on_remove_point(CPU, plane_name, point_name, track_element) {
+    
+}
 
 /**
  * Fired once <track> is loaded
@@ -453,6 +469,7 @@ window.addEventListener('load', function(){
     list_element.addEventListener('click', check_for_actions);
 
     sound_CPU.add_plane('cursors', 'Chapters preview', {track   : 'cursors', panel   : true});
+      // on_add_point , on_remove_point
     sound_CPU.inject_css('cursors', `
         .cursors {
             left: -6px;
@@ -466,6 +483,8 @@ window.addEventListener('load', function(){
             width: 12px;
             position: absolute;
             display : block;
+            touch-action: none;
+            user-select: none;
         }
         .cursors img {
             width: 11px;

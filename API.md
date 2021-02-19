@@ -113,12 +113,35 @@ highlight   | boolean           | `true`        | Points of this annotation plan
 key         | type                        | default value | usage
 ------------|-----------------------------|---------------|-------
 image       | boolean or string           | `false`       | Url of an image, `false` elsewhere
-link        | boolean, string of function | `true`        | Click action :  `false` for nothing, `true` to link moment, url string for an external link, or a function (⁵)
+TODO WILL BE REMOVED link        | boolean or string of function | `true`        | Click action :  `false` for nothing, `true` to link moment, url string for an external link, or a function (⁵)
 text        | string                      |               | Legend
 start       | number                      |               | The anotation point begins at this timecode (not used in add_point)
 end         | number                      | `undefined`   | The anotation point ends at this timecode
 
-(⁵) Parameters of the called function are `(CpuAudioElement.CPU, plane_name, point_name)`. See [live_chapters.html](./live_chapters.html) source code for an example.
+
+Events
+------
+
+`<CPU-audio>` and `<CPU-controller>` elements fire events about their interface. For disambiguation, events created by our webcomponent is `CPU_` prefixed
+
+event_name     | description                                          | detail, see next table (⁵)
+---------------|------------------------------------------------------|-------------------------
+CPU_ready	   | fired when the interface is ready                    |
+CPU_add_point  | fired during `add_point` methods, even private ones  | plane, point, data_point
+CPU_draw_point | fired when a point is drawn or redrawn               | plane, point, data_point, element_point_track, element_point_panel
+CPU_chapter_changed | fired when a cue event defined in WebVTT occured | cue
+
+
+(⁵) Returned object informations usually have a `detail` object, that may contains :
+
+detail key | type | description
+-----------|------|-------------
+plane | string | the name of the plane, as given in the `add_plane` method, `plane` parameter
+point | string | the name of the point, as given in the `add_point` method, `point` parameter
+data_point | object | data for the point, as in `get_point(plane, point)`
+element_point_track | Element | The created or existing point in the time track
+element_point_panel | Element | The created or existing point in the panel
+
 
 Console messages
 ----------------

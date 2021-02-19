@@ -29,6 +29,32 @@ class CPU_element_api {
 	}
 
 	/**
+	 * @summary    create and fire custom events for the global document.
+	 *
+	 * We async-ed it, to avoid ultra-probable performances issues
+	 *
+	 * @param      {string}            event_name  The event name, will be prefixed with CPU_
+	 * @param      {Object|undefined}  detail      Specific public informations about the event
+	 * @return     {Promise}           { description_of_the_return_value }
+	 */
+	async _fire_event(event_name, detail = undefined) {
+		/**
+		 * Events to be created :
+		 *  - cpu-audio tag build
+		 *  - plane CRUD
+		 *  - point CRUD
+		 */
+		let event = new CustomEvent(`CPU_${event_name}`, {
+			target : this.element,
+			bubbles : true,
+			cancelable : false,
+			composed : false,
+			detail : detail
+		});
+		this.element.dispatchEvent(event);
+	}
+
+	/**
 	 * @summary Used for `mode=""` attribute. 
 	 * @public
 	 *
@@ -892,6 +918,7 @@ class CPU_element_api {
 
 		if ((vtt_taged.split('<').length) !== (vtt_taged.split('>').length)) {
 			// unmatching < and >, probably badly written tags, or in full text
+			// unsurprisingly, (vtt_taged.split('<').length) is a lot faster than using regex. But JS need a standard property for counting substring occurences in a string
 			return escapeHTML(vtt_taged);
 		}
 
@@ -932,7 +959,7 @@ class CPU_element_api {
 		let start = data['start'];
 		let data_link = data['link'];
 		let link = '#';
-		let onclick = noop;
+		let onclick = noop; // TODO will be removed, as _fire_event will be A LOT more cleaner way
 		let time_url = `#${audiotag.id}&t=${start}`;
 
 		if (data_link === true) {
@@ -945,6 +972,7 @@ class CPU_element_api {
 			link = data_link;
 		}
 		if (typeof(data_link) === 'function') {
+			// TODO will be removed, as _fire_event will be A LOT more cleaner way
 			let CPU_controler = this;
 			onclick = (event) => { 
 				data_link(CPU_controler, plane_name, point_name);
@@ -953,8 +981,9 @@ class CPU_element_api {
 		}
 
 		let track = this.get_plane_track(plane_name);
+		let plane_point_track;
 		if (track) {
-			let plane_point_track = this.get_point_track(plane_name, point_name);
+			plane_point_track = this.get_point_track(plane_name, point_name);
 			let intended_track_id = this.get_point_id(plane_name, point_name, false);
 			if (!plane_point_track) {
 				plane_point_track = document.createElement('a');
@@ -964,8 +993,7 @@ class CPU_element_api {
 			}
 
 			plane_point_track.href = link;
-			// we use a direct DOM0 .onclick, to be able to painless modify it, without listener and handlers revocations or conflicts
-			plane_point_track.onclick = onclick;
+			plane_point_track.onclick = onclick; // TODO will be removed, as _fire_event will be A LOT more cleaner way
 
 			plane_point_track.title = data['text'];
 			let inner = '';
@@ -978,8 +1006,9 @@ class CPU_element_api {
 		}
 
 		let panel = this.get_plane_nav(plane_name);
+		let plane_point_panel
 		if (panel) {
-			let plane_point_panel = this.get_point_panel(plane_name, point_name);
+			plane_point_panel = this.get_point_panel(plane_name, point_name);
 			let data_start = Number(data['start'])
 			
 			let intended_panel_id = this.get_point_id(plane_name, point_name, true);
@@ -998,9 +1027,16 @@ class CPU_element_api {
 
 			let action_element = plane_point_panel.querySelector('a');
 			action_element.href = link;
-			// we use a direct DOM0 .onclick, to be able to painless modify it, without listener and handlers revocations or conflicts
-			action_element.onclick = onclick;
+			action_element.onclick = onclick; // TODO will be removed, as _fire_event will be A LOT more cleaner way
 		}
+
+		this._fire_event('draw_point', {
+			plane : plane_name,
+			point : point_name,
+			data_point :  data,
+			element_point_track : plane_point_track,
+			element_point_panel : plane_point_panel,
+		});
 
 		if (
 			(this.element.tagName !== CpuControllerTagName) &&
@@ -1043,6 +1079,12 @@ class CPU_element_api {
 			this.audiotag._CPU_planes[plane_name]._st_max = timecode_start;
 		}
 
+		this._fire_event('add_point', {
+			plane : plane_name,
+			point : point_name,
+			data_point :  data
+		});
+
 		return true;
 	}
 
@@ -1081,6 +1123,8 @@ class CPU_element_api {
 			this.draw_point(plane_name, point_name);
 		}
 
+		// TODO Fire Event on_edit_point
+
 		let start = Number(data['start']);
 		if (this.audiotag._CPU_planes[plane_name]._st_max < start) {
 			this.audiotag._CPU_planes[plane_name]._st_max = start;
@@ -1101,6 +1145,9 @@ class CPU_element_api {
 		if (!point_track_element) {
 			return false;
 		}
+
+		// TODO Fire Event on_remove_point
+
 		point_track_element.remove();
 		this.get_point_panel(plane_name, point_name).remove();
 		delete this.audiotag._CPU_planes[plane_name].points[point_name];
@@ -1287,19 +1334,23 @@ class CPU_element_api {
 	_cuechange_event(event) {
 		// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
 		// this junk to NOT repaint 4 times the same active chapter
+		let activecue;
 		try {
-			let activecue = event.target.activeCues[0];
+			activecue = event.target.activeCues[0];
 			if (Object.is(activecue, this._activecue)) {
 				return ;
 			}
 			this._activecue = activecue;
 			//this.flash(activecue['text']);
-			// do NOT tell me this is ugly, i know this is ugly. I missed something better
+			// do NOT tell me this is ugly, i know this is ugly. I missed something. Teach me how to do it better
 		} catch (error) {
 
 		}
 
 		trigger.cuechange(event, this.elements['interface']);
+		this._fire_event('chapter_changed', {
+			cue : activecue
+		})
 		
 	}
 	/**
@@ -1333,9 +1384,9 @@ class CPU_element_api {
 		 */
 		function _build_from_track(tracks) {
 			let _cuechange_event = self._cuechange_event.bind(self);
-			tracks.removeEventListener('cuechange', _cuechange_event);
+			tracks.removeEventListener('cuechange', _cuechange_event, passive_ev);
 			// adding chapter changing event
-			tracks.addEventListener('cuechange', _cuechange_event);
+			tracks.addEventListener('cuechange', _cuechange_event, passive_ev);
 
 			for (let cue of tracks.cues) {
 				let cuepoint = Math.floor(cue.startTime);
@@ -1545,5 +1596,7 @@ class CPU_element_api {
 
 		this.show_main();
 		this.build_chapters_loader();
+
+		this._fire_event('ready', undefined)
 	}
 };
