@@ -20,6 +20,9 @@ HTMLDocument.prototype.CPU = {
 	dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
 	count_element : 0,
 
+	// private, indicate a play already occured in the DOM, so we can start any play
+	had_played : false
+
 	// private, indicate last used audiotag
 	last_used : null,
 
