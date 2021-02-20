@@ -3,35 +3,71 @@ HTMLDocument.prototype.CPU = {
 	// global object for global API
 
 	// public, parameters
+
+	// @public 
+	// @type number
 	'keymove' : 5,
+	// @public
+	// @type boolean
 	'only_play_one_audiotag' : true,
-	'alternate_delay' : 500, // why 500ms ? Because Chrome will trigger a touchcancel event at 800ms to show a context menu
+	// @public
+	// @type number
+	// why 500ms ? Because Chrome will trigger a touchcancel event at 800ms to show a context menu
+	'alternate_delay' : 500, 
+
+	// @public
+	// @type number
 	'fast_factor' : 4,
+	// @public
+	// @type number
 	'repeat_delay' : 400,
+	// @public
+	// @type number
 	'repeat_factor' : 100,
 
 	// public, actual active elements
+	// @public
+	// @type {HTMLAudioElement|null}
 	'current_audiotag_playing' : null,
+	// @type {CpuControllerElement|null}
+	// @public
 	'global_controller' : null,
+
 	// private, actual active elements
+	// @private
+	// @type {string|null}
 	body_className_playing_cue : null,
 
 	// private,to add attributes for unnamed <audio>
+	// @private
+	// @type string
 	dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
+	// @private
+	// @type number
 	count_element : 0,
 
 	// private, indicate a play already occured in the DOM, so we can start any play
-	had_played : false
+	// @private
+	// @type boolean
+	had_played : false,
 
 	// private, indicate last used audiotag
+	// @private
+	// @type {HTMLAudioElement|null}
 	last_used : null,
 
 	// public, playlists
+	// @public
+	// @type Object
 	'playlists' : {},
+	// @public
+	// @type boolean
 	'advance_in_playlist' : true,
 
 	// public, Exposing internals needed for tests
-	'convert' : convert, 
+	// @public
+	'convert' : convert,
+	// @public
 	'trigger' : trigger,
 
 	// @package, not enough mature
