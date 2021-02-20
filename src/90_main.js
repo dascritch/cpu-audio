@@ -1,5 +1,5 @@
 
-function launch() {
+async function main() {
 
 	if (!is_decent_browser_for_webcomponents()) {
 		warn(`WebComponent may NOT behave correctly on this browser. Only timecode hash links are activated.\nSee https://github.com/dascritch/cpu-audio/ for details`);
@@ -11,14 +11,14 @@ function launch() {
 		document.body.classList.add('cpu-audio-with-webcomponents');
 	}
 
-	window.addEventListener('hashchange', trigger.hashOrder, false);
+	window.addEventListener('hashchange', trigger.hashOrder, passive_ev);
 	trigger.hashOrder({ at_start : true });
 }
 
 if (document.body !== null) {
-	launch();
+	main();
 } else {
 	// needed in cpu-audio.js context
-	document.addEventListener('DOMContentLoaded', launch, false);
+	document.addEventListener('DOMContentLoaded', main, passive_ev);
 }
 
