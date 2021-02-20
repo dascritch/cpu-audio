@@ -97,7 +97,7 @@ function _build_template() {
 	if (document.head !== null) {
 		_insert();
 	} else {
-		document.addEventListener('DOMContentLoaded', _insert, false);
+		document.addEventListener('DOMContentLoaded', _insert, {passive:true});
 	}" > "${PROJECT_DIR}/tmp/insert_template.js"
 
 }
