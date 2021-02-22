@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8" />
+<title>CPU-Audio API example : insert annotations</title>
+
+<script>
+// In this example, we will create custom time annotations in the player
+
+// First, we'll wait the web-component have created its UI
+
+document.addEventListener('CPU_ready', e => {
+    // Let's get the <cpu-audio> DOM element
+    let player_element = e.target;
+    // Now we want its API
+    let player_API = player_element.CPU;
+
+    // OK,  let's create our plane 
+    player_API.add_plane(
+    	'annotations',				// named reference
+    	'Personal annotations', 	// Title for the panel
+    	{
+	    	track   : false, 		// Do not show on the timeline
+	    	panel 	: true, 		// Create a panel
+    });
+
+    // Now, we can insert some points of interest
+    player_API.add_point(
+    	'annotations',				// named reference for the plane
+    	0,							// time position, in seconds
+    	'note-1',					// named reference for the point
+    	{  
+            'text' : '“Enjoy the silence” is the name of a song of Depeche Mode',
+            'link' : true,			// on click, should go to the time position
+           	'end'  : 20				// The point ends at 20 seconds 
+    	});
+
+    player_API.add_point(
+    	'annotations',
+    	15,							// you can overleap points
+    	'note-2',					// named reference for the point
+    	{  
+            'text' : 'As this song is copyrighted, we used another one',
+            'link' : false,			// no action on click
+           	'end'  : 40
+    	});
+
+    player_API.add_point(
+    	'annotations',
+    	40,
+    	'note-3',					// remember, those names should be unique
+    	{  
+            'text' : 'an excerpt of “<em>4:33</em>” which is <em>also</em> copyrighted! See link for details!', // remember that only a subset of tags may work here
+            'link' : 'https://www.classicalmpr.org/blog/classical-notes/2015/12/02/can-silence-be-copyrighted',	// If link is a string, the url is targeted by your point
+    	});
+
+
+});
+
+</script>
+<script src="../dist/cpu-audio.js" async></script>
+
+<body>
+<cpu-audio 
+    title="Enjoy the silence">
+    <audio controls id="sound">
+        <source src="../tests-assets/blank.mp3" type="audio/mpeg" />
+    </audio>
+</cpu-audio>
+</body>
+</html>

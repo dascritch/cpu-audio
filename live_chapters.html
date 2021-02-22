@@ -529,7 +529,7 @@ document.addEventListener('CPU_ready', e => {
     let sound_element = document.getElementById('sound'); // We may have DOMContentLoaded after CPU_ready :/
 
     sound_CPU = sound_element.CPU_controller().CPU;
-    sound_CPU.add_plane('cursors', 'Chapters preview', {track   : 'cursors', panel   : true});
+    sound_CPU.add_plane('cursors', 'Chapters preview', {track : 'cursors', panel : true});
     sound_CPU.inject_css('cursors', `
         .cursors {
             left: -6px;
