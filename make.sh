@@ -94,11 +94,14 @@ function _build_template() {
 		template.innerHTML = \`<style>${scoped_css}</style>${template_html}\`;
 		document.head.appendChild(template);
 	}
-	if (document.head !== null) {
-		_insert();
-	} else {
-		document.addEventListener('DOMContentLoaded', _insert, {passive:true});
-	}" > "${PROJECT_DIR}/tmp/insert_template.js"
+	if (!document.CPU__template__installed) {
+		if (document.head !== null) {
+			_insert();
+		} else {
+			document.addEventListener('DOMContentLoaded', _insert, {passive:true});
+		}
+		document.CPU__template__installed = true;
+}" > "${PROJECT_DIR}/tmp/insert_template.js"
 
 }
 
