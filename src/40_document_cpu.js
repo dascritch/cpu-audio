@@ -250,11 +250,6 @@ HTMLDocument.prototype.CPU = {
 		 */
 		function do_needle_move(event) {
 			let audiotag = event.target;
-
-			if (_isEvent(event)) {
-				audiotag.removeEventListener('loadedmetadata', do_needle_move);
-			}
-
 			let secs = convert.TimeInSeconds(timecode);
 			document.CPU.seekElementAt(audiotag, secs);
 
@@ -262,7 +257,7 @@ HTMLDocument.prototype.CPU = {
 			if (audiotag.readyState >= audiotag.HAVE_FUTURE_DATA) {
 				do_element_play(mocked_event);
 			} else {
-				audiotag.addEventListener('canplay', do_element_play, passive_ev);
+				audiotag.addEventListener('canplay', do_element_play, once_passive_ev);
 			}
 			trigger.update(mocked_event);
 		}
@@ -272,10 +267,7 @@ HTMLDocument.prototype.CPU = {
 		 */
 		function do_element_play(event) {
 			let tag = event.target;
-			trigger.play(undefined, tag)
-			if (_isEvent(event)) {
-				tag.removeEventListener('canplay', do_element_play);
-			}
+			trigger.play(undefined, tag);
 			onDebug(callback_fx);
 		}
 
@@ -285,18 +277,19 @@ HTMLDocument.prototype.CPU = {
 
 		if ((audiotag === undefined) || (audiotag === null) || (audiotag.currentTime === undefined)) {
 			warn(`Unknow audiotag ${hash}`);
-			return /* false */;
+			return;
 		}
 
 		let mocked_event = {'target' : audiotag};
 		if (audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {  /*  WHHYYYY ?????? */
-			audiotag.addEventListener('loadedmetadata', do_needle_move , passive_ev);
+			audiotag.addEventListener('loadedmetadata', do_needle_move , once_passive_ev);
 			audiotag.load();
 			trigger.update(mocked_event);
 		} else {
 			do_needle_move(mocked_event);
 		}
-		return /* true */;
+		// No problems
+		return;
 	},
 	/**
 	 * @public

@@ -185,7 +185,7 @@ const trigger = {
 			let recall_me = function() { 
 				trigger.throbble(recreated_event);
 			};
-			audiotag.addEventListener(expected_event, recall_me, {passive:true, once:true});
+			audiotag.addEventListener(expected_event, recall_me, once_passive_ev);
 			// loading metadata. May not work on Apples
 			audiotag.setAttribute('preload', 'metadata'); 
 			return ;
@@ -280,9 +280,8 @@ const trigger = {
 					switch (error.name) {
 						case 'NotAllowedError':
 							warn(NotAllowedError);
-							let just_one = {passive:true, once:true};
-							document.addEventListener('focus', unlock, just_one);
-							document.addEventListener('click', unlock, just_one);
+							document.addEventListener('focus', unlock, once_passive_ev);
+							document.addEventListener('click', unlock, once_passive_ev);
 
 							if (audiotag.CPU_connected) {
 								audiotag.CPU_controller().CPU.set_act_container('glow');

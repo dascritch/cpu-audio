@@ -30,4 +30,6 @@ let preview_classname = 'with-preview';
 
 // For addEventListener
 // @private
-const passive_ev = {passive: true};
+const passive_ev = {'passive': true};
+// @private
+const once_passive_ev = {'passive':true, 'once':true};
