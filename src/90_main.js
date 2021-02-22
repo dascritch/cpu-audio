@@ -12,7 +12,7 @@ async function main() {
 	}
 
 	window.addEventListener('hashchange', trigger.hashOrder, passive_ev);
-	await trigger.hashOrder({ at_start : true });
+	trigger.hashOrder({ at_start : true });
 }
 
 if (document.body !== null) {

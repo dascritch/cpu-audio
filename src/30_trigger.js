@@ -29,7 +29,6 @@ const trigger = {
 	 *
 	 * @param      {string|Object}  hashcode     Called hashcode
 	 * @param      {Function}       callback_fx  When done, call a function to end the tests (optional).
-	 * \@return     {boolean}        understood
 	 */
 	hashOrder : async function(hashcode, callback_fx=undefined) {
 		let at_start = true;
@@ -93,7 +92,7 @@ const trigger = {
 		if (document.CPU.global_controller) {
 			document.CPU.global_controller.build_playlist();
 		}
-		// scroll to the audio element. Should be reworked, or parametrable
+		// scroll to the audio element. Should be reworked, or parametrable , see issue #60
 		// window.location.hash = `#${hash}`;
 		return /* true */;
 	},
