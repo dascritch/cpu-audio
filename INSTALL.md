@@ -70,7 +70,7 @@ Some attributes enhance the component :
     * `panels-except-play` : any panels, except when the module is playing a media (do not use with `panels`) ;
 * `waveform="<url>"` : waveform image, will be displayed in the timeline, only in `default` mode (may be generated with [sox spectrogram](http://sox.sourceforge.net/sox.html) or [audiowaveform](https://github.com/bbc/audiowaveform)) ;
 * `playlist="<string>"` : add this media in a named playlist, play the next one when ended ;
-* `duration="<seconds|coloncoded|humanreadable>"` : force displayed duration instead to load it from the media resource before playing (add a `preload="none"` attribute to the `<audio>` tag) ;
+* `duration="<seconds|coloncoded|humanreadable>"` : force displayed duration instead to load it from the media resource before playing (add a `preload="none"` attribute to the `<audio>` tag). Metadata will be loaded in case of hover on the timeline if a duration nor steamed-media indication are given ;
 * `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page) ;
 * `glow` : will make the play button glowing before the first play, even if autoplay is not prevented.
 

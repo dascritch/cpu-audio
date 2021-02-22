@@ -167,7 +167,7 @@ const trigger = {
 			trigger.pause(undefined, document.CPU.current_audiotag_playing);
 		}
 
-		if (isNaN(audiotag.duration)) {
+		if ((isNaN(audiotag.duration)) && (!document.CPU.is_audiotag_streamed(audiotag))) {
 			// Correct play from position on the timeline when metadata not preloaded #88
 
 			// indicate we are loading something

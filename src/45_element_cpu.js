@@ -363,10 +363,17 @@ class CPU_element_api {
 	 * @param      {number}  seeked_time  The seeked time
 	 */
 	show_throbber_at(seeked_time) {
-		if (this.audiotag.duration < 1) {
+		let audiotag = this.audiotag;
+		if (audiotag.duration < 1) {
 			// do not try to show if no metadata
 			return;
 		}
+		if ((isNaN(audiotag.duration)) && (!document.CPU.is_audiotag_streamed(audiotag))) {
+			// as we navigate on the timeline, we wish to know its total duration
+			// yes, this is twice calling, as of trigger.throbble() 
+  			audiotag.setAttribute('preload', 'metadata'); 
+		}
+
 		let phylactere = this.elements['popup'];
 		let elapse_element = this.elements['line'];
 
