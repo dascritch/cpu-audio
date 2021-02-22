@@ -134,7 +134,7 @@ Thank you to my lovely friends :
 * [Thomas Parisot](https://oncletom.io/) for suggestions
 * [Loïc Gerbaud](https://github.com/chibani) for corrections
 * [Guillaume Lemoine and Phonitive](http://www.phonitive.fr/) for helping
-* [Benoît Salles](https://twitter.com/infestedgrunt) for testing
+* [Benoît Salles](https://twitter.com/infestedgrunt) and [Michel Poulain](https://twitter.com/MichelPoulain) for testing
 - [@mariejulien](https://twitter.com/mariejulien/status/1047827583126183937) about [CONTRIBUTING.md](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
 
 Really sorry, [NerOcrO](https://github.com/NerOcrO)

@@ -250,7 +250,9 @@ const trigger = {
 		 */
 		function unlock(_e) {
 			trigger._last_play_error = false;
-			trigger.play(_e, audiotag);
+			if (document.CPU.autoplay) {
+				trigger.play(_e, audiotag);
+			}
 		}
 
 		if (audiotag === undefined) {

@@ -1,6 +1,7 @@
 <!--
 
 TODO
+- regression cpu controller => player
 - draggable cursor . Continue https://www.kirupa.com/html5/drag.htm . 
 - click on the timeline to create a point
 - export .csv 
@@ -496,7 +497,6 @@ function interpret_form(_event) {
 }
 
 document.addEventListener('DOMContentLoaded', e => {
-    console.log('DOMContentLoaded');
     document.location.hash = '#configure';
 
     sound_element = document.getElementById('sound');
@@ -523,7 +523,6 @@ document.addEventListener('DOMContentLoaded', e => {
 });
 
 document.addEventListener('CPU_ready', e => {
-    console.log('CPU_ready');
     // sometimes not fired, so we needed a "ready" event
     component_element = e.target;
 

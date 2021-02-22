@@ -3,6 +3,9 @@ HTMLDocument.prototype.CPU = {
 	// global object for global API
 
 	// public, parameters
+	// @public
+	// @type boolean
+	'autoplay' : false,
 
 	// @public 
 	// @type number

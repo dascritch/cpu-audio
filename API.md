@@ -23,6 +23,7 @@ current_audiotag_playing | `null`        | Reference to the playing `<audio>` el
 global_controller        | `null`        | Reference to the `<cpu-controller>` in the page if any, `null` elsewhere
 playlists                | `{}`          | Collection of audio tag by playlists (named by the `<cpu-audio playlist="">` attribute). [See playlist feature](./FEATURES#playlists).
 advance_in_playlist      | `true`        | When an audio is ended in a playlist, starts immediatly the next one.
+autoplay                 | `false`       | Will try to play at the start of the page if a temporal url is given or the audio was previously exited
 
 Some properties are still not documented, for internal usage, as they may evolve.
 
