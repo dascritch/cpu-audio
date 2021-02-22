@@ -1,6 +1,5 @@
 QUnit.config.autostart = false;
 
-
 function check_focus() {
 	document.body.style.background = document.hasFocus() ? 'white' : 'grey';
 }
@@ -124,5 +123,36 @@ window.addEventListener('load', function() {
 		}
 	});
 
+	QUnit.test( "Check CPU_ custom events", function( assert ) {
+		let was_done_CPU_draw_point = false;
+		let was_done_CPU_add_point = false;
+		let was_done_CPU_edit_point = false;
+		let was_done_CPU_remove_point = false;
+		let done = assert.async();
+		document.addEventListener('CPU_draw_point',(e) => {
+			was_done_CPU_draw_point = true;
+		});
+		document.addEventListener('CPU_add_point',(e) => {
+			was_done_CPU_add_point = true;
+		});
+		document.addEventListener('CPU_edit_point',(e) => {
+			was_done_CPU_edit_point = true;
+		});
+		document.addEventListener('CPU_remove_point',(e) => {
+			was_done_CPU_remove_point = true;
+			done();
+		});
+
+		cpuaudio_tag.CPU.add_plane('testplane','');
+		cpuaudio_tag.CPU.add_point('testplane',0,'testpoint');
+		cpuaudio_tag.CPU.edit_point('testplane','testpoint', {});
+		cpuaudio_tag.CPU.remove_point('testplane','testpoint');
+
+		assert.ok(was_done_CPU_draw_point,'CPU_draw_point');
+		assert.ok(was_done_CPU_add_point,'CPU_add_point');
+		assert.ok(was_done_CPU_edit_point,'CPU_edit_point');
+		assert.ok(was_done_CPU_remove_point,'CPU_remove_point');
+		// missing : CPU_chapter_changed and CPU_ready
+	});
 
 });
