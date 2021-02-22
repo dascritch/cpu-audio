@@ -483,39 +483,20 @@ const trigger = {
 	},
 
 	/**
-	 * @summary Refresh the interface when changing chapter
+	 * @summary Refresh document body when changing chapter
 	 *
-	 * @param      {Object}  event              The event
-	 * @param      {Element}  element_interface  The element interface
+	 * @param      {Object}   active_cue         The TextTrack actived
 	 * 
 	 * To not warns on classList.remove()
 	 * @suppress {checkTypes} 
 	 */
-	cuechange : function(event, element_interface) {
+	cuechange : function(active_cue) {
 		document.body.classList.remove(document.CPU.body_className_playing_cue);
-		// when the position in a media element goes out of the current
-		if (element_interface === undefined) {
-			return;
-		}
-		let class_name = 'active-cue';
-		let container = document.CPU.find_container(element_interface);
-		let plane_name = '_chapters';
-		container.remove_highlights_points(class_name);
-
-		if (event.target.activeCues.length === 0) {
-			// too early, we need to keep this case from Chrome
-			return;
-		}
-
-		let cue_id = event.target.activeCues[0].id;
 		// giving a class to document.body, with a syntax according to https://www.w3.org/TR/CSS21/syndata.html#characters
-		let current_audiotag = document.CPU.current_audiotag_playing;
-		if (current_audiotag !== null) {
-			document.CPU.body_className_playing_cue = `cpu_playing_tag_«${document.CPU.current_audiotag_playing.id}»_cue_«${cue_id}»`;
+		if (document.CPU.current_audiotag_playing !== null) {
+			document.CPU.body_className_playing_cue = `cpu_playing_tag_«${document.CPU.current_audiotag_playing.id}»_cue_«${active_cue.id}»`;
 			document.body.classList.add(document.CPU.body_className_playing_cue);
 		}
-
-		container.highlight_point(plane_name, cue_id, class_name);
 	},
 
 

@@ -1337,26 +1337,36 @@ class CPU_element_api {
 	 * @param      {Object}  event   The event
 	 */
 	_cuechange_event(event) {
-		// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
-		// this junk to NOT repaint 4 times the same active chapter
-		let activecue;
+		let active_cue;
+		let class_name = 'active-cue';
+		let plane_name = '_chapters';
 		try {
-			activecue = event.target.activeCues[0];
-			if (Object.is(activecue, this._activecue)) {
+			// Chrome may put more than one activeCue. That's a stupid regression from them, but alas... I have to do with
+			let _time = this.audiotag.currentTime;
+			for (let _cue of event.target.activeCues) {
+				if ((_cue.startTime >= _time) && (_time < _cue.endTime)) {
+					active_cue = _cue;
+				}
+			}
+
+			if (Object.is(active_cue, this._activecue)) {
 				return ;
 			}
-			this._activecue = activecue;
+			this._activecue = active_cue;
 			//this.flash(activecue['text']);
 			// do NOT tell me this is ugly, i know this is ugly. I missed something. Teach me how to do it better
 		} catch (error) {
-
+			error(error)
 		}
 
-		trigger.cuechange(event, this.elements['interface']);
-		this._fire_event('chapter_changed', {
-			cue : activecue
-		})
-		
+		this.remove_highlights_points(class_name);
+		if (active_cue) {
+			trigger.cuechange(active_cue);
+			this._fire_event('chapter_changed', {
+				cue : active_cue
+			});
+			this.highlight_point(plane_name, active_cue.id, class_name);
+		}		
 	}
 	/**
 	 * @summary Builds or refresh chapters interface.
@@ -1389,6 +1399,8 @@ class CPU_element_api {
 		 */
 		function _build_from_track(tracks) {
 			let _cuechange_event = self._cuechange_event.bind(self);
+			// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
+			// this junk to NOT repaint 4 times the same active chapter
 			tracks.removeEventListener('cuechange', _cuechange_event, passive_ev);
 			// adding chapter changing event
 			tracks.addEventListener('cuechange', _cuechange_event, passive_ev);

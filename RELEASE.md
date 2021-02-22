@@ -1,5 +1,5 @@
-RELEASE NOTES Version 6.6
-=========================
+RELEASE NOTES Version 6.6.2
+===========================
 
 New features
 ------------
@@ -26,6 +26,8 @@ Corrections
  * Won't try to autoplay anymore, as this behaviour is really annoying. You can still revert to this mode with `document.CPU.autoplay` parameter ([#103](#103))
  * Returns from `document.CPU.jumpIdAt` and `trigger.hashOrder` aren't used. We can `async` them
  * We try to preload duration metadata when the mouse cursors goes over the timeline on a not know duration and not streamed source ([#88](#88))
+ * github-pages trigger strange problems, numerous CPU-audio instances
+ * Chrome returned more than one activeCue, strange regression
 
 Back-end
 --------
