@@ -156,7 +156,6 @@ function set_source_audio() {
     let url = edit_source_audio_element.value;
     let track_element = sound_element.querySelector('track');
     document.body.classList.add('loaded');
-
     track_element.addEventListener('load', interpret_loaded_tracks);
     
     sound_element.src = url;
@@ -216,8 +215,6 @@ function add_line(time_value=undefined , text_value='') {
 }
 
 
-
-
 /**
  * Special operations on <button type="button">
  *
@@ -263,14 +260,21 @@ function show_only_line(point_name) {
     }
 }
 
+function cursor_hover(point_name) {
+    let data = component_element.CPU.get_point('cursors', point_name);
+    component_element.CPU.show_throbber_at(data.start);
+}
+
+function cursor_out(point_name) {
+    component_element.CPU.hide_throbber();
+}
 
 let initial_x;
 let x_offset = 0;
-let clicked_a
-let clicked_track
+let clicked_a;
+let clicked_track;
 function drag_start(event) {
-    initial_x = ((event.type === 'touchstart') ? event.touches[0].clientX : event.clientX) - x_offset;
-    console.log(event, initial_x);
+    initial_x = event.clientX - x_offset;
     let clicked_point = event.originalTarget;
     clicked_a = clicked_point.tagName === 'A' ? clicked_point : clicked_point.closest('a');
     clicked_track = clicked_point.closest('aside');
@@ -278,16 +282,19 @@ function drag_start(event) {
 
     let ratio = relative_x / clicked_track.clientWidth;
     let seeked_time = ratio * sound_element.duration;
+    console.log(relative_x, seeked_time);
     component_element.CPU.show_throbber_at(seeked_time);
-    console.log(seeked_time)
 }
 
 function drag(event) {
     if (!clicked_track) {
         return ;
     }
-    current_x = ((event.type === 'touchmove') ? event.touches[0].clientX : event.clientX ) - initial_x;
+    console.log(event)
+    event.preventDefault();
+    current_x = event.clientX - initial_x;
     let relative_x = current_x - clicked_track.offsetLeft;
+    console.log(current_x);
 
     let ratio = relative_x / clicked_track.clientWidth;
     let seeked_time = ratio * sound_element.duration;
@@ -295,8 +302,15 @@ function drag(event) {
 }
 
 function drag_end(event) {
+    console.log(event)
     clicked_track = false;
     component_element.CPU.hide_throbber();
+    current_x = event.clientX - initial_x;
+    let relative_x = current_x - clicked_track.offsetLeft;
+
+    let ratio = relative_x / clicked_track.clientWidth;
+    let seeked_time = ratio * sound_element.duration;
+    console.log(relative_x, seeked_time);
 }
 
 /**
@@ -314,28 +328,38 @@ function CPU_draw_point(event) {
     let element_point_panel = detail.element_point_panel;
 
     // first, we remove pre-existing events
+    element_point_track.removeEventListener('mouseover', cursor_hover);
+    element_point_track.removeEventListener('mouseout',cursor_out);
+    element_point_panel.removeEventListener('mouseover', cursor_hover);
+    element_point_panel.removeEventListener('mouseout',cursor_out);
     element_point_track.removeEventListener('click', show_only_line);
     element_point_panel.removeEventListener('click', show_only_line);
-    element_point_track.removeEventListener('touchstart', drag_start);
-    element_point_track.removeEventListener('touchmove', drag);
-    element_point_track.removeEventListener('touchend', drag_end);
-    element_point_track.removeEventListener('mousedown', drag_start);
-    element_point_track.removeEventListener('mousemove', drag);
-    element_point_track.removeEventListener('mouseup', drag_end);
+    element_point_track.removeEventListener('pointerdown', drag_start);
+    element_point_track.removeEventListener('pointermove', drag);
+    element_point_track.removeEventListener('pointerup', drag_end);
+//    element_point_track.removeEventListener('mousedown', drag_start);
+//    element_point_track.removeEventListener('mousemove', drag);
+//    element_point_track.removeEventListener('mouseup', drag_end);
 
 
     // When you click on a point, we show the line editing interface
     // we bind() the function to pass its arguments. First one, "event", is not event useful, and your current event will be replaced by the created event. It's just a placeholder for Event object ;)
+    element_point_track.addEventListener('mouseover', cursor_hover.bind(event, detail.point));
+    element_point_track.addEventListener('mouseout',cursor_out.bind(event, detail.point));
+    element_point_panel.addEventListener('mouseover', cursor_hover.bind(event, detail.point));
+    element_point_panel.addEventListener('mouseout',cursor_out.bind(event, detail.point));
     element_point_track.addEventListener('click', show_only_line.bind(event, detail.point));
     element_point_panel.addEventListener('click', show_only_line.bind(event, detail.point));
 
-    element_point_track.addEventListener('touchstart', drag_start);
-    element_point_track.addEventListener('touchmove', drag);
-    element_point_track.addEventListener('touchend', drag_end);
+    element_point_track.addEventListener('pointerdown', drag_start);
+    element_point_track.addEventListener('pointermove', drag);
+    element_point_track.addEventListener('pointerup', drag_end);
     // still needed
+    /*
     element_point_track.addEventListener('mousedown', drag_start);
     element_point_track.addEventListener('mousemove', drag);
     element_point_track.addEventListener('mouseup', drag_end);
+    */
 }
 
 /**
