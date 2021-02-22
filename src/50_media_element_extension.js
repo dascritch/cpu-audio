@@ -1,5 +1,4 @@
 // Extension on media element
-
 HTMLAudioElement.prototype.CPU_connected = false;
 
 /**

@@ -8,7 +8,7 @@ TODO
 -->
 
 <meta charset="UTF-8" />
-<script src="./dist/cpu-audio.js" async></script>
+<!-- script src="./dist/cpu-audio.js" async></script -->
 
 <details id="at_start" open>
     <summary>Configure editor</summary>
@@ -574,6 +574,14 @@ document.addEventListener('CPU_ready', e => {
     `);
 });
 
+window.addEventListener('load', e => {
+    if (!document.CPU__template__installed) {
+        // very big trouble with github pages generator
+        let sc = document.createElement('script');
+        sc.src = './dist/cpu-audio.js';
+        document.head.appendChild(sc);
+    }
+});
 
 </script>
 
