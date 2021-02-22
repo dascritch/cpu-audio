@@ -1,4 +1,4 @@
-RELEASE NOTES Version 6.6pre
+RELEASE NOTES Version 6.6
 =========================
 
 New features

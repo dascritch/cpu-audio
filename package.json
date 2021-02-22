@@ -17,8 +17,14 @@
   "keywords": [
     "javascript",
     "webcomponent",
+    "audio",
+    "sound",
+    "audio-player",
+    "hyperlink",
+    "timecoded-links",
+    "playlist",
     "vanillajs",
-    "audio"
+    "vanilla",
   ],
   "author": "Xavier \"dascritch\" Mouton-Dubosc",
   "license": "GPL-3.0-or-later",
