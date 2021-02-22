@@ -100,7 +100,6 @@ function _build_template() {
 		} else {
 			document.addEventListener('DOMContentLoaded', _insert, {passive:true});
 		}
-		document.CPU__template__installed = true;
 }" > "${PROJECT_DIR}/tmp/insert_template.js"
 
 }

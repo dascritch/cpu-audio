@@ -1,4 +1,4 @@
-if (!document.CPU) {
+if ((!document.CPU) && (!(document.CPU__template__installed))) {
 HTMLDocument.prototype.CPU = {
 	// global object for global API
 

@@ -1,5 +1,6 @@
 
 async function main() {
+	document.CPU__template__installed = true;
 
 	if (!is_decent_browser_for_webcomponents()) {
 		warn(`WebComponent may NOT behave correctly on this browser. Only timecode hash links are activated.\nSee https://github.com/dascritch/cpu-audio/ for details`);
@@ -15,8 +16,9 @@ async function main() {
 	trigger.hashOrder({ at_start : true });
 }
 
-if (window.customElements.get(CpuAudioTagName) ) {
-	warn(`cpu-audio.js already called in this page`);
+
+if ((document.CPU__template__installed) || (window.customElements.get(CpuAudioTagName.toLowerCase()))) {
+	warn('cpu-audio is called twice');
 } else {
 	if (document.body !== null) {
 		main();
@@ -24,6 +26,5 @@ if (window.customElements.get(CpuAudioTagName) ) {
 		// needed in cpu-audio.js context
 		document.addEventListener('DOMContentLoaded', main, passive_ev);
 	}
-
 }
 

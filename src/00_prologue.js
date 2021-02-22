@@ -1,3 +1,4 @@
+
 let template, shadow_element;
 
 const thisDoc = (document._currentScript || document.currentScript).ownerDocument;
