@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8" />
+<title>CPU-Audio API example : styling background</title>
+
+<script src="../dist/cpu-audio.js" async></script>
+<style>
+    div {
+        background : #FF7;
+        padding : 10px;
+    }
+
+    div style {
+        display : block;
+        font-family: monospace;
+        white-space: pre;
+        margin : 10px;
+        border : 2px solid grey;
+    }
+
+    div cpu-audio {
+        margin : 10px;
+        width : 80%;
+    }
+</style>
+<body>
+
+<div id="example1">
+Perhaps you wish to put a non-solid background to the player&nbsp;? Simply define background variables in any alpha-transparency accepted format.
+    <style scoped contenteditable> 
+    #example1 {
+        --cpu-background : rgba(0, 0, 255, 0.3);
+        /* Do not forget to redefine accordingly "normal color" */
+        --cpu-color : black;
+        /* And the focused colors, as invert normal background/color will be ugly  */
+        --cpu-focus-color : white;
+        --cpu-focus-background : black;
+    }
+    /* This <style> tag is editable, try it ! */
+    </style>
+<cpu-audio 
+    title="Semi-transparent background">
+    <audio controls id="sound">
+        <source src="../tests-assets/blank.mp3" type="audio/mpeg" />
+    </audio>
+</cpu-audio>
+    <p>
+         Redefining --cpu-color and --cpu-focus-color and --cpu-focus-background may be really useful, for resolving accessibility issues you may encounter, as <a href="https://dascritch.net/post/2019/11/13/Deux-couleurs-bizarres-en-CSS">I wrote about some actual CSS limitations (in French)</a>.
+    </p>
+</div>
+
+<p>
+</p>
+
+
+<div id="example2">
+You can also use a background image. But you should also provide a solid color to it
+    <style scoped contenteditable> 
+    #example2 {
+        --cpu-background : #eee url('data:image/svg+xml,\
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill-opacity=".25" >\
+                <rect x="8" width="8" height="8" />\
+                <rect y="8" width="8" height="8" />\
+            </svg>');
+        /* svg background code taken from https://codepen.io/pascalvgaal/pen/jPXPNP/ , by Pascal Van Gaal */
+        --cpu-color : black;
+        --cpu-focus-color : white;
+        --cpu-focus-background : black;
+    }
+
+    </style>
+<cpu-audio 
+    title="Semi-transparent background">
+    <audio controls id="sound">
+        <source src="../tests-assets/blank.mp3" type="audio/mpeg" />
+    </audio>
+</cpu-audio>
+</div>
+
+</body>
+</html>
