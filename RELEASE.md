@@ -25,7 +25,7 @@ Corrections
 Back-end
 --------
 
- * Tests moved in their own subdir
+ * Tests and examples moved in their own subdirs
  * Using arrow functions, modernizing code
  * Updating [Google Closure to v20200719](https://dl.google.com/closure-compiler/compiler-20200719.tar.gz)
    * Removing `--jscomp_off internetExplorerChecks`
