@@ -344,10 +344,6 @@ aside.ticker a.active-cue span {
   height : calc(2 * var(--cpu-font-size));
 }
 
-[type="time"] {
-	text-align : center;
-}
-
 .hide-actions #actions {
 	/* we won't display:none, as we need a padding on the right */
 	visibility : hidden;
