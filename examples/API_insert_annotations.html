@@ -53,6 +53,78 @@ document.addEventListener('CPU_ready', e => {
             'link' : 'https://www.classicalmpr.org/blog/classical-notes/2015/12/02/can-silence-be-copyrighted',	// If link is a string, the url is targeted by your point
     	});
 
+    // What about create a second panel ?
+    player_API.add_plane(
+        'parameters',
+        'Parameters',
+        {
+            track   : false,        // Do not show on the timeline
+            panel   : true,         // Create a panel
+    });
+
+    // I need this, it's for a magick trick 
+    let audio_element = document.querySelector('audio');
+
+    // And, let's say we want to intercept on each panel redraw ?
+    // so we add some interactions on them.
+    document.addEventListener('CPU_draw_point', (event) => {
+        //document.addEventListener('change', (event) => {
+        //    console.log(event.target);
+        //});
+
+        // I want the CPU specific informations of those events
+        let detail =  event.detail;
+        if (detail.plane !== 'parameters') {
+            // I only wish to change the panel paramemeters actions
+            return ;
+        }
+        // we take the point panel in element
+        let element_point_panel = detail.element_point_panel;
+        // I need to prevent any drag events, due to some... we'll i keep the surprise
+        element_point_panel.draggable = false;
+        element_point_panel.querySelector('A').draggable = false;
+        let input_element = element_point_panel.querySelector('input');
+        if (detail.point === 'volume') {
+            // don't forget to remove this eventListener before putting it again !
+            let action = function(e) {
+                audio_element.volume = e.target.value;
+            }
+            input_element.removeEventListener('input', action);
+            input_element.addEventListener('input', action);
+        }
+
+        if (detail.point === 'playbackrate') {
+            // don't forget to remove this eventListener before putting it again !
+            let action = function(e) {
+                audio_element.playbackRate = e.target.value;
+            }
+            input_element.removeEventListener('input', action);
+            input_element.addEventListener('input', action);
+        }
+    });
+
+
+    // Let's have a bit of fun
+    player_API.add_point(
+        'parameters',
+        0,
+        'volume',
+        {  
+            'text' : 'Volume <input id="input_volume" type="range" value="1" min="0" max="1" step="0.1" />', // Yes, I know what I wrote upper, but... let's play !
+            'link' : false
+        });
+
+    // Let's have a SECOND bit of fun
+    player_API.add_point(
+        'parameters',
+        0,
+        'playbackrate',
+        {  
+            'text' : 'Speed <input id="input_rate" type="range" value="1" min="0.5" max="2" step="0.5" />',
+            'link' : false
+        });
+
+        // OK. Who still needs a volume and a playrate selector build in the audio player ?
 
 });
 
