@@ -1,0 +1,29 @@
+{
+  "name": "cpu-audio",
+  "version": "6.6.0",
+  "description": "An audio WebComponent to provide an user-interface, timecoded links and some other features to an <audio> tag",
+  "main": "index.js",
+  "directories": {
+    "example": "examples",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Tests in tests/ needs browser and help\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dascritch/cpu-audio.git"
+  },
+  "keywords": [
+    "javascript",
+    "webcomponent",
+    "vanillajs",
+    "audio"
+  ],
+  "author": "Xavier \"dascritch\" Mouton-Dubosc",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/dascritch/cpu-audio/issues"
+  },
+  "homepage": "https://github.com/dascritch/cpu-audio#readme"
+}
