@@ -108,7 +108,7 @@ remove_css(style_key)						 |		   | Remove an inject `<style>` from the shadowDo
 key         | type              | default value | usage
 ------------|-------------------|---------------|-------
 track       | boolean or string | `true`        | Create a track in the time line, string to precise the kind (`chapters`, `borders`, same naming convention than upper (²)), or presentation restriction (`nosmall`, `nosmaller`, `nosmallest`), space separated
-panel       | boolean or string | `true`        | Create a panel under the player, or precise presentation restriction (`nosmall`, `nosmaller`, `nosmallest`), space separated
+panel       | boolean or string | `true`        | Create a panel under the player, or precise presentation restriction (`nosmall`, `nosmaller`, `nosmallest`, `nocuetime`) space separated
 highlight   | boolean           | `true`        | Points of this annotation plane can be highlighted with the mouse
 
 (⁴) `data` is an object, with detailled keys for points :

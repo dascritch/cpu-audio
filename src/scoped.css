@@ -460,6 +460,10 @@ h6 {
 	text-align : right;
 }
 
+.nocuetime time {
+	display : none;
+}
+
 aside a, h6, .cue time , aside.ticker * /*, #infoline, #infoline * */
 {
 	font-size : var(--cpu-font-small-size);
