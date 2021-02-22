@@ -269,6 +269,7 @@ function cursor_out(point_name) {
     component_element.CPU.hide_throbber();
 }
 
+/* not yet ready
 let initial_x;
 let x_offset = 0;
 let clicked_a;
@@ -312,6 +313,7 @@ function drag_end(event) {
     let seeked_time = ratio * sound_element.duration;
     console.log(relative_x, seeked_time);
 }
+*/
 
 /**
  * When a repaint occurs on a cpu-audio component point element, we add our events
@@ -334,13 +336,12 @@ function CPU_draw_point(event) {
     element_point_panel.removeEventListener('mouseout',cursor_out);
     element_point_track.removeEventListener('click', show_only_line);
     element_point_panel.removeEventListener('click', show_only_line);
+
+/* not yet ready
     element_point_track.removeEventListener('pointerdown', drag_start);
     element_point_track.removeEventListener('pointermove', drag);
     element_point_track.removeEventListener('pointerup', drag_end);
-//    element_point_track.removeEventListener('mousedown', drag_start);
-//    element_point_track.removeEventListener('mousemove', drag);
-//    element_point_track.removeEventListener('mouseup', drag_end);
-
+*/
 
     // When you click on a point, we show the line editing interface
     // we bind() the function to pass its arguments. First one, "event", is not event useful, and your current event will be replaced by the created event. It's just a placeholder for Event object ;)
@@ -351,15 +352,11 @@ function CPU_draw_point(event) {
     element_point_track.addEventListener('click', show_only_line.bind(event, detail.point));
     element_point_panel.addEventListener('click', show_only_line.bind(event, detail.point));
 
+/* not yet ready
     element_point_track.addEventListener('pointerdown', drag_start);
     element_point_track.addEventListener('pointermove', drag);
     element_point_track.addEventListener('pointerup', drag_end);
-    // still needed
-    /*
-    element_point_track.addEventListener('mousedown', drag_start);
-    element_point_track.addEventListener('mousemove', drag);
-    element_point_track.addEventListener('mouseup', drag_end);
-    */
+*/
 }
 
 /**
