@@ -12,7 +12,7 @@ if (!document.hasFocus()) {
 	alert('Please click on the web view, giving focus, to autorize the audio tag. Else, numerous tests will fail. See issu 17 on our github for details : https://github.com/dascritch/cpu-audio/issues/17 .');
 }
 
-window.addEventListener('load', function() {
+document.addEventListener('CPU_ready', function() {
 	QUnit.config.autostart = false;
 
 
@@ -148,11 +148,12 @@ window.addEventListener('load', function() {
 		cpuaudio_tag.CPU.edit_point('testplane','testpoint', {});
 		cpuaudio_tag.CPU.remove_point('testplane','testpoint');
 
+		assert.ok(true,'CPU_ready (was tested to instanciate those tests)');
 		assert.ok(was_done_CPU_draw_point,'CPU_draw_point');
 		assert.ok(was_done_CPU_add_point,'CPU_add_point');
 		assert.ok(was_done_CPU_edit_point,'CPU_edit_point');
 		assert.ok(was_done_CPU_remove_point,'CPU_remove_point');
-		// missing : CPU_chapter_changed and CPU_ready
+		// missing : CPU_chapter_changed
 	});
 
 });
