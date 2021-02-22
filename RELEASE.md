@@ -20,6 +20,7 @@ Corrections
  * Reducing repaints on panels point draws
  * Some events are passive, others are better once-called
  * Won't try to autoplay anymore, as this behaviour is really annoying. You can still revert to this mode with `document.CPU.autoplay` parameter ([#103](#103))
+ * Returns from `document.CPU.jumpIdAt` isn't used. We can `async` it.
 
 Back-end
 --------

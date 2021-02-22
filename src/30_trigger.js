@@ -29,9 +29,9 @@ const trigger = {
 	 *
 	 * @param      {string|Object}  hashcode     Called hashcode
 	 * @param      {Function}       callback_fx  When done, call a function to end the tests (optional).
-	 * @return     {boolean}        understood
+	 * \@return     {boolean}        understood
 	 */
-	hashOrder : function(hashcode, callback_fx=undefined) {
+	hashOrder : async function(hashcode, callback_fx=undefined) {
 		let at_start = true;
 		if (typeof hashcode !== 'string') {
 			at_start = 'at_start' in hashcode;
@@ -74,7 +74,7 @@ const trigger = {
 		if ((timecode === '') || ((at_start) && (!autoplay))) {
 			// this is a normal anchor call. Go back to normal behaviour
 			onDebug(callback_fx);
-			return false;
+			return /* false */;
 		}
 
 		// we may have a begin,end notation
@@ -88,14 +88,14 @@ const trigger = {
 				false;
 		}
 
-		document.CPU.jumpIdAt(hash, timecode_start, callback_fx);
+		await document.CPU.jumpIdAt(hash, timecode_start, callback_fx);
 
 		if (document.CPU.global_controller) {
 			document.CPU.global_controller.build_playlist();
 		}
 		// scroll to the audio element. Should be reworked, or parametrable
 		// window.location.hash = `#${hash}`;
-		return true;
+		return /* true */;
 	},
 
 	/**

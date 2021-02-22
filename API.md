@@ -34,7 +34,7 @@ name                             | returns                       | usage
 ---------------------------------|-------------------------------|-----------------
 is_audiotag_playing(audiotag)    | boolean                       | Indicate if this `<audio>` element is playing and correctly cpu-audio started
 is_audiotag_global(audiotag)     | boolean                       | Indicate if this `<audio>` element is displayed by `<cpu-controller>` if installed
-jumpIdAt(hash, timecode)         | boolean                       | will jump the `<audio id="hash">` to timecode (any convertable format in seconds, colon-coded or human coded)
+jumpIdAt(hash, timecode)         | 	                             | will jump the `<audio id="hash">` to timecode (any convertable format in seconds, colon-coded or human coded)
 seekElementAt(audiotag, seconds) |                               | will jump the `<audio>` to a position in seconds (number only)
 find_interface(child)            | HTMLElement or null           | For any ShadowDOM element, will returns its parent interface container
 find_container(child)            | CpuAudioElement.`CPU` or null | For any `<audio>` tag or its child tag, will returns the element `CPU` API

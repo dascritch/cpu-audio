@@ -241,9 +241,9 @@ HTMLDocument.prototype.CPU = {
 	 * @param      {string}   hash         The id="" of an <audio> tag
 	 * @param      {string}   timecode     The timecode, 
 	 * @param      {Function|null|undefined}   callback_fx  Function to be called afterwards, for ending tests
-	 * @return     {boolean}  { description_of_the_return_value }
+	 * \@return     {boolean}  { description_of_the_return_value }
 	 */
-	'jumpIdAt' : function(hash, timecode, callback_fx=undefined) {
+	'jumpIdAt' : async function(hash, timecode, callback_fx=undefined) {
 
 		/**
 		 * @param 	{Object}	event 	triggered event, or mockup
@@ -285,7 +285,7 @@ HTMLDocument.prototype.CPU = {
 
 		if ((audiotag === undefined) || (audiotag === null) || (audiotag.currentTime === undefined)) {
 			warn(`Unknow audiotag ${hash}`);
-			return false;
+			return /* false */;
 		}
 
 		let mocked_event = {'target' : audiotag};
@@ -296,7 +296,7 @@ HTMLDocument.prototype.CPU = {
 		} else {
 			do_needle_move(mocked_event);
 		}
-		return true
+		return /* true */;
 	},
 	/**
 	 * @public
