@@ -3,6 +3,8 @@ API
 
 cpu-audio.js can be fine-tuned only with HTML attributes and CSS variables, but javascript-savvy developers can use API features to get more precise controls or extend possibilities.
 
+This is the reference page for public accessible methods and properties. You can read some test cases in the `examples` sub-directory of this project.
+
 
 document.body.CPU
 -----------------
