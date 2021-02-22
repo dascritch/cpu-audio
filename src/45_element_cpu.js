@@ -335,14 +335,14 @@ class CPU_element_api {
 	 * @param      {number|undefined}   	  seconds_begin   Starts position in seconds, do not apply if undefined
 	 * @param      {number|undefined|boolean} seconds_end     Ends position in seconds, do not apply if undefined or false
 	 */	
-	timeline_position(element, seconds_begin=undefined, seconds_end=undefined) {
+	position_time_element(element, seconds_begin=undefined, seconds_end=undefined) {
 
 		/**
           * @param  {number|undefined|boolean} sec  Is it a "seconds" value ?
           * @return {boolean}
           */
 		function is_seconds(sec) {
-			// completely ugly... « WAT » as in https://www.destroyallsoftware.com/talks/wat
+			// completely ugly... but « WAT » ! as in https://www.destroyallsoftware.com/talks/wat
 			return ((sec !== undefined) && (sec !== false));
 		}
 		let duration = this.audiotag.duration;
@@ -362,7 +362,7 @@ class CPU_element_api {
 	 *
 	 * @param      {number}  seeked_time  The seeked time
 	 */
-	show_throbber_at(seeked_time) {
+	async show_throbber_at(seeked_time) {
 		let audiotag = this.audiotag;
 		if (audiotag.duration < 1) {
 			// do not try to show if no metadata
@@ -378,7 +378,7 @@ class CPU_element_api {
 		let elapse_element = this.elements['line'];
 
 		phylactere.style.opacity = 1;
-		this.timeline_position(phylactere, seeked_time);
+		this.position_time_element(phylactere, seeked_time);
 		phylactere.innerHTML = convert.SecondsInColonTime(seeked_time);
 		phylactere.dateTime = convert.SecondsInTime(seeked_time).toUpperCase();
 	}
@@ -1001,7 +1001,7 @@ class CPU_element_api {
 			}
 			inner += `<span>${data['text']}</span>`;
 			plane_point_track.innerHTML = inner;
-			this.timeline_position(plane_point_track, start, data['end']);
+			this.position_time_element(plane_point_track, start, data['end']);
 		}
 
 		let panel = this.get_plane_nav(plane_name);
