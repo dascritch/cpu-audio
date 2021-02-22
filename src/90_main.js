@@ -15,10 +15,15 @@ async function main() {
 	trigger.hashOrder({ at_start : true });
 }
 
-if (document.body !== null) {
-	main();
+if (window.customElements.get(CpuAudioTagName) ) {
+	warn(`cpu-audio.js already called in this page`);
 } else {
-	// needed in cpu-audio.js context
-	document.addEventListener('DOMContentLoaded', main, passive_ev);
+	if (document.body !== null) {
+		main();
+	} else {
+		// needed in cpu-audio.js context
+		document.addEventListener('DOMContentLoaded', main, passive_ev);
+	}
+
 }
 

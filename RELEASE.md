@@ -18,18 +18,18 @@ New features
 Corrections
 -----------
 
+ * Check race condition or already called web-commponent
  * Interface may be stucked in loading state. Now, we cannot display "wait" mode if a first play didn't occured first.
  * Annotations points are sorted by timecode ([#68](#68))
  * Reducing repaints on panels point draws
  * Some events are passive, others are better once-called
  * Won't try to autoplay anymore, as this behaviour is really annoying. You can still revert to this mode with `document.CPU.autoplay` parameter ([#103](#103))
  * Returns from `document.CPU.jumpIdAt` and `trigger.hashOrder` aren't used. We can `async` them
- * We try to preload duration metadata when the mouse cursors goes over the timeline on a not know duration and not streamed source ([#88](#88)).
+ * We try to preload duration metadata when the mouse cursors goes over the timeline on a not know duration and not streamed source ([#88](#88))
 
 Back-end
 --------
 
- * Package github ([#86](#86))
  * Tests and examples moved in their own subdirs
  * Using arrow functions, modernizing code
  * Updating [Google Closure to v20200719](https://dl.google.com/closure-compiler/compiler-20200719.tar.gz)
@@ -39,6 +39,7 @@ Back-end
    * Erroneous `@brief` annotations changed to `@summary`
    * … but a lot of bugs in Closure, as TextTracks objects aren't declared as iterable, a surprising “*Property replaceAll never defined on String*” and so on…
  * We have a [surprising bug in Chrome that avoid to use `audiotag.currentTime=<number>` ONLY if the source is hosted on localhost](https://stackoverflow.com/questions/52620284/make-html5-video-start-at-specified-currenttime-in-chrome), if your local server doesn't support HTTP response 206 (partial content). If you need to local test on Chrome, please user file:/// protocol or a complete web server.
+ * Primitives for package github ([#86](#86)). “to be done”
 
 Making of
 ---------
