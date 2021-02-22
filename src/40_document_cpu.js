@@ -241,7 +241,6 @@ HTMLDocument.prototype.CPU = {
 	 * @param      {string}   hash         The id="" of an <audio> tag
 	 * @param      {string}   timecode     The timecode, 
 	 * @param      {Function|null|undefined}   callback_fx  Function to be called afterwards, for ending tests
-	 * \@return     {boolean}  { description_of_the_return_value }
 	 */
 	'jumpIdAt' : async function(hash, timecode, callback_fx=undefined) {
 

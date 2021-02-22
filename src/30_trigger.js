@@ -6,12 +6,14 @@ let NotSupportedError = 'The browser refuses the audio source, probably due to a
 
 const trigger = {
 
+	// @private
 	_timecode_start : 0,
+	// @private
 	_timecode_end : false,
 
+	// @private
 	_last_play_error : false,
 
-	// wrongly placed information. Should be in Element.CPU
 	_remove_timecode_outofborders : function(at) {
 		if ( 
 			(at < trigger._timecode_start)

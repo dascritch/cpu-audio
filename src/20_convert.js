@@ -1,12 +1,17 @@
 const convert = {
+	// @private
 	units : {
 		'd' : 86400,
 		'h' : 3600,
 		'm' : 60,
 		's' : 1
 	},
+	// @private
 	_is_only_numeric : /^\d+$/,
+	// @private
 	_any_not_numeric : /\D*/g,
+	// @private
+	// How Inifity (streamed live media with unspecified duration) should be humanly expressed
 	Infinity : '?',
 
 	/**
