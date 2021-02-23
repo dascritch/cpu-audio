@@ -107,6 +107,15 @@ function escapeHTML(text) {
 	return out;
 }
 
+/**
+ * @summary check if an element.id is cited in hash url
+ *
+ * @param      {string}   id      element id to check
+ * @return     {boolean}  is in hash
+ */
+function id_in_hash(id) {
+	return location.hash.substr(1).split('&').includes(id);
+}
 
 
 /**
