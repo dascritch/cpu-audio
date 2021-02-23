@@ -14,6 +14,12 @@ const trigger = {
 	// @private
 	_last_play_error : false,
 
+	/**
+	 * @summary If audio position out of begin/end borders, remove borders
+	 * @private
+	 *
+	 * @param      {number}  at      timecode position
+	 */
 	_remove_timecode_outofborders : function(at) {
 		if ( 
 			(at < trigger._timecode_start)
@@ -22,7 +28,6 @@ const trigger = {
 			trigger._timecode_end = false;
 		}
 	},
-
 
 	/**
 	 * @summary    Interprets the hash part of the URL, when loaded or changed
@@ -33,6 +38,7 @@ const trigger = {
 	 * @param      {Function}       callback_fx  When done, call a function to end the tests (optional).
 	 */
 	hashOrder : async function(hashcode, callback_fx=undefined) {
+		info('hashOrder')
 		let at_start = true;
 		if (typeof hashcode !== 'string') {
 			at_start = 'at_start' in hashcode;
@@ -485,18 +491,17 @@ const trigger = {
 	/**
 	 * @summary Refresh document body when changing chapter
 	 *
-	 * @param      {Object}   active_cue         The TextTrack actived
+	 * @param      {Object}   active_cue         		The TextTrack actived
+	 * @param      {HTMLAudioElement}   audiotag        Audiotag relative to TextTrack
 	 * 
 	 * To not warns on classList.remove()
 	 * @suppress {checkTypes} 
 	 */
-	cuechange : function(active_cue) {
+	cuechange : function(active_cue, audiotag) {
 		document.body.classList.remove(document.CPU.body_className_playing_cue);
 		// giving a class to document.body, with a syntax according to https://www.w3.org/TR/CSS21/syndata.html#characters
-		if (document.CPU.current_audiotag_playing !== null) {
-			document.CPU.body_className_playing_cue = `cpu_playing_tag_«${document.CPU.current_audiotag_playing.id}»_cue_«${active_cue.id}»`;
-			document.body.classList.add(document.CPU.body_className_playing_cue);
-		}
+		document.CPU.body_className_playing_cue = `cpu_playing_tag_«${audiotag.id}»_cue_«${active_cue.id}»`;
+		document.body.classList.add(document.CPU.body_className_playing_cue);
 	},
 
 
@@ -506,7 +511,6 @@ const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	update : function(event) {
-		// info(`update ${event.type}`)
 		let audiotag = event.target;
 
 		if ((trigger._timecode_end !== false) && (audiotag.currentTime > trigger._timecode_end)) {

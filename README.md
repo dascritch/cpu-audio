@@ -28,8 +28,7 @@ Some links :
 * [How to cite a podcast](https://www.buzzsprout.com/blog/cite-podcast), now you can support time positions URL
 * Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 
-Version : 6.6 [Licence GPL 3](LICENSE)
-
+Version : 6.6.3 [Licence GPL 3](LICENSE)
 
 Purpose
 -------
@@ -48,6 +47,17 @@ During the page life :
 * if you have a `<cpu-controller>` in your page, it will clone the playing `<cpu-audio>` interface.
 
 <a href="#sound&t=20m45s">This link starts the upper player at 20:45</a>
+
+
+HOW TO install
+--------------
+
+A unique and lightweight js file to install, without any dependencies, 
+
+* [How to install, deploy and customize on your server](INSTALL)
+* [You can try playing with our live configurator tool](LIVE)
+* See [basic examples](examples) and [applications with advanced use cases](applications) 
+* [Known problems and misconfigurations](TROUBLESHOOTING)
 
 
 Features
@@ -95,14 +105,6 @@ When the interface got the focus, you can use those keys :
 For handheld users, a long press on the timeline will show you another interface for a more precise navigation.
 
 
-HOW TO install
---------------
-
-* [How install, deploy and customize on your server](INSTALL)
-* [You can try playing with our live configurator tool, event it isn't perfect yet.](LIVE)
-* [Known problems and misconfigurations](TROUBLESHOOTING)
-
-
 Participate
 -----------
 
@@ -112,8 +114,8 @@ Participate
 * [What to do, next](https://github.com/dascritch/cpu-audio/blob/master/TODO.md)
 
 
-Versions
---------
+Versions history
+----------------
 
 * June 2019 : 6 , plane and points, public API stabilization
 * April 2018 : 5 , [forking to cpu-audio, WebComponent version](https://github.com/dascritch/ondemiroir-audio-tag/issues/7#issuecomment-382043789)
@@ -125,6 +127,8 @@ Versions
 * July 2014 : 1.a , public release
 * June 2014 : 0.2 , proof of concept
 * October 2012 : first version, trashed
+
+[See releases for detailled changes](https://github.com/dascritch/cpu-audio/releases)
 
 
 Credits

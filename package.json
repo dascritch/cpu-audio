@@ -1,6 +1,6 @@
 {
   "name": "cpu-audio",
-  "version": "6.6.0",
+  "version": "6.6.3",
   "description": "An audio WebComponent to provide an user-interface, timecoded links and some other features to an <audio> tag",
   "main": "index.js",
   "directories": {

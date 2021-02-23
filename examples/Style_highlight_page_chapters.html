@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="UTF-8" />
+    <title>CPU-Audio API example : Highlight page chapters</title>
+
+    <script src="../dist/cpu-audio.js" async></script>
+    <style>
+        /* 
+            For each reached chapter, declare which chapters must be hightlighted.
+            During a chapter, the cpu-audio player will add specific class on document <body> tag, as here :
+            .cpu_playing_tag_«highlights»_cue_«chap-1»   
+            - «highlights» refers to the Id of the <audio id="highlights" controls> tag
+            - «chap-1» is the cue name, in the "../tests-assets/chapters-ex0085.vtt" file
+            - syntax seems strange, but those characters are valids, per https://www.w3.org/TR/CSS21/syndata.html#characters
+
+
+        */
+        #demo li {
+            padding : 5px;
+            margin : 5px;
+        }
+        /*
+            in-text chapters in standby mode
+        */
+        #demo li {
+            opacity : 0.5;
+        }
+
+        /*
+            in-text chapters during chapter playing. Sorry, this is verbose
+        */
+        .cpu_playing_tag_«highlights»_cue_«chap-1» #highlights_c1,
+        .cpu_playing_tag_«highlights»_cue_«chap-2» #highlights_c2,
+        .cpu_playing_tag_«highlights»_cue_«chap-3» #highlights_c3,
+        .cpu_playing_tag_«highlights»_cue_«chap-4» #highlights_c4,
+        .cpu_playing_tag_«highlights»_cue_«chap-5» #highlights_c5,
+        .cpu_playing_tag_«highlights»_cue_«chap-6» #highlights_c6,
+        .cpu_playing_tag_«highlights»_cue_«chap-7» #highlights_c7,
+        .cpu_playing_tag_«highlights»_cue_«chap-8» #highlights_c8,
+        .cpu_playing_tag_«highlights»_cue_«chap-9» #highlights_c9,
+        .cpu_playing_tag_«highlights»_cue_«chap-10» #highlights_c10 {
+            opacity : 1;
+            background : #ddd;
+            outline : 1px solid black;
+        }
+    </style>
+
+<body>
+
+<h1 id="highlighting-text-amond-chapters">Highlighting text amond chapters</h1>
+
+<p>In this example, elements of the host page are highlighted when the player show some chapters, with only CSS and HTML.</p>
+<details>
+    <summary>Technical explanations</summary>
+    <p>
+        If you use a chapter track with name chapters <a href="applications/chapters_editor.html">(you can generate them here)</a>, you can use a CSS rule to highlight a portion of your text with the playing audio.
+    </p>
+    <p>
+        This feature works if a chapter &lt;track&gt; is correctly loaded and interpreted by cpu-audio. Once loaded interpreted, you can hide chapter panel and tracks in the player (with hide="chapters panels"), the feature and so the css effects will still work.
+    </p>
+    <p>
+        Please note : This example must be run in a web server, not via file:/// protocol, due to CSP/CORS requirements from browsers. Please note that obviously a chapter track is unuseful for a live streamed audio.<br />
+        Also note that the class is set when the page is loaded and before the element is playing only if the audio id is expressed in the hash url
+    </p>
+    <p>
+        The context-style feature was inspired by the now defunct BBC mini website hommage to their 1980s TV show about computers.
+    </p>
+
+</details>
+<hr />
+
+
+<cpu-audio title="Ex0085 Le Mystère Enigma" poster="https://cpu.dascritch.net/public/Images/Emissions/.1805-Ex0085-Enigma_m.jpg" canonical="https://cpu.dascritch.net/post/2018/05/17/Ex0085-Histoires-de-la-cryptographie%2C-2%C3%A8me-partie-%3A-Le-myst%C3%A8re-d-Enigma" twitter="@cpuprogramme">
+    <audio id="highlights" data-title="Ex0085 Le Mystère Enigma" data-poster="https://cpu.dascritch.net/public/Images/Emissions/.1805-Ex0085-Enigma_m.jpg" data-canonical="https://cpu.dascritch.net/post/2018/05/17/Ex0085-Histoires-de-la-cryptographie%2C-2%C3%A8me-partie-%3A-Le-myst%C3%A8re-d-Enigma" data-twitter="@cpuprogramme" controls>
+        <source src="https://dascritch.net/vrac/Emissions/CPU/0085-CPU%2817-05-18%29.ogg" type="audio/ogg">
+        <source src="https://dascritch.net/vrac/Emissions/CPU/podcast/0085-CPU%2817-05-18%29.mp3" type="audio/mpeg">
+        <track kind="chapters" src="../tests-assets/chapters-ex0085.vtt" default="">
+    </audio>
+
+    <!-- Fallback messages -->
+    <div class="cpu-audio-without-webcomponents too-old">
+        <h2>Player didn't start (yet ?)</h2>
+        <p>
+            Your browser is loading very slowly, or doesn't support WebComponent fairly enough.
+            Following examples are <strong>not fully functionnal</strong>, as the interface is not shown and the browser display its native player. This is intentional.<br>
+            Only the hash-links functions works.
+        </p>
+    </div>
+</cpu-audio>
+
+<div id="demo">
+    <ul>
+        <li id="highlights_c1"><a href="#highlights&amp;t=1m17s">Bonjour à toi, Enfant du Futur Immédiat : Des chiffres et des lettres</a></li>
+        <li id="highlights_c2"><a href="#highlights&amp;t=6m28s">Lexique : Casser un chiffrement</a></li>
+        <li id="highlights_c3">music. joke intented by the song name</li>
+        <li id="highlights_c4"><a href="#highlights&amp;t=12m45s">Plantage : La chute de l'Empire du chiffre Allemand</a></li>
+        <li id="highlights_c5"><a href="#highlights&amp;t=20m45s">Artefact du passé : La machine Enigma</a></li>
+        <li id="highlights_c6">music. French band name, spanish song name, german lyrics</li>
+        <li id="highlights_c7"><a href="#highlights&amp;t=33m19s">Histoire : Les génies du Biuro Szyfrów</a></li>
+        <li id="highlights_c8"><a href="#highlights&amp;t=38m35s">Ainsi naquit : Bletchley Park, le premier campus technologique</a></li>
+        <li id="highlights_c9">music. Obligatory musical reference to the Turing biopic</li>
+        <li id="highlights_c10"><a href="#highlights&amp;t=50m03s">Le Gourou : Alan Turing</a></li>
+    </ul>
+</div>
+
+
+</body>
+</html>
