@@ -21,8 +21,7 @@ class CPU_element_api {
 		this.mode_was = null;
 		this.act_was = null;
 		this.elapse_was = null;
-		this._loadedmetadata_ev = false;
-		// record some related data on the <audio> tag, outside the dataset scheme
+
 		if ( (this.audiotag) && (! this.audiotag._CPU_planes)) {
 			this.audiotag._CPU_planes = {}
 		}
@@ -163,8 +162,8 @@ class CPU_element_api {
 	 * @param      {number|undefined=}  ratio    ratio position in case time position are still unknown
 	 */
 	update_line(type, seconds, ratio=undefined) {
+		let duration = this.audiotag.duration;
 		if (ratio === undefined) {
-			let duration = this.audiotag.duration;
 			ratio = duration === 0 ? 0 : (100*seconds / duration);
 		}
 		this.elements[`${type}line`].style.width = `${ratio}%`;
@@ -346,6 +345,11 @@ class CPU_element_api {
 			return ((sec !== undefined) && (sec !== false));
 		}
 		let duration = this.audiotag.duration;
+
+		if ((duration === 0) || (isNaN(duration))) {
+			// duration still unkonw ! We will need to redraw later the tracks
+		}
+
 		if (is_seconds(seconds_begin)) {
 			element.style.left =  `${100 * (seconds_begin / duration)}%`;
 		}
@@ -877,7 +881,9 @@ class CPU_element_api {
 	 *
 	 * @param      {string}            vtt_taged  The vtt tagged
 	 * @return     string                         HTML tagged string
-	 */
+	 * 
+	 * string.replace().replaceAll() is not corectly understood by Google Closure
+	 * @suppress {missingProperties} */
 	translate_vtt(vtt_taged) {
 
 		let acceptables = {
@@ -964,7 +970,6 @@ class CPU_element_api {
 	draw_point(plane_name, point_name) {
 		let data = this.get_point(plane_name, point_name);
 		let audiotag = this.audiotag ? this.audiotag : document.CPU.global_controller.audiotag;
-		let audio_duration = audiotag.duration;
 
 		let start = data['start'];
 		let data_link = data['link'];
@@ -1196,7 +1201,7 @@ class CPU_element_api {
 	 */
 	clear_plane(plane_name) {
 		let remove_from_data = this.get_plane(plane_name);
-		if (!this.get_plane(plane_name)) {
+		if (!remove_from_data) {
 			return false;   
 		}
 
@@ -1246,6 +1251,31 @@ class CPU_element_api {
 		for (let plane_name of Object.keys(this.audiotag._CPU_planes)) {
 			this.draw_plane(plane_name);
 			this.refresh_plane(plane_name);
+		}
+	}
+
+
+	/**
+	 * @summary Needed because Chrome can fire loadedmetadata before knowing audio duration. Fired at durationchange
+	 * 
+	 * @private
+	 */
+	reposition_tracks() {
+		let duration = this.audiotag.duration;
+		if ((this.audiotag.duration === 0) || (isNaN(this.audiotag.duration))) {
+			// duration still unkown
+			return ;
+		}
+
+		for (let plane_name in this.audiotag._CPU_planes) {
+			let plane_data = this.get_plane(plane_name);
+			if (plane_data.track !== false) {
+				for (let point_name of Object.keys(this.audiotag._CPU_planes[plane_name].points)) {
+					let point_data = this.get_point(plane_name, point_name);
+					let element = this.get_point_track(plane_name, point_name);
+					this.position_time_element(element, point_data.start, point_data.end);
+				}
+			}
 		}
 	}
 
@@ -1343,30 +1373,30 @@ class CPU_element_api {
 		try {
 			// Chrome may put more than one activeCue. That's a stupid regression from them, but alas... I have to do with
 			let _time = this.audiotag.currentTime;
-			for (let _cue of event.target.activeCues) {
-				if ((_cue.startTime >= _time) && (_time < _cue.endTime)) {
-					active_cue = _cue;
+			for (let cue of event.target.activeCues) {
+				if ((cue.startTime <= _time) && (_time < cue.endTime)) {
+					active_cue = cue;
 				}
 			}
-
 			if (Object.is(active_cue, this._activecue)) {
 				return ;
 			}
+
 			this._activecue = active_cue;
 			//this.flash(activecue['text']);
 			// do NOT tell me this is ugly, i know this is ugly. I missed something. Teach me how to do it better
 		} catch (error) {
-			error(error)
+			window.console.error(error)
 		}
 
 		this.remove_highlights_points(class_name);
 		if (active_cue) {
-			trigger.cuechange(active_cue);
+			trigger.cuechange(active_cue, this.audiotag);
 			this._fire_event('chapter_changed', {
 				cue : active_cue
 			});
 			this.highlight_point(plane_name, active_cue.id, class_name);
-		}		
+		}
 	}
 	/**
 	 * @summary Builds or refresh chapters interface.
@@ -1375,67 +1405,24 @@ class CPU_element_api {
 	 * @param      {Object|undefined}  event          The event
 	 */
 	build_chapters(event = undefined) {
+		// this functions is called THREE times at load : at build, at loadedmetada event and at load event
+		// and afterwards, we have to reposition track points on duractionchange
+
 		if (this.element.tagName === CpuControllerTagName) {
 			// not your job, CPUController
 			return;
 		}
-		let self = this; // needed later by _build_from_track() , may be .bind(this) ?
 
-		if (event !== undefined) {
-			// Chrome load <track> afterwards, so an event is needed, and we need to recatch our CPU api to this event
-			self = document.CPU.find_container(event.target);
-			if (self === null) {
-				// not yet ready, should not occurs
-				error('Container CPU- not ready yet. WTF ?');
-			}
-		}
-
-		let audiotag = self.audiotag;
+		let audiotag = this.audiotag;
 		let has = false;
 		let plane_name = '_chapters';
-
-		/**
-		 * * @param      {Object|TextTrackCueList}  tracks TextTrack object  
-		 */
-		function _build_from_track(tracks) {
-			let _cuechange_event = self._cuechange_event.bind(self);
-			// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
-			// this junk to NOT repaint 4 times the same active chapter
-			tracks.removeEventListener('cuechange', _cuechange_event, passive_ev);
-			// adding chapter changing event
-			tracks.addEventListener('cuechange', _cuechange_event, passive_ev);
-
-			for (let cue of tracks.cues) {
-				let cuepoint = Math.floor(cue.startTime);
-
-				self.add_point(plane_name, cuepoint, cue.id,  {
-					'text' : self.translate_vtt(cue.text),
-					'link' : true,          // point the link to start time position
-					'end'  : cue.endTime    // end timecode of the cue
-				});
-			}
-
-			if (tracks.cues.length > 0) {
-				has = true;
-			}
-
-		}
+		let active_cue;
 
 		if (audiotag) {
 			if ((audiotag.textTracks) && (audiotag.textTracks.length > 0)) {
 				let chapter_track = null;
 
 				for (let tracks of audiotag.textTracks) {
-					/**
-					 * TODO : we have here a singular problem : how to NOT rebuild the
-					 * chapter lists, being sure to have the SAME cues and they are
-					 * loaded, as we may have FOUR builds. Those multiple repaint events
-					 * doesn't seem to have so much impact, but they are awful, unwanted
-					 * and MAY have an impact We must find a way to clean it up or not
-					 * rebuild for SAME tracks, AND remove associated events AND clean
-					 * up the chapter list if a new chapter list is loaded and really
-					 * empty 
-					 */
 					if (
 							(tracks.kind.toLowerCase() === 'chapters') &&
 							(tracks.cues !== null) &&  // linked to default="" attribute, only one per set !
@@ -1448,15 +1435,40 @@ class CPU_element_api {
 					}
 				}
 
-				if (chapter_track) {
-					self.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
-					self.clear_plane(plane_name);
-					_build_from_track(chapter_track)
+				if ((chapter_track) && (chapter_track.cues.length > 0)) {
+					this.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
+					// this.clear_plane(plane_name); // avoid unuseful redraw
+
+					let _cuechange_event = this._cuechange_event.bind(this);
+					// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
+					// adding/reinstall chapter changing event
+					chapter_track.removeEventListener('cuechange', _cuechange_event, passive_ev);
+					chapter_track.addEventListener('cuechange', _cuechange_event, passive_ev);
+
+					for (let cue of chapter_track.cues) {
+						if ((cue.startTime <= cue.startTime) && (cue.startTime < cue.endTime)) {
+							active_cue = cue;
+						}
+						if (!this.get_point(plane_name, cue.id)) {
+							// avoid unuseful redraw, again
+							let cuepoint = Math.floor(cue.startTime);
+							this.add_point(plane_name, cuepoint, cue.id,  {
+								'text' : this.translate_vtt(cue.text),
+								'link' : true,          // point the link to start time position
+								'end'  : cue.endTime    // end timecode of the cue
+							});
+						}
+					}
+
+					if (chapter_track.cues.length > 0) {
+						has = true;
+					}
+
 				}
 			}
 		}
 
-		if (self.element.tagName === CpuAudioTagName) {
+		if (this.element.tagName === CpuAudioTagName) {
 			let body_class = `cpu_tag_«${audiotag.id}»_chaptered`;
 			if (has) {
 				/**
@@ -1465,10 +1477,20 @@ class CPU_element_api {
 				 */
 				document.body.classList.add(body_class);
 			} else {
-				self.remove_plane(plane_name);
+				this.remove_plane(plane_name);
 				document.body.classList.remove(body_class);
 			}
 
+			/*
+			info(`active_cue ${active_cue} && id_in_hash(this.audiotag.id) ${id_in_hash(this.audiotag.id)}`)
+			if ((active_cue) && (id_in_hash(this.audiotag.id)) ) {
+				// shoud be set ONLY if audiotag is alone in page or if audiotag.id named in hash
+				trigger.cuechange(active_cue, this.audiotag);
+				this._fire_event('chapter_changed', {
+					cue : active_cue
+				});
+			}
+			*/
 		}
 
 	}
@@ -1482,15 +1504,16 @@ class CPU_element_api {
 		let this_build_chapters = this.build_chapters.bind(this);
 		// sometimes, we MAY have loose loading
 
-		if (!this._loadedmetadata_ev) {
-			this.audiotag.addEventListener('loadedmetadata', this_build_chapters, passive_ev);
-			this._loadedmetadata_ev = true;
-		}
+		this.audiotag.addEventListener('loadedmetadata', this_build_chapters, once_passive_ev);
 
 		let track_element = this.audiotag.querySelector('track[kind="chapters"]');
 		if ((track_element) && (!track_element._CPU_load_ev)) {
 			track_element._CPU_load_ev = track_element.addEventListener('load', this_build_chapters, passive_ev);
 		}
+
+		// stupidly, we need to try to catch its evend load twice, and even redraw the track element if the total audio duration is known after drawing it
+		this.reposition_tracks();
+		this.audiotag.addEventListener('durationchange', this.reposition_tracks.bind(this), passive_ev);
 	}
 
 	/**
