@@ -1,7 +1,7 @@
 API
 ===
 
-cpu-audio.js can be fine-tuned only with HTML attributes and CSS variables, but javascript-savvy developers can use API features to get more precise controls or extend possibilities.
+cpu-audio.js can be fine-tuned only with HTML attributes and CSS variables, but javascript-savvy developers can use API features to get more precise controls or extend possibilities, as we do in our <a href="applications/chapters_editor.html">chapters editor</a>.
 
 This is the reference page for public accessible methods and properties. You can read some test cases in the `examples` sub-directory of this project.
 
