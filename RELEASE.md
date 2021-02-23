@@ -1,24 +1,75 @@
-RELEASE NOTES Version 6.7pre
-===========================
+RELEASE NOTES version 6.7pre
+============================
 
 New features
 ------------
 
- * ...User-defined annotation planes can have cue times hidden ([#106](#106))
+ * not yet
 
 Corrections
 -----------
 
- * Removed Chapter editor from github pages due to a sync problem. Now available [as a standalone and not yet skinned page](applications/chapters_editor.html). 
-  * An `applications` sub-directory is created by the way.
+ * Lot of corrections in chapters panels/tracks due to surprising behaviour of Chrome :
+   * multiple TextTracks.activeCues creating race conflicts but only in some specific conditions,
+   * chapter tracks not displayed if duration not seen in time, refreshing timeline when duration is certainly known,
+   * unuseful refreshes
+ * Removed Chapter editor from github pages due to a sync problem. Now available [as a standalone and not yet skinned page](applications/chapters_editor.html) with better explanations
+  * An `applications` sub-directory is created by the way
 
 Back-end
 --------
 
+ * Mask error from Google Closure that doesn't `recognize string.replace().replaceAll()`
+ * Primitives for package github ([#86](#86)). “to be done”
+
+
+RELEASE NOTES version 6.6.2
+============================
+
+New features
+------------
+
+ * Colour of the chapter lines under the time-line is now configurable (`--cpu-cue`)
+ * Colour of the border points in timeline, when you play a end-specified segment (as in `#0,60`), is now configurable (`--cpu-timeline-limits`)
+ * Live chapter editor has been deeply revised
+ * New [public API functions](./API.md), mainly on planes and points editions
+ * Custom events are fired, (documented in [API page](./API.md)). They are `CPU_` prefixed
+ * API get inject specific styles features. Very useful for specific annotations presentations. (Preparatory works for [#76](#76)) 
+ * Adding some examples how to use API ([#66](#66), [#101](#101))
+ * Adding a `convert.IsoDuration` public method, `datetime=""` attribute in `<time>` needing a specific duration format in ISO 8601
+ * User-defined annotation planes can have cue times hidden ([#106](#106))
+ * Users can add volume and playrate controls, but we let them program it, [as documented here](examples/API_insert_annotations.html)
+
+Corrections
+-----------
+
+ * Check race condition or already called web-commponent
+ * Interface may be stucked in loading state. Now, we cannot display "wait" mode if a first play didn't occured first.
+ * Annotations points are sorted by timecode ([#68](#68))
+ * Reducing repaints on panels point draws
+ * Some events are passive, others are better once-called
+ * Won't try to autoplay anymore, as this behaviour is really annoying. You can still revert to this mode with `document.CPU.autoplay` parameter ([#103](#103))
+ * Returns from `document.CPU.jumpIdAt` and `trigger.hashOrder` aren't used. We can `async` them
+ * We try to preload duration metadata when the mouse cursors goes over the timeline on a not know duration and not streamed source ([#88](#88))
+ * github-pages trigger strange problems, numerous CPU-audio instances
+ * Chrome returned more than one activeCue, strange regression
+
+Back-end
+--------
+
+ * Tests and examples moved in their own subdirs
+ * Using arrow functions, modernizing code
+ * Updating [Google Closure to v20200719](https://dl.google.com/closure-compiler/compiler-20200719.tar.gz)
+   * Removing `--jscomp_off internetExplorerChecks`
+   * Moved to ECMAScript 2019 as output (`Object.fromEntries` [seems enough available](https://caniuse.com/?search=fromEntries))
+   * Annotations updated
+   * Erroneous `@brief` annotations changed to `@summary`
+   * … but a lot of bugs in Closure, as TextTracks objects aren't declared as iterable, a surprising “*Property replaceAll never defined on String*” and so on…
+ * We have a [surprising bug in Chrome that avoid to use `audiotag.currentTime=<number>` ONLY if the source is hosted on localhost](https://stackoverflow.com/questions/52620284/make-html5-video-start-at-specified-currenttime-in-chrome), if your local server doesn't support HTTP response 206 (partial content). If you need to local test on Chrome, please user file:/// protocol or a complete web server.
  * Primitives for package github ([#86](#86)). “to be done”
 
 Making of
----------
+=========
 
 [Those posts are mainly in French, sorry](https://dascritch.net/serie/cpu-audio)
 

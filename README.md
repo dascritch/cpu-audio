@@ -28,8 +28,7 @@ Some links :
 * [How to cite a podcast](https://www.buzzsprout.com/blog/cite-podcast), now you can support time positions URL
 * Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 
-Version : 6.7 [Licence GPL 3](LICENSE)
-
+Version : 6.7pre. [Licence GPL 3](LICENSE)
 
 Purpose
 -------
@@ -98,8 +97,9 @@ For handheld users, a long press on the timeline will show you another interface
 HOW TO install
 --------------
 
-* [How install, deploy and customize on your server](INSTALL)
-* [You can try playing with our live configurator tool, event it isn't perfect yet.](LIVE)
+* [How to install, deploy and customize on your server](INSTALL)
+* [You can try playing with our live configurator tool](LIVE)
+* See [basic examples](examples) and [applications with advanced use cases](applications) 
 * [Known problems and misconfigurations](TROUBLESHOOTING)
 
 
@@ -112,8 +112,8 @@ Participate
 * [What to do, next](https://github.com/dascritch/cpu-audio/blob/master/TODO.md)
 
 
-Versions
---------
+Versions history
+----------------
 
 * June 2019 : 6 , plane and points, public API stabilization
 * April 2018 : 5 , [forking to cpu-audio, WebComponent version](https://github.com/dascritch/ondemiroir-audio-tag/issues/7#issuecomment-382043789)
@@ -126,6 +126,7 @@ Versions
 * June 2014 : 0.2 , proof of concept
 * October 2012 : first version, trashed
 
+[See releases for detailled changes](https://github.com/dascritch/cpu-audio/releases)
 
 Credits
 -------
