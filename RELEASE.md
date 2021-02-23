@@ -1,30 +1,5 @@
-RELEASE NOTES version 6.7pre
-============================
-
-New features
-------------
-
- * not yet
-
-Corrections
------------
-
- * Lot of corrections in chapters panels/tracks due to surprising behaviour of Chrome :
-   * multiple TextTracks.activeCues creating race conflicts but only in some specific conditions,
-   * chapter tracks not displayed if duration not seen in time, refreshing timeline when duration is certainly known,
-   * unuseful refreshes
- * Removed Chapter editor from github pages due to a sync problem. Now available [as a standalone and not yet skinned page](applications/chapters_editor.html) with better explanations
-  * An `applications` sub-directory is created by the way
-
-Back-end
---------
-
- * Mask error from Google Closure that doesn't `recognize string.replace().replaceAll()`
- * Primitives for package github ([#86](#86)). “to be done”
-
-
-RELEASE NOTES version 6.6.2
-============================
+RELEASE NOTES version 6.6.3
+===========================
 
 New features
 ------------
@@ -53,6 +28,12 @@ Corrections
  * We try to preload duration metadata when the mouse cursors goes over the timeline on a not know duration and not streamed source ([#88](#88))
  * github-pages trigger strange problems, numerous CPU-audio instances
  * Chrome returned more than one activeCue, strange regression
+ * Lot of corrections in chapters panels/tracks due to surprising behaviour of Chrome :
+   * multiple TextTracks.activeCues creating race conflicts but only in some specific conditions,
+   * chapter tracks not displayed if duration not seen in time, refreshing timeline when duration is certainly known,
+   * unuseful refreshes
+ * Removed Chapter editor from github pages due to a sync problem. Now available [as a standalone and not yet skinned page](applications/chapters_editor.html) with better explanations
+
 
 Back-end
 --------
@@ -66,7 +47,10 @@ Back-end
    * Erroneous `@brief` annotations changed to `@summary`
    * … but a lot of bugs in Closure, as TextTracks objects aren't declared as iterable, a surprising “*Property replaceAll never defined on String*” and so on…
  * We have a [surprising bug in Chrome that avoid to use `audiotag.currentTime=<number>` ONLY if the source is hosted on localhost](https://stackoverflow.com/questions/52620284/make-html5-video-start-at-specified-currenttime-in-chrome), if your local server doesn't support HTTP response 206 (partial content). If you need to local test on Chrome, please user file:/// protocol or a complete web server.
+ * An `applications` sub-directory is created by the way
+ * Mask error from Google Closure that doesn't `recognize string.replace().replaceAll()`
  * Primitives for package github ([#86](#86)). “to be done”
+
 
 Making of
 =========

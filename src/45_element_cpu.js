@@ -1404,7 +1404,7 @@ class CPU_element_api {
 	 *
 	 * @param      {Object|undefined}  event          The event
 	 */
-	build_chapters(event = undefined) {
+	async build_chapters(event = undefined) {
 		// this functions is called THREE times at load : at build, at loadedmetada event and at load event
 		// and afterwards, we have to reposition track points on duractionchange
 
@@ -1500,20 +1500,19 @@ class CPU_element_api {
 	 * @private
 	 */
 	build_chapters_loader() {
+
+		this.audiotag.addEventListener('durationchange', this.reposition_tracks.bind(this), passive_ev);
 		this.build_chapters();
 		let this_build_chapters = this.build_chapters.bind(this);
 		// sometimes, we MAY have loose loading
 
 		this.audiotag.addEventListener('loadedmetadata', this_build_chapters, once_passive_ev);
 
+		
 		let track_element = this.audiotag.querySelector('track[kind="chapters"]');
 		if ((track_element) && (!track_element._CPU_load_ev)) {
 			track_element._CPU_load_ev = track_element.addEventListener('load', this_build_chapters, passive_ev);
 		}
-
-		// stupidly, we need to try to catch its evend load twice, and even redraw the track element if the total audio duration is known after drawing it
-		this.reposition_tracks();
-		this.audiotag.addEventListener('durationchange', this.reposition_tracks.bind(this), passive_ev);
 	}
 
 	/**

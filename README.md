@@ -28,7 +28,7 @@ Some links :
 * [How to cite a podcast](https://www.buzzsprout.com/blog/cite-podcast), now you can support time positions URL
 * Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 
-Version : 6.7pre. [Licence GPL 3](LICENSE)
+Version : 6.6.3 [Licence GPL 3](LICENSE)
 
 Purpose
 -------
