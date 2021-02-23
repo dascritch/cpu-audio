@@ -49,6 +49,17 @@ During the page life :
 <a href="#sound&t=20m45s">This link starts the upper player at 20:45</a>
 
 
+HOW TO install
+--------------
+
+A unique and lightweight js file to install, without any dependencies, 
+
+* [How to install, deploy and customize on your server](INSTALL)
+* [You can try playing with our live configurator tool](LIVE)
+* See [basic examples](examples) and [applications with advanced use cases](applications) 
+* [Known problems and misconfigurations](TROUBLESHOOTING)
+
+
 Features
 ---------
 
@@ -94,15 +105,6 @@ When the interface got the focus, you can use those keys :
 For handheld users, a long press on the timeline will show you another interface for a more precise navigation.
 
 
-HOW TO install
---------------
-
-* [How to install, deploy and customize on your server](INSTALL)
-* [You can try playing with our live configurator tool](LIVE)
-* See [basic examples](examples) and [applications with advanced use cases](applications) 
-* [Known problems and misconfigurations](TROUBLESHOOTING)
-
-
 Participate
 -----------
 
@@ -127,6 +129,7 @@ Versions history
 * October 2012 : first version, trashed
 
 [See releases for detailled changes](https://github.com/dascritch/cpu-audio/releases)
+
 
 Credits
 -------
