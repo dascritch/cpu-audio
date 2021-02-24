@@ -1,3 +1,10 @@
+RELEASE NOTES actual
+====================
+
+ * [Made a call on contribulle.org](https://contribulle.org/projects/27) 
+
+
+
 RELEASE NOTES version 6.6.3
 ===========================
 
