@@ -77,15 +77,13 @@ function _remove_spaces() {
 }
 
 function _build_template() {
-	for file in 'global.css' 'scoped.css' # 'template.html'
-	do
-		_remove_spaces "${PROJECT_DIR}/src/${file}" "${PROJECT_DIR}/tmp/${file}"
-	done
+	# for file in 'global.css' 'scoped.css' # 'template.html'
+	# do
+	# 	_remove_spaces "${PROJECT_DIR}/src/${file}" "${PROJECT_DIR}/tmp/${file}"
+	# done
 
-	# npx css-minify --file src/global.css # this parameter doesn't work : --output tmp
-	# npx css-minify --file src/scoped.css # this parameter doesn't work : --output tmp
-	# mv css-dist/{global,scoped}.min.css tmp/
-	# rmdir css-dist
+	npx clean-css-cli -o tmp/global.css src/global.css 
+	npx clean-css-cli -o tmp/scoped.css src/scoped.css 
 
 	npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace src/template.html -o tmp/template.html
 
