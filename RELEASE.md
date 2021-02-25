@@ -1,8 +1,12 @@
 RELEASE NOTES actual
 ====================
 
- * [Made a call on contribulle.org](https://contribulle.org/projects/27) 
+Back-end
+--------
 
+ * [Made a call on contribulle.org](https://contribulle.org/projects/27) 
+ * Now using standard ECMA imports [#110](#110)
+ * Leaving Google Closure for webpack : too many bugs, too old
 
 
 RELEASE NOTES version 6.6.3
