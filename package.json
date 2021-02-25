@@ -8,6 +8,7 @@
     "test": "tests"
   },
   "scripts": {
+    "build": "./make.sh",
     "test": "echo \"Tests in tests/ needs browser and help\" && exit 0"
   },
   "repository": {
@@ -31,5 +32,12 @@
   "bugs": {
     "url": "https://github.com/dascritch/cpu-audio/issues"
   },
-  "homepage": "https://github.com/dascritch/cpu-audio#readme"
+  "homepage": "https://github.com/dascritch/cpu-audio#readme",
+  "dependencies": {
+    "google-closure-compiler": "^20210202.0.0",
+    "webpack": "^5.24.2"
+  },
+  "devDependencies": {
+    "webpack-cli": "^4.5.0"
+  }
 }

@@ -1,10 +1,14 @@
+import {CpuAudioTagName, acceptable_selector} from './00_prologue.js'
+import convert from './20_convert.js'
+import trigger from './30_trigger.js'
+import CpuControllerElement from './70_cpu_controller.class.js'
 
 /**
  * Controller with assigned audio element
  *
  * @class      CpuAudioElement (name)
  */
-class CpuAudioElement extends CpuControllerElement {
+export class CpuAudioElement extends CpuControllerElement {
 
 	constructor() {
 		super();

@@ -1,3 +1,5 @@
+import {CpuAudioTagName} from './00_prologue.js'
+
 /**
  * @summary Do litteraly nothing
  */
@@ -9,7 +11,7 @@ function noop() {
  *
  * @param      {Function|null|undefined}  callback_fx  The function to call
  */
-function onDebug(callback_fx) { 
+export function onDebug(callback_fx) { 
 	// may be used as a noop(); 
 	if (typeof callback_fx === 'function') {
 		// this is needed for testing, as we now run in async tests
@@ -24,11 +26,11 @@ function onDebug(callback_fx) {
  * @param      {Function}              callback             The callback function, its 1st parameter will be the matching DOM element
  * @param      {Element|HTMLDocument|ShadowRoot}  [subtree=undefined]  The subtree, by default the whole hosting document
  */
-function querySelector_apply(selector, callback, subtree=undefined) {
+export function querySelector_apply(selector, callback, subtree=undefined) {
 	subtree = subtree === undefined ? document : subtree;
 	Array.from(
 		subtree.querySelectorAll(selector)
-		).forEach(callback);
+	).forEach(callback);
 }
 
 /**
@@ -36,7 +38,7 @@ function querySelector_apply(selector, callback, subtree=undefined) {
  *
  * @return     {boolean}  True if decent browser for webcomponents, False otherwise.
  */
-function is_decent_browser_for_webcomponents() {
+export function is_decent_browser_for_webcomponents() {
 	return window.customElements !== undefined;
 }
 
@@ -46,7 +48,7 @@ function is_decent_browser_for_webcomponents() {
  * @param      {string}  url     The url
  * @return     {string}  url     Absolute url
  */
-function absolutize_url(url) {
+export function absolutize_url(url) {
 	let test_element = document.createElement('a');
 	test_element.href = (typeof url !== 'string') ? url : url.split('#')[0];
 	return test_element.href;
@@ -57,7 +59,7 @@ function absolutize_url(url) {
  *
  * @return     {boolean}  False if have a screen
  */
-function not_screen_context() {
+export function not_screen_context() {
 	return !window.matchMedia("screen").matches;
 }
 
@@ -78,7 +80,7 @@ function prevent_link_on_same_page(event) {
  *
  * @param      {Element}  element  The <A> DOM element
  */
-function element_prevent_link_on_same_page(element) {
+export function element_prevent_link_on_same_page(element) {
 	element.addEventListener('click', prevent_link_on_same_page);
 }
 
@@ -99,7 +101,7 @@ function _isEvent(event) {
  * @param      {string}  text    The text
  * @return     {string}  HTML escaped text
  */
-function escapeHTML(text) {
+export function escapeHTML(text) {
 	let burn_after_reading = document.createElement('span');
 	burn_after_reading.innerText = text;
 	let out = burn_after_reading.innerHTML;
@@ -123,7 +125,7 @@ function id_in_hash(id) {
  *
  * @param      {string}  message  The message
  */
-function info(message) {
+export function info(message) {
 	window.console.info(`${CpuAudioTagName}: `,message);
 }
 
@@ -132,7 +134,7 @@ function info(message) {
  *
  * @param      {string}  message  The message
  */
-function warn(message) {
+export function warn(message) {
 	window.console.warn(`${CpuAudioTagName}: `,message);
 }
 
@@ -141,6 +143,6 @@ function warn(message) {
  *
  * @param      {string}  message  The message
  */
-function error(message) {
+export function error(message) {
 	window.console.error(`${CpuAudioTagName}: `,message);
 }

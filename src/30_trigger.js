@@ -1,10 +1,14 @@
+import {passive_ev, once_passive_ev} from './00_prologue.js'
+import {info, warn, onDebug} from './11_utils.js'
+import {convert} from './20_convert.js'
+
 const KEY_LEFT_ARROW = 37;
 const KEY_RIGHT_ARROW = 39;
 
 let NotAllowedError = 'Auto-play prevented : Browser requires a manual interaction first.';
 let NotSupportedError = 'The browser refuses the audio source, probably due to audio format.';
 
-const trigger = {
+export const trigger = {
 
 	// @private
 	_timecode_start : 0,

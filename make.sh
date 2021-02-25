@@ -12,6 +12,7 @@ Projet repo
 Options:
   -h, --help            Display this message.
   -c, --clean        	Clean dist/ directory
+  -d, --debug           Used for ease debug.
   -a, --advanced        Tries 'ADVANCED_OPTIMIZATIONS' for Google Closure. ONLY FOR LINT/VERIFICATIONS, NOT PRODUCTION ! (yet)
 
 DESTINATION is a sftp URL where to copy the builded files
@@ -24,10 +25,11 @@ HELP
 )
 
 PROJECT_DIR=$(readlink -f $(dirname ${0}))
-component_file_js="./dist/cpu-audio.js" 
+component_file_js="cpu-audio.js" 
 
 JS_COMPILATION_LEVEL='SIMPLE_OPTIMIZATIONS'
 OTHER_OPTIONS=''
+webpack_mode='production'
 
 while [ '-' == "${1:0:1}" ] ; do
 	case "${1}" in
@@ -41,12 +43,12 @@ while [ '-' == "${1:0:1}" ] ; do
 		;;
 		-a|--advanced)
 			JS_COMPILATION_LEVEL='ADVANCED_OPTIMIZATIONS'
-			component_file_js="./dist/cpu-audio.EXPERIMENTAL.js"
+			component_file_js='cpu-audio.EXPERIMENTAL.js'
 		;;
 		-d|--debug)
 			JS_COMPILATION_LEVEL='BUNDLE'
 			OTHER_OPTIONS=' --debug '
-			component_file_js="./dist/cpu-audio.js"
+			webpack_mode='development'
 		;;
 		--)
 			shift
@@ -84,22 +86,16 @@ function _build_template() {
 	scoped_css=$(cat "${PROJECT_DIR}/tmp/scoped.css")
 	template_html=$(cat "${PROJECT_DIR}/tmp/template.html")
 
-	echo "function _insert(){
-		let style = document.createElement('style');
-		style.innerHTML = \`${global_css}\`;
-		document.head.appendChild(style);
+	echo "// auto-generated source, done via make.sh
+export function insert_template(){
+	let style = document.createElement('style');
+	style.innerHTML = \`${global_css}\`;
+	document.head.appendChild(style);
 
-		let template = document.createElement('template');
-		template.id = 'CPU__template';
-		template.innerHTML = \`<style>${scoped_css}</style>${template_html}\`;
-		document.head.appendChild(template);
-	}
-	if (!document.CPU__template__installed) {
-		if (document.head !== null) {
-			_insert();
-		} else {
-			document.addEventListener('DOMContentLoaded', _insert, {passive:true});
-		}
+	let template = document.createElement('template');
+	template.id = 'CPU__template';
+	template.innerHTML = \`<style>${scoped_css}</style>${template_html}\`;
+	document.head.appendChild(template);
 }" > "${PROJECT_DIR}/tmp/insert_template.js"
 
 }
@@ -113,27 +109,35 @@ $(cat ${PROJECT_DIR}/src/license.txt)
 
 "
 
-function _build_component_js() {
+function _build_component_js_closure() {
 
-	java -jar /usr/share/java/closure-compiler.jar \
+#	java -jar /usr/share/java/closure-compiler.jar \
+	npx google-closure-compiler \
 		--compilation_level ${JS_COMPILATION_LEVEL} \
 			--use_types_for_optimization=true \
 			--summary_detail_level=3 \
 		--isolation_mode=IIFE \
 		--assume_function_wrapper \
+		--module_resolution=BROWSER \
 		--js ./src/license.txt \
 		--js ./src/{00_prologue,10_i18n,../tmp/insert_template,11_utils,20_convert,30_trigger,40_document_cpu,45_element_cpu,50_media_element_extension,70_cpu_controller.class,71_cpu_audio.class,90_main}.js \
-		--entry_point "./src/90_main.js" \
+		--js_module_root "/90_main.js" \
 		   --language_in ECMASCRIPT_2020 \
 				--module_resolution BROWSER \
 				--js_module_root src \
 				--strict_mode_input \
-		--js_output_file "${component_file_js}" \
+		--js_output_file "./dist/${component_file_js}" \
 			--language_out ECMASCRIPT_2019 \
-		--create_source_map "${component_file_js}.map" \
+		--create_source_map "./dist/${component_file_js}.map" \
 		--warning_level VERBOSE \
 		${OTHER_OPTIONS}
+# 		--entry_point "./src/90_main.js" \
 }
+
+function _build_component_js_webpack() {
+	npx webpack --mode ${webpack_mode} --entry ./src/90_main.js --output-path ./dist --output-filename ${component_file_js}
+}
+
 
 function _copy_to_server() {
 	if [ '' != "${DESTINATION}" ] ; then
@@ -151,7 +155,7 @@ _clean
 set -e
 
 _build_template
-_build_component_js
+_build_component_js_webpack
 
 _copy_to_server
 
