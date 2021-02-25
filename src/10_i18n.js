@@ -81,4 +81,4 @@ if ((!prefered_language.length) || (!(prefered_language.toLowerCase() in sources
 	}
 }
 
-const __ = sources_i18n[prefered_language];
+export const __ = sources_i18n[prefered_language];
