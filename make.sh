@@ -77,18 +77,21 @@ function _remove_spaces() {
 }
 
 function _build_template() {
-	for file in 'template.html' # 'global.css' 'scoped.css'
+	for file in 'global.css' 'scoped.css' # 'template.html'
 	do
 		_remove_spaces "${PROJECT_DIR}/src/${file}" "${PROJECT_DIR}/tmp/${file}"
 	done
 
-	npx css-minify --file src/global.css # this parameter doesn't work : --output tmp
-	npx css-minify --file src/scoped.css # this parameter doesn't work : --output tmp
-	mv css-dist/{global,scoped}.min.css tmp/
-	rmdir css-dist
+	# npx css-minify --file src/global.css # this parameter doesn't work : --output tmp
+	# npx css-minify --file src/scoped.css # this parameter doesn't work : --output tmp
+	# mv css-dist/{global,scoped}.min.css tmp/
+	# rmdir css-dist
 
-	global_css=$(cat "${PROJECT_DIR}/tmp/global.min.css")
-	scoped_css=$(cat "${PROJECT_DIR}/tmp/scoped.min.css")
+	npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace src/template.html -o tmp/template.html
+
+
+	global_css=$(cat "${PROJECT_DIR}/tmp/global.css")
+	scoped_css=$(cat "${PROJECT_DIR}/tmp/scoped.css")
 	template_html=$(cat "${PROJECT_DIR}/tmp/template.html")
 
 	echo "// auto-generated source, done via make.sh
