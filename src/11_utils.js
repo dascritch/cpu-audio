@@ -1,4 +1,4 @@
-import {CpuAudioTagName} from './src/00_prologue.js'
+import {CpuAudioTagName} from './00_prologue.js'
 
 /**
  * @summary Do litteraly nothing
