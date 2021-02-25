@@ -42,7 +42,6 @@ export const trigger = {
 	 * @param      {Function}       callback_fx  When done, call a function to end the tests (optional).
 	 */
 	hashOrder : async function(hashcode, callback_fx=undefined) {
-		info('hashOrder')
 		let at_start = true;
 		if (typeof hashcode !== 'string') {
 			at_start = 'at_start' in hashcode;
