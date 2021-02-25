@@ -2,7 +2,7 @@
 
 HELP=$(cat <<-HELP
 
-Usage: make.sh [OPTIONS] [DESTINATION]
+Usage: make.sh [OPTIONS]
 
 Build the cpu-audio webcomponent source.
 
@@ -14,8 +14,6 @@ Options:
   -c, --clean        	Clean dist/ directory
   -d, --debug           Used for ease debug.
   -a, --advanced        Tries 'ADVANCED_OPTIMIZATIONS' for Google Closure. ONLY FOR LINT/VERIFICATIONS, NOT PRODUCTION ! (yet)
-
-DESTINATION is a sftp URL where to copy the builded files
 
 Needed utilities : 
 — tr (GNU coreutils) 8.26
@@ -62,31 +60,17 @@ while [ '-' == "${1:0:1}" ] ; do
 	shift
 done
 
-DESTINATION=${1}
-
 function _clean() {
 	mkdir -p ${PROJECT_DIR}/tmp
 	rm ${PROJECT_DIR}/tmp/*
 }
 
-function _remove_spaces() {
-	from=${1}
-	to=${2}
-
-	cat "${from}"  | sed  -r 's/\/\*.*\*\// /g' | tr '\n' ' '  | sed -r 's/[\t ]+/ /g' > "${to}"
-}
-
 function _build_template() {
-	# for file in 'global.css' 'scoped.css' # 'template.html'
-	# do
-	# 	_remove_spaces "${PROJECT_DIR}/src/${file}" "${PROJECT_DIR}/tmp/${file}"
-	# done
 
 	npx clean-css-cli -o tmp/global.css src/global.css 
 	npx clean-css-cli -o tmp/scoped.css src/scoped.css 
 
 	npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace src/template.html -o tmp/template.html
-
 
 	global_css=$(cat "${PROJECT_DIR}/tmp/global.css")
 	scoped_css=$(cat "${PROJECT_DIR}/tmp/scoped.css")
@@ -146,16 +130,6 @@ function _build_component_js_webpack() {
 }
 
 
-function _copy_to_server() {
-	if [ '' != "${DESTINATION}" ] ; then
-		scp ${PROJECT_DIR}/dist/cpu-audio.html ${DESTINATION}/cpu-audio.html
-		scp ${PROJECT_DIR}/dist/cpu-audio.js ${DESTINATION}/cpu-audio.js
-	fi
-}
-
-
-# main
-
 _clean
 
 # It fails ? crash
@@ -163,6 +137,3 @@ set -e
 
 _build_template
 _build_component_js_webpack
-
-_copy_to_server
-
