@@ -77,13 +77,18 @@ function _remove_spaces() {
 }
 
 function _build_template() {
-	for file in 'template.html' 'global.css' 'scoped.css'
+	for file in 'template.html' # 'global.css' 'scoped.css'
 	do
 		_remove_spaces "${PROJECT_DIR}/src/${file}" "${PROJECT_DIR}/tmp/${file}"
 	done
 
-	global_css=$(cat "${PROJECT_DIR}/tmp/global.css")
-	scoped_css=$(cat "${PROJECT_DIR}/tmp/scoped.css")
+	npx css-minify --file src/global.css # this parameter doesn't work : --output tmp
+	npx css-minify --file src/scoped.css # this parameter doesn't work : --output tmp
+	mv css-dist/{global,scoped}.min.css tmp/
+	rmdir css-dist
+
+	global_css=$(cat "${PROJECT_DIR}/tmp/global.min.css")
+	scoped_css=$(cat "${PROJECT_DIR}/tmp/scoped.min.css")
 	template_html=$(cat "${PROJECT_DIR}/tmp/template.html")
 
 	echo "// auto-generated source, done via make.sh
@@ -136,7 +141,7 @@ function _build_component_js_closure() {
 }
 
 function _build_component_js_webpack() {
-	npx webpack --mode ${webpack_mode} --entry ./src/90_main.js --output-path ./dist --output-filename ${component_file_js}
+	npx webpack --mode ${webpack_mode} --target es2020 --entry ./src/90_main.js --output-path ./dist --output-filename ${component_file_js}
 }
 
 

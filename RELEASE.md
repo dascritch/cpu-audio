@@ -7,6 +7,7 @@ Back-end
  * [Made a call on contribulle.org](https://contribulle.org/projects/27) 
  * Now using standard ECMA imports [#110](#110)
  * Leaving Google Closure for webpack : too many bugs, too old
+ * Using `css-minify` for compressing css, instead of home-boiled regex
 
 
 RELEASE NOTES version 6.6.3
