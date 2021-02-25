@@ -126,7 +126,7 @@ function _build_component_js_closure() {
 }
 
 function _build_component_js_webpack() {
-	npx webpack --mode ${webpack_mode} --target es2020 --entry ./src/90_main.js --output-path ./dist --output-filename ${component_file_js}
+	npx webpack --mode ${webpack_mode} --target es2020 --entry ./src/90_main.js --output-path ./dist --output-filename ${component_file_js} --devtool source-map
 }
 
 
@@ -136,4 +136,5 @@ _clean
 set -e
 
 _build_template
+# _build_component_js_closure # should be kept as its linker is still used sometimes
 _build_component_js_webpack
