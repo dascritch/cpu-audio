@@ -1,4 +1,16 @@
-class CPU_element_api {
+import {passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName, acceptable_hide_atttributes, valid_id, plane_point_names_from_id, preview_classname} from './src/00_prologue.js'
+import {absolutize_url, escapeHTML, querySelector_apply, error} from './src/11_utils.js'
+import {convert} from './src/20_convert.js'
+import {trigger} from './src/30_trigger.js'
+
+// Add regexes used for WebVTT tag validation
+// @private
+const regex_vtt = {
+	opentag : /<(\w+)(\.[^>]+)?( [^>]+)?>/gi,
+	closetag : /<\/(\w+)( [^>]*)?>/gi
+};
+
+export class CPU_element_api {
 	/**
 	 *
 	 * @summary Constructs the object.

@@ -1,5 +1,11 @@
-if ((!document.CPU) && (!(document.CPU__template__installed))) {
-HTMLDocument.prototype.CPU = {
+import {passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName} from './src/00_prologue.js'
+import {is_decent_browser_for_webcomponents, onDebug, warn} from './src/11_utils.js'
+import {convert} from './src/20_convert.js'
+import {trigger} from './src/30_trigger.js'
+// only called for type
+import CPU_element_api from './src/45_element_cpu.js'
+
+export let document_CPU = {
 	// global object for global API
 
 	// public, parameters
@@ -380,5 +386,4 @@ HTMLDocument.prototype.CPU = {
 		return [];
 	}
 
-}
 }

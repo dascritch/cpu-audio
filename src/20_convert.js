@@ -1,4 +1,4 @@
-const convert = {
+export const convert = {
 	// @private
 	units : {
 		'd' : 86400,

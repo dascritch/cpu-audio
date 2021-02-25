@@ -1,9 +1,14 @@
+import {CpuControllerTagName, CpuAudioTagName, acceptable_selector, selector_interface} from './src/00_prologue.js'
+import {not_screen_context, warn, querySelector_apply, element_prevent_link_on_same_page} from './src/11_utils.js'
+import trigger from './src/30_trigger.js'
+import CPU_element_api from './src/45_element_cpu.js'
+
 /**
  * Controller without assigned audio element, i.e. global page controller
  *
  * @class      CpuControllerElement (name)
  */
-class CpuControllerElement extends HTMLElement {
+export class CpuControllerElement extends HTMLElement {
 
 	constructor() {
 		super();
@@ -25,8 +30,9 @@ class CpuControllerElement extends HTMLElement {
 			}
 		}
 
-		template =  thisDoc.querySelector('template#CPU__template');
-		shadow_element = this.attachShadow({mode: 'open'});
+		const thisDoc = (document._currentScript || document.currentScript).ownerDocument;
+		let template =  thisDoc.querySelector('template#CPU__template');
+		let shadow_element = this.attachShadow({mode: 'open'});
 		shadow_element.innerHTML = template.innerHTML;
 	}
 
