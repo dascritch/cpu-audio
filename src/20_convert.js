@@ -1,15 +1,15 @@
+const units_scale = {
+	'd' : 86400,
+	'h' : 3600,
+	'm' : 60,
+	's' : 1
+};
+
+const _is_only_numeric = /^\d+$/;
+const _any_not_numeric = /\D*/g;
+
 export const convert = {
-	// @private
-	units : {
-		'd' : 86400,
-		'h' : 3600,
-		'm' : 60,
-		's' : 1
-	},
-	// @private
-	_is_only_numeric : /^\d+$/,
-	// @private
-	_any_not_numeric : /\D*/g,
+
 	// @private
 	// How Inifity (streamed live media with unspecified duration) should be humanly expressed
 	Infinity : '?',
@@ -26,7 +26,7 @@ export const convert = {
 	'TimeInSeconds' : function(givenTime) {
 		let seconds = 0;
 		if (givenTime !== '') {
-			if (convert._is_only_numeric.test(givenTime)) {
+			if (_is_only_numeric.test(givenTime)) {
 				seconds = Number(givenTime);
 			} else {
 				seconds = (givenTime.indexOf(':') === -1) ? 
@@ -48,10 +48,10 @@ export const convert = {
 	 */
 	'SubunitTimeInSeconds' : function(givenTime) {
 		let seconds = 0;
-		for(let key in convert.units) {
-			if ( (convert.units.hasOwnProperty(key)) && (givenTime.indexOf(key) !== -1) ) {
+		for(let key in units_scale) {
+			if ( (units_scale.hasOwnProperty(key)) && (givenTime.indexOf(key) !== -1) ) {
 				let atoms = givenTime.split(key);
-				seconds += Number(atoms[0].replace(convert._any_not_numeric,'' )) * convert.units[key];
+				seconds += Number(atoms[0].replace(_any_not_numeric,'' )) * units_scale[key];
 				givenTime = atoms[1];
 			}
 		}
@@ -92,9 +92,9 @@ export const convert = {
 		}
 		let converted = '';
 		let inned = false;
-		for(let key in convert.units) {
-			if (convert.units.hasOwnProperty(key)) {
-				let multiply = convert.units[key];
+		for(let key in units_scale) {
+			if (units_scale.hasOwnProperty(key)) {
+				let multiply = units_scale[key];
 				if ((givenSeconds >= multiply) || (inned)) {
 					inned = true;
 					let digits = Math.floor(givenSeconds / multiply);
@@ -121,9 +121,9 @@ export const convert = {
 		}
 		let converted = '';
 		let inned = false;
-		for (let key in convert.units) {
-			if (convert.units.hasOwnProperty(key)) {
-				let multiply = convert.units[key];
+		for (let key in units_scale) {
+			if (units_scale.hasOwnProperty(key)) {
+				let multiply = units_scale[key];
 				if ((givenSeconds >= multiply) || (inned)) {
 					inned = true;
 					let digits = Math.floor(givenSeconds / multiply);

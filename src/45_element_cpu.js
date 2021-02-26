@@ -1,15 +1,27 @@
-import {passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName, acceptable_hide_atttributes, valid_id, plane_point_names_from_id, preview_classname} from './00_prologue.js'
+import {passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName} from './00_prologue.js'
 import {__} from './10_i18n.js'
 import {absolutize_url, escapeHTML, querySelector_apply, error} from './11_utils.js'
 import {convert} from './20_convert.js'
 import {trigger} from './30_trigger.js'
 
-// Add regexes used for WebVTT tag validation
-// @private
-const regex_vtt = {
-	opentag : /<(\w+)(\.[^>]+)?( [^>]+)?>/gi,
-	closetag : /<\/(\w+)( [^>]*)?>/gi
-};
+
+// Acceptables attributes values for hide="" parameter on webcomponent
+const acceptable_hide_atttributes = ['poster', 'actions', 'timeline', 'chapters', 'panels', 'panels-title', 'panels-except-play'];
+
+// should be put in CPU-controller ?
+let preview_classname = 'with-preview';
+
+
+// regexes used for WebVTT tag validation
+const vtt_opentag = /<(\w+)(\.[^>]+)?( [^>]+)?>/gi;
+const vtt_closetag = /<\/(\w+)( [^>]*)?>/gi;
+
+// Regex used to validate planes, points and injected css names
+const valid_id = /^[a-zA-Z0-9\-_]+$/;
+
+// Regex for extracting plane and point names from an id
+const plane_point_names_from_id = /^([a-zA-Z0-9\-_]+_«)([a-zA-Z0-9\-_]+)((»_.*_«)([a-zA-Z0-9\-_]+))?(»)$/;
+
 
 export class CPU_element_api {
 	/**
@@ -951,8 +963,8 @@ export class CPU_element_api {
 		}
 
 		return vtt_taged.
-				replace(regex_vtt.opentag, opentag).
-				replace(regex_vtt.closetag, closetag).
+				replace(vtt_opentag, opentag).
+				replace(vtt_closetag, closetag).
 				replaceAll('\n', '<br/>');   // JSC_INEXISTENT_PROPERTY ? The property exists, you're drunk Closure !
 	}
 

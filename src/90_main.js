@@ -1,3 +1,15 @@
+/** @license
+Cpu-Audio: an extension to the hash system to address timecode into audio/video elements.
+Version 6.7pre
+Copyright (C) 2014-2021 Xavier "dascritch" Mouton-Dubosc & contributors.
+License GNU GPL 3
+
+- project mini-site https://dascritch.github.io/cpu-audio/
+- project repository : https://github.com/dascritch/cpu-audio
+- use case : http://cpu.pm
+- blog post : https://dascritch.net/post/2018/11/06/Reconstruire-son-lecteur-audio-pour-le-web
+**/
+
 import {CpuAudioTagName, CpuControllerTagName, passive_ev, acceptable_selector} from './00_prologue.js'
 import {is_decent_browser_for_webcomponents, warn, querySelector_apply} from './11_utils.js'
 import {trigger} from './30_trigger.js'
