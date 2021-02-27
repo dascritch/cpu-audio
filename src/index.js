@@ -10,13 +10,12 @@ License GNU GPL 3
 - blog post : https://dascritch.net/post/2018/11/06/Reconstruire-son-lecteur-audio-pour-le-web
 **/
 
-import {CpuAudioTagName, CpuControllerTagName, passive_ev, acceptable_selector} from './00_prologue.js'
-import {is_decent_browser_for_webcomponents, warn, querySelector_apply} from './11_utils.js'
-import {trigger} from './30_trigger.js'
-import {document_CPU} from './40_document_cpu.js'
-import './50_media_element_extension.js'
-import {CpuControllerElement} from './70_cpu_controller.class.js'
-import {CpuAudioElement} from './71_cpu_audio.class.js'
+import {CpuAudioTagName, CpuControllerTagName, passive_ev, acceptable_selector, is_decent_browser_for_webcomponents, warn, querySelector_apply} from './utils.js'
+import {trigger} from './trigger.js'
+import {document_CPU} from './document_cpu.js'
+import './media_element_extension.js'
+import {CpuControllerElement} from './cpu_controller.class.js'
+import {CpuAudioElement} from './cpu_audio.class.js'
 import {insert_template} from '../tmp/insert_template.js'
 
 export async function main() {

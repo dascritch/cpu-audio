@@ -1,6 +1,5 @@
-import {passive_ev, once_passive_ev} from './00_prologue.js'
-import {info, warn, onDebug} from './11_utils.js'
-import {convert} from './20_convert.js'
+import {passive_ev, once_passive_ev, info, warn, onDebug} from './utils.js'
+import {convert} from './convert.js'
 
 const KEY_LEFT_ARROW = 37;
 const KEY_RIGHT_ARROW = 39;

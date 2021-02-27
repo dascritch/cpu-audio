@@ -1,4 +1,4 @@
-import {CpuAudioTagName, CpuControllerTagName} from './00_prologue.js'
+import {CpuAudioTagName, CpuControllerTagName} from './utils.js'
 
 // Extension on media element
 HTMLAudioElement.prototype.CPU_connected = false;

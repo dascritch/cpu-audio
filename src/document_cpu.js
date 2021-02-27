@@ -1,7 +1,6 @@
-import {passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName} from './00_prologue.js'
-import {is_decent_browser_for_webcomponents, onDebug, warn} from './11_utils.js'
-import {convert} from './20_convert.js'
-import {trigger} from './30_trigger.js'
+import {passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName, is_decent_browser_for_webcomponents, onDebug, warn} from './utils.js'
+import {convert} from './convert.js'
+import {trigger} from './trigger.js'
 
 export let document_CPU = {
 	// global object for global API

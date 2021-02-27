@@ -1,8 +1,7 @@
-import {passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName} from './00_prologue.js'
-import {__} from './10_i18n.js'
-import {absolutize_url, escapeHTML, querySelector_apply, error} from './11_utils.js'
-import {convert} from './20_convert.js'
-import {trigger} from './30_trigger.js'
+import {passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName, absolutize_url, escapeHTML, querySelector_apply, error} from './utils.js'
+import {__} from './i18n.js'
+import {convert} from './convert.js'
+import {trigger} from './trigger.js'
 
 
 // Acceptables attributes values for hide="" parameter on webcomponent

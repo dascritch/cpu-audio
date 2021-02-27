@@ -77,7 +77,7 @@ function _build_template() {
 	template_html=$(cat "${PROJECT_DIR}/tmp/template.html")
 
 	echo "// auto-generated source, done via make.sh
-import {__} from '../src/10_i18n.js'
+import {__} from '../src/i18n.js'
 export function insert_template(){
 	let style = document.createElement('style');
 	style.innerHTML = \`${global_css}\`;
@@ -126,7 +126,7 @@ function _build_component_js_closure() {
 }
 
 function _build_component_js_webpack() {
-	npx webpack --mode ${webpack_mode} --target es2020 --entry ./src/90_main.js --output-path ./dist --output-filename ${component_file_js} --devtool source-map 
+	npx webpack --mode ${webpack_mode} --target es2020 --entry ./src/index.js --output-path ./dist --output-filename ${component_file_js} --devtool source-map 
 }
 
 
