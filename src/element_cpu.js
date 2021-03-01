@@ -60,7 +60,7 @@ export class CPU_element_api {
 	 * @param      {Object|undefined}  detail      Specific public informations about the event
 	 * @return     {Promise}           { description_of_the_return_value }
 	 */
-	async _fire_event(event_name, detail = undefined) {
+	async fire_event(event_name, detail = undefined) {
 		/**
 		 * Events to be created :
 		 *  - plane CRUD
@@ -1057,7 +1057,7 @@ export class CPU_element_api {
 			action_element.href = link;
 		}
 
-		this._fire_event('draw_point', {
+		this.fire_event('draw_point', {
 			plane : plane_name,
 			point : point_name,
 			data_point :  data,
@@ -1098,7 +1098,7 @@ export class CPU_element_api {
 		data['start'] = timecode_start;
 		this.audiotag._CPU_planes[plane_name].points[point_name] = data;
 
-		this._fire_event('add_point', {
+		this.fire_event('add_point', {
 			plane : plane_name,
 			point : point_name,
 			data_point :  data
@@ -1150,7 +1150,7 @@ export class CPU_element_api {
 			this.draw_point(plane_name, point_name);
 		}
 
-		this._fire_event('edit_point', {
+		this.fire_event('edit_point', {
 			plane : plane_name,
 			point : point_name,
 			data_point :  data
@@ -1177,7 +1177,7 @@ export class CPU_element_api {
 			return false;
 		}
 
-		this._fire_event('remove_point', {
+		this.fire_event('remove_point', {
 			plane : plane_name,
 			point : point_name
 		});
@@ -1416,7 +1416,7 @@ export class CPU_element_api {
 		this.remove_highlights_points(class_name);
 		if (active_cue) {
 			trigger.cuechange(active_cue, this.audiotag);
-			this._fire_event('chapter_changed', {
+			this.fire_event('chapter_changed', {
 				cue : active_cue
 			});
 			this.highlight_point(plane_name, active_cue.id, class_name);
@@ -1510,7 +1510,7 @@ export class CPU_element_api {
 			if ((active_cue) && (id_in_hash(this.audiotag.id)) ) {
 				// shoud be set ONLY if audiotag is alone in page or if audiotag.id named in hash
 				trigger.cuechange(active_cue, this.audiotag);
-				this._fire_event('chapter_changed', {
+				this.fire_event('chapter_changed', {
 					cue : active_cue
 				});
 			}
@@ -1660,6 +1660,6 @@ export class CPU_element_api {
 		this.show_main();
 		this.build_chapters_loader();
 
-		this._fire_event('ready');
+		this.fire_event('ready');
 	}
 };
