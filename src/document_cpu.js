@@ -2,6 +2,47 @@ import {passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuCon
 import {convert} from './convert.js'
 import {trigger} from './trigger.js'
 
+/* @type {string|null} */
+function get_default_title() {
+	for (let domain of ['og', 'twitter']) {
+		let header_element = document.querySelector(`meta[property="${domain}:title"]`);
+		if (header_element !== null) {
+			return header_element.content;
+		}
+	}
+	let title = document.title;
+	return title === '' ? null : title;
+}
+
+/* @type {string|null} */
+function get_default_poster() {
+	for (let attr of ['property="og:image"', 'name="twitter:image:src"']) {
+		let header_element = document.querySelector(`meta[${attr}]`);
+		if (header_element !== null) {
+			return header_element.content;
+		}
+	}
+	return null;
+}
+
+/* @type {string|null} */
+function get_default_canonical() {
+	let header_element = document.querySelector('link[rel="canonical"]');
+	if (header_element !== null) {
+		return header_element.href;
+	}
+	return location.href.split('#')[0];
+}
+
+/* @type {string|null} */
+function get_default_twitter() {
+	let header_element = document.querySelector('meta[name="twitter:creator"]');
+	if ((header_element !== null) && (header_element.content.length>1)) {
+		return header_element.content;
+	}
+	return null;
+}
+
 export let document_CPU = {
 	// global object for global API
 
@@ -79,43 +120,14 @@ export let document_CPU = {
 	// @package, not enough mature
 	// NOTE : we need to refresh this when the <head> of the host page changes
 	default_dataset : {
-		'title' : /* @type {string|null} */ function () { 
-				for(let domain of ['og', 'twitter']){
-					let header_element = document.querySelector(`meta[property="${domain}:title"]`);
-					if (header_element !== null) {
-						return header_element.content;
-					}
-				}
-				let title = document.title;
-				return title === '' ? null : title;
-			}(), 
-		'poster' : /* @type {string|null} */ function () {
-				for(let attr of ['property="og:image"', 'name="twitter:image:src"']){
-					let header_element = document.querySelector(`meta[${attr}]`);
-					if (header_element !== null) {
-						return header_element.content;
-					}
-				}
-				return null;
-			}(),
-		'canonical' : /* @type {string|null} */ function () {
-				let header_element = document.querySelector('link[rel="canonical"]');
-				if (header_element !== null) {
-					return header_element.href;
-				}
-				return location.href.split('#')[0];
-			}(),
-		'twitter' : /* @type {string|null} */ function () {
-				let header_element = document.querySelector('meta[name="twitter:creator"]');
-				if ((header_element !== null) && (header_element.content.length>1)) {
-					return header_element.content;
-				}
-				return null;
-			}(),
+		'title' : get_default_title(), 
+		'poster' : get_default_poster(),
+		'canonical' : get_default_canonical(),
+		'twitter' : get_default_twitter(),
 		'playlist' : null,
 		'waveform' : null,
 		'duration' : null,
-		'download' : null,
+		'download' : null	
 	},
 
 	/**
