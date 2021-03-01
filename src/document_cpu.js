@@ -180,7 +180,7 @@ export let document_CPU = {
 			'play', 'playing', 'pause', 'ended',
 			'durationchange',  'loadedmetadata', 'timeupdate', 'waiting'
 		].forEach( (on) => { 
-			audiotag.addEventListener(on, trigger.update); 
+			audiotag.addEventListener(on, trigger.update, passive_ev); 
 		});
 
 		if (!is_decent_browser_for_webcomponents()) {
@@ -188,7 +188,7 @@ export let document_CPU = {
 			[
 				'pause', 'ended'
 			].forEach( (on) => { 
-				audiotag.addEventListener(on, trigger.pause); 
+				audiotag.addEventListener(on, trigger.pause, passive_ev);
 			});
 		}
   
