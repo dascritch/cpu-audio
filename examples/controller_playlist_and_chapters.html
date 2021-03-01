@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<script src="../dist/cpu-audio.js"></script>
+
+<p>
+	Heere is a cpu-controller in a playlist context (each sound when finished is launching the next one) with chapters (when you change of sound, its chapters' track and panel are displayer in controller). We hide panels in the players for ease to read.
+</p>
+
+<p>Note : this demo will work best via a webserver, as chapters won't be loaded in a file:/// context</p>
+<p>Example shows taken from <a href="https://cpu.dascritch.net/serie/Radio%20num%C3%A9rique">my series about DAB+</a></p>
+
+<cpu-controller></cpu-controller>
+
+<hr />
+
+<cpu-audio
+	title="Ex0117 À la source du son"
+	poster="https://cpu.dascritch.net/public/Images/Emissions/.1910-Ex0117-SourceDuSon_s.jpg"
+	canonical="https://cpu.dascritch.net/post/2019/10/17/Ex0117-%C3%80-la-source-du-son" playlist="cpu" hide="panels">
+	<audio controls id="ep1">
+		<source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0117-CPU%2817-10-19%29.mp3" type="audio/mpeg" />
+        <track kind="chapters" src="../tests-assets/0117-CPU%2817-10-19%29.vtt" default>
+	</audio>
+</cpu-audio>
+
+<cpu-audio
+	title="Ex0136 Traitements du son"
+	poster="https://cpu.dascritch.net/public/Images/Emissions/.2004-Ex0136-TraitementsDeSon_s.jpg"
+	canonical="https://cpu.dascritch.net/post/2020/04/30/Ex0136-Traitements-du-son" playlist="cpu" hide="panels">
+	<audio controls id="ep2">
+		<source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0136-CPU%2830-04-20%29.mp3" type="audio/mpeg" />
+        <track kind="chapters" src="../tests-assets/0136-CPU%2830-04-20%29.vtt" default>
+	</audio>
+</cpu-audio>
+
+<cpu-audio
+	title="Ex0137 Ingénieur du son"
+	poster="https://cpu.dascritch.net/public/Images/Emissions/.2005-Ex0137-IngenieurDuSon_s.jpg"
+	canonical="https://cpu.dascritch.net/post/2020/05/14/Ex0137-Ing%C3%A9nieur-du-son" playlist="cpu" hide="panels">
+	<audio controls id="ep3">
+		<source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0137-CPU%2814-05-20%29.mp3" type="audio/mpeg" />
+        <track kind="chapters" src="../tests-assets/0137-CPU%2814-05-20%29.vtt" default>
+	</audio>
+</cpu-audio>
+
+<cpu-audio
+	title="Ex0143 Le son laser"
+	poster="https://cpu.dascritch.net/public/Images/Chroniques/.2009-Ex0143-CD_s.jpg"
+	canonical="https://cpu.dascritch.net/post/2020/09/24/Ex0143-Le-son-laser" playlist="cpu" hide="panels">
+	<audio controls id="ep4">
+		<source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0143-CPU%2824-09-20%29.mp3" type="audio/mpeg" />
+        <track kind="chapters" src="../tests-assets/0143-CPU%2824-09-20%29.vtt" default>
+	</audio>
+</cpu-audio>
+
+
+</html>
