@@ -443,10 +443,11 @@ export const trigger = {
 	_hand_on : null, // Repeated event allocation
 	/*
 	 * @summary Start handheld navigation button press
+	 * @private
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	_press_button : function(event) {
+	press_button : function(event) {
 		let target = event.target.id ? event.target : event.target.closest('button');
 		let acceptable_actions = ['fastreward', 'reward', 'foward', 'fastfoward'];
 		if ( (!target.id) || (acceptable_actions.indexOf(target.id) === -1)) {
@@ -463,28 +464,30 @@ export const trigger = {
 			target : target,
 			preventDefault : on_debug
 		};
-		trigger._hand_on = window.setTimeout(trigger._repeat_button, document.CPU.repeat_delay, mini_event);
+		trigger._hand_on = window.setTimeout(trigger.repeat_button, document.CPU.repeat_delay, mini_event);
 		event.preventDefault();
 	},
 
 	/*
 	 * @summary Repeat during pressing handheld navigation button
+	 * @private
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	_repeat_button : function(event) {
+	repeat_button : function(event) {
 		// 
 		trigger[event.target.id](event);
 		// next call : repetition are closest
-		trigger._hand_on = window.setTimeout(trigger._repeat_button, document.CPU.repeat_factor, event);
+		trigger._hand_on = window.setTimeout(trigger.repeat_button, document.CPU.repeat_factor, event);
 	},
 
 	/*
 	 * @summary Release handheld navigation button
+	 * @private
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	_release_button : function(event) {
+	release_button : function(event) {
 		window.clearTimeout(trigger._hand_on);
 		trigger._hand_on = null;
 		event.preventDefault();

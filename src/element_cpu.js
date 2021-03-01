@@ -1617,11 +1617,11 @@ export class CPU_element_api {
 			'mouseup'       : false,
 			'mouseleave'    : false
 		};
-		let _press = trigger._press_button;
-		let _release = trigger._release_button;
+		let _press = trigger.press_button;
+		let _release = trigger.release_button;
 		for (let that of _buttons) {
 			for (let _act in _actions) {
-				this.elements[that].addEventListener(_act, _actions[_act] ? trigger._press_button : trigger._release_button);
+				this.elements[that].addEventListener(_act, _actions[_act] ? trigger.press_button : trigger.release_button);
 			}
 		}
 
