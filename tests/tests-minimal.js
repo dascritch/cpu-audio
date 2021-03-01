@@ -125,29 +125,29 @@ document.getElementById('get_focus').addEventListener('click', function() {
 		});
 	});
 
-	function hashOrder_test(expected_string, hash , expected_time)
+	function hash_order_test(expected_string, hash , expected_time)
 	{
-		QUnit.test( `document.CPU.trigger.hashOrder ${expected_string}`, function( assert ) {
+		QUnit.test( `document.CPU.trigger.hash_order ${expected_string}`, function( assert ) {
 			assert.expect( 1 );
 			let done = assert.async();
-			cpu.trigger.hashOrder(hash, function() {
+			cpu.trigger.hash_order(hash, function() {
 				assert.equal(audiotag.currentTime, expected_time, expected_string);
 				done();
 			});
 		});
 	}
-	hashOrder_test('is at start if empty', 'track&t=', 0);
-	hashOrder_test('is at 10 seconds', 'track&t=10', 10);
-	hashOrder_test('is at one minute and 2 seconds', 'track&t=1m2s', 62);
-	hashOrder_test('unnammed track is at 40 seconds', 't=40', 40);
-	hashOrder_test('unnammed track is at 20 seconds', 't=20s', 20);
-	hashOrder_test('track is at 00:01:42', 'track&t=00:01:42', 102);
-	hashOrder_test('unnamed track is at 1:02', '&t=1:02', 62);
+	hash_order_test('is at start if empty', 'track&t=', 0);
+	hash_order_test('is at 10 seconds', 'track&t=10', 10);
+	hash_order_test('is at one minute and 2 seconds', 'track&t=1m2s', 62);
+	hash_order_test('unnammed track is at 40 seconds', 't=40', 40);
+	hash_order_test('unnammed track is at 20 seconds', 't=20s', 20);
+	hash_order_test('track is at 00:01:42', 'track&t=00:01:42', 102);
+	hash_order_test('unnamed track is at 1:02', '&t=1:02', 62);
 
-	QUnit.test( "hashorder starts,end , same notation", function (assert){
+	QUnit.test( "hash_order starts,end , same notation", function (assert){
 		assert.expect( 2 );
 		let done = assert.async();
-		cpu.trigger.hashOrder('track&t=0:20,0:30', function() {
+		cpu.trigger.hash_order('track&t=0:20,0:30', function() {
 			assert.equal(audiotag.currentTime , 20, 'starts at 20 seconds');
 			assert.equal(cpu.trigger._timecode_end, 30, 'ends at 30 seconds');
 			done();
@@ -155,40 +155,40 @@ document.getElementById('get_focus').addEventListener('click', function() {
 	});
 
 	
-	QUnit.test( "hashorder starts,end , mixed notation", function (assert){
+	QUnit.test( "hash_order starts,end , mixed notation", function (assert){
 		assert.expect( 2 );
 		let done = assert.async();
-		cpu.trigger.hashOrder('track&t=0:10,20', function() {
+		cpu.trigger.hash_order('track&t=0:10,20', function() {
 			assert.equal(audiotag.currentTime , 10, 'starts at 10 seconds');
 			assert.equal(cpu.trigger._timecode_end, 20, 'ends at 20 seconds');
 			done();
 		});
 	});
 
-	QUnit.test( "hashorder ,end ", function (assert){
+	QUnit.test( "hash_order ,end ", function (assert){
 		assert.expect( 2 );
 		let done = assert.async();
-		cpu.trigger.hashOrder('track&t=,20', function() {
+		cpu.trigger.hash_order('track&t=,20', function() {
 			assert.equal(audiotag.currentTime, 0, 'starts at 0 second');
 			assert.equal(cpu.trigger._timecode_end, 20, 'ends at 20 seconds');
 			done();
 		});
 	});
 
-	QUnit.test( "hashorder start, ", function (assert){
+	QUnit.test( "hash_order start, ", function (assert){
 		assert.expect( 2 );
 		let done = assert.async();
-		cpu.trigger.hashOrder('track&t=20,', function() {
+		cpu.trigger.hash_order('track&t=20,', function() {
 			assert.equal(audiotag.currentTime, 20, 'starts at 0 second');
 			assert.equal(cpu.trigger._timecode_end, false, 'natural end');
 			done();
 		});
 	});
 
-	QUnit.test( "hashorder end,start ", function (assert){
+	QUnit.test( "hash_order end,start ", function (assert){
 		assert.expect( 2 );
 		let done = assert.async();
-		cpu.trigger.hashOrder('track&t=20,10', function() {
+		cpu.trigger.hash_order('track&t=20,10', function() {
 			assert.equal(audiotag.currentTime, 20, 'starts at 0 second');
 			assert.equal(cpu.trigger._timecode_end, false, 'ignored end');
 			done();
@@ -196,10 +196,10 @@ document.getElementById('get_focus').addEventListener('click', function() {
 	});
 
 
-	QUnit.test( "hashorder start,end with erroneous entries ", function (assert){
+	QUnit.test( "hash_order start,end with erroneous entries ", function (assert){
 		assert.expect( 2 );
 		let done = assert.async();
-		cpu.trigger.hashOrder('track&t=a1r,\v0', function() {
+		cpu.trigger.hash_order('track&t=a1r,\v0', function() {
 			assert.ok(audiotag.currentTime === 0, 'starts at 0 second');
 			assert.ok(cpu.trigger._timecode_end === false, 'natural end');
 			done();
@@ -217,7 +217,7 @@ document.getElementById('get_focus').addEventListener('click', function() {
 			done();
 		}
 		check_only_one_play_this = check_only_one_play.bind(this);
-		cpu.trigger.hashOrder('track&t=20,21', function() {
+		cpu.trigger.hash_order('track&t=20,21', function() {
 			setTimeout(check_only_one_play_this, 1500);
 		});
 	});
@@ -248,7 +248,7 @@ document.getElementById('get_focus').addEventListener('click', function() {
 		secondary_audiotag.play();
 	});
 
-	// Try trigger.hashOrder({ at_start : true }); with hash link
+	// Try trigger.hash_order({ at_start : true }); with hash link
 	QUnit.test( "Startup page with a hash link and without localStorage still played", function(assert) {
 		let done = assert.async();
 		assert.expect(1);
@@ -269,16 +269,16 @@ document.getElementById('get_focus').addEventListener('click', function() {
 			assert.ok(secondary_audiotag.currentTime = 10, 'Second player should be at 10s');
 			window.location = '#';
 			// restore hashchange event
-			window.addEventListener('hashchange', cpu.trigger.hashOrder, false);
+			window.addEventListener('hashchange', cpu.trigger.hash_order, false);
 			done();
 		}
 		// désactiver provisoirement le hashchange event
-		window.removeEventListener('hashchange', cpu.trigger.hashOrder);
+		window.removeEventListener('hashchange', cpu.trigger.hash_order);
 		window.location = '#secondary&t=10';
-		cpu.trigger.hashOrder({ at_start : true }, check_onstart);
+		cpu.trigger.hash_order({ at_start : true }, check_onstart);
 	});
 
-	// Try trigger.hashOrder({ at_start : true }); with hash link
+	// Try trigger.hash_order({ at_start : true }); with hash link
 	QUnit.test( "Startup page without hash link and with a localStorage recalling", function(assert) {
 		let done = assert.async();
 		assert.expect(1);
@@ -300,16 +300,16 @@ document.getElementById('get_focus').addEventListener('click', function() {
 			assert.ok(secondary_audiotag.currentTime = 30, 'Second player should be at 30s');
 			window.location = '#';
 			// restore hashchange event
-			window.addEventListener('hashchange', cpu.trigger.hashOrder, false);
+			window.addEventListener('hashchange', cpu.trigger.hash_order, false);
 			done();
 		}
 		// désactiver provisoirement le hashchange event
-		window.removeEventListener('hashchange', cpu.trigger.hashOrder);
+		window.removeEventListener('hashchange', cpu.trigger.hash_order);
 		window.location = '#';
-		cpu.trigger.hashOrder({ at_start : true }, check_onstart);
+		cpu.trigger.hash_order({ at_start : true }, check_onstart);
 	});
 
-	// Try trigger.hashOrder({ at_start : true }); with in-memory interruptd play and with hash link (hash link should have priority)
+	// Try trigger.hash_order({ at_start : true }); with in-memory interruptd play and with hash link (hash link should have priority)
 	QUnit.test( "Startup page with a hash link and with a localStorage recalling", function(assert) {
 		let done = assert.async();
 		assert.expect(3);
@@ -331,17 +331,17 @@ document.getElementById('get_focus').addEventListener('click', function() {
 			assert.ok(secondary_audiotag.currentTime = 30, 'Second player should be at 30s');
 			window.location = '#';
 			// restore hashchange event
-			window.addEventListener('hashchange', cpu.trigger.hashOrder, false);
+			window.addEventListener('hashchange', cpu.trigger.hash_order, false);
 			done();
 		}
 		// désactiver provisoirement le hashchange event
-		window.removeEventListener('hashchange', cpu.trigger.hashOrder);
+		window.removeEventListener('hashchange', cpu.trigger.hash_order);
 		window.location = '#track&t=10';
-		cpu.trigger.hashOrder({ at_start : true }, check_onstart);
+		cpu.trigger.hash_order({ at_start : true }, check_onstart);
 	});
 
 
-	// Try trigger.hashOrder({ at_start : true }); with in-memory interruptd play and with hash link (hash link should have priority)
+	// Try trigger.hash_order({ at_start : true }); with in-memory interruptd play and with hash link (hash link should have priority)
 
 
 	QUnit.test( "Playlist features", function(assert) {

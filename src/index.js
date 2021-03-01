@@ -20,8 +20,8 @@ export async function main() {
 		document.body.classList.add('cpu-audio-with-webcomponents');
 	}
 
-	window.addEventListener('hashchange', trigger.hashOrder, passive_ev);
-	trigger.hashOrder({ at_start : true });
+	window.addEventListener('hashchange', trigger.hash_order, passive_ev);
+	trigger.hash_order({ at_start : true });
 }
 
 

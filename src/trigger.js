@@ -23,7 +23,7 @@ export const trigger = {
 	 *
 	 * @param      {number}  at      timecode position
 	 */
-	_remove_timecode_outofborders : function(at) {
+	remove_timecode_outofborders : function(at) {
 		if ( 
 			(at < trigger._timecode_start)
 			|| ((trigger._timecode_end !== false) && (at > trigger._timecode_end)) ) {
@@ -40,7 +40,7 @@ export const trigger = {
 	 * @param      {string|Object}  hashcode     Called hashcode
 	 * @param      {Function}       callback_fx  When done, call a function to end the tests (optional).
 	 */
-	hashOrder : async function(hashcode, callback_fx=undefined) {
+	hash_order : async function(hashcode, callback_fx=undefined) {
 		let at_start = true;
 		if (typeof hashcode !== 'string') {
 			at_start = 'at_start' in hashcode;
@@ -274,7 +274,7 @@ export const trigger = {
 		}
 
 		trigger._last_play_error = false;
-		trigger._remove_timecode_outofborders(audiotag.currentTime);
+		trigger.remove_timecode_outofborders(audiotag.currentTime);
 
 		let promised = audiotag.play();
 
