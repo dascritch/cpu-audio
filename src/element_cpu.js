@@ -1390,7 +1390,7 @@ export class CPU_element_api {
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	_cuechange_event(event) {
+	cuechange_event(event) {
 		let active_cue;
 		let class_name = 'active-cue';
 		let plane_name = '_chapters';
@@ -1463,11 +1463,11 @@ export class CPU_element_api {
 					this.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
 					// this.clear_plane(plane_name); // avoid unuseful redraw
 
-					let _cuechange_event = this._cuechange_event.bind(this);
+					let cuechange_event = this.cuechange_event.bind(this);
 					// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
 					// adding/reinstall chapter changing event
-					chapter_track.removeEventListener('cuechange', _cuechange_event, passive_ev);
-					chapter_track.addEventListener('cuechange', _cuechange_event, passive_ev);
+					chapter_track.removeEventListener('cuechange', cuechange_event, passive_ev);
+					chapter_track.addEventListener('cuechange', cuechange_event, passive_ev);
 
 					for (let cue of chapter_track.cues) {
 						if ((cue.startTime <= cue.startTime) && (cue.startTime < cue.endTime)) {
