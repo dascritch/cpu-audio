@@ -61,10 +61,13 @@ function _clean() {
 }
 
 function _build_template() {
-
+	echo 'compress'
+	echo '.. global.css'
 	npx clean-css-cli -o tmp/global.css src/global.css 
+	echo '.. scoped.css'
 	npx clean-css-cli -o tmp/scoped.css src/scoped.css 
 
+	echo '.. template.html'
 	npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace src/template.html -o tmp/template.html
 
 	global_css=$(cat "${PROJECT_DIR}/tmp/global.css")
@@ -96,7 +99,8 @@ $(cat ${PROJECT_DIR}/src/license.txt)
 "
 
 function _build_component_js_webpack() {
-	npx webpack --mode ${webpack_mode} --target es2020 --entry ./src/index.js --output-path ./dist --output-filename ${component_file_js} --devtool source-map 
+	echo 'webpacking'
+	npx webpack --config ${PROJECT_DIR}/webpack.config.js --mode ${webpack_mode} --target es2020 --entry ${PROJECT_DIR}/src/index.js --output-path ${PROJECT_DIR}/dist --output-filename ${component_file_js} --devtool source-map 
 }
 
 
