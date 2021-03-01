@@ -85,10 +85,6 @@ export let document_CPU = {
 	// @type {string|null}
 	body_className_playing_cue : null,
 
-	// private,to add attributes for unnamed <audio>
-	// @private
-	// @type string
-	dynamicallyAllocatedIdPrefix : 'CPU-Audio-tag-',
 	// @private
 	// @type number
 	count_element : 0,

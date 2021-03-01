@@ -1,4 +1,4 @@
-import {passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName, absolutize_url, escape_html, querySelector_apply, error} from './utils.js'
+import {dynamically_allocated_id_prefix, passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName, absolutize_url, escape_html, querySelector_apply, error} from './utils.js'
 import {__} from './i18n.js'
 import {convert} from './convert.js'
 import {trigger} from './trigger.js'
@@ -607,7 +607,7 @@ export class CPU_element_api {
 	 */
 	add_id_to_audiotag() {
 		if (this.audiotag.id === '') {
-			this.audiotag.id = document.CPU.dynamicallyAllocatedIdPrefix + String(document.CPU.count_element++);
+			this.audiotag.id = dynamically_allocated_id_prefix + String(document.CPU.count_element++);
 		}
 	}
 

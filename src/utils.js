@@ -21,6 +21,10 @@ export const passive_ev = {'passive': true};
 // @private
 export const once_passive_ev = {'passive':true, 'once':true};
 
+// private,to add attributes for unnamed <audio>
+// @private
+export const dynamically_allocated_id_prefix = 'CPU-Audio-tag-';
+
 /**
  * @summary Do litteraly nothing
  */
