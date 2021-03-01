@@ -60,10 +60,7 @@ Development
 
 To make the `dist/` files, run `./make.sh`
 
-You will need :
-- sed
-- tr
-- [Google closure compiler](https://github.com/google/closure-compiler/wiki/Binary-Downloads) (an so, Java, sigh). Don't forget to keep it up to date.
+You will need to add packages via `npm` to finalize `dist/*` files.
 
 If you're not working on `master` or `preprod` original branches, try to avoid to commit `dist/*` files, to avoid conflicts during merge.
 
