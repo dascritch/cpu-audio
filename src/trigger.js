@@ -1,4 +1,4 @@
-import {passive_ev, once_passive_ev, info, warn, onDebug} from './utils.js'
+import {passive_ev, once_passive_ev, info, warn, on_debug} from './utils.js'
 import {convert} from './convert.js'
 
 const KEY_LEFT_ARROW = 37;
@@ -82,7 +82,7 @@ export const trigger = {
 
 		if ((timecode === '') || ((at_start) && (!autoplay))) {
 			// this is a normal anchor call. Go back to normal behaviour
-			onDebug(callback_fx);
+			on_debug(callback_fx);
 			return /* false */;
 		}
 
@@ -461,7 +461,7 @@ export const trigger = {
 
 		let mini_event = {
 			target : target,
-			preventDefault : onDebug
+			preventDefault : on_debug
 		};
 		trigger._hand_on = window.setTimeout(trigger._repeat_button, document.CPU.repeat_delay, mini_event);
 		event.preventDefault();

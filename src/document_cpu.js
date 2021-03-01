@@ -1,4 +1,4 @@
-import {passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName, is_decent_browser_for_webcomponents, onDebug, warn} from './utils.js'
+import {passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName, is_decent_browser_for_webcomponents, on_debug, warn} from './utils.js'
 import {convert} from './convert.js'
 import {trigger} from './trigger.js'
 
@@ -282,7 +282,7 @@ export let document_CPU = {
 		function do_element_play(event) {
 			let tag = event.target;
 			trigger.play(undefined, tag);
-			onDebug(callback_fx);
+			on_debug(callback_fx);
 		}
 
 		let selector_fallback = 'cpu-audio audio'; // should be 'audio[controls]' but PHRACK APPLE !

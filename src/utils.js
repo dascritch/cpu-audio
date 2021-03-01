@@ -32,7 +32,7 @@ function noop() {
  *
  * @param      {Function|null|undefined}  callback_fx  The function to call
  */
-export function onDebug(callback_fx) { 
+export function on_debug(callback_fx) { 
 	// may be used as a noop(); 
 	if (typeof callback_fx === 'function') {
 		// this is needed for testing, as we now run in async tests
@@ -106,23 +106,12 @@ export function element_prevent_link_on_same_page(element) {
 }
 
 /**
- * @summary Determines if event is really an event, and not a faked one
- *
- * @param      {Event|Object}   event   The supposed event
- * @return     {boolean}  True if event, False otherwise.
- */
-function _isEvent(event) {
-	// is this event really triggered via a native event ?
-	return event.preventDefault !== undefined;
-}
-
-/**
  * @summary Escape a text. Will truly escape HTML tags and entities. No hazardous regexes or replaces
  *
  * @param      {string}  text    The text
  * @return     {string}  HTML escaped text
  */
-export function escapeHTML(text) {
+export function escape_html(text) {
 	let burn_after_reading = document.createElement('span');
 	burn_after_reading.innerText = text;
 	let out = burn_after_reading.innerHTML;

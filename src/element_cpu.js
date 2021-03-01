@@ -1,4 +1,4 @@
-import {passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName, absolutize_url, escapeHTML, querySelector_apply, error} from './utils.js'
+import {passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName, absolutize_url, escape_html, querySelector_apply, error} from './utils.js'
 import {__} from './i18n.js'
 import {convert} from './convert.js'
 import {trigger} from './trigger.js'
@@ -751,7 +751,7 @@ export class CPU_element_api {
 			let inner = '<nav><ul></ul></nav>';
 
 			if (data['title'] !== undefined) {
-				inner = `<h6>${escapeHTML(data['title'])}</h6>${inner}`;
+				inner = `<h6>${escape_html(data['title'])}</h6>${inner}`;
 			}
 			plane_panel.innerHTML = inner;
 			this.container.appendChild(plane_panel);
@@ -958,7 +958,7 @@ export class CPU_element_api {
 		if ((vtt_taged.split('<').length) !== (vtt_taged.split('>').length)) {
 			// unmatching < and >, probably badly written tags, or in full text
 			// unsurprisingly, (vtt_taged.split('<').length) is a lot faster than using regex. JS needs a standard property for counting substring occurences in a string
-			return escapeHTML(vtt_taged);
+			return escape_html(vtt_taged);
 		}
 
 		return vtt_taged.
