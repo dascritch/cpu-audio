@@ -15,6 +15,7 @@ Back-end
  * Better separation between public objects and private methods
  * Leaving Google Closure for webpack : too many bugs, too old
  * Using `css-minify` for compressing css, instead of home-boiled regex
+ * Using `html-minifier` for compressing html, for the exact same reasons
 
 
 RELEASE NOTES version 6.6.3

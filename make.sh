@@ -23,7 +23,7 @@ HELP
 PROJECT_DIR=$(readlink -f $(dirname ${0}))
 component_file_js="cpu-audio.js" 
 
-OTHER_OPTIONS=''
+OTHER_OPTIONS=' --no-devtool'
 webpack_mode='production'
 
 while [ '-' == "${1:0:1}" ] ; do
@@ -40,7 +40,7 @@ while [ '-' == "${1:0:1}" ] ; do
 			component_file_js='cpu-audio.EXPERIMENTAL.js'
 		;;
 		-d|--debug)
-			OTHER_OPTIONS=' --debug '
+			OTHER_OPTIONS=' --devtool source-map'
 			webpack_mode='development'
 		;;
 		--)
@@ -100,7 +100,7 @@ $(cat ${PROJECT_DIR}/src/license.txt)
 
 function _build_component_js_webpack() {
 	echo 'webpacking'
-	npx webpack --config ${PROJECT_DIR}/webpack.config.js --mode ${webpack_mode} --target es2020 --entry ${PROJECT_DIR}/src/index.js --output-path ${PROJECT_DIR}/dist --output-filename ${component_file_js} --devtool source-map 
+	npx webpack --config ${PROJECT_DIR}/webpack.config.js --mode ${webpack_mode} --target es2020 --entry ${PROJECT_DIR}/src/index.js --output-path ${PROJECT_DIR}/dist --output-filename ${component_file_js} ${OTHER_OPTIONS}
 }
 
 
