@@ -124,8 +124,7 @@ export class CPU_element_api {
 		// I hate this style. I rather prefer the object notation
 		this.element = element;
 		this.elements = {};
-		/** \@ type {HTMLAudioElement} NOT WORKING AT ALL due to Google Closure bugs */
-		this.audiotag = element._audiotag;
+		this.audiotag = /* @type {HTMLAudioElement} */ element._audiotag;
 		this.container = container_interface;
 		this.mode_when_play = null;
 		this.glow_before_play = false;
@@ -142,6 +141,7 @@ export class CPU_element_api {
 
 	/**
 	 * @summary    create and fire custom events for the global document.
+	 * @private
 	 *
 	 * We async-ed it, to avoid ultra-probable performances issues
 	 *
@@ -210,14 +210,13 @@ export class CPU_element_api {
 	 *
 	 * @param      {Array<string>}  hide_elements  Array of strings, may contains
 	 *                                        'actions' or 'chapters'
-	 * For an unknown reason, Google Closure estimates that hide_elements can be null ??? 
 	 */
 	set_hide_container(hide_elements) {
 		for (let hide_this of acceptable_hide_atttributes) {
 			this.container.classList.remove(`hide-${hide_this}`)
 		}
 
-		for (let hide_this of /** @type {!null} */ (hide_elements)) {
+		for (let hide_this of hide_elements) {
 			hide_this = hide_this.toLowerCase();
 			if (acceptable_hide_atttributes.indexOf(hide_this)>-1) {
 				this.container.classList.add(`hide-${hide_this}`)
@@ -355,16 +354,15 @@ export class CPU_element_api {
 	}
 
 	/**
-	 * @summary Show the current media error status
+	 * @summary Show the current media error status. NOTE : this is not working, even on non supported media type
+	 * Chrome logs an error « Uncaught (in promise) DOMException: Failed to load because no supported source was found. »
+	 * but don't update message
 	 *
 	 * @private
 	 *
 	 * @return     {boolean}  True if an error is displayed
 	 */
 	update_error() {
-		// NOTE : this is not working, even on non supported media type
-		// Chrome logs an error « Uncaught (in promise) DOMException: Failed to load because no supported source was found. »
-		// but don't update message
 		let audiotag = this.audiotag;
 		if (audiotag === null) {
 			return true;
@@ -460,6 +458,7 @@ export class CPU_element_api {
 		let duration = this.audiotag.duration;
 
 		if ((duration === 0) || (isNaN(duration))) {
+			return;
 			// duration still unkonw ! We will need to redraw later the tracks
 		}
 
@@ -986,6 +985,7 @@ export class CPU_element_api {
 
 	/**
 	 * @summary Transform VTT tag langage into HTML tags, filtering out some
+	 * (needed @public mainly for tests. Moving it up and do those tests in CLI will make it @private-izable)
 	 * 
 	 * NEVER EVER BELIEVE you can parse HTML with regexes ! This function works because we just do minimalistic changes
 	 * By the way, regexes are really time consuming, both for you and your computer.
@@ -994,8 +994,7 @@ export class CPU_element_api {
 	 * @param      {string}            vtt_taged  The vtt tagged
 	 * @return     string                         HTML tagged string
 	 * 
-	 * string.replace().replaceAll() is not corectly understood by Google Closure
-	 * @suppress {missingProperties} */
+     */
 	translate_vtt(vtt_taged) {
 
 		let acceptables = {
@@ -1052,7 +1051,7 @@ export class CPU_element_api {
 		return vtt_taged.
 				replace(vtt_opentag, opentag).
 				replace(vtt_closetag, closetag).
-				replaceAll('\n', '<br/>');   // JSC_INEXISTENT_PROPERTY ? The property exists, you're drunk Closure !
+				replaceAll('\n', '<br/>');
 	}
 
 	/**

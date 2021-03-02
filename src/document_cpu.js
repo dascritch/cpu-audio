@@ -203,6 +203,7 @@ export let document_CPU = {
 		// No problems
 		return;
 	},
+	
 	/**
 	 * @public
 	 *
@@ -211,8 +212,7 @@ export let document_CPU = {
 	 * @param      {HTMLAudioElement}  audiotag  <audio> DOM element
 	 * @param      {number}  seconds   	Wanted position, in seconds
 	 *
-	 * HTMLAudioElement.fastSeek() is an experimental but really fast function. Google Closure doesn't like it in ADVANCED mode
-	 * @suppress {missingProperties} */
+	 */
 	'seekElementAt' : function (audiotag, seconds) {
 		if ((isNaN(seconds)) || // may happens, if the audio track is not loaded/loadable
 			(is_audiotag_streamed(audiotag))) { // never try to set a position on a streamed media
@@ -220,6 +220,7 @@ export let document_CPU = {
 		}
 
 		if (audiotag.fastSeek !== undefined) {
+			// HTMLAudioElement.fastSeek() is an experimental but really fast function.
 			audiotag.fastSeek(seconds);
 		} else {
 			try {
