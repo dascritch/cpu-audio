@@ -1,6 +1,7 @@
 import {CpuAudioTagName, acceptable_selector} from './utils.js'
 import {convert} from './convert.js'
 import {trigger} from './trigger.js'
+import {connect_audiotag} from './media_element_extension.js'
 import {CpuControllerElement} from './cpu_controller.class.js'
 
 /**
@@ -39,7 +40,7 @@ export class CpuAudioElement extends CpuControllerElement {
 
 		super.connectedCallback();
 
-		document.CPU.connect_audiotag(this.CPU.audiotag);
+		connect_audiotag(this.CPU.audiotag);
 	
 		this.observer_cpuaudio = new MutationObserver(trigger.observer_cpuaudio);
 		this.observer_cpuaudio.observe(this, {
