@@ -7,6 +7,35 @@ const KEY_RIGHT_ARROW = 39;
 let NotAllowedError = 'Auto-play prevented : Browser requires a manual interaction first.';
 let NotSupportedError = 'The browser refuses the audio source, probably due to audio format.';
 
+/**
+ * @summary If audio position out of begin/end borders, remove borders
+ * @private
+ *
+ * @param      {number}  at      timecode position
+ */
+function remove_timecode_outofborders(at) {
+	if ( 
+		(at < trigger._timecode_start)
+		|| ((trigger._timecode_end !== false) && (at > trigger._timecode_end)) ) {
+		trigger._timecode_start = 0;
+		trigger._timecode_end = false;
+	}
+}
+
+/*
+ * @summary If playing media was prevented by browser due to missing focus, event on focus does unlock player
+ * @private
+ *
+ * @param      {Object|undefined}  event   Unlocking event
+ */
+function play_once_unlock(event, audiotag) {
+	trigger._last_play_error = false;
+	if (document.CPU.autoplay) {
+		trigger.play(event, audiotag);
+	}
+}
+
+
 export const trigger = {
 
 	// @private
@@ -16,21 +45,6 @@ export const trigger = {
 
 	// @private
 	_last_play_error : false,
-
-	/**
-	 * @summary If audio position out of begin/end borders, remove borders
-	 * @private
-	 *
-	 * @param      {number}  at      timecode position
-	 */
-	remove_timecode_outofborders : function(at) {
-		if ( 
-			(at < trigger._timecode_start)
-			|| ((trigger._timecode_end !== false) && (at > trigger._timecode_end)) ) {
-			trigger._timecode_start = 0;
-			trigger._timecode_end = false;
-		}
-	},
 
 	/**
 	 * @summary    Interprets the hash part of the URL, when loaded or changed
@@ -254,16 +268,6 @@ export const trigger = {
 	 */
 	play : function(event=undefined, audiotag=undefined) {
 
-		/*
-		 * @param      {Object|undefined}  _e   The event
-		 */
-		function unlock(_e) {
-			trigger._last_play_error = false;
-			if (document.CPU.autoplay) {
-				trigger.play(_e, audiotag);
-			}
-		}
-
 		if (audiotag === undefined) {
 			audiotag = document.CPU.find_container(event.target).audiotag;
 		}
@@ -274,9 +278,10 @@ export const trigger = {
 		}
 
 		trigger._last_play_error = false;
-		trigger.remove_timecode_outofborders(audiotag.currentTime);
+		remove_timecode_outofborders(audiotag.currentTime);
 
 		let promised = audiotag.play();
+
 
 		if (promised !== undefined) {
 			promised.then(
@@ -287,6 +292,7 @@ export const trigger = {
 			).catch(
 				error => {
 					trigger._last_play_error = true;
+					let unlock = play_once_unlock.bind(this, audiotag);
 					switch (error.name) {
 						case 'NotAllowedError':
 							warn(NotAllowedError);
@@ -439,60 +445,6 @@ export const trigger = {
 		trigger.key(event, document.CPU.fast_factor);
 	},
 
-
-	_hand_on : null, // Repeated event allocation
-	/*
-	 * @summary Start handheld navigation button press
-	 * @private
-	 *
-	 * @param      {Object}  event   The event
-	 */
-	press_button : function(event) {
-		let target = event.target.id ? event.target : event.target.closest('button');
-		let acceptable_actions = ['fastreward', 'reward', 'foward', 'fastfoward'];
-		if ( (!target.id) || (acceptable_actions.indexOf(target.id) === -1)) {
-			// we have been misleaded
-			return;
-		}
-		// execute the associated function
-		trigger[target.id](event);
-		if (trigger._hand_on !== null) {
-			window.clearTimeout(trigger._hand_on);
-		}
-
-		let mini_event = {
-			target : target,
-			preventDefault : on_debug
-		};
-		trigger._hand_on = window.setTimeout(trigger.repeat_button, document.CPU.repeat_delay, mini_event);
-		event.preventDefault();
-	},
-
-	/*
-	 * @summary Repeat during pressing handheld navigation button
-	 * @private
-	 *
-	 * @param      {Object}  event   The event
-	 */
-	repeat_button : function(event) {
-		// 
-		trigger[event.target.id](event);
-		// next call : repetition are closest
-		trigger._hand_on = window.setTimeout(trigger.repeat_button, document.CPU.repeat_factor, event);
-	},
-
-	/*
-	 * @summary Release handheld navigation button
-	 * @private
-	 *
-	 * @param      {Object}  event   The event
-	 */
-	release_button : function(event) {
-		window.clearTimeout(trigger._hand_on);
-		trigger._hand_on = null;
-		event.preventDefault();
-	},
-
 	/**
 	 * @summary Refresh document body when changing chapter
 	 *
@@ -622,23 +574,6 @@ export const trigger = {
 			'url': dataset.canonical
 		});
 		event.preventDefault();
-	},
-
-	_show_alternate_nav : null,
-
-	/**
-	 * @summary Interprets long play on timeline for alternative fine position
-	 *
-	 * @param      {Object}  event   The event
-	 */
-	touchstart : function(event) {
-		let container = document.CPU.find_container(event.target);
-		trigger._show_alternate_nav = setTimeout(container.show_handheld_nav, document.CPU.alternate_delay, container);
-		
-	},
-
-	touchcancel : function(event) {
-		clearTimeout(trigger._show_alternate_nav);
 	},
 
 }

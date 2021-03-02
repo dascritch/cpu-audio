@@ -1,4 +1,4 @@
-import {dynamically_allocated_id_prefix, passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName, absolutize_url, escape_html, querySelector_apply, error} from './utils.js'
+import {dynamically_allocated_id_prefix, passive_ev, once_passive_ev, selector_interface, on_debug, CpuAudioTagName, CpuControllerTagName, absolutize_url, escape_html, querySelector_apply, error} from './utils.js'
 import {__} from './i18n.js'
 import {convert} from './convert.js'
 import {trigger} from './trigger.js'
@@ -21,6 +21,80 @@ const valid_id = /^[a-zA-Z0-9\-_]+$/;
 // Regex for extracting plane and point names from an id
 const plane_point_names_from_id = /^([a-zA-Z0-9\-_]+_«)([a-zA-Z0-9\-_]+)((»_.*_«)([a-zA-Z0-9\-_]+))?(»)$/;
 
+
+// Handheld navigation button process
+// @private
+let finger_manager = {
+	// Repeated event allocation
+	is_on : null,
+
+	/*
+	 * @summary Start handheld navigation button press
+	 * @private
+	 *
+	 * @param      {Object}  event   The event
+	 */
+	press : function(event) {
+		let target = event.target.id ? event.target : event.target.closest('button');
+		let acceptable_actions = ['fastreward', 'reward', 'foward', 'fastfoward'];
+		if ( (!target.id) || (acceptable_actions.indexOf(target.id) === -1)) {
+			// we have been misleaded
+			return;
+		}
+		// execute the associated function
+		trigger[target.id](event);
+		if (finger_manager.is_on !== null) {
+			window.clearTimeout(finger_manager.is_on);
+		}
+
+		let mini_event = {
+			target : target,
+			preventDefault : on_debug
+		};
+		finger_manager.is_on = window.setTimeout(finger_manager.repeat, document.CPU.repeat_delay, mini_event);
+		event.preventDefault();
+	},
+	/*
+	 * @summary Repeat during pressing handheld navigation button
+	 * @private
+	 *
+	 * @param      {Object}  event   The event
+	 */
+	repeat : function(event) {
+		// 
+		trigger[event.target.id](event);
+		// next call : repetition are closest
+		finger_manager.is_on = window.setTimeout(finger_manager.repeat, document.CPU.repeat_factor, event);
+	},
+	/*
+	 * @summary Release handheld navigation button
+	 * @private
+	 *
+	 * @param      {Object}  event   The event
+	 */
+	release : function(event) {
+		window.clearTimeout(finger_manager.is_on);
+		finger_manager.is_on = null;
+		event.preventDefault();
+	},
+
+	show_alternate_nav : null,
+
+	/**
+	 * @summary Interprets long play on timeline for alternative fine position
+	 *
+	 * @param      {Object}  event   The event
+	 */
+	touchstart : function(event) {
+		let container = document.CPU.find_container(event.target);
+		finger_manager.show_alternate_nav = setTimeout(container.show_handheld_nav.bind(container), document.CPU.alternate_delay, event);
+	},
+
+	touchcancel : function(event) {
+		clearTimeout(finger_manager.show_alternate_nav);
+	},
+
+}
 
 export class CPU_element_api {
 	/**
@@ -556,14 +630,15 @@ export class CPU_element_api {
 	 * @param      {Object}  event   The event
 	 */
 	show_handheld_nav(event) {
-		let container = (event !== undefined) ?
-				document.CPU.find_container(event.target) :
-				this;
-		if (document.CPU.is_audiotag_streamed(container.audiotag)) {
+		window.console.log('show_handheld_nav',this, this.audiotag);
+		window.console.trace();
+		if (document.CPU.is_audiotag_streamed(this.audiotag)) {
 			return;
 		}
-		container.container.classList.toggle('show-handheld-nav');
-		event.preventDefault();
+		this.container.classList.toggle('show-handheld-nav');
+		if (event.preventDefault) {
+			event.preventDefault();
+		}
 	}
 
 	/**
@@ -1617,11 +1692,10 @@ export class CPU_element_api {
 			'mouseup'       : false,
 			'mouseleave'    : false
 		};
-		let _press = trigger.press_button;
-		let _release = trigger.release_button;
+
 		for (let that of _buttons) {
 			for (let _act in _actions) {
-				this.elements[that].addEventListener(_act, _actions[_act] ? trigger.press_button : trigger.release_button);
+				this.elements[that].addEventListener(_act, _actions[_act] ? finger_manager.press : finger_manager.release);
 			}
 		}
 
@@ -1648,9 +1722,9 @@ export class CPU_element_api {
 				do_events[event_name] ? trigger.hover : trigger.out, passive_ev);
 		}
 		// alternative fine navigation for handhelds
-		timeline_element.addEventListener('touchstart', trigger.touchstart, passive_ev);
-		timeline_element.addEventListener('touchend', trigger.touchcancel, passive_ev);
-		timeline_element.addEventListener('contextmenu', this.show_handheld_nav );
+		timeline_element.addEventListener('touchstart', finger_manager.touchstart, passive_ev);
+		timeline_element.addEventListener('touchend', finger_manager.touchcancel, passive_ev);
+		timeline_element.addEventListener('contextmenu', this.show_handheld_nav.bind(this) );
 
 		if (!this.audiotag)  {
 			// <cpu-controller> without <cpu-audio> , see https://github.com/dascritch/cpu-audio/issues/91
