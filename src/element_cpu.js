@@ -78,22 +78,38 @@ let finger_manager = {
 		event.preventDefault();
 	},
 
-	show_alternate_nav : null,
-
 	/**
-	 * @summary Interprets long play on timeline for alternative fine position
+	 * @summary Interprets long play on timeline to reveal alternative fine position panel
+	 */
+	touching : null,
+	/**
+	 * @summary Press started on the timeline
 	 *
 	 * @param      {Object}  event   The event
 	 */
 	touchstart : function(event) {
 		let container = document.CPU.find_container(event.target);
-		finger_manager.show_alternate_nav = setTimeout(container.show_handheld_nav.bind(container), document.CPU.alternate_delay, event);
+		finger_manager.touching = setTimeout(container.show_handheld_nav.bind(container), document.CPU.alternate_delay);
 	},
-
+	/**
+	 * @summary Press stoped on the timeline
+	 *
+	 * @param      {Object}  event   The event
+	 */
 	touchcancel : function(event) {
-		clearTimeout(finger_manager.show_alternate_nav);
+		clearTimeout(finger_manager.touching);
 	},
 
+	/**
+	 * @summary Menu launch. Right Mouse Button on desktop, but may be a pointer long-press, we try to avoid this last one
+	 *
+	 * @param      {Object}  event   The event
+	 */
+	rmb : function(event) {
+		if (!finger_manager.touching) {
+			container.show_handheld_nav();
+		}
+	}
 }
 
 export class CPU_element_api {
@@ -630,13 +646,11 @@ export class CPU_element_api {
 	 * @param      {Object}  event   The event
 	 */
 	show_handheld_nav(event) {
-		window.console.log('show_handheld_nav',this, this.audiotag);
-		window.console.trace();
 		if (document.CPU.is_audiotag_streamed(this.audiotag)) {
 			return;
 		}
 		this.container.classList.toggle('show-handheld-nav');
-		if (event.preventDefault) {
+		if ((event) && (event.preventDefault)) {
 			event.preventDefault();
 		}
 	}
@@ -1724,7 +1738,7 @@ export class CPU_element_api {
 		// alternative fine navigation for handhelds
 		timeline_element.addEventListener('touchstart', finger_manager.touchstart, passive_ev);
 		timeline_element.addEventListener('touchend', finger_manager.touchcancel, passive_ev);
-		timeline_element.addEventListener('contextmenu', this.show_handheld_nav.bind(this) );
+		timeline_element.addEventListener('contextmenu', finger_manager.rmb);
 
 		if (!this.audiotag)  {
 			// <cpu-controller> without <cpu-audio> , see https://github.com/dascritch/cpu-audio/issues/91

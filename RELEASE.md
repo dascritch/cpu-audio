@@ -1,11 +1,18 @@
 RELEASE NOTES actual
 ====================
 
+Corrections
+-----------
+
+ * Resolving an robable issue on fine navigation panel on handheld
+
 Back-end
 --------
 
  * [Made a call on contribulle.org](https://contribulle.org/projects/27) 
- * Now using standard ECMA imports [#110](#110)
+ * Now using standard ECMA imports ([#110](#110))
+ * Renamed files
+ * Better separation between public objects and private methods
  * Leaving Google Closure for webpack : too many bugs, too old
  * Using `css-minify` for compressing css, instead of home-boiled regex
 
