@@ -158,11 +158,12 @@ function CPU_ready(event) {
 document.addEventListener('CPU_ready', CPU_ready);
 ```
 
-More tricks can be seen in the <live_chapters.html> source code.
+More tricks can be seen in the <applications/chapters_editor.html> source code.
 
+Note : events aren't impacted by `.preventDefault()`, yet.
 
 
 Console messages
 ----------------
 
-Any technical messages for cpu-audio.js will begin with `CPU-AUDIO: `. All messages are in English, there is no translation for console messages.
+Any technical messages for cpu-audio.js will begin with `CPU-AUDIO: `. All messages are in English, we won't provide translations in console messages.

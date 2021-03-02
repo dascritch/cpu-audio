@@ -1,4 +1,4 @@
-import {passive_ev, once_passive_ev, info, warn, on_debug} from './utils.js'
+import {passive_ev, once_passive_ev,  is_audiotag_streamed, info, warn, on_debug} from './utils.js'
 import {convert} from './convert.js'
 
 const KEY_LEFT_ARROW = 37;
@@ -191,7 +191,7 @@ export const trigger = {
 			trigger.pause(undefined, document.CPU.current_audiotag_playing);
 		}
 
-		if ((isNaN(audiotag.duration)) && (!document.CPU.is_audiotag_streamed(audiotag))) {
+		if ((isNaN(audiotag.duration)) && (!is_audiotag_streamed(audiotag))) {
 			// Correct play from position on the timeline when metadata not preloaded #88
 
 			// indicate we are loading something
@@ -475,7 +475,7 @@ export const trigger = {
 		}
 
 		audiotag.CPU_update();
-		if ((!audiotag.paused) && (!document.CPU.is_audiotag_streamed(audiotag))) {
+		if ((!audiotag.paused) && (!is_audiotag_streamed(audiotag))) {
 			window.localStorage.setItem(audiotag.currentSrc, String(audiotag.currentTime));
 		}
 	},

@@ -1,4 +1,4 @@
-import {dynamically_allocated_id_prefix, passive_ev, once_passive_ev, selector_interface, on_debug, CpuAudioTagName, CpuControllerTagName, absolutize_url, escape_html, querySelector_apply, error} from './utils.js'
+import {dynamically_allocated_id_prefix, passive_ev, once_passive_ev, selector_interface, on_debug, CpuAudioTagName, CpuControllerTagName, absolutize_url, escape_html, querySelector_apply, is_audiotag_streamed, error} from './utils.js'
 import {__} from './i18n.js'
 import {convert} from './convert.js'
 import {trigger} from './trigger.js'
@@ -9,7 +9,6 @@ const acceptable_hide_atttributes = ['poster', 'actions', 'timeline', 'chapters'
 
 // should be put in CPU-controller ?
 let preview_classname = 'with-preview';
-
 
 // regexes used for WebVTT tag validation
 const vtt_opentag = /<(\w+)(\.[^>]+)?( [^>]+)?>/gi;
@@ -289,7 +288,7 @@ export class CPU_element_api {
 	 */
 	update_time() {
 		let audiotag = this.audiotag;
-		let timecode = document.CPU.is_audiotag_streamed(audiotag) ? 0 : Math.floor(audiotag.currentTime);
+		let timecode = is_audiotag_streamed(audiotag) ? 0 : Math.floor(audiotag.currentTime);
 		let canonical = audiotag.dataset.canonical;
 		canonical = canonical === undefined ? '' : canonical;
 		let link_to = absolutize_url(canonical)+'#';
@@ -312,7 +311,7 @@ export class CPU_element_api {
 		}
 		 
 		let colon_time = convert.SecondsInColonTime(audiotag.currentTime);
-		let innerHTML = document.CPU.is_audiotag_streamed(audiotag) ? colon_time :`${colon_time}<span class="nosmaller">\u00a0/\u00a0${total_duration}</span>`;
+		let innerHTML = is_audiotag_streamed(audiotag) ? colon_time :`${colon_time}<span class="nosmaller">\u00a0/\u00a0${total_duration}</span>`;
 
 		if (this.elapse_was !== innerHTML) {
 			elapse_element.innerHTML = innerHTML;
@@ -486,7 +485,7 @@ export class CPU_element_api {
 			// do not try to show if no metadata
 			return;
 		}
-		if ((isNaN(audiotag.duration)) && (!document.CPU.is_audiotag_streamed(audiotag))) {
+		if ((isNaN(audiotag.duration)) && (!is_audiotag_streamed(audiotag))) {
 			// as we navigate on the timeline, we wish to know its total duration
 			// yes, this is twice calling, as of trigger.throbble() 
   			audiotag.setAttribute('preload', 'metadata'); 
@@ -604,7 +603,7 @@ export class CPU_element_api {
 	 */
 	show_interface(mode) {
 		this.container.classList.remove('show-no', 'show-main', 'show-share', 'show-error', 'media-streamed');
-		if (document.CPU.is_audiotag_streamed(this.audiotag)) {
+		if (is_audiotag_streamed(this.audiotag)) {
 			this.container.classList.add('media-streamed');
 		}
 		this.container.classList.add('show-'+mode);
@@ -646,7 +645,7 @@ export class CPU_element_api {
 	 * @param      {Object}  event   The event
 	 */
 	show_handheld_nav(event) {
-		if (document.CPU.is_audiotag_streamed(this.audiotag)) {
+		if (is_audiotag_streamed(this.audiotag)) {
 			return;
 		}
 		this.container.classList.toggle('show-handheld-nav');
