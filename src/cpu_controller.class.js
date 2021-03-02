@@ -47,17 +47,20 @@ export class CpuControllerElement extends HTMLElement {
 			this.CPU.audiotag = document.querySelector('cpu-audio audio');
 		}
 
+
+		if (this.getAttribute('glow') !== null) {
+			this.CPU.glow_before_play=true;
+		}
+
 		this.CPU.build_controller();
 		querySelector_apply('#canonical', element_prevent_link_on_same_page, this.shadowRoot);
 
 		this.CPU.attach_audiotag_to_controller(this.CPU.audiotag);
 
-		// construct aspects
-		let interface_classlist = this.CPU.elements['interface'].classList;
-
+		// mode="" attribute, on general aspect
 		let mode = this.getAttribute('mode');
 		if (mode !== null) {
-		// in case of a mode"still,play" declaration
+		// in case of a mode="still,play" declaration
 			let modes = mode.split(',');
 			if (modes.length > 1) {
 				mode = this.CPU.audiotag.paused ? modes[0] : modes[1];
@@ -66,19 +69,10 @@ export class CpuControllerElement extends HTMLElement {
 		}
 		this.CPU.set_mode_container(mode);
 
+		// hide="" attribute, space separated elements to hide
 		let hide_those = this.getAttribute('hide');
 		if (hide_those !== null) {
 			this.CPU.set_hide_container(hide_those.split(' '));
-		}
-
-		if (navigator.share) {
-			interface_classlist.add('hasnativeshare');
-			this.CPU.elements['nativeshare'].addEventListener('click', trigger.native_share);
-		}
-
-		if (this.getAttribute('glow') !== null) {
-			this.CPU.glow_before_play=true;
-			this.CPU.update_playbutton();
 		}
 
 	}

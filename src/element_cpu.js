@@ -191,7 +191,7 @@ export class CPU_element_api {
 		if (this.act_was === act) {
 			return;
 		}
-		if ( (! document.CPU.had_played) && (act === 'loading') ){
+		if ( (! document.CPU.had_played) && (this.act_was !== null) && (act === 'loading') ){
 			return;
 		}
 		this.container.classList.remove(
@@ -240,12 +240,17 @@ export class CPU_element_api {
 			return;
 		}
 
-		if (! ((trigger._last_play_error) && (audiotag.paused))) {
-			this.set_act_container(audiotag.paused ? 'pause' : 'play');
+		let will_act = 'play';
+		if (audiotag.paused) {
+			will_act = 'pause';
+			if ((!audiotag._CPU_played) && (this.glow_before_play)) {
+				// TODO check option
+				will_act = 'glow';
+			}
 		}
-		let hide_panels_except_play_mark = 'last-used';
 
-		let previous_audiotag = document.CPU.last_used;
+		this.set_act_container(will_act);
+		let hide_panels_except_play_mark = 'last-used';
 
 		if (!audiotag.paused) {
 			audiotag._CPU_played = true;
@@ -255,12 +260,8 @@ export class CPU_element_api {
 				this.mode_when_play = null;
 			}
 		} else {
-			if (! this.audiotag.isEqualNode(previous_audiotag)) {
+			if (! this.audiotag.isEqualNode(document.CPU.last_used)) {
 				this.container.classList.remove(hide_panels_except_play_mark);
-			}
-			// TODO check option
-			if ((!audiotag._CPU_played) && (this.glow_before_play)) {
-				this.set_act_container('glow');
 			}
 		}
 	}
@@ -1611,8 +1612,6 @@ export class CPU_element_api {
 	 * @private
 	 */
 	build_chapters_loader() {
-
-		this.audiotag.addEventListener('durationchange', this.reposition_tracks.bind(this), passive_ev);
 		this.build_chapters();
 		let this_build_chapters = this.build_chapters.bind(this);
 		// sometimes, we MAY have loose loading
@@ -1674,10 +1673,11 @@ export class CPU_element_api {
 		// the following mess is to simplify sub-element declaration and selection
 		let controller = this;
 		querySelector_apply('[id]', (element) => { controller.elements[element.id] = element; }, this.element.shadowRoot);
+		let interface_classlist = this.elements['interface'].classList;
 
-		// hide broken image when not loaded
+		// hide broken image while not loaded
 		this.elements['poster'].addEventListener('load', () => {
-			controller.elements['interface'].classList.add('poster-loaded'); 
+			interface_classlist.add('poster-loaded'); 
 		}, passive_ev);
 
 		let cliquables = {
@@ -1738,14 +1738,21 @@ export class CPU_element_api {
 		timeline_element.addEventListener('touchend', finger_manager.touchcancel, passive_ev);
 		timeline_element.addEventListener('contextmenu', finger_manager.rmb);
 
+		
+		if (navigator.share) {
+			interface_classlist.add('hasnativeshare');
+			this.elements['nativeshare'].addEventListener('click', trigger.native_share);
+		}
+
 		if (!this.audiotag)  {
 			// <cpu-controller> without <cpu-audio> , see https://github.com/dascritch/cpu-audio/issues/91
 			return;
 		}
 
+		this.audiotag.addEventListener('durationchange', this.reposition_tracks.bind(this), passive_ev);
+
 		this.show_main();
 		this.build_chapters_loader();
-
 		this.fire_event('ready');
 	}
 };

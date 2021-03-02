@@ -4,7 +4,8 @@ RELEASE NOTES actual
 Corrections
 -----------
 
- * Resolving an robable issue on fine navigation panel on handheld
+ * Resolving a probable issue on fine navigation panel on handheld
+ * Play/pause button may have issues if Chrome got numerous webcomponents in the same page
 
 Back-end
 --------

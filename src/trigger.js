@@ -300,7 +300,9 @@ export const trigger = {
 							document.addEventListener('click', unlock, once_passive_ev);
 
 							if (audiotag.CPU_connected) {
-								audiotag.CPU_controller().CPU.set_act_container('glow');
+								let CPU_api = audiotag.CPU_controller().CPU;
+								CPU_api.glow_before_play = true;
+								CPU_api.set_act_container('glow');
 							}
 							break;
 						case 'NotSupportedError':
