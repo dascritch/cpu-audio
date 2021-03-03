@@ -504,14 +504,10 @@ export class CPU_element_api {
 
 	/**
 	 * @summary Hides immediately the throbber.
-	 *
 	 * @public
-	 *
-	 * @param      {Object|undefined}  that    "this" callback
 	 */
-	hide_throbber(that=undefined) {
-		that = that === undefined ? this : that;
-		let phylactere = that.elements['popup'];
+	hide_throbber() {
+		let phylactere = this.elements['popup'];
 		phylactere.style.opacity = 0;
 	}
 
@@ -525,7 +521,7 @@ export class CPU_element_api {
 		if (phylactere._hider) {
 			window.clearTimeout(phylactere._hider);
 		}
-		phylactere._hider = window.setTimeout(this.hide_throbber, hide_throbber_delay, this);
+		phylactere._hider = window.setTimeout(this.hide_throbber.bind(this), hide_throbber_delay);
 	}
 
 	/**
@@ -553,11 +549,13 @@ export class CPU_element_api {
 
 	/**
 	 * @private
+	 * still need to be public exposed for tests
 	 *
 	 * @summary Update links for sharing
 	 */
 	update_links() {
 		let container = this;
+		let audiotag = this.audiotag;
 		function ahref(category, href) {
 			container.elements[category].href = href;
 		}
@@ -569,10 +567,10 @@ export class CPU_element_api {
 		let dataset = this.fetch_audiotag_dataset();
 
 		let url = (dataset.canonical === null ? '' : remove_hash(dataset.canonical))
-					+ `#${this.audiotag.id}` 
-					+ ( this.audiotag.currentTime === 0 
+					+ `#${audiotag.id}` 
+					+ ( audiotag.currentTime === 0 
 							? ''
-							: `&t=${Math.floor(this.audiotag.currentTime)}`
+							: `&t=${Math.floor(audiotag.currentTime)}`
 						);
 
 		let _url = encodeURI(absolutize_url(url));
@@ -586,11 +584,11 @@ export class CPU_element_api {
 		ahref('twitter', `https://twitter.com/share?text=${dataset.title}&url=${_url}${_twitter}`);
 		ahref('facebook', `https://www.facebook.com/sharer.php?t=${dataset.title}&u=${_url}`);
 		ahref('email', `mailto:?subject=${dataset.title}&body=${_url}`);
-		let download_link = this.audiotag.currentSrc
+		let download_link = audiotag.currentSrc
 		if (dataset.download) {
 			download_link = dataset.download;
 		}
-		let prerefed_audio_src = this.audiotag.querySelector('source[data-downloadable]');
+		let prerefed_audio_src = audiotag.querySelector('source[data-downloadable]');
 		if (prerefed_audio_src) {
 			download_link = prerefed_audio_src.src;
 		}
@@ -604,11 +602,12 @@ export class CPU_element_api {
 	 * @param      {string}  mode    The mode, can be 'main', 'share' or 'error'
 	 */
 	show_interface(mode) {
-		this.container.classList.remove('show-no', 'show-main', 'show-share', 'show-error', 'media-streamed');
+		let classlist = this.container.classList;
+		classlist.remove('show-no', 'show-main', 'show-share', 'show-error', 'media-streamed');
 		if (is_audiotag_streamed(this.audiotag)) {
-			this.container.classList.add('media-streamed');
+			classlist.add('media-streamed');
 		}
-		this.container.classList.add('show-'+mode);
+		classlist.add('show-'+mode);
 	}
 
 	/**
