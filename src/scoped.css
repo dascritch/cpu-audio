@@ -4,7 +4,7 @@
   contain: content; 
 }
 
-.act-play {
+.act-play, .act-buffer {
 	--cpu-background : var(--cpu-playing-background);
 	--cpu-color : var(--cpu-playing-color);
 }

@@ -111,3 +111,5 @@ set -e
 
 _build_template
 _build_component_js_webpack
+
+ls -l ${PROJECT_DIR}/dist/*

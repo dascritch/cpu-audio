@@ -4,6 +4,7 @@ RELEASE NOTES actual
 Corrections
 -----------
 
+ * Do not change color when changing mode play→loading→play ([#114](#114)) 
  * Resolving a probable issue on fine navigation panel on handheld
  * Play/pause button may have issues if Chrome got numerous webcomponents in the same page
 
