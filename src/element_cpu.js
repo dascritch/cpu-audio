@@ -191,17 +191,18 @@ export class CPU_element_api {
 		if ( (! document.CPU.had_played) && (this.act_was !== null) && (act === 'loading') ){
 			return;
 		}
-		if ((this.act_was === 'play') && (act === 'loading')) {
-			act = 'buffer';
-		}
-		this.container.classList.remove(
+		let classes = this.container.classList;
+		classes.remove(
 			'act-loading',
 			'act-buffer',
 			'act-pause',
 			'act-play',
 			'act-glow'
 			);
-		this.container.classList.add(`act-${act}`);
+		classes.add(`act-${act}`);
+		if ((this.act_was === 'play') && (act === 'loading')) {
+			classes.add(`act-buffer`);
+		}
 		this.act_was = act;
 	}
 	/**
