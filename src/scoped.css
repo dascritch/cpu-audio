@@ -105,6 +105,7 @@ a {
 }
 
 .act-loading #loading,
+.act-buffer #loading,
 .act-play #play,
 .act-glow #pause,
 .act-pause #pause {
