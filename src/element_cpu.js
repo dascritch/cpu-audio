@@ -2,6 +2,7 @@ import {dynamically_allocated_id_prefix, passive_ev, once_passive_ev, selector_i
 import {__} from './i18n.js'
 import {convert} from './convert.js'
 import {trigger} from './trigger.js'
+import {translate_vtt} from './translate_vtt.js'
 
 
 // Acceptables attributes values for hide="" parameter on webcomponent
@@ -9,10 +10,6 @@ const acceptable_hide_atttributes = ['poster', 'actions', 'timeline', 'chapters'
 
 // should be put in CPU-controller ?
 let preview_classname = 'with-preview';
-
-// regexes used for WebVTT tag validation
-const vtt_opentag = /<(\w+)(\.[^>]+)?( [^>]+)?>/gi;
-const vtt_closetag = /<\/(\w+)( [^>]*)?>/gi;
 
 // Regex used to validate planes, points and injected css names
 const valid_id = /^[a-zA-Z0-9\-_]+$/;
@@ -987,72 +984,12 @@ export class CPU_element_api {
 	/**
 	 * @summary Transform VTT tag langage into HTML tags, filtering out some
 	 * (needed @public mainly for tests. Moving it up and do those tests in CLI will make it @private-izable)
-	 * 
-	 * NEVER EVER BELIEVE you can parse HTML with regexes ! This function works because we just do minimalistic changes
-	 * By the way, regexes are really time consuming, both for you and your computer.
-	 * And, sincerely, I love playing on https://regexcrossword.com/
 	 *
 	 * @param      {string}            vtt_taged  The vtt tagged
 	 * @return     string                         HTML tagged string
-	 * 
      */
 	translate_vtt(vtt_taged) {
-
-		let acceptables = {
-			'i'     : 'i',
-			'em'    : 'em', // (not in the standard but used in legacy CPU.pm show)
-			'b'     : 'b', 
-			'bold'  : 'strong', // (declared in the MDN page, but never saw it in standard pages)
-			'u'     : 'u',
-			'lang'  : 'i' // emphasis for typographic convention
-		};
-
-		function not_acceptable_tag(/* @param {string} */ name) {
-			return !(name in acceptables);
-		}
-
-		/**
-		 * @param      {string}   		   tag 			Unused regex capture
-		 * @param      {string}   		   name 		Name of the tag
-		 * @param      {string}   		   class_name 	attribute key, unused
-		 * @param      {string}   		   attribute 	attribute value, may be language code
-		 * @return     {string}
-		 */
-		function opentag(tag, name, class_name, attribute) {
-			name = name.toLowerCase();
-			if (not_acceptable_tag(name)) {
-				return '';
-			}
-			let $_attr = '';
-			if (name === 'lang') {
-				$_attr = ` lang="${attribute.trim()}"`;
-			}
-			return `<${acceptables[name]}${$_attr}>`;
-		}
-
-		/**
-		 * @param      {string}   		   tag 			Unused regex capture
-		 * @param      {string}   		   name 		Name of the tag
-		 * @return     {string}
-		 */
-		function closetag(tag, name) {
-			name = name.toLowerCase();
-			if (not_acceptable_tag(name)) {
-				return '';
-			}
-			return `</${acceptables[name]}>`;
-		}
-
-		if ((vtt_taged.split('<').length) !== (vtt_taged.split('>').length)) {
-			// unmatching < and >, probably badly written tags, or in full text
-			// unsurprisingly, (vtt_taged.split('<').length) is a lot faster than using regex. JS needs a standard property for counting substring occurences in a string
-			return escape_html(vtt_taged);
-		}
-
-		return vtt_taged.
-				replace(vtt_opentag, opentag).
-				replace(vtt_closetag, closetag).
-				replaceAll('\n', '<br/>');
+		return translate_vtt(vtt_taged)
 	}
 
 	/**
@@ -1736,12 +1673,12 @@ export class CPU_element_api {
 		// alternative fine navigation for handhelds
 		timeline_element.addEventListener('touchstart', finger_manager.touchstart, passive_ev);
 		timeline_element.addEventListener('touchend', finger_manager.touchcancel, passive_ev);
-		timeline_element.addEventListener('contextmenu', finger_manager.rmb);
+		timeline_element.addEventListener('contextmenu', finger_manager.rmb, passive_ev);
 
 		
 		if (navigator.share) {
 			interface_classlist.add('hasnativeshare');
-			this.elements['nativeshare'].addEventListener('click', trigger.native_share);
+			this.elements['nativeshare'].addEventListener('click', trigger.native_share, passive_ev);
 		}
 
 		if (!this.audiotag)  {
