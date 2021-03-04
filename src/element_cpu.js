@@ -946,6 +946,17 @@ export class CPU_element_api {
 	}
 
 	/**
+	 * @summary Shortcut to get  points data
+	 * @private
+	 *
+	 * @param      {string}  plane_name  The plane name
+	 * @return     {Object}  Data
+	 */
+	plane_points(plane_name) {
+		return this.audiotag._CPU_planes[plane_name].points;
+	}
+
+	/**
 	 * @summary Gets the point track identifier
 	 * @private
 	 *
@@ -967,7 +978,7 @@ export class CPU_element_api {
 	 * @return     {Object}  Data
 	 */
 	get_point(plane_name, point_name) {
-		return this.audiotag._CPU_planes[plane_name].points[point_name];
+		return this.plane_points(plane_name)[point_name];
 	}
 
 	/**
@@ -1015,7 +1026,7 @@ export class CPU_element_api {
 	 */
 	plane_resort(plane_name) {
 		this.audiotag._CPU_planes[plane_name].points = Object.fromEntries(
-		    Object.entries(this.audiotag._CPU_planes[plane_name].points).sort(
+		    Object.entries(this.plane_points(plane_name)).sort(
 		    	(point_a, point_b) => {
 		    		return point_a[1].start - point_b[1].start;
 		    	})
@@ -1226,7 +1237,7 @@ export class CPU_element_api {
 
 		//  recalc _start_max for caching repaints
 		let _st_max = 0;
-		for (let s of Object.values(this.audiotag._CPU_planes[plane_name].points)) {
+		for (let s of Object.values(this.plane_points(plane_name))) {
 			let that_start = Number(s.start);
 			_st_max = _st_max < that_start ? that_start : _st_max;
 		}
@@ -1289,7 +1300,7 @@ export class CPU_element_api {
 	 */
 	refresh_plane(plane_name) {
 		this.plane_resort(plane_name);
-		for (let point_name of Object.keys(this.audiotag._CPU_planes[plane_name].points)) {
+		for (let point_name of Object.keys(this.plane_points(plane_name))) {
 			this.draw_point(plane_name, point_name);
 		}
 	}
@@ -1332,7 +1343,7 @@ export class CPU_element_api {
 		for (let plane_name in this.audiotag._CPU_planes) {
 			let plane_data = this.get_plane(plane_name);
 			if (plane_data.track !== false) {
-				for (let point_name of Object.keys(this.audiotag._CPU_planes[plane_name].points)) {
+				for (let point_name of Object.keys(this.plane_points(plane_name))) {
 					let point_data = this.get_point(plane_name, point_name);
 					let element = this.get_point_track(plane_name, point_name);
 					this.position_time_element(element, point_data.start, point_data.end);
@@ -1583,11 +1594,11 @@ export class CPU_element_api {
 			// Note that ONLY the global controller will display the playlist. For now.
 			return;
 		}
-		// Later, we will try to remove this specific code, and use plane/point arch, with data hosted on <CPU-CONTROLLER>
 
 		let previous_playlist = this.current_playlist;
 		this.current_playlist = document.CPU.find_current_playlist();
 
+		// Later, we will try to remove this specific code, and use plane/point arch, with data hosted on <CPU-CONTROLLER>
 		let playlist_element = this.elements['playlist'];
 		playlist_element.innerHTML = '';
 
