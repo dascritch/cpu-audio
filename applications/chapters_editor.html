@@ -75,47 +75,37 @@
         }
     </style>
 
-
 </head>
 <body>
 <H1>cpu-audio chapters editor</H1>
 
 <details id="at_start" open>
-
-<p>
-    This is a primitive live chapters editor for CPU-Audio, helping you to build link in page for your website, blog, CMS, etc.
-</p>
-
+    <p>
+        This is a primitive live chapters editor for CPU-Audio, helping you to build link in page for your website, blog, CMS, etc.
+    </p>
     <summary>Configure editor</summary>
     <form id="configure" action="#edit_chapters" method="post">
-
         <fieldset>
             <label for="source_audio">
                 <span>URL source audio</span>
                 <input id="source_audio" name="source_audio" type="url" />
             </label>
         </fieldset>
-
         <fieldset>
             <label for="source_webvtt">
                 <span>(optional) : URL WebVTT track to re-edit</span>
                 <input id="source_webvtt" name="source_webvtt" type="url" />
             </label>
-
             <label for="source_waveform">
                 <span>(optional) : URL waveform image</span>
                 <!-- Is there any JS lib to create it on the fly ? -->
                 <input id="source_waveform" name="source_waveform" type="url" />
             </label>
-
         </fieldset>
-
         <fieldset class="actions">
             <button type="submit" class="validate">Go to editor</button>
         </fieldset>
-
         <p>Think my editor is ugly ? You're right ! <a href="https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md">Just help us !</a></p>
-
     </form>
 </details>
 
@@ -139,11 +129,9 @@
 <details id="chapters">
     <summary>Chapters editor</summary>
     <form id="edit_chapters" action="#generated_html" method="post">
-
         <fieldset class="actions">
             <button type="button" class="validate" id="add"><strong>+</strong> Add a new chapter</button>
         </fieldset>
-
         <fieldset id="list">
             <p class="line editing" id="line-0">
                 
@@ -163,13 +151,10 @@
 <!-- -->
 <details id="generated_html">
     <summary>Generated HTML</summary>
-
     <fieldset id="html_out">
     </fieldset>    
-
     <fieldset>
         <p>Copy and paste this HTML code :</p>
-
         <pre id="html_source"></pre>
     </fieldset>
 </details>
@@ -178,31 +163,24 @@
     <summary>Generated MarkDown</summary>
     <fieldset>
         <p>Copy and paste this MarkDown code :</p>
-
         <pre id="md_source"></pre>
     </fieldset>
 </details>
 
 <details id="generated_wiki">
     <summary>Generated DokuWiki</summary>
-
     <fieldset>
         <p>Copy and paste this Wiki code :</p>
-
         <pre id="wiki_source"></pre>
     </fieldset>
 </details>
 
 <details id="generated_vtt">
     <summary>Generated WebVTT</summary>
-
     <fieldset>
         <p><a id="vtt_source_download" download="chapter.vtt">Save this in a .vtt file</a> :</p>
-
         <pre id="vtt_source"></pre>
-
         <p>Then insert a <code>&lt;track kind="chapters" default src="…"&gt;</code> tag reffering it into your <code>&lt;audio control&gt;</code> tag</p>
-
     </fieldset>
 </details>
 
