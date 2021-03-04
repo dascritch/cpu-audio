@@ -1499,7 +1499,6 @@ export class CPU_element_api {
 
 				if ((chapter_track) && (chapter_track.cues.length > 0)) {
 					this.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
-					// this.clear_plane(plane_name); // avoid unuseful redraw
 
 					let cuechange_event = this.cuechange_event.bind(this);
 					// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
@@ -1564,11 +1563,10 @@ export class CPU_element_api {
 	build_chapters_loader() {
 		this.build_chapters();
 		let this_build_chapters = this.build_chapters.bind(this);
-		// sometimes, we MAY have loose loading
 
+		// sometimes, we MAY have loose loading
 		this.audiotag.addEventListener('loadedmetadata', this_build_chapters, once_passive_ev);
 
-		
 		let track_element = this.audiotag.querySelector('track[kind="chapters"]');
 		if ((track_element) && (!track_element._CPU_load_ev)) {
 			track_element._CPU_load_ev = track_element.addEventListener('load', this_build_chapters, passive_ev);
@@ -1585,6 +1583,7 @@ export class CPU_element_api {
 			// Note that ONLY the global controller will display the playlist. For now.
 			return;
 		}
+		// Later, we will try to remove this specific code, and use plane/point arch, with data hosted on <CPU-CONTROLLER>
 
 		let previous_playlist = this.current_playlist;
 		this.current_playlist = document.CPU.find_current_playlist();
