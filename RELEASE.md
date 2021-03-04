@@ -4,6 +4,7 @@ RELEASE NOTES actual
 Corrections
 -----------
 
+ * Reduce repaints
  * Do not change color when changing mode play→loading→play ([#114](#114)) 
  * Resolving a probable issue on fine navigation panel on handheld
  * Play/pause button may have issues if Chrome got numerous webcomponents in the same page
@@ -18,6 +19,14 @@ Back-end
  * Leaving Google Closure for webpack : too many bugs, too old
  * Using `css-minify` for compressing css, instead of home-boiled regex
  * Using `html-minifier` for compressing html, for the exact same reasons
+
+Todo:
+
+ - Debug issues in Chrome mobile , as replay position or highlighted chapters in double
+ - Finish drag'n'drop in chapters-editors
+ - Automated links from MD (or index.html) to examples and applications
+ - Create and example of multiple choices downloads in panel with data-downloadables=""
+ - Implement <kbd>↑</kbd> and <kbd>↓</kbd> keys to move on chapters and playlists
 
 
 RELEASE NOTES version 6.6.3

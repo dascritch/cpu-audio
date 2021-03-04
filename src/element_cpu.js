@@ -329,17 +329,26 @@ export class CPU_element_api {
 	 */
 	update_time_borders() {
 		let audiotag = this.audiotag;
-		let plane = '_borders';
+		let plane_name = '_borders';
+		let point_name = 'play';
 		if ((!document.CPU.is_audiotag_global(audiotag)) || (trigger._timecode_end === false)) {
-			this.remove_plane(plane);
+			this.remove_plane(plane_name);
 			return;
 		}
-		this.add_plane(plane,'',{ 
+		// verify if plane exists, and point is invariant
+		if (this.get_plane(plane_name)) {
+			let check = this.get_point(plane_name, point_name);
+			if ((check) && (check.start === trigger._timecode_start) && (check.end === trigger._timecode_end)) {
+				return;
+			}
+		}
+
+		this.add_plane(plane_name,'',{ 
 			track   : 'borders',
 			panel   : false,
 			highlight : false
 		});
-		this.add_point(plane, trigger._timecode_start, 'play', {
+		this.add_point(plane_name, trigger._timecode_start, point_name, {
 			link    : false,
 			end     : trigger._timecode_end
 		});
