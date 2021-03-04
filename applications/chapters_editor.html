@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>cpu-audio application : chapters editor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./chapters_editor.js" async></script>
+    <script src="../dist/cpu-audio.js" async></script>
+
+    <style>
+        #configure label {
+            display: flex;
+        }
+
+        #configure label span {
+            flex : 0 0 150px;
+        }
+
+        #configure label input {
+            flex : 1 1 auto;
+        }
+
+        button, summary {
+            font-family: sans-serif;
+            color : black;
+            padding : 6px;
+            border-radius: 4px;
+            border: 2px outset gray;
+            background: #AAA;
+            display: inline-block;
+        }
+
+        button.validate {
+            color : white;
+            background : #070;
+        }
+        button.remove {
+            color : white;
+            background : #F00;
+        }
+
+        #steps {
+            display : none;
+        }
+
+        .loaded #steps {
+            display: flex;
+            width: 100%;
+        }
+
+        #steps a {
+            padding : 4px;
+            border : 1px #ccc solid;
+        }
+
+        fieldset {
+            border  :1px solid #ccc
+        }
+
+        #list p {
+            display : none;
+            width : 100%;
+        }
+
+        #list p.editing {
+            display : block;
+        }
+
+        .text_input {
+            width : 100%;
+        }
+
+        .remove {
+            float : right;
+        }
+    </style>
+
+
+</head>
+<body>
+<H1>cpu-audio chapters editor</H1>
+
+<details id="at_start" open>
+
+<p>
+    This is a primitive live chapters editor for CPU-Audio, helping you to build link in page for your website, blog, CMS, etc.
+</p>
+
+    <summary>Configure editor</summary>
+    <form id="configure" action="#edit_chapters" method="post">
+
+        <fieldset>
+            <label for="source_audio">
+                <span>URL source audio</span>
+                <input id="source_audio" name="source_audio" type="url" />
+            </label>
+        </fieldset>
+
+        <fieldset>
+            <label for="source_webvtt">
+                <span>(optional) : URL WebVTT track to re-edit</span>
+                <input id="source_webvtt" name="source_webvtt" type="url" />
+            </label>
+
+            <label for="source_waveform">
+                <span>(optional) : URL waveform image</span>
+                <!-- Is there any JS lib to create it on the fly ? -->
+                <input id="source_waveform" name="source_waveform" type="url" />
+            </label>
+
+        </fieldset>
+
+        <fieldset class="actions">
+            <button type="submit" class="validate">Go to editor</button>
+        </fieldset>
+
+        <p>Think my editor is ugly ? You're right ! <a href="https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md">Just help us !</a></p>
+
+    </form>
+</details>
+
+
+<cpu-audio 
+    title="First, Choose an URL for source"
+    hide="poster actions">
+    <audio controls id="sound">
+        <source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+        <track kind="metadata" src="" default />
+    </audio>
+    <!-- fallback messages for browsers without webcomponents -->
+    <div class="cpu-audio-without-webcomponents too-old">
+        <h2>Player didn't start (yet ?)</h2>
+        <p>
+            Your browser is loading very slowly, or doesn't support WebComponent fairly enough. This application cannot run without it.
+        </p>
+    </div>
+</cpu-audio>
+
+<details id="chapters">
+    <summary>Chapters editor</summary>
+    <form id="edit_chapters" action="#generated_html" method="post">
+
+        <fieldset class="actions">
+            <button type="button" class="validate" id="add"><strong>+</strong> Add a new chapter</button>
+        </fieldset>
+
+        <fieldset id="list">
+            <p class="line editing" id="line-0">
+                
+                <input class="timecode_input" inputmode="numeric" pattern="^([0-5]?[0-9]:){0,2}[0-5]?[0-9]$" placeholder="00:00:00" valu="0:00" size="8" />
+                <br />
+                <input class="text_input" type="text" placeholder="Chapter name" />
+                <br />
+                <button type="button" class="set">Set position to now</button>
+                <button type="button" class="test">Test time position</button>
+                <button type="button" class="remove">× Remove this chapter</button>
+            </p>
+        </fieldset>
+
+    </form>
+</details>
+
+<!-- -->
+<details id="generated_html">
+    <summary>Generated HTML</summary>
+
+    <fieldset id="html_out">
+    </fieldset>    
+
+    <fieldset>
+        <p>Copy and paste this HTML code :</p>
+
+        <pre id="html_source"></pre>
+    </fieldset>
+</details>
+
+<details id="generated_md">
+    <summary>Generated MarkDown</summary>
+    <fieldset>
+        <p>Copy and paste this MarkDown code :</p>
+
+        <pre id="md_source"></pre>
+    </fieldset>
+</details>
+
+<details id="generated_wiki">
+    <summary>Generated DokuWiki</summary>
+
+    <fieldset>
+        <p>Copy and paste this Wiki code :</p>
+
+        <pre id="wiki_source"></pre>
+    </fieldset>
+</details>
+
+<details id="generated_vtt">
+    <summary>Generated WebVTT</summary>
+
+    <fieldset>
+        <p><a id="vtt_source_download" download="chapter.vtt">Save this in a .vtt file</a> :</p>
+
+        <pre id="vtt_source"></pre>
+
+        <p>Then insert a <code>&lt;track kind="chapters" default src="…"&gt;</code> tag reffering it into your <code>&lt;audio control&gt;</code> tag</p>
+
+    </fieldset>
+</details>
+
+</body>
+</html>
