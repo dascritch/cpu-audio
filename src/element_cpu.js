@@ -1,4 +1,4 @@
-import {dynamically_allocated_id_prefix, passive_ev, once_passive_ev, on_debug, CpuAudioTagName, CpuControllerTagName, absolutize_url, escape_html, querySelector_apply, is_audiotag_streamed, error} from './utils.js'
+import {dynamically_allocated_id_prefix, passive_ev, once_passive_ev, on_debug, CpuControllerTagName, absolutize_url, escape_html, querySelector_apply, is_audiotag_streamed, error} from './utils.js'
 import {__, prefered_language} from './i18n.js'
 import {convert} from './convert.js'
 import {trigger} from './trigger.js'
@@ -135,6 +135,8 @@ export class CPU_element_api {
 		if ( (this.audiotag) && (! this.audiotag._CPU_planes)) {
 			this.audiotag._CPU_planes = {}
 		}
+
+		this.is_controller = this.element.tagName === CpuControllerTagName;
 	}
 
 	/**
@@ -856,7 +858,7 @@ export class CPU_element_api {
 		}
 
 		if (
-			(this.element.tagName !== CpuControllerTagName) &&
+			(!this.is_controller) &&
 			(document.CPU.global_controller !== null) &&
 			(this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
 			) {
@@ -878,7 +880,7 @@ export class CPU_element_api {
 	 * @return     {boolean}  success
 	 */
 	add_plane(plane_name, title, data) {
-		if ((this.element.tagName === CpuControllerTagName) || (! plane_name.match(valid_id)) || (this.get_plane(plane_name) !== undefined)) {
+		if ((this.is_controller) || (! plane_name.match(valid_id)) || (this.get_plane(plane_name) !== undefined)) {
 			return false;
 		}
 
@@ -916,7 +918,7 @@ export class CPU_element_api {
 	 * @return     {boolean}  success
 	 */
 	remove_plane(name) {
-		if ( (this.element.tagName === CpuControllerTagName) || (! name.match(valid_id)) || (this.audiotag._CPU_planes[name] === undefined)) {
+		if ( (this.is_controller) || (! name.match(valid_id)) || (this.audiotag._CPU_planes[name] === undefined)) {
 			return false;
 		}
 		if (this.audiotag) {
@@ -933,7 +935,7 @@ export class CPU_element_api {
 		}
 
 		if (
-			(this.element.tagName !== CpuControllerTagName) &&
+			(!this.is_controller) &&
 			(document.CPU.global_controller !== null) &&
 			(this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
 			) {
@@ -1112,7 +1114,7 @@ export class CPU_element_api {
 		});
 
 		if (
-			(this.element.tagName !== CpuControllerTagName) &&
+			(!this.is_controller) &&
 			(document.CPU.global_controller !== null) &&
 			(this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
 			) {
@@ -1137,7 +1139,7 @@ export class CPU_element_api {
 	add_point(plane_name, timecode_start, point_name, data) {
 		data = data === undefined ? {} : data;
 		
-		if ( (this.element.tagName === CpuControllerTagName) || (this.get_plane(plane_name) === undefined) || (this.get_point(plane_name, point_name) !== undefined) || (timecode_start < 0) || (!point_name.match(valid_id)) ) {
+		if ( (this.is_controller) || (this.get_plane(plane_name) === undefined) || (this.get_point(plane_name, point_name) !== undefined) || (timecode_start < 0) || (!point_name.match(valid_id)) ) {
 			return false;
 		}
 
@@ -1241,7 +1243,7 @@ export class CPU_element_api {
 		this.audiotag._CPU_planes[plane_name]._st_max = _st_max;
 
 		if (
-			(this.element.tagName !== CpuControllerTagName) &&
+			(!this.is_controller) &&
 			(document.CPU.global_controller !== null) &&
 			(this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
 			) {
@@ -1366,7 +1368,7 @@ export class CPU_element_api {
 			(document.CPU.global_controller !== null) &&
 			(this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
 			) {
-			if (this.element.tagName !== CpuControllerTagName) {
+			if (!this.is_controller) {
 				document.CPU.global_controller.remove_highlights_points(class_name, false);
 			} else {
 				document.CPU.find_container(document.CPU.global_controller.audiotag).remove_highlights_points(class_name, false);
@@ -1422,7 +1424,7 @@ export class CPU_element_api {
 			(document.CPU.global_controller !== null) &&
 			(this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
 			) {
-			if (this.element.tagName !== CpuControllerTagName) {
+			if (!this.is_controller) {
 				document.CPU.global_controller.highlight_point(plane_name, point_name, class_name, false);
 			} else {
 				document.CPU.find_container(document.CPU.global_controller.audiotag).highlight_point(plane_name, point_name, class_name, false);
@@ -1478,7 +1480,7 @@ export class CPU_element_api {
 		// this functions is called THREE times at load : at build, at loadedmetada event and at load event
 		// and afterwards, we have to reposition track points on duractionchange
 
-		if (this.element.tagName === CpuControllerTagName) {
+		if (this.is_controller) {
 			// not your job, CPUController
 			return;
 		}
@@ -1532,7 +1534,7 @@ export class CPU_element_api {
 			}
 		}
 
-		if (this.element.tagName === CpuAudioTagName) {
+		if (!this.is_controller) {
 			let body_class = `cpu_tag_«${audiotag.id}»_chaptered`;
 			if (has) {
 				/**
@@ -1582,7 +1584,7 @@ export class CPU_element_api {
 	 * @public
 	 */
 	build_playlist() {
-		if (this.element.tagName !== CpuControllerTagName) {
+		if (!this.is_controller) {
 			// Note that ONLY the global controller will display the playlist. For now.
 			return;
 		}
