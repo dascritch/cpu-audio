@@ -106,6 +106,7 @@ let finger_manager = {
 		if (!finger_manager.touching) {
 			container.show_handheld_nav();
 		}
+		event.preventDefault();
 	}
 }
 
