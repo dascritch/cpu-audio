@@ -139,6 +139,10 @@ export class CPU_element_api {
 		this.is_controller = this.element.tagName === CpuControllerTagName;
 	}
 
+	mirrored_in_controller() {
+		return (document.CPU.global_controller !== null) && (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag));
+	}
+
 	/**
 	 * @summary    create and fire custom events for the global document.
 	 * @private
@@ -848,7 +852,7 @@ export class CPU_element_api {
 		if (
 			(!this.is_controller) &&
 			(document.CPU.global_controller !== null) &&
-			(this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
+			(this.mirrored_in_controller())
 			) {
 			document.CPU.global_controller.draw_plane(plane_name);
 		}
@@ -925,7 +929,7 @@ export class CPU_element_api {
 		if (
 			(!this.is_controller) &&
 			(document.CPU.global_controller !== null) &&
-			(this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
+			(this.mirrored_in_controller())
 			) {
 			// as plane data is removed, it will remove its aside and track 
 			document.CPU.global_controller.draw_plane(name);
