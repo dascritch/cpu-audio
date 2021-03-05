@@ -5,6 +5,8 @@ cpu-audio.js can be fine-tuned only with HTML attributes and CSS variables, but 
 
 This is the reference page for public accessible methods and properties. You can read some test cases in the `examples` sub-directory of this project.
 
+Important : Undocumented feature uses is at your risks, we won't check naming, parameters, actions and outputs continuity. And seriously, keep our webcomponent up to date on the stable version.
+
 
 document.body.CPU
 -----------------
