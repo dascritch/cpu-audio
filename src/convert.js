@@ -4,6 +4,7 @@ const units_scale = {
 	'm' : 60,
 	's' : 1
 };
+let scale = [1, 60, 3600, 86400];
 
 const _is_only_numeric = /^\d+$/;
 const _any_not_numeric = /\D*/g;
@@ -70,9 +71,8 @@ export const convert = {
 	'ColonTimeInSeconds' : function(givenTime) {
 		let seconds = 0;
 		let atoms = givenTime.split(':');
-		let convert = [1, 60, 3600, 86400];
 		for (let pos = 0 ; pos < atoms.length ; pos++) {
-			seconds += Number(atoms[pos]) * convert[((atoms.length-1) - pos)];
+			seconds += Number(atoms[pos]) * scale[((atoms.length-1) - pos)];
 		}
 		return seconds;
 	},
@@ -135,11 +135,11 @@ export const convert = {
 		}
 		if (converted.length === 1) {
 			// between 0 and 9 seconds
-			return '0:0' + converted;
+			return `0:0${converted}`;
 		}
 		if (converted.length === 2) {
 			// between 10 and 59 seconds
-			return '0:' + converted;
+			return `0:${converted}`;
 		} 
 		
 		return converted === '' ? '0:00' : converted;
@@ -177,4 +177,4 @@ export const convert = {
 	'IsoDuration' : function(givenSeconds) {
 		return `P${convert.SecondsInTime(givenSeconds).toUpperCase()}`;
 	}
-}
+};

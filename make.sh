@@ -75,7 +75,8 @@ function _build_template() {
 	template_html=$(cat "${PROJECT_DIR}/tmp/template.html")
 
 	echo "// auto-generated source, done via make.sh
-import {__} from '../src/i18n.js'
+import {__} from '../src/i18n.js';
+/** @summary insert styles and template into host document */
 export function insert_template(){
 	let style = document.createElement('style');
 	style.innerHTML = \`${global_css}\`;

@@ -1,8 +1,8 @@
-import {dynamically_allocated_id_prefix, passive_ev, once_passive_ev, on_debug, CpuControllerTagName, absolutize_url, escape_html, querySelector_apply, is_audiotag_streamed, error} from './utils.js'
-import {__, prefered_language} from './i18n.js'
-import {convert} from './convert.js'
-import {trigger} from './trigger.js'
-import {translate_vtt} from './translate_vtt.js'
+import {dynamically_allocated_id_prefix, passive_ev, once_passive_ev, on_debug, CpuControllerTagName, absolutize_url, escape_html, querySelector_apply, is_audiotag_streamed, error} from './utils.js';
+import {__, prefered_language} from './i18n.js';
+import {convert} from './convert.js';
+import {trigger} from './trigger.js';
+import {translate_vtt} from './translate_vtt.js';
 
 
 // Acceptables attributes values for hide="" parameter on webcomponent
@@ -17,6 +17,17 @@ const valid_id = /^[a-zA-Z0-9\-_]+$/;
 // Regex for extracting plane and point names from an id
 const plane_point_names_from_id = /^([a-zA-Z0-9\-_]+_«)([a-zA-Z0-9\-_]+)((»_.*_«)([a-zA-Z0-9\-_]+))?(»)$/;
 
+
+/**
+ * Removes a hash in an URL
+ *
+ * @param      {string}   canonical  The canonical url
+ * @return     {string}  { url without hash }
+ */
+function remove_hash(canonical) {
+	let hash_at = canonical.indexOf('#');
+	return hash_at === -1 ? canonical : canonical.substr(0,hash_at);
+}
 
 // Handheld navigation button process
 // @private
@@ -108,7 +119,7 @@ let finger_manager = {
 		}
 		event.preventDefault();
 	}
-}
+};
 
 export class CPU_element_api {
 	/**
@@ -134,7 +145,7 @@ export class CPU_element_api {
 		this.elapse_was = null;
 
 		if ( (this.audiotag) && (! this.audiotag._CPU_planes)) {
-			this.audiotag._CPU_planes = {}
+			this.audiotag._CPU_planes = {};
 		}
 
 		this.is_controller = this.element.tagName === CpuControllerTagName;
@@ -219,13 +230,13 @@ export class CPU_element_api {
 	 */
 	set_hide_container(hide_elements) {
 		for (let hide_this of acceptable_hide_atttributes) {
-			this.container.classList.remove(`hide-${hide_this}`)
+			this.container.classList.remove(`hide-${hide_this}`);
 		}
 
 		for (let hide_this of hide_elements) {
 			hide_this = hide_this.toLowerCase();
 			if (acceptable_hide_atttributes.indexOf(hide_this)>-1) {
-				this.container.classList.add(`hide-${hide_this}`)
+				this.container.classList.add(`hide-${hide_this}`);
 			}
 		}
 	}
@@ -297,13 +308,9 @@ export class CPU_element_api {
 		let timecode = is_audiotag_streamed(audiotag) ? 0 : Math.floor(audiotag.currentTime);
 		let canonical = audiotag.dataset.canonical;
 		canonical = canonical === undefined ? '' : canonical;
-		let link_to = absolutize_url(canonical)+'#';
-		let _is_at = canonical.indexOf('#'); 
-
-		link_to += ((_is_at === -1) ? audiotag.id : canonical.substr(_is_at+1) )+'&t='+timecode;
-
+		let _is_at = canonical.indexOf('#');
 		let elapse_element = this.elements['elapse'];
-		elapse_element.href = link_to;
+		elapse_element.href = `${ absolutize_url(canonical) }#${ (_is_at === -1) ? audiotag.id : canonical.substr(_is_at+1) }&t=${timecode}`;
 
 		let total_duration = '…';
 		let _natural = Math.round(audiotag.duration);
@@ -383,12 +390,12 @@ export class CPU_element_api {
 		if (audiotag === null) {
 			return true;
 		}
-		let error = audiotag.error;
-		if (error !== null) {
+		let error_object = audiotag.error;
+		if (error_object !== null) {
 			let error_message;
 			let pageerror = this.elements['pageerror'];
 			this.show_interface('error');
-			switch (error.code) {
+			switch (error_object.code) {
 				case MediaError.MEDIA_ERR_ABORTED:
 					error_message = __.media_err_aborted;
 					break;
@@ -482,7 +489,7 @@ export class CPU_element_api {
 			element.style.left =  `${100 * (seconds_begin / duration)}%`;
 		}
 		if (is_seconds(seconds_end)) {
-			element.style.right = `${100 - 100 * (seconds_end / duration)}%`;
+			element.style.right = `${100 - (100 * (seconds_end / duration))}%`;
 		}
 		
 	}
@@ -527,7 +534,7 @@ export class CPU_element_api {
 	 * @public
 	 */
 	hide_throbber_later() {
-		let hide_throbber_delay = 1000
+		let hide_throbber_delay = 1000;
 		let phylactere = this.elements['popup'];
 		if (phylactere._hider) {
 			window.clearTimeout(phylactere._hider);
@@ -543,7 +550,7 @@ export class CPU_element_api {
 	 * @return     {Object}  dataset
 	 */
 	fetch_audiotag_dataset() {
-		let dataset = {} 
+		let dataset = {};
 		for (let key in document.CPU.default_dataset) {
 			let value = null;
 			if (key in this.audiotag.dataset) {
@@ -567,24 +574,21 @@ export class CPU_element_api {
 	update_links() {
 		let container = this;
 		let audiotag = this.audiotag;
+
+		/**
+		 * @summary Assign an url to a link
+		 *
+		 * @param      {string}  category  The category
+		 * @param      {string}  href      The link
+		 */
 		function ahref(category, href) {
 			container.elements[category].href = href;
 		}
-		function remove_hash(canonical) {
-			let hash_at = canonical.indexOf('#');
-			return hash_at === -1 ? canonical : canonical.substr(0,hash_at);
-		}
 
 		let dataset = this.fetch_audiotag_dataset();
-
-		let url = (dataset.canonical === null ? '' : remove_hash(dataset.canonical))
-					+ `#${audiotag.id}` 
-					+ ( audiotag.currentTime === 0 
-							? ''
-							: `&t=${Math.floor(audiotag.currentTime)}`
-						);
-
-		let _url = encodeURI(absolutize_url(url));
+		let canonical = (dataset.canonical === null ? '' : remove_hash(dataset.canonical));
+		let timepos = audiotag.currentTime === 0  ? '' : `&t=${Math.floor(audiotag.currentTime)}`;
+		let _url = encodeURI(absolutize_url(`${canonical}#${audiotag.id}${timepos}`));
 		let _twitter = '';
 		if (
 			(dataset.twitter) && /* a little bit better than `dataset.twitter === null` or `typeof dataset.twitter === 'string'` . but really, “a little bit” */
@@ -595,7 +599,7 @@ export class CPU_element_api {
 		ahref('twitter', `https://twitter.com/share?text=${dataset.title}&url=${_url}${_twitter}`);
 		ahref('facebook', `https://www.facebook.com/sharer.php?t=${dataset.title}&u=${_url}`);
 		ahref('email', `mailto:?subject=${dataset.title}&body=${_url}`);
-		let download_link = audiotag.currentSrc
+		let download_link = audiotag.currentSrc;
 		if (dataset.download) {
 			download_link = dataset.download;
 		}
@@ -618,7 +622,7 @@ export class CPU_element_api {
 		if (is_audiotag_streamed(this.audiotag)) {
 			classlist.add('media-streamed');
 		}
-		classlist.add('show-'+mode);
+		classlist.add(`show-${mode}`);
 	}
 
 	/**
@@ -677,7 +681,7 @@ export class CPU_element_api {
 	inject_css(style_key, css) {
 		if (!style_key.match(valid_id)) {
 			error(`inject_css invalid key "${style_key}"`);
-			return
+			return;
 		}
 
 		this.remove_css(style_key);
@@ -722,10 +726,10 @@ export class CPU_element_api {
 		element_canonical.href = dataset.canonical;
 
 		if (dataset.title === null) {
-			element_canonical.classList.add('untitled')
-			dataset.title = __.untitled
+			element_canonical.classList.add('untitled');
+			dataset.title = __.untitled;
 		} else {
-			element_canonical.classList.remove('untitled')
+			element_canonical.classList.remove('untitled');
 		}
 		element_canonical.innerText = dataset.title; 
 		this.elements['poster'].src = dataset.poster === null ? '' : dataset.poster;
@@ -742,8 +746,7 @@ export class CPU_element_api {
 			return;
 		}
 		this.audiotag = audiotag;
-
-		this.add_id_to_audiotag()
+		this.add_id_to_audiotag();
 		this.complete_template();
 
 		// throw simplified event
@@ -819,7 +822,7 @@ export class CPU_element_api {
 		let highlight_preview = trigger.preview_container_hover;
 		let remove_highlights_points_bind = this.remove_highlights_points.bind(this);
 
-		/*
+		/**
 		 * @param      {Element}  element  Impacted element
 		 */
 		function assign_events(element) {
@@ -898,7 +901,7 @@ export class CPU_element_api {
 			'title'     : title,
 			'highlight' : true,
 			'points'    : {}
-		}
+		};
 
 		for (let key in default_values) {
 			if (data[key] === undefined) {
@@ -928,7 +931,7 @@ export class CPU_element_api {
 		}
 		let remove_element = this.get_plane_track(name);
 		if (remove_element) {
-			remove_element.remove()
+			remove_element.remove();
 		}
 		remove_element = this.get_plane_panel(name);
 		if (remove_element) {
@@ -992,7 +995,7 @@ export class CPU_element_api {
 	 * @return     {Element}    The <div> point element into <aside> from ShadowDom interface
 	 */
 	get_point_track(plane_name, point_name) {
-		return this.elements['line'].querySelector('#' + this.get_point_id(plane_name, point_name, false));
+		return this.elements['line'].querySelector(`#${this.get_point_id(plane_name, point_name, false)}`);
 	}
 
 	/**
@@ -1004,7 +1007,7 @@ export class CPU_element_api {
 	 * @return     {Element}    The <li> point element into panel from ShadowDom interface
 	 */
 	get_point_panel(plane_name, point_name) {
-		return this.container.querySelector('#' + this.get_point_id(plane_name, point_name, true));
+		return this.container.querySelector(`#${this.get_point_id(plane_name, point_name, true)}`);
 	}
 
 	/**
@@ -1015,7 +1018,7 @@ export class CPU_element_api {
 	 * @return     string                         HTML tagged string
      */
 	translate_vtt(vtt_taged) {
-		return translate_vtt(vtt_taged)
+		return translate_vtt(vtt_taged);
 	}
 
 	/**
@@ -1085,7 +1088,7 @@ export class CPU_element_api {
 		}
 
 		let panel = this.get_plane_nav(plane_name);
-		let plane_point_panel
+		let plane_point_panel;
 		if (panel) {
 			plane_point_panel = this.get_point_panel(plane_name, point_name);
 			let intended_panel_id = this.get_point_id(plane_name, point_name, true);
@@ -1119,7 +1122,7 @@ export class CPU_element_api {
 			(document.CPU.global_controller !== null) &&
 			(this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
 			) {
-			document.CPU.global_controller.draw_point(plane_name, point_name) 
+			document.CPU.global_controller.draw_point(plane_name, point_name);
 		}
 	}
 
@@ -1320,7 +1323,7 @@ export class CPU_element_api {
 	 * @public
 	 */
 	redraw_all_planes() {
-		this.undraw_all_planes()
+		this.undraw_all_planes();
 		for (let plane_name of Object.keys(this.audiotag._CPU_planes)) {
 			this.draw_plane(plane_name);
 			this.refresh_plane(plane_name);
@@ -1458,8 +1461,8 @@ export class CPU_element_api {
 			this._activecue = active_cue;
 			//this.flash(activecue['text']);
 			// do NOT tell me this is ugly, i know this is ugly. I missed something. Teach me how to do it better
-		} catch (error) {
-			window.console.error(error)
+		} catch (oops) {
+			window.console.error(oops);
 		}
 
 		this.remove_highlights_points(class_name);
@@ -1682,7 +1685,7 @@ export class CPU_element_api {
 			// 'touchmove'   : true,
 			'touchend'    : false,
 			'touchcancel' : false,
-		}
+		};
 		for (let event_name in do_events) {
 			timeline_element.addEventListener(
 				event_name,

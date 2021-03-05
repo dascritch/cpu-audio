@@ -1,5 +1,5 @@
-import {once_passive_ev,  is_audiotag_streamed, info, warn, on_debug} from './utils.js'
-import {convert} from './convert.js'
+import {once_passive_ev,  is_audiotag_streamed, info, warn, on_debug} from './utils.js';
+import {convert} from './convert.js';
 
 const KEY_LEFT_ARROW = 37;
 const KEY_RIGHT_ARROW = 39;
@@ -22,7 +22,7 @@ function remove_timecode_outofborders(at) {
 	}
 }
 
-/*
+/**
  * @summary If playing media was prevented by browser due to missing focus, event on focus does unlock player
  * @private
  *
@@ -118,7 +118,6 @@ export const trigger = {
 		}
 		// scroll to the audio element. Should be reworked, or parametrable , see issue #60
 		// window.location.hash = `#${hash}`;
-		return /* true */;
 	},
 
 	/**
@@ -338,7 +337,7 @@ export const trigger = {
 		let container = document.CPU.find_container(event.target);
 		let audiotag = container.audiotag;
 
-		/* @param      {number}  seconds    Relative position fowards */
+		/** @param      {number}  seconds    Relative position fowards */
 		function seek_relative(seconds) {
 			event.at = container.audiotag.currentTime + seconds;
 			container.show_throbber_at(event.at);
@@ -529,9 +528,9 @@ export const trigger = {
 		let container = document.CPU.find_container(mutationsList[0].target);
 
 		let media_tagname = 'audio';
-		let audio_element = container.element.querySelector(media_tagname)
+		let audio_element = container.element.querySelector(media_tagname);
 		if (audio_element === null) {
-			info(`<${media_tagname}> element was removed.`)
+			info(`<${media_tagname}> element was removed.`);
 			container.element.remove();
 			return;
 		}
@@ -574,4 +573,4 @@ export const trigger = {
 		event.preventDefault();
 	},
 
-}
+};

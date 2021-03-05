@@ -1,5 +1,5 @@
-import {CpuAudioTagName, is_audiotag_streamed, is_decent_browser_for_webcomponents, passive_ev} from './utils.js'
-import {trigger} from './trigger.js'
+import {CpuAudioTagName, is_audiotag_streamed, is_decent_browser_for_webcomponents, passive_ev} from './utils.js';
+import {trigger} from './trigger.js';
 
 // Indicate if media element was extended
 HTMLAudioElement.prototype.CPU_connected = false;
@@ -83,9 +83,9 @@ export function connect_audiotag(audiotag) {
 	if (typeof(audiotag.dataset.playlist) === 'string') {
 		let playlist_name = audiotag.dataset.playlist;
 		if (!(playlist_name in document.CPU.playlists)) {
-			document.CPU.playlists[playlist_name] = []
+			document.CPU.playlists[playlist_name] = [];
 		}
-		document.CPU.playlists[playlist_name].push(audiotag.id)
+		document.CPU.playlists[playlist_name].push(audiotag.id);
 	}
 }
 
@@ -98,7 +98,7 @@ export function connect_audiotag(audiotag) {
  */
 HTMLAudioElement.prototype.CPU_controller = function() {
 	return this.closest(CpuAudioTagName);
-}
+};
 
 /**
  * @summary Trigger display updates in the interface
@@ -117,4 +117,4 @@ HTMLAudioElement.prototype.CPU_update = function() {
 	if (document.CPU.global_controller !== null) {
 		document.CPU.global_controller.update();
 	}
-}
+};

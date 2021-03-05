@@ -1,4 +1,4 @@
-import {escape_html} from './utils.js'
+import {escape_html} from './utils.js';
 
 let acceptables_tags = {
 	'i'     : 'i',
@@ -62,7 +62,7 @@ function closetag(tag, name) {
 	return `</${acceptables_tags[name]}>`;
 }
 
-/*
+/**
  * @summary Transform WebVTT tag langage into HTML tags, filtering out some
  * (needed @public mainly for tests. Moving it up and do those tests in CLI will make it @private-izable)
  *

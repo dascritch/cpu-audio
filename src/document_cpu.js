@@ -1,8 +1,8 @@
-import {once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName, on_debug, is_audiotag_streamed, warn} from './utils.js'
-import {convert} from './convert.js'
-import {trigger} from './trigger.js'
+import {once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName, on_debug, is_audiotag_streamed, warn} from './utils.js';
+import {convert} from './convert.js';
+import {trigger} from './trigger.js';
 
-/* @type {string|null} */
+/** @type {string|null} */
 function get_default_title() {
 	for (let domain of ['og', 'twitter']) {
 		let header_element = document.querySelector(`meta[property="${domain}:title"]`);
@@ -14,7 +14,7 @@ function get_default_title() {
 	return title === '' ? null : title;
 }
 
-/* @type {string|null} */
+/** @type {string|null} */
 function get_default_poster() {
 	for (let attr of ['property="og:image"', 'name="twitter:image:src"']) {
 		let header_element = document.querySelector(`meta[${attr}]`);
@@ -25,7 +25,7 @@ function get_default_poster() {
 	return null;
 }
 
-/* @type {string|null} */
+/** @type {string|null} */
 function get_default_canonical() {
 	let header_element = document.querySelector('link[rel="canonical"]');
 	if (header_element !== null) {
@@ -34,7 +34,7 @@ function get_default_canonical() {
 	return location.href.split('#')[0];
 }
 
-/* @type {string|null} */
+/** @type {string|null} */
 function get_default_twitter() {
 	let header_element = document.querySelector('meta[name="twitter:creator"]');
 	if ((header_element !== null) && (header_element.content.length>1)) {
@@ -134,7 +134,7 @@ export let document_CPU = {
 	 * @return     {boolean}  True if audiotag playing, False otherwise.
 	 */
 	'is_audiotag_playing' : function(audiotag) {
-		return (document.CPU.current_audiotag_playing) && (audiotag.isEqualNode(document.CPU.current_audiotag_playing))
+		return (document.CPU.current_audiotag_playing) && (audiotag.isEqualNode(document.CPU.current_audiotag_playing));
 	},
 	/**
 	 * @public
@@ -144,7 +144,7 @@ export let document_CPU = {
 	 * @return     {boolean}  True if audiotag global, False otherwise.
 	 */
 	'is_audiotag_global' : function(audiotag) {
-		return this.global_controller === null ? this.is_audiotag_playing(audiotag) : audiotag.isEqualNode(this.global_controller.audiotag)
+		return this.global_controller === null ? this.is_audiotag_playing(audiotag) : audiotag.isEqualNode(this.global_controller.audiotag);
 	},
 
 	/**
@@ -201,7 +201,6 @@ export let document_CPU = {
 			do_needle_move(mocked_event);
 		}
 		// No problems
-		return;
 	},
 	
 	/**
@@ -261,12 +260,12 @@ export let document_CPU = {
 	'find_container' : function(child) {
 		if ((child.tagName === CpuAudioTagName) 
 			|| ( child.tagName === CpuControllerTagName)) {
-			return child.CPU
+			return child.CPU;
 		}
 
 		let closest_cpuaudio = child.closest(CpuAudioTagName);
 		if (closest_cpuaudio) {
-			return closest_cpuaudio.CPU
+			return closest_cpuaudio.CPU;
 		}
 
 		let _interface = document.CPU.find_interface(child);
@@ -294,4 +293,4 @@ export let document_CPU = {
 		return [];
 	}
 
-}
+};
