@@ -1527,7 +1527,7 @@ export class CPU_element_api {
 					if (chapter_track.cues.length > 0) {
 						has = true;
 					}
-					this.cuechange_event();
+					this.cuechange_event({target : {activeCues : chapter_track.cues}});
 				}
 			}
 		}
