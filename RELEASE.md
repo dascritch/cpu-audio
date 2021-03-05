@@ -8,6 +8,7 @@ Corrections
  * Do not change color when changing mode play→loading→play ([#114](#114)) 
  * Resolving a probable issue on fine navigation panel on handheld
  * Play/pause button may have issues if Chrome got numerous webcomponents in the same page
+ * An translation error may occurs in shareable URL. We reove audio id if we'r not in same URL
 
 Back-end
 --------

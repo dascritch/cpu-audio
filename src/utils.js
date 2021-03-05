@@ -69,7 +69,7 @@ export function is_decent_browser_for_webcomponents() {
 }
 
 /**
- * @summary Transform a possibily relative URL to an absolute URL, including server name
+ * @summary Transform a possibily relative URL to an absolute URL, including server name, but removing hash part
  *
  * @param      {string}  url     The url
  * @return     {string}  url     Absolute url

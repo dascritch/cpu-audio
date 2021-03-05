@@ -17,18 +17,6 @@ const valid_id = /^[a-zA-Z0-9\-_]+$/;
 // Regex for extracting plane and point names from an id
 const plane_point_names_from_id = /^([a-zA-Z0-9\-_]+_«)([a-zA-Z0-9\-_]+)((»_.*_«)([a-zA-Z0-9\-_]+))?(»)$/;
 
-
-/**
- * Removes a hash in an URL
- *
- * @param      {string}   canonical  The canonical url
- * @return     {string}  { url without hash }
- */
-function remove_hash(canonical) {
-	let hash_at = canonical.indexOf('#');
-	return hash_at === -1 ? canonical : canonical.substr(0,hash_at);
-}
-
 // Handheld navigation button process
 // @private
 let finger_manager = {
@@ -586,9 +574,11 @@ export class CPU_element_api {
 		}
 
 		let dataset = this.fetch_audiotag_dataset();
-		let canonical = (dataset.canonical === null ? '' : remove_hash(dataset.canonical));
-		let timepos = audiotag.currentTime === 0  ? '' : `&t=${Math.floor(audiotag.currentTime)}`;
-		let _url = encodeURI(absolutize_url(`${canonical}#${audiotag.id}${timepos}`));
+		let canonical = absolutize_url( (dataset.canonical === null) ? '' : dataset.canonical );
+		let timepos = (audiotag.currentTime === 0)  ? '' : `&t=${Math.floor(audiotag.currentTime)}`;
+		// watch out : we should put the ID only if canonical URL is strictly identical to this page 
+		let tag_id =  canonical === absolutize_url(window.location.href) ? audiotag.id : '';
+		let _url = encodeURIComponent(`${canonical}#${tag_id}${timepos}`);
 		let _twitter = '';
 		if (
 			(dataset.twitter) && /* a little bit better than `dataset.twitter === null` or `typeof dataset.twitter === 'string'` . but really, “a little bit” */
@@ -631,12 +621,9 @@ export class CPU_element_api {
 	 * @private
 	 * @param      {Object}  event   The event
 	 */
-	show_actions(event) {
-		let container = (event !== undefined) ?
-				document.CPU.find_container(event.target) :
-				this;
-		container.show_interface('share');
-		container.update_links();
+	show_actions(/* event */) {
+		this.show_interface('share');
+		this.update_links();
 	}
 
 	/**
@@ -646,11 +633,8 @@ export class CPU_element_api {
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	show_main(event = undefined) {
-		let container = (event !== undefined) ?
-				document.CPU.find_container(event.target) :
-				this;
-		container.show_interface('main');
+	show_main(/* event */) {
+		this.show_interface('main');
 	}
 
 	/**
@@ -1638,13 +1622,15 @@ export class CPU_element_api {
 			interface_classlist.add('poster-loaded'); 
 		}, passive_ev);
 
+		let show_main = this.show_main.bind(this);
+
 		let cliquables = {
 			'pause'     : trigger.play,
 			'play'      : trigger.pause,
 			'time'      : trigger.throbble,
-			'actions'   : this.show_actions,
-			'back'      : this.show_main,
-			'poster'    : this.show_main,
+			'actions'   : this.show_actions.bind(this),
+			'back'      : show_main,
+			'poster'    : show_main,
 			'restart'   : trigger.restart,
 		};
 		for (let that in cliquables) {
