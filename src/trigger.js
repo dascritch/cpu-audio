@@ -1,4 +1,4 @@
-import {passive_ev, once_passive_ev,  is_audiotag_streamed, info, warn, on_debug} from './utils.js'
+import {once_passive_ev,  is_audiotag_streamed, info, warn, on_debug} from './utils.js'
 import {convert} from './convert.js'
 
 const KEY_LEFT_ARROW = 37;
@@ -129,12 +129,8 @@ export const trigger = {
 	hover : function(event) {
 		let target = event.target;
 		let container = document.CPU.find_container(target);
-
-		let target_rect = target.getClientRects()[0];
-		let relLeft = target_rect.left;
 		let ratio = event.offsetX / target.clientWidth;
 		let seeked_time = ratio * container.audiotag.duration;
-
 		container.show_throbber_at(seeked_time);
 	},
 
@@ -285,7 +281,7 @@ export const trigger = {
 
 		if (promised !== undefined) {
 			promised.then(
-				_ => {
+				() => {
 					// we have a successful play occured, we can display wait event later
 					document.CPU.had_played = true;
 				} 
@@ -569,7 +565,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	native_share : function(event) {
-		let dataset = document.CPU.find_container(event.target).fetch_audiotag_dataset();;
+		let dataset = document.CPU.find_container(event.target).fetch_audiotag_dataset();
 		navigator.share({
 			'title': dataset.title,
 			'text': dataset.title,

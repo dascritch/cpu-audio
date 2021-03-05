@@ -1,7 +1,7 @@
 import {CpuAudioTagName, CpuControllerTagName, passive_ev, acceptable_selector, is_decent_browser_for_webcomponents, warn, querySelector_apply} from './utils.js'
 import {trigger} from './trigger.js'
 import {document_CPU} from './document_cpu.js'
-import './media_element_extension.js'
+import {attach_events_audiotag} from './media_element_extension.js'
 import {CpuControllerElement} from './cpu_controller.class.js'
 import {CpuAudioElement} from './cpu_audio.class.js'
 import {insert_template} from '../tmp/insert_template.js'

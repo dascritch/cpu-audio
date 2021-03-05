@@ -1,4 +1,4 @@
-import {CpuAudioTagName, CpuControllerTagName, is_audiotag_streamed, is_decent_browser_for_webcomponents, passive_ev} from './utils.js'
+import {CpuAudioTagName, is_audiotag_streamed, is_decent_browser_for_webcomponents, passive_ev} from './utils.js'
 import {trigger} from './trigger.js'
 
 // Indicate if media element was extended

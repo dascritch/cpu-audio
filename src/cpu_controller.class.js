@@ -1,5 +1,4 @@
-import {CpuControllerTagName, CpuAudioTagName, acceptable_selector, selector_interface, not_screen_context, warn, querySelector_apply, element_prevent_link_on_same_page} from './utils.js'
-import {trigger} from './trigger.js'
+import {CpuAudioTagName, acceptable_selector, selector_interface, not_screen_context, warn, querySelector_apply, element_prevent_link_on_same_page} from './utils.js'
 import {CPU_element_api} from './element_cpu.js'
 
 /**

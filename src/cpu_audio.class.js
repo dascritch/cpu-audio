@@ -1,4 +1,4 @@
-import {CpuAudioTagName, acceptable_selector} from './utils.js'
+import {acceptable_selector} from './utils.js'
 import {convert} from './convert.js'
 import {trigger} from './trigger.js'
 import {connect_audiotag} from './media_element_extension.js'

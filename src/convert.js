@@ -87,7 +87,7 @@ export const convert = {
 	 * @return     {string}   Converted time
 	 */
 	'SecondsInTime' : function(givenSeconds) {
-		if (givenSeconds == Infinity) {
+		if (givenSeconds === Infinity) {
 			return convert.Infinity;
 		}
 		let converted = '';
@@ -116,7 +116,7 @@ export const convert = {
 	 * @return     {string}  Converted time
 	 */
 	'SecondsInColonTime' : function(givenSeconds) {
-		if (givenSeconds == Infinity) {
+		if (givenSeconds === Infinity) {
 			return convert.Infinity;
 		}
 		let converted = '';
@@ -156,7 +156,7 @@ export const convert = {
 	 * @return     {string}  Converted time
 	 */
 	'SecondsInPaddledColonTime' : function(givenSeconds) {
-		if (givenSeconds == Infinity) {
+		if (givenSeconds === Infinity) {
 			return convert.Infinity;
 		}
 		// principaly needed by <input type="time"> whom needs a really precise HH:MM:SS format

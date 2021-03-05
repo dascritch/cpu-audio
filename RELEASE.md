@@ -17,6 +17,7 @@ Back-end
  * Renamed files
  * Better separation between public objects and private methods
  * Leaving Google Closure for webpack : too many bugs, too old
+ * Using a more aggressive linter
  * Using `css-minify` for compressing css, instead of home-boiled regex
  * Using `html-minifier` for compressing html, for the exact same reasons
 

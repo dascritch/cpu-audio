@@ -27,9 +27,10 @@ export const dynamically_allocated_id_prefix = 'CPU-Audio-tag-';
 
 /**
  * @summary Do litteraly nothing
- */
+ * /
 function noop() {
 }
+*/
 
 /**
  * @summary If run in debug context, launch a function for calback
@@ -128,10 +129,10 @@ export function escape_html(text) {
  *
  * @param      {string}   id      element id to check
  * @return     {boolean}  is in hash
- */
+ * /
 function id_in_hash(id) {
 	return location.hash.substr(1).split('&').includes(id);
-}
+}*/
 
 /**
  * @summary Determines if audiotag source is streamed, and so unactivate reposition, position memory, length display…

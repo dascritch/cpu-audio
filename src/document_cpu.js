@@ -1,4 +1,4 @@
-import {passive_ev, once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName, is_decent_browser_for_webcomponents, on_debug, is_audiotag_streamed, warn} from './utils.js'
+import {once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName, on_debug, is_audiotag_streamed, warn} from './utils.js'
 import {convert} from './convert.js'
 import {trigger} from './trigger.js'
 

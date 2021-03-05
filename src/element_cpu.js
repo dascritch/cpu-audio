@@ -1,5 +1,5 @@
-import {dynamically_allocated_id_prefix, passive_ev, once_passive_ev, selector_interface, on_debug, CpuAudioTagName, CpuControllerTagName, absolutize_url, escape_html, querySelector_apply, is_audiotag_streamed, error} from './utils.js'
-import {__} from './i18n.js'
+import {dynamically_allocated_id_prefix, passive_ev, once_passive_ev, on_debug, CpuAudioTagName, CpuControllerTagName, absolutize_url, escape_html, querySelector_apply, is_audiotag_streamed, error} from './utils.js'
+import {__, prefered_language} from './i18n.js'
 import {convert} from './convert.js'
 import {trigger} from './trigger.js'
 import {translate_vtt} from './translate_vtt.js'
@@ -92,7 +92,7 @@ let finger_manager = {
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	touchcancel : function(event) {
+	touchcancel : function(/* event */) {
 		clearTimeout(finger_manager.touching);
 	},
 
@@ -102,6 +102,7 @@ let finger_manager = {
 	 * @param      {Object}  event   The event
 	 */
 	rmb : function(event) {
+		let container = document.CPU.find_container(event.target);
 		if (!finger_manager.touching) {
 			container.show_handheld_nav();
 		}
@@ -503,8 +504,6 @@ export class CPU_element_api {
 		}
 
 		let phylactere = this.elements['popup'];
-		let elapse_element = this.elements['line'];
-
 		phylactere.style.opacity = 1;
 		this.position_time_element(phylactere, seeked_time);
 		phylactere.innerHTML = convert.SecondsInColonTime(seeked_time);
@@ -1086,8 +1085,6 @@ export class CPU_element_api {
 		let plane_point_panel
 		if (panel) {
 			plane_point_panel = this.get_point_panel(plane_name, point_name);
-			let data_start = Number(data['start'])
-			
 			let intended_panel_id = this.get_point_id(plane_name, point_name, true);
 			if (!plane_point_panel) {
 				plane_point_panel = document.createElement('li');
@@ -1335,7 +1332,7 @@ export class CPU_element_api {
 	 */
 	reposition_tracks() {
 		let duration = this.audiotag.duration;
-		if ((this.audiotag.duration === 0) || (isNaN(this.audiotag.duration))) {
+		if ((duration === 0) || (isNaN(duration))) {
 			// duration still unkown
 			return ;
 		}
@@ -1477,7 +1474,7 @@ export class CPU_element_api {
 	 *
 	 * @param      {Object|undefined}  event          The event
 	 */
-	async build_chapters(event = undefined) {
+	async build_chapters(/* event = undefined */) {
 		// this functions is called THREE times at load : at build, at loadedmetada event and at load event
 		// and afterwards, we have to reposition track points on duractionchange
 
@@ -1489,7 +1486,6 @@ export class CPU_element_api {
 		let audiotag = this.audiotag;
 		let has = false;
 		let plane_name = '_chapters';
-		let active_cue;
 
 		if (audiotag) {
 			if ((audiotag.textTracks) && (audiotag.textTracks.length > 0)) {
@@ -1518,9 +1514,6 @@ export class CPU_element_api {
 					chapter_track.addEventListener('cuechange', cuechange_event, passive_ev);
 
 					for (let cue of chapter_track.cues) {
-						if ((cue.startTime <= cue.startTime) && (cue.startTime < cue.endTime)) {
-							active_cue = cue;
-						}
 						if (!this.get_point(plane_name, cue.id)) {
 							// avoid unuseful redraw, again
 							let cuepoint = Math.floor(cue.startTime);
@@ -1531,11 +1524,10 @@ export class CPU_element_api {
 							});
 						}
 					}
-
 					if (chapter_track.cues.length > 0) {
 						has = true;
 					}
-
+					this.cuechange_event();
 				}
 			}
 		}
@@ -1595,7 +1587,7 @@ export class CPU_element_api {
 			return;
 		}
 
-		let previous_playlist = this.current_playlist;
+		// let previous_playlist = this.current_playlist;
 		this.current_playlist = document.CPU.find_current_playlist();
 
 		// Later, we will try to remove this specific code, and use plane/point arch, with data hosted on <CPU-CONTROLLER>
@@ -1715,4 +1707,4 @@ export class CPU_element_api {
 		this.build_chapters_loader();
 		this.fire_event('ready');
 	}
-};
+}
