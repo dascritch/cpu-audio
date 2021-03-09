@@ -1,7 +1,8 @@
 {
   "name": "cpu-audio",
-  "version": "6.6.3",
+  "version": "6.7.0pre",
   "description": "An audio WebComponent to provide an user-interface, timecoded links and some other features to an <audio> tag",
+  "type": "module",
   "main": "index.js",
   "directories": {
     "example": "examples",
@@ -38,6 +39,7 @@
     "eslint": "^7.21.0",
     "eslint-webpack-plugin": "^2.5.2",
     "html-minifier": "^4.0.0",
+    "node-qunit-puppeteer": "^2.0.3",
     "qunit": "^2.14.0",
     "terser-webpack-plugin": "^5.1.1",
     "webpack": "^5.24.2"

@@ -12,9 +12,8 @@ Projet repo
 Options:
   -h, --help            Display this message.
   -c, --clean        	Clean dist/ directory
-  -d, --debug           Used for ease debug.
+  -d, --debug           Used for ease debug. Will run tests after compression
   -a, --advanced        Tries 'ADVANCED_OPTIMIZATIONS' for Google Closure. DEPRECIATED
-
 Needed utilities : 
 — npm/npx
 HELP
@@ -24,7 +23,10 @@ PROJECT_DIR=$(readlink -f $(dirname ${0}))
 component_file_js="cpu-audio.js" 
 
 OTHER_OPTIONS=' --no-devtool'
+OTHER_OPTIONS=' --devtool source-map'
 webpack_mode='production'
+
+TESTS=0
 
 while [ '-' == "${1:0:1}" ] ; do
 	case "${1}" in
@@ -42,6 +44,7 @@ while [ '-' == "${1:0:1}" ] ; do
 		-d|--debug)
 			OTHER_OPTIONS=' --devtool source-map'
 			webpack_mode='development'
+			TESTS=1
 		;;
 		--)
 			shift
@@ -104,6 +107,13 @@ function _build_component_js_webpack() {
 	npx webpack --config ${PROJECT_DIR}/webpack.config.js --mode ${webpack_mode} --target es2020 --entry ${PROJECT_DIR}/src/index.js --output-path ${PROJECT_DIR}/dist --output-filename ${component_file_js} ${OTHER_OPTIONS}
 }
 
+function _tests() {
+	# npx qunit tests/module-*.js
+	for chapter in minimal api browser ; do
+    	npx node-qunit-puppeteer "tests/tests-${chapter}.html" 120000 "-allow-file-access-from-files --no-sandbox"
+	done
+}
+
 
 _clean
 
@@ -112,5 +122,10 @@ set -e
 
 _build_template
 _build_component_js_webpack
+
+if [ 1 == TESTS ] ; then
+	_tests
+	
+fi
 
 ls -l ${PROJECT_DIR}/dist/*

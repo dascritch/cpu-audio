@@ -24,7 +24,7 @@ Work by cloning the `preprod` branch. We merge in `master` when everything is al
 
 Check first in [TODO.md](TODO.md) which lists some priorities and objectives. I usually [create bugs](https://github.com/dascritch/cpu-audio/issues) and refers to them in my commits. Most of the time.
 
-I'm sorry but due to draft rewrites and refactoring, I've lost most of the git history. Git blaming won't help for the code before September 2018.
+Node.js 14 is mandatory to run CLI tests with modules.
 
 Most of functions and methods are now javadoc-style commented, be kind about it.
 
