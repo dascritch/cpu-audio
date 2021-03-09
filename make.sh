@@ -12,10 +12,13 @@ Projet repo
 Options:
   -h, --help            Display this message.
   -c, --clean        	Clean dist/ directory
-  -d, --debug           Used for ease debug. Will run tests after compression
-  -a, --advanced        Tries 'ADVANCED_OPTIMIZATIONS' for Google Closure. DEPRECIATED
+  -d, --debug           Used for ease debug.
+  -t, --test        	Run tests after (ev.) compression
 Needed utilities : 
 — npm/npx
+
+Optimal options for release :
+./make.sh --clean --test
 HELP
 )
 
@@ -38,12 +41,11 @@ while [ '-' == "${1:0:1}" ] ; do
 			echo 'cleaning dist/*'
 			rm ${PROJECT_DIR}/dist/*
 		;;
-		-a|--advanced)
-			component_file_js='cpu-audio.EXPERIMENTAL.js'
-		;;
 		-d|--debug)
 			OTHER_OPTIONS=' --devtool source-map'
 			webpack_mode='development'
+		;;
+		-t|--test)
 			TESTS=1
 		;;
 		--)
