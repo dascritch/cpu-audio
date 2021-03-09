@@ -10,10 +10,11 @@ Projet repo
   → http://github.com/dascritch/cpu-audio
 
 Options:
-  -h, --help            Display this message.
+  -h, --help            Display this message
   -c, --clean        	Clean dist/ directory
   -d, --debug           Used for ease debug.
   -t, --test        	Run tests after (ev.) compression
+  -i, --index        	Recreate INDEX.md with examples and applications  
 Needed utilities : 
 — npm/npx
 
@@ -30,6 +31,7 @@ OTHER_OPTIONS=' --devtool source-map'
 webpack_mode='production'
 
 TESTS=0
+REINDEX=0
 
 while [ '-' == "${1:0:1}" ] ; do
 	case "${1}" in
@@ -47,6 +49,9 @@ while [ '-' == "${1:0:1}" ] ; do
 		;;
 		-t|--test)
 			TESTS=1
+		;;
+		-i|--index)
+			REINDEX=1
 		;;
 		--)
 			shift
@@ -116,6 +121,26 @@ function _tests() {
 	done
 }
 
+function _recreate_index() {
+	EXAMPLES_MD=${PROJECT_DIR}/EXAMPLES.md
+	EXAMPLES_HTML=${PROJECT_DIR}/examples.html
+	rm ${EXAMPLES_MD}
+	rm ${EXAMPLES_HTML}
+	echo -e "\n\n### Examples\n\n" >> ${EXAMPLES_MD}
+	echo "<h2>Examples</h2><ul>" >> ${EXAMPLES_HTML}
+	for line in $(ls -1 examples/*); do 
+		echo " * [${line}](${line})" >> ${EXAMPLES_MD}
+		echo "<li><a href='${line}'>${line}</a></li>" >> ${EXAMPLES_HTML}
+	done
+	echo -e "\n\n### Applications\n\n" >> ${EXAMPLES_MD}
+	echo "</ul><h2>Applcations</h2><ul>" >> ${EXAMPLES_HTML}
+	for line in $(ls -1 applications/*); do 
+		echo " * [${line}](${line})" >> ${EXAMPLES_MD}
+		echo "<li><a href='${line}'>${line}</a></li>" >> ${EXAMPLES_HTML}
+	done
+	echo "</ul>" >> ${EXAMPLES_HTML}
+}
+
 
 _clean
 
@@ -127,7 +152,10 @@ _build_component_js_webpack
 
 if [ "1" == "${TESTS}" ] ; then
 	_tests
-	
+fi
+
+if [ "1" == "${REINDEX}" ] ; then
+	_recreate_index
 fi
 
 ls -l ${PROJECT_DIR}/dist/*

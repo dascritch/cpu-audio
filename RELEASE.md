@@ -25,12 +25,12 @@ Back-end
  * Using `html-minifier` for compressing html, for the exact same reasons
  * QUnit removed from repo, provided via `npm`
  * QUnit-puppeteer integrated into `make.sh`
+ * Automated links from MD (or examples.html) to examples and applications
 
 Todo:
 
  - Debug issues in Chrome mobile , as replay position or highlighted chapters in double
  - Finish drag'n'drop in chapters-editors
- - Automated links from MD (or index.html) to examples and applications
  - Create and example of multiple choices downloads in panel with data-downloadables=""
  - Implement <kbd>↑</kbd> and <kbd>↓</kbd> keys to move on chapters and playlists
 
