@@ -14,7 +14,10 @@ if (!document.hasFocus()) {
 }
 
 window.addEventListener('load', function() {
-	document.querySelector('#get_focus').click();
+	if (navigator.userAgent === 'puppeteer') {
+		// Tests fails on Chrome browszer is this button is not humanly clicked, except in puppeteer /o\
+		document.querySelector('#get_focus').click();
+	}
 });
 
 document.querySelector('#get_focus').addEventListener('click', function() {

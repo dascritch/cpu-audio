@@ -8,8 +8,8 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "./make.sh",
-    "test": "echo \"Tests in tests/ needs browser and help\" && exit 0"
+    "build": "./make.sh --clean",
+    "test": "./make.sh --test"
   },
   "repository": {
     "type": "git",
