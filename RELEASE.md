@@ -24,7 +24,7 @@ Back-end
  * Using `css-minify` for compressing css, instead of home-boiled regex
  * Using `html-minifier` for compressing html, for the exact same reasons
  * QUnit removed from repo, provided via `npm`
- * Using QUint-puppeteer integrated into make.sh
+ * QUnit-puppeteer integrated into `make.sh`
 
 Todo:
 
