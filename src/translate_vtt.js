@@ -19,6 +19,7 @@ let acceptables_tags = {
 // regexes used for WebVTT tag validation
 const vtt_opentag = /<(\w+)(\.[^>]+)?( [^>]+)?>/gi;
 const vtt_closetag = /<\/(\w+)( [^>]*)?>/gi;
+const vtt_cr = /\n/gi;
 
 /**
  * Checks if a WebVTT candidate tag name is acceptable or not
@@ -80,5 +81,5 @@ export function translate_vtt(vtt_taged) {
 	return vtt_taged.
 			replace(vtt_opentag, opentag).
 			replace(vtt_closetag, closetag).
-			replaceAll('\n', '<br/>');
+			replace(vtt_cr, '<br/>');
 }
