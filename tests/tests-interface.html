@@ -4,11 +4,15 @@
 	<meta charset="utf-8">
 	<title>cpu-audio tests</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="./qunit.css">
+	<link rel="stylesheet" href="../node_modules/qunit/qunit/qunit.css">
+	<style>
+		#qunit {position : relative !important ;}
+	</style>
 	<script>
 		// needed to avoid a unwanted hot start
 		window.localStorage.clear();
 	</script>
+
 	<script src="../dist/cpu-audio.js"></script>
 </head>
 <body>
@@ -48,9 +52,7 @@
 
 	<div id="qunit"></div>
 	<div id="qunit-fixture"></div>
-	<script src="./qunit.js"></script>
+	<script src="../node_modules/qunit/qunit/qunit.js"></script>
 	<script src="./tests-interface.js"></script>
-
-
 </body>
 </html>

@@ -9,18 +9,13 @@ check_focus();
 document.addEventListener('focus', check_focus)
 document.addEventListener('blur', check_focus)
 
-
 if (!document.hasFocus()) {
-	alert('Please click on the web view, giving focus, to autorize the audio tag. Else, numerous tests will fail. See issu 17 on our github for details : https://github.com/dascritch/cpu-audio/issues/17 .');
+	alert('Please click on the web view, giving focus, to autorize the audio tag. Else, numerous tests will fail. See issue 17 on our github for details : https://github.com/dascritch/cpu-audio/issues/17 .');
 }
-
 
 window.addEventListener('load', function() {
 	QUnit.config.autostart = false;
 	window.location = '#';
-});
-
-document.getElementById('get_focus').addEventListener('click', function() {
 
 	document.getElementById('get_focus').closest('p').remove();
 
@@ -375,6 +370,5 @@ document.getElementById('get_focus').addEventListener('click', function() {
 			}, 2000);
 		}, 100);
 	});
-
 
 });
