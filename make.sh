@@ -108,9 +108,9 @@ function _build_component_js_webpack() {
 }
 
 function _tests() {
-	# npx qunit tests/module-*.js
-	for chapter in minimal api browser ; do
-    	npx node-qunit-puppeteer "tests/tests-${chapter}.html" 120000 "-allow-file-access-from-files --no-sandbox"
+	# watchout to NOT inclue "browser", which is only a browsder comptability test, and Chrome fails it
+	for chapter in minimal api interface; do
+    	npx node-qunit-puppeteer "tests/tests-${chapter}.html" 120000 "-allow-file-access-from-files --no-sandbox --autoplay-policy=no-user-gesture-required"
 	done
 }
 
@@ -123,7 +123,7 @@ set -e
 _build_template
 _build_component_js_webpack
 
-if [ 1 == TESTS ] ; then
+if [ "1" == "${TESTS}" ] ; then
 	_tests
 	
 fi

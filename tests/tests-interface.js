@@ -14,6 +14,10 @@ if (!document.hasFocus()) {
 }
 
 window.addEventListener('load', function() {
+//	document.querySelector('#get_focus').click();
+});
+
+document.querySelector('#get_focus').addEventListener('click', function() {
 	QUnit.config.autostart = false;
 	window.location = '#';
 

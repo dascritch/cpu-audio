@@ -14,6 +14,10 @@ if (!document.hasFocus()) {
 }
 
 window.addEventListener('load', function() {
+//	document.querySelector('#get_focus').click();
+});
+
+document.querySelector('#get_focus').addEventListener('click', function() {
 	QUnit.config.autostart = false;
 	window.location = '#';
 
@@ -32,7 +36,7 @@ window.addEventListener('load', function() {
 	QUnit.testDone(stopPlayer);
 
 	// before starting the tests, I must be assured the browser autorise playing
-	// see https://bugzilla.mozilla.org/show_bug.cgi?id=1476853
+	// see https://bugzilla.mozilla.org/show_bug.cgi?id=1476853 and https://developers.google.com/web/updates/2017/09/autoplay-policy-changes
 
 	QUnit.start();
 
@@ -225,7 +229,7 @@ window.addEventListener('load', function() {
 		// Dynamic add a second audio player
 		playground.innerHTML = `
 		<cpu-audio>
-			<audio id="secondary" controls="controls" muted>
+			<audio id="secondary" controls="controls" muted="muted">
 				<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 			</audio>
 		</cpu-audio>`;
@@ -250,7 +254,7 @@ window.addEventListener('load', function() {
 		// assert.expect(3);
 		playground.innerHTML = `
 			<cpu-audio>
-				<audio id="secondary" controls="controls" muted>
+				<audio id="secondary" controls="controls" muted="muted">
 					<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>`;
@@ -280,7 +284,7 @@ window.addEventListener('load', function() {
 		// assert.expect(3);
 		playground.innerHTML = `
 			<cpu-audio>
-				<audio id="secondary" controls="controls" muted>
+				<audio id="secondary" controls="controls" muted="muted">
 					<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>`;
@@ -310,7 +314,7 @@ window.addEventListener('load', function() {
 		assert.expect(3);
 		playground.innerHTML = `
 			<cpu-audio>
-				<audio id="secondary" controls="controls" muted>
+				<audio id="secondary" controls="controls" muted="muted">
 					<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>`;
@@ -344,12 +348,12 @@ window.addEventListener('load', function() {
 		assert.expect(5);
 		playground.innerHTML = `
 			<cpu-audio playlist="plname">
-				<audio id="pl1" controls="controls" muted>
+				<audio id="pl1" controls="controls" muted="muted">
 					<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>
 			<cpu-audio playlist="plname">
-				<audio id="pl2" controls="controls" muted>
+				<audio id="pl2" controls="controls" muted="muted">
 					<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
 				</audio>
 			</cpu-audio>
