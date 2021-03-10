@@ -152,8 +152,9 @@ function cursor_out(point_name) {
 }
 
 ///* not yet ready
-let initial_x, current_x;
+let current_x;
 let x_offset = 0;
+let track_width = 0;
 let seeked_time;
 let clicked_a;
 let clicked_point_name;
@@ -166,12 +167,11 @@ function drag_start(event) {
     // Use for your own project will require you to monitor this method behaviour at future releases.
     clicked_point_name = sound_CPU.get_point_names_from_id(clicked_a.id)[1];
     clicked_track = clicked_point.closest('aside');
-    initial_x = event.clientX;
+    x_offset = clicked_track.getBoundingClientRect().left
+    track_width = clicked_track.clientWidth;
 
-    let relative_x = initial_x - clicked_a.getBoundingClientRect().left;
-
-    let ratio = relative_x / clicked_a.clientWidth;
-    seeked_time = ratio * sound_element.duration;
+    current_x = event.clientX - x_offset;
+    seeked_time = sound_element.duration * current_x / track_width;
     sound_CPU.show_throbber_at(seeked_time);
 
     this_line_time_element = document.querySelector(`p#${clicked_point_name} .timecode_input`);
@@ -183,13 +183,10 @@ function drag(event) {
         return ;
     }
 
-    current_x = event.clientX - initial_x;
-    let relative_x = current_x - clicked_track.offsetLeft;
-
-    let ratio = relative_x / clicked_track.clientWidth;
-    seeked_time = ratio * sound_element.duration;
+    current_x = event.clientX - x_offset;
+    seeked_time = sound_element.duration * current_x / track_width;
     if ((seeked_time < 0) || (seeked_time > sound_element.duration)) {
-        console.error({seeked_time});
+        console.error(seeked_time);
         return ;
     }
     
@@ -203,16 +200,14 @@ function drag_end(event) {
         return ;
     }
     clicked_track = false;
-    sound_CPU.hide_throbber();
-    current_x = event.clientX - initial_x;
-    let relative_x = current_x - clicked_track.offsetLeft;
-
-    let ratio = relative_x / clicked_track.clientWidth;
-    sound_CPU.edit_point('cursors', clicked_point_name, {start : seeked_time});
+    let point = sound_CPU.get_point('cursors', clicked_point_name);
+    point.start = seeked_time;
     this_line_time_element.value = document.CPU.convert.SecondsInPaddledColonTime(seeked_time);
-    let a = sound_CPU.get_point('cursors', clicked_point_name);
+    sound_element._CPU_planes['cursors'].points = point;
+    // we don't use sound_CPU.edit_point('cursors', clicked_point_name, {start : seeked_time}) , as it triggers a bad refresh
+    
     let b = sound_CPU.plane_points('cursors');
-    console.log({clicked_point_name, seeked_time, a, b})
+    console.log({clicked_point_name, seeked_time, point, b})
 }
 //*/
 
@@ -441,6 +436,13 @@ document.addEventListener('DOMContentLoaded', e => {
     new_chapter_line = document.querySelector('p.line').innerHTML;
     document.getElementById('add').addEventListener('click', add_line);
     list_element.addEventListener('click', check_for_actions);
+
+
+    /* drag'n'drop events */
+    document.body.addEventListener('pointermove', drag);
+    document.body.addEventListener('pointerup', drag_end);
+    document.body.addEventListener('pointerleave', drag_end);
+    document.body.addEventListener('pointercancel', drag_end);
 });
 
 document.addEventListener('CPU_ready', e => {
@@ -470,12 +472,4 @@ document.addEventListener('CPU_ready', e => {
             height: 21px;
         }
     `);
-
-    // drag'n'drop events 
-    let plane_track = sound_CPU.get_plane_track('cursors');
-
-    plane_track.addEventListener('pointermove', drag);
-    plane_track.addEventListener('pointerup', drag_end);
-    plane_track.addEventListener('pointerleave', drag_end);
-    plane_track.addEventListener('pointercancel', drag_end);
 });
