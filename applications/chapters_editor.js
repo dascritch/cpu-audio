@@ -143,57 +143,65 @@ function show_only_line(point_name) {
 }
 
 function cursor_hover(point_name) {
-    let data = component_element.CPU.get_point('cursors', point_name);
-    component_element.CPU.show_throbber_at(data.start);
+    let data = sound_CPU.get_point('cursors', point_name);
+    sound_CPU.show_throbber_at(data.start);
 }
 
 function cursor_out(point_name) {
-    component_element.CPU.hide_throbber();
+    sound_CPU.hide_throbber();
 }
 
 ///* not yet ready
-let initial_x;
+let initial_x, current_x;
 let x_offset = 0;
 let clicked_a;
+let clicked_point_name;
 let clicked_track;
 function drag_start(event) {
     initial_x = event.clientX - x_offset;
+    console.log({initial_x, event})
     let clicked_point = event.originalTarget;
     clicked_a = clicked_point.tagName === 'A' ? clicked_point : clicked_point.closest('a');
+    // NOTE : element.CPU.get_point_names_from_id() is still a private method, as it may change later. 
+    // Use for your own project will require you to monitor this method behaviour at future releases.
+    clicked_point_name = sound_CPU.get_point_names_from_id(clicked_a.id)[1];
+
     clicked_track = clicked_point.closest('aside');
     let relative_x = initial_x - clicked_track.offsetLeft;
 
     let ratio = relative_x / clicked_track.clientWidth;
     let seeked_time = ratio * sound_element.duration;
-    console.log(relative_x, seeked_time);
-    component_element.CPU.show_throbber_at(seeked_time);
+    sound_CPU.show_throbber_at(seeked_time);
 }
 
 function drag(event) {
     if (!clicked_track) {
         return ;
     }
-    console.log(event)
     event.preventDefault();
     current_x = event.clientX - initial_x;
     let relative_x = current_x - clicked_track.offsetLeft;
-    console.log(current_x);
+    console.log({current_x});
 
     let ratio = relative_x / clicked_track.clientWidth;
     let seeked_time = ratio * sound_element.duration;
-    component_element.CPU.show_throbber_at(seeked_time);
+    if ((seeked_time < 0) || (seeked_time > sound_element.duration)) {
+        console.error({seeked_time});
+        return ;
+    }
+    sound_CPU.show_throbber_at(seeked_time);
+    sound_CPU.edit_point('cursors', clicked_point_name, {start : seeked_time});
 }
 
 function drag_end(event) {
-    console.log(event)
     clicked_track = false;
-    component_element.CPU.hide_throbber();
+    sound_CPU.hide_throbber();
     current_x = event.clientX - initial_x;
     let relative_x = current_x - clicked_track.offsetLeft;
 
     let ratio = relative_x / clicked_track.clientWidth;
     let seeked_time = ratio * sound_element.duration;
-    console.log(relative_x, seeked_time);
+    console.log({relative_x, seeked_time});
 }
 //*/
 
