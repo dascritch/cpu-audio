@@ -154,54 +154,65 @@ function cursor_out(point_name) {
 ///* not yet ready
 let initial_x, current_x;
 let x_offset = 0;
+let seeked_time;
 let clicked_a;
 let clicked_point_name;
 let clicked_track;
+let this_line_time_element;
 function drag_start(event) {
-    initial_x = event.clientX - x_offset;
-    console.log({initial_x, event})
     let clicked_point = event.originalTarget;
     clicked_a = clicked_point.tagName === 'A' ? clicked_point : clicked_point.closest('a');
     // NOTE : element.CPU.get_point_names_from_id() is still a private method, as it may change later. 
     // Use for your own project will require you to monitor this method behaviour at future releases.
     clicked_point_name = sound_CPU.get_point_names_from_id(clicked_a.id)[1];
-
     clicked_track = clicked_point.closest('aside');
-    let relative_x = initial_x - clicked_track.offsetLeft;
+    initial_x = event.clientX;
 
-    let ratio = relative_x / clicked_track.clientWidth;
-    let seeked_time = ratio * sound_element.duration;
+    let relative_x = initial_x - clicked_a.getBoundingClientRect().left;
+
+    let ratio = relative_x / clicked_a.clientWidth;
+    seeked_time = ratio * sound_element.duration;
     sound_CPU.show_throbber_at(seeked_time);
+
+    this_line_time_element = document.querySelector(`p#${clicked_point_name} .timecode_input`);
+    event.preventDefault();
 }
 
 function drag(event) {
     if (!clicked_track) {
         return ;
     }
-    event.preventDefault();
+
     current_x = event.clientX - initial_x;
     let relative_x = current_x - clicked_track.offsetLeft;
-    console.log({current_x});
 
     let ratio = relative_x / clicked_track.clientWidth;
-    let seeked_time = ratio * sound_element.duration;
+    seeked_time = ratio * sound_element.duration;
     if ((seeked_time < 0) || (seeked_time > sound_element.duration)) {
         console.error({seeked_time});
         return ;
     }
+    
     sound_CPU.show_throbber_at(seeked_time);
-    sound_CPU.edit_point('cursors', clicked_point_name, {start : seeked_time});
+    sound_CPU.position_time_element(clicked_a, seeked_time, seeked_time);
+    event.preventDefault();
 }
 
 function drag_end(event) {
+    if (!clicked_track) {
+        return ;
+    }
     clicked_track = false;
     sound_CPU.hide_throbber();
     current_x = event.clientX - initial_x;
     let relative_x = current_x - clicked_track.offsetLeft;
 
     let ratio = relative_x / clicked_track.clientWidth;
-    let seeked_time = ratio * sound_element.duration;
-    console.log({relative_x, seeked_time});
+    sound_CPU.edit_point('cursors', clicked_point_name, {start : seeked_time});
+    this_line_time_element.value = document.CPU.convert.SecondsInPaddledColonTime(seeked_time);
+    let a = sound_CPU.get_point('cursors', clicked_point_name);
+    let b = sound_CPU.plane_points('cursors');
+    console.log({clicked_point_name, seeked_time, a, b})
 }
 //*/
 
@@ -224,30 +235,24 @@ function CPU_draw_point(event) {
         return;
     }
 
-    // first, we remove pre-existing events
-    
+    // first, we remove pre-existing events    
     element_point_track.removeEventListener('mouseover', cursor_hover);
     element_point_track.removeEventListener('mouseout',cursor_out);
     element_point_track.removeEventListener('click', show_only_line);
     element_point_panel.removeEventListener('mouseover', cursor_hover);
     element_point_panel.removeEventListener('mouseout',cursor_out);
     element_point_panel.removeEventListener('click', show_only_line);
-//    /* not yet ready
-        element_point_track.removeEventListener('pointerdown', drag_start);
-        element_point_track.removeEventListener('pointermove', drag);
-        element_point_track.removeEventListener('pointerup', drag_end);
-//    */
+
+    element_point_track.removeEventListener('pointerdown', drag_start);
     
     // When you click on a point, we show the line editing interface
     // we bind() the function to pass its arguments. 
     element_point_track.addEventListener('mouseover', cursor_hover.bind(event, detail.point));
     element_point_track.addEventListener('mouseout',cursor_out.bind(event, detail.point));
     element_point_track.addEventListener('click', show_only_line.bind(event, detail.point));
-//    /* not yet ready
-        element_point_track.addEventListener('pointerdown', drag_start);
-        element_point_track.addEventListener('pointermove', drag);
-        element_point_track.addEventListener('pointerup', drag_end);
-//    */
+
+    element_point_track.addEventListener('pointerdown', drag_start);
+
     element_point_panel.addEventListener('mouseover', cursor_hover.bind(event, detail.point));
     element_point_panel.addEventListener('mouseout',cursor_out.bind(event, detail.point));
     element_point_panel.addEventListener('click', show_only_line.bind(event, detail.point));
@@ -446,6 +451,7 @@ document.addEventListener('CPU_ready', e => {
     sound_CPU.inject_css('cursors', `
         .cursors {
             left: -6px;
+            user-select: none;
         }
         .cursors .with-preview {
             outline : white 4px solid;
@@ -464,4 +470,12 @@ document.addEventListener('CPU_ready', e => {
             height: 21px;
         }
     `);
+
+    // drag'n'drop events 
+    let plane_track = sound_CPU.get_plane_track('cursors');
+
+    plane_track.addEventListener('pointermove', drag);
+    plane_track.addEventListener('pointerup', drag_end);
+    plane_track.addEventListener('pointerleave', drag_end);
+    plane_track.addEventListener('pointercancel', drag_end);
 });

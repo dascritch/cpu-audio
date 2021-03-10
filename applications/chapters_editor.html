@@ -109,25 +109,24 @@
     </form>
 </details>
 
-
-<cpu-audio 
-    title="First, Choose an URL for source"
-    hide="poster actions">
-    <audio controls id="sound">
-        <source src="./tests-assets/blank.mp3" type="audio/mpeg" />
-        <track kind="metadata" src="" default />
-    </audio>
-    <!-- fallback messages for browsers without webcomponents -->
-    <div class="cpu-audio-without-webcomponents too-old">
-        <h2>Player didn't start (yet ?)</h2>
-        <p>
-            Your browser is loading very slowly, or doesn't support WebComponent fairly enough. This application cannot run without it.
-        </p>
-    </div>
-</cpu-audio>
-
 <details id="chapters">
     <summary>Chapters editor</summary>
+    
+    <cpu-audio 
+        title="First, Choose an URL for source"
+        hide="poster actions">
+        <audio controls id="sound">
+            <source src="./tests-assets/blank.mp3" type="audio/mpeg" />
+            <track kind="metadata" src="" default />
+        </audio>
+        <!-- fallback messages for browsers without webcomponents -->
+        <div class="cpu-audio-without-webcomponents too-old">
+            <h2>Player didn't start (yet ?)</h2>
+            <p>
+                Your browser is loading very slowly, or doesn't support WebComponent fairly enough. This application cannot run without it.
+            </p>
+        </div>
+    </cpu-audio>
     <form id="edit_chapters" action="#generated_html" method="post">
         <fieldset class="actions">
             <button type="button" class="validate" id="add"><strong>+</strong> Add a new chapter</button>
