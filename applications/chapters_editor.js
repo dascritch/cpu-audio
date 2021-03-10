@@ -1,3 +1,5 @@
+'use strict'; 
+
 /**
 
 TODO
@@ -149,7 +151,7 @@ function cursor_out(point_name) {
     component_element.CPU.hide_throbber();
 }
 
-/* not yet ready
+///* not yet ready
 let initial_x;
 let x_offset = 0;
 let clicked_a;
@@ -193,7 +195,7 @@ function drag_end(event) {
     let seeked_time = ratio * sound_element.duration;
     console.log(relative_x, seeked_time);
 }
-*/
+//*/
 
 /**
  * When a repaint occurs on a cpu-audio component point element, we add our events
@@ -222,22 +224,22 @@ function CPU_draw_point(event) {
     element_point_panel.removeEventListener('mouseover', cursor_hover);
     element_point_panel.removeEventListener('mouseout',cursor_out);
     element_point_panel.removeEventListener('click', show_only_line);
-    /* not yet ready
+//    /* not yet ready
         element_point_track.removeEventListener('pointerdown', drag_start);
         element_point_track.removeEventListener('pointermove', drag);
         element_point_track.removeEventListener('pointerup', drag_end);
-    */
+//    */
     
     // When you click on a point, we show the line editing interface
     // we bind() the function to pass its arguments. 
     element_point_track.addEventListener('mouseover', cursor_hover.bind(event, detail.point));
     element_point_track.addEventListener('mouseout',cursor_out.bind(event, detail.point));
     element_point_track.addEventListener('click', show_only_line.bind(event, detail.point));
-    /* not yet ready
+//    /* not yet ready
         element_point_track.addEventListener('pointerdown', drag_start);
         element_point_track.addEventListener('pointermove', drag);
         element_point_track.addEventListener('pointerup', drag_end);
-    */
+//    */
     element_point_panel.addEventListener('mouseover', cursor_hover.bind(event, detail.point));
     element_point_panel.addEventListener('mouseout',cursor_out.bind(event, detail.point));
     element_point_panel.addEventListener('click', show_only_line.bind(event, detail.point));
@@ -403,7 +405,7 @@ function interpret_form(_event) {
 }
 
 document.addEventListener('DOMContentLoaded', e => {
-    document.location.hash = '#configure';
+    document.location.hash = '#';
 
     sound_element = document.getElementById('sound');
     list_element = document.getElementById('list');
@@ -431,10 +433,7 @@ document.addEventListener('DOMContentLoaded', e => {
 document.addEventListener('CPU_ready', e => {
     // sometimes not fired, so we needed a "ready" event
     component_element = e.target;
-
-    let sound_element = document.getElementById('sound'); // We may have DOMContentLoaded after CPU_ready :/
-
-    sound_CPU = sound_element.CPU_controller().CPU;
+    sound_CPU = component_element.CPU;
     sound_CPU.add_plane('cursors', 'Chapters preview', {track : 'cursors', panel : true});
     sound_CPU.inject_css('cursors', `
         .cursors {
