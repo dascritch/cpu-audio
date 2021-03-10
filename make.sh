@@ -128,13 +128,13 @@ function _recreate_index() {
 	rm ${EXAMPLES_HTML}
 	echo -e "\n\n### Examples\n\n" >> ${EXAMPLES_MD}
 	echo "<h2>Examples</h2><ul>" >> ${EXAMPLES_HTML}
-	for line in $(ls -1 examples/*); do 
+	for line in $(ls -1 examples/*.html); do 
 		echo " * [${line}](${line})" >> ${EXAMPLES_MD}
 		echo "<li><a href='${line}'>${line}</a></li>" >> ${EXAMPLES_HTML}
 	done
 	echo -e "\n\n### Applications\n\n" >> ${EXAMPLES_MD}
 	echo "</ul><h2>Applcations</h2><ul>" >> ${EXAMPLES_HTML}
-	for line in $(ls -1 applications/*); do 
+	for line in $(ls -1 applications/*.html); do 
 		echo " * [${line}](${line})" >> ${EXAMPLES_MD}
 		echo "<li><a href='${line}'>${line}</a></li>" >> ${EXAMPLES_HTML}
 	done

@@ -14,4 +14,3 @@
 
 
  * [applications/chapters_editor.html](applications/chapters_editor.html)
- * [applications/chapters_editor.js](applications/chapters_editor.js)
