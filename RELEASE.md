@@ -5,7 +5,8 @@ New features
 ------------
 
  * Possibility to create themed versions with specific html and css files ([#56](#56))
- * Possibility to change css breakpoints by this way ([#56](#56))
+ * Possibility to change css breakpoints ([#51](#51)) by this way ([#56](#56))
+ * Possibility to create RTL version ([#26](#26)) by this way ([#56](#56))
 
 Corrections
 -----------
@@ -40,7 +41,6 @@ Todo:
  - Finish drag'n'drop in chapters-editors
  - Create and example of multiple choices downloads in panel with data-downloadables=""
  - Implement <kbd>↑</kbd> and <kbd>↓</kbd> keys to move on chapters and playlists
-
 
 RELEASE NOTES version 6.6.3
 ===========================
