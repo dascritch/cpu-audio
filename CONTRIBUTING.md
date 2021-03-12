@@ -41,6 +41,7 @@ If you are integrating HTML
  - Try to group CSS properties into CSS varables, and document them : it helps to not repeat yourself, and someone may need to change them.
  - Be wise : SVG path can be declared as symbols to reuse them.
  - Simplify your path in SVG:`<path d="">` : we don't have 10000 dpi screens yet. Use preferably `viewport="0 0 32 32"`, have only one digit precision after decimal point and reduce number of points if your path.
+ - You can create you own themes, with specific HTML and/or CSS files stored in `src/themes/your-theme`. You may probably create more fancy versions of my player by this way, but you will have to use the `./make.sh --theme your-theme` command to build it.
 
 
 Tests
@@ -60,7 +61,7 @@ Development
 
 To make the `dist/` files, run `./make.sh`
 
-You will need to add packages via `npm` to finalize `dist/*` files.
+You will need to add packages via `npm install` to finalize `dist/*` files.
 
 If you're not working on `master` or `preprod` original branches, try to avoid to commit `dist/*` files, to avoid conflicts during merge.
 

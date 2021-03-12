@@ -1,6 +1,12 @@
 RELEASE NOTES actual
 ====================
 
+New features
+------------
+
+ * Possibility to create themed versions with specific html and css files ([#56](#56))
+ * Possibility to change css breakpoints by this way ([#56](#56))
+
 Corrections
 -----------
 
@@ -24,7 +30,6 @@ Back-end
  * Using `css-minify` for compressing css, instead of home-boiled regex ([#56](#56))
  * Using `html-minifier` for compressing html, for the exact same reasons ([#56](#56))
  * Reduce CSS and HTML compressions operations if no need to freshen ([#56](#56))
- * Possibility to create themed versions ([#56](#56))
  * QUnit removed from repo, provided via `npm`
  * QUnit-puppeteer integrated into `make.sh`
  * Automated links from MD (or examples.html) to examples and applications

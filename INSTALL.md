@@ -230,6 +230,7 @@ Variable name               | Description                                       
 
 Some color/background values are not recommended, as `currentColor` and `transparent` ([explained here in French](https://dascritch.net/post/2019/11/13/Deux-couleurs-bizarres-en-CSS)), except if you also define `--cpu-focus-background` and `--cpu-focus-color` to address accessibility issues.
 
+In case you need to create some specific breakpoints, the best way is to create a theme and make your own version. See [API.md](API) and [CONTRIBUTING.md](CONTRIBUTING).
 
 Using classes on host page
 --------------------------
