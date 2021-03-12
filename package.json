@@ -8,7 +8,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "./make.sh --clean",
+    "build": "./make.sh --clean --index",
     "test": "./make.sh --test"
   },
   "repository": {

@@ -14,24 +14,33 @@ Options:
   -c, --clean        	Clean dist/ directory
   -d, --debug           Used for ease debug.
   -t, --test        	Run tests after (ev.) compression
-  -i, --index        	Recreate INDEX.md with examples and applications  
+  -i, --index        	Recreate INDEX.md with examples and applications
+  --theme THEME_NAME    Build especially THEME_NAME variant
+  --all-themes			Build all themes
 Needed utilities : 
 — npm/npx
 
 Optimal options for release :
-./make.sh --clean --test
+./make.sh --clean --test --index --all-themes
 HELP
 )
 
 PROJECT_DIR=$(readlink -f $(dirname ${0}))
 component_file_js="cpu-audio.js" 
 
+
 OTHER_OPTIONS=' --no-devtool'
 OTHER_OPTIONS=' --devtool source-map'
 webpack_mode='production'
 
+THEME_NAME="default"
+ALL_THEMES=0
 TESTS=0
 REINDEX=0
+
+SRC_TEMPLATE="${PROJECT_DIR}/src/themes/default/template.html"
+SRC_GLOBAL="${PROJECT_DIR}/src/themes/default/global.css"
+SRC_SCOPED="${PROJECT_DIR}/src/themes/default/scoped.css"
 
 mkdir -p ${PROJECT_DIR}/tmp
 
@@ -56,6 +65,15 @@ while [ '-' == "${1:0:1}" ] ; do
 		-i|--index)
 			REINDEX=1
 		;;
+		--theme)
+			THEME_NAME=${1}
+			shift
+		;;
+		--all-themes)
+			ALL_THEMES=1
+			echo "NO YET"
+			exit 1
+		;;
 		--)
 			shift
 			break
@@ -68,6 +86,24 @@ while [ '-' == "${1:0:1}" ] ; do
 	shift
 done
 
+function _retarget_src_files() {
+	if [ -f "${PROJECT_DIR}/src/themes/${THEME_NAME}/template.html" ] ; then
+		SRC_TEMPLATE="${PROJECT_DIR}/src/themes/${THEME_NAME}/template.html"
+	else
+		echo "No template.html in ${THEME_NAME} theme, will use ${SRC_TEMPLATE} instead"
+	fi
+	if [ -f "${PROJECT_DIR}/src/themes/${THEME_NAME}/global.css" ] ; then
+		SRC_GLOBAL="${PROJECT_DIR}/src/themes/${THEME_NAME}/global.css"
+	else
+		echo "No global.css in ${THEME_NAME} theme, will use ${SRC_GLOBAL} instead"
+	fi
+	if [ -f "${PROJECT_DIR}/src/themes/${THEME_NAME}/scoped.css" ] ; then
+		SRC_SCOPED="${PROJECT_DIR}/src/themes/${THEME_NAME}/scoped.css"
+	else
+		echo "No scoped.css in ${THEME_NAME} theme, will use ${SRC_SCOPED} instead"
+	fi
+}
+
 function _clean_too_old() {
 	SRC_FILE=${1}
 	TMP_FILE=${1}
@@ -78,24 +114,24 @@ function _clean_too_old() {
 }
 
 function _clean() {
-	_clean_too_old src/global.css    tmp/global.css 
-	_clean_too_old src/scoped.css    tmp/scoped.css 
-	_clean_too_old src/template.html tmp/template.html
+	_clean_too_old ${SRC_TEMPLATE} tmp/template.html
+	_clean_too_old ${SRC_GLOBAL}   tmp/global.css 
+	_clean_too_old ${SRC_SCOPED}   tmp/scoped.css 
 }
 
 function _build_template() {
 	echo 'compress'
 	if [ ! -f tmp/global.css ] ; then
 		echo '.. global.css'
-		npx clean-css-cli -o tmp/global.css src/global.css 
+		npx clean-css-cli -o tmp/global.css ${SRC_GLOBAL}
 	fi
 	if [ ! -f tmp/scoped.css ] ; then
 		echo '.. scoped.css'
-		npx clean-css-cli -o tmp/scoped.css src/scoped.css 
+		npx clean-css-cli -o tmp/scoped.css ${SRC_SCOPED}
 	fi
 	if [ ! -f tmp/template.html ] ; then
 		echo '.. template.html'
-		npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace src/template.html -o tmp/template.html
+		npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace ${SRC_TEMPLATE} -o tmp/template.html
 	fi
 
 	global_css=$(cat "${PROJECT_DIR}/tmp/global.css")
@@ -117,15 +153,6 @@ export function insert_template(){
 }" > "${PROJECT_DIR}/tmp/insert_template.js"
 
 }
-
-license="/**
-
-$(cat ${PROJECT_DIR}/src/license.txt)
-
-**/
-//# sourceMappingURL=./cpu-audio.js.map
-
-"
 
 function _build_component_js_webpack() {
 	echo 'webpacking'
@@ -160,6 +187,7 @@ function _recreate_index() {
 }
 
 
+_retarget_src_files
 _clean
 
 # It fails ? crash
