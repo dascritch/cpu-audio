@@ -21,8 +21,9 @@ Back-end
  * Use `npm` to catch dependencies
  * Leaving Google Closure for webpack : too many bugs, too old
  * Using a more aggressive linter
- * Using `css-minify` for compressing css, instead of home-boiled regex
- * Using `html-minifier` for compressing html, for the exact same reasons
+ * Using `css-minify` for compressing css, instead of home-boiled regex ([#56](#56))
+ * Using `html-minifier` for compressing html, for the exact same reasons ([#56](#56))
+ * Reduce CSS and HTML compressions operations if no need to freshen ([#56](#56))
  * QUnit removed from repo, provided via `npm`
  * QUnit-puppeteer integrated into `make.sh`
  * Automated links from MD (or examples.html) to examples and applications

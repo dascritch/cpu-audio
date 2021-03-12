@@ -33,6 +33,8 @@ webpack_mode='production'
 TESTS=0
 REINDEX=0
 
+mkdir -p ${PROJECT_DIR}/tmp
+
 while [ '-' == "${1:0:1}" ] ; do
 	case "${1}" in
 		-h|--help)
@@ -42,6 +44,7 @@ while [ '-' == "${1:0:1}" ] ; do
 		-c|--clean)
 			echo 'cleaning dist/*'
 			rm ${PROJECT_DIR}/dist/*
+			rm ${PROJECT_DIR}/tmp/*
 		;;
 		-d|--debug)
 			OTHER_OPTIONS=' --devtool source-map'
@@ -65,20 +68,35 @@ while [ '-' == "${1:0:1}" ] ; do
 	shift
 done
 
+function _clean_too_old() {
+	SRC_FILE=${1}
+	TMP_FILE=${1}
+	if [ "${TMP_FILE}" -ot "${SRC_FILE}" ]; then
+		echo "${TMP_FILE} needs refresh"
+		rm ${TMP_FILE}
+	fi
+}
+
 function _clean() {
-	mkdir -p ${PROJECT_DIR}/tmp
-	rm ${PROJECT_DIR}/tmp/*
+	_clean_too_old src/global.css    tmp/global.css 
+	_clean_too_old src/scoped.css    tmp/scoped.css 
+	_clean_too_old src/template.html tmp/template.html
 }
 
 function _build_template() {
 	echo 'compress'
-	echo '.. global.css'
-	npx clean-css-cli -o tmp/global.css src/global.css 
-	echo '.. scoped.css'
-	npx clean-css-cli -o tmp/scoped.css src/scoped.css 
-
-	echo '.. template.html'
-	npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace src/template.html -o tmp/template.html
+	if [ ! -f tmp/global.css ] ; then
+		echo '.. global.css'
+		npx clean-css-cli -o tmp/global.css src/global.css 
+	fi
+	if [ ! -f tmp/scoped.css ] ; then
+		echo '.. scoped.css'
+		npx clean-css-cli -o tmp/scoped.css src/scoped.css 
+	fi
+	if [ ! -f tmp/template.html ] ; then
+		echo '.. template.html'
+		npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace src/template.html -o tmp/template.html
+	fi
 
 	global_css=$(cat "${PROJECT_DIR}/tmp/global.css")
 	scoped_css=$(cat "${PROJECT_DIR}/tmp/scoped.css")
