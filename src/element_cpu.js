@@ -719,7 +719,10 @@ export class CPU_element_api {
 		} else {
 			element_canonical.classList.remove('untitled');
 		}
-		element_canonical.innerText = dataset.title; 
+		element_canonical.innerText = dataset.title;
+		if (this.element.title !== dataset.title) {
+			this.element.title = dataset.title; // WATCHOUT ! May goes recursive with observers
+		}
 		this.elements['poster'].src = dataset.poster === null ? '' : dataset.poster;
 		this.elements['time'].style.backgroundImage = (dataset.waveform === null) ? '' : `url(${dataset.waveform})`;
 	}

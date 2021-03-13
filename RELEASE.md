@@ -39,6 +39,7 @@ Todo for this release :
 -----------------------
 
  - in examples/controller_playlist_and_chapters.html, if controller is engaged in a audio, playlist should be displayed
+ - Can't remember, but to check : regression cpu controller => player
  - Click on any chapter in examples/controller_playlist_and_chapters.html makes playlist position unfocused
  - Debug issues in Chrome mobile , as replay position or highlighted chapters in double
  - Finish drag'n'drop in chapters-editors

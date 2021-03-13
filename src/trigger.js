@@ -1,4 +1,4 @@
-import {once_passive_ev,  is_audiotag_streamed, info, warn, on_debug} from './utils.js';
+import {once_passive_ev,  is_audiotag_streamed, warn, on_debug} from './utils.js';
 import {convert} from './convert.js';
 
 const KEY_LEFT_ARROW = 37;
@@ -517,45 +517,6 @@ export const trigger = {
 		// Play the next media in playlist, starting at zero
 		document.CPU.seekElementAt(next_audiotag, 0);
 		trigger.play({}, next_audiotag);
-	},
-
-	/**
-	 * @summary Interprets if <cpu-audio> element is modified 
-	 *
-	 * @param      {Object}  mutationsList  The mutations list
-	 */
-	observer_cpuaudio : function(mutationsList) {
-		let container = document.CPU.find_container(mutationsList[0].target);
-
-		let media_tagname = 'audio';
-		let audio_element = container.element.querySelector(media_tagname);
-		if (audio_element === null) {
-			info(`<${media_tagname}> element was removed.`);
-			container.element.remove();
-			return;
-		}
-		container.element.copy_attributes_to_media_dataset();
-	},
-	/**
-	 * @summary Interprets if <audio> element is modified or removed
-	 * TODO : act when a child change as <source> or <track>
-	 *
-	 * @param      {Object}  mutationsList  The mutations list
-	 */
-	observer_audio : function(mutationsList) {
-		let container = document.CPU.find_container(mutationsList[0].target);
-
-		// in case <track> changed/removed
-		container.build_chapters();
-
-		// in case attributes changed
-		container.complete_template();
-
-		let global_controller = document.CPU.global_controller;
-		if ((global_controller !== null) && (container.audiotag.isEqualNode(global_controller.audiotag))) {
-			global_controller.build_chapters();
-			global_controller.complete_template();
-		}
 	},
 
 	/**

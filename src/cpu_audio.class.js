@@ -1,8 +1,48 @@
+import {info} from './utils.js';
 import {acceptable_selector} from './utils.js';
 import {convert} from './convert.js';
-import {trigger} from './trigger.js';
 import {connect_audiotag} from './media_element_extension.js';
 import {CpuControllerElement} from './cpu_controller.class.js';
+
+/**
+ * @summary Interprets if <cpu-audio> element is modified 
+ *
+ * @param      {Object}  mutationsList  The mutations list
+ */
+function observer_cpuaudio(mutationsList) {
+	let container = document.CPU.find_container(mutationsList[0].target);
+
+	let media_tagname = 'audio';
+	let audio_element = container.element.querySelector(media_tagname);
+	if (audio_element === null) {
+		info(`<${media_tagname}> element was removed.`);
+		container.element.remove();
+		return;
+	}
+	container.element.copy_attributes_to_media_dataset();
+}
+
+/**
+ * @summary Interprets if <audio> element is modified or removed
+ * TODO : act when a child change as <source> or <track>
+ *
+ * @param      {Object}  mutationsList  The mutations list
+ */
+function observer_audio(mutationsList) {
+	let container = document.CPU.find_container(mutationsList[0].target);
+
+	// in case <track> changed/removed
+	container.build_chapters();
+
+	// in case attributes changed
+	container.complete_template();
+
+	let global_controller = document.CPU.global_controller;
+	if ((global_controller !== null) && (container.audiotag.isEqualNode(global_controller.audiotag))) {
+		global_controller.build_chapters();
+		global_controller.complete_template();
+	}
+}
 
 /**
  * Controller with assigned audio element
@@ -42,13 +82,13 @@ export class CpuAudioElement extends CpuControllerElement {
 
 		connect_audiotag(this.CPU.audiotag);
 	
-		this.observer_cpuaudio = new MutationObserver(trigger.observer_cpuaudio);
+		this.observer_cpuaudio = new MutationObserver(observer_cpuaudio);
 		this.observer_cpuaudio.observe(this, {
 			'childList': true,
 			'attributes' : true
 		});
 
-		this.observer_audio = new MutationObserver(trigger.observer_audio);
+		this.observer_audio = new MutationObserver(observer_audio);
 		this.observer_audio.observe(this, {
 			'childList': true,
 			'attributes' : true,
