@@ -35,12 +35,16 @@ Back-end
  * QUnit-puppeteer integrated into `make.sh`
  * Automated links from MD (or examples.html) to examples and applications
 
-Todo:
+Todo for this release :
+-----------------------
 
+ - in examples/controller_playlist_and_chapters.html, if controller is engaged in a audio, playlist should be displayed
+ - Click on any chapter in examples/controller_playlist_and_chapters.html makes playlist position unfocused
  - Debug issues in Chrome mobile , as replay position or highlighted chapters in double
  - Finish drag'n'drop in chapters-editors
  - Create and example of multiple choices downloads in panel with data-downloadables=""
- - Implement <kbd>↑</kbd> and <kbd>↓</kbd> keys to move on chapters and playlists
+ - Implement <kbd>↑</kbd> and <kbd>↓</kbd> keys to move on chapters and playlists ([#108](#108))
+ - If we unify name style camelCase or snake_case ([#112](#112)), we go for a major version release (7.0)
 
 RELEASE NOTES version 6.6.3
 ===========================
