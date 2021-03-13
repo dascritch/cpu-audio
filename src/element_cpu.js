@@ -1022,8 +1022,31 @@ export class CPU_element_api {
 		    Object.entries(this.plane_points(plane_name)).sort(
 		    	(point_a, point_b) => {
 		    		return point_a[1].start - point_b[1].start;
-		    	})
+		    	}
+		    )
 		);
+	}
+
+	/**
+	 * @summary    Reorder panel elementof a plane by points order
+	 * @private
+	 * 
+	 * @param      {string}   plane_name     The plane name
+	 */
+	panel_reorder(plane_name) { 
+		this.plane_resort(plane_name); 
+		if (!this.get_plane_panel(plane_name)) {
+			return;
+		}
+		let first_element, element;
+		for (let point_name of Object.keys(this.plane_points(plane_name))) {
+			element = this.get_point_panel(plane_name, point_name);
+			if (!first_element) {
+				first_element = element; 
+			} else {
+				first_element.insertAdjacentElement('afterend', element); 
+			}
+		}
 	}
 
 	/**
@@ -1145,8 +1168,8 @@ export class CPU_element_api {
 		});
 
 		if (this.audiotag._CPU_planes[plane_name]._st_max > timecode_start) {
-			// we need to redraw the plane 
-			this.refresh_plane(plane_name);
+			// we need to reorder the plane 
+			this.panel_reorder(plane_name);
 		} else {
 			this.draw_point(plane_name, point_name);
 			this.audiotag._CPU_planes[plane_name]._st_max = timecode_start;
@@ -1183,11 +1206,9 @@ export class CPU_element_api {
 		
 		this.audiotag._CPU_planes[plane_name].points[point_name] = original_data;
 
+		this.draw_point(plane_name, point_name);
 		if (will_refresh) {
-			this.clear_plane(plane_name);
-			this.refresh_plane(plane_name);
-		} else {
-			this.draw_point(plane_name, point_name);
+			this.panel_reorder(plane_name);
 		}
 
 		this.fire_event('edit_point', {
@@ -1284,7 +1305,7 @@ export class CPU_element_api {
 	}
 
 	/**
-	 * @summary Refresh a plane
+	 * @summary Refresh a plane. a panel_reorder may be enough
 	 * @public
 	 *
 	 * @param      {string}  plane_name  The plane name

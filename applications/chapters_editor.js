@@ -3,6 +3,9 @@
 /**
 
 TODO
+- should reorder panel when time changed ? may trigger some problems
+- if a time point is edited, code in element_cpu.js should simply move it, instead rebuild panel
+- when unfolding generators, expanded panels should be also scrolled to
 - draggable cursor . some primitive "nearly" ready for release
 - regression cpu controller => player
 - click on the timeline to create a point
@@ -192,6 +195,7 @@ function drag(event) {
     
     sound_CPU.show_throbber_at(seeked_time);
     sound_CPU.position_time_element(clicked_a, seeked_time, seeked_time);
+    // should we mode play position too ?
     event.preventDefault();
 }
 
@@ -203,11 +207,7 @@ function drag_end(event) {
     let point = sound_CPU.get_point('cursors', clicked_point_name);
     point.start = seeked_time;
     this_line_time_element.value = document.CPU.convert.SecondsInPaddledColonTime(seeked_time);
-    sound_element._CPU_planes['cursors'].points = point;
-    // we don't use sound_CPU.edit_point('cursors', clicked_point_name, {start : seeked_time}) , as it triggers a bad refresh
-    
-    let b = sound_CPU.plane_points('cursors');
-    console.log({clicked_point_name, seeked_time, point, b})
+    sound_CPU.edit_point('cursors', clicked_point_name, {start : seeked_time});   
 }
 //*/
 
@@ -254,6 +254,15 @@ function CPU_draw_point(event) {
 
 }
 
+// imported from src/utils.js
+function escape_html(text) {
+    let burn_after_reading = document.createElement('span');
+    burn_after_reading.innerText = text;
+    let out = burn_after_reading.innerHTML;
+    burn_after_reading.remove();
+    return out;
+}
+
 /**
  * Interpret a chapter line edited
  *
@@ -261,7 +270,12 @@ function CPU_draw_point(event) {
  */
 function interpret_line(this_line_element, from_interpret_form=false) {
     let time = this_line_element.querySelector('.timecode_input').value; 
-    let text = this_line_element.querySelector('.text_input').value; // TODO : clean HTML , perhaps via a innerHTML ?
+    let text = this_line_element.querySelector('.text_input').value;
+
+    // very simple clean HTML
+    if ((text.split('<').length) !== (text.split('>').length)) {
+        text = escape_html(text);
+    }
 
     if ((!from_interpret_form) && (Number(this_line_element.dataset.time) !== Number(document.CPU.convert.TimeInSeconds(time)))) {
         interpret_form();
