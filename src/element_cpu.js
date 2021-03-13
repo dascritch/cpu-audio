@@ -1028,24 +1028,24 @@ export class CPU_element_api {
 	}
 
 	/**
-	 * @summary    Reorder panel elementof a plane by points order
+	 * @summary    Reorder panel of a plane by points order
 	 * @private
 	 * 
 	 * @param      {string}   plane_name     The plane name
 	 */
-	panel_reorder(plane_name) { 
+	panel_reorder(plane_name) {
 		this.plane_resort(plane_name); 
 		if (!this.get_plane_panel(plane_name)) {
 			return;
 		}
-		let first_element, element;
+		let previous_element, element;
 		for (let point_name of Object.keys(this.plane_points(plane_name))) {
+
 			element = this.get_point_panel(plane_name, point_name);
-			if (!first_element) {
-				first_element = element; 
-			} else {
-				first_element.insertAdjacentElement('afterend', element); 
+			if (previous_element) {
+				previous_element.insertAdjacentElement('afterend', element); 
 			}
+			previous_element = element;
 		}
 	}
 

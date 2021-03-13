@@ -204,10 +204,9 @@ function drag_end(event) {
         return ;
     }
     clicked_track = false;
-    let point = sound_CPU.get_point('cursors', clicked_point_name);
-    point.start = seeked_time;
     this_line_time_element.value = document.CPU.convert.SecondsInPaddledColonTime(seeked_time);
-    sound_CPU.edit_point('cursors', clicked_point_name, {start : seeked_time});   
+    sound_CPU.edit_point('cursors', clicked_point_name, {start : seeked_time});
+    //sound_CPU.
 }
 //*/
 
