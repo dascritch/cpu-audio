@@ -1077,6 +1077,7 @@ export class CPU_element_api {
 	 * @return     {boolean}  success
 	 */
 	add_point(plane_name, timecode_start, point_name, data) {
+
 		data = data === undefined ? {} : data;
 		
 		if ( (this.get_plane(plane_name) === undefined) || (this.get_point(plane_name, point_name) !== undefined) || (timecode_start < 0) || (!point_name.match(valid_id)) ) {
@@ -1161,8 +1162,7 @@ export class CPU_element_api {
 	 * @return     {boolean}  success
 	 */
 	remove_point(plane_name, point_name) {
-		let point_track_element = this.get_point_track(plane_name, point_name);
-		if (!point_track_element) {
+		if (!this.get_point(plane_name, point_name)) {
 			return false;
 		}
 
@@ -1171,9 +1171,11 @@ export class CPU_element_api {
 			point : point_name
 		});
 
-		point_track_element.remove();
+		let point_track_element = this.get_point_track(plane_name, point_name);
+		if (point_track_element) {
+			point_track_element.remove();
+		}
 		this.get_point_panel(plane_name, point_name).remove();
-		delete this.get_plane(plane_name).points[point_name];
 
 		//  recalc _start_max for caching repaints
 		let _st_max = 0;
@@ -1186,6 +1188,9 @@ export class CPU_element_api {
 		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
 			document.CPU.global_controller.remove_point(plane_name, point_name);
 		}
+		console.log('avant', this.get_plane(plane_name).points[point_name])
+		delete this.get_plane(plane_name).points[point_name];
+		console.log('apres', this.get_plane(plane_name).points[point_name])
 		return true;
 	}
 
@@ -1522,7 +1527,6 @@ export class CPU_element_api {
 		let previous_playlist = this.current_playlist;
 		this.current_playlist = document.CPU.find_current_playlist();
 		
-		window.console.log('build_playlist' , this.current_playlist)
 
 		if (! this.get_plane(plane_playlist)) {
 			this.add_plane(plane_playlist, __['playlist'], {
@@ -1538,26 +1542,24 @@ export class CPU_element_api {
 			this.clear_plane(plane_playlist);
 
 			if (this.current_playlist.length === 0) {
+				// remove plane to hide panel. Yes, overkill
+				this.remove_plane(plane_playlist);
 				return;
 			}
 
-			window.console.log('this.current_playlist', this.current_playlist)
-
 			for (let audiotag_id of this.current_playlist) {
 				let audiotag = document.getElementById(audiotag_id);
-
-				window.console.log('add_point', audiotag_id)
 				
 				this.add_point(plane_playlist, 0, audiotag_id, {
 					text : audiotag.dataset.title,
-					link : `#${audiotag.id}&t=0`
+					link : `#${audiotag_id}&t=0`
 				});
 			}
 		}
 
 		this.highlight_point(plane_playlist, this.audiotag.id, activecue_classname);
 
-		// move _playlist on top, via main_element.insertAdjacentElement('afterend', panel) . Hoping it will insert it RIGHT AFTER the main element.
+		// move _playlist on top. Hoping it will insert it RIGHT AFTER the main element.
 		this.element.shadowRoot.querySelector('main').insertAdjacentElement('afterend', this.get_plane_panel(plane_playlist) );
 
 	}

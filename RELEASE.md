@@ -19,14 +19,15 @@ Corrections
  * Issue with intermittent `.replaceAll()` resolved
  * When changing component title, its title="" must follows
  * `Element.CPU.remove_highlights_points()` was too generic. Modification in parameters ([#109](#109))
+ * `Element.CPU.remove_point()` was terrible
 
 Back-end
 --------
 
  * [Made a call on contribulle.org](https://contribulle.org/projects/27) 
  * Now using standard ECMA imports ([#110](#110))
- * Renamed files
- * Better separation between public objects and private methods
+ * Renamed files ([#110](#110))
+ * Better separation between public objects and private methods ([#110](#110))
  * Use `npm` to catch dependencies
  * Leaving Google Closure for webpack : too many bugs, too old
  * Using a more aggressive linter

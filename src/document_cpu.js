@@ -279,8 +279,10 @@ export let document_CPU = {
 	 * @return     {Array}  Array with named id
 	 */
 	'find_current_playlist' : function() {
-		if (this.global_controller === null)
+		
+		if (this.global_controller === null) {
 			return [];
+		}
 		let current_audiotag = this.global_controller.audiotag;
 		if (current_audiotag === null) {
 			return [];
