@@ -12,6 +12,10 @@ const acceptable_hide_atttributes = ['poster', 'actions', 'timeline', 'chapters'
 // should be put in CPU-controller ?
 let preview_classname = 'with-preview';
 
+let plane_chapters = '_chapters';
+// plane for _playlist. Only used in <CPU-Controller>
+let plane_playlist = '_playlist';
+
 // Regex used to validate planes, points and injected css names
 const valid_id = /^[a-zA-Z0-9\-_]+$/;
 
@@ -1373,7 +1377,6 @@ export class CPU_element_api {
 	cuechange_event(event) {
 		let active_cue;
 		let class_name = 'active-cue';
-		let plane_name = '_chapters';
 		try {
 			// Chrome may put more than one activeCue. That's a stupid regression from them, but alas... I have to do with
 			let _time = this.audiotag.currentTime;
@@ -1393,13 +1396,13 @@ export class CPU_element_api {
 			window.console.error(oops);
 		}
 
-		this.remove_highlights_points(plane_name, class_name);
+		this.remove_highlights_points(plane_chapters, class_name);
 		if (active_cue) {
 			trigger.cuechange(active_cue, this.audiotag);
 			this.fire_event('chapter_changed', {
 				cue : active_cue
 			});
-			this.highlight_point(plane_name, active_cue.id, class_name);
+			this.highlight_point(plane_chapters, active_cue.id, class_name);
 		}
 	}
 	/**
@@ -1419,7 +1422,6 @@ export class CPU_element_api {
 
 		let audiotag = this.audiotag;
 		let has = false;
-		let plane_name = '_chapters';
 
 		if (audiotag) {
 			if ((audiotag.textTracks) && (audiotag.textTracks.length > 0)) {
@@ -1439,7 +1441,7 @@ export class CPU_element_api {
 				}
 
 				if ((chapter_track) && (chapter_track.cues.length > 0)) {
-					this.add_plane(plane_name, __['chapters'], {'track' : 'chapters'});
+					this.add_plane(plane_chapters, __['chapters'], {'track' : 'chapters'});
 
 					let cuechange_event = this.cuechange_event.bind(this);
 					// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
@@ -1448,10 +1450,10 @@ export class CPU_element_api {
 					chapter_track.addEventListener('cuechange', cuechange_event, passive_ev);
 
 					for (let cue of chapter_track.cues) {
-						if (!this.get_point(plane_name, cue.id)) {
+						if (!this.get_point(plane_chapters, cue.id)) {
 							// avoid unuseful redraw, again
 							let cuepoint = Math.floor(cue.startTime);
-							this.add_point(plane_name, cuepoint, cue.id,  {
+							this.add_point(plane_chapters, cuepoint, cue.id,  {
 								'text' : this.translate_vtt(cue.text),
 								'link' : true,          // point the link to start time position
 								'end'  : cue.endTime    // end timecode of the cue
@@ -1475,7 +1477,7 @@ export class CPU_element_api {
 				 */
 				document.body.classList.add(body_class);
 			} else {
-				this.remove_plane(plane_name);
+				this.remove_plane(plane_chapters);
 				document.body.classList.remove(body_class);
 			}
 
@@ -1524,38 +1526,37 @@ export class CPU_element_api {
 		let previous_playlist = this.current_playlist;
 		this.current_playlist = document.CPU.find_current_playlist();
 
-		if (! this.get_plane('_playlist')) {
-			this.add_plane('_playlist', __['playlist'], {
+		if (! this.get_plane(plane_playlist)) {
+			this.add_plane(plane_playlist, __['playlist'], {
 				track : false,
 				panel : true,
 				highlight : true,
 				_comp : true 				// data stored on CPU-Controller ONLY 
 			});
-		} else {
-			if (previous_playlist !== this.current_playlist) {
-				this.clear_plane('_playlist');
-			}
 		}
 
-		if (this.current_playlist.length === 0) {
-			return;
-		}
 
 		if (previous_playlist !== this.current_playlist) {
+			this.clear_plane(plane_playlist);
+
+			if (this.current_playlist.length === 0) {
+				return;
+			}
+
 			for (let audiotag_id of this.current_playlist) {
 				let audiotag = document.getElementById(audiotag_id);
 				
-				this.add_point('_playlist', 0, audiotag_id, {
+				this.add_point(plane_playlist, 0, audiotag_id, {
 					text : audiotag.dataset.title,
 					link : `#${audiotag.id}&t=0`
 				});
 			}
 		}
 
-		this.highlight_point('_playlist', this.audiotag.id, 'active-cue');
+		this.highlight_point(plane_playlist, this.audiotag.id, 'active-cue');
 
 		// move _playlist on top, via main_element.insertAdjacentElement('afterend', panel) . Hoping it will insert it RIGHT AFTER the main element.
-		this.element.shadowRoot.querySelector('main').insertAdjacentElement('afterend', this.get_plane_panel('_playlist') );
+		this.element.shadowRoot.querySelector('main').insertAdjacentElement('afterend', this.get_plane_panel(plane_playlist) );
 
 	}
 	/**
