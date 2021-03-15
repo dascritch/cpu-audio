@@ -760,11 +760,7 @@ export class CPU_element_api {
 			assign_events(plane_panel);
 		}
 
-		if (
-			(!this.is_controller) &&
-			(document.CPU.global_controller !== null) &&
-			(this.mirrored_in_controller())
-			) {
+		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
 			document.CPU.global_controller.draw_plane(plane_name);
 		}
 
@@ -837,11 +833,7 @@ export class CPU_element_api {
 			remove_element.remove();
 		}
 
-		if (
-			(!this.is_controller) &&
-			(document.CPU.global_controller !== null) &&
-			(this.mirrored_in_controller())
-			) {
+		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
 			// as plane data is removed, it will remove its aside and track 
 			document.CPU.global_controller.draw_plane(name);
 		}
@@ -1039,11 +1031,7 @@ export class CPU_element_api {
 			element_point_panel : plane_point_panel,
 		});
 
-		if (
-			(!this.is_controller) &&
-			(document.CPU.global_controller !== null) &&
-			(this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
-			) {
+		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
 			document.CPU.global_controller.draw_point(plane_name, point_name);
 		}
 	}
@@ -1166,11 +1154,7 @@ export class CPU_element_api {
 		}
 		this.audiotag._CPU_planes[plane_name]._st_max = _st_max;
 
-		if (
-			(!this.is_controller) &&
-			(document.CPU.global_controller !== null) &&
-			(this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
-			) {
+		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
 			document.CPU.global_controller.remove_point(plane_name, point_name);
 		}
 		return true;
@@ -1287,11 +1271,7 @@ export class CPU_element_api {
 		class_name = (typeof class_name === 'string') ? class_name : preview_classname;
 		querySelector_apply(`.${class_name}`,(element) => { element.classList.remove(class_name); },this.container);
 		// this.flash(''); // we have a change : redisplay the playing cue text. Not so easy
-		if (
-			(mirror) &&
-			(document.CPU.global_controller !== null) &&
-			(this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
-			) {
+		if ( (mirror) && (this.mirrored_in_controller()) ) {
 			if (!this.is_controller) {
 				document.CPU.global_controller.remove_highlights_points(class_name, false);
 			} else {
@@ -1343,11 +1323,7 @@ export class CPU_element_api {
 		}
 		*/
 
-		if (
-			(mirror) &&
-			(document.CPU.global_controller !== null) &&
-			(this.audiotag.isEqualNode(document.CPU.global_controller.audiotag))
-			) {
+		if ( (mirror) && (this.mirrored_in_controller()) ) {
 			if (!this.is_controller) {
 				document.CPU.global_controller.highlight_point(plane_name, point_name, class_name, false);
 			} else {
