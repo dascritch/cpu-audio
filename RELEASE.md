@@ -15,7 +15,7 @@ Corrections
  * Do not change color when changing mode play→loading→play ([#114](#114)) 
  * Resolving a probable issue on fine navigation panel on handheld
  * Play/pause button may have issues if Chrome got numerous webcomponents in the same page
- * An translation error may occurs in shareable URL. We reove audio id if we'r not in same URL
+ * An translation error may occurs in shareable URL. We remove audio id if we are not in same URL
  * Issue with intermittent `.replaceAll()` resolved
  * When changing component title, its title="" must follows
  * `Element.CPU.remove_highlights_points()` was too generic. Modification in parameters ([#109](#109))
@@ -42,15 +42,14 @@ Back-end
 Todo for this release :
 -----------------------
 
-
- - we still have a flashing chapters before the one clicked in panel. There is something to clean up
- - Can't remember, but to check : regression cpu controller => player
- - Click on any chapter in examples/controller_playlist_and_chapters.html makes playlist position unfocused
+ - If we unify name style camelCase or snake_case ([#112](#112)), or as we changed some public API, we go for a major version release (7.0)
+ - we still have a flashing chapters before the one clicked in panel. There is something to clean up, probable root cause is my (voluntary) 206 defaillant web server
  - Debug issues in Chrome mobile , as replay position or highlighted chapters in double
+ - Can't remember, but to check : regression cpu controller => player (color focus, I believe)
+ - Click on any chapter in players in examples/controller_playlist_and_chapters.html makes chapter position unfocused in controller
  - Finish drag'n'drop in chapters-editors
  - Create and example of multiple choices downloads in panel with data-downloadables=""
  - Implement <kbd>↑</kbd> and <kbd>↓</kbd> keys to move on chapters and playlists ([#108](#108))
- - If we unify name style camelCase or snake_case ([#112](#112)), we go for a major version release (7.0)
 
 RELEASE NOTES version 6.6.3
 ===========================
