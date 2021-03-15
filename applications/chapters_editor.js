@@ -3,6 +3,7 @@
 /**
 
 TODO
+- AAARG ! Chrome still doesn't keep the moving cursor :(
 - when unfolding generators, expanded panels should be also scrolled to
 - draggable cursor . some primitive "nearly" ready for release
 - export .csv 
@@ -159,13 +160,10 @@ let clicked_a;
 let clicked_point_name;
 let clicked_track;
 let this_line_time_element;
-function drag_start(event) {
-    let clicked_point = event.originalTarget;
-    clicked_a = clicked_point.tagName === 'A' ? clicked_point : clicked_point.closest('a');
-    // NOTE : element.CPU.get_point_names_from_id() is still a private method, as it may change later. 
-    // Use for your own project will require you to monitor this method behaviour at future releases.
-    clicked_point_name = sound_CPU.get_point_names_from_id(clicked_a.id)[1];
-    clicked_track = clicked_point.closest('aside');
+function drag_start(_clicked_a, _clicked_point_name, event) {
+    clicked_a = _clicked_a;
+    clicked_point_name = _clicked_point_name;
+    clicked_track = clicked_a.closest('aside');
     x_offset = clicked_track.getBoundingClientRect().left
     track_width = clicked_track.clientWidth;
 
@@ -241,7 +239,7 @@ function CPU_draw_point(event) {
     element_point_track.addEventListener('mouseout',cursor_out.bind(event, detail.point));
     element_point_track.addEventListener('click', show_only_line.bind(event, detail.point));
 
-    element_point_track.addEventListener('pointerdown', drag_start);
+    element_point_track.addEventListener('pointerdown', drag_start.bind(undefined, element_point_track, detail.point));
 
     element_point_panel.addEventListener('mouseover', cursor_hover.bind(event, detail.point));
     element_point_panel.addEventListener('mouseout',cursor_out.bind(event, detail.point));
