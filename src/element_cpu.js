@@ -188,16 +188,15 @@ export class CPU_element_api {
 	 * @summary Update time-line length
 	 * @private
 	 *
-	 * @param      {string}  type     line to impact. Can be 'elapsed' or 'loading'
 	 * @param      {number}  seconds  The seconds
 	 * @param      {number|undefined=}  ratio    ratio position in case time position are still unknown
 	 */
-	update_line(type, seconds, ratio=undefined) {
+	update_line(seconds, ratio=undefined) {
 		let duration = this.audiotag.duration;
 		if (ratio === undefined) {
 			ratio = duration === 0 ? 0 : (100*seconds / duration);
 		}
-		this.elements[`${type}line`].style.width = `${ratio}%`;
+		this.elements[`loadingline`].style.width = `${ratio}%`;
 	}
 
 	/**
@@ -232,7 +231,7 @@ export class CPU_element_api {
 			this.elapse_was = innerHTML;
 		}
 
-		this.update_line('loading', audiotag.currentTime);
+		this.update_line(audiotag.currentTime);
 	}
 
 	/**
@@ -273,7 +272,7 @@ export class CPU_element_api {
 	 * @param      {number}  seconds  The seconds
 	 */
 	update_loading(seconds, ratio) {
-		this.update_line('loading', seconds, ratio);
+		this.update_line(seconds, ratio);
 		this.set_act_container('loading');
 	}
 
