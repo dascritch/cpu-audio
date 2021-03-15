@@ -50,6 +50,10 @@
 <h1 id="highlighting-text-amond-chapters">Highlighting text amond chapters</h1>
 
 <p>In this example, elements of the host page are highlighted when the player show some chapters, with only CSS and HTML.</p>
+<p>
+    Please note : This example must be run in a web server, not via file:/// protocol, due to CSP/CORS requirements from browsers. Please note that obviously a chapter track is unuseful for a live streamed audio.<br />
+    Also note that the class is set when the page is loaded and before the element is playing only if the audio id is expressed in the hash url
+</p>
 <details>
     <summary>Technical explanations</summary>
     <p>
@@ -57,10 +61,6 @@
     </p>
     <p>
         This feature works if a chapter &lt;track&gt; is correctly loaded and interpreted by cpu-audio. Once loaded interpreted, you can hide chapter panel and tracks in the player (with hide="chapters panels"), the feature and so the css effects will still work.
-    </p>
-    <p>
-        Please note : This example must be run in a web server, not via file:/// protocol, due to CSP/CORS requirements from browsers. Please note that obviously a chapter track is unuseful for a live streamed audio.<br />
-        Also note that the class is set when the page is loaded and before the element is playing only if the audio id is expressed in the hash url
     </p>
     <p>
         The context-style feature was inspired by the now defunct BBC mini website hommage to their 1980s TV show about computers.
