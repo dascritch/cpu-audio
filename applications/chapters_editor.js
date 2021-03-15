@@ -5,7 +5,6 @@
 TODO
 - when unfolding generators, expanded panels should be also scrolled to
 - draggable cursor . some primitive "nearly" ready for release
-- click on the timeline to create a point
 - export .csv 
 
 **/
