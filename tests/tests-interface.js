@@ -42,8 +42,6 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 	stopPlayer();
 	QUnit.start();
 
-
-
 	QUnit.test( "default_dataset at default", function( assert ) {
 		assert.equal(cpu.default_dataset.title, document.title, "title is document title" );
 		assert.equal(cpu.default_dataset.poster, null, "poster is null without social meta" );
@@ -65,6 +63,14 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.equal(cpu.default_dataset.poster, 'https://twitter', "poster with twitter social meta" );
 		assert.equal(cpu.default_dataset.twitter, '@dascritch', "twitter account with twitter social meta" );
 		*/
+	});
+
+
+
+	QUnit.test( "All named .elements. in template needed in code", function( assert ) {
+		for (id of ['loadingline', 'elapse', 'pageerror', 'popup', 'twitter', 'facebook', 'email', 'nativeshare', 'canonical', 'poster', 'time', 'line', 'playlist', 'interface', 'poster', 'pause', 'play', 'actions', 'back', 'restart' , 'fastreward', 'reward', 'foward', 'fastfoward', 'control']) {
+			assert.ok(componenttag.CPU.elements[id], `Component.CPU.elements['${id}']`);
+		}
 	});
 
 	QUnit.test( "Press play to start", function( assert ) {
