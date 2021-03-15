@@ -1084,14 +1084,10 @@ export class CPU_element_api {
 		}
 
 		data['start'] = timecode_start;
-		if (this._planes[plane_name]) {
-			this._planes[plane_name].points[point_name] = data;
-		} else {
-			if (this.is_controller)  {
-				return false;
-			}
-			this.audiotag._CPU_planes[plane_name].points[point_name] = data;
+		if ((!this._planes[plane_name]) && (this.is_controller)) {
+			return false;
 		}
+		this.get_plane(plane_name).points[point_name] = data;
 
 		this.fire_event('add_point', {
 			plane : plane_name,
@@ -1525,11 +1521,13 @@ export class CPU_element_api {
 
 		let previous_playlist = this.current_playlist;
 		this.current_playlist = document.CPU.find_current_playlist();
+		
+		window.console.log('build_playlist' , this.current_playlist)
 
 		if (! this.get_plane(plane_playlist)) {
 			this.add_plane(plane_playlist, __['playlist'], {
 				track : false,
-				panel : true,
+				panel : 'nocuetime',
 				highlight : true,
 				_comp : true 				// data stored on CPU-Controller ONLY 
 			});
@@ -1543,8 +1541,12 @@ export class CPU_element_api {
 				return;
 			}
 
+			window.console.log('this.current_playlist', this.current_playlist)
+
 			for (let audiotag_id of this.current_playlist) {
 				let audiotag = document.getElementById(audiotag_id);
+
+				window.console.log('add_point', audiotag_id)
 				
 				this.add_point(plane_playlist, 0, audiotag_id, {
 					text : audiotag.dataset.title,
