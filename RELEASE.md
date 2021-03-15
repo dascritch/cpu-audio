@@ -18,6 +18,7 @@ Corrections
  * An translation error may occurs in shareable URL. We reove audio id if we'r not in same URL
  * Issue with intermittent `.replaceAll()` resolved
  * When changing component title, its title="" must follows
+ * `Element.CPU.remove_highlights_points()` was too generic. Modification in parameters
 
 Back-end
 --------
@@ -35,11 +36,13 @@ Back-end
  * QUnit removed from repo, provided via `npm`
  * QUnit-puppeteer integrated into `make.sh`
  * Automated links from MD (or examples.html) to examples and applications
+ * Playlist are now using the standard API, with special code for CPU-Controller ([#109](#109))
 
 Todo for this release :
 -----------------------
 
- - in examples/controller_playlist_and_chapters.html, if controller is engaged in a audio but not playing it yet, playlist should be displayed. Linked to `remove_highlights_points` , which is public :/ Need to create a "panel" attribute, and so refactor playlist in panel attached to cpu-controller ([#109](#109)).... wwathc out also on get_plantes()._st_max
+
+ - we still have a flashing chapters before the one clicked in panel. There is something to clean up
  - Can't remember, but to check : regression cpu controller => player
  - Click on any chapter in examples/controller_playlist_and_chapters.html makes playlist position unfocused
  - Debug issues in Chrome mobile , as replay position or highlighted chapters in double

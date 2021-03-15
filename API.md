@@ -101,7 +101,7 @@ remove_point(plane, point)                   | boolean | Remove an annotation po
 clear_plane(plane)                           |         | Remove any points from an annotation plane (¹)(²)
 redraw_all_planes()                          |         | Redraw any annotation planes and points
 highlight_point(plane, point, class, mirror) |         | Highlight a perticuliar annotation point, class is `with-preview` by default (²)
-remove_highlights_points(class, mirror)      |         | Remove any highlights on any points, class is `with-preview` by default (²)
+remove_highlights_points(plane, class, mirror) |         | CHANGED SINCE 6.7! Remove highlights on plane, class is `with-preview` by default (²)
 inject_css(style_key, css)					 |		   | Inject a `<style>` tag into the shadowDom of the component. (²)
 remove_css(style_key)						 |		   | Remove an inject `<style>` from the shadowDom. (²)
 
