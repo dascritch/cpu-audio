@@ -116,6 +116,7 @@ key         | type              | default value | usage
 track       | boolean or string | `true`        | Create a track in the time line, string to precise the kind (`chapters`, `borders`, same naming convention than upper (²)), or presentation restriction (`nosmall`, `nosmaller`, `nosmallest`), space separated
 panel       | boolean or string | `true`        | Create a panel under the player, or precise presentation restriction (`nosmall`, `nosmaller`, `nosmallest`, `nocuetime`) space separated
 highlight   | boolean           | `true`        | Points of this annotation plane can be highlighted with the mouse
+_comp		| boolean			| `false`		| Private use only. Data stored on the component instead of audio element
 
 (⁴) `data` is an object, with detailled keys for points :
 

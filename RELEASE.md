@@ -39,7 +39,7 @@ Back-end
 Todo for this release :
 -----------------------
 
- - in examples/controller_playlist_and_chapters.html, if controller is engaged in a audio but not playing it yet, playlist should be displayed. Linked to `remove_highlights_points` , which is public :/ Need to create a "panel" attribute, and so refactor playlist in panel attached to cpu-controller ([#109](#109)).... 
+ - in examples/controller_playlist_and_chapters.html, if controller is engaged in a audio but not playing it yet, playlist should be displayed. Linked to `remove_highlights_points` , which is public :/ Need to create a "panel" attribute, and so refactor playlist in panel attached to cpu-controller ([#109](#109)).... wwathc out also on get_plantes()._st_max
  - Can't remember, but to check : regression cpu controller => player
  - Click on any chapter in examples/controller_playlist_and_chapters.html makes playlist position unfocused
  - Debug issues in Chrome mobile , as replay position or highlighted chapters in double

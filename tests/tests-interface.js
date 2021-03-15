@@ -68,7 +68,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 
 
 	QUnit.test( "All named .elements. in template needed in code", function( assert ) {
-		for (id of ['loadingline', 'elapse', 'pageerror', 'popup', 'twitter', 'facebook', 'email', 'nativeshare', 'canonical', 'poster', 'time', 'line', 'playlist', 'interface', 'poster', 'pause', 'play', 'actions', 'back', 'restart' , 'fastreward', 'reward', 'foward', 'fastfoward', 'control']) {
+		for (id of ['loadingline', 'elapse', 'pageerror', 'popup', 'twitter', 'facebook', 'email', 'nativeshare', 'canonical', 'poster', 'time', 'line', 'interface', 'poster', 'pause', 'play', 'actions', 'back', 'restart' , 'fastreward', 'reward', 'foward', 'fastfoward', 'control']) {
 			assert.ok(componenttag.CPU.elements[id], `Component.CPU.elements['${id}']`);
 		}
 	});
