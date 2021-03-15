@@ -1121,6 +1121,12 @@ export class CPU_element_api {
 	 *										  will only change keys in the list
 	 */
 	edit_point(plane_name, point_name, data) {
+
+		if ( (!this.get_plane(plane_name)) || (!this.get_point(plane_name, point_name)) ) {
+			return false;
+		}
+
+
 		let original_data = this.get_point(plane_name, point_name);
 		let will_refresh = false;
 
@@ -1162,7 +1168,7 @@ export class CPU_element_api {
 	 * @return     {boolean}  success
 	 */
 	remove_point(plane_name, point_name) {
-		if (!this.get_point(plane_name, point_name)) {
+		if ((!this.get_plane(plane_name)) || (!this.get_point(plane_name, point_name))) {
 			return false;
 		}
 
@@ -1188,9 +1194,9 @@ export class CPU_element_api {
 		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
 			document.CPU.global_controller.remove_point(plane_name, point_name);
 		}
-		console.log('avant', this.get_plane(plane_name).points[point_name])
-		delete this.get_plane(plane_name).points[point_name];
-		console.log('apres', this.get_plane(plane_name).points[point_name])
+		if (this.get_plane(plane_name).points[point_name]) {
+			delete this.get_plane(plane_name).points[point_name];
+		}
 		return true;
 	}
 

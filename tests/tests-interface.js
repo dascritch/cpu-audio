@@ -521,7 +521,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
 		secondary_API_CPU.add_plane('hello');
-		assert.ok(! secondary_API_CPU.remove_point('pipo', 'point'), 'function cannot works with a non-existing aside');
+		assert.ok(! secondary_API_CPU.remove_point('pipo', 'point'), 'function cannot works with a non-existing plane');
 		assert.ok(! secondary_API_CPU.remove_point('hello', 'point'), 'function cannot works with a non-existing point');
 		secondary_API_CPU.add_point('hello', 2, 'point');
 		assert.ok(secondary_API_CPU.remove_point('hello', 'point'), 'function accept when parameters are valid');
