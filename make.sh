@@ -181,9 +181,18 @@ function _recreate_index() {
 		echo " * [${line}](${line})" >> ${EXAMPLES_MD}
 		echo "<li><a href='${line}'>${line}</a></li>" >> ${EXAMPLES_HTML}
 	done
+
 	echo -e "\n\n### Applications\n\n" >> ${EXAMPLES_MD}
-	echo "</ul><h2>Applcations</h2><ul>" >> ${EXAMPLES_HTML}
+	echo "</ul><h2>Applications</h2><ul>" >> ${EXAMPLES_HTML}
 	for line in $(ls -1 applications/*.html); do 
+		echo " * [${line}](${line})" >> ${EXAMPLES_MD}
+		echo "<li><a href='${line}'>${line}</a></li>" >> ${EXAMPLES_HTML}
+	done
+	echo "</ul>" >> ${EXAMPLES_HTML}
+
+	echo -e "\n\n### Tests\n\n" >> ${EXAMPLES_MD}
+	echo "</ul><h2>Tests</h2><ul>" >> ${EXAMPLES_HTML}
+	for line in $(ls -1 tests/*.html); do 
 		echo " * [${line}](${line})" >> ${EXAMPLES_MD}
 		echo "<li><a href='${line}'>${line}</a></li>" >> ${EXAMPLES_HTML}
 	done
