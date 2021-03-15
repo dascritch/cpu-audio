@@ -20,5 +20,6 @@ Planned evolutions
     - [ ] [Supporting annotations à la SoundCloud](https://github.com/dascritch/cpu-audio/issues/10)
 - [ ] [Prepare design and key bindings for RTL localizations](https://github.com/dascritch/cpu-audio/issues/26)
 - [ ] Finish `ticker` plane track mode, or propose a code snippet in `examples/`
+- [ ] Example add-son with FFT analyzer, like in [webcammictester](https://webcammictest.com/check-mic.html)
 
 <!-- {% include footer.html %} -->

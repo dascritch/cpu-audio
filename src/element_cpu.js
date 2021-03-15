@@ -40,6 +40,7 @@ export class CPU_element_api {
 		this.mode_was = null;
 		this.act_was = null;
 		this.elapse_was = null;
+		this._planes = {}; // only used for CPU-CONTROLLER
 
 		if ( (this.audiotag) && (! this.audiotag._CPU_planes)) {
 			this.audiotag._CPU_planes = {};
@@ -774,7 +775,9 @@ export class CPU_element_api {
 	 * @param      {string}   title       The displayed title for the panel
 	 * @param      {Object}   data        { track : true/false/classnames , 
 	 * 										panel : true/false/classnames , 
-	 * 										highlight : true/false }
+	 * 										highlight : true/false,
+	 *										_comp : true/false // only stored in component, private use only
+	  }
 	 *
 	 * @return     {boolean}  success
 	 */
@@ -795,7 +798,8 @@ export class CPU_element_api {
 			'panel'     : true,
 			'title'     : title,
 			'highlight' : true,
-			'points'    : {}
+			'points'    : {},
+			'_comp'		: false
 		};
 
 		for (let key in default_values) {
@@ -804,7 +808,11 @@ export class CPU_element_api {
 			}
 		}
 
-		this.audiotag._CPU_planes[plane_name] = data;
+		if (!data['_comp']) {
+			this.audiotag._CPU_planes[plane_name] = data;
+		} else {
+			this._planes[plane_name] = data;
+		}
 		this.draw_plane(plane_name);
 		return true;
 	}
@@ -849,6 +857,9 @@ export class CPU_element_api {
 	 * @return     {Object}  Data
 	 */
 	plane_points(plane_name) {
+		if (plane_name in this._planes) {
+			return this._planes[plane_name].points;
+		}
 		return this.audiotag._CPU_planes[plane_name].points;
 	}
 
@@ -921,13 +932,18 @@ export class CPU_element_api {
 	 * @param      {string}   plane_name     The plane name
 	 */
 	plane_resort(plane_name) {
-		this.audiotag._CPU_planes[plane_name].points = Object.fromEntries(
+		let out = Object.fromEntries(
 		    Object.entries(this.plane_points(plane_name)).sort(
 		    	(point_a, point_b) => {
 		    		return point_a[1].start - point_b[1].start;
 		    	}
 		    )
 		);
+		if (this._planes[plane_name]) {
+			this._planes[plane_name].points = out
+		} else {
+			this.audiotag._CPU_planes[plane_name].points = out
+		}
 	}
 
 	/**
@@ -1058,7 +1074,11 @@ export class CPU_element_api {
 		}
 
 		data['start'] = timecode_start;
-		this.audiotag._CPU_planes[plane_name].points[point_name] = data;
+		if (this._planes[plane_name]) {
+			this._planes[plane_name].points[point_name] = data;
+		} else {
+			this.audiotag._CPU_planes[plane_name].points[point_name] = data;
+		}
 
 		this.fire_event('add_point', {
 			plane : plane_name,
@@ -1103,7 +1123,11 @@ export class CPU_element_api {
 			}
 		}
 		
-		this.audiotag._CPU_planes[plane_name].points[point_name] = original_data;
+		if (this._planes[plane_name]) {
+			this._planes[plane_name].points[point_name] = original_data;
+		} else {
+			this.audiotag._CPU_planes[plane_name].points[point_name] = original_data;
+		}
 
 		this.draw_point(plane_name, point_name);
 		if (will_refresh) {
@@ -1144,7 +1168,11 @@ export class CPU_element_api {
 
 		point_track_element.remove();
 		this.get_point_panel(plane_name, point_name).remove();
-		delete this.audiotag._CPU_planes[plane_name].points[point_name];
+		if (this._planes[plane_name]) {
+			delete this._planes[plane_name].points[point_name];
+		} else {
+			delete this.audiotag._CPU_planes[plane_name].points[point_name];
+		}
 
 		//  recalc _start_max for caching repaints
 		let _st_max = 0;
