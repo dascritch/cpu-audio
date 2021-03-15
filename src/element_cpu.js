@@ -11,6 +11,7 @@ const acceptable_hide_atttributes = ['poster', 'actions', 'timeline', 'chapters'
 
 // should be put in CPU-controller ?
 let preview_classname = 'with-preview';
+let activecue_classname = 'active-cue';
 
 let plane_chapters = '_chapters';
 // plane for _playlist. Only used in <CPU-Controller>
@@ -1376,7 +1377,6 @@ export class CPU_element_api {
 	 */
 	cuechange_event(event) {
 		let active_cue;
-		let class_name = 'active-cue';
 		try {
 			// Chrome may put more than one activeCue. That's a stupid regression from them, but alas... I have to do with
 			let _time = this.audiotag.currentTime;
@@ -1396,13 +1396,13 @@ export class CPU_element_api {
 			window.console.error(oops);
 		}
 
-		this.remove_highlights_points(plane_chapters, class_name);
+		this.remove_highlights_points(plane_chapters, activecue_classname);
 		if (active_cue) {
 			trigger.cuechange(active_cue, this.audiotag);
 			this.fire_event('chapter_changed', {
 				cue : active_cue
 			});
-			this.highlight_point(plane_chapters, active_cue.id, class_name);
+			this.highlight_point(plane_chapters, active_cue.id, activecue_classname);
 		}
 	}
 	/**
@@ -1553,7 +1553,7 @@ export class CPU_element_api {
 			}
 		}
 
-		this.highlight_point(plane_playlist, this.audiotag.id, 'active-cue');
+		this.highlight_point(plane_playlist, this.audiotag.id, activecue_classname);
 
 		// move _playlist on top, via main_element.insertAdjacentElement('afterend', panel) . Hoping it will insert it RIGHT AFTER the main element.
 		this.element.shadowRoot.querySelector('main').insertAdjacentElement('afterend', this.get_plane_panel(plane_playlist) );
