@@ -17,6 +17,7 @@ Corrections
  * Play/pause button may have issues if Chrome got numerous webcomponents in the same page
  * An translation error may occurs in shareable URL. We reove audio id if we'r not in same URL
  * Issue with intermittent `.replaceAll()` resolved
+ * When changing component title, its title="" must follows
 
 Back-end
 --------
@@ -38,7 +39,7 @@ Back-end
 Todo for this release :
 -----------------------
 
- - in examples/controller_playlist_and_chapters.html, if controller is engaged in a audio, playlist should be displayed
+ - in examples/controller_playlist_and_chapters.html, if controller is engaged in a audio but not playing it yet, playlist should be displayed
  - Can't remember, but to check : regression cpu controller => player
  - Click on any chapter in examples/controller_playlist_and_chapters.html makes playlist position unfocused
  - Debug issues in Chrome mobile , as replay position or highlighted chapters in double

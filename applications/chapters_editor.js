@@ -3,11 +3,8 @@
 /**
 
 TODO
-- should reorder panel when time changed ? may trigger some problems
-- if a time point is edited, code in element_cpu.js should simply move it, instead rebuild panel
 - when unfolding generators, expanded panels should be also scrolled to
 - draggable cursor . some primitive "nearly" ready for release
-- regression cpu controller => player
 - click on the timeline to create a point
 - export .csv 
 
