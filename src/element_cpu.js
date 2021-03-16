@@ -1094,18 +1094,11 @@ export class CPU_element_api {
 
 
 		let original_data = this.get_point(plane_name, point_name);
-		let will_refresh = false;
+		let  will_refresh =  (('start' in data) && (Number(data['start']) !== original_data['start']));
 
-		if (('start' in data) && (Number(data['start']) !== original_data['start'])) {
-			will_refresh = true;
-		}
-		for (let key in original_data) {
-			if (key in data) {
-				original_data[key] = data[key];
-			}
-		}
+		data = {...original_data, ...data};
 
-		this.get_plane(plane_name).points[point_name] = original_data;
+		this.get_plane(plane_name).points[point_name] = data;
 
 		this.draw_point(plane_name, point_name);
 		if (will_refresh) {
