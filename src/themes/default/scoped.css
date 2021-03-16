@@ -1,7 +1,7 @@
 :host {
   all: initial;
   display: block;
-  contain: content; 
+  contain: content;
 }
 
 .act-play, .act-buffer {
@@ -33,7 +33,7 @@
 	text-indent: 0;
 	list-style-type: none;
 	user-select: none;
-	transition : 
+	transition :
 				color var(--cpu-color-transitions),
 				background-color var(--cpu-background-transitions),
 				opacity var(--cpu-background-transitions);
@@ -230,7 +230,7 @@ a {
 	display : block;
 	outline : var(--cpu-color) 4px solid;
 	z-index : 127;
-	opacity : 0; 
+	opacity : 0;
 }
 
 main:hover #loadingline:after,
@@ -300,7 +300,7 @@ aside.borders a:after {
 
 aside.ticker {
 	height : 16px;
-	top : 30px; 
+	top : 30px;
 }
 
 aside.ticker a.active-cue {
@@ -417,7 +417,7 @@ aside.ticker a.active-cue span {
 	background : var(--cpu-popup-background);
 	color : var(--cpu-popup-color);
 	opacity : 0;
-} 
+}
 #popup:before {
 	pointer-events : none;
 	content:"";
@@ -431,12 +431,12 @@ aside.ticker a.active-cue span {
 	border-top: 8px solid var(--cpu-popup-background);
 	border-left: 4px solid transparent;
 	border-right: 4px solid transparent;
-} 
+}
 
 .panel {
 	display : flex;
 	list-style: none;
-	flex-direction: column; 
+	flex-direction: column;
 	padding : 0 var(--cpu-min-padding);
 	box-shadow: var(--cpu-inner-shadow);
 }
@@ -495,7 +495,7 @@ aside a, h6, .cue time , aside.ticker * /*, #infoline, #infoline * */
 .hide-panels .panel,
 .hide-panels-title h6,
 .hide-panels-except-play .panel,
-.media-streamed #link, 
+.media-streamed #link,
 .media-streamed #line {
 	display : none;
 }
@@ -521,7 +521,7 @@ aside a, h6, .cue time , aside.ticker * /*, #infoline, #infoline * */
 	#interface {
 		--cpu-timeline-height : 8px ;
 	}
-	
+
 	#handheld-nav {
 		padding-bottom: 4px;
 	}

@@ -17,7 +17,6 @@ export const convert = {
 
 	/**
 	 * @summary convert a string empty, with a number, with a colon-coded or an human-coded timecode in seconds
-	 *
 	 * @public
 	 *
 	 * @class      TimeInSeconds (name)
@@ -40,7 +39,6 @@ export const convert = {
 
 	/**
 	 * @summary convert a human-coded (`1h2m3s`) time in seconds
-	 *
 	 * @public
 	 *
 	 * @class      SubunitTimeInSeconds (name)
@@ -108,7 +106,6 @@ export const convert = {
 
 	/**
 	 * @summary    convert a time in seconds in a colon-coded time (`1:02:03s`). Zero is `0:00`.
-	 *
 	 * @public
 	 *
 	 * @class      SecondsInColonTime (name)
