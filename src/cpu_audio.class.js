@@ -1,11 +1,11 @@
-import {info} from './utils.js';
-import {acceptable_selector} from './utils.js';
-import {convert} from './convert.js';
-import {connect_audiotag} from './media_element_extension.js';
 import {CpuControllerElement} from './cpu_controller.class.js';
+import {acceptable_selector} from './utils.js';
+import {connect_audiotag} from './media_element_extension.js';
+import {convert} from './convert.js';
+import {info} from './utils.js';
 
 /**
- * @summary Interprets if <cpu-audio> element is modified 
+ * @summary Interprets if <cpu-audio> element is modified
  *
  * @param      {Object}  mutationsList  The mutations list
  */
@@ -81,7 +81,7 @@ export class CpuAudioElement extends CpuControllerElement {
 		super.connectedCallback();
 
 		connect_audiotag(this.CPU.audiotag);
-	
+
 		this.observer_cpuaudio = new MutationObserver(observer_cpuaudio);
 		this.observer_cpuaudio.observe(this, {
 			'childList': true,

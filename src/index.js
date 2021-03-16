@@ -1,15 +1,16 @@
-import {CpuAudioTagName, CpuControllerTagName, passive_ev, acceptable_selector, is_decent_browser_for_webcomponents, warn, querySelector_apply} from './utils.js';
-import {trigger} from './trigger.js';
-import {document_CPU} from './document_cpu.js';
-import {attach_events_audiotag} from './media_element_extension.js';
-import {CpuControllerElement} from './cpu_controller.class.js';
+import {CpuAudioTagName, CpuControllerTagName, acceptable_selector, is_decent_browser_for_webcomponents, passive_ev, querySelector_apply, warn} from './utils.js';
+
 import {CpuAudioElement} from './cpu_audio.class.js';
+import {CpuControllerElement} from './cpu_controller.class.js';
+import {attach_events_audiotag} from './media_element_extension.js';
+import {document_CPU} from './document_cpu.js';
 import {insert_template} from '../tmp/insert_template.js';
+import {trigger} from './trigger.js';
 
 /**
  * Entry point
  *
- * @return     {Promise}  { description_of_the_return_value }
+ * @return     {Promise}  No returned value
  */
 async function main() {
 	insert_template();
@@ -20,7 +21,7 @@ async function main() {
 		document.body.classList.add('cpu-audio-without-webcomponents');
 	} else {
 		window.customElements.define(CpuAudioTagName.toLowerCase(), CpuAudioElement);
-		window.customElements.define(CpuControllerTagName.toLowerCase(), CpuControllerElement); 
+		window.customElements.define(CpuControllerTagName.toLowerCase(), CpuControllerElement);
 		document.body.classList.add('cpu-audio-with-webcomponents');
 	}
 	window.addEventListener('hashchange', trigger.hash_order, passive_ev);
@@ -40,4 +41,3 @@ if ((document.CPU) || (window.customElements.get(CpuAudioTagName.toLowerCase()))
 		document.addEventListener('DOMContentLoaded', main, passive_ev);
 	}
 }
-

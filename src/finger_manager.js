@@ -40,7 +40,7 @@ export let finger_manager = {
 	 * @param      {Object}  event   The event
 	 */
 	repeat : function(event) {
-		// 
+		//
 		trigger[event.target.id](event);
 		// next call : repetition are closest
 		finger_manager.is_on = window.setTimeout(finger_manager.repeat, document.CPU.repeat_factor, event);

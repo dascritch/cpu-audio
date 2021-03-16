@@ -536,9 +536,7 @@ export class CPU_element_api {
 
 	/**
 	 * @summary Shows the sharing panel
-	 *
 	 * @private
-	 * @param      {Object}  event   The event
 	 */
 	show_actions(/* event */) {
 		this.show_interface('share');
@@ -547,10 +545,7 @@ export class CPU_element_api {
 
 	/**
 	 * @summary Shows the main manel
-	 *
 	 * @private
-	 *
-	 * @param      {Object}  event   The event
 	 */
 	show_main(/* event */) {
 		this.show_interface('main');
@@ -558,8 +553,7 @@ export class CPU_element_api {
 
 	/**
 	 * @package not mature enough
-	 *
-	 * @summary Shows the handheld fine navigation
+   * @summary Shows the handheld fine navigation
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -575,7 +569,6 @@ export class CPU_element_api {
 
 	/**
 	 * @summary Inject a <style> into the shadowDom
-	 *
 	 * @public
 	 *
 	 * @param 	{string}  style_key   	A name in the range /[a-zA-Z0-9\-_]+/, key to tag the created <style>
@@ -596,7 +589,6 @@ export class CPU_element_api {
 
 	/**
 	 * @summary Remove an injected <style> into the shadowDom
-	 *
 	 * @public
 	 *
 	 * @param 	{string}  style_key   	Key of the created <style> , /[a-zA-Z0-9\-_]+/
@@ -1544,7 +1536,6 @@ export class CPU_element_api {
 			});
 		}
 
-
 		if (previous_playlist !== this.current_playlist) {
 			this.clear_plane(plane_playlist);
 
@@ -1568,8 +1559,8 @@ export class CPU_element_api {
 
 		// move _playlist on top. Hoping it will insert it RIGHT AFTER the main element.
 		this.element.shadowRoot.querySelector('main').insertAdjacentElement('afterend', this.get_plane_panel(plane_playlist) );
-
 	}
+
 	/**
 	 * @package, because at start
 	 *

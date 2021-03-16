@@ -30,8 +30,8 @@ export const convert = {
 			if (_is_only_numeric.test(givenTime)) {
 				seconds = Number(givenTime);
 			} else {
-				seconds = (givenTime.indexOf(':') === -1) ? 
-					convert.SubunitTimeInSeconds(givenTime) : 
+				seconds = (givenTime.indexOf(':') === -1) ?
+					convert.SubunitTimeInSeconds(givenTime) :
 					convert.ColonTimeInSeconds(givenTime) ;
 			}
 		}
@@ -79,7 +79,7 @@ export const convert = {
 
 	/**
 	 * @summary convert a time in seconds in a human-coded time (`1h2m3s`). Zero is `0s`.
-	 * 
+	 *
 	 * @public
 	 *
 	 * @class      SecondsInTime (name)
@@ -92,7 +92,7 @@ export const convert = {
 		}
 		let converted = '';
 		let inned = false;
-		for(let key in units_scale) {
+		for (let key in units_scale) {
 			if (units_scale.hasOwnProperty(key)) {
 				let multiply = units_scale[key];
 				if ((givenSeconds >= multiply) || (inned)) {
@@ -140,8 +140,8 @@ export const convert = {
 		if (converted.length === 2) {
 			// between 10 and 59 seconds
 			return `0:${converted}`;
-		} 
-		
+		}
+
 		return converted === '' ? '0:00' : converted;
 	},
 
@@ -161,13 +161,13 @@ export const convert = {
 		}
 		// principaly needed by <input type="time"> whom needs a really precise HH:MM:SS format
 		let colon_time = convert.SecondsInColonTime(givenSeconds);
-		return '00:00:00'.substr(0, 8 - colon_time.length ) + colon_time; 
+		return '00:00:00'.substr(0, 8 - colon_time.length ) + colon_time;
 	},
 
 	/**
 	 * @summary convert a duration in an ISO 8601 string suitable for `datetime=""` attribute in <time>
 	 * See spec in https://www.w3.org/TR/html51/infrastructure.html#durations
-	 * 
+	 *
 	 * @public
 	 *
 	 * @class      IsoDuration (name)

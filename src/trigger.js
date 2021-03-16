@@ -1,4 +1,5 @@
-import {once_passive_ev,  is_audiotag_streamed, warn, on_debug} from './utils.js';
+import {is_audiotag_streamed, on_debug, once_passive_ev, warn} from './utils.js';
+
 import {convert} from './convert.js';
 
 const KEY_LEFT_ARROW = 37;
@@ -14,7 +15,7 @@ let NotSupportedError = 'The browser refuses the audio source, probably due to a
  * @param      {number}  at      timecode position
  */
 function remove_timecode_outofborders(at) {
-	if ( 
+	if (
 		(at < trigger._timecode_start)
 		|| ((trigger._timecode_end !== false) && (at > trigger._timecode_end)) ) {
 		trigger._timecode_start = 0;
@@ -182,7 +183,7 @@ export const trigger = {
 
 		if ((document.CPU.current_audiotag_playing) && (!document.CPU.is_audiotag_playing(audiotag))) {
 			// Chrome needs to STOP any other playing tag before seeking
-			//  Very slow seeking on Chrome #89 
+			//  Very slow seeking on Chrome #89
 			trigger.pause(undefined, document.CPU.current_audiotag_playing);
 		}
 
@@ -201,12 +202,12 @@ export const trigger = {
 				'offsetX' : event.offsetX,
 				'target'  : event.target
 			};
-			let recall_me = function() { 
+			let recall_me = function() {
 				trigger.throbble(recreated_event);
 			};
 			audiotag.addEventListener(expected_event, recall_me, once_passive_ev);
 			// loading metadata. May not work on Apples
-			audiotag.setAttribute('preload', 'metadata'); 
+			audiotag.setAttribute('preload', 'metadata');
 			return ;
 		}
 
@@ -283,7 +284,7 @@ export const trigger = {
 				() => {
 					// we have a successful play occured, we can display wait event later
 					document.CPU.had_played = true;
-				} 
+				}
 			).catch(
 				error => {
 					trigger._last_play_error = true;
@@ -382,14 +383,13 @@ export const trigger = {
 	keydownplay : function(event) {
 		if (event.keyCode !== 13 ) {
 			return;
-		} 
+		}
 		let container = document.CPU.find_container(event.target);
 		let audiotag = container.audiotag;
 
 		audiotag.paused ?
 			trigger.play(undefined, audiotag) :
 			trigger.pause(undefined, audiotag);
-		
 		event.preventDefault();
 	},
 
@@ -447,9 +447,9 @@ export const trigger = {
 	 *
 	 * @param      {Object}   active_cue         		The TextTrack actived
 	 * @param      {HTMLAudioElement}   audiotag        Audiotag relative to TextTrack
-	 * 
+	 *
 	 * To not warns on classList.remove()
-	 * @suppress {checkTypes} 
+	 * @suppress {checkTypes}
 	 */
 	cuechange : function(active_cue, audiotag) {
 		document.body.classList.remove(document.CPU.body_className_playing_cue);
@@ -484,7 +484,7 @@ export const trigger = {
 	 * @param      {HTMLAudioElement}  	audiotag  The audiotag
 	 */
 	ended : function(event, audiotag=undefined) {
-		// the media element reached its end 
+		// the media element reached its end
 		if (audiotag === undefined) {
 			audiotag = event.target;
 		}

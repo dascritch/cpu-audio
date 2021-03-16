@@ -65,8 +65,8 @@ if ((!prefered_language.length) || (!(prefered_language.toLowerCase() in sources
 
 	// trying to find the browser preferences
 	let languages = window.navigator.languages;
-	languages = (languages !== undefined) ? 
-				languages : 
+	languages = (languages !== undefined) ?
+				languages :
 				[(navigator.language || navigator.browserLanguage)];
 	let added = false;
 	for (let line of languages) {

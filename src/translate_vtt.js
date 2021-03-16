@@ -3,14 +3,14 @@ import {escape_html} from './utils.js';
 let acceptables_tags = {
 	'i'     : 'i',
 	'em'    : 'em', // (not in the standard but used in legacy CPU.pm show)
-	'b'     : 'b', 
+	'b'     : 'b',
 	'bold'  : 'strong', // (declared in the MDN page, but never saw it in standard pages)
 	'u'     : 'u',
 	'lang'  : 'i' // emphasis for typographic convention
 };
 
 /**
- * 
+ *
  * NEVER EVER BELIEVE you can parse HTML with regexes ! This function works because we just do minimalistic changes
  * By the way, regexes are really time consuming, both for you and your computer.
  * And, sincerely, I love playing on https://regexcrossword.com/

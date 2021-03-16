@@ -1,4 +1,5 @@
 import {CpuAudioTagName, is_audiotag_streamed, is_decent_browser_for_webcomponents, passive_ev} from './utils.js';
+
 import {trigger} from './trigger.js';
 
 // Indicate if media element was extended
@@ -13,7 +14,7 @@ function recall_stored_play(event) {
 	let audiotag = event.target;
 	if ((document.CPU.current_audiotag_playing !== null) || (is_audiotag_streamed(audiotag))) {
 		return;
-	} 
+	}
 	let lasttimecode = Number(window.localStorage.getItem(audiotag.currentSrc));
 	// TODO and no hashed time
 	if ((lasttimecode > 0) && (!trigger._last_play_error)) {
@@ -37,19 +38,19 @@ export function attach_events_audiotag(audiotag) {
 
 	// see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events for list of events
 	[
-		'ready', 'load', 'loadeddata', 'canplay', 'abort', 
+		'ready', 'load', 'loadeddata', 'canplay', 'abort',
 		'error', 'emptied',
 		'play', 'playing', 'pause', 'ended',
 		'durationchange',  'loadedmetadata', 'timeupdate', 'waiting'
-	].forEach( (on) => { 
-		audiotag.addEventListener(on, trigger.update, passive_ev); 
+	].forEach( (on) => {
+		audiotag.addEventListener(on, trigger.update, passive_ev);
 	});
 
 	if (!is_decent_browser_for_webcomponents()) {
 		// in case we are in legacy mode
 		[
 			'pause', 'ended'
-		].forEach( (on) => { 
+		].forEach( (on) => {
 			audiotag.addEventListener(on, trigger.pause, passive_ev);
 		});
 	}
@@ -79,7 +80,7 @@ export function connect_audiotag(audiotag) {
 	// PHRACK SAFARI
 	audiotag.removeAttribute('controls');
 
-	// playlist 
+	// playlist
 	if (typeof(audiotag.dataset.playlist) === 'string') {
 		let playlist_name = audiotag.dataset.playlist;
 		if (!(playlist_name in document.CPU.playlists)) {

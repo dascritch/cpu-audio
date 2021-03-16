@@ -1,4 +1,5 @@
-import {once_passive_ev, selector_interface, CpuAudioTagName, CpuControllerTagName, on_debug, is_audiotag_streamed, warn} from './utils.js';
+import {CpuAudioTagName, CpuControllerTagName, is_audiotag_streamed, on_debug, once_passive_ev, selector_interface, warn} from './utils.js';
+
 import {convert} from './convert.js';
 import {trigger} from './trigger.js';
 
@@ -51,7 +52,7 @@ export let document_CPU = {
 	// @type boolean
 	'autoplay' : false,
 
-	// @public 
+	// @public
 	// @type number
 	'keymove' : 5,
 	// @public
@@ -60,7 +61,7 @@ export let document_CPU = {
 	// @public
 	// @type number
 	// why 500ms ? Because Chrome will trigger a touchcancel event at 800ms to show a context menu
-	'alternate_delay' : 500, 
+	'alternate_delay' : 500,
 
 	// @public
 	// @type number
@@ -116,14 +117,14 @@ export let document_CPU = {
 	// @package, not enough mature
 	// NOTE : we need to refresh this when the <head> of the host page changes
 	default_dataset : {
-		'title' : get_default_title(), 
+		'title' : get_default_title(),
 		'poster' : get_default_poster(),
 		'canonical' : get_default_canonical(),
 		'twitter' : get_default_twitter(),
 		'playlist' : null,
 		'waveform' : null,
 		'duration' : null,
-		'download' : null	
+		'download' : null
 	},
 
 	/**
@@ -152,7 +153,7 @@ export let document_CPU = {
 	 * @summary Position a timecode to a named audio tag
 	 *
 	 * @param      {string}   hash         The id="" of an <audio> tag
-	 * @param      {string}   timecode     The timecode, 
+	 * @param      {string}   timecode     The timecode,
 	 * @param      {Function|null|undefined}   callback_fx  Function to be called afterwards, for ending tests
 	 */
 	'jumpIdAt' : async function(hash, timecode, callback_fx=undefined) {
@@ -202,7 +203,7 @@ export let document_CPU = {
 		}
 		// No problems
 	},
-	
+
 	/**
 	 * @public
 	 *
@@ -240,7 +241,7 @@ export let document_CPU = {
 
 	/**
 	 * @public
-	 * 
+	 *
 	 * @summary For any ShadowDOM element, will returns its parent interface container
 	 *
 	 * @param      {Element}  child   The ShadowDOM child
@@ -258,7 +259,7 @@ export let document_CPU = {
 	 * @return     {CPU_element_api}       Element.CPU
 	 */
 	'find_container' : function(child) {
-		if ((child.tagName === CpuAudioTagName) 
+		if ((child.tagName === CpuAudioTagName)
 			|| ( child.tagName === CpuControllerTagName)) {
 			return child.CPU;
 		}
@@ -279,7 +280,7 @@ export let document_CPU = {
 	 * @return     {Array}  Array with named id
 	 */
 	'find_current_playlist' : function() {
-		
+
 		if (this.global_controller === null) {
 			return [];
 		}
