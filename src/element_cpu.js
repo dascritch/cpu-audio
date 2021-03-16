@@ -773,17 +773,19 @@ export class CPU_element_api {
 			return false;
 		}
 
-		let default_values = {
-			'track'     : true,
-			'panel'     : true,
-			'title'     : title,
-			'highlight' : true,
-			'points'    : {},
-			'_comp'		: false
+		// I don't understand (yet) why, when I move this declaration at top of file, tests will fail
+		const default_plane_data = {
+			track       : true,
+			panel       : true,
+			title       : '',
+			highlight   : true,
+			points      : {},
+			_comp		: false
 		};
-		data = { ...default_values, ...data };
 
-		if (!data['_comp']) {
+		data = { ...default_plane_data, ...data , title};
+
+		if (!data._comp) {
 			if (this.is_controller) {
 				return false;
 			}
@@ -849,7 +851,7 @@ export class CPU_element_api {
 	 * @return     {string}  The point track identifier.
 	 */
 	get_point_id(plane_name, point_name, panel) {
-		return `${panel?'panel':'track'}_«${plane_name}»_point_«${point_name}»`;
+		return `${ panel?'panel':'track' }_«${plane_name}»_point_«${point_name}»`;
 	}
 
 	/**
