@@ -3,47 +3,6 @@ import {CpuAudioTagName, CpuControllerTagName, is_audiotag_streamed, on_debug, o
 import {convert} from './convert.js';
 import {trigger} from './trigger.js';
 
-/** @type {string|null} */
-function get_default_title() {
-	for (let domain of ['og', 'twitter']) {
-		let header_element = document.querySelector(`meta[property="${domain}:title"]`);
-		if (header_element !== null) {
-			return header_element.content;
-		}
-	}
-	let title = document.title;
-	return title === '' ? null : title;
-}
-
-/** @type {string|null} */
-function get_default_poster() {
-	for (let attr of ['property="og:image"', 'name="twitter:image:src"']) {
-		let header_element = document.querySelector(`meta[${attr}]`);
-		if (header_element !== null) {
-			return header_element.content;
-		}
-	}
-	return null;
-}
-
-/** @type {string|null} */
-function get_default_canonical() {
-	let header_element = document.querySelector('link[rel="canonical"]');
-	if (header_element !== null) {
-		return header_element.href;
-	}
-	return location.href.split('#')[0];
-}
-
-/** @type {string|null} */
-function get_default_twitter() {
-	let header_element = document.querySelector('meta[name="twitter:creator"]');
-	if ((header_element !== null) && (header_element.content.length>1)) {
-		return header_element.content;
-	}
-	return null;
-}
-
 export let document_CPU = {
 	// global object for global API
 
@@ -115,16 +74,44 @@ export let document_CPU = {
 	'trigger' : trigger,
 
 	// @package, not enough mature
-	// NOTE : we need to refresh this when the <head> of the host page changes
 	default_dataset : {
-		'title' : get_default_title(),
-		'poster' : get_default_poster(),
-		'canonical' : get_default_canonical(),
-		'twitter' : get_default_twitter(),
-		'playlist' : null,
-		'waveform' : null,
-		'duration' : null,
-		'download' : null
+		get title() {
+			for (let domain of ['og', 'twitter']) {
+				let header_element = document.querySelector(`meta[property="${domain}:title"]`);
+				if (header_element !== null) {
+					return header_element.content;
+				}
+			}
+			let title = document.title;
+			return title === '' ? null : title;		
+		},
+		get poster() {
+			for (let attr of ['property="og:image"', 'name="twitter:image:src"']) {
+				let header_element = document.querySelector(`meta[${attr}]`);
+				if (header_element !== null) {
+					return header_element.content;
+				}
+			}
+			return null;
+		},
+		get canonical() {
+			let header_element = document.querySelector('link[rel="canonical"]');
+			if (header_element !== null) {
+				return header_element.href;
+			}
+			return location.href.split('#')[0];
+		},
+		get twitter() {
+			let header_element = document.querySelector('meta[name="twitter:creator"]');
+			if ((header_element !== null) && (header_element.content.length>1)) {
+				return header_element.content;
+			}
+			return null;
+		},
+		playlist : null,
+		waveform : null,
+		duration : null,
+		download : null
 	},
 
 	/**
@@ -162,6 +149,7 @@ export let document_CPU = {
 		 * @param 	{Object}	event 	triggered event, or mockup
 		 */
 		function do_needle_move(event) {
+			// maybe we should add `timecode` in argument (timecode, event), and bind it to the event listener, moving the function upper
 			let audiotag = event.target;
 			let secs = convert.TimeInSeconds(timecode);
 			document.CPU.seekElementAt(audiotag, secs);
@@ -205,9 +193,8 @@ export let document_CPU = {
 	},
 
 	/**
-	 * @public
-	 *
 	 * @summary Position a <audio> element to a time position
+	 * @public
 	 *
 	 * @param      {HTMLAudioElement}  audiotag  <audio> DOM element
 	 * @param      {number}  seconds   	Wanted position, in seconds
@@ -240,9 +227,8 @@ export let document_CPU = {
 	},
 
 	/**
-	 * @public
-	 *
 	 * @summary For any ShadowDOM element, will returns its parent interface container
+ 	 * @public
 	 *
 	 * @param      {Element}  child   The ShadowDOM child
 	 * @return     {Element}  The #interface element
@@ -251,9 +237,8 @@ export let document_CPU = {
 		return child.closest(selector_interface);
 	},
 	/**
-	 * @public
-	 *
 	 * @summary For any <audio> tag or its child tag or shadowDOM element, returns the element `CPU` API
+ 	 * @public
 	 *
 	 * @param      {Element}  child   The child
 	 * @return     {CPU_element_api}       Element.CPU
@@ -273,9 +258,8 @@ export let document_CPU = {
 		return _interface.parentNode.host.CPU;
 	},
 	/**
+>	 * @summary Return the current playing playlist array
 	 * @public
-	 *
-	 * @summary Return the current playing playlist array
 	 *
 	 * @return     {Array}  Array with named id
 	 */

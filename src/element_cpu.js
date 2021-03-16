@@ -457,19 +457,7 @@ export class CPU_element_api {
 	 * @return     {Object}  dataset
 	 */
 	fetch_audiotag_dataset() {
-		let dataset = {};
-		for (let key in document.CPU.default_dataset) {
-			let value = null;
-			if (key in this.audiotag.dataset) {
-				value = this.audiotag.dataset[key];
-			} else {
-				if (document.CPU.default_dataset[key] !== null) {
-					value = document.CPU.default_dataset[key];
-				}
-			}
-			dataset[key] = value === undefined ? null : value;
-		}
-		return dataset;
+		return {...document.CPU.default_dataset, ...this.audiotag.dataset};
 	}
 
 	/**

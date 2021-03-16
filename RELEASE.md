@@ -25,7 +25,8 @@ Back-end
 --------
 
  * [Made a call on contribulle.org](https://contribulle.org/projects/27) 
- * Now using standard ECMA imports ([#110](#110))
+ * Using standard ECMA imports ([#110](#110))
+ * Using ECMA5+ classes, getters, setters, rests & spreads ([#115](#115))
  * Renamed files ([#110](#110))
  * Better separation between public objects and private methods ([#110](#110))
  * Use `npm` to catch dependencies
