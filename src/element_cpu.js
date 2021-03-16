@@ -1044,10 +1044,7 @@ export class CPU_element_api {
 	 *
 	 * @return     {boolean}  success
 	 */
-	add_point(plane_name, timecode_start, point_name, data) {
-
-		data = data === undefined ? {} : data;
-
+	add_point(plane_name, timecode_start, point_name, data={}) {
 		if ( (this.get_plane(plane_name) === undefined) || (this.get_point(plane_name, point_name) !== undefined) || (timecode_start < 0) || (!point_name.match(valid_id)) ) {
 			return false;
 		}
@@ -1089,11 +1086,9 @@ export class CPU_element_api {
 	 *										  will only change keys in the list
 	 */
 	edit_point(plane_name, point_name, data) {
-
 		if ( (!this.get_plane(plane_name)) || (!this.get_point(plane_name, point_name)) ) {
 			return false;
 		}
-
 
 		let original_data = this.get_point(plane_name, point_name);
 		let  will_refresh =  (('start' in data) && (Number(data['start']) !== original_data['start']));
@@ -1169,6 +1164,7 @@ export class CPU_element_api {
 	 * @return     {Array<string>}    An array with two strings : plane name and point name.
 	 */
 	get_point_names_from_id(element_id) {
+		// needs a refacto, but optional group 5 makes crashes...
 		let plane_name = element_id.replace(plane_point_names_from_id,'$2');
 		let point_name = element_id.replace(plane_point_names_from_id,'$5');
 		return [plane_name, point_name];
@@ -1229,11 +1225,8 @@ export class CPU_element_api {
 	 */
 	redraw_all_planes() {
 		this.undraw_all_planes();
-		for (let plane_name of Object.keys(this.audiotag._CPU_planes)) {
-			this.draw_plane(plane_name);
-			this.refresh_plane(plane_name);
-		}
-		for (let plane_name of Object.keys(this._planes)) {
+
+		for (let plane_name of Object.keys({...this._planes, ...this.audiotag._CPU_planes})) {
 			this.draw_plane(plane_name);
 			this.refresh_plane(plane_name);
 		}
