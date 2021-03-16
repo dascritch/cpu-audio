@@ -1249,9 +1249,9 @@ export class CPU_element_api {
 			let plane_data = this.get_plane(plane_name);
 			if (plane_data.track !== false) {
 				for (let point_name of Object.keys(this.plane_points(plane_name))) {
-					let point_data = this.get_point(plane_name, point_name);
 					let element = this.get_point_track(plane_name, point_name);
-					this.position_time_element(element, point_data.start, point_data.end);
+					let {start, end} = this.get_point(plane_name, point_name);
+					this.position_time_element(element, start, end);
 				}
 			}
 		}
