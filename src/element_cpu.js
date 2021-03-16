@@ -1416,9 +1416,9 @@ export class CPU_element_api {
 							// avoid unuseful redraw, again
 							let cuepoint = Math.floor(cue.startTime);
 							this.add_point(plane_chapters, cuepoint, cue.id,  {
-								'text' : this.translate_vtt(cue.text),
-								'link' : true,          // point the link to start time position
-								'end'  : cue.endTime    // end timecode of the cue
+								text : this.translate_vtt(cue.text),
+								link : true,          // point the link to start time position
+								end  : cue.endTime    // end timecode of the cue
 							});
 						}
 					}
@@ -1430,30 +1430,28 @@ export class CPU_element_api {
 			}
 		}
 
-		if (!this.is_controller) {
-			let body_class = `cpu_tag_«${audiotag.id}»_chaptered`;
-			if (has) {
-				/**
-				 * indicate in host page that audio tag chapters are listed see
-				 * https://github.com/dascritch/cpu-audio/issues/36
-				 */
-				document.body.classList.add(body_class);
-			} else {
-				this.remove_plane(plane_chapters);
-				document.body.classList.remove(body_class);
-			}
-
-			/*
-			info(`active_cue ${active_cue} && id_in_hash(this.audiotag.id) ${id_in_hash(this.audiotag.id)}`)
-			if ((active_cue) && (id_in_hash(this.audiotag.id)) ) {
-				// shoud be set ONLY if audiotag is alone in page or if audiotag.id named in hash
-				trigger.cuechange(active_cue, this.audiotag);
-				this.fire_event('chapter_changed', {
-					cue : active_cue
-				});
-			}
-			*/
+		let body_class = `cpu_tag_«${audiotag.id}»_chaptered`;
+		if (has) {
+			/**
+			 * indicate in host page that audio tag chapters are listed see
+			 * https://github.com/dascritch/cpu-audio/issues/36
+			 */
+			document.body.classList.add(body_class);
+		} else {
+			this.remove_plane(plane_chapters);
+			document.body.classList.remove(body_class);
 		}
+
+		/*
+		info(`active_cue ${active_cue} && id_in_hash(this.audiotag.id) ${id_in_hash(this.audiotag.id)}`)
+		if ((active_cue) && (id_in_hash(this.audiotag.id)) ) {
+			// shoud be set ONLY if audiotag is alone in page or if audiotag.id named in hash
+			trigger.cuechange(active_cue, this.audiotag);
+			this.fire_event('chapter_changed', {
+				cue : active_cue
+			});
+		}
+		*/
 
 	}
 
@@ -1491,10 +1489,10 @@ export class CPU_element_api {
 
 		if (! this.get_plane(plane_playlist)) {
 			this.add_plane(plane_playlist, __['playlist'], {
-				track : false,
-				panel : 'nocuetime',
-				highlight : true,
-				_comp : true 				// data stored on CPU-Controller ONLY
+				track 		: false,
+				panel 		: 'nocuetime',
+				highlight 	: true,
+				_comp 		: true 				// data stored on CPU-Controller ONLY
 			});
 		}
 
