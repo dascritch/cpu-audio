@@ -593,7 +593,7 @@ export class CPU_element_api {
 	 * @private
 	 */
 	add_id_to_audiotag() {
-		this.audiotag.id ||= dynamically_allocated_id_prefix + String(document.CPU.count_element++);
+		this.audiotag.id = this.audiotag.id || dynamically_allocated_id_prefix + String(document.CPU.count_element++);
 	}
 
 	/**
