@@ -1,8 +1,8 @@
 const units_scale = {
-	'd' : 86400,
-	'h' : 3600,
-	'm' : 60,
-	's' : 1
+	d : 86400,
+	h : 3600,
+	m : 60,
+	s : 1
 };
 let scale = [1, 60, 3600, 86400];
 
@@ -23,7 +23,7 @@ export const convert = {
 	 * @param      {string}  givenTime  The given time
 	 * @return     {number}  time in seconds
 	 */
-	'TimeInSeconds' : function(givenTime) {
+	TimeInSeconds : function(givenTime) {
 		let seconds = 0;
 		if (givenTime !== '') {
 			if (_is_only_numeric.test(givenTime)) {
@@ -45,7 +45,7 @@ export const convert = {
 	 * @param      {string}  givenTime  The given time
 	 * @return     {number}  seconds
 	 */
-	'SubunitTimeInSeconds' : function(givenTime) {
+	SubunitTimeInSeconds : function(givenTime) {
 		let seconds = 0;
 		for(let key in units_scale) {
 			if ( (units_scale.hasOwnProperty(key)) && (givenTime.indexOf(key) !== -1) ) {
@@ -59,14 +59,13 @@ export const convert = {
 
 	/**
 	 * @summary    convert a colon-coded (`01:02:03`) time in seconds
-	 *
 	 * @public
 	 *
 	 * @class      ColonTimeInSeconds (name)
 	 * @param      {string}  givenTime  The given time
 	 * @return     {number}  Time in seconds
 	 */
-	'ColonTimeInSeconds' : function(givenTime) {
+	ColonTimeInSeconds : function(givenTime) {
 		let seconds = 0;
 		let atoms = givenTime.split(':');
 		for (let pos = 0 ; pos < atoms.length ; pos++) {
@@ -77,14 +76,13 @@ export const convert = {
 
 	/**
 	 * @summary convert a time in seconds in a human-coded time (`1h2m3s`). Zero is `0s`.
-	 *
 	 * @public
 	 *
 	 * @class      SecondsInTime (name)
 	 * @param      {number}   givenSeconds  The given seconds
 	 * @return     {string}   Converted time
 	 */
-	'SecondsInTime' : function(givenSeconds) {
+	SecondsInTime : function(givenSeconds) {
 		if (givenSeconds === Infinity) {
 			return convert.Infinity;
 		}
@@ -112,7 +110,7 @@ export const convert = {
 	 * @param      {number}          givenSeconds  The given seconds
 	 * @return     {string}  Converted time
 	 */
-	'SecondsInColonTime' : function(givenSeconds) {
+	SecondsInColonTime : function(givenSeconds) {
 		if (givenSeconds === Infinity) {
 			return convert.Infinity;
 		}
@@ -152,7 +150,7 @@ export const convert = {
 	 * @param      {number}  givenSeconds  The given seconds
 	 * @return     {string}  Converted time
 	 */
-	'SecondsInPaddledColonTime' : function(givenSeconds) {
+	SecondsInPaddledColonTime : function(givenSeconds) {
 		if (givenSeconds === Infinity) {
 			return convert.Infinity;
 		}
@@ -164,14 +162,13 @@ export const convert = {
 	/**
 	 * @summary convert a duration in an ISO 8601 string suitable for `datetime=""` attribute in <time>
 	 * See spec in https://www.w3.org/TR/html51/infrastructure.html#durations
-	 *
 	 * @public
 	 *
 	 * @class      IsoDuration (name)
 	 * @param      {number}  givenSeconds  Duration, in seconds
 	 * @return     {string}  Converted duration
 	 */
-	'IsoDuration' : function(givenSeconds) {
+	IsoDuration : function(givenSeconds) {
 		return `P${convert.SecondsInTime(givenSeconds).toUpperCase()}`;
 	}
 };
