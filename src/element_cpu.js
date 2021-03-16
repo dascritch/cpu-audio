@@ -93,7 +93,7 @@ export class CPU_element_api {
 	 * @param      {string|null}  mode    Accepted are only in `/\w+/` format, 'default' by default
 	 */
 	set_mode_container(mode=null) {
-		mode = mode !== null ? mode : 'default';
+		mode = mode ?? 'default';
 		if (this.mode_was === mode) {
 			return;
 		}
@@ -481,10 +481,10 @@ export class CPU_element_api {
 		}
 
 		let dataset = this.fetch_audiotag_dataset();
-		let canonical = absolutize_url( (dataset.canonical === null) ? '' : dataset.canonical );
+		let canonical = absolutize_url( dataset.canonical ?? '' );
 		let timepos = (audiotag.currentTime === 0)  ? '' : `&t=${Math.floor(audiotag.currentTime)}`;
 		// watch out : we should put the ID only if canonical URL is strictly identical to this page
-		let tag_id =  canonical === absolutize_url(window.location.href) ? audiotag.id : '';
+		let tag_id = (canonical === absolutize_url(window.location.href)) ? audiotag.id : '';
 		let _url = encodeURIComponent(`${canonical}#${tag_id}${timepos}`);
 		let _twitter = '';
 		if (
