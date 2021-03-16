@@ -787,10 +787,7 @@ export class CPU_element_api {
 			if (this.is_controller) {
 				return false;
 			}
-
-			if (this.audiotag._CPU_planes === undefined) {
-				this.audiotag._CPU_planes = {};
-			}
+			this.audiotag._CPU_planes = this.audiotag._CPU_planes ?? {};
 			this.audiotag._CPU_planes[plane_name] = data;
 		} else {
 			this._planes[plane_name] = data;
@@ -864,7 +861,7 @@ export class CPU_element_api {
 	 * @return     {Object}  Data
 	 */
 	get_point(plane_name, point_name) {
-		return this.plane_points(plane_name)[point_name];
+		return this.get_plane(plane_name).points[point_name];
 	}
 
 	/**
@@ -913,8 +910,8 @@ export class CPU_element_api {
 	plane_resort(plane_name) {
 		let out = Object.fromEntries(
 		    Object.entries(this.plane_points(plane_name)).sort(
-		    	(point_a, point_b) => {
-		    		return point_a[1].start - point_b[1].start;
+		    	([,point_a], [,point_b]) => {
+		    		return point_a.start - point_b.start;
 		    	}
 		    )
 		);
