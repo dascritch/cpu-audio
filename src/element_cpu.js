@@ -593,9 +593,7 @@ export class CPU_element_api {
 	 * @private
 	 */
 	add_id_to_audiotag() {
-		if (this.audiotag.id === '') {
-			this.audiotag.id = dynamically_allocated_id_prefix + String(document.CPU.count_element++);
-		}
+		this.audiotag.id ||= dynamically_allocated_id_prefix + String(document.CPU.count_element++);
 	}
 
 	/**
@@ -618,7 +616,7 @@ export class CPU_element_api {
 		if (this.element.title !== dataset.title) {
 			this.element.title = dataset.title; // WATCHOUT ! May goes recursive with observers
 		}
-		this.elements['poster'].src = dataset.poster === null ? '' : dataset.poster;
+		this.elements['poster'].src = dataset.poster || '';
 		this.elements['time'].style.backgroundImage = (dataset.waveform === null) ? '' : `url(${dataset.waveform})`;
 	}
 	/**
@@ -770,13 +768,9 @@ export class CPU_element_api {
 	 *
 	 * @return     {boolean}  success
 	 */
-	add_plane(plane_name, title, data) {
+	add_plane(plane_name, title, data = {}) {
 		if ((! plane_name.match(valid_id)) || (this.get_plane(plane_name) !== undefined)) {
 			return false;
-		}
-
-		if (data === undefined) {
-			data = {};
 		}
 
 		let default_values = {
@@ -787,12 +781,7 @@ export class CPU_element_api {
 			'points'    : {},
 			'_comp'		: false
 		};
-
-		for (let key in default_values) {
-			if (data[key] === undefined) {
-				data[key] = default_values[key];
-			}
-		}
+		data = { ...default_values, ...data };
 
 		if (!data['_comp']) {
 			if (this.is_controller) {
