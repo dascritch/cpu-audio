@@ -23,6 +23,27 @@ const valid_id = /^[a-zA-Z0-9\-_]+$/;
 // Regex for extracting plane and point names from an id
 const plane_point_names_from_id = /^([a-zA-Z0-9\-_]+_«)([a-zA-Z0-9\-_]+)((»_.*_«)([a-zA-Z0-9\-_]+))?(»)$/;
 
+const default_plane_values = {
+	track       : true,
+	panel       : true,
+	title       : title,
+	highlight   : true,
+	points      : {},
+	_comp		: false
+};
+
+
+// TODO
+/*
+const default_point_values = {
+	image 		: '',		// needs a test with a value `false`
+	link 		: true,
+	text 		: '',		// needs a test with a value `false`
+	start 		: 0,		// needs a test with a value `false`
+	end 		: false		// needs a test with a value `false`
+};
+*/
+
 export class CPU_element_api {
 	/**
 	 *
@@ -773,15 +794,7 @@ export class CPU_element_api {
 			return false;
 		}
 
-		let default_values = {
-			'track'     : true,
-			'panel'     : true,
-			'title'     : title,
-			'highlight' : true,
-			'points'    : {},
-			'_comp'		: false
-		};
-		data = { ...default_values, ...data };
+		data = { ...default_plane_values, ...data };
 
 		if (!data['_comp']) {
 			if (this.is_controller) {
