@@ -1265,9 +1265,7 @@ export class CPU_element_api {
 	 * @param      {string}  class_name Targeted class name, 'with-preview' by default
 	 * @param      {boolean} mirror     Also act on linked cpu-controller/cpu-audio
 	 */
-	remove_highlights_points(plane_name, class_name=undefined, mirror=undefined) {
-		mirror = mirror === undefined ? true : mirror;
-		class_name = (typeof class_name === 'string') ? class_name : preview_classname;
+	remove_highlights_points(plane_name, class_name=preview_classname, mirror=true) {
 		querySelector_apply(`#track_«${plane_name}» .${class_name}, #panel_«${plane_name}» .${class_name}`,(element) => { element.classList.remove(class_name); },this.container);
 		// this.flash(''); // we have a change : redisplay the playing cue text. Not so easy
 		if ( (mirror) && (this.mirrored_in_controller()) ) {
