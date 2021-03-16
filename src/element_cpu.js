@@ -1,10 +1,10 @@
-import {dynamically_allocated_id_prefix, passive_ev, once_passive_ev, CpuControllerTagName, absolutize_url, escape_html, querySelector_apply, is_audiotag_streamed, error} from './utils.js';
+import {CpuControllerTagName, absolutize_url, dynamically_allocated_id_prefix, error, escape_html, is_audiotag_streamed, once_passive_ev, passive_ev, querySelector_apply} from './utils.js';
 import {__, prefered_language} from './i18n.js';
-import {convert} from './convert.js';
-import {trigger} from './trigger.js';
-import {translate_vtt} from './translate_vtt.js';
-import {finger_manager} from './finger_manager.js';
 
+import {convert} from './convert.js';
+import {finger_manager} from './finger_manager.js';
+import {translate_vtt} from './translate_vtt.js';
+import {trigger} from './trigger.js';
 
 // Acceptables attributes values for hide="" parameter on webcomponent
 const acceptable_hide_atttributes = ['poster', 'actions', 'timeline', 'chapters', 'panels', 'panels-title', 'panels-except-play'];
@@ -52,7 +52,7 @@ export class CPU_element_api {
 
 		this.is_controller = this.element.tagName === CpuControllerTagName;
 		// only used for CPU-CONTROLLER, for playlist
-		this._planes = {}; 
+		this._planes = {};
 	}
 
 	mirrored_in_controller() {
@@ -87,7 +87,7 @@ export class CPU_element_api {
 	}
 
 	/**
-	 * @summary Used for `mode=""` attribute. 
+	 * @summary Used for `mode=""` attribute.
 	 * @public
 	 *
 	 * @param      {string|null}  mode    Accepted are only in `/\w+/` format, 'default' by default
@@ -157,9 +157,9 @@ export class CPU_element_api {
 		let audiotag = this.audiotag;
 		let _attr = audiotag.getAttribute('preload');
 		let _preload = _attr ? (_attr.toLowerCase() !== 'none') : true ;
-		if ( 
-				(audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA ) && 
-				((_preload) || (audiotag._CPU_played)) 
+		if (
+				(audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA ) &&
+				((_preload) || (audiotag._CPU_played))
 			) {
 			this.set_act_container('loading');
 			return;
@@ -229,7 +229,7 @@ export class CPU_element_api {
 				total_duration = convert.SecondsInColonTime(_forced);
 			}
 		}
-		 
+
 		let colon_time = convert.SecondsInColonTime(audiotag.currentTime);
 		let innerHTML = is_audiotag_streamed(audiotag) ? colon_time :`${colon_time}<span class="nosmaller">\u00a0/\u00a0${total_duration}</span>`;
 
@@ -261,7 +261,7 @@ export class CPU_element_api {
 			}
 		}
 
-		this.add_plane(plane_name,'',{ 
+		this.add_plane(plane_name,'',{
 			track   : 'borders',
 			panel   : false,
 			highlight : false
@@ -374,7 +374,7 @@ export class CPU_element_api {
 	 * @param      {Element} 			      element         Element to impact, should be in #time
 	 * @param      {number|undefined}   	  seconds_begin   Starts position in seconds, do not apply if undefined
 	 * @param      {number|undefined|boolean} seconds_end     Ends position in seconds, do not apply if undefined or false
-	 */	
+	 */
 	position_time_element(element, seconds_begin=undefined, seconds_end=undefined) {
 
 		/**
@@ -398,7 +398,7 @@ export class CPU_element_api {
 		if (is_seconds(seconds_end)) {
 			element.style.right = `${100 - (100 * (seconds_end / duration))}%`;
 		}
-		
+
 	}
 
 	/**
@@ -416,8 +416,8 @@ export class CPU_element_api {
 		}
 		if ((isNaN(audiotag.duration)) && (!is_audiotag_streamed(audiotag))) {
 			// as we navigate on the timeline, we wish to know its total duration
-			// yes, this is twice calling, as of trigger.throbble() 
-  			audiotag.setAttribute('preload', 'metadata'); 
+			// yes, this is twice calling, as of trigger.throbble()
+  			audiotag.setAttribute('preload', 'metadata');
 		}
 
 		let phylactere = this.elements['popup'];
@@ -495,7 +495,7 @@ export class CPU_element_api {
 		let dataset = this.fetch_audiotag_dataset();
 		let canonical = absolutize_url( (dataset.canonical === null) ? '' : dataset.canonical );
 		let timepos = (audiotag.currentTime === 0)  ? '' : `&t=${Math.floor(audiotag.currentTime)}`;
-		// watch out : we should put the ID only if canonical URL is strictly identical to this page 
+		// watch out : we should put the ID only if canonical URL is strictly identical to this page
 		let tag_id =  canonical === absolutize_url(window.location.href) ? audiotag.id : '';
 		let _url = encodeURIComponent(`${canonical}#${tag_id}${timepos}`);
 		let _twitter = '';
@@ -738,7 +738,7 @@ export class CPU_element_api {
 			element.addEventListener('mouseover', highlight_preview, passive_ev);
 			element.addEventListener('focusin', highlight_preview, passive_ev);
 			element.addEventListener('mouseleave', remove_highlights_points_bind, passive_ev);
-			element.addEventListener('focusout', remove_highlights_points_bind, passive_ev);            
+			element.addEventListener('focusout', remove_highlights_points_bind, passive_ev);
 		}
 
 		if (data.track !== false) {
@@ -747,7 +747,7 @@ export class CPU_element_api {
 			if (data.track !== true) {
 				plane_track.classList.add(data.track.split(' '));
 			}
-			
+
 			this.elements['line'].appendChild(plane_track);
 			assign_events(plane_track);
 		}
@@ -782,8 +782,8 @@ export class CPU_element_api {
 	 *
 	 * @param      {string}   plane_name  A name in the range /[a-zA-Z0-9\-_]+/
 	 * @param      {string}   title       The displayed title for the panel
-	 * @param      {Object}   data        { track : true/false/classnames , 
-	 * 										panel : true/false/classnames , 
+	 * @param      {Object}   data        { track : true/false/classnames ,
+	 * 										panel : true/false/classnames ,
 	 * 										highlight : true/false,
 	 *										_comp : true/false // only stored in component, private use only
 	  }
@@ -797,7 +797,7 @@ export class CPU_element_api {
 
 		if (data === undefined) {
 			data = {};
-		} 
+		}
 
 		let default_values = {
 			'track'     : true,
@@ -855,7 +855,7 @@ export class CPU_element_api {
 		}
 
 		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
-			// as plane data is removed, it will remove its aside and track 
+			// as plane data is removed, it will remove its aside and track
 			document.CPU.global_controller.draw_plane(name);
 		}
 
@@ -936,7 +936,7 @@ export class CPU_element_api {
 	/**
 	 * @summary    Resort points of a plane by start-time
 	 * @private
-	 * 
+	 *
 	 * ok, i found it on https://stackoverflow.com/questions/1069666/sorting-object-property-by-values#answer-1069840
 	 *
 	 * @param      {string}   plane_name     The plane name
@@ -959,11 +959,11 @@ export class CPU_element_api {
 	/**
 	 * @summary    Reorder panel of a plane by points order
 	 * @private
-	 * 
+	 *
 	 * @param      {string}   plane_name     The plane name
 	 */
 	panel_reorder(plane_name) {
-		this.plane_resort(plane_name); 
+		this.plane_resort(plane_name);
 		if (!this.get_plane_panel(plane_name)) {
 			return;
 		}
@@ -972,7 +972,7 @@ export class CPU_element_api {
 
 			element = this.get_point_panel(plane_name, point_name);
 			if (previous_element) {
-				previous_element.insertAdjacentElement('afterend', element); 
+				previous_element.insertAdjacentElement('afterend', element);
 			}
 			previous_element = element;
 		}
@@ -1069,9 +1069,9 @@ export class CPU_element_api {
 	 * @param      {string}   plane_name      The existing plane name
 	 * @param      {number}   timecode_start  The timecode start for this annotation
 	 * @param      {string}   point_name      The point name, should conform to /^[a-zA-Z0-9\-_]+$/
-	 * @param      {Object}   data            { 'image' : <url>, 
-	 * 											'link' : <url>/true (in audio)/false (none), 
-	 * 											'text' : <text>, 
+	 * @param      {Object}   data            { 'image' : <url>,
+	 * 											'link' : <url>/true (in audio)/false (none),
+	 * 											'text' : <text>,
 	 * 											'end'  : <seconds> }
 	 *
 	 * @return     {boolean}  success
@@ -1079,7 +1079,7 @@ export class CPU_element_api {
 	add_point(plane_name, timecode_start, point_name, data) {
 
 		data = data === undefined ? {} : data;
-		
+
 		if ( (this.get_plane(plane_name) === undefined) || (this.get_point(plane_name, point_name) !== undefined) || (timecode_start < 0) || (!point_name.match(valid_id)) ) {
 			return false;
 		}
@@ -1097,7 +1097,7 @@ export class CPU_element_api {
 		});
 
 		if (this.get_plane(plane_name)._st_max > timecode_start) {
-			// we need to reorder the plane 
+			// we need to reorder the plane
 			this.panel_reorder(plane_name);
 		} else {
 			this.draw_point(plane_name, point_name);
@@ -1113,10 +1113,10 @@ export class CPU_element_api {
 	 *
 	 * @param      {string}   plane_name      The existing plane name
 	 * @param      {string}   point_name      The existing point name
-	 * @param      {Object}   data            { 'image' : <url>, 
-	 * 											'link'  : <url>/true (in audio)/false (none), 
-	 * 											'text'  : <text>, 
-	 * 											'start' : <seconds>, 
+	 * @param      {Object}   data            { 'image' : <url>,
+	 * 											'link'  : <url>/true (in audio)/false (none),
+	 * 											'text'  : <text>,
+	 * 											'start' : <seconds>,
 	 * 											'end'   : <seconds> }
 	 *										  will only change keys in the list
 	 */
@@ -1138,7 +1138,7 @@ export class CPU_element_api {
 				original_data[key] = data[key];
 			}
 		}
-		
+
 		this.get_plane(plane_name).points[point_name] = original_data;
 
 		this.draw_point(plane_name, point_name);
@@ -1222,7 +1222,7 @@ export class CPU_element_api {
 	clear_plane(plane_name) {
 		let remove_from_data = this.get_plane(plane_name);
 		if (!remove_from_data) {
-			return false;   
+			return false;
 		}
 
 		for (let point_name of Object.keys(remove_from_data.points)) {
@@ -1231,7 +1231,7 @@ export class CPU_element_api {
 		// need to repass in case of badly removed / malformed entries
 		let nav = this.get_plane_nav(plane_name);
 		if (nav !== null) {
-			nav.innerHTML = '';	
+			nav.innerHTML = '';
 		}
 		// purge repaint flag to redraw
 		this.get_plane(plane_name)._st_max = 0;
@@ -1281,7 +1281,7 @@ export class CPU_element_api {
 
 	/**
 	 * @summary Needed because Chrome can fire loadedmetadata before knowing audio duration. Fired at durationchange
-	 * 
+	 *
 	 * @private
 	 */
 	reposition_tracks() {
@@ -1307,7 +1307,8 @@ export class CPU_element_api {
 	 * @summary Remove any previewes on plane points
 	 * @public
 	 *
-	 * @param      {string}  class_name  Targeted class name, 'with-preview' by default
+	 * @param			 {string}  plane_name The plane name to operate
+	 * @param      {string}  class_name Targeted class name, 'with-preview' by default
 	 * @param      {boolean} mirror     Also act on linked cpu-controller/cpu-audio
 	 */
 	remove_highlights_points(plane_name, class_name=undefined, mirror=undefined) {
@@ -1363,7 +1364,7 @@ export class CPU_element_api {
 		/* we need to keep the actual flash message, to recall it
 		let point = this.get_point(plane_name, point_name);
 		if (point) {
-			this.flash(point['text']); 
+			this.flash(point['text']);
 		}
 		*/
 
@@ -1438,9 +1439,9 @@ export class CPU_element_api {
 					if (
 							(tracks.kind.toLowerCase() === 'chapters') &&
 							(tracks.cues !== null) &&  // linked to default="" attribute, only one per set !
-							( 
-								(chapter_track === null) /* still no active track */ 
-								|| (tracks.language.toLowerCase() === prefered_language) /* correspond to <html lang> */ 
+							(
+								(chapter_track === null) /* still no active track */
+								|| (tracks.language.toLowerCase() === prefered_language) /* correspond to <html lang> */
 							)
 						) {
 						chapter_track = tracks;
@@ -1480,7 +1481,7 @@ export class CPU_element_api {
 			if (has) {
 				/**
 				 * indicate in host page that audio tag chapters are listed see
-				 * https://github.com/dascritch/cpu-audio/issues/36 
+				 * https://github.com/dascritch/cpu-audio/issues/36
 				 */
 				document.body.classList.add(body_class);
 			} else {
@@ -1520,7 +1521,7 @@ export class CPU_element_api {
 	}
 
 	/**
-	 * @summary Builds or refresh the playlist panel. 
+	 * @summary Builds or refresh the playlist panel.
 	 Should be called only for <cpu-controller>
 	 * @public
 	 */
@@ -1532,14 +1533,14 @@ export class CPU_element_api {
 
 		let previous_playlist = this.current_playlist;
 		this.current_playlist = document.CPU.find_current_playlist();
-		
+
 
 		if (! this.get_plane(plane_playlist)) {
 			this.add_plane(plane_playlist, __['playlist'], {
 				track : false,
 				panel : 'nocuetime',
 				highlight : true,
-				_comp : true 				// data stored on CPU-Controller ONLY 
+				_comp : true 				// data stored on CPU-Controller ONLY
 			});
 		}
 
@@ -1555,7 +1556,7 @@ export class CPU_element_api {
 
 			for (let audiotag_id of this.current_playlist) {
 				let audiotag = document.getElementById(audiotag_id);
-				
+
 				this.add_point(plane_playlist, 0, audiotag_id, {
 					text : audiotag.dataset.title,
 					link : `#${audiotag_id}&t=0`
@@ -1583,7 +1584,7 @@ export class CPU_element_api {
 
 		// hide broken image while not loaded
 		this.elements['poster'].addEventListener('load', () => {
-			interface_classlist.add('poster-loaded'); 
+			interface_classlist.add('poster-loaded');
 		}, passive_ev);
 
 		let show_main = this.show_main.bind(this);
@@ -1646,7 +1647,7 @@ export class CPU_element_api {
 		timeline_element.addEventListener('touchend', finger_manager.touchcancel, passive_ev);
 		timeline_element.addEventListener('contextmenu', finger_manager.rmb, passive_ev);
 
-		
+
 		if (navigator.share) {
 			interface_classlist.add('hasnativeshare');
 			this.elements['nativeshare'].addEventListener('click', trigger.native_share, passive_ev);
