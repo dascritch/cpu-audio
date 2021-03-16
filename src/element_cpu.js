@@ -1286,9 +1286,7 @@ export class CPU_element_api {
 	 * @param      {string}  class_name  class name, 'with-preview' by default
 	 * @param      {boolean} mirror     Also act on linked cpu-controller/cpu-audio, true by default
 	 */
-	highlight_point(plane_name, point_name, class_name=undefined, mirror=undefined) {
-		mirror = mirror === undefined ? true : mirror;
-		class_name = (typeof class_name === 'string') ? class_name : preview_classname;
+	highlight_point(plane_name, point_name, class_name=preview_classname, mirror=true) {
 		this.remove_highlights_points(plane_name, class_name, mirror);
 
 		let check_plane = this.get_plane(plane_name);
