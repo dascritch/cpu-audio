@@ -213,8 +213,7 @@ export class CPU_element_api {
 	update_time() {
 		let audiotag = this.audiotag;
 		let timecode = is_audiotag_streamed(audiotag) ? 0 : Math.floor(audiotag.currentTime);
-		let canonical = audiotag.dataset.canonical;
-		canonical = canonical === undefined ? '' : canonical;
+		let canonical = audiotag.dataset.canonical ?? '' ;
 		let _is_at = canonical.indexOf('#');
 		let elapse_element = this.elements['elapse'];
 		elapse_element.href = `${ absolutize_url(canonical) }#${ (_is_at === -1) ? audiotag.id : canonical.substr(_is_at+1) }&t=${timecode}`;
