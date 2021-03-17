@@ -39,12 +39,12 @@ function play_once_unlock(event, audiotag) {
 
 export const trigger = {
 
-	// @private
+	// @private   MAY GO OUT OF THIS OBJECT IF NOT TESTED OUTSIDE
 	_timecode_start : 0,
-	// @private
+	// @private   MAY GO OUT OF THIS OBJECT IF NOT TESTED OUTSIDE
 	_timecode_end : false,
 
-	// @private
+	// @private   MAY GO OUT OF THIS OBJECT IF NOT TESTED OUTSIDE
 	_last_play_error : false,
 
 	/**
@@ -151,13 +151,13 @@ export const trigger = {
 		if (!target.id) {
 			target = target.closest('[id]');
 		}
-		if (target === null) {
+		if (!target) {
 			return;
 		}
 
 		let container = document.CPU.find_container(target);
-		let names = container.get_point_names_from_id(target.id);
-		container.highlight_point(names[0], names[1]);
+		let [plane_name, point_name] = container.get_point_names_from_id(target.id);
+		container.highlight_point(plane_name, point_name);
 	},
 
 
@@ -261,9 +261,7 @@ export const trigger = {
 	 */
 	play : function(event=undefined, audiotag=undefined) {
 
-		if (audiotag === undefined) {
-			audiotag = document.CPU.find_container(event.target).audiotag;
-		}
+		audiotag = audiotag ?? document.CPU.find_container(event.target).audiotag;
 
 		if ( (event === undefined) && (trigger._last_play_error)) {
 			warn(`play() prevented because already waiting for focus`);
@@ -274,7 +272,6 @@ export const trigger = {
 		remove_timecode_outofborders(audiotag.currentTime);
 
 		let promised = audiotag.play();
-
 
 		if (promised !== undefined) {
 			promised.then(
@@ -324,14 +321,13 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 * @param      {number}  mult    Multiply the keypressed act, 1 by default
 	 */
-	key : function(event, mult=undefined) {
+	key : function(event, mult=1) {
 
 		// do not interpret key when there is a modifier, for not preventing browsers shortcurs
 		if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
 			return;
 		}
 
-		mult = mult === undefined ? 1 : mult;
 		let container = document.CPU.find_container(event.target);
 		let audiotag = container.audiotag;
 
@@ -524,9 +520,9 @@ export const trigger = {
 	native_share : function(event) {
 		let dataset = document.CPU.find_container(event.target).fetch_audiotag_dataset();
 		navigator.share({
-			'title': dataset.title,
-			'text': dataset.title,
-			'url': dataset.canonical
+			title	: dataset.title,
+			text	: dataset.title,
+			url 	: dataset.canonical
 		});
 		event.preventDefault();
 	},
