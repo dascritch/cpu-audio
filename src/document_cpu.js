@@ -12,7 +12,7 @@ const default_dataset = {
 			}
 		}
 		let title = document.title;
-		return title === '' ? null : title;		
+		return title === '' ? null : title;
 	},
 	get poster() {
 		for (let attr of ['property="og:image"', 'name="twitter:image:src"']) {
@@ -156,7 +156,7 @@ export let document_CPU = {
 			let secs = convert.TimeInSeconds(timecode);
 			document.CPU.seekElementAt(audiotag, secs);
 
-			let mocked_event = {'target' : audiotag};
+			let mocked_event = {target : audiotag};
 			if (audiotag.readyState >= audiotag.HAVE_FUTURE_DATA) {
 				do_element_play(mocked_event);
 			} else {
@@ -183,7 +183,7 @@ export let document_CPU = {
 			return;
 		}
 
-		let mocked_event = {'target' : audiotag};
+		let mocked_event = {target : audiotag};
 		if (audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {  /*  WHHYYYY ?????? */
 			audiotag.addEventListener('loadedmetadata', do_needle_move , once_passive_ev);
 			audiotag.load();

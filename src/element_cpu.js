@@ -1090,7 +1090,7 @@ export class CPU_element_api {
 		}
 
 		let original_data = this.get_point(plane_name, point_name);
-		let  will_refresh =  (('start' in data) && (Number(data['start']) !== original_data['start']));
+		let will_refresh = (('start' in data) && (Number(data['start']) !== original_data['start']));
 
 		data = {...original_data, ...data};
 

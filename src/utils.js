@@ -37,8 +37,8 @@ function noop() {
  *
  * @param      {Function|null|undefined}  callback_fx  The function to call
  */
-export function on_debug(callback_fx) { 
-	// may be used as a noop(); 
+export function on_debug(callback_fx) {
+	// may be used as a noop();
 	if (typeof callback_fx === 'function') {
 		// this is needed for testing, as we now run in async tests
 		callback_fx();
@@ -52,8 +52,7 @@ export function on_debug(callback_fx) {
  * @param      {Function}              callback             The callback function, its 1st parameter will be the matching DOM element
  * @param      {Element|HTMLDocument|ShadowRoot}  [subtree=undefined]  The subtree, by default the whole hosting document
  */
-export function querySelector_apply(selector, callback, subtree=undefined) {
-	subtree = subtree === undefined ? document : subtree;
+export function querySelector_apply(selector, callback, subtree=document) {
 	Array.from(
 		subtree.querySelectorAll(selector)
 	).forEach(callback);
@@ -95,10 +94,9 @@ export function not_screen_context() {
  * @param      {Event}  event   The event
  */
 function prevent_link_on_same_page(event) {
-	if (absolutize_url(window.location.href) !== absolutize_url(event.target.href)) {
-		return ;
+	if (absolutize_url(window.location.href) === absolutize_url(event.target.href)) {
+		event.preventDefault();
 	}
-	event.preventDefault();
 }
 
 /**

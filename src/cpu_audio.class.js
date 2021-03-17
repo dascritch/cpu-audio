@@ -72,7 +72,6 @@ export class CpuAudioElement extends CpuControllerElement {
 				this._audiotag.dataset[key] = (key !== 'duration') ? value : convert.TimeInSeconds(value);
 			}
 		}
-		
 	}
 
 	connectedCallback() {
@@ -90,15 +89,15 @@ export class CpuAudioElement extends CpuControllerElement {
 
 		this.observer_cpuaudio = new MutationObserver(observer_cpuaudio);
 		this.observer_cpuaudio.observe(this, {
-			'childList': true,
-			'attributes' : true
+			childList 	: true,
+			attributes	: true
 		});
 
 		this.observer_audio = new MutationObserver(observer_audio);
 		this.observer_audio.observe(this, {
-			'childList': true,
-			'attributes' : true,
-			'subtree' : true
+			childList	: true,
+			attributes	: true,
+			subtree		: true
 		});
 
 		// this.observer.disconnect();
