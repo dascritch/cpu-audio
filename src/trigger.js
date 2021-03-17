@@ -72,9 +72,7 @@ export const trigger = {
 				hash = parameter;
 			} else {
 				// should be a key=value parameter
-				let atoms = parameter.split('=');
-				let p_key = atoms[0];
-				let p_value = atoms[1];
+				let [p_key, p_value] = parameter.split('=');
 				switch (p_key) {
 					case 't':
 						// is a time index
@@ -85,7 +83,7 @@ export const trigger = {
 						break;
 					case 'autoplay':
 						// is a card from a social network, run now
-						autoplay =  p_value === '1';
+						autoplay = p_value === '1';
 						break;
 					case 'auto_play':
 						// is a card from a social network, run now
@@ -102,10 +100,9 @@ export const trigger = {
 		}
 
 		// we may have a begin,end notation
-		let times = timecode.split(',');
-		let timecode_start = times[0];
+		let [timecode_start, timecode_end] = timecode.split(',');
 		trigger._timecode_start = convert.TimeInSeconds(timecode_start);
-		trigger._timecode_end = times.length > 1 ? convert.TimeInSeconds(times[1]) : false;
+		trigger._timecode_end = timecode_end !== undefined ? convert.TimeInSeconds(timecode_end) : false;
 		if (trigger._timecode_end !== false) {
 			trigger._timecode_end = (trigger._timecode_end > trigger._timecode_start) ?
 				trigger._timecode_end :
