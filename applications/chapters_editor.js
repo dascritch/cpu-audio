@@ -385,9 +385,7 @@ function interpret_form(_event) {
         return `WEBVTT FILE\n${out.join('')}\n`;
     }
 
-    if (_event) {
-        _event.preventDefault();
-    }
+    _event.preventDefault?.();
     chapters = [];
     sound_CPU.clear_plane('cursors');
 

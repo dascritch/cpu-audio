@@ -337,9 +337,7 @@ function configurator_html(event) {
 	document.getElementById('code').innerText = code;
 	cpu_audio = document.querySelector('cpu-audio');
 	
-	if (event) {
-		event.preventDefault();
-	}
+	event.preventDefault?.();
 }
 
 function configurator_css(event) {
@@ -397,9 +395,8 @@ function configurator_css(event) {
 	}
 
 	document.getElementById('style').innerHTML = css;
-	if (event) {
-		event.preventDefault();
-	}
+	
+	event.preventDefault?.();
 }
 
 function noop(event) {

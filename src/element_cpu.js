@@ -549,9 +549,7 @@ export class CPU_element_api {
 			return;
 		}
 		this.container.classList.toggle('show-handheld-nav');
-		if ((event) && (event.preventDefault)) {
-			event.preventDefault();
-		}
+		event.preventDefault?.();
 	}
 
 	/**
