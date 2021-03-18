@@ -23,6 +23,9 @@ const valid_id = /^[a-zA-Z0-9\-_]+$/;
 // Regex for extracting plane and point names from an id
 const plane_point_names_from_id = /^([a-zA-Z0-9\-_]+_«)([a-zA-Z0-9\-_]+)((»_.*_«)([a-zA-Z0-9\-_]+))?(»)$/;
 
+// used for add_id_to_audiotag , when tag was not named in HTML or DOM
+let	count_element = 0;
+
 export class CPU_element_api {
 	/**
 	 *
@@ -590,7 +593,7 @@ export class CPU_element_api {
 	 * @private
 	 */
 	add_id_to_audiotag() {
-		this.audiotag.id = this.audiotag.id || dynamically_allocated_id_prefix + String(document.CPU.count_element++);
+		this.audiotag.id = this.audiotag.id || `${dynamically_allocated_id_prefix}${count_element++}`;
 	}
 
 	/**

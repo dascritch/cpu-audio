@@ -80,10 +80,6 @@ export let document_CPU = {
 	// @public
 	'global_controller' : null,
 
-	// @private
-	// @type number
-	count_element : 0,
-
 	// private, indicate a play already occured in the DOM, so we can start any play
 	// @private
 	// @type boolean
