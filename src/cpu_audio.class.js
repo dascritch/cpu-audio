@@ -60,12 +60,13 @@ export class CpuAudioElement extends CpuControllerElement {
 	}
 
 	copy_attributes_to_media_dataset() {
-		/*
-		let a = document.CPU.default_dataset;
-		window.console.info({...a, duration : convert.TimeInSeconds(a.value)})
-		return {...a, duration : convert.TimeInSeconds(a.value)};
-		*/
 		// copying personalized data to audio tag
+		/**
+		not working because of null returned values, and because dataset in a setter
+			let def = document.CPU.default_dataset;
+			this._audiotag.dataset = {...def, duration : convert.TimeInSeconds(def.duration || 0)};
+		**/
+
 		for (let key in document.CPU.default_dataset) {
 			let value = this.getAttribute(key);
 			if (value !== null) {
@@ -75,9 +76,8 @@ export class CpuAudioElement extends CpuControllerElement {
 	}
 
 	connectedCallback() {
-
 		this._audiotag = this.querySelector(acceptable_selector);
-		if (this._audiotag === null) {
+		if (!this._audiotag) {
 			return;
 		}
 
@@ -101,7 +101,5 @@ export class CpuAudioElement extends CpuControllerElement {
 		});
 
 		// this.observer.disconnect();
-
 	}
-
 }
