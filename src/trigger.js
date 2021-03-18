@@ -136,9 +136,7 @@ export const trigger = {
 
 		await document.CPU.jumpIdAt(hash, timecode_start, callback_fx);
 
-		if (document.CPU.global_controller) {
-			document.CPU.global_controller.build_playlist();
-		}
+		document.CPU.global_controller?.build_playlist();
 		// scroll to the audio element. Should be reworked, or parametrable , see issue #60
 		// window.location.hash = `#${hash}`;
 	},
@@ -400,8 +398,8 @@ export const trigger = {
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	restart : function(event) {
-		let container = document.CPU.find_container(event.target);
+	restart : function({target}) {
+		let container = document.CPU.find_container(target);
 		document.CPU.seekElementAt(container.audiotag, 0);
 	},
 	/**
@@ -462,13 +460,11 @@ export const trigger = {
 
 
 	/**
-	 * @summary Updatting time position. Pause if a end position is defined
+	 * @summary Updatting time position. Pause if a end position was defined
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	update : function(event) {
-		let audiotag = event.target;
-
+	update : function({target:audiotag}) {
 		if ((trigger._timecode_end !== false) && (audiotag.currentTime > trigger._timecode_end)) {
 			trigger.pause(undefined, audiotag);
 		}
@@ -485,24 +481,25 @@ export const trigger = {
 	 * @param      {Object}  			event     The event
 	 * @param      {HTMLAudioElement}  	audiotag  The audiotag
 	 */
-	ended : function(event, audiotag=undefined) {
+	ended : function({target}, audiotag=undefined) {
 		// the media element reached its end
-		if (audiotag === undefined) {
-			audiotag = event.target;
-		}
-		if (!('playlist' in audiotag.dataset)) {
+		audiotag = audiotag ?? target;
+		let {dataset, id} = audiotag;
+
+		if (!dataset.playlist) {
 			return;
 		}
 		// and is in a declarated playlist
-		let playlist_name = audiotag.dataset.playlist;
+		let playlist_name = dataset.playlist;
 		let playlist = document.CPU.playlists[playlist_name];
-		if (playlist === undefined) {
+		if (playlist === undefined) { 
+			// test strict : we may have a funnily 'undefined' named playlist ;)
 			warn(`Named playlist ${playlist_name} not created. WTF ?`);
 			return;
 		}
-		let playlist_index = playlist.indexOf(audiotag.id);
+		let playlist_index = playlist.indexOf(id);
 		if (playlist_index < 0) {
-			warn(`Audiotag ${audiotag.id} not in playlist ${playlist_name}. WTF ?`);
+			warn(`Audiotag ${id} not in playlist ${playlist_name}. WTF ?`);
 			return;
 		}
 		if ((playlist_index +1) === playlist.length) {
