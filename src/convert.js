@@ -9,11 +9,10 @@ let scale = [1, 60, 3600, 86400];
 const _is_only_numeric = /^\d+$/;
 const _any_not_numeric = /\D*/g;
 
-export const convert = {
+// How Inifity (streamed live media with unspecified duration) should be humanly expressed
+const Infinity_representation = '?';
 
-	// @private
-	// How Inifity (streamed live media with unspecified duration) should be humanly expressed
-	Infinity : '?',
+export const convert = {
 
 	/**
 	 * @summary convert a string empty, with a number, with a colon-coded or an human-coded timecode in seconds
@@ -84,7 +83,7 @@ export const convert = {
 	 */
 	SecondsInTime : function(givenSeconds) {
 		if (givenSeconds === Infinity) {
-			return convert.Infinity;
+			return Infinity_representation;
 		}
 		let converted = '';
 		let inned = false;
@@ -112,7 +111,7 @@ export const convert = {
 	 */
 	SecondsInColonTime : function(givenSeconds) {
 		if (givenSeconds === Infinity) {
-			return convert.Infinity;
+			return Infinity_representation;
 		}
 		let converted = '';
 		let inned = false;
@@ -152,7 +151,7 @@ export const convert = {
 	 */
 	SecondsInPaddledColonTime : function(givenSeconds) {
 		if (givenSeconds === Infinity) {
-			return convert.Infinity;
+			return Infinity_representation;
 		}
 		// principaly needed by <input type="time"> whom needs a really precise HH:MM:SS format
 		let colon_time = convert.SecondsInColonTime(givenSeconds);
