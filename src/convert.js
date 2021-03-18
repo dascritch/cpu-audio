@@ -47,11 +47,11 @@ export const convert = {
 	 */
 	SubunitTimeInSeconds : function(givenTime) {
 		let seconds = 0;
+		let atom;
 		for(let key in units_scale) {
 			if ( (units_scale.hasOwnProperty(key)) && (givenTime.indexOf(key) !== -1) ) {
-				let atoms = givenTime.split(key);
-				seconds += Number(atoms[0].replace(_any_not_numeric,'' )) * units_scale[key];
-				givenTime = atoms[1];
+				[atom, givenTime] = givenTime.split(key);
+				seconds += Number(atom.replace(_any_not_numeric,'' )) * units_scale[key];
 			}
 		}
 		return seconds;
