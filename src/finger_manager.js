@@ -1,12 +1,12 @@
 import {on_debug} from './utils.js';
 import {trigger} from './trigger.js';
 
+// Repeated event allocation
+let is_on = null;
+
 // Handheld navigation button process
 // @private
 export let finger_manager = {
-	// Repeated event allocation
-	is_on : null,
-
 	/*
 	 * @summary Start handheld navigation button press
 	 * @private
@@ -22,15 +22,15 @@ export let finger_manager = {
 		}
 		// execute the associated function
 		trigger[target.id](event);
-		if (finger_manager.is_on !== null) {
-			window.clearTimeout(finger_manager.is_on);
+		if (is_on) {
+			window.clearTimeout(is_on);
 		}
 
 		let mini_event = {
 			target : target,
 			preventDefault : on_debug
 		};
-		finger_manager.is_on = window.setTimeout(finger_manager.repeat, document.CPU.repeat_delay, mini_event);
+		is_on = window.setTimeout(finger_manager.repeat, document.CPU.repeat_delay, mini_event);
 		event.preventDefault();
 	},
 	/*
@@ -43,7 +43,7 @@ export let finger_manager = {
 		//
 		trigger[event.target.id](event);
 		// next call : repetition are closest
-		finger_manager.is_on = window.setTimeout(finger_manager.repeat, document.CPU.repeat_factor, event);
+		is_on = window.setTimeout(finger_manager.repeat, document.CPU.repeat_factor, event);
 	},
 	/*
 	 * @summary Release handheld navigation button
@@ -52,8 +52,8 @@ export let finger_manager = {
 	 * @param      {Object}  event   The event
 	 */
 	release : function(event) {
-		window.clearTimeout(finger_manager.is_on);
-		finger_manager.is_on = null;
+		window.clearTimeout(is_on);
+		is_on = null;
 		event.preventDefault();
 	},
 
@@ -66,8 +66,8 @@ export let finger_manager = {
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	touchstart : function(event) {
-		let container = document.CPU.find_container(event.target);
+	touchstart : function({target}) {
+		let container = document.CPU.find_container(target);
 		finger_manager.touching = setTimeout(container.show_handheld_nav.bind(container), document.CPU.alternate_delay);
 	},
 	/**
