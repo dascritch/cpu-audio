@@ -1,84 +1,22 @@
 import {CpuAudioTagName, CpuControllerTagName, is_audiotag_streamed, on_debug, once_passive_ev, selector_interface, warn} from './utils.js';
-
+import {default_document_cpu_parameters} from './default_document_cpu_parameters.js'
+import {default_dataset} from './default_dataset.js'
 import {convert} from './convert.js';
 import {trigger} from './trigger.js';
 
-const default_dataset = {
-	get title() {
-		for (let domain of ['og', 'twitter']) {
-			let header_element = document.querySelector(`meta[property="${domain}:title"]`);
-			if (header_element !== null) {
-				return header_element.content;
-			}
-		}
-		let title = document.title;
-		return title === '' ? null : title;
-	},
-	get poster() {
-		for (let attr of ['property="og:image"', 'name="twitter:image:src"']) {
-			let header_element = document.querySelector(`meta[${attr}]`);
-			if (header_element !== null) {
-				return header_element.content;
-			}
-		}
-		return null;
-	},
-	get canonical() {
-		let header_element = document.querySelector('link[rel="canonical"]');
-		if (header_element !== null) {
-			return header_element.href;
-		}
-		return location.href.split('#')[0];
-	},
-	get twitter() {
-		let header_element = document.querySelector('meta[name="twitter:creator"]');
-		if ((header_element !== null) && (header_element.content.length>1)) {
-			return header_element.content;
-		}
-		return null;
-	},
-	playlist : null,
-	waveform : null,
-	duration : null,
-	download : null
-};
-
-export let document_CPU = {
+export const document_CPU = {
 	// global object for global API
 
 	// public, parameters
-	// @public
-	// @type boolean
-	'autoplay' : false,
-
-	// @public
-	// @type number
-	'keymove' : 5,
-	// @public
-	// @type boolean
-	'only_play_one_audiotag' : true,
-	// @public
-	// @type number
-	// why 500ms ? Because Chrome will trigger a touchcancel event at 800ms to show a context menu
-	'alternate_delay' : 500,
-
-	// @public
-	// @type number
-	'fast_factor' : 4,
-	// @public
-	// @type number
-	'repeat_delay' : 400,
-	// @public
-	// @type number
-	'repeat_factor' : 100,
+	...default_document_cpu_parameters,
 
 	// public, actual active elements
 	// @public
 	// @type {HTMLAudioElement|null}
-	'current_audiotag_playing' : null,
+	current_audiotag_playing : null,
 	// @type {CpuControllerElement|null}
 	// @public
-	'global_controller' : null,
+	global_controller : null,
 
 	// private, indicate a play already occured in the DOM, so we can start any play
 	// @private
@@ -93,10 +31,7 @@ export let document_CPU = {
 	// public, playlists
 	// @public
 	// @type Object
-	'playlists' : {},
-	// @public
-	// @type boolean
-	'advance_in_playlist' : true,
+	playlists : {},
 
 	// public, Exposing internals needed for tests
 	// @public
@@ -114,7 +49,7 @@ export let document_CPU = {
 	 * @param      {HTMLAudioElement}   audiotag  The audiotag
 	 * @return     {boolean}  True if audiotag playing, False otherwise.
 	 */
-	'is_audiotag_playing' : function(audiotag) {
+	is_audiotag_playing : function(audiotag) {
 		return (document.CPU.current_audiotag_playing) && (audiotag.isEqualNode(document.CPU.current_audiotag_playing));
 	},
 	/**
@@ -124,7 +59,7 @@ export let document_CPU = {
 	 * @param      {HTMLAudioElement}   audiotag  The audiotag
 	 * @return     {boolean}  True if audiotag global, False otherwise.
 	 */
-	'is_audiotag_global' : function(audiotag) {
+	is_audiotag_global : function(audiotag) {
 		return this.global_controller === null ? this.is_audiotag_playing(audiotag) : audiotag.isEqualNode(this.global_controller.audiotag);
 	},
 
@@ -136,7 +71,7 @@ export let document_CPU = {
 	 * @param      {string}   timecode     The timecode,
 	 * @param      {Function|null|undefined}   callback_fx  Function to be called afterwards, for ending tests
 	 */
-	'jumpIdAt' : async function(hash, timecode, callback_fx=undefined) {
+	jumpIdAt : async function(hash, timecode, callback_fx=undefined) {
 
 		/**
 		 * @param 	{Object}	event 	triggered event, or mockup
