@@ -80,11 +80,6 @@ export let document_CPU = {
 	// @public
 	'global_controller' : null,
 
-	// private, actual active elements
-	// @private
-	// @type {string|null}
-	body_className_playing_cue : null,
-
 	// @private
 	// @type number
 	count_element : 0,

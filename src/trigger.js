@@ -8,6 +8,11 @@ const KEY_RIGHT_ARROW = 39;
 let NotAllowedError = 'Auto-play prevented : Browser requires a manual interaction first.';
 let NotSupportedError = 'The browser refuses the audio source, probably due to audio format.';
 
+// private, actual active elements
+// @type {string|null}
+let	body_className_playing_cue = null;
+
+
 /**
  * @summary If audio position out of begin/end borders, remove borders
  * @private
@@ -445,10 +450,10 @@ export const trigger = {
 	 * @suppress {checkTypes}
 	 */
 	cuechange : function(active_cue, audiotag) {
-		document.body.classList.remove(document.CPU.body_className_playing_cue);
+		document.body.classList.remove(body_className_playing_cue);
 		// giving a class to document.body, with a syntax according to https://www.w3.org/TR/CSS21/syndata.html#characters
-		document.CPU.body_className_playing_cue = `cpu_playing_tag_«${audiotag.id}»_cue_«${active_cue.id}»`;
-		document.body.classList.add(document.CPU.body_className_playing_cue);
+		body_className_playing_cue = `cpu_playing_tag_«${audiotag.id}»_cue_«${active_cue.id}»`;
+		document.body.classList.add(body_className_playing_cue);
 	},
 
 
