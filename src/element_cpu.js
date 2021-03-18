@@ -1,6 +1,7 @@
 import {CpuControllerTagName, absolutize_url, dynamically_allocated_id_prefix, error, escape_html, is_audiotag_streamed, once_passive_ev, passive_ev, querySelector_apply} from './utils.js';
 import {__, prefered_language} from './i18n.js';
 
+import {default_dataset} from './default_dataset.js';
 import {convert} from './convert.js';
 import {finger_manager} from './finger_manager.js';
 import {translate_vtt} from './translate_vtt.js';
@@ -459,7 +460,7 @@ export class CPU_element_api {
 	 * @return     {Object}  dataset
 	 */
 	fetch_audiotag_dataset() {
-		return {...document.CPU.default_dataset, ...this.audiotag.dataset};
+		return {...default_dataset, ...this.audiotag.dataset};
 	}
 
 	/**
