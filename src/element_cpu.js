@@ -184,7 +184,7 @@ export class CPU_element_api {
 		if (!audiotag.paused) {
 			audiotag._CPU_played = true;
 			this.container.classList.add(hide_panels_except_play_mark);
-			if (this.mode_when_play !== null) {
+			if (this.mode_when_play) {
 				this.set_mode_container(this.mode_when_play);
 				this.mode_when_play = null;
 			}
@@ -204,7 +204,7 @@ export class CPU_element_api {
 	 */
 	update_line(seconds, ratio=undefined) {
 		let duration = this.audiotag.duration;
-		if (ratio === undefined) {
+		if (!ratio) {
 			ratio = duration === 0 ? 0 : (100*seconds / duration);
 		}
 		this.elements[`loadingline`].style.width = `${ratio}%`;
@@ -259,15 +259,18 @@ export class CPU_element_api {
 		// verify if plane exists, and point is invariant
 		if (this.get_plane(plane_name)) {
 			let check = this.get_point(plane_name, point_name);
-			if ((check) && (check.start === trigger._timecode_start) && (check.end === trigger._timecode_end)) {
+			if (
+				(check) &&
+				(check.start === trigger._timecode_start) &&
+				(check.end === trigger._timecode_end)) {
 				return;
 			}
 		}
 
 		this.add_plane(plane_name,'',{
-			track   : 'borders',
-			panel   : false,
-			highlight : false
+			track   	: 'borders',
+			panel   	: false,
+			highlight 	: false
 		});
 		this.add_point(plane_name, trigger._timecode_start, point_name, {
 			link    : false,
@@ -297,11 +300,11 @@ export class CPU_element_api {
 	 */
 	update_error() {
 		let audiotag = this.audiotag;
-		if (audiotag === null) {
+		if (!audiotag) {
 			return true;
 		}
 		let error_object = audiotag.error;
-		if (error_object !== null) {
+		if (error_object) {
 			let error_message;
 			let pageerror = this.elements['pageerror'];
 			this.show_interface('error');
@@ -472,17 +475,6 @@ export class CPU_element_api {
 	update_links() {
 		let container = this;
 		let audiotag = this.audiotag;
-
-		/**
-		 * @summary Assign an url to a link
-		 *
-		 * @param      {string}  category  The category
-		 * @param      {string}  href      The link
-		 */
-		function ahref(category, href) {
-			container.elements[category].href = href;
-		}
-
 		let dataset = this.fetch_audiotag_dataset();
 		let canonical = absolutize_url( dataset.canonical ?? '' );
 		let timepos = (audiotag.currentTime === 0)  ? '' : `&t=${Math.floor(audiotag.currentTime)}`;
@@ -496,9 +488,6 @@ export class CPU_element_api {
 			) {
 			_twitter = `&via=${dataset.twitter.substring(1)}`;
 		}
-		ahref('twitter', `https://twitter.com/share?text=${dataset.title}&url=${_url}${_twitter}`);
-		ahref('facebook', `https://www.facebook.com/sharer.php?t=${dataset.title}&u=${_url}`);
-		ahref('email', `mailto:?subject=${dataset.title}&body=${_url}`);
 		let download_link = audiotag.currentSrc;
 		if (dataset.download) {
 			download_link = dataset.download;
@@ -507,7 +496,16 @@ export class CPU_element_api {
 		if (prerefed_audio_src) {
 			download_link = prerefed_audio_src.src;
 		}
-		ahref('link', download_link);
+
+		let links = {
+			twitter : `https://twitter.com/share?text=${dataset.title}&url=${_url}${_twitter}`,
+			facebook : `https://www.facebook.com/sharer.php?t=${dataset.title}&u=${_url}`,
+			email : `mailto:?subject=${dataset.title}&body=${_url}`,
+			link : download_link
+		};
+		for (let key in links) {
+			container.elements[key].href = links[key];
+		}
 	}
 
 	/**
