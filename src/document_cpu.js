@@ -193,15 +193,12 @@ export const document_CPU = {
 	 */
 	'find_current_playlist' : function() {
 
-		if (this.global_controller === null) {
-			return [];
-		}
-		let current_audiotag = this.global_controller.audiotag;
-		if (current_audiotag === null) {
+		let current_audiotag = this.global_controller?.audiotag;
+		if (!current_audiotag) {
 			return [];
 		}
 		for (let playlist_name in this.playlists) {
-			if (this.playlists[playlist_name].indexOf(current_audiotag.id) >= 0) {
+			if (this.playlists[playlist_name].includes(current_audiotag.id)) {
 				return this.playlists[playlist_name];
 			}
 		}

@@ -322,7 +322,7 @@ function configurator_html(event) {
 	}
 
 	let audio_attribs = '';
-	if (cpu_audio_attributes.indexOf(' duration="') > -1) {
+	if (cpu_audio_attributes.includes(' duration="')) {
 		audio_attribs = ' preload="none"';
 	}
 	if (form_html.querySelector(`[name="is_stream"]`).checked) {
@@ -360,7 +360,7 @@ function configurator_css(event) {
 		if ((input_changed(element)) && (value !== '')) {
 
 			// duration need unit
-			if (['color-transitions', 'background-transitions'].indexOf(attr)>-1) {
+			if (['color-transitions', 'background-transitions'].includes(attr)) {
 				value = value +'s';
 			}
 

@@ -241,7 +241,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 			component.querySelector('audio').play();
 			let elapsetag = component.shadowRoot.querySelector('#elapse');
 			setTimeout(function() {
-				assert.notEqual(-1, elapsetag.href.indexOf('canonical.html#id&t='), `Elapse tag href ${elapsetag.href}`);
+				assert.ok(elapsetag.href.includes('canonical.html#id&t='), `Elapse tag href ${elapsetag.href}`);
 				done();
 			}, 100);
 		}, 100);
@@ -630,14 +630,14 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 			let third_download_link = third_component.shadowRoot.querySelector('a[download]');
 			third_API_CPU.update_links();
 
-			assert.ok(third_download_link.href.indexOf(third_source) >= 0 , `If indicated, download link ( ${third_download_link.href} ) is taking the prefered <source data-downloadable> ( ${third_source} )`);
+			assert.ok(third_download_link.href.includes(third_source), `If indicated, download link ( ${third_download_link.href} ) is taking the prefered <source data-downloadable> ( ${third_source} )`);
 
 			let fourth_component = document.getElementById('fourth').closest('cpu-audio');
 			let fourth_API_CPU = fourth_component.CPU;
 			let fourth_download_link = fourth_component.shadowRoot.querySelector('a[download]');
 			fourth_API_CPU.update_links();
 
-			assert.ok(fourth_download_link.href.indexOf(third_source) >= 0 , `If indicated, download link ( ${fourth_download_link.href} ) is taking the <cpu-audio download="<url>"> ( ${third_source} ) `);
+			assert.ok(fourth_download_link.href.includes(third_source), `If indicated, download link ( ${fourth_download_link.href} ) is taking the <cpu-audio download="<url>"> ( ${third_source} ) `);
 
 			done();
 		}

@@ -147,7 +147,7 @@ export class CPU_element_api {
 
 		for (let hide_this of hide_elements) {
 			hide_this = hide_this.toLowerCase();
-			if (acceptable_hide_atttributes.indexOf(hide_this)>-1) {
+			if (acceptable_hide_atttributes.includes(hide_this)) {
 				this.container.classList.add(`hide-${hide_this}`);
 			}
 		}

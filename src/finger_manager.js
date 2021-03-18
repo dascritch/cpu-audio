@@ -16,7 +16,7 @@ export let finger_manager = {
 	press : function(event) {
 		let target = event.target.id ? event.target : event.target.closest('button');
 		let acceptable_actions = ['fastreward', 'reward', 'foward', 'fastfoward'];
-		if ( (!target.id) || (acceptable_actions.indexOf(target.id) === -1)) {
+		if ( (!target.id) || (!acceptable_actions.includes(target.id))) {
 			// we have been misleaded
 			return;
 		}

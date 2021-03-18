@@ -72,7 +72,7 @@ export const trigger = {
 		let autoplay = false;
 
 		for (let parameter of segments) {
-			if ((parameter.indexOf('=') === -1) && (hash === '')) {
+			if ((!parameter.includes('=')) && (hash === '')) {
 				// should reference to the ID of the element
 				hash = parameter;
 			} else {
@@ -497,7 +497,7 @@ export const trigger = {
 			return;
 		}
 		let playlist_index = playlist.indexOf(audiotag.id);
-		if (playlist_index === -1) {
+		if (playlist_index < 0) {
 			warn(`Audiotag ${audiotag.id} not in playlist ${playlist_name}. WTF ?`);
 			return;
 		}
@@ -508,7 +508,7 @@ export const trigger = {
 		let next_id = playlist[playlist_index+1];
 
 		let next_audiotag = /** @type {HTMLAudioElement} */ (document.getElementById(next_id));
-		if (next_audiotag === null) {
+		if (!next_audiotag) {
 			warn(`Audiotag #${next_id} doesn't exists. WTF ?`);
 			return;
 		}

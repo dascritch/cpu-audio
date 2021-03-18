@@ -29,9 +29,9 @@ export const convert = {
 			if (_is_only_numeric.test(givenTime)) {
 				seconds = Number(givenTime);
 			} else {
-				seconds = (givenTime.indexOf(':') === -1) ?
-					convert.SubunitTimeInSeconds(givenTime) :
-					convert.ColonTimeInSeconds(givenTime) ;
+				seconds = givenTime.includes(':') ?
+					convert.ColonTimeInSeconds(givenTime) :
+					convert.SubunitTimeInSeconds(givenTime) ;
 			}
 		}
 		return seconds;
@@ -49,7 +49,7 @@ export const convert = {
 		let seconds = 0;
 		let atom;
 		for(let key in units_scale) {
-			if ( (units_scale.hasOwnProperty(key)) && (givenTime.indexOf(key) !== -1) ) {
+			if ( (units_scale.hasOwnProperty(key)) && (givenTime.includes(key)) ) {
 				[atom, givenTime] = givenTime.split(key);
 				seconds += Number(atom.replace(_any_not_numeric,'' )) * units_scale[key];
 			}
