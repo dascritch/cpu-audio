@@ -14,7 +14,7 @@ function observer_cpuaudio(mutationsList) {
 
 	let media_tagname = 'audio';
 	let audio_element = container.element.querySelector(media_tagname);
-	if (audio_element === null) {
+	if (!audio_element) {
 		info(`<${media_tagname}> element was removed.`);
 		container.element.remove();
 		return;
@@ -38,7 +38,7 @@ function observer_audio(mutationsList) {
 	container.complete_template();
 
 	let global_controller = document.CPU.global_controller;
-	if ((global_controller !== null) && (container.audiotag.isEqualNode(global_controller.audiotag))) {
+	if (container.audiotag.isEqualNode(global_controller?.audiotag)) {
 		global_controller.build_chapters();
 		global_controller.complete_template();
 	}

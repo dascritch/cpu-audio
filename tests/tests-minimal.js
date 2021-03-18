@@ -74,7 +74,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.equal(convert.SecondsInTime(60), '1m0s', 'got one minute' );
 		assert.equal(convert.SecondsInTime(61), '1m1s', 'got one minute and one second' );
 		assert.equal(convert.SecondsInTime(7442), '2h4m2s', 'got 2 hours, 4 minutes and 2 seconds' );
-		assert.equal(convert.SecondsInTime(Infinity), convert.Infinity, `Infinity got convert.Infinity aka “${convert.Infinity}”` );
+		assert.equal(convert.SecondsInTime(Infinity), '?', `Infinity got “?”` );
 	});
 
 	QUnit.test( "document.CPU.convert.SecondsInColonTime", function( assert ) {
@@ -85,13 +85,13 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.equal(convert.SecondsInColonTime(61), '1:01', 'got 1:01' );
 		assert.equal(convert.SecondsInColonTime(130), '2:10', 'got 2:10' );
 		assert.equal(convert.SecondsInColonTime(7442), '2:04:02', 'got 2:04:02' );
-		assert.equal(convert.SecondsInColonTime(Infinity), convert.Infinity, `Infinity got convert.Infinity aka “${convert.Infinity}”` );
+		assert.equal(convert.SecondsInColonTime(Infinity), '?', `Infinity got “?”` );
 	});
 
 	QUnit.test( "document.CPU.convert.SecondsInPaddledColonTime", function( assert ) {
 		assert.equal(convert.SecondsInPaddledColonTime(61), '00:01:01', 'got 00:01:01' );
 		assert.equal(convert.SecondsInPaddledColonTime(7442), '02:04:02', 'got 02:04:02' );
-		assert.equal(convert.SecondsInPaddledColonTime(Infinity), convert.Infinity, `Infinity got convert.Infinity aka “${convert.Infinity}”` );
+		assert.equal(convert.SecondsInPaddledColonTime(Infinity), '?', `Infinity got convert.Infinity aka “?”` );
 	});
 	
 	QUnit.test( "document.CPU.convert.IsoDuration", function( assert ) {
