@@ -20,7 +20,7 @@ export class CpuControllerElement extends HTMLElement {
 		}
 
 		if (this.tagName === CpuAudioTagName) {
-			if (this.querySelector(acceptable_selector) === null) {
+			if (!this.querySelector(acceptable_selector)) {
 				// Graceful degradation : do not start if no media element OR no native controls
 				warn(`Tag <${CpuAudioTagName}> without <audio controls>.\nSee https://github.com/dascritch/cpu-audio/blob/master/INSTALL.md for a correct installation.`);
 				this.remove();
@@ -46,8 +46,7 @@ export class CpuControllerElement extends HTMLElement {
 			this.CPU.audiotag = document.querySelector('cpu-audio audio');
 		}
 
-
-		if (this.getAttribute('glow') !== null) {
+		if (this.getAttribute('glow')) {
 			this.CPU.glow_before_play=true;
 		}
 
@@ -60,17 +59,17 @@ export class CpuControllerElement extends HTMLElement {
 		let mode = this.getAttribute('mode');
 		if (mode !== null) {
 		// in case of a mode="still,play" declaration
-			let modes = mode.split(',');
-			if (modes.length > 1) {
-				mode = this.CPU.audiotag.paused ? modes[0] : modes[1];
-				this.CPU.mode_when_play = modes[1];
+			let [mode_still, mode_play] = mode.split(',');
+			if (mode_play) {
+				mode = this.CPU.audiotag.paused ? mode_still : mode_play;
+				this.CPU.mode_when_play = mode_play;
 			}
 		}
 		this.CPU.set_mode_container(mode);
 
 		// hide="" attribute, space separated elements to hide
 		let hide_those = this.getAttribute('hide');
-		if (hide_those !== null) {
+		if (hide_those) {
 			this.CPU.set_hide_container(hide_those.split(' '));
 		}
 
