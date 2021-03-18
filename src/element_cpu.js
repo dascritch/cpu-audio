@@ -81,11 +81,11 @@ export class CPU_element_api {
 		 */
 		this.element.dispatchEvent(
 			new CustomEvent(`CPU_${event_name}`, {
-				target : this.element,
-				bubbles : true,
-				cancelable : false,
-				composed : false,
-				detail : detail
+				target 		: this.element,
+				bubbles 	: true,
+				cancelable 	: false,
+				composed 	: false,
+				detail 		: detail
 			})
 		);
 	}
@@ -207,7 +207,7 @@ export class CPU_element_api {
 		if (!ratio) {
 			ratio = duration === 0 ? 0 : (100*seconds / duration);
 		}
-		this.elements[`loadingline`].style.width = `${ratio}%`;
+		this.elements.loadingline.style.width = `${ratio}%`;
 	}
 
 	/**
@@ -219,7 +219,7 @@ export class CPU_element_api {
 		let timecode = is_audiotag_streamed(audiotag) ? 0 : Math.floor(audiotag.currentTime);
 		let canonical = audiotag.dataset.canonical ?? '' ;
 		let _is_at = canonical.indexOf('#');
-		let elapse_element = this.elements['elapse'];
+		let elapse_element = this.elements.elapse;
 		elapse_element.href = `${ absolutize_url(canonical) }#${ (_is_at === -1) ? audiotag.id : canonical.substr(_is_at+1) }&t=${timecode}`;
 
 		let total_duration = '…';
@@ -510,7 +510,13 @@ export class CPU_element_api {
 	 */
 	show_interface(mode) {
 		let classlist = this.container.classList;
-		classlist.remove('show-no', 'show-main', 'show-share', 'show-error', 'media-streamed');
+		classlist.remove(
+			'show-no',
+			'show-main',
+			'show-share',
+			'show-error',
+			'media-streamed'
+		);
 		if (is_audiotag_streamed(this.audiotag)) {
 			classlist.add('media-streamed');
 		}
@@ -577,10 +583,7 @@ export class CPU_element_api {
 	 * @param 	{string}  style_key   	Key of the created <style> , /[a-zA-Z0-9\-_]+/
 	 */
 	remove_css(style_key) {
-		let element = this.container.querySelector(`#style_${style_key}`);
-		if (element) {
-			element.remove();
-		}
+		this.container.querySelector(`#style_${style_key}`)?.remove();
 	}
 
 	/**
@@ -588,7 +591,8 @@ export class CPU_element_api {
 	 * @private
 	 */
 	add_id_to_audiotag() {
-		this.audiotag.id = this.audiotag.id || `${dynamically_allocated_id_prefix}${count_element++}`;
+		this.audiotag.id = this.audiotag.id ||
+							`${dynamically_allocated_id_prefix}${count_element++}`;
 	}
 
 	/**
@@ -601,7 +605,7 @@ export class CPU_element_api {
 
 		element_canonical.href = dataset.canonical;
 
-		if (dataset.title === null) {
+		if (!dataset.title) {
 			element_canonical.classList.add('untitled');
 			dataset.title = __.untitled;
 		} else {
@@ -612,7 +616,7 @@ export class CPU_element_api {
 			this.element.title = dataset.title; // WATCHOUT ! May goes recursive with observers
 		}
 		this.elements['poster'].src = dataset.poster || '';
-		this.elements['time'].style.backgroundImage = (dataset.waveform === null) ? '' : `url(${dataset.waveform})`;
+		this.elements['time'].style.backgroundImage = dataset.waveform ? `url(${dataset.waveform})` : '';
 	}
 	/**
 	 * @summary Attach the audiotag to the API
@@ -641,10 +645,7 @@ export class CPU_element_api {
 	 * @return     {Object}                 data of the plane
 	 */
 	get_plane(plane_name) {
-		if (this._planes[plane_name]) {
-			return this._planes[plane_name];
-		}
-		return this.audiotag._CPU_planes[plane_name];
+		return this._planes[plane_name] ?? this.audiotag._CPU_planes[plane_name];
 	}
 
 	/**
