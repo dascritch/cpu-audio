@@ -204,9 +204,7 @@ export class CPU_element_api {
 	 */
 	update_line(seconds, ratio=undefined) {
 		let duration = this.audiotag.duration;
-		if (!ratio) {
-			ratio = duration === 0 ? 0 : (100*seconds / duration);
-		}
+		ratio = ratio ?? ( duration === 0 ? 0 : (100*seconds / duration) );
 		this.elements.loadingline.style.width = `${ratio}%`;
 	}
 
