@@ -76,9 +76,8 @@ export const document_CPU = {
 		/**
 		 * @param 	{Object}	event 	triggered event, or mockup
 		 */
-		function do_needle_move(event) {
+		function do_needle_move({target:audiotag}) {
 			// maybe we should add `timecode` in argument (timecode, event), and bind it to the event listener, moving the function upper
-			let audiotag = event.target;
 			let secs = convert.TimeInSeconds(timecode);
 			document.CPU.seekElementAt(audiotag, secs);
 
@@ -104,7 +103,7 @@ export const document_CPU = {
 
 		let audiotag = /** @type {HTMLAudioElement} */ ( (hash !== '') ? document.getElementById(hash)  :  document.querySelector(selector_fallback) );
 
-		if ((audiotag === undefined) || (audiotag === null) || (audiotag.currentTime === undefined)) {
+		if ((audiotag == null) || (audiotag.currentTime === undefined)) {
 			warn(`Unknow audiotag ${hash}`);
 			return;
 		}
@@ -128,7 +127,7 @@ export const document_CPU = {
 	 * @param      {number}  seconds   	Wanted position, in seconds
 	 *
 	 */
-	'seekElementAt' : function (audiotag, seconds) {
+	seekElementAt : function (audiotag, seconds) {
 		if ((isNaN(seconds)) || // may happens, if the audio track is not loaded/loadable
 			(is_audiotag_streamed(audiotag))) { // never try to set a position on a streamed media
 			return;
@@ -148,10 +147,8 @@ export const document_CPU = {
 		}
 
 		let controller = audiotag.CPU_controller();
-		if ((controller !== null) && (controller.update_loading)) {
-			// it may be still constructing it
-			controller.update_loading(seconds);
-		}
+		// it may be still constructing it, so be precautionous
+		controller?.update_loading?.(seconds);
 	},
 
 	/**
@@ -161,7 +158,7 @@ export const document_CPU = {
 	 * @param      {Element}  child   The ShadowDOM child
 	 * @return     {Element}  The #interface element
 	 */
-	'find_interface' : function(child) {
+	find_interface : function(child) {
 		return child.closest(selector_interface);
 	},
 	/**
@@ -171,9 +168,8 @@ export const document_CPU = {
 	 * @param      {Element}  child   The child
 	 * @return     {CPU_element_api}       Element.CPU
 	 */
-	'find_container' : function(child) {
-		if ((child.tagName === CpuAudioTagName)
-			|| ( child.tagName === CpuControllerTagName)) {
+	find_container : function(child) {
+		if ([CpuAudioTagName, CpuControllerTagName].includes(child.tagName)) {
 			return child.CPU;
 		}
 
@@ -191,7 +187,7 @@ export const document_CPU = {
 	 *
 	 * @return     {Array}  Array with named id
 	 */
-	'find_current_playlist' : function() {
+	find_current_playlist : function() {
 
 		let current_audiotag = this.global_controller?.audiotag;
 		if (!current_audiotag) {
