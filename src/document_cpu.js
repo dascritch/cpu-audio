@@ -204,5 +204,4 @@ export const document_CPU = {
 		}
 		return [];
 	}
-
 };
