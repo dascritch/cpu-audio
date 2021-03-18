@@ -482,26 +482,20 @@ export class CPU_element_api {
 		let tag_id = (canonical === absolutize_url(window.location.href)) ? audiotag.id : '';
 		let _url = encodeURIComponent(`${canonical}#${tag_id}${timepos}`);
 		let _twitter = '';
-		if (
-			(dataset.twitter) && /* a little bit better than `dataset.twitter === null` or `typeof dataset.twitter === 'string'` . but really, “a little bit” */
-			(dataset.twitter[0]==='@') /* why did I want an @ in the attribute if I cut it in my code ? to keep HTML readable and comprehensible, instead to developpe attribute name into a "twitter-handler" */
-			) {
+		if (dataset.twitter?.[0]==='@') {
+			 /* why did I want an @ in the attribute if I cut it in my code ? to keep HTML readable and comprehensible, instead to developpe attribute name into a "twitter-handler" */
 			_twitter = `&via=${dataset.twitter.substring(1)}`;
 		}
-		let download_link = audiotag.currentSrc;
-		if (dataset.download) {
-			download_link = dataset.download;
-		}
-		let prerefed_audio_src = audiotag.querySelector('source[data-downloadable]');
-		if (prerefed_audio_src) {
-			download_link = prerefed_audio_src.src;
-		}
+		let link = audiotag.querySelector('source[data-downloadable]')?.src ||
+					 dataset.download ||
+					 audiotag.currentSrc;
 
+		let title = dataset.title;
 		let links = {
-			twitter : `https://twitter.com/share?text=${dataset.title}&url=${_url}${_twitter}`,
-			facebook : `https://www.facebook.com/sharer.php?t=${dataset.title}&u=${_url}`,
-			email : `mailto:?subject=${dataset.title}&body=${_url}`,
-			link : download_link
+			twitter  : `https://twitter.com/share?text=${title}&url=${_url}${_twitter}`,
+			facebook : `https://www.facebook.com/sharer.php?t=${title}&u=${_url}`,
+			email    : `mailto:?subject=${title}&body=${_url}`,
+			link
 		};
 		for (let key in links) {
 			container.elements[key].href = links[key];
@@ -542,7 +536,7 @@ export class CPU_element_api {
 
 	/**
 	 * @package not mature enough
-   * @summary Shows the handheld fine navigation
+     * @summary Shows the handheld fine navigation
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -555,8 +549,10 @@ export class CPU_element_api {
 	}
 
 	/**
-	 * @summary Inject a <style> into the shadowDom
+	 * @summary Inject a <style> into the shadowDom.
 	 * @public
+	 *
+	 * Usage example in applications/chapters_editor.js
 	 *
 	 * @param 	{string}  style_key   	A name in the range /[a-zA-Z0-9\-_]+/, key to tag the created <style>
 	 * @param 	{string}  css 			inline CSS to inject
@@ -768,7 +764,7 @@ export class CPU_element_api {
 	 * @return     {boolean}  success
 	 */
 	add_plane(plane_name, title, data = {}) {
-		if ((! plane_name.match(valid_id)) || (this.get_plane(plane_name) !== undefined)) {
+		if ((! plane_name.match(valid_id)) || (this.get_plane(plane_name))) {
 			return false;
 		}
 
@@ -805,7 +801,7 @@ export class CPU_element_api {
 	 * @return     {boolean}  success
 	 */
 	remove_plane(name) {
-		if ( (this.is_controller) || (! name.match(valid_id)) || (this.audiotag._CPU_planes[name] === undefined)) {
+		if ( (this.is_controller) || (! name.match(valid_id)) || (! this.audiotag._CPU_planes[name])) {
 			return false;
 		}
 		if (this.audiotag) {
@@ -916,11 +912,7 @@ export class CPU_element_api {
 		    	}
 		    )
 		);
-		if (this._planes[plane_name]) {
-			this._planes[plane_name].points = out;
-		} else {
-			this.audiotag._CPU_planes[plane_name].points = out;
-		}
+		this.get_plane(plane_name).points = out;
 	}
 
 	/**
