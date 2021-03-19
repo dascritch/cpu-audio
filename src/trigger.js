@@ -380,8 +380,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	keydownplay : function(event) {
-		if (![13,32].includes(event.keyCode)) {
-			// Not [Enter], not [space]
+		if (event.keyCode === 13) {
 			return;
 		}
 		let container = document.CPU.find_container(event.target);
