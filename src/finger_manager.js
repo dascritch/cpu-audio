@@ -84,16 +84,4 @@ export class touch_manager {
 		clearTimeout(touching);
 	}
 
-	/**
-	 * @summary Menu launch. Right Mouse Button on desktop, but may be a pointer long-press, we try to avoid this last one
-	 *
-	 * @param      {Object}  event   The event
-	 */
-	rmb(event) {
-		let container = document.CPU.find_container(event.target);
-		if (!touching) {
-			container.show_handheld_nav();
-		}
-		event.preventDefault();
-	}
 }

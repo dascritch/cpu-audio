@@ -1538,7 +1538,7 @@ export class CPU_element_api {
 		// alternative fine navigation for handhelds
 		timeline_element.addEventListener('touchstart', touch_manager.start, passive_ev);
 		timeline_element.addEventListener('touchend', touch_manager.cancel, passive_ev);
-		timeline_element.addEventListener('contextmenu', touch_manager.rmb, passive_ev);
+		timeline_element.addEventListener('contextmenu', this.show_handheld_nav.bind(this));
 
 		if (navigator.share) {
 			interface_classlist.add('hasnativeshare');

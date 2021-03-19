@@ -42,8 +42,6 @@ Back-end
 
 Todo for this release :
 -----------------------
- - still regression on touch & rmb events on time
-
 
  - Finish drag'n'drop in chapters-editors
  - If we unify name style camelCase or snake_case ([#112](#112)), or as we changed some public API, we go for a major version release (7.0)
