@@ -39,7 +39,7 @@ export class CPU_element_api {
 	constructor(element, container_interface) {
 		// I hate this style. I rather prefer the object notation
 		this.element = element;
-		this.elements = {}; // TODO get elements(id) : { return this.shadowRoot.querySelector(`#${id}`) }
+		this.elements = {}; // TODO get element_id(id) : { return this.shadowRoot.querySelector(`#${id}`) }
 		this.audiotag = /* @type {HTMLAudioElement} */ element._audiotag;
 		this.container = container_interface;
 		this.mode_when_play = null;
@@ -1154,13 +1154,8 @@ export class CPU_element_api {
 	 * @return     {Array<string>}    An array with two strings : plane name and point name.
 	 */
 	get_point_names_from_id(element_id) {
-		// needs a refacto, but optional group 5 makes crashes...
-		let plane_name = element_id.replace(plane_point_names_from_id,'$1');
-		let point_name = element_id.replace(plane_point_names_from_id,'$3');
-		//const [,plane_name , point_name] = element_id.match(plane_point_names_from_id)
-
-		return [plane_name, point_name];
-		//return [plane_name??'', point_name??''];
+		const [,plane_name, , point_name] = element_id.match(plane_point_names_from_id) || [];
+		return [plane_name??'', point_name??''];
 	}
 
 	/**
