@@ -1070,7 +1070,8 @@ export class CPU_element_api {
 	 *										  will only change keys in the list
 	 */
 	edit_point(plane_name, point_name, data) {
-		if ( (!this.get_plane(plane_name)) || (!this.get_point(plane_name, point_name)) ) {
+		let plane = this.get_plane(plane_name);
+		if ( (!plane) || (!this.get_point(plane_name, point_name)) ) {
 			return false;
 		}
 
@@ -1079,7 +1080,7 @@ export class CPU_element_api {
 
 		data = {...original_data, ...data};
 
-		this.get_plane(plane_name).points[point_name] = data;
+		plane.points[point_name] = data;
 
 		this.draw_point(plane_name, point_name);
 		if (will_refresh) {
@@ -1093,8 +1094,8 @@ export class CPU_element_api {
 		});
 
 		let start = Number(data['start']);
-		if (this.get_plane(plane_name)._st_max < start) {
-			this.get_plane(plane_name)._st_max = start;
+		if (plane._st_max < start) {
+			plane._st_max = start;
 		}
 
 	}
@@ -1108,7 +1109,8 @@ export class CPU_element_api {
 	 * @return     {boolean}  success
 	 */
 	remove_point(plane_name, point_name) {
-		if ((!this.get_plane(plane_name)) || (!this.get_point(plane_name, point_name))) {
+		let plane = this.get_plane(plane_name);
+		if ((!plane) || (!this.get_point(plane_name, point_name))) {
 			return false;
 		}
 
@@ -1126,13 +1128,13 @@ export class CPU_element_api {
 			let that_start = Number(s.start);
 			_st_max = _st_max < that_start ? that_start : _st_max;
 		}
-		this.get_plane(plane_name)._st_max = _st_max;
+		plane._st_max = _st_max;
 
 		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
 			document.CPU.global_controller.remove_point(plane_name, point_name);
 		}
-		if (this.get_plane(plane_name).points[point_name]) {
-			delete this.get_plane(plane_name).points[point_name];
+		if (plane.points[point_name]) {
+			delete plane.points[point_name];
 		}
 		return true;
 	}
@@ -1144,12 +1146,12 @@ export class CPU_element_api {
 	 * @param      {string}  plane_name  The plane name
 	 */
 	clear_plane(plane_name) {
-		let remove_from_data = this.get_plane(plane_name);
-		if (!remove_from_data) {
+		let plane = this.get_plane(plane_name);
+		if (!plane) {
 			return false;
 		}
 
-		for (let point_name of Object.keys(remove_from_data.points)) {
+		for (let point_name of Object.keys(plane.points)) {
 			this.remove_point(plane_name, point_name);
 		}
 		// need to repass in case of badly removed / malformed entries
@@ -1158,7 +1160,7 @@ export class CPU_element_api {
 			nav.innerHTML = '';
 		}
 		// purge repaint flag to redraw
-		this.get_plane(plane_name)._st_max = 0;
+		plane._st_max = 0;
 
 		return true;
 	}
