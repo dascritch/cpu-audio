@@ -22,7 +22,7 @@ let plane_playlist = '_playlist';
 const valid_id = /^[a-zA-Z0-9\-_]+$/;
 
 // Regex for extracting plane and point names from an id
-const plane_point_names_from_id = /^([a-zA-Z0-9\-_]+_«)([a-zA-Z0-9\-_]+)((»_.*_«)([a-zA-Z0-9\-_]+))?(»)$/;
+const plane_point_names_from_id = /^[a-zA-Z0-9\-_]+_«([a-zA-Z0-9\-_]+)(»_.*_«([a-zA-Z0-9\-_]+))?»$/;
 
 // used for add_id_to_audiotag , when tag was not named in HTML or DOM
 let	count_element = 0;
@@ -1155,9 +1155,12 @@ export class CPU_element_api {
 	 */
 	get_point_names_from_id(element_id) {
 		// needs a refacto, but optional group 5 makes crashes...
-		let plane_name = element_id.replace(plane_point_names_from_id,'$2');
-		let point_name = element_id.replace(plane_point_names_from_id,'$5');
+		let plane_name = element_id.replace(plane_point_names_from_id,'$1');
+		let point_name = element_id.replace(plane_point_names_from_id,'$3');
+		//const [,plane_name , point_name] = element_id.match(plane_point_names_from_id)
+
 		return [plane_name, point_name];
+		//return [plane_name??'', point_name??''];
 	}
 
 	/**
@@ -1237,7 +1240,7 @@ export class CPU_element_api {
 
 		for (let plane_name in this.audiotag._CPU_planes) {
 			let plane_data = this.get_plane(plane_name);
-			if (plane_data.track !== false) {
+			if (plane_data.track) {
 				for (let point_name of Object.keys(this.plane_points(plane_name))) {
 					let element = this.get_point_track(plane_name, point_name);
 					let {start, end} = this.get_point(plane_name, point_name);

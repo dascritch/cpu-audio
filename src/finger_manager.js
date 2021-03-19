@@ -5,8 +5,6 @@ import {trigger} from './trigger.js';
 let pressing = null;
 const acceptable_press_actions = ['fastreward', 'reward', 'foward', 'fastfoward'];
 
-// TODO explode between manager_press and manager_touch
-
 // Handheld navigation button process
 // @private
 export class press_manager {
