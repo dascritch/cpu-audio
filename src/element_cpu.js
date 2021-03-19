@@ -330,35 +330,6 @@ export class CPU_element_api {
 	}
 
 	/**
-
-	has_ticker_planes() {
-		return this.elements['about'].querySelector('.ticker')
-	}
-
-	 @summary Displays a text in the infoline or hide it
-	 * @public
-	 *
-	 * @param      {string} 			text     	HTML text to display. Or hide it if empty
-	 * @param      {boolean} 			priority   	If set to true, will hide any track, else, will not be displayed if there is a track
-
-	flash(text='') {
-		// I still need to complete https://codepen.io/GoOz/pen/QWGGgOo
-		let indication_classname = 'flash';
-		let indicate_on = this.elements['about'];
-		if (text) {
-			indicate_on.classList.add(indication_classname);
-			if (this.has_ticker_planes()) {
-				// window.setTimeout(() => {this.flash()}, 2000, this);
-			}
-		} else {
-			indicate_on.classList.remove(indication_classname);
-			text = '';
-		}
-		this.elements['infoline'].innerHTML = text;
-	}
-	*/
-
-	/**
 	 * @summary Will refresh player interface at each time change (a lot)
 	 *
 	 * @private
@@ -941,67 +912,57 @@ export class CPU_element_api {
 	 * @param      {string}  point_name  The point name
 	 */
 	draw_point(plane_name, point_name) {
-		let data = this.get_point(plane_name, point_name);
 		let audiotag = this.audiotag ? this.audiotag : document.CPU.global_controller.audiotag;
+		let data = this.get_point(plane_name, point_name);
+		let {start, link, text, image, end} = data;
 
-		let start = data['start'];
-		let data_link = data['link'];
-		let link = '#';
+		let use_link = '#';
 		let time_url = `#${audiotag.id}&t=${start}`;
-
-		if (data_link === true) {
+		if (link === true) {
 			// automated link to the audio tag.
-			// if the parameter is a string, use it as a simple link
-			link = time_url;
+			use_link = time_url;
 		}
-		if (typeof(data_link) === 'string') {
-			// Author of the page wants a specific url (hoping he know what he do with a "javascript:")
-			link = data_link;
+		if (typeof(link) === 'string') {
+			// Integrator of the page wants a specific url (hoping he know what he do with a "javascript:")
+			use_link = link;
 		}
 
 		let track = this.get_plane_track(plane_name);
 		let plane_point_track;
 		if (track) {
 			plane_point_track = this.get_point_track(plane_name, point_name);
-			let intended_track_id = this.get_point_id(plane_name, point_name, false);
 			if (!plane_point_track) {
 				plane_point_track = document.createElement('a');
-				plane_point_track.id = intended_track_id;
-				plane_point_track.tabIndex = -1;
+				plane_point_track.id = this.get_point_id(plane_name, point_name, false);
+				// TODO : how to do chose index of a point track if there is no link, or a panel but no track??
+				plane_point_track.tabIndex = -1; 
+				plane_point_panel.innerHTML='<img alt="" /><span></span>';
 				track.appendChild(plane_point_track);
 			}
-			plane_point_track.href = link;
-
-			plane_point_track.title = data['text'];
-			let inner = '';
-			if (data['image']) {
-				inner = `<img src="${data['image']}" alt="">`;
-			}
-			inner += `<span>${data['text']}</span>`;
-			plane_point_track.innerHTML = inner;
-			this.position_time_element(plane_point_track, start, data['end']);
+			plane_point_track.href = use_link;
+			plane_point_track.title = text;
+			let track_img = plane_point_track.querySelector('img');
+			track_img.style.display = image ? 'inherit' : 'none'; 
+			track_img.src = image || '';
+			plane_point_track.querySelector('img').innerHTML = text ;
+			this.position_time_element(plane_point_track, start, end);
 		}
 
 		let panel = this.get_plane_nav(plane_name);
 		let plane_point_panel;
 		if (panel) {
 			plane_point_panel = this.get_point_panel(plane_name, point_name);
-			let intended_panel_id = this.get_point_id(plane_name, point_name, true);
 			if (!plane_point_panel) {
 				plane_point_panel = document.createElement('li');
-				plane_point_panel.id = intended_panel_id;
+				plane_point_panel.id = this.get_point_id(plane_name, point_name, true);
 				plane_point_panel.innerHTML='<a href="#" class="cue"><strong></strong><time></time></a>';
 				panel.appendChild(plane_point_panel);
 			}
-
-			plane_point_panel.querySelector('strong').innerHTML = data['text'];
-			// see string format for valid duration time https://www.w3.org/TR/2014/REC-html5-20141028/infrastructure.html#valid-duration-string
+			plane_point_panel.querySelector('a').href = use_link;
+			plane_point_panel.querySelector('strong').innerHTML = text;
 			let time_element = plane_point_panel.querySelector('time');
 			time_element.dateTime = convert.IsoDuration(start);
 			time_element.innerText = convert.SecondsInColonTime(start);
-
-			let action_element = plane_point_panel.querySelector('a');
-			action_element.href = link;
 		}
 
 		this.fire_event('draw_point', {
@@ -1078,7 +1039,7 @@ export class CPU_element_api {
 		}
 
 		let original_data = this.get_point(plane_name, point_name);
-		let will_refresh = (('start' in data) && (Number(data['start']) !== original_data['start']));
+		let will_refresh = (('start' in data) && (Number(data.start) !== Number(original_data.start)));
 
 		data = {...original_data, ...data};
 
@@ -1249,7 +1210,6 @@ export class CPU_element_api {
 	 */
 	remove_highlights_points(plane_name, class_name=preview_classname, mirror=true) {
 		querySelector_apply(`#track_«${plane_name}» .${class_name}, #panel_«${plane_name}» .${class_name}`,(element) => { element.classList.remove(class_name); },this.container);
-		// this.flash(''); // we have a change : redisplay the playing cue text. Not so easy
 		if ( (mirror) && (this.mirrored_in_controller()) ) {
 			if (!this.is_controller) {
 				document.CPU.global_controller.remove_highlights_points(plane_name, class_name, false);
@@ -1279,13 +1239,6 @@ export class CPU_element_api {
 
 		this.get_point_track(plane_name, point_name)?.classList.add(class_name);
 		this.get_point_panel(plane_name, point_name)?.classList.add(class_name);
-
-		/* we need to keep the actual flash message, to recall it
-		let point = this.get_point(plane_name, point_name);
-		if (point) {
-			this.flash(point['text']);
-		}
-		*/
 
 		if ( (mirror) && (this.mirrored_in_controller()) ) {
 			if (!this.is_controller) {
@@ -1317,7 +1270,6 @@ export class CPU_element_api {
 			}
 
 			this._activecue = active_cue;
-			//this.flash(activecue['text']);
 			// do NOT tell me this is ugly, i know this is ugly. I missed something. Teach me how to do it better
 		} catch (oops) {
 			window.console.error(oops);
@@ -1357,9 +1309,9 @@ export class CPU_element_api {
 				for (let tracks of audiotag.textTracks) {
 					if (
 							(tracks.kind.toLowerCase() === 'chapters') &&
-							(tracks.cues !== null) &&  // linked to default="" attribute, only one per set !
+							(tracks.cues) &&  // linked to default="" attribute, only one per set !
 							(
-								(chapter_track === null) /* still no active track */
+								(!chapter_track) /* still no active track */
 								|| (tracks.language.toLowerCase() === prefered_language) /* correspond to <html lang> */
 							)
 						) {
@@ -1368,12 +1320,12 @@ export class CPU_element_api {
 				}
 
 				if ((chapter_track) && (chapter_track.cues.length > 0)) {
-					this.add_plane(plane_chapters, __['chapters'], {'track' : 'chapters'});
+					this.add_plane(plane_chapters, __['chapters'], {track : 'chapters'});
 
 					let cuechange_event = this.cuechange_event.bind(this);
 					// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
 					// adding/reinstall chapter changing event
-					chapter_track.removeEventListener('cuechange', cuechange_event, passive_ev);
+					chapter_track.removeEventListener('cuechange', cuechange_event);
 					chapter_track.addEventListener('cuechange', cuechange_event, passive_ev);
 
 					for (let cue of chapter_track.cues) {
@@ -1451,7 +1403,6 @@ export class CPU_element_api {
 		let previous_playlist = this.current_playlist;
 		this.current_playlist = document.CPU.find_current_playlist();
 
-
 		if (! this.get_plane(plane_playlist)) {
 			this.add_plane(plane_playlist, __['playlist'], {
 				track 		: false,
@@ -1506,13 +1457,13 @@ export class CPU_element_api {
 		let show_main = this.show_main.bind(this);
 
 		let cliquables = {
-			'pause'     : trigger.play,
-			'play'      : trigger.pause,
-			'time'      : trigger.throbble,
-			'actions'   : this.show_actions.bind(this),
-			'back'      : show_main,
-			'poster'    : show_main,
-			'restart'   : trigger.restart,
+			pause     : trigger.play,
+			play      : trigger.pause,
+			time      : trigger.throbble,
+			actions   : this.show_actions.bind(this),
+			back      : show_main,
+			poster    : show_main,
+			restart   : trigger.restart,
 		};
 		for (let that in cliquables) {
 			this.elements[that].addEventListener('click', cliquables[that], passive_ev);
@@ -1521,13 +1472,13 @@ export class CPU_element_api {
 		// handheld nav to allow long press to repeat action
 		let _buttons = ['fastreward', 'reward', 'foward', 'fastfoward'];
 		let _actions = {
-			'touchstart'    : true,
-			'touchend'      : false,
-			'touchcancel'   : false,
+			touchstart    : true,
+			touchend      : false,
+			touchcancel   : false,
 			/* PHRACKING IOS PHRACKING SAFARI PHRACKING APPLE */
-			'mousedown'     : true,
-			'mouseup'       : false,
-			'mouseleave'    : false
+			mousedown     : true,
+			mouseup       : false,
+			mouseleave    : false
 		};
 
 		for (let that of _buttons) {
@@ -1544,14 +1495,13 @@ export class CPU_element_api {
 		// throbber management
 		let timeline_element = this.elements['time'];
 		let do_events = {
-			'mouseover' : true,
-			'mousemove' : true,
-			'mouseout'  : false,
+			mouseover   : true,
+			mousemove   : true,
+			mouseout    : false,
 
-			'touchstart'  : true,
-			// 'touchmove'   : true,
-			'touchend'    : false,
-			'touchcancel' : false,
+			touchstart  : true,
+			touchend    : false,
+			touchcancel : false,
 		};
 		for (let event_name in do_events) {
 			timeline_element.addEventListener(

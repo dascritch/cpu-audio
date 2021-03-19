@@ -314,13 +314,6 @@ aside.ticker a.active-cue span {
 	display : inline-block;
 }
 
-/*
-#infoline {
-	flex: 0 0 auto;
-	min-height : 14px;
-}
-*/
-
 .act-loading #loadingline #loadingline {
 	background : repeating-linear-gradient(45deg, var(--cpu-color) 0, var(--cpu-background) 15px, var(--cpu-color) 30px);
 	  background-size: 200% 200%;
@@ -464,7 +457,7 @@ h6 {
 	display : none;
 }
 
-aside a, h6, .cue time , aside.ticker * /*, #infoline, #infoline * */
+aside a, h6, .cue time , aside.ticker *
 {
 	font-size : var(--cpu-font-small-size);
 }
