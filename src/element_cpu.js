@@ -1175,7 +1175,7 @@ export class CPU_element_api {
 		}
 		// need to repass in case of badly removed / malformed entries
 		let nav = this.get_plane_nav(plane_name);
-		if (nav !== null) {
+		if (nav) {
 			nav.innerHTML = '';
 		}
 		// purge repaint flag to redraw
