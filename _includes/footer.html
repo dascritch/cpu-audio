@@ -67,11 +67,11 @@
     }
 </style>
 <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function(){
-        if (document.querySelector('cpu-audio') === null) {
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!document.querySelector('cpu-audio')) {
             return;
         }
-        let controller = document.createElement('cpu-controller');
+        const controller = document.createElement('cpu-controller');
         controller.setAttribute('mode', 'button');
         document.querySelector('h1').prepend(controller);
     });

@@ -9,9 +9,8 @@ import {info} from './utils.js';
  *
  * @param      {Object}  mutationsList  The mutations list
  */
-function observer_cpuaudio(mutationsList) {
-	let container = document.CPU.find_container(mutationsList[0].target);
-
+function observer_cpuaudio([{target}]) {
+	const container = document.CPU.find_container(target);
 	let media_tagname = 'audio';
 	let audio_element = container.element.querySelector(media_tagname);
 	if (!audio_element) {
@@ -28,8 +27,8 @@ function observer_cpuaudio(mutationsList) {
  *
  * @param      {Object}  mutationsList  The mutations list
  */
-function observer_audio(mutationsList) {
-	let container = document.CPU.find_container(mutationsList[0].target);
+function observer_audio([{target}]) {
+	const container = document.CPU.find_container(target);
 
 	// in case <track> changed/removed
 	container.build_chapters();
@@ -37,7 +36,7 @@ function observer_audio(mutationsList) {
 	// in case attributes changed
 	container.complete_template();
 
-	let global_controller = document.CPU.global_controller;
+	const global_controller = document.CPU.global_controller;
 	if (container.audiotag.isEqualNode(global_controller?.audiotag)) {
 		global_controller.build_chapters();
 		global_controller.complete_template();
