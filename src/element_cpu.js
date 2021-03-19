@@ -58,6 +58,17 @@ function preview_container_hover({target}) {
 	document.CPU.find_container(target).highlight_point(plane_name, point_name);
 }
 
+/**
+ * @summary Gets the point track identifier
+ *
+ * @param      {string}  plane_name  The plane name
+ * @param      {string}  point_name  The point name
+ * @param      {boolean} panel       Is panel (true) or track (false)
+ * @return     {string}  The point track identifier.
+ */
+function get_point_id(plane_name, point_name, panel) {
+	return `${ panel?'panel':'track' }_«${plane_name}»_point_«${point_name}»`;
+}
 
 export class CPU_element_api {
 	/**
@@ -80,7 +91,6 @@ export class CPU_element_api {
 		this._activecue = null;
 		this.mode_was = null;
 		this.act_was = null;
-		this.elapse_was = null;
 
 		if ( (this.audiotag) && (! this.audiotag._CPU_planes)) {
 			this.audiotag._CPU_planes = {};
@@ -270,7 +280,10 @@ export class CPU_element_api {
 		let canonical = audiotag.dataset.canonical ?? '' ;
 		let _is_at = canonical.indexOf('#');
 		let elapse_element = this.elements.elapse;
-		elapse_element.href = `${ absolutize_url(canonical) }#${ (_is_at < 0) ? audiotag.id : canonical.substr(_is_at+1) }&t=${timecode}`;
+		elapse_element.href = 
+			`${ absolutize_url(canonical) }#${ (_is_at < 0) ?
+				audiotag.id :
+				canonical.substr(_is_at+1) }&t=${timecode}`;
 
 		let total_duration = false;
 		let _natural = Math.round(audiotag.duration);
@@ -283,9 +296,7 @@ export class CPU_element_api {
 			}
 		}
 
-		let colon_time = SecondsInColonTime(audiotag.currentTime);
-
-		elapse_element.querySelector('span').innerText = colon_time;
+		elapse_element.querySelector('span').innerText = SecondsInColonTime(audiotag.currentTime);
 		let duration_element = elapse_element.querySelector('.nosmaller');
 		duration_element.innerText = total_duration ? `\u00a0/\u00a0${total_duration}` : '…';
 		duration_element.style.display = total_duration ? 'inline' : 'none';
@@ -859,19 +870,6 @@ export class CPU_element_api {
 	}
 
 	/**
-	 * @summary Gets the point track identifier
-	 * @private
-	 *
-	 * @param      {string}  plane_name  The plane name
-	 * @param      {string}  point_name  The point name
-	 * @param      {boolean} panel       Is panel (true) or track (false)
-	 * @return     {string}  The point track identifier.
-	 */
-	get_point_id(plane_name, point_name, panel) {
-		return `${ panel?'panel':'track' }_«${plane_name}»_point_«${point_name}»`;
-	}
-
-	/**
 	 * @summary Gets the point info
 	 * @private
 	 *
@@ -892,7 +890,7 @@ export class CPU_element_api {
 	 * @return     {Element}    The <div> point element into <aside> from ShadowDom interface
 	 */
 	get_point_track(plane_name, point_name) {
-		return this.elements['line'].querySelector(`#${this.get_point_id(plane_name, point_name, false)}`);
+		return this.elements['line'].querySelector(`#${get_point_id(plane_name, point_name, false)}`);
 	}
 
 	/**
@@ -904,7 +902,7 @@ export class CPU_element_api {
 	 * @return     {Element}    The <li> point element into panel from ShadowDom interface
 	 */
 	get_point_panel(plane_name, point_name) {
-		return this.container.querySelector(`#${this.get_point_id(plane_name, point_name, true)}`);
+		return this.container.querySelector(`#${get_point_id(plane_name, point_name, true)}`);
 	}
 
 	/**
@@ -974,7 +972,7 @@ export class CPU_element_api {
 			plane_point_track = this.get_point_track(plane_name, point_name);
 			if (!plane_point_track) {
 				plane_point_track = document.createElement('a');
-				plane_point_track.id = this.get_point_id(plane_name, point_name, false);
+				plane_point_track.id = get_point_id(plane_name, point_name, false);
 				// TODO : how to do chose index of a point track if there is no link, or a panel but no track??
 				plane_point_track.tabIndex = -1; 
 				plane_point_track.innerHTML = '<img alt="" /><span></span>';
@@ -995,7 +993,7 @@ export class CPU_element_api {
 			plane_point_panel = this.get_point_panel(plane_name, point_name);
 			if (!plane_point_panel) {
 				plane_point_panel = document.createElement('li');
-				plane_point_panel.id = this.get_point_id(plane_name, point_name, true);
+				plane_point_panel.id = get_point_id(plane_name, point_name, true);
 				plane_point_panel.innerHTML = '<a href="#" class="cue"><strong></strong><time></time></a>';
 				panel.appendChild(plane_point_panel);
 			}
@@ -1037,11 +1035,12 @@ export class CPU_element_api {
 		if ( (!this.get_plane(plane_name)) || (this.get_point(plane_name, point_name)) || (timecode_start < 0) || (!point_name.match(valid_id)) ) {
 			return false;
 		}
-
-		data['start'] = timecode_start;
 		if ((!this._planes[plane_name]) && (this.is_controller)) {
 			return false;
 		}
+
+		data.start = timecode_start; // TO move into parameter
+		let { start } = data;
 		this.get_plane(plane_name).points[point_name] = data;
 
 		this.fire_event('add_point', {
@@ -1050,12 +1049,12 @@ export class CPU_element_api {
 			data_point :  data
 		});
 
-		if (this.get_plane(plane_name)._st_max > timecode_start) {
+		if (this.get_plane(plane_name)._st_max > start) {
 			// we need to reorder the plane
 			this.panel_reorder(plane_name);
 		} else {
 			this.draw_point(plane_name, point_name);
-			this.get_plane(plane_name)._st_max = timecode_start;
+			this.get_plane(plane_name)._st_max = start;
 		}
 
 		return true;
