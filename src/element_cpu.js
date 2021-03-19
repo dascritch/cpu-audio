@@ -2,7 +2,7 @@ import {CpuControllerTagName, absolutize_url, dynamically_allocated_id_prefix, e
 import {__, prefered_language} from './i18n.js';
 
 import {default_dataset} from './default_dataset.js';
-import {convert} from './convert.js';
+import {SecondsInColonTime, SecondsInTime, IsoDuration} from './convert.js';
 import {press_manager, touch_manager} from './finger_manager.js';
 import {translate_vtt} from './translate_vtt.js';
 import {trigger} from './trigger.js';
@@ -26,6 +26,38 @@ const plane_point_names_from_id = /^[a-zA-Z0-9\-_]+_«([a-zA-Z0-9\-_]+)(»_.*_«
 
 // used for add_id_to_audiotag , when tag was not named in HTML or DOM
 let	count_element = 0;
+
+/**
+ * @summary Gets the plane point names from an id on a ShadowDOM element.
+ * @package
+
+ * repeated in the class for testing purposes
+ *
+ * @param      {string}  element_id  The element identifier
+ * @return     {Array<string>}    An array with two strings : plane name and point name.
+ */
+function get_point_names_from_id(element_id) {
+	const [,plane_name, , point_name] = element_id.match(plane_point_names_from_id) || [];
+	return [plane_name??'', point_name??''];
+}
+
+/**
+ * @summary    Highlight the playable positions when hovering a marked link
+ *
+ * @param      {Object}  event   An hover event
+ */
+function preview_container_hover({target}) {
+	if (!target.id) {
+		target = target.closest('[id]');
+	}
+	if (!target) {
+		return;
+	}
+
+	let [plane_name, point_name] = get_point_names_from_id(target.id);
+	document.CPU.find_container(target).highlight_point(plane_name, point_name);
+}
+
 
 export class CPU_element_api {
 	/**
@@ -61,6 +93,26 @@ export class CPU_element_api {
 
 	mirrored_in_controller() {
 		return (document.CPU.global_controller !== null) && (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag));
+	}
+
+
+	/**
+	 * @summary Transform VTT tag langage into HTML tags, filtering out some
+	 * (needed @public mainly for tests. Moving it up and do those tests in CLI will make it @private-izable)
+	 *
+	 * @param      {string}            vtt_taged  The vtt tagged
+	 * @return     string                         HTML tagged string
+     */
+	translate_vtt(vtt_taged) {
+		return translate_vtt(vtt_taged);
+	}
+
+	/**
+	 * @summary Passthru there only for testing purposes. Perhaps may be on document.CPU as public method ?
+	 * @public
+	 */
+	get_point_names_from_id(element_id) {
+		return get_point_names_from_id(element_id);
 	}
 
 	/**
@@ -220,24 +272,23 @@ export class CPU_element_api {
 		let elapse_element = this.elements.elapse;
 		elapse_element.href = `${ absolutize_url(canonical) }#${ (_is_at < 0) ? audiotag.id : canonical.substr(_is_at+1) }&t=${timecode}`;
 
-		let total_duration = '…';
+		let total_duration = false;
 		let _natural = Math.round(audiotag.duration);
 		if (!isNaN(_natural)){
-			total_duration = convert.SecondsInColonTime(_natural);
+			total_duration = SecondsInColonTime(_natural);
 		} else {
 			let _forced = Math.round(audiotag.dataset.duration);
 			if (_forced > 0) {
-				total_duration = convert.SecondsInColonTime(_forced);
+				total_duration = SecondsInColonTime(_forced);
 			}
 		}
 
-		let colon_time = convert.SecondsInColonTime(audiotag.currentTime);
-		let innerHTML = is_audiotag_streamed(audiotag) ? colon_time :`${colon_time}<span class="nosmaller">\u00a0/\u00a0${total_duration}</span>`;
+		let colon_time = SecondsInColonTime(audiotag.currentTime);
 
-		if (this.elapse_was !== innerHTML) {
-			elapse_element.innerHTML = innerHTML;
-			this.elapse_was = innerHTML;
-		}
+		elapse_element.querySelector('span').innerText = colon_time;
+		let duration_element = elapse_element.querySelector('.nosmaller');
+		duration_element.innerText = `\u00a0/\u00a0${total_duration||'…'}`;
+		duration_element.style.display = total_duration ? 'inline' : 'none';
 
 		this.update_line(audiotag.currentTime);
 	}
@@ -271,8 +322,8 @@ export class CPU_element_api {
 			highlight 	: false
 		});
 		this.add_point(plane_name, trigger._timecode_start, point_name, {
-			link    : false,
-			end     : trigger._timecode_end
+			link    	: false,
+			end     	: trigger._timecode_end
 		});
 
 	}
@@ -398,8 +449,8 @@ export class CPU_element_api {
 		let phylactere = this.elements['popup'];
 		phylactere.style.opacity = 1;
 		this.position_time_element(phylactere, seeked_time);
-		phylactere.innerHTML = convert.SecondsInColonTime(seeked_time);
-		phylactere.dateTime = convert.SecondsInTime(seeked_time).toUpperCase();
+		phylactere.innerHTML = SecondsInColonTime(seeked_time);
+		phylactere.dateTime = SecondsInTime(seeked_time).toUpperCase();
 	}
 
 	/**
@@ -664,46 +715,47 @@ export class CPU_element_api {
 		if (!data) {
 			return ;
 		}
-		let highlight_preview = trigger.preview_container_hover;
 		let remove_highlights_points_bind = this.remove_highlights_points.bind(this, plane_name);
 
 		/**
 		 * @param      {Element}  element  Impacted element
 		 */
 		function assign_events(element) {
-			element.addEventListener('mouseover', highlight_preview, passive_ev);
-			element.addEventListener('focusin', highlight_preview, passive_ev);
+			element.addEventListener('mouseover', preview_container_hover, passive_ev);
+			element.addEventListener('focusin', preview_container_hover, passive_ev);
 			element.addEventListener('mouseleave', remove_highlights_points_bind, passive_ev);
 			element.addEventListener('focusout', remove_highlights_points_bind, passive_ev);
 		}
 
-		if (data.track !== false) {
+		let { track, panel, title } = data;
+
+		if (track !== false) {
 			// we have to create the track timeline
 			let plane_track = document.createElement('aside');
 			plane_track.id = `track_«${plane_name}»`;
-			if (data.track !== true) {
+			if (track !== true) {
 				// …with a class list
-				plane_track.classList.add(data.track.split(' '));
+				plane_track.classList.add(track.split(' '));
 			}
 
 			this.elements['line'].appendChild(plane_track);
 			assign_events(plane_track);
 		}
 
-		if (data.panel !== false) {
+		if (panel !== false) {
 			// we have to create the panel area
 			let plane_panel = document.createElement('div');
 			plane_panel.id = `panel_«${plane_name}»`;
-			if (data.panel !== true) {
+			if (panel !== true) {
 				// …with a class list
-				plane_panel.classList.add(data.panel.split(' '));
+				plane_panel.classList.add(panel.split(' '));
 			}
 
 			plane_panel.classList.add('panel');
 			let inner = '<nav><ul></ul></nav>';
 
-			if (data['title'] !== undefined) {
-				inner = `<h6>${escape_html(data['title'])}</h6>${inner}`;
+			if (title !== undefined) {
+				inner = `<h6>${escape_html(title)}</h6>${inner}`;
 			}
 			plane_panel.innerHTML = inner;
 			this.container.appendChild(plane_panel);
@@ -856,17 +908,6 @@ export class CPU_element_api {
 	}
 
 	/**
-	 * @summary Transform VTT tag langage into HTML tags, filtering out some
-	 * (needed @public mainly for tests. Moving it up and do those tests in CLI will make it @private-izable)
-	 *
-	 * @param      {string}            vtt_taged  The vtt tagged
-	 * @return     string                         HTML tagged string
-     */
-	translate_vtt(vtt_taged) {
-		return translate_vtt(vtt_taged);
-	}
-
-	/**
 	 * @summary    Resort points of a plane by start-time
 	 * @private
 	 *
@@ -936,7 +977,7 @@ export class CPU_element_api {
 				plane_point_track.id = this.get_point_id(plane_name, point_name, false);
 				// TODO : how to do chose index of a point track if there is no link, or a panel but no track??
 				plane_point_track.tabIndex = -1; 
-				plane_point_panel.innerHTML='<img alt="" /><span></span>';
+				plane_point_track.innerHTML = '<img alt="" /><span></span>';
 				track.appendChild(plane_point_track);
 			}
 			plane_point_track.href = use_link;
@@ -955,14 +996,14 @@ export class CPU_element_api {
 			if (!plane_point_panel) {
 				plane_point_panel = document.createElement('li');
 				plane_point_panel.id = this.get_point_id(plane_name, point_name, true);
-				plane_point_panel.innerHTML='<a href="#" class="cue"><strong></strong><time></time></a>';
+				plane_point_panel.innerHTML = '<a href="#" class="cue"><strong></strong><time></time></a>';
 				panel.appendChild(plane_point_panel);
 			}
 			plane_point_panel.querySelector('a').href = use_link;
 			plane_point_panel.querySelector('strong').innerHTML = text;
 			let time_element = plane_point_panel.querySelector('time');
-			time_element.dateTime = convert.IsoDuration(start);
-			time_element.innerText = convert.SecondsInColonTime(start);
+			time_element.dateTime = IsoDuration(start);
+			time_element.innerText = SecondsInColonTime(start);
 		}
 
 		this.fire_event('draw_point', {
@@ -1099,18 +1140,6 @@ export class CPU_element_api {
 			delete this.get_plane(plane_name).points[point_name];
 		}
 		return true;
-	}
-
-	/**
-	 * @summary Gets the plane point names from an id on a ShadowDOM element.
-	 * @package
-	 *
-	 * @param      {string}  element_id  The element identifier
-	 * @return     {Array<string>}    An array with two strings : plane name and point name.
-	 */
-	get_point_names_from_id(element_id) {
-		const [,plane_name, , point_name] = element_id.match(plane_point_names_from_id) || [];
-		return [plane_name??'', point_name??''];
 	}
 
 	/**

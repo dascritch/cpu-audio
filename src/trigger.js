@@ -1,6 +1,6 @@
 import {is_audiotag_streamed, on_debug, once_passive_ev, warn} from './utils.js';
 
-import {convert} from './convert.js';
+import {TimeInSeconds} from './convert.js';
 
 const KEY_LEFT_ARROW = 37;
 const KEY_RIGHT_ARROW = 39;
@@ -126,8 +126,8 @@ export const trigger = {
 
 		// we may have a begin,end notation
 		let [timecode_start, timecode_end] = timecode.split(',');
-		trigger._timecode_start = convert.TimeInSeconds(timecode_start);
-		trigger._timecode_end = timecode_end !== undefined ? convert.TimeInSeconds(timecode_end) : false;
+		trigger._timecode_start = TimeInSeconds(timecode_start);
+		trigger._timecode_end = timecode_end !== undefined ? TimeInSeconds(timecode_end) : false;
 		if (trigger._timecode_end !== false) {
 			trigger._timecode_end = (trigger._timecode_end > trigger._timecode_start) ?
 				trigger._timecode_end :
@@ -162,25 +162,6 @@ export const trigger = {
 		let container = document.CPU.find_container(target);
 		container.hide_throbber();
 	},
-
-	/**
-	 * @summary    Highlight the playable positions when hovering a marked link
-	 *
-	 * @param      {Object}  event   The event
-	 */
-	preview_container_hover : function({target}) {
-		if (!target.id) {
-			target = target.closest('[id]');
-		}
-		if (!target) {
-			return;
-		}
-
-		let container = document.CPU.find_container(target);
-		let [plane_name, point_name] = container.get_point_names_from_id(target.id);
-		container.highlight_point(plane_name, point_name);
-	},
-
 
 	/**
 	 * @summary Change play position of a audio tag

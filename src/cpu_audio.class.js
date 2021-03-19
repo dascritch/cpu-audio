@@ -1,7 +1,7 @@
 import {CpuControllerElement} from './cpu_controller.class.js';
 import {acceptable_selector} from './utils.js';
 import {connect_audiotag} from './media_element_extension.js';
-import {convert} from './convert.js';
+import {TimeInSeconds} from './convert.js';
 import {info} from './utils.js';
 
 /**
@@ -63,13 +63,13 @@ export class CpuAudioElement extends CpuControllerElement {
 		/**
 		not working because of null returned values, and because dataset in a setter
 			let def = document.CPU.default_dataset;
-			this._audiotag.dataset = {...def, duration : convert.TimeInSeconds(def.duration || 0)};
+			this._audiotag.dataset = {...def, duration : TimeInSeconds(def.duration || 0)};
 		**/
 
 		for (let key in document.CPU.default_dataset) {
 			let value = this.getAttribute(key);
 			if (value !== null) {
-				this._audiotag.dataset[key] = (key !== 'duration') ? value : convert.TimeInSeconds(value);
+				this._audiotag.dataset[key] = (key !== 'duration') ? value : TimeInSeconds(value);
 			}
 		}
 	}

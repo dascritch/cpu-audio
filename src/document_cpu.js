@@ -1,7 +1,7 @@
 import {CpuAudioTagName, CpuControllerTagName, is_audiotag_streamed, on_debug, once_passive_ev, selector_interface, warn} from './utils.js';
 import {default_document_cpu_parameters} from './default_document_cpu_parameters.js';
 import {default_dataset} from './default_dataset.js';
-import {convert} from './convert.js';
+import {convert, TimeInSeconds} from './convert.js';
 import {trigger} from './trigger.js';
 
 export const document_CPU = {
@@ -78,7 +78,7 @@ export const document_CPU = {
 		 */
 		function do_needle_move({target:audiotag}) {
 			// maybe we should add `timecode` in argument (timecode, event), and bind it to the event listener, moving the function upper
-			let secs = convert.TimeInSeconds(timecode);
+			let secs = TimeInSeconds(timecode);
 			document.CPU.seekElementAt(audiotag, secs);
 
 			let mocked_event = {target : audiotag};
