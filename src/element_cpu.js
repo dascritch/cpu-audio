@@ -70,6 +70,15 @@ function get_point_id(plane_name, point_name, panel) {
 	return `${ panel?'panel':'track' }_«${plane_name}»_point_«${point_name}»`;
 }
 
+/**
+  * @param  {number|undefined|boolean} sec  Is it a "seconds" value ?
+  * @return {boolean}
+  */
+function is_seconds(sec) {
+	// completely ugly... but « WAT » ! as in https://www.destroyallsoftware.com/talks/wat
+	return ((sec !== undefined) && (sec !== false));
+}
+
 export class CPU_element_api {
 	/**
 	 *
@@ -267,7 +276,7 @@ export class CPU_element_api {
 	 * @param      {number|undefined=}  ratio    ratio position in case time position are still unknown
 	 */
 	update_line(seconds, ratio=undefined) {
-		let duration = this.audiotag.duration;
+		let { duration } = this.audiotag;
 		ratio = ratio ?? ( duration === 0 ? 0 : (100*seconds / duration) );
 		this.shadowId('loadingline').style.width = `${ratio}%`;
 	}
@@ -415,16 +424,7 @@ export class CPU_element_api {
 	 * @param      {number|undefined|boolean} seconds_end     Ends position in seconds, do not apply if undefined or false
 	 */
 	position_time_element(element, seconds_begin=undefined, seconds_end=undefined) {
-
-		/**
-          * @param  {number|undefined|boolean} sec  Is it a "seconds" value ?
-          * @return {boolean}
-          */
-		function is_seconds(sec) {
-			// completely ugly... but « WAT » ! as in https://www.destroyallsoftware.com/talks/wat
-			return ((sec !== undefined) && (sec !== false));
-		}
-		let duration = this.audiotag.duration;
+		let { duration } = this.audiotag;
 
 		if ((duration === 0) || (isNaN(duration))) {
 			return;
@@ -435,7 +435,7 @@ export class CPU_element_api {
 			element.style.left =  `${100 * (seconds_begin / duration)}%`;
 		}
 		if (is_seconds(seconds_end)) {
-			element.style.right = `${100 - (100 * (seconds_end / duration))}%`;
+			element.style.right = `${100 * (1 - (seconds_end / duration))}%`;
 		}
 
 	}
@@ -471,8 +471,7 @@ export class CPU_element_api {
 	 * @public
 	 */
 	hide_throbber() {
-		let phylactere = this.shadowId('popup');
-		phylactere.style.opacity = 0;
+		this.shadowId('popup').style.opacity = 0;
 	}
 
 	/**
@@ -616,7 +615,7 @@ export class CPU_element_api {
 	 * @param 	{string}  style_key   	Key of the created <style> , /[a-zA-Z0-9\-_]+/
 	 */
 	remove_css(style_key) {
-		this.container.querySelector(`#style_${style_key}`)?.remove();
+		this.shadowId(`style_${style_key}`)?.remove();
 	}
 
 	/**
@@ -649,7 +648,10 @@ export class CPU_element_api {
 			this.element.title = dataset.title; // WATCHOUT ! May goes recursive with observers
 		}
 		this.shadowId('poster').src = dataset.poster || '';
-		this.shadowId('time').style.backgroundImage = dataset.waveform ? `url(${dataset.waveform})` : '';
+		this.shadowId('time').style.backgroundImage = 
+			dataset.waveform ? 
+				`url(${dataset.waveform})` :
+				'';
 	}
 	/**
 	 * @summary Attach the audiotag to the API
@@ -711,7 +713,7 @@ export class CPU_element_api {
 	 * @return     {Element}    The <ul> element from ShadowDom interface, null if inexisting
 	 */
 	get_plane_nav(plane_name) {
-		return this.get_plane_panel(plane_name)?.querySelector(`ul`) || null;
+		return this.get_plane_panel(plane_name)?.querySelector(`ul`);
 	}
 
 	/**
@@ -728,19 +730,19 @@ export class CPU_element_api {
 		if (!data) {
 			return ;
 		}
+		let { track, panel, title } = data;
 		let remove_highlights_points_bind = this.remove_highlights_points.bind(this, plane_name, preview_classname, true);
 
 		/**
 		 * @param      {Element}  element  Impacted element
 		 */
-		function assign_events(element) {
+		function assign_events_on_planes(element) {
 			element.addEventListener('mouseover', preview_container_hover, passive_ev);
 			element.addEventListener('focusin', preview_container_hover, passive_ev);
 			element.addEventListener('mouseleave', remove_highlights_points_bind, passive_ev);
 			element.addEventListener('focusout', remove_highlights_points_bind, passive_ev);
 		}
 
-		let { track, panel, title } = data;
 
 		if (track !== false) {
 			// we have to create the track timeline
@@ -752,7 +754,7 @@ export class CPU_element_api {
 			}
 
 			this.shadowId('line').appendChild(plane_track);
-			assign_events(plane_track);
+			assign_events_on_planes(plane_track);
 		}
 
 		if (panel !== false) {
@@ -765,14 +767,11 @@ export class CPU_element_api {
 			}
 
 			plane_panel.classList.add('panel');
-			let inner = '<nav><ul></ul></nav>';
 
-			if (title !== undefined) {
-				inner = `<h6>${escape_html(title)}</h6>${inner}`;
-			}
-			plane_panel.innerHTML = inner;
+			let header = (title == undefined) ? '' : `<h6>${escape_html(title)}</h6>`;
+			plane_panel.innerHTML = `${header}<nav><ul></ul></nav>`;
 			this.container.appendChild(plane_panel);
-			assign_events(plane_panel);
+			assign_events_on_planes(plane_panel);
 		}
 
 		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
@@ -835,26 +834,19 @@ export class CPU_element_api {
 	 *
 	 * @return     {boolean}  success
 	 */
-	remove_plane(name) {
-		if ( (this.is_controller) || (! name.match(valid_id)) || (! this.audiotag._CPU_planes[name])) {
+	remove_plane(plane_name) {
+		if ( (this.is_controller) || (! plane_name.match(valid_id)) || (! this.get_plane(plane_name))) {
 			return false;
 		}
-		if (this.audiotag) {
-			// we are perhaps in <cpu-controller>
-			delete this.audiotag._CPU_planes[name];
-		}
-		let remove_element = this.get_plane_track(name);
-		if (remove_element) {
-			remove_element.remove();
-		}
-		remove_element = this.get_plane_panel(name);
-		if (remove_element) {
-			remove_element.remove();
-		}
+
+		delete (this._planes[plane_name] ? this._planes : this.audiotag._CPU_planes)[plane_name];
+
+		this.get_plane_track(plane_name)?.remove();
+		this.get_plane_panel(plane_name)?.remove();
 
 		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
 			// as plane data is removed, it will remove its aside and track
-			document.CPU.global_controller.draw_plane(name);
+			document.CPU.global_controller.draw_plane(plane_name);
 		}
 
 		return true;
