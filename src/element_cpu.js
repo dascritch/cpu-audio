@@ -919,6 +919,17 @@ export class CPU_element_api {
 	}
 
 	/**
+	 * @summary    get point_names from a plane_name
+	 * @private
+	 *
+	 * @param      {string}   plane_name     The plane name
+	 * @return     {[string]} points_names	 Array of point_names
+	 */
+	plane_pointsnames(plane_name) {
+		return Object.keys(this.plane_points(plane_name));
+	}
+
+	/**
 	 * @summary    Reorder panel of a plane by points order
 	 * @private
 	 *
@@ -930,7 +941,7 @@ export class CPU_element_api {
 			return;
 		}
 		let previous_element, element;
-		for (let point_name of Object.keys(this.plane_points(plane_name))) {
+		for (let point_name of this.plane_pointsnames(plane_name)) {
 			element = this.get_point_panel(plane_name, point_name);
 			previous_element?.insertAdjacentElement('afterend', element);
 			previous_element = element;
@@ -1035,7 +1046,7 @@ export class CPU_element_api {
 			return false;
 		}
 
-		data.start = timecode_start; // TO move into parameter
+		data.start = Number(timecode_start); // TO move into parameter
 		let { start } = data;
 		this.get_plane(plane_name).points[point_name] = data;
 
@@ -1071,12 +1082,18 @@ export class CPU_element_api {
 	 */
 	edit_point(plane_name, point_name, data) {
 		let plane = this.get_plane(plane_name);
-		if ( (!plane) || (!this.get_point(plane_name, point_name)) ) {
+		if (!plane) {
 			return false;
 		}
 
 		let original_data = this.get_point(plane_name, point_name);
-		let will_refresh = (('start' in data) && (Number(data.start) !== Number(original_data.start)));
+		if (!original_data) {
+			return false;	
+		}
+
+		let { start } = data;
+		start = Number(start);
+		let will_refresh = ((start != null) && (start !== original_data.start));
 
 		data = {...original_data, ...data};
 
@@ -1093,7 +1110,6 @@ export class CPU_element_api {
 			data_point :  data
 		});
 
-		let start = Number(data['start']);
 		if (plane._st_max < start) {
 			plane._st_max = start;
 		}
@@ -1173,7 +1189,7 @@ export class CPU_element_api {
 	 */
 	refresh_plane(plane_name) {
 		this.plane_resort(plane_name);
-		for (let point_name of Object.keys(this.plane_points(plane_name))) {
+		for (let point_name of this.plane_pointsnames(plane_name)) {
 			this.draw_point(plane_name, point_name);
 		}
 	}
@@ -1217,7 +1233,7 @@ export class CPU_element_api {
 		for (let plane_name in this.audiotag._CPU_planes) {
 			let plane_data = this.get_plane(plane_name);
 			if (plane_data.track) {
-				for (let point_name of Object.keys(this.plane_points(plane_name))) {
+				for (let point_name of this.plane_pointsnames(plane_name)) {
 					let element = this.get_point_track(plane_name, point_name);
 					let {start, end} = this.get_point(plane_name, point_name);
 					this.position_time_element(element, start, end);
