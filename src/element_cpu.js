@@ -584,7 +584,7 @@ export class CPU_element_api {
 			return;
 		}
 		this.container.classList.toggle('show-handheld-nav');
-		event.preventDefault?.();
+		event?.preventDefault();
 	}
 
 	/**
@@ -1539,7 +1539,6 @@ export class CPU_element_api {
 		timeline_element.addEventListener('touchstart', touch_manager.start, passive_ev);
 		timeline_element.addEventListener('touchend', touch_manager.cancel, passive_ev);
 		timeline_element.addEventListener('contextmenu', touch_manager.rmb, passive_ev);
-
 
 		if (navigator.share) {
 			interface_classlist.add('hasnativeshare');
