@@ -676,8 +676,7 @@ export class CPU_element_api {
 	 * @return     {Element}    The <ul> element from ShadowDom interface, null if inexisting
 	 */
 	get_plane_nav(plane_name) {
-		let panel = this.get_plane_panel(plane_name);
-		return panel ? panel.querySelector(`ul`) : null;
+		return this.get_plane_panel(plane_name)?.querySelector(`ul`) || null;
 	}
 
 	/**
@@ -687,14 +686,8 @@ export class CPU_element_api {
 	 * @param      {string}  plane_name  The plane name
 	 */
 	draw_plane(plane_name) {
-		let plane_track = this.get_plane_track(plane_name);
-		if (plane_track) {
-			plane_track.remove();
-		}
-		let plane_panel = this.get_plane_panel(plane_name);
-		if (plane_panel) {
-			plane_panel.remove();
-		}
+		this.get_plane_track(plane_name)?.remove();
+		this.get_plane_panel(plane_name)?.remove();
 
 		let data = this.get_plane(plane_name);
 		if (!data) {
@@ -714,9 +707,11 @@ export class CPU_element_api {
 		}
 
 		if (data.track !== false) {
-			plane_track = document.createElement('aside');
+			// we have to create the track timeline
+			let plane_track = document.createElement('aside');
 			plane_track.id = `track_«${plane_name}»`;
 			if (data.track !== true) {
+				// …with a class list
 				plane_track.classList.add(data.track.split(' '));
 			}
 
@@ -725,9 +720,11 @@ export class CPU_element_api {
 		}
 
 		if (data.panel !== false) {
-			plane_panel = document.createElement('div');
+			// we have to create the panel area
+			let plane_panel = document.createElement('div');
 			plane_panel.id = `panel_«${plane_name}»`;
 			if (data.panel !== true) {
+				// …with a class list
 				plane_panel.classList.add(data.panel.split(' '));
 			}
 
@@ -760,6 +757,9 @@ export class CPU_element_api {
 	 *										_comp : true/false // only stored in component, private use only
 	  }
 	 *
+	* TODO as parameter points : to bulk create points
+	* TODO as parameter _comp : true/false // only stored in component, private use only
+
 	 * @return     {boolean}  success
 	 */
 	add_plane(plane_name, title, data = {}) {
@@ -927,11 +927,8 @@ export class CPU_element_api {
 		}
 		let previous_element, element;
 		for (let point_name of Object.keys(this.plane_points(plane_name))) {
-
 			element = this.get_point_panel(plane_name, point_name);
-			if (previous_element) {
-				previous_element.insertAdjacentElement('afterend', element);
-			}
+			previous_element?.insertAdjacentElement('afterend', element);
 			previous_element = element;
 		}
 	}
@@ -1035,7 +1032,7 @@ export class CPU_element_api {
 	 * @return     {boolean}  success
 	 */
 	add_point(plane_name, timecode_start, point_name, data={}) {
-		if ( (this.get_plane(plane_name) === undefined) || (this.get_point(plane_name, point_name) !== undefined) || (timecode_start < 0) || (!point_name.match(valid_id)) ) {
+		if ( (!this.get_plane(plane_name)) || (this.get_point(plane_name, point_name)) || (timecode_start < 0) || (!point_name.match(valid_id)) ) {
 			return false;
 		}
 
@@ -1123,11 +1120,8 @@ export class CPU_element_api {
 			point : point_name
 		});
 
-		let point_track_element = this.get_point_track(plane_name, point_name);
-		if (point_track_element) {
-			point_track_element.remove();
-		}
-		this.get_point_panel(plane_name, point_name).remove();
+		this.get_point_track(plane_name, point_name)?.remove();
+		this.get_point_panel(plane_name, point_name)?.remove();
 
 		//  recalc _start_max for caching repaints
 		let _st_max = 0;
@@ -1283,21 +1277,8 @@ export class CPU_element_api {
 			return;
 		}
 
-		let track_element = this.get_plane_track(plane_name);
-		if (track_element) {
-			let point_track = this.get_point_track(plane_name, point_name);
-			if (point_track) {
-				point_track.classList.add(class_name);
-			}
-		}
-
-		let panel_element = this.get_plane_panel(plane_name);
-		if (panel_element) {
-			let point_panel = this.get_point_panel(plane_name, point_name);
-			if (point_panel) {
-				point_panel.classList.add(class_name);
-			}
-		}
+		this.get_point_track(plane_name, point_name)?.classList.add(class_name);
+		this.get_point_panel(plane_name, point_name)?.classList.add(class_name);
 
 		/* we need to keep the actual flash message, to recall it
 		let point = this.get_point(plane_name, point_name);
@@ -1490,10 +1471,9 @@ export class CPU_element_api {
 			}
 
 			for (let audiotag_id of this.current_playlist) {
-				let audiotag = document.getElementById(audiotag_id);
-
+				// TODO : when audiotag not here, do not add point
 				this.add_point(plane_playlist, 0, audiotag_id, {
-					text : audiotag.dataset.title,
+					text : document.getElementById(audiotag_id)?.dataset.title, 
 					link : `#${audiotag_id}&t=0`
 				});
 			}
@@ -1514,6 +1494,7 @@ export class CPU_element_api {
 
 		// the following mess is to simplify sub-element declaration and selection
 		let controller = this;
+		// to replace with a method
 		querySelector_apply('[id]', (element) => { controller.elements[element.id] = element; }, this.element.shadowRoot);
 		let interface_classlist = this.elements['interface'].classList;
 
@@ -1575,7 +1556,8 @@ export class CPU_element_api {
 		for (let event_name in do_events) {
 			timeline_element.addEventListener(
 				event_name,
-				do_events[event_name] ? trigger.hover : trigger.out, passive_ev);
+				do_events[event_name] ? trigger.hover : trigger.out,
+				passive_ev);
 		}
 		// alternative fine navigation for handhelds
 		timeline_element.addEventListener('touchstart', touch_manager.start, passive_ev);
