@@ -689,7 +689,7 @@ export class CPU_element_api {
 	 * @return     {Element}    The <aside> track element from ShadowDom interface
 	 */
 	get_plane_track(plane_name) {
-		return this.shadowId('line').querySelector(`#track_«${plane_name}»`);
+		return this.shadowId(`track_«${plane_name}»`);
 	}
 
 	/**
@@ -700,7 +700,7 @@ export class CPU_element_api {
 	 * @return     {Element}    The panel element from ShadowDom interface
 	 */
 	get_plane_panel(plane_name) {
-		return this.container.querySelector(`#panel_«${plane_name}»`);
+		return this.shadowId(`panel_«${plane_name}»`);
 	}
 
 	/**
@@ -892,7 +892,7 @@ export class CPU_element_api {
 	 * @return     {Element}    The <div> point element into <aside> from ShadowDom interface
 	 */
 	get_point_track(plane_name, point_name) {
-		return this.shadowId('line').querySelector(`#${get_point_id(plane_name, point_name, false)}`);
+		return this.shadowId(get_point_id(plane_name, point_name, false));
 	}
 
 	/**
@@ -904,7 +904,7 @@ export class CPU_element_api {
 	 * @return     {Element}    The <li> point element into panel from ShadowDom interface
 	 */
 	get_point_panel(plane_name, point_name) {
-		return this.container.querySelector(`#${get_point_id(plane_name, point_name, true)}`);
+		return this.shadowId(get_point_id(plane_name, point_name, true));
 	}
 
 	/**
