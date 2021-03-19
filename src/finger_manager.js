@@ -2,13 +2,14 @@ import {on_debug} from './utils.js';
 import {trigger} from './trigger.js';
 
 // Repeated event allocation
-let is_on = null;
-// touch is occuring
-let touching = null;
+let pressing = null;
+const acceptable_press_actions = ['fastreward', 'reward', 'foward', 'fastfoward'];
+
+// TODO explode between manager_press and manager_touch
 
 // Handheld navigation button process
 // @private
-export class finger_manager {
+export class press_manager {
 	/*
 	 * @summary Start handheld navigation button press
 	 * @private
@@ -17,22 +18,21 @@ export class finger_manager {
 	 */
 	press(event) {
 		let target = event.target.id ? event.target : event.target.closest('button');
-		let acceptable_actions = ['fastreward', 'reward', 'foward', 'fastfoward'];
-		if ( (!target.id) || (!acceptable_actions.includes(target.id))) {
+		if ( (!target.id) || (!acceptable_press_actions.includes(target.id))) {
 			// we have been misleaded
 			return;
 		}
 		// execute the associated function
 		trigger[target.id](event);
-		if (is_on) {
-			window.clearTimeout(is_on);
+		if (pressing) {
+			window.clearTimeout(pressing);
 		}
 
 		let mini_event = {
 			target : target,
 			preventDefault : on_debug
 		};
-		is_on = window.setTimeout(finger_manager.repeat, document.CPU.repeat_delay, mini_event);
+		pressing = window.setTimeout(press_manager.repeat, document.CPU.repeat_delay, mini_event);
 		event.preventDefault();
 	}
 	/*
@@ -45,7 +45,7 @@ export class finger_manager {
 		//
 		trigger[event.target.id](event);
 		// next call : repetition are closest
-		is_on = window.setTimeout(finger_manager.repeat, document.CPU.repeat_factor, event);
+		pressing = window.setTimeout(press_manager.repeat, document.CPU.repeat_factor, event);
 	}
 	/*
 	 * @summary Release handheld navigation button
@@ -54,11 +54,16 @@ export class finger_manager {
 	 * @param      {Object}  event   The event
 	 */
 	release(event) {
-		window.clearTimeout(is_on);
-		is_on = null;
+		window.clearTimeout(pressing);
+		pressing = null;
 		event.preventDefault();
 	}
+}
 
+// touch is occuring
+let touching = null;
+
+export class touch_manager {
 	/**
 	 * @summary Interprets long play on timeline to reveal alternative fine position panel
 	 */
@@ -68,7 +73,7 @@ export class finger_manager {
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	touchstart({target}) {
+	start({target}) {
 		let container = document.CPU.find_container(target);
 		touching = setTimeout(container.show_handheld_nav.bind(container), document.CPU.alternate_delay);
 	}
@@ -77,7 +82,7 @@ export class finger_manager {
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	touchcancel() {
+	cancel() {
 		clearTimeout(touching);
 	}
 

@@ -3,7 +3,7 @@ import {__, prefered_language} from './i18n.js';
 
 import {default_dataset} from './default_dataset.js';
 import {convert} from './convert.js';
-import {finger_manager} from './finger_manager.js';
+import {press_manager, touch_manager} from './finger_manager.js';
 import {translate_vtt} from './translate_vtt.js';
 import {trigger} from './trigger.js';
 
@@ -39,7 +39,7 @@ export class CPU_element_api {
 	constructor(element, container_interface) {
 		// I hate this style. I rather prefer the object notation
 		this.element = element;
-		this.elements = {};
+		this.elements = {}; // TODO get elements(id) : { return this.shadowRoot.querySelector(`#${id}`) }
 		this.audiotag = /* @type {HTMLAudioElement} */ element._audiotag;
 		this.container = container_interface;
 		this.mode_when_play = null;
@@ -218,7 +218,7 @@ export class CPU_element_api {
 		let canonical = audiotag.dataset.canonical ?? '' ;
 		let _is_at = canonical.indexOf('#');
 		let elapse_element = this.elements.elapse;
-		elapse_element.href = `${ absolutize_url(canonical) }#${ (_is_at === -1) ? audiotag.id : canonical.substr(_is_at+1) }&t=${timecode}`;
+		elapse_element.href = `${ absolutize_url(canonical) }#${ (_is_at < 0) ? audiotag.id : canonical.substr(_is_at+1) }&t=${timecode}`;
 
 		let total_duration = '…';
 		let _natural = Math.round(audiotag.duration);
@@ -1553,7 +1553,7 @@ export class CPU_element_api {
 
 		for (let that of _buttons) {
 			for (let _act in _actions) {
-				this.elements[that].addEventListener(_act, _actions[_act] ? finger_manager.press : finger_manager.release);
+				this.elements[that].addEventListener(_act, _actions[_act] ? press_manager.press : press_manager.release);
 			}
 		}
 
@@ -1580,9 +1580,9 @@ export class CPU_element_api {
 				do_events[event_name] ? trigger.hover : trigger.out, passive_ev);
 		}
 		// alternative fine navigation for handhelds
-		timeline_element.addEventListener('touchstart', finger_manager.touchstart, passive_ev);
-		timeline_element.addEventListener('touchend', finger_manager.touchcancel, passive_ev);
-		timeline_element.addEventListener('contextmenu', finger_manager.rmb, passive_ev);
+		timeline_element.addEventListener('touchstart', touch_manager.start, passive_ev);
+		timeline_element.addEventListener('touchend', touch_manager.cancel, passive_ev);
+		timeline_element.addEventListener('contextmenu', touch_manager.rmb, passive_ev);
 
 
 		if (navigator.share) {
