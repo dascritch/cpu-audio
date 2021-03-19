@@ -433,11 +433,11 @@ document.addEventListener('DOMContentLoaded', function(){
 	document.querySelector('#do_error').addEventListener('click', function() {
 		if (!in_error) {
 			cpu_audio.CPU.show_interface('error');
-			cpu_audio.CPU.elements.pageerror.innerText = 'This is an error message.';
+			cpu_audio.CPU.shadowId('pageerror').innerText = 'This is an error message.';
 			in_error = true;
 		} else {
 			cpu_audio.CPU.show_interface('main');
-			cpu_audio.CPU.elements.pageerror.innerText = '';
+			cpu_audio.CPU.shadowId('pageerror').innerText = '';
 			in_error = false;
 		}
 	});

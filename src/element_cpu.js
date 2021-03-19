@@ -82,7 +82,6 @@ export class CPU_element_api {
 	constructor(element, container_interface) {
 		// I hate this style. I rather prefer the object notation
 		this.element = element;
-		this.elements = {}; // TODO get element_id(id) : { return this.shadowRoot.querySelector(`#${id}`) }
 		this.audiotag = /* @type {HTMLAudioElement} */ element._audiotag;
 		this.container = container_interface;
 		this.mode_when_play = null;
@@ -107,8 +106,7 @@ export class CPU_element_api {
 
 
 	/**
-	 * @summary Transform VTT tag langage into HTML tags, filtering out some
-	 * (needed @public mainly for tests. Moving it up and do those tests in CLI will make it @private-izable)
+	 * @summary Passthru there only for testing purposes.
 	 *
 	 * @param      {string}            vtt_taged  The vtt tagged
 	 * @return     string                         HTML tagged string
@@ -151,6 +149,10 @@ export class CPU_element_api {
 			})
 		);
 	}
+
+	shadowId(id) {
+		return this.element.shadowRoot.getElementById(id);
+	}  
 
 	/**
 	 * @summary Used for `mode=""` attribute.
@@ -267,7 +269,7 @@ export class CPU_element_api {
 	update_line(seconds, ratio=undefined) {
 		let duration = this.audiotag.duration;
 		ratio = ratio ?? ( duration === 0 ? 0 : (100*seconds / duration) );
-		this.elements.loadingline.style.width = `${ratio}%`;
+		this.shadowId('loadingline').style.width = `${ratio}%`;
 	}
 
 	/**
@@ -279,7 +281,7 @@ export class CPU_element_api {
 		let timecode = is_audiotag_streamed(audiotag) ? 0 : Math.floor(audiotag.currentTime);
 		let canonical = audiotag.dataset.canonical ?? '' ;
 		let _is_at = canonical.indexOf('#');
-		let elapse_element = this.elements.elapse;
+		let elapse_element = this.shadowId('elapse');
 		elapse_element.href = 
 			`${ absolutize_url(canonical) }#${ (_is_at < 0) ?
 				audiotag.id :
@@ -366,7 +368,7 @@ export class CPU_element_api {
 		let error_object = audiotag.error;
 		if (error_object) {
 			let error_message;
-			let pageerror = this.elements['pageerror'];
+			let pageerror = this.shadowId('pageerror');
 			this.show_interface('error');
 			switch (error_object.code) {
 				case MediaError.MEDIA_ERR_ABORTED:
@@ -457,7 +459,7 @@ export class CPU_element_api {
   			audiotag.setAttribute('preload', 'metadata');
 		}
 
-		let phylactere = this.elements['popup'];
+		let phylactere = this.shadowId('popup');
 		phylactere.style.opacity = 1;
 		this.position_time_element(phylactere, seeked_time);
 		phylactere.innerHTML = SecondsInColonTime(seeked_time);
@@ -469,7 +471,7 @@ export class CPU_element_api {
 	 * @public
 	 */
 	hide_throbber() {
-		let phylactere = this.elements['popup'];
+		let phylactere = this.shadowId('popup');
 		phylactere.style.opacity = 0;
 	}
 
@@ -479,7 +481,7 @@ export class CPU_element_api {
 	 */
 	hide_throbber_later() {
 		let hide_throbber_delay = 1000;
-		let phylactere = this.elements['popup'];
+		let phylactere = this.shadowId('popup');
 		if (phylactere._hider) {
 			window.clearTimeout(phylactere._hider);
 		}
@@ -529,7 +531,7 @@ export class CPU_element_api {
 			link
 		};
 		for (let key in links) {
-			container.elements[key].href = links[key];
+			container.shadowId(key).href = links[key];
 		}
 	}
 
@@ -632,7 +634,7 @@ export class CPU_element_api {
 	 */
 	complete_template() {
 		let dataset = this.fetch_audiotag_dataset();
-		let element_canonical = this.elements['canonical'];
+		let element_canonical = this.shadowId('canonical');
 
 		element_canonical.href = dataset.canonical;
 
@@ -646,8 +648,8 @@ export class CPU_element_api {
 		if (this.element.title !== dataset.title) {
 			this.element.title = dataset.title; // WATCHOUT ! May goes recursive with observers
 		}
-		this.elements['poster'].src = dataset.poster || '';
-		this.elements['time'].style.backgroundImage = dataset.waveform ? `url(${dataset.waveform})` : '';
+		this.shadowId('poster').src = dataset.poster || '';
+		this.shadowId('time').style.backgroundImage = dataset.waveform ? `url(${dataset.waveform})` : '';
 	}
 	/**
 	 * @summary Attach the audiotag to the API
@@ -687,7 +689,7 @@ export class CPU_element_api {
 	 * @return     {Element}    The <aside> track element from ShadowDom interface
 	 */
 	get_plane_track(plane_name) {
-		return this.elements['line'].querySelector(`#track_«${plane_name}»`);
+		return this.shadowId('line').querySelector(`#track_«${plane_name}»`);
 	}
 
 	/**
@@ -749,7 +751,7 @@ export class CPU_element_api {
 				plane_track.classList.add(track.split(' '));
 			}
 
-			this.elements['line'].appendChild(plane_track);
+			this.shadowId('line').appendChild(plane_track);
 			assign_events(plane_track);
 		}
 
@@ -890,7 +892,7 @@ export class CPU_element_api {
 	 * @return     {Element}    The <div> point element into <aside> from ShadowDom interface
 	 */
 	get_point_track(plane_name, point_name) {
-		return this.elements['line'].querySelector(`#${get_point_id(plane_name, point_name, false)}`);
+		return this.shadowId('line').querySelector(`#${get_point_id(plane_name, point_name, false)}`);
 	}
 
 	/**
@@ -1470,15 +1472,10 @@ export class CPU_element_api {
 	 * @summary Builds the controller.
 	 */
 	build_controller() {
-
-		// the following mess is to simplify sub-element declaration and selection
-		let controller = this;
-		// to replace with a method
-		querySelector_apply('[id]', (element) => { controller.elements[element.id] = element; }, this.element.shadowRoot);
-		let interface_classlist = this.elements['interface'].classList;
+		let interface_classlist = this.shadowId('interface').classList;
 
 		// hide broken image while not loaded
-		this.elements['poster'].addEventListener('load', () => {
+		this.shadowId('poster').addEventListener('load', () => {
 			interface_classlist.add('poster-loaded');
 		}, passive_ev);
 
@@ -1494,7 +1491,7 @@ export class CPU_element_api {
 			restart   : trigger.restart,
 		};
 		for (let that in cliquables) {
-			this.elements[that].addEventListener('click', cliquables[that], passive_ev);
+			this.shadowId(that).addEventListener('click', cliquables[that], passive_ev);
 		}
 
 		// handheld nav to allow long press to repeat action
@@ -1510,8 +1507,9 @@ export class CPU_element_api {
 		};
 
 		for (let that of _buttons) {
+			const element_id = this.shadowId(that);
 			for (let _act in _actions) {
-				this.elements[that].addEventListener(_act, _actions[_act] ? press_manager.press : press_manager.release);
+				element_id.addEventListener(_act, _actions[_act] ? press_manager.press : press_manager.release);
 			}
 		}
 
@@ -1519,9 +1517,9 @@ export class CPU_element_api {
 		this.element.addEventListener('keydown', trigger.key);
 
 		// not working correctly :/
-		this.elements['control'].addEventListener('keydown', trigger.keydownplay);
+		this.shadowId('control').addEventListener('keydown', trigger.keydownplay);
 		// throbber management
-		let timeline_element = this.elements['time'];
+		let timeline_element = this.shadowId('time');
 		let do_events = {
 			mouseover   : true,
 			mousemove   : true,
@@ -1545,7 +1543,7 @@ export class CPU_element_api {
 
 		if (navigator.share) {
 			interface_classlist.add('hasnativeshare');
-			this.elements['nativeshare'].addEventListener('click', trigger.native_share, passive_ev);
+			this.shadowId('nativeshare').addEventListener('click', trigger.native_share, passive_ev);
 		}
 
 		if (!this.audiotag)  {
