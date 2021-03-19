@@ -728,7 +728,7 @@ export class CPU_element_api {
 		if (!data) {
 			return ;
 		}
-		let remove_highlights_points_bind = this.remove_highlights_points.bind(this, plane_name);
+		let remove_highlights_points_bind = this.remove_highlights_points.bind(this, plane_name, preview_classname, true);
 
 		/**
 		 * @param      {Element}  element  Impacted element
@@ -1034,6 +1034,8 @@ export class CPU_element_api {
 	 * @return     {boolean}  success
 	 */
 	add_point(plane_name, timecode_start, point_name, data={}) {
+		// TODO major release : move timecode_start in data, add points argument for a bulk insertion
+
 		if ( (!this.get_plane(plane_name)) || (this.get_point(plane_name, point_name)) || (timecode_start < 0) || (!point_name.match(valid_id)) ) {
 			return false;
 		}
@@ -1239,7 +1241,10 @@ export class CPU_element_api {
 	 * @param      {boolean} mirror     Also act on linked cpu-controller/cpu-audio
 	 */
 	remove_highlights_points(plane_name, class_name=preview_classname, mirror=true) {
-		querySelector_apply(`#track_«${plane_name}» .${class_name}, #panel_«${plane_name}» .${class_name}`,(element) => { element.classList.remove(class_name); },this.container);
+		querySelector_apply(
+			`#track_«${plane_name}» .${class_name}, #panel_«${plane_name}» .${class_name}`,
+			(element) => { element.classList.remove(class_name); },
+			this.container);
 		if ( (mirror) && (this.mirrored_in_controller()) ) {
 			if (!this.is_controller) {
 				document.CPU.global_controller.remove_highlights_points(plane_name, class_name, false);

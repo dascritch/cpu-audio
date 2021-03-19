@@ -6,19 +6,24 @@ TODO
 - AAARG ! Chrome still doesn't keep the moving cursor :(
 - when unfolding generators, expanded panels should be also scrolled to
 - draggable cursor . some primitive "nearly" ready for release
+- use audiotag...points for working, remove repeted form elements
+- use <textarea> instead of <input type="text">
+- export points as JSON (for fuure addPlane with adding points in bulk mode)
 - export .csv 
 
 **/
 
 
-var new_chapter_line;
-var sound_element, component_element, list_element, edit_source_audio_element, edit_source_waveform_element, edit_source_webvtt_element;
-var sound_CPU;
-var line_number = 1;
-const convert;
+let new_chapter_line;
+let sound_element, component_element, list_element, edit_source_audio_element, edit_source_waveform_element, edit_source_webvtt_element;
+let sound_CPU;
+let line_number = 1;
+let convert;
 
-var chapters = [];
-var cues = [];
+let chapters = [];
+let cues = [];
+
+const regex_filename_without_path = /(^.*\/)([^\/]+)/;
 
 /**
  * Fired once <track> is loaded
@@ -42,10 +47,10 @@ function set_source_audio() {
     track_element.addEventListener('load', interpret_loaded_tracks);
     
     sound_element.src = url;
-    sound_element.dataset.title = decodeURIComponent(url.replace(/(^.*\/)([^\/]+)/,'$2'));
+    sound_element.dataset.title = decodeURIComponent(url.replace(regex_filename_without_path, '$2'));
     sound_element.dataset.waveform = edit_source_waveform_element.value;
 
-    if ( (edit_source_webvtt_element.value !== '') && (track_element.src !== edit_source_webvtt_element.value) )  {
+    if ( (edit_source_webvtt_element.value) && (track_element.src !== edit_source_webvtt_element.value) )  {
         track_element.src = edit_source_webvtt_element.value;
     }
 }
@@ -386,7 +391,7 @@ function interpret_form(_event) {
         return `WEBVTT FILE\n${out.join('')}\n`;
     }
 
-    _event.preventDefault?.();
+    _event?.preventDefault();
     chapters = [];
     sound_CPU.clear_plane('cursors');
 
