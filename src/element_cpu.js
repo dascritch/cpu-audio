@@ -287,7 +287,7 @@ export class CPU_element_api {
 
 		elapse_element.querySelector('span').innerText = colon_time;
 		let duration_element = elapse_element.querySelector('.nosmaller');
-		duration_element.innerText = `\u00a0/\u00a0${total_duration||'…'}`;
+		duration_element.innerText = total_duration ? `\u00a0/\u00a0${total_duration}` : '…';
 		duration_element.style.display = total_duration ? 'inline' : 'none';
 
 		this.update_line(audiotag.currentTime);
