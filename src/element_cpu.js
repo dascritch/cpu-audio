@@ -124,7 +124,7 @@ export class CPU_element_api {
 	}
 
 	mirrored_in_controller() {
-		return (document.CPU.global_controller !== null) && (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag));
+		return (document.CPU.global_controller) && (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag));
 	}
 
 
@@ -188,8 +188,9 @@ export class CPU_element_api {
 		if (this.mode_was === mode) {
 			return;
 		}
-		this.container.classList.remove(`mode-${this.mode_was}`);
-		this.container.classList.add(`mode-${mode}`);
+		let classes = this.container.classList;
+		classes.remove(`mode-${this.mode_was}`);
+		classes.add(`mode-${mode}`);
 		this.mode_was = mode;
 	}
 	/**
@@ -228,14 +229,16 @@ export class CPU_element_api {
 	 *                                        'actions' or 'chapters'
 	 */
 	set_hide_container(hide_elements) {
+		let container_class = this.container.classList;
+
 		for (let hide_this of acceptable_hide_atttributes) {
-			this.container.classList.remove(`hide-${hide_this}`);
+			container_class.remove(`hide-${hide_this}`);
 		}
 
 		for (let hide_this of hide_elements) {
 			hide_this = hide_this.toLowerCase();
 			if (acceptable_hide_atttributes.includes(hide_this)) {
-				this.container.classList.add(`hide-${hide_this}`);
+				container_class.add(`hide-${hide_this}`);
 			}
 		}
 	}
@@ -268,16 +271,17 @@ export class CPU_element_api {
 		this.set_act_container(will_act);
 		let hide_panels_except_play_mark = 'last-used';
 
+		let container_class = this.container.classList;
 		if (!audiotag.paused) {
 			audiotag._CPU_played = true;
-			this.container.classList.add(hide_panels_except_play_mark);
+			container_class.add(hide_panels_except_play_mark);
 			if (this.mode_when_play) {
 				this.set_mode_container(this.mode_when_play);
 				this.mode_when_play = null;
 			}
 		} else {
 			if (! this.audiotag.isEqualNode(document.CPU.last_used)) {
-				this.container.classList.remove(hide_panels_except_play_mark);
+				container_class.remove(hide_panels_except_play_mark);
 			}
 		}
 	}
@@ -647,25 +651,25 @@ export class CPU_element_api {
 	 */
 	complete_template() {
 		let dataset = this.fetch_audiotag_dataset();
+		let { title, waveform } = dataset;
 		let element_canonical = this.shadowId('canonical');
 
 		element_canonical.href = dataset.canonical;
 
-		if (!dataset.title) {
-			element_canonical.classList.add('untitled');
-			dataset.title = __.untitled;
+		let classlist = element_canonical.classList;
+
+		if (!title) {
+			classlist.add('untitled');
+			title = __.untitled;
 		} else {
-			element_canonical.classList.remove('untitled');
+			classlist.remove('untitled');
 		}
-		element_canonical.innerText = dataset.title;
-		if (this.element.title !== dataset.title) {
-			this.element.title = dataset.title; // WATCHOUT ! May goes recursive with observers
+		element_canonical.innerText = title;
+		if (this.element.title !== title) {
+			this.element.title = title; // WATCHOUT ! May goes recursive with observers
 		}
 		this.shadowId('poster').src = dataset.poster || '';
-		this.shadowId('time').style.backgroundImage = 
-			dataset.waveform ? 
-				`url(${dataset.waveform})` :
-				'';
+		this.shadowId('time').style.backgroundImage = waveform ? `url(${waveform})` : '';
 	}
 	/**
 	 * @summary Attach the audiotag to the API
@@ -782,9 +786,9 @@ export class CPU_element_api {
 
 			plane_panel.classList.add('panel');
 
-			let header = (title == undefined) ? '' : `<h6>${escape_html(title)}</h6>`;
-			plane_panel.innerHTML = `${header}<nav><ul></ul></nav>`;
+			plane_panel.innerHTML = `<h6>${escape_html(title)}</h6><nav><ul></ul></nav>`;
 			this.container.appendChild(plane_panel);
+			show_element( plane_panel.querySelector('h6') , title);
 			assign_events_on_planes(plane_panel);
 		}
 
@@ -917,14 +921,14 @@ export class CPU_element_api {
 	 * @summary    Resort points of a plane by start-time
 	 * @private
 	 *
-	 * ok, i found it on https://stackoverflow.com/questions/1069666/sorting-object-property-by-values#answer-1069840
-	 *
 	 * @param      {string}   plane_name     The plane name
 	 */
 	plane_resort(plane_name) {
 		let out = Object.fromEntries(
-		    Object.entries(this.plane_points(plane_name)).sort(
-		    	([,point_a], [,point_b]) => {
+		    Object.entries(
+		    	this.plane_points(plane_name)
+			).sort(
+		    	([, point_a], [, point_b]) => {
 		    		return point_a.start - point_b.start;
 		    	}
 		    )
@@ -1362,7 +1366,7 @@ export class CPU_element_api {
 		let has = false;
 
 		if (audiotag) {
-			if ((audiotag.textTracks) && (audiotag.textTracks.length > 0)) {
+			if (audiotag.textTracks?.length > 0) {
 				let chapter_track = null;
 
 				for (let tracks of audiotag.textTracks) {
@@ -1378,7 +1382,7 @@ export class CPU_element_api {
 					}
 				}
 
-				if ((chapter_track) && (chapter_track.cues.length > 0)) {
+				if (chapter_track?.cues.length > 0) {
 					this.add_plane(plane_chapters, __['chapters'], {track : 'chapters'});
 
 					let cuechange_event = this.cuechange_event.bind(this);

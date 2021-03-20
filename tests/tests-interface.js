@@ -407,7 +407,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 		assert.equal(secondary_interfacetag.querySelector('div.panel#panel_«hello» h6').innerText, 'Hello<>&', 'panel as a h6 with a properly escaped title');
 		secondary_API_CPU.add_plane('untitled');
-		assert.equal(secondary_interfacetag.querySelector('div.panel#panel_«untitled» h6'), null, 'Untitled panel doesn\'t have any h6');
+		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«untitled» h6').classList.contains('no'), 'Untitled panel have an hidden h6');
 
 		assert.notEqual(secondary_API_CPU.get_plane('hello'), undefined, 'get_plane() returns object');
 		assert.equal(secondary_API_CPU.get_plane_track('hello').tagName, 'ASIDE', 'get_plane_track() returns DOM element and is a <aside>');
