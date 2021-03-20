@@ -79,6 +79,20 @@ function is_seconds(sec) {
 	return ((sec !== undefined) && (sec !== false));
 }
 
+/**
+ * @summary Show or hide an element
+ *
+ * @param      {Element} element  	The element to show or hide
+ * @param      {boolean} show 		Show if true, hide if false
+ */
+function show_element({classList}, show) {
+	if (show) {
+		classList.remove('no');
+	} else {
+		classList.add('no');
+	}
+}
+
 export class CPU_element_api {
 	/**
 	 *
@@ -310,7 +324,7 @@ export class CPU_element_api {
 		elapse_element.querySelector('span').innerText = SecondsInColonTime(audiotag.currentTime);
 		let duration_element = elapse_element.querySelector('.nosmaller');
 		duration_element.innerText = total_duration ? `\u00a0/\u00a0${total_duration}` : '…';
-		duration_element.style.display = total_duration ? 'inline' : 'none';
+		show_element(duration_element, total_duration);
 
 		this.update_line(audiotag.currentTime);
 	}
@@ -986,7 +1000,7 @@ export class CPU_element_api {
 			plane_point_track.href = use_link;
 			plane_point_track.title = text;
 			let track_img = plane_point_track.querySelector('img');
-			track_img.style.display = image ? 'inherit' : 'none'; 
+			show_element(track_img, image);
 			track_img.src = image || '';
 			plane_point_track.querySelector('img').innerHTML = text ;
 			this.position_time_element(plane_point_track, start, end);

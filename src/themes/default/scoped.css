@@ -96,6 +96,7 @@ a {
 	cursor : pointer;
 }
 
+.no,
 #loading, #play, #pause,
 .show-main #pageshare, .show-main #pageerror,
 .show-share #pagemain, .show-share #pageerror,
