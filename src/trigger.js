@@ -238,17 +238,18 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	play_once : function({target}) {
+		let document_cpu = document.CPU;
 		// target, aka audiotag
 		document.CPU.last_used = target;
 
 		if ( 
-			(document.CPU.only_play_one_audiotag) && 
-			(document.CPU.current_audiotag_playing) && 
-			(!document.CPU.is_audiotag_playing(target)) 
+			(document_cpu.only_play_one_audiotag) && 
+			(document_cpu.current_audiotag_playing) && 
+			(!document_cpu.is_audiotag_playing(target)) 
 			) {
-			trigger.pause(undefined, document.CPU.current_audiotag_playing);
+			trigger.pause(undefined, document_cpu.current_audiotag_playing);
 		}
-		document.CPU.current_audiotag_playing = target;
+		document_cpu.current_audiotag_playing = target;
 	},
 
 	/**
