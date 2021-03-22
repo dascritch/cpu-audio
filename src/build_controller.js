@@ -1,4 +1,4 @@
-import {passive_ev, querySelector_apply, element_prevent_link_on_same_page} from './utils.js';
+import {passive_ev, querySelector_apply, find_container, element_prevent_link_on_same_page} from './utils.js';
 import {trigger} from './trigger.js';
 import {press_manager, touch_manager} from './finger_manager.js';
 import {build_chapters_loader} from './build_chapters.js';
@@ -9,7 +9,7 @@ import {build_chapters_loader} from './build_chapters.js';
  * @param      {Object}  event   The event
  */
 function native_share(event) {
-	let {title, canonical} = document.CPU.find_container(event.target).fetch_audiotag_dataset();
+	let {title, canonical} = find_container(event.target).fetch_audiotag_dataset();
 	navigator.share({
 		title,
 		text	: title,
@@ -59,7 +59,6 @@ export function build_controller(container) {
 		mouseup       : false,
 		mouseleave    : false
 	};
-
 	for (let that of _buttons) {
 		const element_id = container.shadowId(that);
 		for (let _act in _actions) {

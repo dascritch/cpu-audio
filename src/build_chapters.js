@@ -1,6 +1,7 @@
 import {error, once_passive_ev, passive_ev} from './utils.js';
 import {__, prefered_language} from './i18n.js';
 import {trigger} from './trigger.js';
+import {translate_vtt} from './translate_vtt.js';
 import {activecue_classname} from './element_cpu.js';
 
 const plane_chapters = '_chapters';
@@ -75,7 +76,7 @@ export async function build_chapters(container) {
 						// avoid unuseful redraw, again
 						let cuepoint = Math.floor(cue.startTime);
 						container.add_point(plane_chapters, cuepoint, cue.id,  {
-							text : container.translate_vtt(cue.text),
+							text : translate_vtt(cue.text),
 							link : true,          // point the link to start time position
 							end  : cue.endTime    // end timecode of the cue
 						});
