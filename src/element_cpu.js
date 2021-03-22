@@ -67,7 +67,7 @@ function get_point_id(plane_name, point_name, panel) {
   * @param  {number|undefined|boolean} sec  Is it a "seconds" value ?
   * @return {boolean}
   */
-function is_seconds(sec) {
+function is_seconds(sec = false) {
 	// completely ugly... but « WAT » ! as in https://www.destroyallsoftware.com/talks/wat
 	return ((sec !== undefined) && (sec !== false));
 }
@@ -222,7 +222,7 @@ export class CPU_element_api {
 	 *
 	 * @param      {string|null}  mode    Accepted are only in `/\w+/` format, 'default' by default
 	 */
-	set_mode_container(mode=null) {
+	set_mode_container(mode = null) {
 		mode = mode ?? 'default';
 		if (this.mode_was === mode) {
 			return;
@@ -329,10 +329,10 @@ export class CPU_element_api {
 	 * @summary Update time-line length
 	 * @private
 	 *
-	 * @param      {number}  seconds  The seconds
-	 * @param      {number|undefined=}  ratio    ratio position in case time position are still unknown
+	 * @param      {number}  					seconds  The seconds
+	 * @param      {number|undefined|null=}  	ratio    ratio position in case time position are still unknown
 	 */
-	update_line(seconds, ratio=undefined) {
+	update_line(seconds, ratio = null) {
 		let { duration } = this.audiotag;
 		ratio = ratio ?? ( duration === 0 ? 0 : (100*seconds / duration) );
 		this.shadowId('loadingline').style.width = `${ratio}%`;
@@ -476,11 +476,11 @@ export class CPU_element_api {
 	 * @summary Position an element in the timeline, on its time
 	 * @private
 	 *
-	 * @param      {Element} 			      element         Element to impact, should be in #time
-	 * @param      {number|undefined}   	  seconds_begin   Starts position in seconds, do not apply if undefined
-	 * @param      {number|undefined|boolean} seconds_end     Ends position in seconds, do not apply if undefined or false
+	 * @param      {Element} 			  		    element         Element to impact, should be in #time
+	 * @param      {number|null|undefined}   	  	seconds_begin   Starts position in seconds, do not apply if undefined
+	 * @param      {number|null|undefined|boolean}	seconds_end     Ends position in seconds, do not apply if NaN
 	 */
-	position_time_element(element, seconds_begin=undefined, seconds_end=undefined) {
+	position_time_element(element, seconds_begin = null, seconds_end = null) {
 		let { duration } = this.audiotag;
 
 		if ((duration === 0) || (isNaN(duration))) {

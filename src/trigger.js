@@ -33,7 +33,8 @@ function remove_timecode_outofborders(at) {
  * @summary If playing media was prevented by browser due to missing focus, event on focus does unlock player
  * @private
  *
- * @param      {Object|undefined}  event   Unlocking event
+ * @param      {Object|undefined}  		event    	Unlocking event
+ * @param      {HTMLAudioElement|null}  audiotag   	The audiotag to start playing, event's target if not defined
  */
 function play_once_unlock(event, audiotag) {
 	trigger._last_play_error = false;
@@ -80,9 +81,9 @@ export const trigger = {
 	 * still exposed in public for tests
 	 *
 	 * @param      {string|Object}  hashcode     Called hashcode
-	 * @param      {Function}       callback_fx  When done, call a function to end the tests (optional).
+	 * @param      {Function|null}  callback_fx  When done, call a function to end the tests (optional).
 	 */
-	hash_order : async function(hashcode, callback_fx=undefined) {
+	hash_order : async function(hashcode, callback_fx = null) {
 		let at_start = true;
 		if (typeof hashcode !== 'string') {
 			at_start = 'at_start' in hashcode;
@@ -210,7 +211,7 @@ export const trigger = {
 		}
 
 		// We know the media length, normal execution
-		if (event.at !== undefined) {
+		if (event.at != undefined) {
 			at = event.at;
 		} else {
 			// normal usage, via an event
@@ -224,10 +225,10 @@ export const trigger = {
 	/**
 	 * @summary    Do pause
 	 *
-	 * @param      {Object|undefined}   event     The event, may be omitted
-	 * @param      {Element|undefined}  audiotag  The audiotag, may be omitted
+	 * @param      {Object|undefined|null}   event     The event, may be omitted
+	 * @param      {Element|undefined|null}  audiotag  The audiotag, if omitted, will be event's target
 	 */
-	pause : function(event=undefined, audiotag=undefined) {
+	pause : function(event = null, audiotag = null) {
 		if (!audiotag) {
 			let {target} = event;
 			audiotag = (target.tagName === 'AUDIO') ? target : find_container(target).audiotag;
@@ -260,10 +261,10 @@ export const trigger = {
 	/**
 	 * @summary    Do play an audio tag
 	 *
-	 * @param      {Object|undefined}   event     The event, may be mocked or ommitted
-	 * @param      {Element|undefined}  audiotag  The audiotag
+	 * @param      {Object|undefined|null}   event     The event, may be mocked or ommitted
+	 * @param      {Element|undefined|null}  audiotag  The audiotag
 	 */
-	play : function(event=undefined, audiotag=undefined) {
+	play : function(event=null, audiotag=null) {
 		if ( (!event) && (trigger._last_play_error)) {
 			warn(`play() prevented because already waiting for focus`);
 			return;
@@ -463,10 +464,10 @@ export const trigger = {
 	/**
 	 * @summary When an audiotag is ended, advance in playlist
 	 *
-	 * @param      {Object}  			event     The event
-	 * @param      {HTMLAudioElement}  	audiotag  The audiotag
+	 * @param      {Object}  							event     The event
+	 * @param      {HTMLAudioElement|null|undefined}  	audiotag  The audiotag, mays be omitted, will be calculated from event
 	 */
-	ended : function({target}, audiotag=undefined) {
+	ended : function({target}, audiotag=null) {
 		// the media element reached its end
 		audiotag = audiotag ?? target;
 		let {dataset, id} = audiotag;

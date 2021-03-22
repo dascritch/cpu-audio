@@ -48,7 +48,6 @@ Todo for this release :
 -----------------------
 
  - Finish drag'n'drop in chapters-editors
- - Hide panel title when no points (class 'no')
  - If we unify name style camelCase or snake_case ([#112](#112)), or as we changed some public API, we go for a major version release (7.0)
  - we still have a flashing chapters before the one clicked in panel. There is something to clean up, probable root cause is my (voluntary) 206 defaillant web server
  - Debug issues in Chrome mobile , as replay position or highlighted chapters in double

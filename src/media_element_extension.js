@@ -19,7 +19,7 @@ function recall_stored_play(event) {
 	// TODO and no hashed time
 	if ((lasttimecode > 0) && (!trigger._last_play_error)) {
 		document.CPU.seekElementAt(audiotag, lasttimecode);
-		trigger.play(undefined, audiotag);
+		trigger.play(null, audiotag);
 	}
 }
 
@@ -42,7 +42,7 @@ export function	add_id_to_audiotag(audiotag) {
  * @return     {boolean}            	True if audiotag streamed, False otherwise.
  */
 export function is_audiotag_streamed(audiotag) {
-	return ((audiotag === null) || (audiotag.duration === Infinity) || (audiotag.dataset.streamed !== undefined));
+	return ((audiotag == null) || (audiotag.duration === Infinity) || (audiotag.dataset.streamed != null));
 }
 
 /**

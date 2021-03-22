@@ -31,7 +31,7 @@ export const dynamically_allocated_id_prefix = 'CPU-Audio-tag-';
  *
  * @param      {string}                selector             The css selector
  * @param      {Function}              callback             The callback function, its 1st parameter will be the matching DOM element
- * @param      {Element|HTMLDocument|ShadowRoot}  [subtree=undefined]  The subtree, by default the whole hosting document
+ * @param      {Element|HTMLDocument|ShadowRoot}  [subtree=document]  The subtree, by default the whole hosting document
  */
 export function querySelector_apply(selector, callback, subtree=document) {
 	Array.from(
