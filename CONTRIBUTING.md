@@ -19,14 +19,10 @@ If you are a developer
 - Categorize the tests.
 - If you add parameters, attributes, CSS variables,… keep the web component able to run without.
 - Document everything, even dead-ends. Someone can find interesting your regrets.
-
-Work by cloning the `preprod` branch. We merge in `master` when everything is alright.
-
-Check first in [TODO.md](TODO.md) which lists some priorities and objectives. I usually [create bugs](https://github.com/dascritch/cpu-audio/issues) and refers to them in my commits. Most of the time.
-
-Node.js 14 is mandatory to run CLI tests with modules.
-
-Most of functions and methods are now javadoc-style commented, be kind about it.
+- Work by cloning the `preprod` branch. We merge in `master` when everything is alright.
+- Check first in [TODO.md](TODO.md) which lists some priorities and objectives. I usually [create bugs](https://github.com/dascritch/cpu-audio/issues) and refers to them in my commits. Most of the time.
+- Node.js 14 is mandatory to run CLI tests with modules.
+- Most of functions and methods are now javadoc-style commented, be kind about it.
 
 
 If you are integrating HTML
@@ -54,6 +50,7 @@ As I'm not perfect, some tests were written for non-regressions, conformity and 
  - [Graphic interface and webcomponents-dependant features](./tests/tests-interface.html)
  - [API method names](./tests/tests-api.html)
 
+Please note that tests aren't done yet on non default themes.
 
 Development
 -----------
