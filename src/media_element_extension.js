@@ -1,4 +1,4 @@
-import {CpuAudioTagName, is_audiotag_streamed, is_decent_browser_for_webcomponents, passive_ev} from './utils.js';
+import {CpuAudioTagName, dynamically_allocated_id_prefix, is_decent_browser_for_webcomponents, passive_ev} from './utils.js';
 
 import {trigger} from './trigger.js';
 
@@ -21,6 +21,28 @@ function recall_stored_play(event) {
 		document.CPU.seekElementAt(audiotag, lasttimecode);
 		trigger.play(undefined, audiotag);
 	}
+}
+
+// used for add_id_to_audiotag , when tag was not named in HTML or DOM
+let	count_element = 0;
+
+/**
+ * @summary Adds an identifier to audiotag at build time.
+ * @private
+ */
+export function	add_id_to_audiotag(audiotag) {
+	audiotag.id = audiotag.id || `${dynamically_allocated_id_prefix}${count_element++}`;
+}
+
+
+/**
+ * @summary Determines if audiotag source is streamed, and so unactivate reposition, position memory, length display…
+ *
+ * @param      {HTMLAudioElement|null}  audiotag  The audiotag
+ * @return     {boolean}            	True if audiotag streamed, False otherwise.
+ */
+export function is_audiotag_streamed(audiotag) {
+	return ((audiotag === null) || (audiotag.duration === Infinity) || (audiotag.dataset.streamed !== undefined));
 }
 
 /**

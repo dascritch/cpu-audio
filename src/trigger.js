@@ -1,5 +1,5 @@
-import {is_audiotag_streamed, on_debug, once_passive_ev, warn} from './utils.js';
-
+import {on_debug, once_passive_ev, warn} from './utils.js';
+import {is_audiotag_streamed} from './media_element_extension.js';
 import {TimeInSeconds} from './convert.js';
 
 const KEY_LEFT_ARROW = 37;

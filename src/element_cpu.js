@@ -1,4 +1,4 @@
-import {CpuControllerTagName, absolutize_url, dynamically_allocated_id_prefix, error, escape_html, is_audiotag_streamed, once_passive_ev, passive_ev, querySelector_apply} from './utils.js';
+import {CpuControllerTagName, absolutize_url, error, escape_html, once_passive_ev, passive_ev, querySelector_apply} from './utils.js';
 import {__, prefered_language} from './i18n.js';
 
 import {default_dataset} from './default_dataset.js';
@@ -6,6 +6,7 @@ import {SecondsInColonTime, SecondsInTime, IsoDuration} from './convert.js';
 import {press_manager, touch_manager} from './finger_manager.js';
 import {translate_vtt} from './translate_vtt.js';
 import {trigger} from './trigger.js';
+import {is_audiotag_streamed, add_id_to_audiotag} from './media_element_extension.js';
 
 // Acceptables attributes values for hide="" parameter on webcomponent
 const acceptable_hide_atttributes = ['poster', 'actions', 'timeline', 'chapters', 'panels', 'panels-title', 'panels-except-play'];
@@ -23,9 +24,6 @@ const valid_id = /^[a-zA-Z0-9\-_]+$/;
 
 // Regex for extracting plane and point names from an id
 const plane_point_names_from_id = /^[a-zA-Z0-9\-_]+_«([a-zA-Z0-9\-_]+)(»_.*_«([a-zA-Z0-9\-_]+))?»$/;
-
-// used for add_id_to_audiotag , when tag was not named in HTML or DOM
-let	count_element = 0;
 
 /**
  * @summary Gets the plane point names from an id on a ShadowDOM element.
@@ -124,7 +122,8 @@ export class CPU_element_api {
 	}
 
 	mirrored_in_controller() {
-		return (document.CPU.global_controller) && (this.audiotag.isEqualNode(document.CPU.global_controller.audiotag));
+		let global_controller = document.CPU.global_controller;
+		return (global_controller) && (this.audiotag.isEqualNode(global_controller.audiotag));
 	}
 
 
@@ -489,6 +488,7 @@ export class CPU_element_api {
 	 * @public
 	 */
 	hide_throbber() {
+		// we use opacity instead of a class change to permits opacity smooth transition via `--cpu-background-transitions`
 		this.shadowId('popup').style.opacity = 0;
 	}
 
@@ -636,14 +636,6 @@ export class CPU_element_api {
 		this.shadowId(`style_${style_key}`)?.remove();
 	}
 
-	/**
-	 * @summary Adds an identifier to audiotag at build time.
-	 * @private
-	 */
-	add_id_to_audiotag() {
-		this.audiotag.id = this.audiotag.id ||
-							`${dynamically_allocated_id_prefix}${count_element++}`;
-	}
 
 	/**
 	 * @summary Complete the interface at build time
@@ -682,7 +674,7 @@ export class CPU_element_api {
 			return;
 		}
 		this.audiotag = audiotag;
-		this.add_id_to_audiotag();
+		add_id_to_audiotag(audiotag);
 		this.complete_template();
 
 		// throw simplified event
@@ -1273,10 +1265,12 @@ export class CPU_element_api {
 			(element) => { element.classList.remove(class_name); },
 			this.container);
 		if ( (mirror) && (this.mirrored_in_controller()) ) {
+			let global_controller = document.CPU.global_controller;
+
 			if (!this.is_controller) {
-				document.CPU.global_controller.remove_highlights_points(plane_name, class_name, false);
+				global_controller.remove_highlights_points(plane_name, class_name, false);
 			} else {
-				document.CPU.find_container(document.CPU.global_controller.audiotag).remove_highlights_points(class_name, false);
+				document.CPU.find_container(global_controller.audiotag).remove_highlights_points(class_name, false);
 			}
 		}
 	}

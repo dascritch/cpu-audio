@@ -1,8 +1,9 @@
-import {CpuAudioTagName, CpuControllerTagName, is_audiotag_streamed, on_debug, once_passive_ev, selector_interface, warn} from './utils.js';
+import {CpuAudioTagName, CpuControllerTagName, on_debug, once_passive_ev, selector_interface, warn} from './utils.js';
 import {default_document_cpu_parameters} from './default_document_cpu_parameters.js';
 import {default_dataset} from './default_dataset.js';
 import {convert, TimeInSeconds} from './convert.js';
 import {trigger} from './trigger.js';
+import {is_audiotag_streamed} from './media_element_extension.js';
 
 export const document_CPU = {
 	// global object for global API

@@ -132,15 +132,6 @@ function id_in_hash(id) {
 	return location.hash.substr(1).split('&').includes(id);
 }*/
 
-/**
- * @summary Determines if audiotag source is streamed, and so unactivate reposition, position memory, length display…
- *
- * @param      {HTMLAudioElement|null}  audiotag  The audiotag
- * @return     {boolean}            	True if audiotag streamed, False otherwise.
- */
-export function is_audiotag_streamed(audiotag) {
-	return ((audiotag === null) || (audiotag.duration === Infinity) || (audiotag.dataset.streamed !== undefined));
-}
 
 /**
  * @summary Shortcut for console info
