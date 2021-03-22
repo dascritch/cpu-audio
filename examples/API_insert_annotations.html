@@ -29,28 +29,28 @@ document.addEventListener('CPU_ready', e => {
     	'note-1',					// named reference for the point
     	{  
             start   : 0,                          // time position, in seconds
-            'text' : '“Enjoy the silence” is the name of a song of Depeche Mode [on click, should go to the time position]',
-            'link' : true,			// on click, should go to the time position
-           	'end'  : 20				// The point ends at 20 seconds 
+            text    : '“Enjoy the silence” is the name of a song of Depeche Mode [on click, should go to the time position]',
+            link    : true,			// on click, should go to the time position
+           	end     : 20				// The point ends at 20 seconds 
     	});
 
     player_API.addPoint(
     	'annotations',
     	'note-2',					// named reference for the point
     	{  
-    	   start : 15,							// you can overleap points
-            'text' : 'As this song is copyrighted, we used another one [no action on click]',
-            'link' : false,			// no action on click
-           	'end'  : 40
+    	    start : 15,							// you can overleap points
+            text  : 'As this song is copyrighted, we used another one [no action on click]',
+            link  : false,			// no action on click
+           	end   : 40
     	});
 
     player_API.addPoint(
     	'annotations',
     	'note-3',					// remember, those names should be unique
     	{  
-    	   start : 40,
-            'text' : 'an excerpt of “<em>4:33</em>” which is <em>also</em> copyrighted! See link for details! [If link is a string, the url is targeted by your point]', // remember that only a subset of tags may work here
-            'link' : 'https://www.classicalmpr.org/blog/classical-notes/2015/12/02/can-silence-be-copyrighted',	// If link is a string, the url is targeted by your point
+    	    start : 40,
+            text  : 'an excerpt of “<em>4:33</em>” which is <em>also</em> copyrighted! See link for details! [If link is a string, the url is targeted by your point]', // remember that only a subset of tags may work here
+            link  : 'https://www.classicalmpr.org/blog/classical-notes/2015/12/02/can-silence-be-copyrighted',	// If link is a string, the url is targeted by your point
     	});
 
     // What about create a second panel ?
@@ -110,8 +110,8 @@ document.addEventListener('CPU_ready', e => {
         'volume',
         {  
             start : 0,
-            'text' : 'Volume <input id="input_volume" type="range" value="1" min="0" max="1" step="0.1" />', // Yes, I know what I wrote upper, but... let's play !
-            'link' : false
+            text  : 'Volume <input id="input_volume" type="range" value="1" min="0" max="1" step="0.1" />', // Yes, I know what I wrote upper, but... let's play !
+            link  : false
         });
 
     // Let's have a SECOND bit of fun
@@ -120,8 +120,8 @@ document.addEventListener('CPU_ready', e => {
         'playbackrate',
         {  
             start : 0,
-            'text' : 'Speed <input id="input_rate" type="range" value="1" min="0.5" max="2" step="0.5" />',
-            'link' : false
+            text  : 'Speed <input id="input_rate" type="range" value="1" min="0.5" max="2" step="0.5" />',
+            link  : false
         });
 
         // OK. Who still needs a volume and a playrate selector build in the audio player ?
