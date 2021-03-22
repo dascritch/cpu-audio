@@ -504,11 +504,11 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	native_share : function(event) {
-		let dataset = document.CPU.find_container(event.target).fetch_audiotag_dataset();
+		let {title, canonical} = document.CPU.find_container(event.target).fetch_audiotag_dataset();
 		navigator.share({
-			title	: dataset.title,
-			text	: dataset.title,
-			url 	: dataset.canonical
+			title,
+			text	: title,
+			url 	: canonical
 		});
 		event.preventDefault();
 	},
