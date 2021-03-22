@@ -91,6 +91,15 @@ function show_element({classList}, show) {
 	}
 }
 
+/**
+ * @summary Clean up DOM elements of any annotations, before rebuild them
+ * @private
+ *
+ * @param      {Element} container  The webcontainer to clean-up
+ */
+function undraw_all_planes(container) {
+	querySelector_apply('aside, div.panel', (element) => { element.remove(); }, container);
+}
 
 /**
  * @summary Interprets `navigator.share` native API
@@ -105,6 +114,63 @@ function native_share(event) {
 		url 	: canonical
 	});
 	event.preventDefault();
+}
+
+/**
+ * @summary Call when a chapter is changed, to trigger the changes
+ * @private
+ *
+ * @param      {Object}  container  Element.CPU
+ * @param      {Object}  event   	The event
+ */
+function cuechange_event(container, event) {
+	let active_cue;
+	try {
+		// Chrome may put more than one activeCue. That's a stupid regression from them, but alas... I have to do with
+		let _time = container.audiotag.currentTime;
+		for (let cue of event.target.activeCues) {
+			if ((cue.startTime <= _time) && (_time < cue.endTime)) {
+				active_cue = cue;
+			}
+		}
+		if (Object.is(active_cue, container._activecue)) {
+			return ;
+		}
+
+		container._activecue = active_cue;
+		// do NOT tell me this is ugly, i know this is ugly. I missed something. Teach me how to do it better
+	} catch (oops) {
+		window.console.error(oops);
+	}
+
+	container.remove_highlights_points(plane_chapters, activecue_classname);
+	if (active_cue) {
+		trigger.cuechange(active_cue, container.audiotag);
+		container.fire_event('chapter_changed', {
+			cue : active_cue
+		});
+		container.highlight_point(plane_chapters, active_cue.id, activecue_classname);
+	}
+}
+
+/**
+ * @summary Add listeners on tracks to build chapters when loaded
+ * @private
+ * 
+ * @param      {Object}  container  Element.CPU
+ */
+function build_chapters_loader(container) {
+	container.build_chapters();
+	let audiotag = container.audiotag;
+	let this_build_chapters = container.build_chapters.bind(container);
+
+	// sometimes, we MAY have loose loading
+	audiotag.addEventListener('loadedmetadata', this_build_chapters, once_passive_ev);
+
+	let track_element = audiotag.querySelector('track[kind="chapters"]');
+	if ((track_element) && (!track_element._CPU_load_ev)) {
+		track_element._CPU_load_ev = track_element.addEventListener('load', this_build_chapters, passive_ev);
+	}
 }
 
 
@@ -904,7 +970,7 @@ export class CPU_element_api {
 
 	/**
 	 * @summary Gets the point element in the track
-	 * @private
+	 * @private but needed in tests
 	 *
 	 * @param      {string}  plane_name   The plane
 	 * @param      {string}  point_name   The point
@@ -916,7 +982,7 @@ export class CPU_element_api {
 
 	/**
 	 * @summary Gets the point element in the panel
-	 * @private
+	 * @private but needed in tests
 	 *
 	 * @param      {string}  plane_name   The plane
 	 * @param      {string}  point_name   The point
@@ -1220,22 +1286,13 @@ export class CPU_element_api {
 		}
 	}
 
-
-	/**
-	 * @summary Clean up DOM elements of any annotations, before rebuild them
-	 * @private
-	 */
-	undraw_all_planes() {
-		querySelector_apply('aside, div.panel', (element) => { element.remove(); }, this.container);
-	}
-
 	/**
 	 * @summary Clear and redraw all planes
 	 * Mainly when cpu-controller is changing targeted audio tag
 	 * @public
 	 */
 	redraw_all_planes() {
-		this.undraw_all_planes();
+		undraw_all_planes(this.container);
 
 		for (let plane_name of Object.keys({...this._planes, ...this.audiotag._CPU_planes})) {
 			this.draw_plane(plane_name);
@@ -1326,41 +1383,6 @@ export class CPU_element_api {
 	}
 
 	/**
-	 * @summary Call when a chapter is changed, to trigger the changes
-	 * @private
-	 *
-	 * @param      {Object}  event   The event
-	 */
-	cuechange_event(event) {
-		let active_cue;
-		try {
-			// Chrome may put more than one activeCue. That's a stupid regression from them, but alas... I have to do with
-			let _time = this.audiotag.currentTime;
-			for (let cue of event.target.activeCues) {
-				if ((cue.startTime <= _time) && (_time < cue.endTime)) {
-					active_cue = cue;
-				}
-			}
-			if (Object.is(active_cue, this._activecue)) {
-				return ;
-			}
-
-			this._activecue = active_cue;
-			// do NOT tell me this is ugly, i know this is ugly. I missed something. Teach me how to do it better
-		} catch (oops) {
-			window.console.error(oops);
-		}
-
-		this.remove_highlights_points(plane_chapters, activecue_classname);
-		if (active_cue) {
-			trigger.cuechange(active_cue, this.audiotag);
-			this.fire_event('chapter_changed', {
-				cue : active_cue
-			});
-			this.highlight_point(plane_chapters, active_cue.id, activecue_classname);
-		}
-	}
-	/**
 	 * @summary Builds or refresh chapters interface.
 	 * @public
 	 *
@@ -1398,11 +1420,11 @@ export class CPU_element_api {
 				if (chapter_track?.cues.length > 0) {
 					this.add_plane(plane_chapters, __['chapters'], {track : 'chapters'});
 
-					let cuechange_event = this.cuechange_event.bind(this);
+					let cuechange_event_this = cuechange_event.bind(undefined, this);
 					// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
 					// adding/reinstall chapter changing event
-					chapter_track.removeEventListener('cuechange', cuechange_event);
-					chapter_track.addEventListener('cuechange', cuechange_event, passive_ev);
+					chapter_track.removeEventListener('cuechange', cuechange_event_this);
+					chapter_track.addEventListener('cuechange', cuechange_event_this, passive_ev);
 
 					for (let cue of chapter_track.cues) {
 						if (!this.get_point(plane_chapters, cue.id)) {
@@ -1418,7 +1440,7 @@ export class CPU_element_api {
 					if (chapter_track.cues.length > 0) {
 						has = true;
 					}
-					this.cuechange_event({
+					cuechange_event(this, {
 						target : {
 							activeCues : chapter_track.cues
 						}
@@ -1449,23 +1471,6 @@ export class CPU_element_api {
 		}
 		*/
 
-	}
-
-	/**
-	 * @summary Add listeners on tracks to build chapters when loaded
-	 * @private
-	 */
-	build_chapters_loader() {
-		this.build_chapters();
-		let this_build_chapters = this.build_chapters.bind(this);
-
-		// sometimes, we MAY have loose loading
-		this.audiotag.addEventListener('loadedmetadata', this_build_chapters, once_passive_ev);
-
-		let track_element = this.audiotag.querySelector('track[kind="chapters"]');
-		if ((track_element) && (!track_element._CPU_load_ev)) {
-			track_element._CPU_load_ev = track_element.addEventListener('load', this_build_chapters, passive_ev);
-		}
 	}
 
 	/**
@@ -1602,7 +1607,7 @@ export class CPU_element_api {
 		this.audiotag.addEventListener('durationchange', this.reposition_tracks.bind(this), passive_ev);
 
 		this.show_main();
-		this.build_chapters_loader();
+		build_chapters_loader();
 		this.fire_event('ready');
 	}
 }
