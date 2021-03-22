@@ -979,10 +979,9 @@ export class CPU_element_api {
 		let {start, link, text, image, end} = data;
 
 		let use_link = '#';
-		let time_url = `#${audiotag.id}&t=${start}`;
 		if (link === true) {
 			// automated link to the audio tag.
-			use_link = time_url;
+			use_link = `#${audiotag.id}&t=${start}`;
 		}
 		if (typeof(link) === 'string') {
 			// Integrator of the page wants a specific url (hoping he know what he do with a "javascript:")
@@ -1294,9 +1293,7 @@ export class CPU_element_api {
 	highlight_point(plane_name, point_name, class_name=preview_classname, mirror=true) {
 		this.remove_highlights_points(plane_name, class_name, mirror);
 
-		let check_plane = this.get_plane(plane_name);
-
-		if ((!check_plane) || (!check_plane['highlight'])) {
+		if (! this.get_plane(plane_name)?.highlight) {
 			return;
 		}
 
