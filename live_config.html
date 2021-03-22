@@ -423,20 +423,20 @@ document.addEventListener('DOMContentLoaded', function(){
 
 	document.querySelector('#do_waiting').addEventListener('click', function() {
 		cpu_audio.CPU.audiotag.pause();
-		cpu_audio.CPU.set_act_container('loading');
+		cpu_audio.CPU.setActContainer('loading');
 	});
 	document.querySelector('#do_glow').addEventListener('click', function() {
 		cpu_audio.CPU.audiotag.pause();
-		cpu_audio.CPU.set_act_container('glow');
+		cpu_audio.CPU.setActContainer('glow');
 	});	
 	let in_error = false;
 	document.querySelector('#do_error').addEventListener('click', function() {
 		if (!in_error) {
-			cpu_audio.CPU.show_interface('error');
+			cpu_audio.CPU.showInterface('error');
 			cpu_audio.CPU.shadowId('pageerror').innerText = 'This is an error message.';
 			in_error = true;
 		} else {
-			cpu_audio.CPU.show_interface('main');
+			cpu_audio.CPU.showInterface('main');
 			cpu_audio.CPU.shadowId('pageerror').innerText = '';
 			in_error = false;
 		}

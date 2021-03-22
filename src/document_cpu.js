@@ -1,9 +1,9 @@
-import {findInterface, findContainer, once_passive_ev, selector_audio_in_component, warn} from './utils.js';
+import {findInterface, findContainer, once_passive_ev, selectorAudioInComponent, warn} from './utils.js';
 import {DefaultParametersDocumentCPU} from './default_document_cpu_parameters.js';
 import {defaultDataset} from './default_dataset.js';
 import {convert, timeInSeconds} from './convert.js';
 import {trigger} from './trigger.js';
-import {is_audiotag_streamed} from './media_element_extension.js';
+import {isAudiotagStreamed} from './media_element_extension.js';
 
 export const DocumentCPU = {
 	// global object for global API
@@ -106,7 +106,7 @@ export const DocumentCPU = {
 			callback_fx?.();
 		}
 
-		let audiotag = /** @type {HTMLAudioElement} */ ( (hash !== '') ? document.getElementById(hash)  :  document.querySelector(selector_audio_in_component) );
+		let audiotag = /** @type {HTMLAudioElement} */ ( (hash !== '') ? document.getElementById(hash)  :  document.querySelector(selectorAudioInComponent) );
 
 		if ((audiotag == null) || (audiotag.currentTime === undefined)) {
 			warn(`Unknow audiotag ${hash}`);
@@ -135,7 +135,7 @@ export const DocumentCPU = {
 	 */
 	seekElementAt : function (audiotag, seconds) {
 		if ((isNaN(seconds)) || // may happens, if the audio track is not loaded/loadable
-			(is_audiotag_streamed(audiotag))) { // never try to set a position on a streamed media
+			(isAudiotagStreamed(audiotag))) { // never try to set a position on a streamed media
 			return;
 		}
 
@@ -154,7 +154,7 @@ export const DocumentCPU = {
 
 		let controller = audiotag.CPU_controller();
 		// it may be still constructing it, so be precautionous
-		controller?.update_loading?.(seconds);
+		controller?.updateLoading?.(seconds);
 	},
 
 

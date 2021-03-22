@@ -34,12 +34,12 @@ function observer_audio([{target}]) {
 	build_chapters(container);
 
 	// in case attributes changed
-	container.complete_template();
+	container.completeTemplate();
 
 	const globalController = document.CPU.globalController;
 	if (container.audiotag.isEqualNode(globalController?.audiotag)) {
 		build_chapters(globalController);
-		globalController.complete_template();
+		globalController.completeTemplate();
 	}
 }
 

@@ -12,7 +12,7 @@ HTMLAudioElement.prototype.CPU_connected = false;
  */
 function recall_stored_play(event) {
 	let audiotag = event.target;
-	if ((document.CPU.currentAudiotagPlaying !== null) || (is_audiotag_streamed(audiotag))) {
+	if ((document.CPU.currentAudiotagPlaying !== null) || (isAudiotagStreamed(audiotag))) {
 		return;
 	}
 	let lasttimecode = Number(window.localStorage.getItem(audiotag.currentSrc));
@@ -23,14 +23,14 @@ function recall_stored_play(event) {
 	}
 }
 
-// used for add_id_to_audiotag , when tag was not named in HTML or DOM
+// used for addIdToAudiotag , when tag was not named in HTML or DOM
 let	count_element = 0;
 
 /**
  * @summary Adds an identifier to audiotag at build time.
  * @private
  */
-export function	add_id_to_audiotag(audiotag) {
+export function	addIdToAudiotag(audiotag) {
 	audiotag.id = audiotag.id || `${dynamically_allocated_id_prefix}${count_element++}`;
 }
 
@@ -41,7 +41,7 @@ export function	add_id_to_audiotag(audiotag) {
  * @param      {HTMLAudioElement|null}  audiotag  The audiotag
  * @return     {boolean}            	True if audiotag streamed, False otherwise.
  */
-export function is_audiotag_streamed(audiotag) {
+export function isAudiotagStreamed(audiotag) {
 	return ((audiotag == null) || (audiotag.duration === Infinity) || (audiotag.dataset.streamed != null));
 }
 

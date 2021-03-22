@@ -14,7 +14,7 @@ export const CpuAudioTagName = 'CPU-AUDIO';
 export const CpuControllerTagName = 'CPU-CONTROLLER';
 export const selector_interface = '#interface';
 export const acceptable_selector = 'audio[controls]';
-export const selector_audio_in_component = 'cpu-audio audio'; // should be 'audio[controls]' but PHRACK APPLE !
+export const selectorAudioInComponent = 'cpu-audio audio'; // should be 'audio[controls]' but PHRACK APPLE !
 
 // Parameters for addEventListener
 // @private
@@ -33,7 +33,7 @@ export const dynamically_allocated_id_prefix = 'CPU-Audio-tag-';
  * @param      {Function}              callback             The callback function, its 1st parameter will be the matching DOM element
  * @param      {Element|HTMLDocument|ShadowRoot}  [subtree=document]  The subtree, by default the whole hosting document
  */
-export function querySelector_apply(selector, callback, subtree=document) {
+export function querySelectorDo(selector, callback, subtree=document) {
 	Array.from(
 		subtree.querySelectorAll(selector)
 	).forEach(callback);
@@ -54,7 +54,7 @@ export function is_decent_browser_for_webcomponents() {
  * @param      {string}  url     The url
  * @return     {string}  url     Absolute url
  */
-export function absolutize_url(url) {
+export function absolutizeUrl(url) {
 	let test_element = document.createElement('a');
 	test_element.href = (typeof url !== 'string') ? url : url.split('#')[0];
 	return test_element.href;
@@ -75,7 +75,7 @@ export function not_screen_context() {
  * @param      {Event}  event   The event
  */
 function prevent_link_on_same_page(event) {
-	if (absolutize_url(window.location.href) === absolutize_url(event.target.href)) {
+	if (absolutizeUrl(window.location.href) === absolutizeUrl(event.target.href)) {
 		event.preventDefault();
 	}
 }
@@ -85,7 +85,7 @@ function prevent_link_on_same_page(event) {
  *
  * @param      {Element}  element  The <A> DOM element
  */
-export function element_prevent_link_on_same_page(element) {
+export function preventLinkOnSamePage(element) {
 	element.addEventListener('click', prevent_link_on_same_page);
 }
 
@@ -95,7 +95,7 @@ export function element_prevent_link_on_same_page(element) {
  * @param      {string}  text    The text
  * @return     {string}  HTML escaped text
  */
-export function escape_html(text) {
+export function escapeHtml(text) {
 	let burn_after_reading = document.createElement('span');
 	burn_after_reading.innerText = text;
 	let out = burn_after_reading.innerHTML;

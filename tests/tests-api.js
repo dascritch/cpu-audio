@@ -40,15 +40,15 @@ document.addEventListener('CPU_ready', function() {
 		// those public values are assumed to have a constant name
 		let expected = {
 			'keymove' : 5,
-			'alternate_delay' : 500,
-			'fast_factor' : 4,
-			'repeat_delay' : 400,
-			'repeat_factor' : 100,
-			'only_play_one_audiotag' : true,
+			'alternateDelay' : 500,
+			'fastFactor' : 4,
+			'repeatDelay' : 400,
+			'repeatFactor' : 100,
+			'playStopOthers' : true,
 			'currentAudiotagPlaying' : null,
 			'globalController' : null,
 			'playlists' : {},
-			'advance_in_playlist' : true
+			'advanceInPlaylist' : true
 		};
 		for(let key in expected) {
 			let expected_prop = document.CPU[key];
@@ -95,25 +95,25 @@ document.addEventListener('CPU_ready', function() {
 	QUnit.test( "Public API CpuAudioElement.CPU maps public methods", function( assert ) {
 		// those public values are assumed to have a constant name
 		let expected = [
-			'set_mode_container',
-			'set_act_container',
-			'set_hide_container',
-			'show_throbber_at',
-			'hide_throbber',
-			'hide_throbber_later',
-			'show_interface',
-			'add_plane',
-			'remove_plane',
-			'add_point',
-			'get_point',
-			'edit_point',
-			'remove_point',
-			'clear_plane',
-			'redraw_all_planes',
-			'highlight_point',
-			'remove_highlights_points',
-			'inject_css',
-			'remove_css'
+			'setModeContainer',
+			'setActContainer',
+			'setHideContainer',
+			'showThrobberAt',
+			'hideThrobber',
+			'hideThrobberLater',
+			'showInterface',
+			'addPlane',
+			'removePlane',
+			'addPoint',
+			'point',
+			'editPoint',
+			'removePoint',
+			'clearPlane',
+			'redrawAllPlanes',
+			'highlightPoint',
+			'removeHighlightsPoints',
+			'injectCss',
+			'removeCss'
 		];
 		for(let name of expected) {
 			assert.equal(typeof cpuaudio_tag.CPU[name] , 'function', `CpuAudioElement.CPU.${name} method is still a function`);
@@ -121,35 +121,35 @@ document.addEventListener('CPU_ready', function() {
 	});
 
 	QUnit.test( "Check CPU_ custom events", function( assert ) {
-		let was_done_CPU_draw_point = false;
-		let was_done_CPU_add_point = false;
-		let was_done_CPU_edit_point = false;
-		let was_done_CPU_remove_point = false;
+		let was_done_CPU_drawPoint = false;
+		let was_done_CPU_addPoint = false;
+		let was_done_CPU_editPoint = false;
+		let was_done_CPU_removePoint = false;
 		let done = assert.async();
-		document.addEventListener('CPU_draw_point',(e) => {
-			was_done_CPU_draw_point = true;
+		document.addEventListener('CPU_drawPoint',(e) => {
+			was_done_CPU_drawPoint = true;
 		});
-		document.addEventListener('CPU_add_point',(e) => {
-			was_done_CPU_add_point = true;
+		document.addEventListener('CPU_addPoint',(e) => {
+			was_done_CPU_addPoint = true;
 		});
-		document.addEventListener('CPU_edit_point',(e) => {
-			was_done_CPU_edit_point = true;
+		document.addEventListener('CPU_editPoint',(e) => {
+			was_done_CPU_editPoint = true;
 		});
-		document.addEventListener('CPU_remove_point',(e) => {
-			was_done_CPU_remove_point = true;
+		document.addEventListener('CPU_removePoint',(e) => {
+			was_done_CPU_removePoint = true;
 			done();
 		});
 
-		cpuaudio_tag.CPU.add_plane('testplane','');
-		cpuaudio_tag.CPU.add_point('testplane',0,'testpoint');
-		cpuaudio_tag.CPU.edit_point('testplane','testpoint', {});
-		cpuaudio_tag.CPU.remove_point('testplane','testpoint');
+		cpuaudio_tag.CPU.addPlane('testplane','');
+		cpuaudio_tag.CPU.addPoint('testplane',0,'testpoint');
+		cpuaudio_tag.CPU.editPoint('testplane','testpoint', {});
+		cpuaudio_tag.CPU.removePoint('testplane','testpoint');
 
 		assert.ok(true,'CPU_ready (was tested to instanciate those tests)');
-		assert.ok(was_done_CPU_draw_point,'CPU_draw_point');
-		assert.ok(was_done_CPU_add_point,'CPU_add_point');
-		assert.ok(was_done_CPU_edit_point,'CPU_edit_point');
-		assert.ok(was_done_CPU_remove_point,'CPU_remove_point');
+		assert.ok(was_done_CPU_drawPoint,'CPU_drawPoint');
+		assert.ok(was_done_CPU_addPoint,'CPU_addPoint');
+		assert.ok(was_done_CPU_editPoint,'CPU_editPoint');
+		assert.ok(was_done_CPU_removePoint,'CPU_removePoint');
 		// missing : CPU_chapter_changed
 	});
 

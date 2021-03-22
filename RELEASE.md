@@ -19,8 +19,8 @@ Corrections
  * An translation error may occurs in shareable URL. We remove audio id if we are not in same URL
  * Issue with intermittent `.replaceAll()` resolved
  * When changing component title, its title="" must follows
- * `Element.CPU.remove_highlights_points()` was too generic. Modification in parameters ([#109](#109))
- * `Element.CPU.remove_point()` was terrible
+ * `Element.CPU.removeHighlightsPoints()` was too generic. Modification in parameters ([#109](#109))
+ * `Element.CPU.removePoint()` was terrible
  * `Element.CPU.build_chapters()` and `Element.CPU.build_playlist()` are no more public API
  * Attributes `hide`, `mode` and `glow` weren't properly checked
 

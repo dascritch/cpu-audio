@@ -22,15 +22,15 @@ Properties :
 name                     | default value | usage
 -------------------------|---------------|----------
 keymove                  | `5`           | Number of seconds skipped in the timeline when <kbd>←</kbd> or <kbd>→</kbd> keys are pressed in an interface
-alternate_delay          | `500`         | Delay for a long press on time-line (in milliseconds) to switch to the handheld alternate browsing interface
-fast_factor              | `4`           | Amplification ratio between <kbd>▸︎▸︎</kbd> and <kbd>▸︎▸︎▸︎</kbd> in handheld alternate browsing interface
-repeat_delay             | `400`         | First repetition delay when clicking a button in handheld alternate browsing interface
-repeat_factor            | `100`         | Next repetitions delay when clicking a button in handheld alternate browsing interface
-only_play_one_audiotag   | `true`        | When a cpu-audio starts to play, any other instances in the same page are paused.
+alternateDelay          | `500`         | Delay for a long press on time-line (in milliseconds) to switch to the handheld alternate browsing interface
+fastFactor              | `4`           | Amplification ratio between <kbd>▸︎▸︎</kbd> and <kbd>▸︎▸︎▸︎</kbd> in handheld alternate browsing interface
+repeatDelay             | `400`         | First repetition delay when clicking a button in handheld alternate browsing interface
+repeatFactor            | `100`         | Next repetitions delay when clicking a button in handheld alternate browsing interface
+playStopOthers   | `true`        | When a cpu-audio starts to play, any other instances in the same page are paused.
 currentAudiotagPlaying | `null`        | Reference to the playing `<audio>` element, `null` if none
 globalController        | `null`        | Reference to the `<cpu-controller>` in the page if any, `null` elsewhere
 playlists                | `{}`          | Collection of audio tag by playlists (named by the `<cpu-audio playlist="">` attribute). [See playlist feature](./FEATURES#playlists).
-advance_in_playlist      | `true`        | When an audio is ended in a playlist, starts immediatly the next one.
+advanceInPlaylist      | `true`        | When an audio is ended in a playlist, starts immediatly the next one.
 autoplay                 | `false`       | Will try to play at the start of the page if a temporal url is given or the audio was previously exited
 
 Some properties are still not documented, for internal usage, as they may evolve.
@@ -83,25 +83,25 @@ Methods :
 
 name                                         | returns | usage
 ---------------------------------------------|---------|------
-set_mode_container(string)                   |         | Change the presentation mode, [used for `mode=""` attribute](./INSTALL#attributes-references)
-set_act_container(string)                    |         | Change the presentation style between `'loading'`, `'glow'`, `'pause'` or `'play'`, reflecting the media tag status
-set_hide_container(array)                    |         | Array of strings, may contains `'actions'` or `'chapters'`, [used for `hide=""` attribute](./INSTALL#attributes-references)
-show_throbber_at(number)                     |         | Display the throbber on the timeline at a given time in seconds.
-hide_throbber()                              |         | Hide immediately the throbber
-hide_throbber_later()                        |         | Hide the throbber later (waiting 1 seconds). A newer call will delay the hiding later. News at 11.
-show_interface(string)                       |         | Switch between `'main'`, `'share'` or `'error'` interfaces.
-add_plane(plane, title, data)                | boolean | Create an annotation plane (¹)(²)(³)
-remove_plane(plane)                          | boolean | Remove an annotation plane (¹)(²)
-add_point(plane, timecode, point, data)      | boolean | Add an annotation point to a plane at a timecode (¹)(²)(⁴)
-get_point(plane, point)						 | object  | Return data for a point (³)
-edit_point(plane, point, data)				 |         | Modify data for a point (³). Only existing keys from get_point() are updated
-remove_point(plane, point)                   | boolean | Remove an annotation point (¹)(²)
-clear_plane(plane)                           |         | Remove any points from an annotation plane (¹)(²)
-redraw_all_planes()                          |         | Redraw any annotation planes and points
-highlight_point(plane, point, class, mirror) |         | Highlight a perticuliar annotation point, class is `with-preview` by default (²)
-remove_highlights_points(plane, class, mirror) |         | CHANGED SINCE 6.7! Remove highlights on plane, class is `with-preview` by default (²)
-inject_css(style_key, css)					 |		   | Inject a `<style>` tag into the shadowDom of the component. (²)
-remove_css(style_key)						 |		   | Remove an inject `<style>` from the shadowDom. (²)
+setModeContainer(string)                   |         | Change the presentation mode, [used for `mode=""` attribute](./INSTALL#attributes-references)
+setActContainer(string)                    |         | Change the presentation style between `'loading'`, `'glow'`, `'pause'` or `'play'`, reflecting the media tag status
+setHideContainer(array)                    |         | Array of strings, may contains `'actions'` or `'chapters'`, [used for `hide=""` attribute](./INSTALL#attributes-references)
+showThrobberAt(number)                     |         | Display the throbber on the timeline at a given time in seconds.
+hideThrobber()                              |         | Hide immediately the throbber
+hideThrobberLater()                        |         | Hide the throbber later (waiting 1 seconds). A newer call will delay the hiding later. News at 11.
+showInterface(string)                       |         | Switch between `'main'`, `'share'` or `'error'` interfaces.
+addPlane(plane, title, data)                | boolean | Create an annotation plane (¹)(²)(³)
+removePlane(plane)                          | boolean | Remove an annotation plane (¹)(²)
+addPoint(plane, timecode, point, data)      | boolean | Add an annotation point to a plane at a timecode (¹)(²)(⁴)
+point(plane, point)						 | object  | Return data for a point (³)
+editPoint(plane, point, data)				 |         | Modify data for a point (³). Only existing keys from point() are updated
+removePoint(plane, point)                   | boolean | Remove an annotation point (¹)(²)
+clearPlane(plane)                           |         | Remove any points from an annotation plane (¹)(²)
+redrawAllPlanes()                          |         | Redraw any annotation planes and points
+highlightPoint(plane, point, class, mirror) |         | Highlight a perticuliar annotation point, class is `with-preview` by default (²)
+removeHighlightsPoints(plane, class, mirror) |         | CHANGED SINCE 6.7! Remove highlights on plane, class is `with-preview` by default (²)
+injectCss(style_key, css)					 |		   | Inject a `<style>` tag into the shadowDom of the component. (²)
+removeCss(style_key)						 |		   | Remove an inject `<style>` from the shadowDom. (²)
 
 (¹) Only available via `CpuAudioElement.CPU`
 
@@ -123,7 +123,7 @@ key         | type                        | default value | usage
 image       | boolean or string           | `false`       | Url of an image, `false` elsewhere
 link        | boolean or string of function | `true`        | Click action :  `false` for nothing, `true` to link moment, url string for an external link
 text        | string                      |               | Legend
-start       | number                      |               | The anotation point begins at this timecode (not used in add_point)
+start       | number                      |               | The anotation point begins at this timecode (not used in addPoint)
 end         | number                      | `undefined`   | The anotation point ends at this timecode
 
 
@@ -135,21 +135,21 @@ Events
 event_name          | description                                          | detail, see next table (⁵)
 --------------------|------------------------------------------------------|------------------------------------------
 CPU_ready	        | The DOM component and its interface are ready        |
-CPU_add_point       | During `add_point` method, even private ones         | plane, point, data_point
-CPU_draw_point      | A point is drawn or redrawn                          | plane, point, data_point, element_point_track, element_point_panel
-CPU_edit_point      | During `edit_point` method                           | plane, point, data_point
-CPU_remove_point    | During `remove_point` method, even private ones      | plane, point
+CPU_addPoint       | During `addPoint` method, even private ones         | plane, point, data_point
+CPU_drawPoint      | A point is drawn or redrawn                          | plane, point, data_point, element_pointTrack, element_pointPanel
+CPU_editPoint      | During `editPoint` method                           | plane, point, data_point
+CPU_removePoint    | During `removePoint` method, even private ones      | plane, point
 CPU_chapter_changed | A cue event defined in WebVTT occured                | cue
 
 (⁵) Returned object informations usually have a `detail` object, it may contains :
 
 detail key          | type    | description
 --------------------|---------|-------------
-plane               | string  | the name of the plane, as given in the `add_plane` method, `plane` parameter
-point               | string  | the name of the point, as given in the `add_point` method, `point` parameter
-data_point          | object  | data for the point, as in `get_point(plane, point)`
-element_point_track | Element | The created or existing point in the time track
-element_point_panel | Element | The created or existing point in the panel
+plane               | string  | the name of the plane, as given in the `addPlane` method, `plane` parameter
+point               | string  | the name of the point, as given in the `addPoint` method, `point` parameter
+data_point          | object  | data for the point, as in `point(plane, point)`
+element_pointTrack | Element | The created or existing point in the time track
+element_pointPanel | Element | The created or existing point in the panel
 
 
 As the `event.target` is the `<cpu-audio>` element, you can reach its API with `event.target.CPU`. Here is a way to do it for asynchronous build :
@@ -157,7 +157,7 @@ As the `event.target` is the `<cpu-audio>` element, you can reach its API with `
 ```js
 function CPU_ready(event) {
 	let CPU = event.target.CPU;
-	CPU.add_plane("hello_world", "Now, we can play !", {});
+	CPU.addPlane("hello_world", "Now, we can play !", {});
 }
 
 document.addEventListener('CPU_ready', CPU_ready);

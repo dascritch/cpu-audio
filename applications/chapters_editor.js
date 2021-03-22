@@ -121,7 +121,7 @@ function check_for_actions(event) {
                 interpret_line(this_line_element);
                 break ;
             case 'remove' :
-                sound_CPU.remove_point('cursors', this_line_element.id);
+                sound_CPU.removePoint('cursors', this_line_element.id);
                 this_line_element.remove();
                 event.preventDefault();
                 break ;
@@ -132,29 +132,29 @@ function check_for_actions(event) {
 /**
  * Hide all lines of the chapters editor, show only the one focused
  *
- * @param      {string}  point_name  The point name to show
+ * @param      {string}  pointName  The point name to show
  * note : a second parameter (event) is added due to eventListener, but is ignored
  */
-function show_only_line(point_name) {
+function show_only_line(pointName) {
     Array.from(
         document.querySelectorAll('p.line')
         ).forEach( (element) => {
             element.classList.remove('editing');
         });
-    let active_line = document.getElementById(point_name) ;
+    let active_line = document.getElementById(pointName) ;
     if (active_line) {
         active_line.classList.add('editing');
         active_line.querySelector('input[type="text"]').focus();
     }
 }
 
-function cursor_hover(point_name) {
-    let data = sound_CPU.get_point('cursors', point_name);
-    sound_CPU.show_throbber_at(data.start);
+function cursor_hover(pointName) {
+    let data = sound_CPU.point('cursors', pointName);
+    sound_CPU.showThrobberAt(data.start);
 }
 
-function cursor_out(point_name) {
-    sound_CPU.hide_throbber();
+function cursor_out(pointName) {
+    sound_CPU.hideThrobber();
 }
 
 ///* not yet ready
@@ -163,21 +163,21 @@ let x_offset = 0;
 let track_width = 0;
 let seeked_time;
 let clicked_a;
-let clicked_point_name;
+let clicked_pointName;
 let clicked_track;
 let this_line_time_element;
-function drag_start(_clicked_a, _clicked_point_name, event) {
+function drag_start(_clicked_a, _clicked_pointName, event) {
     clicked_a = _clicked_a;
-    clicked_point_name = _clicked_point_name;
+    clicked_pointName = _clicked_pointName;
     clicked_track = clicked_a.closest('aside');
     x_offset = clicked_track.getBoundingClientRect().left
     track_width = clicked_track.clientWidth;
 
     current_x = event.clientX - x_offset;
     seeked_time = sound_element.duration * current_x / track_width;
-    sound_CPU.show_throbber_at(seeked_time);
+    sound_CPU.showThrobberAt(seeked_time);
 
-    this_line_time_element = document.querySelector(`p#${clicked_point_name} .timecode_input`);
+    this_line_time_element = document.querySelector(`p#${clicked_pointName} .timecode_input`);
     event.preventDefault();
 }
 
@@ -193,7 +193,7 @@ function drag(event) {
         return ;
     }
     
-    sound_CPU.show_throbber_at(seeked_time);
+    sound_CPU.showThrobberAt(seeked_time);
     sound_CPU.position_time_element(clicked_a, seeked_time, seeked_time);
     // should we mode play position too ?
     event.preventDefault();
@@ -205,7 +205,7 @@ function drag_end(event) {
     }
     clicked_track = false;
     this_line_time_element.value = convert.secondsInPaddledColonTime(seeked_time);
-    sound_CPU.edit_point('cursors', clicked_point_name, {start : seeked_time});
+    sound_CPU.editPoint('cursors', clicked_pointName, {start : seeked_time});
     //sound_CPU.
 }
 //*/
@@ -213,48 +213,48 @@ function drag_end(event) {
 /**
  * When a repaint occurs on a cpu-audio component point element, we add our events
  *
- * @class      CPU_draw_point (name)
+ * @class      CPU_drawPoint (name)
  * @param      {<type>}  event   The event
  */
-function CPU_draw_point(event) {
+function CPU_drawPoint(event) {
     // I show how you can reach CPU API from an event. Not used here, but it may helps someone digging into it
     // let  CPU_controler = event.target.CPU;
 
     let detail = event.detail;
-    let element_point_track = detail.element_point_track;
-    let element_point_panel = detail.element_point_panel;
+    let element_pointTrack = detail.element_pointTrack;
+    let element_pointPanel = detail.element_pointPanel;
 
-    if ((!element_point_track) || (!element_point_panel)) {
+    if ((!element_pointTrack) || (!element_pointPanel)) {
         // May happen is phracking github pages integration
         return;
     }
 
     // first, we remove pre-existing events    
-    element_point_track.removeEventListener('mouseover', cursor_hover);
-    element_point_track.removeEventListener('mouseout',cursor_out);
-    element_point_track.removeEventListener('click', show_only_line);
-    element_point_panel.removeEventListener('mouseover', cursor_hover);
-    element_point_panel.removeEventListener('mouseout',cursor_out);
-    element_point_panel.removeEventListener('click', show_only_line);
+    element_pointTrack.removeEventListener('mouseover', cursor_hover);
+    element_pointTrack.removeEventListener('mouseout',cursor_out);
+    element_pointTrack.removeEventListener('click', show_only_line);
+    element_pointPanel.removeEventListener('mouseover', cursor_hover);
+    element_pointPanel.removeEventListener('mouseout',cursor_out);
+    element_pointPanel.removeEventListener('click', show_only_line);
 
-    element_point_track.removeEventListener('pointerdown', drag_start);
+    element_pointTrack.removeEventListener('pointerdown', drag_start);
     
     // When you click on a point, we show the line editing interface
     // we bind() the function to pass its arguments. 
-    element_point_track.addEventListener('mouseover', cursor_hover.bind(event, detail.point));
-    element_point_track.addEventListener('mouseout',cursor_out.bind(event, detail.point));
-    element_point_track.addEventListener('click', show_only_line.bind(event, detail.point));
+    element_pointTrack.addEventListener('mouseover', cursor_hover.bind(event, detail.point));
+    element_pointTrack.addEventListener('mouseout',cursor_out.bind(event, detail.point));
+    element_pointTrack.addEventListener('click', show_only_line.bind(event, detail.point));
 
-    element_point_track.addEventListener('pointerdown', drag_start.bind(undefined, element_point_track, detail.point));
+    element_pointTrack.addEventListener('pointerdown', drag_start.bind(undefined, element_pointTrack, detail.point));
 
-    element_point_panel.addEventListener('mouseover', cursor_hover.bind(event, detail.point));
-    element_point_panel.addEventListener('mouseout',cursor_out.bind(event, detail.point));
-    element_point_panel.addEventListener('click', show_only_line.bind(event, detail.point));
+    element_pointPanel.addEventListener('mouseover', cursor_hover.bind(event, detail.point));
+    element_pointPanel.addEventListener('mouseout',cursor_out.bind(event, detail.point));
+    element_pointPanel.addEventListener('click', show_only_line.bind(event, detail.point));
 
 }
 
 // imported from src/utils.js
-function escape_html(text) {
+function escapeHtml(text) {
     let burn_after_reading = document.createElement('span');
     burn_after_reading.innerText = text;
     let out = burn_after_reading.innerHTML;
@@ -273,7 +273,7 @@ function interpret_line(this_line_element, from_interpret_form=false) {
 
     // very simple clean HTML
     if ((text.split('<').length) !== (text.split('>').length)) {
-        text = escape_html(text);
+        text = escapeHtml(text);
     }
 
     if ((!from_interpret_form) && (Number(this_line_element.dataset.time) !== Number(convert.timeInSeconds(time)))) {
@@ -303,11 +303,11 @@ function interpret_line(this_line_element, from_interpret_form=false) {
             'start' : seconds
     }
 
-    if (! sound_CPU.get_point('cursors', this_line_element.id)) {
-        sound_CPU.add_point('cursors', seconds, this_line_element.id, data);
+    if (! sound_CPU.point('cursors', this_line_element.id)) {
+        sound_CPU.addPoint('cursors', seconds, this_line_element.id, data);
     } else {
         data.start = seconds;
-        sound_CPU.edit_point('cursors', this_line_element.id, data);
+        sound_CPU.editPoint('cursors', this_line_element.id, data);
     }
 }
 
@@ -393,7 +393,7 @@ function interpret_form(_event) {
 
     _event?.preventDefault();
     chapters = [];
-    sound_CPU.clear_plane('cursors');
+    sound_CPU.clearPlane('cursors');
 
     // this segment is a bit tricky : we sort lines per their timecode, without moving them from the DOM
     // If we move them, we lose focus and cursor positions, very annoying
@@ -440,7 +440,7 @@ document.addEventListener('DOMContentLoaded', e => {
     document.querySelector('#configure').addEventListener('submit', check_configure);
 
     /* Building addedd events into CPU-audio panels */
-    document.addEventListener('CPU_draw_point', CPU_draw_point);
+    document.addEventListener('CPU_drawPoint', CPU_drawPoint);
 
     /* Chapter editor */
     add_events_line(document.querySelector('p.line'));
@@ -461,8 +461,8 @@ document.addEventListener('CPU_ready', e => {
     // sometimes not fired, so we needed a "ready" event
     component_element = e.target;
     sound_CPU = component_element.CPU;
-    sound_CPU.add_plane('cursors', 'Chapters preview', {track : 'cursors', panel : true});
-    sound_CPU.inject_css('cursors', `
+    sound_CPU.addPlane('cursors', 'Chapters preview', {track : 'cursors', panel : true});
+    sound_CPU.injectCss('cursors', `
         .cursors {
             left: -6px;
             user-select: none;

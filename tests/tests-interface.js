@@ -333,9 +333,9 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		});
 	});
 
-	QUnit.test( "Public API : disable no cacophony feature via document.CPU.only_play_one_audiotag", function( assert ) {
+	QUnit.test( "Public API : disable no cacophony feature via document.CPU.playStopOthers", function( assert ) {
 		let done = assert.async();
-		document.CPU.only_play_one_audiotag = false;
+		document.CPU.playStopOthers = false;
 		assert.expect(2);
 		audiotag.play();
 		// Dynamic add a second audio player
@@ -370,7 +370,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 	});
 	*/
 
-	QUnit.test( "Public API : add_plane won't accept void or out of /[a-zA-Z0-9\\-_]+/ range name ", function( assert ) {
+	QUnit.test( "Public API : addPlane won't accept void or out of /[a-zA-Z0-9\\-_]+/ range name ", function( assert ) {
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
@@ -381,11 +381,11 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_component = secondary_audiotag.closest('cpu-audio');
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
-		assert.ok(! secondary_API_CPU.add_plane(''), 'function refuse empty name');
-		assert.ok(! secondary_API_CPU.add_plane('*&0f'), 'function refuse invalid name');
+		assert.ok(! secondary_API_CPU.addPlane(''), 'function refuse empty name');
+		assert.ok(! secondary_API_CPU.addPlane('*&0f'), 'function refuse invalid name');
 	});
 
-	QUnit.test( "Public API : add_plane should create elements", function( assert ) {
+	QUnit.test( "Public API : addPlane should create elements", function( assert ) {
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
@@ -397,8 +397,8 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
 		assert.deepEqual(secondary_audiotag._CPU_planes, {}, 'empty audio._CPU_planes at start');
-		assert.equal(secondary_API_CPU.get_plane('zgou'), undefined, 'get_plane() returns undefined when nothing exists');
-		assert.ok(secondary_API_CPU.add_plane('hello', 'Hello<>&'), 'function accepts');
+		assert.equal(secondary_API_CPU.plane('zgou'), undefined, 'plane() returns undefined when nothing exists');
+		assert.ok(secondary_API_CPU.addPlane('hello', 'Hello<>&'), 'function accepts');
 		assert.ok(secondary_interfacetag.querySelector('aside#track_«hello»') , 'DOM element aside added in the track line');
 		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello»') , 'DOM element div added as a panel');
 		assert.deepEqual(Object.keys(secondary_audiotag._CPU_planes).length, 1, 'one audio._CPU_planes created');
@@ -406,16 +406,16 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		
 
 		assert.equal(secondary_interfacetag.querySelector('div.panel#panel_«hello» h6').innerText, 'Hello<>&', 'panel as a h6 with a properly escaped title');
-		secondary_API_CPU.add_plane('untitled');
+		secondary_API_CPU.addPlane('untitled');
 		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«untitled» h6').classList.contains('no'), 'Untitled panel have an hidden h6');
 
-		assert.notEqual(secondary_API_CPU.get_plane('hello'), undefined, 'get_plane() returns object');
-		assert.equal(secondary_API_CPU.get_plane_track('hello').tagName, 'ASIDE', 'get_plane_track() returns DOM element and is a <aside>');
-		assert.equal(secondary_API_CPU.get_plane_panel('hello').tagName, 'DIV', 'get_plane_panel() returns DOM element and is a <div>');
-		assert.equal(secondary_API_CPU.get_plane_nav('hello').tagName, 'UL', 'get_plane_nav() returns DOM element and is a <ul>');
+		assert.notEqual(secondary_API_CPU.plane('hello'), undefined, 'plane() returns object');
+		assert.equal(secondary_API_CPU.planeTrack('hello').tagName, 'ASIDE', 'planeTrack() returns DOM element and is a <aside>');
+		assert.equal(secondary_API_CPU.planePanel('hello').tagName, 'DIV', 'planePanel() returns DOM element and is a <div>');
+		assert.equal(secondary_API_CPU.planeNav('hello').tagName, 'UL', 'planeNav() returns DOM element and is a <ul>');
 	});
 
-	QUnit.test( "Public API : add_plane cannot create an element if a already existing same name exists", function( assert ) {
+	QUnit.test( "Public API : addPlane cannot create an element if a already existing same name exists", function( assert ) {
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
@@ -426,20 +426,20 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_component = secondary_audiotag.closest('cpu-audio');
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
-		assert.ok(secondary_API_CPU.add_plane('hello'), 'first call accepts');
-		assert.ok(! secondary_API_CPU.add_plane('hello'), 'second call refuses');
-		assert.ok(secondary_API_CPU.get_plane_track('hello'), 'Element aside added in shadowDom');
+		assert.ok(secondary_API_CPU.addPlane('hello'), 'first call accepts');
+		assert.ok(! secondary_API_CPU.addPlane('hello'), 'second call refuses');
+		assert.ok(secondary_API_CPU.planeTrack('hello'), 'Element aside added in shadowDom');
 	});
 
-	QUnit.test("get_point_names_from_id", function( assert ) {
-		assert.deepEqual(componenttag.CPU.get_point_names_from_id(''), ["",""], 'on empty, returns ["",""]');
-		assert.deepEqual(componenttag.CPU.get_point_names_from_id('track_«_chapters»'), ["_chapters",""], 'on track_«_chapters», returns ["_chapters",""]');
-		assert.deepEqual(componenttag.CPU.get_point_names_from_id('track_«_chapters»_point_«chap-3»'), ["_chapters","chap-3"], 'on track_«_chapters», returns ["_chapters","chap-3"]');
-		assert.deepEqual(componenttag.CPU.get_point_names_from_id('panel_«_chapters»'), ["_chapters",""], 'on panel_«_chapters», returns ["_chapters",""]');
-		assert.deepEqual(componenttag.CPU.get_point_names_from_id('panel_«_chapters»_point_«chap-3»'), ["_chapters","chap-3"], 'on plane name panel_«_chapters»_point_«chap-3», returns ["_chapters","chap-3"]');
+	QUnit.test("planeAndPointNamesFromId", function( assert ) {
+		assert.deepEqual(componenttag.CPU.planeAndPointNamesFromId(''), ["",""], 'on empty, returns ["",""]');
+		assert.deepEqual(componenttag.CPU.planeAndPointNamesFromId('track_«_chapters»'), ["_chapters",""], 'on track_«_chapters», returns ["_chapters",""]');
+		assert.deepEqual(componenttag.CPU.planeAndPointNamesFromId('track_«_chapters»_point_«chap-3»'), ["_chapters","chap-3"], 'on track_«_chapters», returns ["_chapters","chap-3"]');
+		assert.deepEqual(componenttag.CPU.planeAndPointNamesFromId('panel_«_chapters»'), ["_chapters",""], 'on panel_«_chapters», returns ["_chapters",""]');
+		assert.deepEqual(componenttag.CPU.planeAndPointNamesFromId('panel_«_chapters»_point_«chap-3»'), ["_chapters","chap-3"], 'on plane name panel_«_chapters»_point_«chap-3», returns ["_chapters","chap-3"]');
 	});
 
-	QUnit.test( "Public API : remove_plane", function( assert ) {
+	QUnit.test( "Public API : removePlane", function( assert ) {
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
@@ -450,18 +450,18 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_component = secondary_audiotag.closest('cpu-audio');
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
-		assert.ok(! secondary_API_CPU.remove_plane(''), 'function refuse empty name');
-		assert.ok(! secondary_API_CPU.remove_plane('*&0f'), 'function refuse invalid name');
-		assert.ok(! secondary_API_CPU.remove_plane('a_girl_has_no_name'), 'function refuse inexisting plane');
+		assert.ok(! secondary_API_CPU.removePlane(''), 'function refuse empty name');
+		assert.ok(! secondary_API_CPU.removePlane('*&0f'), 'function refuse invalid name');
+		assert.ok(! secondary_API_CPU.removePlane('a_girl_has_no_name'), 'function refuse inexisting plane');
 
-		assert.ok(secondary_API_CPU.add_plane('hello'), 'create plane')
-		assert.ok(secondary_API_CPU.remove_plane('hello'), 'remove created plane successfull');
+		assert.ok(secondary_API_CPU.addPlane('hello'), 'create plane')
+		assert.ok(secondary_API_CPU.removePlane('hello'), 'remove created plane successfull');
 		assert.ok(! ('hello' in secondary_audiotag._CPU_planes), 'audio._CPU_planes named “hello” is removed');
-		assert.equal(secondary_API_CPU.get_plane('hello'), undefined, 'get_plane() returns undefined');
-		assert.ok(!secondary_API_CPU.get_plane_track('hello'), 'Element aside removed in shadowDom');
+		assert.equal(secondary_API_CPU.plane('hello'), undefined, 'plane() returns undefined');
+		assert.ok(!secondary_API_CPU.planeTrack('hello'), 'Element aside removed in shadowDom');
 	});
 
-	QUnit.test( "Public API : add_point", function( assert ) {
+	QUnit.test( "Public API : addPoint", function( assert ) {
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
@@ -477,25 +477,25 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 			'link' : true
 		};
 
-		assert.ok(! secondary_API_CPU.add_point('hello', 2, 'point', data), 'function cannot works without a created plane');
-		secondary_API_CPU.add_plane('hello');
-		assert.ok(! secondary_API_CPU.add_point('hello', -2, 'point', data), 'function cannot works with a negative timecode');
-		assert.ok(! secondary_API_CPU.add_point('hello', 2, '', data), 'function cannot works with an empty name');
-		assert.ok(! secondary_API_CPU.add_point('hello', 2, '*&0f', data), 'function refuse invalid name');
+		assert.ok(! secondary_API_CPU.addPoint('hello', 2, 'point', data), 'function cannot works without a created plane');
+		secondary_API_CPU.addPlane('hello');
+		assert.ok(! secondary_API_CPU.addPoint('hello', -2, 'point', data), 'function cannot works with a negative timecode');
+		assert.ok(! secondary_API_CPU.addPoint('hello', 2, '', data), 'function cannot works with an empty name');
+		assert.ok(! secondary_API_CPU.addPoint('hello', 2, '*&0f', data), 'function refuse invalid name');
 
-		assert.equal(secondary_API_CPU.get_point('hello', 'world'), undefined, 'get_point() returns undefined');
+		assert.equal(secondary_API_CPU.point('hello', 'world'), undefined, 'point() returns undefined');
 
-		assert.ok(secondary_API_CPU.add_point('hello', 2, 'world', data), 'function accept when parameters are valid');
-		assert.ok(!secondary_API_CPU.add_point('hello', 10, 'world', data), 'function refuse another name with the same point name in the same track');
+		assert.ok(secondary_API_CPU.addPoint('hello', 2, 'world', data), 'function accept when parameters are valid');
+		assert.ok(!secondary_API_CPU.addPoint('hello', 10, 'world', data), 'function refuse another name with the same point name in the same track');
 
-		assert.notEqual(secondary_API_CPU.get_point('hello', 'world'), undefined, 'get_point() returns data');
+		assert.notEqual(secondary_API_CPU.point('hello', 'world'), undefined, 'point() returns data');
 		assert.ok(secondary_interfacetag.querySelector('aside#track_«hello» > a#track_«hello»_point_«world»') , 'DOM element point added in aside track');
 		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > ul > li#panel_«hello»_point_«world»'), 'DOM element point added in panel');
 
-		let point_in_track = secondary_API_CPU.get_point_track('hello', 'world');
-		let point_in_panel = secondary_API_CPU.get_point_panel('hello', 'world');
-		assert.ok(point_in_track, 'get_point_track() returns DOM element');
-		assert.ok(point_in_panel, 'get_point_panel() returns DOM element');
+		let point_in_track = secondary_API_CPU.pointTrack('hello', 'world');
+		let point_in_panel = secondary_API_CPU.pointPanel('hello', 'world');
+		assert.ok(point_in_track, 'pointTrack() returns DOM element');
+		assert.ok(point_in_panel, 'pointPanel() returns DOM element');
 
 		let time_in_point = point_in_panel.querySelector('time');
 		assert.ok(time_in_point, 'point in panel has a <time> indication');
@@ -509,7 +509,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 	});
 
-	QUnit.test( "Public API : remove_point", function( assert ) {
+	QUnit.test( "Public API : removePoint", function( assert ) {
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
@@ -520,20 +520,20 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_component = secondary_audiotag.closest('cpu-audio');
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
-		secondary_API_CPU.add_plane('hello');
-		assert.ok(! secondary_API_CPU.remove_point('pipo', 'point'), 'function cannot works with a non-existing plane');
-		assert.ok(! secondary_API_CPU.remove_point('hello', 'point'), 'function cannot works with a non-existing point');
-		secondary_API_CPU.add_point('hello', 2, 'point');
-		assert.ok(secondary_API_CPU.remove_point('hello', 'point'), 'function accept when parameters are valid');
+		secondary_API_CPU.addPlane('hello');
+		assert.ok(! secondary_API_CPU.removePoint('pipo', 'point'), 'function cannot works with a non-existing plane');
+		assert.ok(! secondary_API_CPU.removePoint('hello', 'point'), 'function cannot works with a non-existing point');
+		secondary_API_CPU.addPoint('hello', 2, 'point');
+		assert.ok(secondary_API_CPU.removePoint('hello', 'point'), 'function accept when parameters are valid');
 
-		assert.equal(secondary_API_CPU.get_point('hello', 'world'), undefined, 'get_point() returns undefined');
-		assert.equal(secondary_API_CPU.get_point_track('hello', 'point'), null , 'get_aside_point_track() returns null');
-		assert.equal(secondary_API_CPU.get_point_panel('hello', 'point'), null, 'get_aside_point_panel() returns null');
+		assert.equal(secondary_API_CPU.point('hello', 'world'), undefined, 'point() returns undefined');
+		assert.equal(secondary_API_CPU.pointTrack('hello', 'point'), null , 'get_aside_pointTrack() returns null');
+		assert.equal(secondary_API_CPU.pointPanel('hello', 'point'), null, 'get_aside_pointPanel() returns null');
 		assert.ok(! secondary_interfacetag.querySelector('aside#aside_«hello» > div#aside_«hello»_point_«point»') , 'DOM element point removed from aside track');
 		assert.ok(! secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > li#panel_«hello»_point_«point»') , 'DOM element point removed from panel');
 	});
 
-	QUnit.test( "Public API : clear_plane", function( assert ) {
+	QUnit.test( "Public API : clearPlane", function( assert ) {
 		playground.innerHTML = `
 		<cpu-audio>
 			<audio id="secondary" controls="controls" muted>
@@ -544,51 +544,51 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_component = secondary_audiotag.closest('cpu-audio');
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
-		secondary_API_CPU.add_plane('hello');
-		secondary_API_CPU.add_point('hello', 2, 'point');
-		secondary_API_CPU.add_point('hello', 20, 'point2');
-		assert.ok(! secondary_API_CPU.clear_plane('point'), 'function return false when parameter is invalid');
-		assert.ok(secondary_API_CPU.clear_plane('hello'), 'function accept when parameter is valid');
+		secondary_API_CPU.addPlane('hello');
+		secondary_API_CPU.addPoint('hello', 2, 'point');
+		secondary_API_CPU.addPoint('hello', 20, 'point2');
+		assert.ok(! secondary_API_CPU.clearPlane('point'), 'function return false when parameter is invalid');
+		assert.ok(secondary_API_CPU.clearPlane('hello'), 'function accept when parameter is valid');
 
-		assert.equal(secondary_API_CPU.get_point_track('hello', 'point'), null , 'get_point_track() returns null');
-		assert.equal(secondary_API_CPU.get_point_panel('hello', 'point'), null, 'get_point_panel() returns null');
+		assert.equal(secondary_API_CPU.pointTrack('hello', 'point'), null , 'pointTrack() returns null');
+		assert.equal(secondary_API_CPU.pointPanel('hello', 'point'), null, 'pointPanel() returns null');
 		assert.ok(! secondary_interfacetag.querySelector('aside#aside_«hello» > div#aside_«hello»_point_«point»') , 'DOM element point removed from aside track');
 		assert.ok(! secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > li#panel_«hello»_point_«point»') , 'DOM element point removed from panel');
-		assert.equal(secondary_API_CPU.get_point_track('hello', 'point2'), null , 'second point removed');
+		assert.equal(secondary_API_CPU.pointTrack('hello', 'point2'), null , 'second point removed');
 	});
 
 	QUnit.skip( "hash_order end,start create a “private” plane", function (assert){
 		/* WHY THE SECOND TEST DOESN'T WORK ???? WHHYYYYY??????
 		assert.expect( 3 );
 		let done = assert.async();
-		assert.equal(componenttag.CPU.get_plane('_borders'), undefined, 'inexisting _borders plane on undefined end.');
+		assert.equal(componenttag.CPU.plane('_borders'), undefined, 'inexisting _borders plane on undefined end.');
 		cpu.trigger.hash_order('track&t=20,100', function() {
 			audiotag.CPU_update(); // may not be fired fast enough 
-			console.log(componenttag.CPU.get_plane('_borders') , audiotag._CPU_planes)
-			assert.notEqual(componenttag.CPU.get_plane('_borders'), undefined, 'existing _borders plane on specified end.');
+			console.log(componenttag.CPU.plane('_borders') , audiotag._CPU_planes)
+			assert.notEqual(componenttag.CPU.plane('_borders'), undefined, 'existing _borders plane on specified end.');
 			cpu.trigger.hash_order('track&t=40', function() {
 				audiotag.CPU_update();
-				assert.equal(componenttag.CPU.get_plane('_borders'), undefined, '_borders removed out of previous bordered time.');
+				assert.equal(componenttag.CPU.plane('_borders'), undefined, '_borders removed out of previous bordered time.');
 				done();
 			});
 		});
 		*/
 	});
 
-	QUnit.test( "Public API : translate_vtt", function( assert ) {
-		assert.equal(componenttag.CPU.translate_vtt('Hello, World !'), 'Hello, World !', 'translate_vtt() bypass simple text');
-		assert.equal(componenttag.CPU.translate_vtt('Hello <i>World</i>'), 'Hello <i>World</i>', 'bypass simple <i> tag');
-		assert.equal(componenttag.CPU.translate_vtt('Hello <I>World</I>'), 'Hello <i>World</i>', 'Accept capitalized tags');
-		assert.equal(componenttag.CPU.translate_vtt('Hello <i.classname>World</i>'), 'Hello <i>World</i>', 'remove classnames');
-		assert.equal(componenttag.CPU.translate_vtt('Hello <em>World</em>'), 'Hello <em>World</em>', 'bypass <em>, used in some legacy CPU shows');
-		assert.equal(componenttag.CPU.translate_vtt('Hello <b>World</b>'), 'Hello <b>World</b>', 'bypass <b>');
-		assert.equal(componenttag.CPU.translate_vtt('Hello <bold>World</bold>'), 'Hello <strong>World</strong>', 'transform <bold> → <strong> (declared in the MDN page, but never seen in standards pages)');
-		assert.equal(componenttag.CPU.translate_vtt('Hello <u>World</u>'), 'Hello <u>World</u>', 'bypass <u>');
-		assert.equal(componenttag.CPU.translate_vtt('Hello <lang fr>Monde</lang>'), 'Hello <i lang="fr">Monde</i>', 'transform <lang xx> into <i lang="xx">, emphasis for typographic convention');
-		assert.equal(componenttag.CPU.translate_vtt('Hello <a href=".">World</a>'), 'Hello World', 'remove <a href>');
-		assert.equal(componenttag.CPU.translate_vtt('Hello\nWorld\nHow are you ?'), 'Hello<br/>World<br/>How are you ?', 'transform CR into <br>');
-		assert.equal(componenttag.CPU.translate_vtt('♪ Johnny Mercer, Robert Emmet Dolan <em lang="en">featuring</em> Hedy Lamarr - <em>Just a moment more</em>'), '♪ Johnny Mercer, Robert Emmet Dolan <em>featuring</em> Hedy Lamarr - <em>Just a moment more</em>', 'A valid example with 2 consecutives <em> tags')
-		assert.equal(componenttag.CPU.translate_vtt('♪ Johnny Mercer, Robert Emmet Dolan <em lang="en"<featuring</em> Hedy Lamarr - <em>Just a moment more</em>'), '♪ Johnny Mercer, Robert Emmet Dolan &lt;em lang="en"&lt;featuring&lt;/em&gt; Hedy Lamarr - &lt;em&gt;Just a moment more&lt;/em&gt;', 'An invalid example with unmatching < and >, replaced by html escapes')
+	QUnit.test( "Public API : translateVTT", function( assert ) {
+		assert.equal(componenttag.CPU.translateVTT('Hello, World !'), 'Hello, World !', 'translateVTT() bypass simple text');
+		assert.equal(componenttag.CPU.translateVTT('Hello <i>World</i>'), 'Hello <i>World</i>', 'bypass simple <i> tag');
+		assert.equal(componenttag.CPU.translateVTT('Hello <I>World</I>'), 'Hello <i>World</i>', 'Accept capitalized tags');
+		assert.equal(componenttag.CPU.translateVTT('Hello <i.classname>World</i>'), 'Hello <i>World</i>', 'remove classnames');
+		assert.equal(componenttag.CPU.translateVTT('Hello <em>World</em>'), 'Hello <em>World</em>', 'bypass <em>, used in some legacy CPU shows');
+		assert.equal(componenttag.CPU.translateVTT('Hello <b>World</b>'), 'Hello <b>World</b>', 'bypass <b>');
+		assert.equal(componenttag.CPU.translateVTT('Hello <bold>World</bold>'), 'Hello <strong>World</strong>', 'transform <bold> → <strong> (declared in the MDN page, but never seen in standards pages)');
+		assert.equal(componenttag.CPU.translateVTT('Hello <u>World</u>'), 'Hello <u>World</u>', 'bypass <u>');
+		assert.equal(componenttag.CPU.translateVTT('Hello <lang fr>Monde</lang>'), 'Hello <i lang="fr">Monde</i>', 'transform <lang xx> into <i lang="xx">, emphasis for typographic convention');
+		assert.equal(componenttag.CPU.translateVTT('Hello <a href=".">World</a>'), 'Hello World', 'remove <a href>');
+		assert.equal(componenttag.CPU.translateVTT('Hello\nWorld\nHow are you ?'), 'Hello<br/>World<br/>How are you ?', 'transform CR into <br>');
+		assert.equal(componenttag.CPU.translateVTT('♪ Johnny Mercer, Robert Emmet Dolan <em lang="en">featuring</em> Hedy Lamarr - <em>Just a moment more</em>'), '♪ Johnny Mercer, Robert Emmet Dolan <em>featuring</em> Hedy Lamarr - <em>Just a moment more</em>', 'A valid example with 2 consecutives <em> tags')
+		assert.equal(componenttag.CPU.translateVTT('♪ Johnny Mercer, Robert Emmet Dolan <em lang="en"<featuring</em> Hedy Lamarr - <em>Just a moment more</em>'), '♪ Johnny Mercer, Robert Emmet Dolan &lt;em lang="en"&lt;featuring&lt;/em&gt; Hedy Lamarr - &lt;em&gt;Just a moment more&lt;/em&gt;', 'An invalid example with unmatching < and >, replaced by html escapes')
 	});
 
 
@@ -620,7 +620,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 			let secondary_component = secondary_audiotag.closest('cpu-audio');
 			let secondary_API_CPU = secondary_component.CPU;
 			let secondary_download_link = secondary_component.shadowRoot.querySelector('a[download]');
-			secondary_API_CPU.update_links();
+			secondary_API_CPU.updateLinks();
 
 			assert.ok(secondary_download_link.href === secondary_audiotag.currentSrc , `By default, download link ( ${secondary_download_link.href} ) is the <audio>.currentSrc ( ${secondary_audiotag.currentSrc} )`);
 
@@ -628,14 +628,14 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 			let third_component = third_audiotag.closest('cpu-audio');
 			let third_API_CPU = third_component.CPU;
 			let third_download_link = third_component.shadowRoot.querySelector('a[download]');
-			third_API_CPU.update_links();
+			third_API_CPU.updateLinks();
 
 			assert.ok(third_download_link.href.includes(third_source), `If indicated, download link ( ${third_download_link.href} ) is taking the prefered <source data-downloadable> ( ${third_source} )`);
 
 			let fourth_component = document.getElementById('fourth').closest('cpu-audio');
 			let fourth_API_CPU = fourth_component.CPU;
 			let fourth_download_link = fourth_component.shadowRoot.querySelector('a[download]');
-			fourth_API_CPU.update_links();
+			fourth_API_CPU.updateLinks();
 
 			assert.ok(fourth_download_link.href.includes(third_source), `If indicated, download link ( ${fourth_download_link.href} ) is taking the <cpu-audio download="<url>"> ( ${third_source} ) `);
 
@@ -647,10 +647,10 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 	QUnit.test( "Style injection", function( assert ) {
 		let css = `#interface { background : yellow; }`;
-		componenttag.CPU.inject_css('injection',css);
-		assert.ok(componenttag.shadowRoot.querySelector('style#style_injection'), 'inject_css injected <style>');
-		componenttag.CPU.remove_css('injection');
-		assert.ok(!componenttag.shadowRoot.querySelector('style#style_injection'), 'remove_css destroyed <style>');
+		componenttag.CPU.injectCss('injection',css);
+		assert.ok(componenttag.shadowRoot.querySelector('style#style_injection'), 'injectCss injected <style>');
+		componenttag.CPU.removeCss('injection');
+		assert.ok(!componenttag.shadowRoot.querySelector('style#style_injection'), 'removeCss destroyed <style>');
 	});
 
 });

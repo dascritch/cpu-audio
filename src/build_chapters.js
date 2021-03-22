@@ -1,8 +1,8 @@
 import {error, once_passive_ev, passive_ev} from './utils.js';
 import {__, prefered_language} from './i18n.js';
 import {trigger} from './trigger.js';
-import {translate_vtt} from './translate_vtt.js';
-import {activecue_classname} from './element_cpu.js';
+import {translateVTT} from './translate_vtt.js';
+import {activecueClassname} from './element_cpu.js';
 
 const plane_chapters = '_chapters';
 
@@ -63,7 +63,7 @@ export async function build_chapters(container) {
 			}
 
 			if (chapter_track?.cues.length > 0) {
-				container.add_plane(plane_chapters, __['chapters'], {track : 'chapters'});
+				container.addPlane(plane_chapters, __['chapters'], {track : 'chapters'});
 
 				let cuechange_event_this = cuechange_event.bind(undefined, container);
 				// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
@@ -72,11 +72,11 @@ export async function build_chapters(container) {
 				chapter_track.addEventListener('cuechange', cuechange_event_this, passive_ev);
 
 				for (let cue of chapter_track.cues) {
-					if (!container.get_point(plane_chapters, cue.id)) {
+					if (!container.point(plane_chapters, cue.id)) {
 						// avoid unuseful redraw, again
 						let cuepoint = Math.floor(cue.startTime);
-						container.add_point(plane_chapters, cuepoint, cue.id,  {
-							text : translate_vtt(cue.text),
+						container.addPoint(plane_chapters, cuepoint, cue.id,  {
+							text : translateVTT(cue.text),
 							link : true,          // point the link to start time position
 							end  : cue.endTime    // end timecode of the cue
 						});
@@ -101,7 +101,7 @@ export async function build_chapters(container) {
 		// see https://github.com/dascritch/cpu-audio/issues/36
 		body_classlist.add(body_class);
 	} else {
-		container.remove_plane(plane_chapters);
+		container.removePlane(plane_chapters);
 		body_classlist.remove(body_class);
 	}
 
@@ -109,7 +109,7 @@ export async function build_chapters(container) {
 	if ((active_cue) && (id_in_hash(this.audiotag.id)) ) {
 		// shoud be set ONLY if audiotag is alone in page or if audiotag.id named in hash
 		trigger.cuechange(active_cue, this.audiotag);
-		this.fire_event('chapter_changed', {
+		this.emitEvent('chapter_changed', {
 			cue : active_cue
 		});
 	}
@@ -144,12 +144,12 @@ function cuechange_event(container, event) {
 		error(oops);
 	}
 
-	container.remove_highlights_points(plane_chapters, activecue_classname);
+	container.removeHighlightsPoints(plane_chapters, activecueClassname);
 	if (active_cue) {
 		trigger.cuechange(active_cue, container.audiotag);
-		container.fire_event('chapter_changed', {
+		container.emitEvent('chapter_changed', {
 			cue : active_cue
 		});
-		container.highlight_point(plane_chapters, active_cue.id, activecue_classname);
+		container.highlightPoint(plane_chapters, active_cue.id, activecueClassname);
 	}
 }

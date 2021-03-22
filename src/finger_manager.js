@@ -7,7 +7,7 @@ const acceptable_press_actions = ['fastreward', 'reward', 'foward', 'fastfoward'
 
 // Handheld navigation button process
 // @private
-export class press_manager {
+export class pressManager {
 	/*
 	 * @summary Start handheld navigation button press
 	 * @private
@@ -26,7 +26,7 @@ export class press_manager {
 			window.clearTimeout(pressing);
 		}
 
-		pressing = window.setTimeout(press_manager.repeat, document.CPU.repeat_delay, { target });
+		pressing = window.setTimeout(pressManager.repeat, document.CPU.repeatDelay, { target });
 		event.preventDefault();
 	}
 	/*
@@ -39,7 +39,7 @@ export class press_manager {
 		//
 		trigger[event.target.id](event);
 		// next call : repetition are closest
-		pressing = window.setTimeout(press_manager.repeat, document.CPU.repeat_factor, event);
+		pressing = window.setTimeout(pressManager.repeat, document.CPU.repeatFactor, event);
 	}
 	/*
 	 * @summary Release handheld navigation button
@@ -69,7 +69,7 @@ export class touch_manager {
 	 */
 	start({target}) {
 		let container = findContainer(target);
-		touching = setTimeout(container.show_handheld_nav.bind(container), document.CPU.alternate_delay);
+		touching = setTimeout(container.showHandheldNav.bind(container), document.CPU.alternateDelay);
 	}
 	/**
 	 * @summary Press stoped on the timeline

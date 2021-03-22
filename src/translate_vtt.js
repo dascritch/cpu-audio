@@ -1,4 +1,4 @@
-import {escape_html} from './utils.js';
+import {escapeHtml} from './utils.js';
 
 let acceptables_tags = {
 	'i'     : 'i',
@@ -70,12 +70,12 @@ function closetag(tag, name) {
  * @param      {string}            vtt_taged  The vtt tagged
  * @return     string                         HTML tagged string
  */
-export function translate_vtt(vtt_taged) {
+export function translateVTT(vtt_taged) {
 
 	if ((vtt_taged.split('<').length) !== (vtt_taged.split('>').length)) {
 		// unmatching < and >, probably badly written tags, or in full text
 		// unsurprisingly, (vtt_taged.split('<').length) is a lot faster than using regex. JS needs a standard property for counting substring occurences in a string
-		return escape_html(vtt_taged);
+		return escapeHtml(vtt_taged);
 	}
 
 	return vtt_taged.

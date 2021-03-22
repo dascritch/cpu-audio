@@ -1,24 +1,24 @@
-import {CpuControllerTagName, findContainer, selector_audio_in_component, querySelector_apply, absolutize_url, error, escape_html, passive_ev} from './utils.js';
+import {CpuControllerTagName, findContainer, selectorAudioInComponent, querySelectorDo, absolutizeUrl, error, escapeHtml, passive_ev} from './utils.js';
 import {__} from './i18n.js';
 import {defaultDataset} from './default_dataset.js';
 import {secondsInColonTime, secondsInTime, durationIso} from './convert.js';
-import {translate_vtt} from './translate_vtt.js';
+import {translateVTT} from './translate_vtt.js';
 import {trigger} from './trigger.js';
-import {is_audiotag_streamed, add_id_to_audiotag} from './media_element_extension.js';
-import {build_controller} from './build_controller.js';
+import {isAudiotagStreamed, addIdToAudiotag} from './media_element_extension.js';
+import {buildController} from './build_controller.js';
 
 // Acceptables attributes values for hide="" parameter on webcomponent
-const acceptable_hide_atttributes = ['poster', 'actions', 'timeline', 'chapters', 'panels', 'panels-title', 'panels-except-play'];
+const acceptableHideAtttributes = ['poster', 'actions', 'timeline', 'chapters', 'panels', 'panels-title', 'panels-except-play'];
 
 // should be put in CPU-controller ?
-const preview_classname = 'with-preview';
-export const activecue_classname = 'active-cue';
+const previewClassname = 'with-preview';
+export const activecueClassname = 'active-cue';
 
 // Regex used to validate planes, points and injected css names
-const valid_id = /^[a-zA-Z0-9\-_]+$/;
+const validId = /^[a-zA-Z0-9\-_]+$/;
 
 // Regex for extracting plane and point names from an id
-const plane_point_names_from_id = /^[a-zA-Z0-9\-_]+_«([a-zA-Z0-9\-_]+)(»_.*_«([a-zA-Z0-9\-_]+))?»$/;
+const planePointNamesFromId = /^[a-zA-Z0-9\-_]+_«([a-zA-Z0-9\-_]+)(»_.*_«([a-zA-Z0-9\-_]+))?»$/;
 
 /**
  * @summary Gets the plane point names from an id on a ShadowDOM element.
@@ -29,9 +29,9 @@ const plane_point_names_from_id = /^[a-zA-Z0-9\-_]+_«([a-zA-Z0-9\-_]+)(»_.*_«
  * @param      {string}  element_id  The element identifier
  * @return     {Array<string>}    An array with two strings : plane name and point name.
  */
-function get_point_names_from_id(element_id) {
-	const [,plane_name, , point_name] = element_id.match(plane_point_names_from_id) || [];
-	return [plane_name??'', point_name??''];
+function planeAndPointNamesFromId(element_id) {
+	const [,planeName, , pointName] = element_id.match(planePointNamesFromId) || [];
+	return [planeName??'', pointName??''];
 }
 
 /**
@@ -39,7 +39,7 @@ function get_point_names_from_id(element_id) {
  *
  * @param      {Object}  event   An hover event
  */
-function preview_container_hover({target}) {
+function previewContainerHover({target}) {
 	if (!target.id) {
 		target = target.closest('[id]');
 	}
@@ -47,27 +47,27 @@ function preview_container_hover({target}) {
 		return;
 	}
 
-	let [plane_name, point_name] = get_point_names_from_id(target.id);
-	findContainer(target).highlight_point(plane_name, point_name);
+	let [planeName, pointName] = planeAndPointNamesFromId(target.id);
+	findContainer(target).highlightPoint(planeName, pointName);
 }
 
 /**
  * @summary Gets the point track identifier
  *
- * @param      {string}  plane_name  The plane name
- * @param      {string}  point_name  The point name
+ * @param      {string}  planeName  The plane name
+ * @param      {string}  pointName  The point name
  * @param      {boolean} panel       Is panel (true) or track (false)
  * @return     {string}  The point track identifier.
  */
-function get_point_id(plane_name, point_name, panel) {
-	return `${ panel?'panel':'track' }_«${plane_name}»_point_«${point_name}»`;
+function getPointId(planeName, pointName, panel) {
+	return `${ panel?'panel':'track' }_«${planeName}»_point_«${pointName}»`;
 }
 
 /**
   * @param  {number|undefined|boolean} sec  Is it a "seconds" value ?
   * @return {boolean}
   */
-function is_seconds(sec = false) {
+function isSeconds(sec = false) {
 	// completely ugly... but « WAT » ! as in https://www.destroyallsoftware.com/talks/wat
 	return ((sec !== undefined) && (sec !== false));
 }
@@ -78,7 +78,7 @@ function is_seconds(sec = false) {
  * @param      {Element} element  	The element to show or hide
  * @param      {boolean} show 		Show if true, hide if false
  */
-function show_element({classList}, show) {
+function showElement({classList}, show) {
 	if (show) {
 		classList.remove('no');
 	} else {
@@ -92,8 +92,8 @@ function show_element({classList}, show) {
  *
  * @param      {Element} container  The webcontainer to clean-up
  */
-function undraw_all_planes(container) {
-	querySelector_apply('aside, div.panel', (element) => { element.remove(); }, container);
+function undrawAllPlanes(container) {
+	querySelectorDo('aside, div.panel', (element) => { element.remove(); }, container);
 }
 
 
@@ -112,8 +112,7 @@ export class CPU_element_api {
 		this.audiotag = /* @type {HTMLAudioElement} */ element._audiotag;
 		this.container = container_interface;
 		this.mode_when_play = null;
-		this.glow_before_play = !! element_attributes.glow;
-		this.glow_before_play = element_attributes.glow;
+		this.glowBeforePlay = !! element_attributes.glow;
 		this.current_playlist = [];
 		this._activecue = null;
 		this.mode_was = null;
@@ -129,11 +128,11 @@ export class CPU_element_api {
 
 		if (!this.audiotag) {
 			document.CPU.globalController = this;
-			this.audiotag = document.querySelector(selector_audio_in_component);
+			this.audiotag = document.querySelector(selectorAudioInComponent);
 		}
 
-		build_controller(this);
-		this.attach_audiotag_to_controller(this.audiotag);
+		buildController(this);
+		this.attachAudiotagToController(this.audiotag);
 
 		// mode="" attribute, on general aspect
 		let mode = element_attributes.mode;
@@ -145,11 +144,11 @@ export class CPU_element_api {
 				this.mode_when_play = mode_play;
 			}
 		}
-		this.set_mode_container(mode);
+		this.setModeContainer(mode);
 
 		// hide="" attribute, space separated elements to hide
 		if (element_attributes.hide) {
-			this.set_hide_container(element_attributes.hide.split(' '));
+			this.setHideContainer(element_attributes.hide.split(' '));
 		}
 
 	}
@@ -160,7 +159,7 @@ export class CPU_element_api {
 	 *
 	 * @return     boolean			False if no cpu-controller or not mirrored
      */
-	mirrored_in_controller() {
+	mirroredInController() {
 		let globalController = document.CPU.globalController;
 		return (globalController) && (this.audiotag.isEqualNode(globalController.audiotag));
 	}
@@ -173,16 +172,16 @@ export class CPU_element_api {
 	 * @param      {string}            vtt_taged  The vtt tagged
 	 * @return     string                         HTML tagged string
      */
-	translate_vtt(vtt_taged) {
-		return translate_vtt(vtt_taged);
+	translateVTT(vtt_taged) {
+		return translateVTT(vtt_taged);
 	}
 
 	/**
 	 * @summary Passthru there only for testing purposes. Perhaps may be on document.CPU as public method ?
 	 * @public
 	 */
-	get_point_names_from_id(element_id) {
-		return get_point_names_from_id(element_id);
+	planeAndPointNamesFromId(element_id) {
+		return planeAndPointNamesFromId(element_id);
 	}
 
 	/**
@@ -195,7 +194,7 @@ export class CPU_element_api {
 	 * @param      {Object|undefined}  detail      Specific public informations about the event
 	 * @return     {Promise}           { description_of_the_return_value }
 	 */
-	async fire_event(event_name, detail = undefined) {
+	async emitEvent(event_name, detail = undefined) {
 		/**
 		 * Events to be created :
 		 *  - plane CRUD
@@ -222,7 +221,7 @@ export class CPU_element_api {
 	 *
 	 * @param      {string|null}  mode    Accepted are only in `/\w+/` format, 'default' by default
 	 */
-	set_mode_container(mode = null) {
+	setModeContainer(mode = null) {
 		mode = mode ?? 'default';
 		if (this.mode_was === mode) {
 			return;
@@ -238,7 +237,7 @@ export class CPU_element_api {
 	 *
 	 * @param      {string}  act     can be 'loading', 'pause', 'glow' or 'play'
 	 */
-	set_act_container(act) {
+	setActContainer(act) {
 		if (this.act_was === act) {
 			return;
 		}
@@ -267,16 +266,16 @@ export class CPU_element_api {
 	 * @param      {Array<string>}  hide_elements  Array of strings, may contains
 	 *                                        'actions' or 'chapters'
 	 */
-	set_hide_container(hide_elements) {
+	setHideContainer(hide_elements) {
 		let container_class = this.container.classList;
 
-		for (let hide_this of acceptable_hide_atttributes) {
+		for (let hide_this of acceptableHideAtttributes) {
 			container_class.remove(`hide-${hide_this}`);
 		}
 
 		for (let hide_this of hide_elements) {
 			hide_this = hide_this.toLowerCase();
-			if (acceptable_hide_atttributes.includes(hide_this)) {
+			if (acceptableHideAtttributes.includes(hide_this)) {
 				container_class.add(`hide-${hide_this}`);
 			}
 		}
@@ -286,7 +285,7 @@ export class CPU_element_api {
 	 * @public
 	 * @summary update play/pause button according to media status
 	 */
-	update_playbutton() {
+	updatePlaybutton() {
 		let audiotag = this.audiotag;
 		let _attr = audiotag.getAttribute('preload');
 		let _preload = _attr ? (_attr.toLowerCase() !== 'none') : true ;
@@ -294,20 +293,20 @@ export class CPU_element_api {
 				(audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA ) &&
 				((_preload) || (audiotag._CPU_played))
 			) {
-			this.set_act_container('loading');
+			this.setActContainer('loading');
 			return;
 		}
 
 		let will_act = 'play';
 		if (audiotag.paused) {
 			will_act = 'pause';
-			if ((!audiotag._CPU_played) && (this.glow_before_play)) {
+			if ((!audiotag._CPU_played) && (this.glowBeforePlay)) {
 				// TODO check option
 				will_act = 'glow';
 			}
 		}
 
-		this.set_act_container(will_act);
+		this.setActContainer(will_act);
 		let hide_panels_except_play_mark = 'last-used';
 
 		let container_class = this.container.classList;
@@ -315,7 +314,7 @@ export class CPU_element_api {
 			audiotag._CPU_played = true;
 			container_class.add(hide_panels_except_play_mark);
 			if (this.mode_when_play) {
-				this.set_mode_container(this.mode_when_play);
+				this.setModeContainer(this.mode_when_play);
 				this.mode_when_play = null;
 			}
 		} else {
@@ -332,7 +331,7 @@ export class CPU_element_api {
 	 * @param      {number}  					seconds  The seconds
 	 * @param      {number|undefined|null=}  	ratio    ratio position in case time position are still unknown
 	 */
-	update_line(seconds, ratio = null) {
+	updateLine(seconds, ratio = null) {
 		let { duration } = this.audiotag;
 		ratio = ratio ?? ( duration === 0 ? 0 : (100*seconds / duration) );
 		this.shadowId('loadingline').style.width = `${ratio}%`;
@@ -342,14 +341,14 @@ export class CPU_element_api {
 	 * @summary update current timecode and related links
 	 * @private
 	 */
-	update_time() {
+	updateTime() {
 		let audiotag = this.audiotag;
-		let timecode = is_audiotag_streamed(audiotag) ? 0 : Math.floor(audiotag.currentTime);
+		let timecode = isAudiotagStreamed(audiotag) ? 0 : Math.floor(audiotag.currentTime);
 		let canonical = audiotag.dataset.canonical ?? '' ;
 		let _is_at = canonical.indexOf('#');
 		let elapse_element = this.shadowId('elapse');
 		elapse_element.href = 
-			`${ absolutize_url(canonical) }#${ (_is_at < 0) ?
+			`${ absolutizeUrl(canonical) }#${ (_is_at < 0) ?
 				audiotag.id :
 				canonical.substr(_is_at + 1) }&t=${timecode}`;
 
@@ -367,26 +366,26 @@ export class CPU_element_api {
 		elapse_element.querySelector('span').innerText = secondsInColonTime(audiotag.currentTime);
 		let duration_element = elapse_element.querySelector('.nosmaller');
 		duration_element.innerText = total_duration ? `\u00a0/\u00a0${total_duration}` : '…';
-		show_element(duration_element, total_duration);
+		showElement(duration_element, total_duration);
 
-		this.update_line(audiotag.currentTime);
+		this.updateLine(audiotag.currentTime);
 	}
 
 	/**
 	 * @summary Shows indicators for the limits of the playing position
 	 * @private
 	 */
-	update_time_borders() {
+	updateTimeBorders() {
 		let audiotag = this.audiotag;
-		let plane_name = '_borders';
-		let point_name = 'play';
+		let planeName = '_borders';
+		let pointName = 'play';
 		if ((!document.CPU.isAudiotagGlobal(audiotag)) || (trigger._timecode_end === false)) {
-			this.remove_plane(plane_name);
+			this.removePlane(planeName);
 			return;
 		}
 		// verify if plane exists, and point is invariant
-		if (this.get_plane(plane_name)) {
-			let check = this.get_point(plane_name, point_name);
+		if (this.plane(planeName)) {
+			let check = this.point(planeName, pointName);
 			if (
 				(check) &&
 				(check.start === trigger._timecode_start) &&
@@ -395,12 +394,12 @@ export class CPU_element_api {
 			}
 		}
 
-		this.add_plane(plane_name,'',{
+		this.addPlane(planeName,'',{
 			track   	: 'borders',
 			panel   	: false,
 			highlight 	: false
 		});
-		this.add_point(plane_name, trigger._timecode_start, point_name, {
+		this.addPoint(planeName, trigger._timecode_start, pointName, {
 			link    	: false,
 			end     	: trigger._timecode_end
 		});
@@ -412,9 +411,9 @@ export class CPU_element_api {
 	 *
 	 * @param      {number}  seconds  The seconds
 	 */
-	update_loading(seconds, ratio) {
-		this.update_line(seconds, ratio);
-		this.set_act_container('loading');
+	updateLoading(seconds, ratio) {
+		this.updateLine(seconds, ratio);
+		this.setActContainer('loading');
 	}
 
 	/**
@@ -426,7 +425,7 @@ export class CPU_element_api {
 	 *
 	 * @return     {boolean}  True if an error is displayed
 	 */
-	update_error() {
+	updateError() {
 		let audiotag = this.audiotag;
 		if (!audiotag) {
 			return true;
@@ -435,7 +434,7 @@ export class CPU_element_api {
 		if (error_object) {
 			let error_message;
 			let pageerror = this.shadowId('pageerror');
-			this.show_interface('error');
+			this.showInterface('error');
 			switch (error_object.code) {
 				case MediaError.MEDIA_ERR_ABORTED:
 					error_message = __.media_err_aborted;
@@ -465,10 +464,10 @@ export class CPU_element_api {
 	 * @private
 	 */
 	update() {
-		if (!this.update_error()) {
-			this.update_playbutton();
-			this.update_time();
-			this.update_time_borders();
+		if (!this.updateError()) {
+			this.updatePlaybutton();
+			this.updateTime();
+			this.updateTimeBorders();
 		}
 	}
 
@@ -480,7 +479,7 @@ export class CPU_element_api {
 	 * @param      {number|null|undefined}   	  	seconds_begin   Starts position in seconds, do not apply if undefined
 	 * @param      {number|null|undefined|boolean}	seconds_end     Ends position in seconds, do not apply if NaN
 	 */
-	position_time_element(element, seconds_begin = null, seconds_end = null) {
+	positionTimeElement(element, seconds_begin = null, seconds_end = null) {
 		let { duration } = this.audiotag;
 
 		if ((duration === 0) || (isNaN(duration))) {
@@ -488,10 +487,10 @@ export class CPU_element_api {
 			// duration still unkonw ! We will need to redraw later the tracks
 		}
 
-		if (is_seconds(seconds_begin)) {
+		if (isSeconds(seconds_begin)) {
 			element.style.left =  `${100 * (seconds_begin / duration)}%`;
 		}
-		if (is_seconds(seconds_end)) {
+		if (isSeconds(seconds_end)) {
 			element.style.right = `${100 * (1 - (seconds_end / duration))}%`;
 		}
 
@@ -504,13 +503,13 @@ export class CPU_element_api {
 	 *
 	 * @param      {number}  seeked_time  The seeked time
 	 */
-	async show_throbber_at(seeked_time) {
+	async showThrobberAt(seeked_time) {
 		let audiotag = this.audiotag;
 		if (audiotag.duration < 1) {
 			// do not try to show if no metadata
 			return;
 		}
-		if ((isNaN(audiotag.duration)) && (!is_audiotag_streamed(audiotag))) {
+		if ((isNaN(audiotag.duration)) && (!isAudiotagStreamed(audiotag))) {
 			// as we navigate on the timeline, we wish to know its total duration
 			// yes, this is twice calling, as of trigger.throbble()
   			audiotag.setAttribute('preload', 'metadata');
@@ -518,7 +517,7 @@ export class CPU_element_api {
 
 		let phylactere = this.shadowId('popup');
 		phylactere.style.opacity = 1;
-		this.position_time_element(phylactere, seeked_time);
+		this.positionTimeElement(phylactere, seeked_time);
 		phylactere.innerHTML = secondsInColonTime(seeked_time);
 		phylactere.dateTime = secondsInTime(seeked_time).toUpperCase();
 	}
@@ -527,7 +526,7 @@ export class CPU_element_api {
 	 * @summary Hides immediately the throbber.
 	 * @public
 	 */
-	hide_throbber() {
+	hideThrobber() {
 		// we use opacity instead of a class change to permits opacity smooth transition via `--cpu-background-transitions`
 		this.shadowId('popup').style.opacity = 0;
 	}
@@ -536,13 +535,13 @@ export class CPU_element_api {
 	 * @summary Hides the throbber later. Will delay the hiding if recalled.
 	 * @public
 	 */
-	hide_throbber_later() {
-		let hide_throbber_delay = 1000;
+	hideThrobberLater() {
+		let hideThrobber_delay = 1000;
 		let phylactere = this.shadowId('popup');
 		if (phylactere._hider) {
 			window.clearTimeout(phylactere._hider);
 		}
-		phylactere._hider = window.setTimeout(this.hide_throbber.bind(this), hide_throbber_delay);
+		phylactere._hider = window.setTimeout(this.hideThrobber.bind(this), hideThrobber_delay);
 	}
 
 	/**
@@ -552,7 +551,7 @@ export class CPU_element_api {
 	 *
 	 * @return     {Object}  dataset
 	 */
-	fetch_audiotag_dataset() {
+	audiotagDataset() {
 		return {...defaultDataset, ...this.audiotag.dataset};
 	}
 
@@ -562,14 +561,14 @@ export class CPU_element_api {
 	 *
 	 * @summary Update links for sharing
 	 */
-	update_links() {
+	updateLinks() {
 		let container = this;
 		let audiotag = this.audiotag;
-		let dataset = this.fetch_audiotag_dataset();
-		let canonical = absolutize_url( dataset.canonical ?? '' );
+		let dataset = this.audiotagDataset();
+		let canonical = absolutizeUrl( dataset.canonical ?? '' );
 		let timepos = (audiotag.currentTime === 0)  ? '' : `&t=${Math.floor(audiotag.currentTime)}`;
 		// watch out : we should put the ID only if canonical URL is strictly identical to this page
-		let tag_id = (canonical === absolutize_url(window.location.href)) ? audiotag.id : '';
+		let tag_id = (canonical === absolutizeUrl(window.location.href)) ? audiotag.id : '';
 		let _url = encodeURIComponent(`${canonical}#${tag_id}${timepos}`);
 		let _twitter = '';
 		if (dataset.twitter?.[0]==='@') {
@@ -598,7 +597,7 @@ export class CPU_element_api {
 	 * @public
 	 * @param      {string}  mode    The mode, can be 'main', 'share' or 'error'
 	 */
-	show_interface(mode) {
+	showInterface(mode) {
 		let classlist = this.container.classList;
 		classlist.remove(
 			'show-no',
@@ -607,7 +606,7 @@ export class CPU_element_api {
 			'show-error',
 			'media-streamed'
 		);
-		if (is_audiotag_streamed(this.audiotag)) {
+		if (isAudiotagStreamed(this.audiotag)) {
 			classlist.add('media-streamed');
 		}
 		classlist.add(`show-${mode}`);
@@ -617,17 +616,17 @@ export class CPU_element_api {
 	 * @summary Shows the sharing panel
 	 * @private
 	 */
-	show_actions(/* event */) {
-		this.show_interface('share');
-		this.update_links();
+	showActions(/* event */) {
+		this.showInterface('share');
+		this.updateLinks();
 	}
 
 	/**
 	 * @summary Shows the main manel
 	 * @private
 	 */
-	show_main(/* event */) {
-		this.show_interface('main');
+	showMain(/* event */) {
+		this.showInterface('main');
 	}
 
 	/**
@@ -636,8 +635,8 @@ export class CPU_element_api {
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	show_handheld_nav(event) {
-		if (is_audiotag_streamed(this.audiotag)) {
+	showHandheldNav(event) {
+		if (isAudiotagStreamed(this.audiotag)) {
 			return;
 		}
 		this.container.classList.toggle('show-handheld-nav');
@@ -653,13 +652,13 @@ export class CPU_element_api {
 	 * @param 	{string}  style_key   	A name in the range /[a-zA-Z0-9\-_]+/, key to tag the created <style>
 	 * @param 	{string}  css 			inline CSS to inject
 	 */
-	inject_css(style_key, css) {
-		if (!style_key.match(valid_id)) {
-			error(`inject_css invalid key "${style_key}"`);
+	injectCss(style_key, css) {
+		if (!style_key.match(validId)) {
+			error(`injectCss invalid key "${style_key}"`);
 			return;
 		}
 
-		this.remove_css(style_key);
+		this.removeCss(style_key);
 		let element = document.createElement('style');
 		element.id = `style_${style_key}`;
 		element.innerHTML = css;
@@ -672,7 +671,7 @@ export class CPU_element_api {
 	 *
 	 * @param 	{string}  style_key   	Key of the created <style> , /[a-zA-Z0-9\-_]+/
 	 */
-	remove_css(style_key) {
+	removeCss(style_key) {
 		this.shadowId(`style_${style_key}`)?.remove();
 	}
 
@@ -681,8 +680,8 @@ export class CPU_element_api {
 	 * @summary Complete the interface at build time
 	 * @package
 	 */
-	complete_template() {
-		let dataset = this.fetch_audiotag_dataset();
+	completeTemplate() {
+		let dataset = this.audiotagDataset();
 		let { title, waveform } = dataset;
 		let element_canonical = this.shadowId('canonical');
 
@@ -709,13 +708,13 @@ export class CPU_element_api {
 	 *
 	 * @param      {Element}  audiotag  The audiotag
 	 */
-	attach_audiotag_to_controller(audiotag) {
+	attachAudiotagToController(audiotag) {
 		if (!audiotag) {
 			return;
 		}
 		this.audiotag = audiotag;
-		add_id_to_audiotag(audiotag);
-		this.complete_template();
+		addIdToAudiotag(audiotag);
+		this.completeTemplate();
 
 		// throw simplified event
 		trigger.update({target : audiotag});
@@ -726,91 +725,91 @@ export class CPU_element_api {
 	 * @summary Gets the plane info
 	 * @private
 	 *
-	 * @param      {string}  plane_name     The name
+	 * @param      {string}  planeName     The name
 	 * @return     {Object}                 data of the plane
 	 */
-	get_plane(plane_name) {
-		return this._planes[plane_name] ?? this.audiotag._CPU_planes[plane_name];
+	plane(planeName) {
+		return this._planes[planeName] ?? this.audiotag._CPU_planes[planeName];
 	}
 
 	/**
 	 * @summary Gets the plane track element
 	 * @private but needed in tests
 	 *
-	 * @param      {string}  plane_name   The name
+	 * @param      {string}  planeName   The name
 	 * @return     {Element}    The <aside> track element from ShadowDom interface
 	 */
-	get_plane_track(plane_name) {
-		return this.shadowId(`track_«${plane_name}»`);
+	planeTrack(planeName) {
+		return this.shadowId(`track_«${planeName}»`);
 	}
 
 	/**
 	 * @summary Gets the plane panel element
 	 * @private but needed in test
 	 *
-	 * @param      {string}  plane_name   The name
+	 * @param      {string}  planeName   The name
 	 * @return     {Element}    The panel element from ShadowDom interface
 	 */
-	get_plane_panel(plane_name) {
-		return this.shadowId(`panel_«${plane_name}»`);
+	planePanel(planeName) {
+		return this.shadowId(`panel_«${planeName}»`);
 	}
 
 	/**
 	 * @summary Gets the <nav><ul> plane panel element
 	 * @private but needed in tests
 	 *
-	 * @param      {string}  plane_name   The name
+	 * @param      {string}  planeName   The name
 	 * @return     {Element}    The <ul> element from ShadowDom interface, null if inexisting
 	 */
-	get_plane_nav(plane_name) {
-		return this.get_plane_panel(plane_name)?.querySelector(`ul`);
+	planeNav(planeName) {
+		return this.planePanel(planeName)?.querySelector(`ul`);
 	}
 
 	/**
 	 * @summary Draws a plane
 	 * @private
 	 *
-	 * @param      {string}  plane_name  The plane name
+	 * @param      {string}  planeName  The plane name
 	 */
-	draw_plane(plane_name) {
-		this.get_plane_track(plane_name)?.remove();
-		this.get_plane_panel(plane_name)?.remove();
+	drawPlane(planeName) {
+		this.planeTrack(planeName)?.remove();
+		this.planePanel(planeName)?.remove();
 
-		let data = this.get_plane(plane_name);
+		let data = this.plane(planeName);
 		if (!data) {
 			return ;
 		}
 		let { track, panel, title } = data;
-		let remove_highlights_points_bind = this.remove_highlights_points.bind(this, plane_name, preview_classname, true);
+		let removeHighlightsPoints_bind = this.removeHighlightsPoints.bind(this, planeName, previewClassname, true);
 
 		/**
 		 * @param      {Element}  element  Impacted element
 		 */
-		function assign_events_on_planes(element) {
-			element.addEventListener('mouseover', preview_container_hover, passive_ev);
-			element.addEventListener('focusin', preview_container_hover, passive_ev);
-			element.addEventListener('mouseleave', remove_highlights_points_bind, passive_ev);
-			element.addEventListener('focusout', remove_highlights_points_bind, passive_ev);
+		function assignEventsOnPlanes(element) {
+			element.addEventListener('mouseover', previewContainerHover, passive_ev);
+			element.addEventListener('focusin', previewContainerHover, passive_ev);
+			element.addEventListener('mouseleave', removeHighlightsPoints_bind, passive_ev);
+			element.addEventListener('focusout', removeHighlightsPoints_bind, passive_ev);
 		}
 
 
 		if (track !== false) {
 			// we have to create the track timeline
 			let plane_track = document.createElement('aside');
-			plane_track.id = `track_«${plane_name}»`;
+			plane_track.id = `track_«${planeName}»`;
 			if (track !== true) {
 				// …with a class list
 				plane_track.classList.add(track.split(' '));
 			}
 
 			this.shadowId('line').appendChild(plane_track);
-			assign_events_on_planes(plane_track);
+			assignEventsOnPlanes(plane_track);
 		}
 
 		if (panel !== false) {
 			// we have to create the panel area
 			let plane_panel = document.createElement('div');
-			plane_panel.id = `panel_«${plane_name}»`;
+			plane_panel.id = `panel_«${planeName}»`;
 			if (panel !== true) {
 				// …with a class list
 				plane_panel.classList.add(panel.split(' '));
@@ -818,14 +817,14 @@ export class CPU_element_api {
 
 			plane_panel.classList.add('panel');
 
-			plane_panel.innerHTML = `<h6>${escape_html(title)}</h6><nav><ul></ul></nav>`;
+			plane_panel.innerHTML = `<h6>${escapeHtml(title)}</h6><nav><ul></ul></nav>`;
 			this.container.appendChild(plane_panel);
-			show_element( plane_panel.querySelector('h6') , title);
-			assign_events_on_planes(plane_panel);
+			showElement( plane_panel.querySelector('h6') , title);
+			assignEventsOnPlanes(plane_panel);
 		}
 
-		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
-			document.CPU.globalController.draw_plane(plane_name);
+		if ( (!this.is_controller) && (this.mirroredInController()) ) {
+			document.CPU.globalController.drawPlane(planeName);
 		}
 
 	}
@@ -834,7 +833,7 @@ export class CPU_element_api {
 	 * @summary Add an annotation plane layer
 	 * @public
 	 *
-	 * @param      {string}   plane_name  A name in the range /[a-zA-Z0-9\-_]+/
+	 * @param      {string}   planeName  A name in the range /[a-zA-Z0-9\-_]+/
 	 * @param      {string}   title       The displayed title for the panel
 	 * @param      {Object}   data        { track : true/false/classnames ,
 	 * 										panel : true/false/classnames ,
@@ -847,8 +846,8 @@ export class CPU_element_api {
 
 	 * @return     {boolean}  success
 	 */
-	add_plane(plane_name, title, data = {}) {
-		if ((! plane_name.match(valid_id)) || (this.get_plane(plane_name))) {
+	addPlane(planeName, title, data = {}) {
+		if ((! planeName.match(validId)) || (this.plane(planeName))) {
 			return false;
 		}
 
@@ -869,34 +868,34 @@ export class CPU_element_api {
 				return false;
 			}
 			this.audiotag._CPU_planes = this.audiotag._CPU_planes ?? {};
-			this.audiotag._CPU_planes[plane_name] = data;
+			this.audiotag._CPU_planes[planeName] = data;
 		} else {
-			this._planes[plane_name] = data;
+			this._planes[planeName] = data;
 		}
-		this.draw_plane(plane_name);
+		this.drawPlane(planeName);
 		return true;
 	}
 	/**
 	 * @summary Remove an annotation plane layer
 	 * @public
 	 *
-	 * @param      {string}   name    A name in the range /[a-zA-Z0-9\-_]+/
+	 * @param      {string}   planeName    A name in the range /[a-zA-Z0-9\-_]+/
 	 *
 	 * @return     {boolean}  success
 	 */
-	remove_plane(plane_name) {
-		if ( (this.is_controller) || (! plane_name.match(valid_id)) || (! this.get_plane(plane_name))) {
+	removePlane(planeName) {
+		if ( (this.is_controller) || (! planeName.match(validId)) || (! this.plane(planeName))) {
 			return false;
 		}
 
-		delete (this._planes[plane_name] ? this._planes : this.audiotag._CPU_planes)[plane_name];
+		delete (this._planes[planeName] ? this._planes : this.audiotag._CPU_planes)[planeName];
 
-		this.get_plane_track(plane_name)?.remove();
-		this.get_plane_panel(plane_name)?.remove();
+		this.planeTrack(planeName)?.remove();
+		this.planePanel(planeName)?.remove();
 
-		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
+		if ( (!this.is_controller) && (this.mirroredInController()) ) {
 			// as plane data is removed, it will remove its aside and track
-			document.CPU.globalController.draw_plane(plane_name);
+			document.CPU.globalController.drawPlane(planeName);
 		}
 
 		return true;
@@ -906,93 +905,93 @@ export class CPU_element_api {
 	 * @summary Shortcut to get  points data
 	 * @private
 	 *
-	 * @param      {string}  plane_name  The plane name
+	 * @param      {string}  planeName  The plane name
 	 * @return     {Object}  Data
 	 */
-	plane_points(plane_name) {
-		return this.get_plane(plane_name).points;
+	planePoints(planeName) {
+		return this.plane(planeName).points;
 	}
 
 	/**
 	 * @summary Gets the point info
 	 * @public
 	 *
-	 * @param      {string}  plane_name  The plane name
-	 * @param      {string}  point_name  The point name
+	 * @param      {string}  planeName  The plane name
+	 * @param      {string}  pointName  The point name
 	 * @return     {Object}  Data
 	 */
-	get_point(plane_name, point_name) {
-		return this.get_plane(plane_name).points[point_name];
+	point(planeName, pointName) {
+		return this.plane(planeName).points[pointName];
 	}
 
 	/**
 	 * @summary Gets the point element in the track
 	 * @private but needed in tests
 	 *
-	 * @param      {string}  plane_name   The plane
-	 * @param      {string}  point_name   The point
+	 * @param      {string}  planeName   The plane
+	 * @param      {string}  pointName   The point
 	 * @return     {Element}    The <div> point element into <aside> from ShadowDom interface
 	 */
-	get_point_track(plane_name, point_name) {
-		return this.shadowId(get_point_id(plane_name, point_name, false));
+	pointTrack(planeName, pointName) {
+		return this.shadowId(getPointId(planeName, pointName, false));
 	}
 
 	/**
 	 * @summary Gets the point element in the panel
 	 * @private but needed in tests
 	 *
-	 * @param      {string}  plane_name   The plane
-	 * @param      {string}  point_name   The point
+	 * @param      {string}  planeName   The plane
+	 * @param      {string}  pointName   The point
 	 * @return     {Element}    The <li> point element into panel from ShadowDom interface
 	 */
-	get_point_panel(plane_name, point_name) {
-		return this.shadowId(get_point_id(plane_name, point_name, true));
+	pointPanel(planeName, pointName) {
+		return this.shadowId(getPointId(planeName, pointName, true));
 	}
 
 	/**
 	 * @summary    Resort points of a plane by start-time
 	 * @private
 	 *
-	 * @param      {string}   plane_name     The plane name
+	 * @param      {string}   planeName     The plane name
 	 */
-	plane_resort(plane_name) {
+	planeSort(planeName) {
 		let out = Object.fromEntries(
 		    Object.entries(
-		    	this.plane_points(plane_name)
+		    	this.planePoints(planeName)
 			).sort(
 		    	([, point_a], [, point_b]) => {
 		    		return point_a.start - point_b.start;
 		    	}
 		    )
 		);
-		this.get_plane(plane_name).points = out;
+		this.plane(planeName).points = out;
 	}
 
 	/**
-	 * @summary    get point_names from a plane_name
+	 * @summary    get pointNames from a planeName
 	 * @private may goes public later
 	 *
-	 * @param      {string}   plane_name     The plane name
-	 * @return     {[string]} points_names	 Array of point_names
+	 * @param      {string}   planeName     The plane name
+	 * @return     {[string]} points_names	 Array of pointNames
 	 */
-	plane_pointsnames(plane_name) {
-		return Object.keys(this.plane_points(plane_name));
+	planePointsnames(planeName) {
+		return Object.keys(this.planePoints(planeName));
 	}
 
 	/**
 	 * @summary    Reorder panel of a plane by points order
 	 * @private
 	 *
-	 * @param      {string}   plane_name     The plane name
+	 * @param      {string}   planeName     The plane name
 	 */
-	panel_reorder(plane_name) {
-		this.plane_resort(plane_name);
-		if (!this.get_plane_panel(plane_name)) {
+	panelReorder(planeName) {
+		this.planeSort(planeName);
+		if (!this.planePanel(planeName)) {
 			return;
 		}
 		let previous_element, element;
-		for (let point_name of this.plane_pointsnames(plane_name)) {
-			element = this.get_point_panel(plane_name, point_name);
+		for (let pointName of this.planePointsnames(planeName)) {
+			element = this.pointPanel(planeName, pointName);
 			previous_element?.insertAdjacentElement('afterend', element);
 			previous_element = element;
 		}
@@ -1002,12 +1001,12 @@ export class CPU_element_api {
 	 * @summary Draws a plane point
 	 * @private
 	 *
-	 * @param      {string}  plane_name  The plane name
-	 * @param      {string}  point_name  The point name
+	 * @param      {string}  planeName  The plane name
+	 * @param      {string}  pointName  The point name
 	 */
-	draw_point(plane_name, point_name) {
+	drawPoint(planeName, pointName) {
 		let audiotag = this.audiotag ? this.audiotag : document.CPU.globalController.audiotag;
-		let data = this.get_point(plane_name, point_name);
+		let data = this.point(planeName, pointName);
 		let {start, link, text, image, end} = data;
 
 		let use_link = '#';
@@ -1020,54 +1019,54 @@ export class CPU_element_api {
 			use_link = link;
 		}
 
-		let track = this.get_plane_track(plane_name);
-		let plane_point_track;
+		let track = this.planeTrack(planeName);
+		let plane_pointTrack;
 		if (track) {
-			plane_point_track = this.get_point_track(plane_name, point_name);
-			if (!plane_point_track) {
-				plane_point_track = document.createElement('a');
-				plane_point_track.id = get_point_id(plane_name, point_name, false);
+			plane_pointTrack = this.pointTrack(planeName, pointName);
+			if (!plane_pointTrack) {
+				plane_pointTrack = document.createElement('a');
+				plane_pointTrack.id = getPointId(planeName, pointName, false);
 				// TODO : how to do chose index of a point track if there is no link, or a panel but no track??
-				plane_point_track.tabIndex = -1; 
-				plane_point_track.innerHTML = '<img alt="" /><span></span>';
-				track.appendChild(plane_point_track);
+				plane_pointTrack.tabIndex = -1; 
+				plane_pointTrack.innerHTML = '<img alt="" /><span></span>';
+				track.appendChild(plane_pointTrack);
 			}
-			plane_point_track.href = use_link;
-			plane_point_track.title = text;
-			let track_img = plane_point_track.querySelector('img');
-			show_element(track_img, image);
+			plane_pointTrack.href = use_link;
+			plane_pointTrack.title = text;
+			let track_img = plane_pointTrack.querySelector('img');
+			showElement(track_img, image);
 			track_img.src = image || '';
-			plane_point_track.querySelector('img').innerHTML = text ;
-			this.position_time_element(plane_point_track, start, end);
+			plane_pointTrack.querySelector('img').innerHTML = text ;
+			this.positionTimeElement(plane_pointTrack, start, end);
 		}
 
-		let panel = this.get_plane_nav(plane_name);
-		let plane_point_panel;
+		let panel = this.planeNav(planeName);
+		let plane_pointPanel;
 		if (panel) {
-			plane_point_panel = this.get_point_panel(plane_name, point_name);
-			if (!plane_point_panel) {
-				plane_point_panel = document.createElement('li');
-				plane_point_panel.id = get_point_id(plane_name, point_name, true);
-				plane_point_panel.innerHTML = '<a href="#" class="cue"><strong></strong><time></time></a>';
-				panel.appendChild(plane_point_panel);
+			plane_pointPanel = this.pointPanel(planeName, pointName);
+			if (!plane_pointPanel) {
+				plane_pointPanel = document.createElement('li');
+				plane_pointPanel.id = getPointId(planeName, pointName, true);
+				plane_pointPanel.innerHTML = '<a href="#" class="cue"><strong></strong><time></time></a>';
+				panel.appendChild(plane_pointPanel);
 			}
-			plane_point_panel.querySelector('a').href = use_link;
-			plane_point_panel.querySelector('strong').innerHTML = text;
-			let time_element = plane_point_panel.querySelector('time');
+			plane_pointPanel.querySelector('a').href = use_link;
+			plane_pointPanel.querySelector('strong').innerHTML = text;
+			let time_element = plane_pointPanel.querySelector('time');
 			time_element.dateTime = durationIso(start);
 			time_element.innerText = secondsInColonTime(start);
 		}
 
-		this.fire_event('draw_point', {
-			plane : plane_name,
-			point : point_name,
+		this.emitEvent('drawPoint', {
+			plane : planeName,
+			point : pointName,
 			data_point :  data,
-			element_point_track : plane_point_track,
-			element_point_panel : plane_point_panel,
+			element_pointTrack : plane_pointTrack,
+			element_pointPanel : plane_pointPanel,
 		});
 
-		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
-			document.CPU.globalController.draw_point(plane_name, point_name);
+		if ( (!this.is_controller) && (this.mirroredInController()) ) {
+			document.CPU.globalController.drawPoint(planeName, pointName);
 		}
 	}
 
@@ -1075,9 +1074,9 @@ export class CPU_element_api {
 	 * @summary Add an annotation point
 	 * @public
 	 *
-	 * @param      {string}   plane_name      The existing plane name
+	 * @param      {string}   planeName      The existing plane name
 	 * @param      {number}   timecode_start  The timecode start for this annotation
-	 * @param      {string}   point_name      The point name, should conform to /^[a-zA-Z0-9\-_]+$/
+	 * @param      {string}   pointName      The point name, should conform to /^[a-zA-Z0-9\-_]+$/
 	 * @param      {Object}   data            { 'image' : <url>,
 	 * 											'link' : <url>/true (in audio)/false (none),
 	 * 											'text' : <text>,
@@ -1085,32 +1084,32 @@ export class CPU_element_api {
 	 *
 	 * @return     {boolean}  success
 	 */
-	add_point(plane_name, timecode_start, point_name, data={}) {
+	addPoint(planeName, timecode_start, pointName, data={}) {
 		// TODO major release : move timecode_start in data, add points argument for a bulk insertion
 
-		if ( (!this.get_plane(plane_name)) || (this.get_point(plane_name, point_name)) || (timecode_start < 0) || (!point_name.match(valid_id)) ) {
+		if ( (!this.plane(planeName)) || (this.point(planeName, pointName)) || (timecode_start < 0) || (!pointName.match(validId)) ) {
 			return false;
 		}
-		if ((!this._planes[plane_name]) && (this.is_controller)) {
+		if ((!this._planes[planeName]) && (this.is_controller)) {
 			return false;
 		}
 
 		data.start = Number(timecode_start); // TO move into parameter
 		let { start } = data;
-		this.get_plane(plane_name).points[point_name] = data;
+		this.plane(planeName).points[pointName] = data;
 
-		this.fire_event('add_point', {
-			plane : plane_name,
-			point : point_name,
+		this.emitEvent('addPoint', {
+			plane : planeName,
+			point : pointName,
 			data_point :  data
 		});
 
-		if (this.get_plane(plane_name)._st_max > start) {
+		if (this.plane(planeName)._st_max > start) {
 			// we need to reorder the plane
-			this.panel_reorder(plane_name);
+			this.panelReorder(planeName);
 		} else {
-			this.draw_point(plane_name, point_name);
-			this.get_plane(plane_name)._st_max = start;
+			this.drawPoint(planeName, pointName);
+			this.plane(planeName)._st_max = start;
 		}
 
 		return true;
@@ -1120,8 +1119,8 @@ export class CPU_element_api {
 	 * @summary Edit an annotation point
 	 * @public
 	 *
-	 * @param      {string}   plane_name      The existing plane name
-	 * @param      {string}   point_name      The existing point name
+	 * @param      {string}   planeName      The existing plane name
+	 * @param      {string}   pointName      The existing point name
 	 * @param      {Object}   data            { 'image' : <url>,
 	 * 											'link'  : <url>/true (in audio)/false (none),
 	 * 											'text'  : <text>,
@@ -1129,13 +1128,13 @@ export class CPU_element_api {
 	 * 											'end'   : <seconds> }
 	 *										  will only change keys in the list
 	 */
-	edit_point(plane_name, point_name, data) {
-		let plane = this.get_plane(plane_name);
+	editPoint(planeName, pointName, data) {
+		let plane = this.plane(planeName);
 		if (!plane) {
 			return false;
 		}
 
-		let original_data = this.get_point(plane_name, point_name);
+		let original_data = this.point(planeName, pointName);
 		if (!original_data) {
 			return false;	
 		}
@@ -1146,16 +1145,16 @@ export class CPU_element_api {
 
 		data = {...original_data, ...data};
 
-		plane.points[point_name] = data;
+		plane.points[pointName] = data;
 
-		this.draw_point(plane_name, point_name);
+		this.drawPoint(planeName, pointName);
 		if (will_refresh) {
-			this.panel_reorder(plane_name);
+			this.panelReorder(planeName);
 		}
 
-		this.fire_event('edit_point', {
-			plane : plane_name,
-			point : point_name,
+		this.emitEvent('editPoint', {
+			plane : planeName,
+			point : pointName,
 			data_point :  data
 		});
 
@@ -1169,37 +1168,37 @@ export class CPU_element_api {
 	 * @summary Remove an annotation point
 	 * @public
 	 *
-	 * @param      {string}   plane_name  A name in the range /^[a-zA-Z0-9\-_$]+/
-	 * @param      {string}   point_name  A name in the range /^[a-zA-Z0-9\-_$]+/
+	 * @param      {string}   planeName  A name in the range /^[a-zA-Z0-9\-_$]+/
+	 * @param      {string}   pointName  A name in the range /^[a-zA-Z0-9\-_$]+/
 	 * @return     {boolean}  success
 	 */
-	remove_point(plane_name, point_name) {
-		let plane = this.get_plane(plane_name);
-		if ((!plane) || (!this.get_point(plane_name, point_name))) {
+	removePoint(planeName, pointName) {
+		let plane = this.plane(planeName);
+		if ((!plane) || (!this.point(planeName, pointName))) {
 			return false;
 		}
 
-		this.fire_event('remove_point', {
-			plane : plane_name,
-			point : point_name
+		this.emitEvent('removePoint', {
+			plane : planeName,
+			point : pointName
 		});
 
-		this.get_point_track(plane_name, point_name)?.remove();
-		this.get_point_panel(plane_name, point_name)?.remove();
+		this.pointTrack(planeName, pointName)?.remove();
+		this.pointPanel(planeName, pointName)?.remove();
 
 		//  recalc _start_max for caching repaints
 		let _st_max = 0;
-		for (let s of Object.values(this.plane_points(plane_name))) {
+		for (let s of Object.values(this.planePoints(planeName))) {
 			let that_start = Number(s.start);
 			_st_max = _st_max < that_start ? that_start : _st_max;
 		}
 		plane._st_max = _st_max;
 
-		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
-			document.CPU.globalController.remove_point(plane_name, point_name);
+		if ( (!this.is_controller) && (this.mirroredInController()) ) {
+			document.CPU.globalController.removePoint(planeName, pointName);
 		}
-		if (plane.points[point_name]) {
-			delete plane.points[point_name];
+		if (plane.points[pointName]) {
+			delete plane.points[pointName];
 		}
 		return true;
 	}
@@ -1208,19 +1207,19 @@ export class CPU_element_api {
 	 * @summary Remove any points from an annotation plane
 	 * @public
 	 *
-	 * @param      {string}  plane_name  The plane name
+	 * @param      {string}  planeName  The plane name
 	 */
-	clear_plane(plane_name) {
-		let plane = this.get_plane(plane_name);
+	clearPlane(planeName) {
+		let plane = this.plane(planeName);
 		if (!plane) {
 			return false;
 		}
 
-		for (let point_name of Object.keys(plane.points)) {
-			this.remove_point(plane_name, point_name);
+		for (let pointName of Object.keys(plane.points)) {
+			this.removePoint(planeName, pointName);
 		}
 		// need to repass in case of badly removed / malformed entries
-		let nav = this.get_plane_nav(plane_name);
+		let nav = this.planeNav(planeName);
 		if (nav) {
 			nav.innerHTML = '';
 		}
@@ -1231,15 +1230,15 @@ export class CPU_element_api {
 	}
 
 	/**
-	 * @summary Refresh a plane. a panel_reorder may be enough
+	 * @summary Refresh a plane. a panelReorder may be enough
 	 * @public
 	 *
-	 * @param      {string}  plane_name  The plane name
+	 * @param      {string}  planeName  The plane name
 	 */
-	refresh_plane(plane_name) {
-		this.plane_resort(plane_name);
-		for (let point_name of this.plane_pointsnames(plane_name)) {
-			this.draw_point(plane_name, point_name);
+	refreshPlane(planeName) {
+		this.planeSort(planeName);
+		for (let pointName of this.planePointsnames(planeName)) {
+			this.drawPoint(planeName, pointName);
 		}
 	}
 
@@ -1248,12 +1247,12 @@ export class CPU_element_api {
 	 * Mainly when cpu-controller is changing targeted audio tag
 	 * @public
 	 */
-	redraw_all_planes() {
-		undraw_all_planes(this.container);
+	redrawAllPlanes() {
+		undrawAllPlanes(this.container);
 
-		for (let plane_name of Object.keys({...this._planes, ...this.audiotag._CPU_planes})) {
-			this.draw_plane(plane_name);
-			this.refresh_plane(plane_name);
+		for (let planeName of Object.keys({...this._planes, ...this.audiotag._CPU_planes})) {
+			this.drawPlane(planeName);
+			this.refreshPlane(planeName);
 		}
 	}
 
@@ -1263,20 +1262,20 @@ export class CPU_element_api {
 	 *
 	 * @private
 	 */
-	reposition_tracks() {
+	repositionTracks() {
 		let duration = this.audiotag.duration;
 		if ((duration === 0) || (isNaN(duration))) {
 			// duration still unkown
 			return ;
 		}
 
-		for (let plane_name in this.audiotag._CPU_planes) {
-			let plane_data = this.get_plane(plane_name);
+		for (let planeName in this.audiotag._CPU_planes) {
+			let plane_data = this.plane(planeName);
 			if (plane_data.track) {
-				for (let point_name of this.plane_pointsnames(plane_name)) {
-					let element = this.get_point_track(plane_name, point_name);
-					let {start, end} = this.get_point(plane_name, point_name);
-					this.position_time_element(element, start, end);
+				for (let pointName of this.planePointsnames(planeName)) {
+					let element = this.pointTrack(planeName, pointName);
+					let {start, end} = this.point(planeName, pointName);
+					this.positionTimeElement(element, start, end);
 				}
 			}
 		}
@@ -1286,16 +1285,16 @@ export class CPU_element_api {
 	 * @summary Remove any previewes on plane points
 	 * @public
 	 *
-	 * @param			 {string}  plane_name The plane name to operate
+	 * @param			 {string}  planeName The plane name to operate
 	 * @param      {string}  class_name Targeted class name, 'with-preview' by default
 	 * @param      {boolean} mirror     Also act on linked cpu-controller/cpu-audio
 	 */
-	remove_highlights_points(plane_name, class_name=preview_classname, mirror=true) {
-		querySelector_apply(
-			`#track_«${plane_name}» .${class_name}, #panel_«${plane_name}» .${class_name}`,
+	removeHighlightsPoints(planeName, class_name=previewClassname, mirror=true) {
+		querySelectorDo(
+			`#track_«${planeName}» .${class_name}, #panel_«${planeName}» .${class_name}`,
 			(element) => { element.classList.remove(class_name); },
 			this.container);
-		if ( (mirror) && (this.mirrored_in_controller()) ) {
+		if ( (mirror) && (this.mirroredInController()) ) {
 			let globalController = document.CPU.globalController;
 
 			let on;
@@ -1304,7 +1303,7 @@ export class CPU_element_api {
 			} else {
 				on = findContainer(globalController.audiotag);
 			}
-			on.remove_highlights_points(plane_name, class_name, false);
+			on.removeHighlightsPoints(planeName, class_name, false);
 		}
 	}
 
@@ -1312,22 +1311,22 @@ export class CPU_element_api {
 	 * @summary Sets a preview on a plane point
 	 * @public
 	 *
-	 * @param      {string}  plane_name  The plane name
-	 * @param      {string}  point_name  The point name
+	 * @param      {string}  planeName  The plane name
+	 * @param      {string}  pointName  The point name
 	 * @param      {string}  class_name  class name, 'with-preview' by default
 	 * @param      {boolean} mirror     Also act on linked cpu-controller/cpu-audio, true by default
 	 */
-	highlight_point(plane_name, point_name, class_name=preview_classname, mirror=true) {
-		this.remove_highlights_points(plane_name, class_name, mirror);
+	highlightPoint(planeName, pointName, class_name=previewClassname, mirror=true) {
+		this.removeHighlightsPoints(planeName, class_name, mirror);
 
-		if (! this.get_plane(plane_name)?.highlight) {
+		if (! this.plane(planeName)?.highlight) {
 			return;
 		}
 
-		this.get_point_track(plane_name, point_name)?.classList.add(class_name);
-		this.get_point_panel(plane_name, point_name)?.classList.add(class_name);
+		this.pointTrack(planeName, pointName)?.classList.add(class_name);
+		this.pointPanel(planeName, pointName)?.classList.add(class_name);
 
-		if ( (mirror) && (this.mirrored_in_controller()) ) {
+		if ( (mirror) && (this.mirroredInController()) ) {
 			let DocumentCPU = document.CPU;
 			let on;
 			if (!this.is_controller) {
@@ -1335,7 +1334,7 @@ export class CPU_element_api {
 			} else {
 				on = findContainer(DocumentCPU.globalController.audiotag);
 			}
-			on.highlight_point(plane_name, point_name, class_name, false);
+			on.highlightPoint(planeName, pointName, class_name, false);
 		}
 	}
 

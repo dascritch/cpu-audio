@@ -1,6 +1,6 @@
-import {passive_ev, querySelector_apply, findContainer, element_prevent_link_on_same_page} from './utils.js';
+import {passive_ev, querySelectorDo, findContainer, preventLinkOnSamePage} from './utils.js';
 import {trigger} from './trigger.js';
-import {press_manager, touch_manager} from './finger_manager.js';
+import {pressManager, touch_manager} from './finger_manager.js';
 import {build_chapters_loader} from './build_chapters.js';
 
 /**
@@ -9,7 +9,7 @@ import {build_chapters_loader} from './build_chapters.js';
  * @param      {Object}  event   The event
  */
 function native_share(event) {
-	let {title, canonical} = findContainer(event.target).fetch_audiotag_dataset();
+	let {title, canonical} = findContainer(event.target).audiotagDataset();
 	navigator.share({
 		title,
 		text	: title,
@@ -25,7 +25,7 @@ function native_share(event) {
  *
  * @summary Builds the controller.
  */
-export function build_controller(container) {
+export function buildController(container) {
 	let interface_classlist = container.shadowId('interface').classList;
 
 	// hide broken image while not loaded
@@ -33,15 +33,15 @@ export function build_controller(container) {
 		interface_classlist.add('poster-loaded');
 	}, passive_ev);
 
-	let show_main = container.show_main.bind(container);
+	let showMain = container.showMain.bind(container);
 
 	let cliquables = {
 		pause     : trigger.play,
 		play      : trigger.pause,
 		time      : trigger.throbble,
-		actions   : container.show_actions.bind(container),
-		back      : show_main,
-		poster    : show_main,
+		actions   : container.showActions.bind(container),
+		back      : showMain,
+		poster    : showMain,
 		restart   : trigger.restart,
 	};
 	for (let that in cliquables) {
@@ -62,7 +62,7 @@ export function build_controller(container) {
 	for (let that of _buttons) {
 		const element_id = container.shadowId(that);
 		for (let _act in _actions) {
-			element_id.addEventListener(_act, _actions[_act] ? press_manager.press : press_manager.release);
+			element_id.addEventListener(_act, _actions[_act] ? pressManager.press : pressManager.release);
 		}
 	}
 
@@ -91,7 +91,7 @@ export function build_controller(container) {
 	// alternative fine navigation for handhelds
 	timeline_element.addEventListener('touchstart', touch_manager.start, passive_ev);
 	timeline_element.addEventListener('touchend', touch_manager.cancel, passive_ev);
-	timeline_element.addEventListener('contextmenu', container.show_handheld_nav.bind(container));
+	timeline_element.addEventListener('contextmenu', container.showHandheldNav.bind(container));
 
 	if (navigator.share) {
 		interface_classlist.add('hasnativeshare');
@@ -103,11 +103,11 @@ export function build_controller(container) {
 		return;
 	}
 
-	container.audiotag.addEventListener('durationchange', container.reposition_tracks.bind(container), passive_ev);
+	container.audiotag.addEventListener('durationchange', container.repositionTracks.bind(container), passive_ev);
 
-	container.show_main();
+	container.showMain();
 	build_chapters_loader(container);
-	container.fire_event('ready');
+	container.emitEvent('ready');
 
-	querySelector_apply('#canonical', element_prevent_link_on_same_page, container.shadowRoot);
+	querySelectorDo('#canonical', preventLinkOnSamePage, container.shadowRoot);
 }

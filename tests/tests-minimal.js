@@ -265,7 +265,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		secondary_audiotag.volume = 0;
 		localStorage.clear();
 		function check_onstart() {
-			// won't work because missing querySelector_apply('audio[controls]', CPU_Audio.recall_audiotag);
+			// won't work because missing querySelectorDo('audio[controls]', CPU_Audio.recall_audiotag);
 			// assert.ok(! secondary_audiotag.paused, 'Second player should have started');
 			// assert.ok(audiotag.paused, 'First player should be paused');
 			assert.ok(secondary_audiotag.currentTime = 10, 'Second player should be at 10s');
@@ -296,7 +296,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		localStorage.setItem(secondary_audiotag.currentSrc, String(30));
 		localStorage.clear();
 		function check_onstart() {
-			// won't work because missing querySelector_apply('audio[controls]', CPU_Audio.recall_audiotag);
+			// won't work because missing querySelectorDo('audio[controls]', CPU_Audio.recall_audiotag);
 			// assert.ok(! secondary_audiotag.paused, 'Second player should have started');
 			// assert.ok(audiotag.paused, 'First player should be paused');
 			assert.ok(secondary_audiotag.currentTime = 30, 'Second player should be at 30s');
@@ -326,7 +326,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		localStorage.setItem(secondary_audiotag.currentSrc, String(30));
 		localStorage.clear();
 		function check_onstart() {
-			// won't work because missing querySelector_apply('audio[controls]', CPU_Audio.recall_audiotag);
+			// won't work because missing querySelectorDo('audio[controls]', CPU_Audio.recall_audiotag);
 			assert.ok(! audiotag.paused, 'First player should be playing');
 			assert.ok(audiotag.currentTime = 10, 'First player should be at 10s');
 			// assert.ok(! secondary_audiotag.paused, 'Second player should have started');

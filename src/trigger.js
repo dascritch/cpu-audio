@@ -1,5 +1,5 @@
 import {once_passive_ev, findContainer, warn} from './utils.js';
-import {is_audiotag_streamed} from './media_element_extension.js';
+import {isAudiotagStreamed} from './media_element_extension.js';
 import {timeInSeconds} from './convert.js';
 import {build_playlist} from './build_playlist.js';
 
@@ -55,11 +55,11 @@ function controller_switch_to(audiotag) {
 		return;
 	}
 	if  (!audiotag.isEqualNode(globalController.audiotag)) {
-		globalController.attach_audiotag_to_controller(audiotag);
+		globalController.attachAudiotagToController(audiotag);
 		globalController.audiotag = audiotag;
-		globalController.show_main();
-		globalController.redraw_all_planes();
-		globalController.set_mode_container(); 	// to switch back the display between streamed/not-str medias
+		globalController.showMain();
+		globalController.redrawAllPlanes();
+		globalController.setModeContainer(); 	// to switch back the display between streamed/not-str medias
 	}
 	globalController.build_playlist();
 }
@@ -156,7 +156,7 @@ export const trigger = {
 		let container = findContainer(target);
 		let ratio = offsetX / target.clientWidth;
 		let seeked_time = ratio * container.audiotag.duration;
-		container.show_throbber_at(seeked_time);
+		container.showThrobberAt(seeked_time);
 	},
 
 	/**
@@ -165,7 +165,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	out : function({target}) {
-		findContainer(target).hide_throbber();
+		findContainer(target).hideThrobber();
 	},
 
 	/**
@@ -191,13 +191,13 @@ export const trigger = {
 			trigger.pause(undefined, DocumentCPU.currentAudiotagPlaying);
 		}
 
-		if ((isNaN(audiotag.duration)) && (!is_audiotag_streamed(audiotag))) {
+		if ((isNaN(audiotag.duration)) && (!isAudiotagStreamed(audiotag))) {
 			// Correct play from position on the timeline when metadata not preloaded #88
 
 			// indicate we are loading something
 			let controller = audiotag.CPU_controller();
-			if ((controller) && (controller.update_loading)) {
-				controller.update_loading(undefined, 100 * offsetX  / target.clientWidth);
+			if ((controller) && (controller.updateLoading)) {
+				controller.updateLoading(undefined, 100 * offsetX  / target.clientWidth);
 			}
 
 			let expected_event = 'loadedmetadata';
@@ -249,7 +249,7 @@ export const trigger = {
 		document.CPU.lastUsed = target;
 
 		if ( 
-			(document_cpu.only_play_one_audiotag) && 
+			(document_cpu.playStopOthers) && 
 			(document_cpu.currentAudiotagPlaying) && 
 			(!document_cpu.isAudiotagPlaying(target)) 
 			) {
@@ -294,8 +294,8 @@ export const trigger = {
 
 							if (audiotag.CPU_connected) {
 								let CPU_api = audiotag.CPU_controller().CPU;
-								CPU_api.glow_before_play = true;
-								CPU_api.set_act_container('glow');
+								CPU_api.glowBeforePlay = true;
+								CPU_api.setActContainer('glow');
 							}
 							break;
 						case 'NotSupportedError':
@@ -326,9 +326,9 @@ export const trigger = {
 		/** @param      {number}  seconds    Relative position fowards */
 		function seek_relative(seconds) {
 			event.at = container.audiotag.currentTime + seconds;
-			container.show_throbber_at(event.at);
+			container.showThrobberAt(event.at);
 			trigger.throbble(event);
-			container.hide_throbber_later();
+			container.hideThrobberLater();
 		}
 
 		switch (event.keyCode) {
@@ -414,7 +414,7 @@ export const trigger = {
 	 */
 	fastreward : function(event) {
 		event.keyCode = KEY_LEFT_ARROW;
-		trigger.key(event, document.CPU.fast_factor);
+		trigger.key(event, document.CPU.fastFactor);
 	},
 	/**
 	 * @summary Pressing fastfoward button
@@ -424,7 +424,7 @@ export const trigger = {
 	 */
 	fastfoward : function(event) {
 		event.keyCode = KEY_RIGHT_ARROW;
-		trigger.key(event, document.CPU.fast_factor);
+		trigger.key(event, document.CPU.fastFactor);
 	},
 
 	/**
@@ -456,7 +456,7 @@ export const trigger = {
 		}
 
 		audiotag.CPU_update();
-		if ((!audiotag.paused) && (!is_audiotag_streamed(audiotag))) {
+		if ((!audiotag.paused) && (!isAudiotagStreamed(audiotag))) {
 			window.localStorage.setItem(audiotag.currentSrc, String(audiotag.currentTime));
 		}
 	},

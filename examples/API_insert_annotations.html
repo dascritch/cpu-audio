@@ -15,7 +15,7 @@ document.addEventListener('CPU_ready', e => {
     let player_API = player_element.CPU;
 
     // OK,  let's create our plane 
-    player_API.add_plane(
+    player_API.addPlane(
     	'annotations',				// named reference
     	'Personal annotations', 	// Title for the panel
     	{
@@ -24,7 +24,7 @@ document.addEventListener('CPU_ready', e => {
     });
 
     // Now, we can insert some points of interest
-    player_API.add_point(
+    player_API.addPoint(
     	'annotations',				// named reference for the plane
     	0,							// time position, in seconds
     	'note-1',					// named reference for the point
@@ -34,7 +34,7 @@ document.addEventListener('CPU_ready', e => {
            	'end'  : 20				// The point ends at 20 seconds 
     	});
 
-    player_API.add_point(
+    player_API.addPoint(
     	'annotations',
     	15,							// you can overleap points
     	'note-2',					// named reference for the point
@@ -44,7 +44,7 @@ document.addEventListener('CPU_ready', e => {
            	'end'  : 40
     	});
 
-    player_API.add_point(
+    player_API.addPoint(
     	'annotations',
     	40,
     	'note-3',					// remember, those names should be unique
@@ -54,7 +54,7 @@ document.addEventListener('CPU_ready', e => {
     	});
 
     // What about create a second panel ?
-    player_API.add_plane(
+    player_API.addPlane(
         'parameters',
         'Parameters',
         {
@@ -67,7 +67,7 @@ document.addEventListener('CPU_ready', e => {
 
     // And, let's say we want to intercept on each panel redraw ?
     // so we add some interactions on them.
-    document.addEventListener('CPU_draw_point', (event) => {
+    document.addEventListener('CPU_drawPoint', (event) => {
         //document.addEventListener('change', (event) => {
         //    console.log(event.target);
         //});
@@ -79,11 +79,11 @@ document.addEventListener('CPU_ready', e => {
             return ;
         }
         // we take the point panel in element
-        let element_point_panel = detail.element_point_panel;
+        let element_pointPanel = detail.element_pointPanel;
         // I need to prevent any drag events, due to some... we'll i keep the surprise
-        element_point_panel.draggable = false;
-        element_point_panel.querySelector('A').draggable = false;
-        let input_element = element_point_panel.querySelector('input');
+        element_pointPanel.draggable = false;
+        element_pointPanel.querySelector('A').draggable = false;
+        let input_element = element_pointPanel.querySelector('input');
         if (detail.point === 'volume') {
             // don't forget to remove this eventListener before putting it again !
             let action = function(e) {
@@ -105,7 +105,7 @@ document.addEventListener('CPU_ready', e => {
 
 
     // Let's have a bit of fun
-    player_API.add_point(
+    player_API.addPoint(
         'parameters',
         0,
         'volume',
@@ -115,7 +115,7 @@ document.addEventListener('CPU_ready', e => {
         });
 
     // Let's have a SECOND bit of fun
-    player_API.add_point(
+    player_API.addPoint(
         'parameters',
         0,
         'playbackrate',
