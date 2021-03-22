@@ -20,6 +20,7 @@ Corrections
  * When changing component title, its title="" must follows
  * `Element.CPU.remove_highlights_points()` was too generic. Modification in parameters ([#109](#109))
  * `Element.CPU.remove_point()` was terrible
+ * `Element.CPU.build_chapters()` and `Element.CPU.build_playlist()` are no more public API
 
 Back-end
 --------

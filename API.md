@@ -90,8 +90,6 @@ show_throbber_at(number)                     |         | Display the throbber on
 hide_throbber()                              |         | Hide immediately the throbber
 hide_throbber_later()                        |         | Hide the throbber later (waiting 1 seconds). A newer call will delay the hiding later. News at 11.
 show_interface(string)                       |         | Switch between `'main'`, `'share'` or `'error'` interfaces.
-build_chapters()                             |         | Rebuild chapters list and time-line.
-build_playlist()                             |         | Rebuild playlist. Should only be used  for `<cpu-controller>`
 add_plane(plane, title, data)                | boolean | Create an annotation plane (¹)(²)(³)
 remove_plane(plane)                          | boolean | Remove an annotation plane (¹)(²)
 add_point(plane, timecode, point, data)      | boolean | Add an annotation point to a plane at a timecode (¹)(²)(⁴)

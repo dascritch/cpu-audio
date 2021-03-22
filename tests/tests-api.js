@@ -102,8 +102,6 @@ document.addEventListener('CPU_ready', function() {
 			'hide_throbber',
 			'hide_throbber_later',
 			'show_interface',
-			'build_chapters',
-			'build_playlist',
 			'add_plane',
 			'remove_plane',
 			'add_point',

@@ -1,8 +1,8 @@
+import {acceptable_selector, info} from './utils.js';
 import {CpuControllerElement} from './cpu_controller.class.js';
-import {acceptable_selector} from './utils.js';
 import {connect_audiotag} from './media_element_extension.js';
 import {TimeInSeconds} from './convert.js';
-import {info} from './utils.js';
+import {build_chapters} from './element_cpu.js';
 
 /**
  * @summary Interprets if <cpu-audio> element is modified
@@ -31,14 +31,14 @@ function observer_audio([{target}]) {
 	const container = document.CPU.find_container(target);
 
 	// in case <track> changed/removed
-	container.build_chapters();
+	build_chapters(container);
 
 	// in case attributes changed
 	container.complete_template();
 
 	const global_controller = document.CPU.global_controller;
 	if (container.audiotag.isEqualNode(global_controller?.audiotag)) {
-		global_controller.build_chapters();
+		build_chapters(global_controller);
 		global_controller.complete_template();
 	}
 }

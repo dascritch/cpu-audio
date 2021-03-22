@@ -1,6 +1,7 @@
 import {once_passive_ev, warn} from './utils.js';
 import {is_audiotag_streamed} from './media_element_extension.js';
 import {TimeInSeconds} from './convert.js';
+import {build_playlist} from './build_playlist.js';
 
 const KEY_LEFT_ARROW = 37;
 const KEY_RIGHT_ARROW = 39;
@@ -137,7 +138,10 @@ export const trigger = {
 		await document.CPU.jumpIdAt(hash, timecode_start, callback_fx);
 
 		// not in document.CPU (yet) to avoid unuseful repaint
-		document.CPU.global_controller?.build_playlist();
+		let global_controller = document.CPU.global_controller;
+		if (global_controller) {
+			build_playlist(global_controller);
+		}
 		// scroll to the audio element. Should be reworked, or parametrable , see issue #60
 		// window.location.hash = `#${hash}`;
 	},

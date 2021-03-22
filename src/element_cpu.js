@@ -12,12 +12,10 @@ import {is_audiotag_streamed, add_id_to_audiotag} from './media_element_extensio
 const acceptable_hide_atttributes = ['poster', 'actions', 'timeline', 'chapters', 'panels', 'panels-title', 'panels-except-play'];
 
 // should be put in CPU-controller ?
-let preview_classname = 'with-preview';
-let activecue_classname = 'active-cue';
+const preview_classname = 'with-preview';
+export const activecue_classname = 'active-cue';
 
-let plane_chapters = '_chapters';
-// plane for _playlist. Only used in <CPU-Controller>
-let plane_playlist = '_playlist';
+const plane_chapters = '_chapters';
 
 // Regex used to validate planes, points and injected css names
 const valid_id = /^[a-zA-Z0-9\-_]+$/;
@@ -157,12 +155,12 @@ function cuechange_event(container, event) {
  * @summary Add listeners on tracks to build chapters when loaded
  * @private
  * 
- * @param      {Object}  container  Element.CPU
+ * @param      {Object}  container  <cpu-audio>.CPU
  */
 function build_chapters_loader(container) {
-	container.build_chapters();
+	build_chapters(container);
 	let audiotag = container.audiotag;
-	let this_build_chapters = container.build_chapters.bind(container);
+	let this_build_chapters = build_chapters.bind(undefined, container);
 
 	// sometimes, we MAY have loose loading
 	audiotag.addEventListener('loadedmetadata', this_build_chapters, once_passive_ev);
@@ -173,6 +171,96 @@ function build_chapters_loader(container) {
 	}
 }
 
+/**
+ * @summary Builds or refresh chapters interface.
+ * @private was public
+ *
+ * @param      {Object}  			container  <cpu-audio>.CPU
+ * @param      {Object|undefined}  	event          The event
+ */
+export async function build_chapters(container) {
+	// this functions is called THREE times at load : at build, at loadedmetada event and at load event
+	// and afterwards, we have to reposition track points on duractionchange
+
+	if (container.is_controller) {
+		// not your job, CPUController
+		return;
+	}
+
+	let audiotag = container.audiotag;
+	let has = false;
+
+	if (audiotag) {
+		if (audiotag.textTracks?.length > 0) {
+			let chapter_track = null;
+
+			for (let tracks of audiotag.textTracks) {
+				if (
+						(tracks.kind.toLowerCase() === 'chapters') &&
+						(tracks.cues) &&  // linked to default="" attribute, only one per set !
+						(
+							(!chapter_track) /* still no active track */
+							|| (tracks.language.toLowerCase() === prefered_language) /* correspond to <html lang> */
+						)
+					) {
+					chapter_track = tracks;
+				}
+			}
+
+			if (chapter_track?.cues.length > 0) {
+				container.add_plane(plane_chapters, __['chapters'], {track : 'chapters'});
+
+				let cuechange_event_this = cuechange_event.bind(undefined, container);
+				// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
+				// adding/reinstall chapter changing event
+				chapter_track.removeEventListener('cuechange', cuechange_event_this);
+				chapter_track.addEventListener('cuechange', cuechange_event_this, passive_ev);
+
+				for (let cue of chapter_track.cues) {
+					if (!container.get_point(plane_chapters, cue.id)) {
+						// avoid unuseful redraw, again
+						let cuepoint = Math.floor(cue.startTime);
+						container.add_point(plane_chapters, cuepoint, cue.id,  {
+							text : container.translate_vtt(cue.text),
+							link : true,          // point the link to start time position
+							end  : cue.endTime    // end timecode of the cue
+						});
+					}
+				}
+				if (chapter_track.cues.length > 0) {
+					has = true;
+				}
+				cuechange_event(container, {
+					target : {
+						activeCues : chapter_track.cues
+					}
+				});
+			}
+		}
+	}
+
+	let body_class = `cpu_tag_«${audiotag.id}»_chaptered`;
+	let body_classlist = document.body.classList;
+	if (has) {
+		// indicate in host page that audio tag chapters are listed
+		// see https://github.com/dascritch/cpu-audio/issues/36
+		body_classlist.add(body_class);
+	} else {
+		container.remove_plane(plane_chapters);
+		body_classlist.remove(body_class);
+	}
+
+	/*
+	if ((active_cue) && (id_in_hash(this.audiotag.id)) ) {
+		// shoud be set ONLY if audiotag is alone in page or if audiotag.id named in hash
+		trigger.cuechange(active_cue, this.audiotag);
+		this.fire_event('chapter_changed', {
+			cue : active_cue
+		});
+	}
+	*/
+
+}
 
 export class CPU_element_api {
 	/**
@@ -1383,144 +1471,6 @@ export class CPU_element_api {
 	}
 
 	/**
-	 * @summary Builds or refresh chapters interface.
-	 * @public
-	 *
-	 * @param      {Object|undefined}  event          The event
-	 */
-	async build_chapters(/* event = undefined */) {
-		// this functions is called THREE times at load : at build, at loadedmetada event and at load event
-		// and afterwards, we have to reposition track points on duractionchange
-
-		if (this.is_controller) {
-			// not your job, CPUController
-			return;
-		}
-
-		let audiotag = this.audiotag;
-		let has = false;
-
-		if (audiotag) {
-			if (audiotag.textTracks?.length > 0) {
-				let chapter_track = null;
-
-				for (let tracks of audiotag.textTracks) {
-					if (
-							(tracks.kind.toLowerCase() === 'chapters') &&
-							(tracks.cues) &&  // linked to default="" attribute, only one per set !
-							(
-								(!chapter_track) /* still no active track */
-								|| (tracks.language.toLowerCase() === prefered_language) /* correspond to <html lang> */
-							)
-						) {
-						chapter_track = tracks;
-					}
-				}
-
-				if (chapter_track?.cues.length > 0) {
-					this.add_plane(plane_chapters, __['chapters'], {track : 'chapters'});
-
-					let cuechange_event_this = cuechange_event.bind(undefined, this);
-					// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
-					// adding/reinstall chapter changing event
-					chapter_track.removeEventListener('cuechange', cuechange_event_this);
-					chapter_track.addEventListener('cuechange', cuechange_event_this, passive_ev);
-
-					for (let cue of chapter_track.cues) {
-						if (!this.get_point(plane_chapters, cue.id)) {
-							// avoid unuseful redraw, again
-							let cuepoint = Math.floor(cue.startTime);
-							this.add_point(plane_chapters, cuepoint, cue.id,  {
-								text : this.translate_vtt(cue.text),
-								link : true,          // point the link to start time position
-								end  : cue.endTime    // end timecode of the cue
-							});
-						}
-					}
-					if (chapter_track.cues.length > 0) {
-						has = true;
-					}
-					cuechange_event(this, {
-						target : {
-							activeCues : chapter_track.cues
-						}
-					});
-				}
-			}
-		}
-
-		let body_class = `cpu_tag_«${audiotag.id}»_chaptered`;
-		let body_classlist = document.body.classList;
-		if (has) {
-			// indicate in host page that audio tag chapters are listed
-			// see https://github.com/dascritch/cpu-audio/issues/36
-			body_classlist.add(body_class);
-		} else {
-			this.remove_plane(plane_chapters);
-			body_classlist.remove(body_class);
-		}
-
-		/*
-		info(`active_cue ${active_cue} && id_in_hash(this.audiotag.id) ${id_in_hash(this.audiotag.id)}`)
-		if ((active_cue) && (id_in_hash(this.audiotag.id)) ) {
-			// shoud be set ONLY if audiotag is alone in page or if audiotag.id named in hash
-			trigger.cuechange(active_cue, this.audiotag);
-			this.fire_event('chapter_changed', {
-				cue : active_cue
-			});
-		}
-		*/
-
-	}
-
-	/**
-	 * @summary Builds or refresh the playlist panel.
-	 Should be called only for <cpu-controller>
-	 * @public
-	 */
-	build_playlist() {
-		if (!this.is_controller) {
-			// Note that ONLY the global controller will display the playlist. For now.
-			return;
-		}
-
-		let previous_playlist = this.current_playlist;
-		this.current_playlist = document.CPU.find_current_playlist();
-
-		if (! this.get_plane(plane_playlist)) {
-			this.add_plane(plane_playlist, __['playlist'], {
-				track 		: false,
-				panel 		: 'nocuetime',
-				highlight 	: true,
-				_comp 		: true 				// data stored on CPU-Controller ONLY
-			});
-		}
-
-		if (previous_playlist !== this.current_playlist) {
-			this.clear_plane(plane_playlist);
-
-			if (this.current_playlist.length === 0) {
-				// remove plane to hide panel. Yes, overkill
-				this.remove_plane(plane_playlist);
-				return;
-			}
-
-			for (let audiotag_id of this.current_playlist) {
-				// TODO : when audiotag not here, do not add point
-				this.add_point(plane_playlist, 0, audiotag_id, {
-					text : document.getElementById(audiotag_id)?.dataset.title, 
-					link : `#${audiotag_id}&t=0`
-				});
-			}
-		}
-
-		this.highlight_point(plane_playlist, this.audiotag.id, activecue_classname);
-
-		// move _playlist on top. Hoping it will insert it RIGHT AFTER the main element.
-		this.element.shadowRoot.querySelector('main').insertAdjacentElement('afterend', this.get_plane_panel(plane_playlist) );
-	}
-
-	/**
 	 * @package, because at start
 	 *
 	 * @summary Builds the controller.
@@ -1607,7 +1557,7 @@ export class CPU_element_api {
 		this.audiotag.addEventListener('durationchange', this.reposition_tracks.bind(this), passive_ev);
 
 		this.show_main();
-		build_chapters_loader();
+		build_chapters_loader(this);
 		this.fire_event('ready');
 	}
 }
