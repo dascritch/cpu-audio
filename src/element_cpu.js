@@ -1,4 +1,4 @@
-import {CpuControllerTagName, selector_audio_in_component, querySelector_apply, absolutize_url, error, escape_html, passive_ev} from './utils.js';
+import {CpuControllerTagName, find_container, selector_audio_in_component, querySelector_apply, absolutize_url, error, escape_html, passive_ev} from './utils.js';
 import {__} from './i18n.js';
 import {default_dataset} from './default_dataset.js';
 import {SecondsInColonTime, SecondsInTime, IsoDuration} from './convert.js';
@@ -48,7 +48,7 @@ function preview_container_hover({target}) {
 	}
 
 	let [plane_name, point_name] = get_point_names_from_id(target.id);
-	document.CPU.find_container(target).highlight_point(plane_name, point_name);
+	find_container(target).highlight_point(plane_name, point_name);
 }
 
 /**
@@ -1302,7 +1302,7 @@ export class CPU_element_api {
 			if (!this.is_controller) {
 				on = global_controller;
 			} else {
-				on = document.CPU.find_container(global_controller.audiotag);
+				on = find_container(global_controller.audiotag);
 			}
 			on.remove_highlights_points(plane_name, class_name, false);
 		}
@@ -1333,7 +1333,7 @@ export class CPU_element_api {
 			if (!this.is_controller) {
 				on = document_CPU.global_controller;
 			} else {
-				on = document_CPU.find_container(document_CPU.global_controller.audiotag);
+				on = find_container(document_CPU.global_controller.audiotag);
 			}
 			on.highlight_point(plane_name, point_name, class_name, false);
 		}

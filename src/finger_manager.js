@@ -1,3 +1,4 @@
+import {find_container} from './utils.js';
 import {trigger} from './trigger.js';
 
 // Repeated event allocation
@@ -67,7 +68,7 @@ export class touch_manager {
 	 * @param      {Object}  event   The event
 	 */
 	start({target}) {
-		let container = document.CPU.find_container(target);
+		let container = find_container(target);
 		touching = setTimeout(container.show_handheld_nav.bind(container), document.CPU.alternate_delay);
 	}
 	/**

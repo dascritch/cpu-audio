@@ -11,6 +11,7 @@ New features
 Corrections
 -----------
 
+ * Production files are now more logically created in `build/` instead of `directory/`
  * Reduce repaints
  * Do not change color when changing mode play→loading→play ([#114](#114)) 
  * Resolving a probable issue on fine navigation panel on handheld

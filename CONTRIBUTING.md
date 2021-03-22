@@ -53,17 +53,16 @@ As I'm not perfect, some tests were written for non-regressions, conformity and 
  - [Minimum services available even without webcomponent part, as hash links](./tests/tests-minimal.html)
  - [Graphic interface and webcomponents-dependant features](./tests/tests-interface.html)
  - [API method names](./tests/tests-api.html)
- - You can check more lint tests with `./make.sh -a`, but please, **never commit** resulting `dist/*` files.
 
 
 Development
 -----------
 
-To make the `dist/` files, run `./make.sh`
+To make the `build/` files, run `./make.sh`
 
-You will need to add packages via `npm install` to finalize `dist/*` files.
+You will need to add packages via `npm install` to finalize `build/*` files.
 
-If you're not working on `master` or `preprod` original branches, try to avoid to commit `dist/*` files, to avoid conflicts during merge.
+If you're not working on `master` or `preprod` original branches, try to avoid to commit `build/*` files, to avoid conflicts during merge.
 
 
 <!-- {% include footer.html %} -->

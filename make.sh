@@ -11,7 +11,7 @@ Projet repo
 
 Options:
   -h, --help            Display this message
-  -c, --clean        	Clean dist/ directory
+  -c, --clean        	Clean build/ directory
   -d, --debug           Used for ease debug.
   -t, --test        	Run tests after (ev.) compression
   -i, --index        	Recreate INDEX.md with examples and applications
@@ -50,8 +50,8 @@ while [ '-' == "${1:0:1}" ] ; do
 			exit 0
 		;;
 		-c|--clean)
-			echo 'cleaning dist/*'
-			rm ${PROJECT_DIR}/dist/*
+			echo 'cleaning build/*'
+			rm ${PROJECT_DIR}/build/*
 			rm ${PROJECT_DIR}/tmp/*
 		;;
 		-d|--debug)
@@ -157,9 +157,9 @@ export function insert_template(){
 function _build_component_js_webpack() {
 	echo 'webpacking'
 	component_file_js="cpu-audio${THEME_OUTPUT}.js"
-	npx webpack --config ${PROJECT_DIR}/webpack.config.js --mode ${webpack_mode} --target es2020 --entry ${PROJECT_DIR}/src/index.js --output-path ${PROJECT_DIR}/dist --output-filename ${component_file_js} ${OTHER_OPTIONS}
+	npx webpack --config ${PROJECT_DIR}/webpack.config.js --mode ${webpack_mode} --target es2020 --entry ${PROJECT_DIR}/src/index.js --output-path ${PROJECT_DIR}/build --output-filename ${component_file_js} ${OTHER_OPTIONS}
 	if [[ "${THEME_NAME}" != "default" ]] ; then
-		echo -e "\n// Generated theme : ${THEME_NAME}\n" >> ${PROJECT_DIR}/dist/${component_file_js}
+		echo -e "\n// Generated theme : ${THEME_NAME}\n" >> ${PROJECT_DIR}/build/${component_file_js}
 	fi
 }
 
@@ -217,4 +217,4 @@ if [ "1" == "${REINDEX}" ] ; then
 	_recreate_index
 fi
 
-ls -l ${PROJECT_DIR}/dist/*
+ls -l ${PROJECT_DIR}/build/*

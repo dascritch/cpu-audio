@@ -1,4 +1,4 @@
-import {acceptable_selector, info} from './utils.js';
+import {acceptable_selector, find_container, info} from './utils.js';
 import {CpuControllerElement} from './cpu_controller.class.js';
 import {connect_audiotag} from './media_element_extension.js';
 import {TimeInSeconds} from './convert.js';
@@ -10,7 +10,7 @@ import {build_chapters} from './build_chapters.js';
  * @param      {Object}  mutationsList  The mutations list
  */
 function observer_cpuaudio([{target}]) {
-	const container = document.CPU.find_container(target);
+	const container = find_container(target);
 	let media_tagname = 'audio';
 	let audio_element = container.element.querySelector(media_tagname);
 	if (!audio_element) {
@@ -28,7 +28,7 @@ function observer_cpuaudio([{target}]) {
  * @param      {Object}  mutationsList  The mutations list
  */
 function observer_audio([{target}]) {
-	const container = document.CPU.find_container(target);
+	const container = find_container(target);
 
 	// in case <track> changed/removed
 	build_chapters(container);

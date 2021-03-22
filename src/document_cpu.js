@@ -1,4 +1,4 @@
-import {CpuAudioTagName, CpuControllerTagName, once_passive_ev, selector_interface, selector_audio_in_component, warn} from './utils.js';
+import {find_interface, find_container, once_passive_ev, selector_audio_in_component, warn} from './utils.js';
 import {default_document_cpu_parameters} from './default_document_cpu_parameters.js';
 import {default_dataset} from './default_dataset.js';
 import {convert, TimeInSeconds} from './convert.js';
@@ -43,6 +43,10 @@ export const document_CPU = {
 	// @package, not enough mature
 	default_dataset,
 
+	// @public utilities to find shadowRoot and CPU API
+	find_interface,
+	find_container,
+
 	/**
 	 * @public
 	 * @summary Determines if audiotag is currently playing.
@@ -62,7 +66,9 @@ export const document_CPU = {
 	 * @return     {boolean}  True if audiotag global, False otherwise.
 	 */
 	is_audiotag_global : function(audiotag) {
-		return this.global_controller ? audiotag.isEqualNode(this.global_controller.audiotag) : this.is_audiotag_playing(audiotag);
+		return this.global_controller ? 
+			audiotag.isEqualNode(this.global_controller.audiotag) : 
+			this.is_audiotag_playing(audiotag);
 	},
 
 	/**
@@ -152,36 +158,7 @@ export const document_CPU = {
 		controller?.update_loading?.(seconds);
 	},
 
-	/**
-	 * @summary For any ShadowDOM element, will returns its parent interface container
- 	 * @public
-	 *
-	 * @param      {Element}  child   The ShadowDOM child
-	 * @return     {Element}  The #interface element
-	 */
-	find_interface : function(child) {
-		return child.closest(selector_interface);
-	},
-	/**
-	 * @summary For any <audio> tag or its child tag or shadowDOM element, returns the element `CPU` API
- 	 * @public
-	 *
-	 * @param      {Element}  child   The child
-	 * @return     {CPU_element_api}       Element.CPU
-	 */
-	find_container : function(child) {
-		if ([CpuAudioTagName, CpuControllerTagName].includes(child.tagName)) {
-			return child.CPU;
-		}
 
-		let closest_cpuaudio = child.closest(CpuAudioTagName);
-		if (closest_cpuaudio) {
-			return closest_cpuaudio.CPU;
-		}
-
-		let _interface = document.CPU.find_interface(child);
-		return _interface.parentNode.host.CPU;
-	},
 	/**
 >	 * @summary Return the current playing playlist array
 	 * @public

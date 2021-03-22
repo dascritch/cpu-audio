@@ -1,4 +1,4 @@
-import {once_passive_ev, warn} from './utils.js';
+import {once_passive_ev, find_container, warn} from './utils.js';
 import {is_audiotag_streamed} from './media_element_extension.js';
 import {TimeInSeconds} from './convert.js';
 import {build_playlist} from './build_playlist.js';
@@ -152,7 +152,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	hover : function({target, offsetX}) {
-		let container = document.CPU.find_container(target);
+		let container = find_container(target);
 		let ratio = offsetX / target.clientWidth;
 		let seeked_time = ratio * container.audiotag.duration;
 		container.show_throbber_at(seeked_time);
@@ -164,7 +164,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	out : function({target}) {
-		document.CPU.find_container(target).hide_throbber();
+		find_container(target).hide_throbber();
 	},
 
 	/**
@@ -176,7 +176,7 @@ export const trigger = {
 		let at = 0;
 		let {target, offsetX} = event;
 		let document_CPU = document.CPU;
-		let audiotag = document_CPU.find_container(target).audiotag;
+		let audiotag = find_container(target).audiotag;
 
 		if (audiotag.duration === Infinity) {
 			// CAVEAT : we may have improper duration due to a streamed media
@@ -200,10 +200,9 @@ export const trigger = {
 			}
 
 			let expected_event = 'loadedmetadata';
-			let recreated_event = {offsetX, target};
 			audiotag.addEventListener(
 				expected_event,
-				() => {trigger.throbble(recreated_event);},
+				() => {trigger.throbble({offsetX, target});},
 				once_passive_ev);
 			// loading metadata. May not work on Apples
 			audiotag.setAttribute('preload', 'metadata');
@@ -231,7 +230,7 @@ export const trigger = {
 	pause : function(event=undefined, audiotag=undefined) {
 		if (!audiotag) {
 			let {target} = event;
-			audiotag = (target.tagName === 'AUDIO') ? target : document.CPU.find_container(target).audiotag;
+			audiotag = (target.tagName === 'AUDIO') ? target : find_container(target).audiotag;
 		}
 		audiotag.pause();
 		document.CPU.current_audiotag_playing = null;
@@ -269,7 +268,7 @@ export const trigger = {
 			warn(`play() prevented because already waiting for focus`);
 			return;
 		}
-		audiotag = audiotag ?? document.CPU.find_container(event.target).audiotag;
+		audiotag = audiotag ?? find_container(event.target).audiotag;
 
 		trigger._last_play_error = false;
 		remove_timecode_outofborders(audiotag.currentTime);
@@ -320,7 +319,7 @@ export const trigger = {
 			return;
 		}
 
-		let container = document.CPU.find_container(event.target);
+		let container = find_container(event.target);
 		let audiotag = container.audiotag;
 
 		/** @param      {number}  seconds    Relative position fowards */
@@ -369,7 +368,7 @@ export const trigger = {
 		if (event.keyCode === 13) {
 			return;
 		}
-		let container = document.CPU.find_container(event.target);
+		let container = find_container(event.target);
 		let audiotag = container.audiotag;
 
 		audiotag.paused ?
@@ -384,7 +383,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	restart : function({target}) {
-		let container = document.CPU.find_container(target);
+		let container = find_container(target);
 		document.CPU.seekElementAt(container.audiotag, 0);
 	},
 	/**

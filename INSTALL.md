@@ -1,7 +1,7 @@
 How-to install
 ==============
 
-Copy [`dist/cpu-audio.js`](dist/cpu-audio.js) file on your website.
+Copy [`build/cpu-audio.js`](build/cpu-audio.js) file on your website.
 
 Call it in the `<head>` of your html page :
 
