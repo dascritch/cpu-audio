@@ -16,11 +16,11 @@ export const selector_interface = '#interface';
 export const acceptable_selector = 'audio[controls]';
 export const selector_audio_in_component = 'cpu-audio audio'; // should be 'audio[controls]' but PHRACK APPLE !
 
-// For addEventListener
+// Parameters for addEventListener
 // @private
-export const passive_ev = {'passive': true};
+export const passive_ev = {passive: true};
 // @private
-export const once_passive_ev = {'passive':true, 'once':true};
+export const once_passive_ev = {passive: true, once: true};
 
 // private,to add attributes for unnamed <audio>
 // @private
@@ -66,7 +66,7 @@ export function absolutize_url(url) {
  * @return     {boolean}  False if have a screen
  */
 export function not_screen_context() {
-	return !window.matchMedia("screen").matches;
+	return !window.matchMedia('screen').matches;
 }
 
 /**
