@@ -116,23 +116,23 @@ function id_in_hash(id) {
 
 /**
  * @summary For any ShadowDOM element, will returns its parent interface container
- * @public via document.CPU.find_interface
+ * @public via document.CPU.findInterface
  *
  * @param      {Element}  child   The ShadowDOM child
  * @return     {Element}  The #interface element
  */
-export function find_interface(child) {
+export function findInterface(child) {
 	return child.closest(selector_interface);
 }
 
 /**
  * @summary For any <audio> tag or its child tag or shadowDOM element, returns the element `CPU` API
- * @public via document.CPU.find_container
+ * @public via document.CPU.findContainer
  *
  * @param      {Element}  child   The child
  * @return     {CPU_element_api}       Element.CPU
  */
-export function find_container(child) {
+export function findContainer(child) {
 	if ([CpuAudioTagName, CpuControllerTagName].includes(child.tagName)) {
 		return child.CPU;
 	}
@@ -142,7 +142,7 @@ export function find_container(child) {
 		return closest_cpuaudio.CPU;
 	}
 
-	return find_interface(child).parentNode.host.CPU;
+	return findInterface(child).parentNode.host.CPU;
 }
 
 

@@ -3,7 +3,7 @@ import {CpuAudioTagName, CpuControllerTagName, acceptable_selector, is_decent_br
 import {CpuAudioElement} from './cpu_audio.class.js';
 import {CpuControllerElement} from './cpu_controller.class.js';
 import {attach_events_audiotag} from './media_element_extension.js';
-import {document_CPU} from './document_cpu.js';
+import {DocumentCPU} from './document_cpu.js';
 import {insert_template} from '../tmp/insert_template.js';
 import {trigger} from './trigger.js';
 
@@ -32,7 +32,7 @@ if ((document.CPU) || (window.customElements.get(CpuAudioTagName.toLowerCase()))
 	warn('cpu-audio is called twice');
 } else {
 	// Here comes document.CPU
-	HTMLDocument.prototype.CPU = document_CPU;
+	HTMLDocument.prototype.CPU = DocumentCPU;
 
 	if (document.body !== null) {
 		main();

@@ -27,8 +27,8 @@ fast_factor              | `4`           | Amplification ratio between <kbd>â–¸ï
 repeat_delay             | `400`         | First repetition delay when clicking a button in handheld alternate browsing interface
 repeat_factor            | `100`         | Next repetitions delay when clicking a button in handheld alternate browsing interface
 only_play_one_audiotag   | `true`        | When a cpu-audio starts to play, any other instances in the same page are paused.
-current_audiotag_playing | `null`        | Reference to the playing `<audio>` element, `null` if none
-global_controller        | `null`        | Reference to the `<cpu-controller>` in the page if any, `null` elsewhere
+currentAudiotagPlaying | `null`        | Reference to the playing `<audio>` element, `null` if none
+globalController        | `null`        | Reference to the `<cpu-controller>` in the page if any, `null` elsewhere
 playlists                | `{}`          | Collection of audio tag by playlists (named by the `<cpu-audio playlist="">` attribute). [See playlist feature](./FEATURES#playlists).
 advance_in_playlist      | `true`        | When an audio is ended in a playlist, starts immediatly the next one.
 autoplay                 | `false`       | Will try to play at the start of the page if a temporal url is given or the audio was previously exited
@@ -40,13 +40,13 @@ Methods :
 
 name                             | returns                       | usage
 ---------------------------------|-------------------------------|-----------------
-is_audiotag_playing(audiotag)    | boolean                       | Indicate if this `<audio>` element is playing and correctly cpu-audio started
-is_audiotag_global(audiotag)     | boolean                       | Indicate if this `<audio>` element is displayed by `<cpu-controller>` if installed
+isAudiotagPlaying(audiotag)    | boolean                       | Indicate if this `<audio>` element is playing and correctly cpu-audio started
+isAudiotagGlobal(audiotag)     | boolean                       | Indicate if this `<audio>` element is displayed by `<cpu-controller>` if installed
 jumpIdAt(hash, timecode)         | 	                             | will jump the `<audio id="hash">` to timecode (any convertable format in seconds, colon-coded or human coded)
 seekElementAt(audiotag, seconds) |                               | will jump the `<audio>` to a position in seconds (number only)
-find_interface(child)            | HTMLElement or null           | For any ShadowDOM element, will returns its parent interface container
-find_container(child)            | CpuAudioElement.`CPU` or null | For any `<audio>` tag or its child tag, will returns the element `CPU` API
-find_current_playlist()          | array                         | Returns an array of the current playing playlist
+findInterface(child)            | HTMLElement or null           | For any ShadowDOM element, will returns its parent interface container
+findContainer(child)            | CpuAudioElement.`CPU` or null | For any `<audio>` tag or its child tag, will returns the element `CPU` API
+findCurrentPlaylist()          | array                         | Returns an array of the current playing playlist
 
 Some methods are still not documented, for internal usage, as they may evolve.
 
@@ -55,13 +55,13 @@ Some methods are still not documented, for internal usage, as they may evolve.
 
 name                              | returns | usage
 ----------------------------------|---------|-----------------
-TimeInSeconds(string)             | number  | Convert a string empty, with a number, with a colon-coded or an human-coded timecode in seconds
-SubunitTimeInSeconds(string)      | number  | Convert a human-coded (`1h2m3s`) time in seconds 
-ColonTimeInSeconds(string)        | number  | Convert a colon-coded (`01:02:03`) time in seconds 
-SecondsInTime(number)             | string  | Convert a time in seconds in a human-coded time (`1h2m3s`). Zero is `0s`.
-SecondsInColonTime(number)        | string  | Convert a time in seconds in a colon-coded time (`1:02:03s`). Zero is `0:00`.
-SecondsInPaddledColonTime(number) | string  | Same as `SecondsInColonTime`, but suited for `<input type="time" />`. Zero is `00:00:00`.
-IsoDuration(number)               | string  | Convert a duration in an ISO 8601 string suitable for `datetime=""` attribute in `<time>`
+timeInSeconds(string)             | number  | Convert a string empty, with a number, with a colon-coded or an human-coded timecode in seconds
+subunittimeInSeconds(string)      | number  | Convert a human-coded (`1h2m3s`) time in seconds 
+colontimeInSeconds(string)        | number  | Convert a colon-coded (`01:02:03`) time in seconds 
+secondsInTime(number)             | string  | Convert a time in seconds in a human-coded time (`1h2m3s`). Zero is `0s`.
+secondsInColonTime(number)        | string  | Convert a time in seconds in a colon-coded time (`1:02:03s`). Zero is `0:00`.
+secondsInPaddledColonTime(number) | string  | Same as `secondsInColonTime`, but suited for `<input type="time" />`. Zero is `00:00:00`.
+durationIso(number)               | string  | Convert a duration in an ISO 8601 string suitable for `datetime=""` attribute in `<time>`
 
 
 CpuAudioElement.CPU and CpuControllerElement.CPU

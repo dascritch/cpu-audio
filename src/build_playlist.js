@@ -19,7 +19,7 @@ export function build_playlist(container) {
 	}
 
 	let previous_playlist = container.current_playlist;
-	container.current_playlist = document.CPU.find_current_playlist();
+	container.current_playlist = document.CPU.findCurrentPlaylist();
 
 	if (! container.get_plane(plane_playlist)) {
 		container.add_plane(plane_playlist, __['playlist'], {

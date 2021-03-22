@@ -42,26 +42,26 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 	stopPlayer();
 	QUnit.start();
 
-	QUnit.test( "default_dataset at default", function( assert ) {
-		assert.equal(cpu.default_dataset.title, document.title, "title is document title" );
-		assert.equal(cpu.default_dataset.poster, null, "poster is null without social meta" );
-		assert.equal(cpu.default_dataset.canonical, window.location.href.split('#')[0], "canonical without social meta is actual address without hash" );
-		assert.equal(cpu.default_dataset.twitter, null, "twitter account is null without social meta" );
+	QUnit.test( "defaultDataset at default", function( assert ) {
+		assert.equal(cpu.defaultDataset.title, document.title, "title is document title" );
+		assert.equal(cpu.defaultDataset.poster, null, "poster is null without social meta" );
+		assert.equal(cpu.defaultDataset.canonical, window.location.href.split('#')[0], "canonical without social meta is actual address without hash" );
+		assert.equal(cpu.defaultDataset.twitter, null, "twitter account is null without social meta" );
 		/*
 		playground.innerHTML = `
 			<meta property="og:title" content="facebook">
 			<meta property="og:image" content="https://facebook">
 		`;
-		assert.equal(cpu.default_dataset.title, 'facebook', "title with facebook social meta" );
-		assert.equal(cpu.default_dataset.poster, 'https://facebook', "poster with facebook social meta" );
+		assert.equal(cpu.defaultDataset.title, 'facebook', "title with facebook social meta" );
+		assert.equal(cpu.defaultDataset.poster, 'https://facebook', "poster with facebook social meta" );
 		playground.innerHTML = `
 			<meta property="twitter:title" content="twitter">
 			<meta property="twitter:image:src" content="https://twitter">
 			<meta property="twitter:creator" content="@dascritch">
 		`;
-		assert.equal(cpu.default_dataset.title, 'twitter', "title with twitter social meta" );
-		assert.equal(cpu.default_dataset.poster, 'https://twitter', "poster with twitter social meta" );
-		assert.equal(cpu.default_dataset.twitter, '@dascritch', "twitter account with twitter social meta" );
+		assert.equal(cpu.defaultDataset.title, 'twitter', "title with twitter social meta" );
+		assert.equal(cpu.defaultDataset.poster, 'https://twitter', "poster with twitter social meta" );
+		assert.equal(cpu.defaultDataset.twitter, '@dascritch', "twitter account with twitter social meta" );
 		*/
 	});
 
@@ -359,14 +359,14 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		secondary_audiotag.play();
 	});
 
-	/* wrong test, as we need to test this BEFORE ANY OTHER ONE : .current_audiotag_playing is not .is_audiotag_playing
-	QUnit.test( "Public API : document.CPU.current_audiotag_playing", function( assert ) {
+	/* wrong test, as we need to test this BEFORE ANY OTHER ONE : .currentAudiotagPlaying is not .isAudiotagPlaying
+	QUnit.test( "Public API : document.CPU.currentAudiotagPlaying", function( assert ) {
 		let done = assert.async();
 		assert.expect(2);
 		audiotag.pause();
-		assert.equal(document.CPU.current_audiotag_playing , null, 'Not playing, document.CPU.current_audiotag_playing is null');
+		assert.equal(document.CPU.currentAudiotagPlaying , null, 'Not playing, document.CPU.currentAudiotagPlaying is null');
 		audiotag.play();
-		assert.ok(audiotag.isEqualNode( document.CPU.current_audiotag_playing ), 'Playing, document.CPU.current_audiotag_playing is refering playing audio');
+		assert.ok(audiotag.isEqualNode( document.CPU.currentAudiotagPlaying ), 'Playing, document.CPU.currentAudiotagPlaying is refering playing audio');
 	});
 	*/
 

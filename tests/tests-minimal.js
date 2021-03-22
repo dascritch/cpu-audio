@@ -49,54 +49,54 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 	});
 
 
-	QUnit.test( "document.CPU.convert.TimeInSeconds", function( assert ) {
-		assert.equal(convert.TimeInSeconds(''), 0, 'empty string' );
-		assert.equal(convert.TimeInSeconds(0), 0, 'got zero' );
-		assert.equal(convert.TimeInSeconds('1'), 1, 'got one' );
-		assert.equal(convert.TimeInSeconds('1s'), 1, 'got one second' );
-		assert.equal(convert.TimeInSeconds('20s'), 20, 'got twenty seconds' );
-		assert.equal(convert.TimeInSeconds('1m'), 60, 'got one minute' );
-		assert.equal(convert.TimeInSeconds('1m1s'), 61, 'got one minute and one second' );
-		assert.equal(convert.TimeInSeconds('2h4m2s'), 7442, 'got 2 hours, 4 minutes and 2 seconds' );
+	QUnit.test( "document.CPU.convert.timeInSeconds", function( assert ) {
+		assert.equal(convert.timeInSeconds(''), 0, 'empty string' );
+		assert.equal(convert.timeInSeconds(0), 0, 'got zero' );
+		assert.equal(convert.timeInSeconds('1'), 1, 'got one' );
+		assert.equal(convert.timeInSeconds('1s'), 1, 'got one second' );
+		assert.equal(convert.timeInSeconds('20s'), 20, 'got twenty seconds' );
+		assert.equal(convert.timeInSeconds('1m'), 60, 'got one minute' );
+		assert.equal(convert.timeInSeconds('1m1s'), 61, 'got one minute and one second' );
+		assert.equal(convert.timeInSeconds('2h4m2s'), 7442, 'got 2 hours, 4 minutes and 2 seconds' );
 	});
 
-	QUnit.test( "document.CPU.convert.ColonTimeInSeconds", function( assert ) {
-		assert.equal(convert.ColonTimeInSeconds('0:01'), 1, 'got one second' );
-		assert.equal(convert.ColonTimeInSeconds('1:34'), 94, 'got one minute and 34 seconds' );
-		assert.equal(convert.ColonTimeInSeconds('2:01:34'), 7294, 'got two hours, one minute and 34 seconds' );
-		assert.equal(convert.ColonTimeInSeconds('1:02:01:34'), (7294 + 86400), 'got one day, two hours, one minute and 34 seconds' );
+	QUnit.test( "document.CPU.convert.colontimeInSeconds", function( assert ) {
+		assert.equal(convert.colontimeInSeconds('0:01'), 1, 'got one second' );
+		assert.equal(convert.colontimeInSeconds('1:34'), 94, 'got one minute and 34 seconds' );
+		assert.equal(convert.colontimeInSeconds('2:01:34'), 7294, 'got two hours, one minute and 34 seconds' );
+		assert.equal(convert.colontimeInSeconds('1:02:01:34'), (7294 + 86400), 'got one day, two hours, one minute and 34 seconds' );
 	});
 
-	QUnit.test( "document.CPU.convert.SecondsInTime", function( assert ) {
-		assert.equal(convert.SecondsInTime(0), '0s', 'got zero' );
-		assert.equal(convert.SecondsInTime(1), '1s', 'got one' );
-		assert.equal(convert.SecondsInTime(20), '20s', 'got twenty seconds' );
-		assert.equal(convert.SecondsInTime(60), '1m0s', 'got one minute' );
-		assert.equal(convert.SecondsInTime(61), '1m1s', 'got one minute and one second' );
-		assert.equal(convert.SecondsInTime(7442), '2h4m2s', 'got 2 hours, 4 minutes and 2 seconds' );
-		assert.equal(convert.SecondsInTime(Infinity), '?', `Infinity got “?”` );
+	QUnit.test( "document.CPU.convert.secondsInTime", function( assert ) {
+		assert.equal(convert.secondsInTime(0), '0s', 'got zero' );
+		assert.equal(convert.secondsInTime(1), '1s', 'got one' );
+		assert.equal(convert.secondsInTime(20), '20s', 'got twenty seconds' );
+		assert.equal(convert.secondsInTime(60), '1m0s', 'got one minute' );
+		assert.equal(convert.secondsInTime(61), '1m1s', 'got one minute and one second' );
+		assert.equal(convert.secondsInTime(7442), '2h4m2s', 'got 2 hours, 4 minutes and 2 seconds' );
+		assert.equal(convert.secondsInTime(Infinity), '?', `Infinity got “?”` );
 	});
 
-	QUnit.test( "document.CPU.convert.SecondsInColonTime", function( assert ) {
-		assert.equal(convert.SecondsInColonTime(0), '0:00', 'got 0:00' );
-		assert.equal(convert.SecondsInColonTime(1), '0:01', 'got 0:01' );
-		assert.equal(convert.SecondsInColonTime(20), '0:20', 'got 0:20' );
-		assert.equal(convert.SecondsInColonTime(60), '1:00', 'got 1:00' );
-		assert.equal(convert.SecondsInColonTime(61), '1:01', 'got 1:01' );
-		assert.equal(convert.SecondsInColonTime(130), '2:10', 'got 2:10' );
-		assert.equal(convert.SecondsInColonTime(7442), '2:04:02', 'got 2:04:02' );
-		assert.equal(convert.SecondsInColonTime(Infinity), '?', `Infinity got “?”` );
+	QUnit.test( "document.CPU.convert.secondsInColonTime", function( assert ) {
+		assert.equal(convert.secondsInColonTime(0), '0:00', 'got 0:00' );
+		assert.equal(convert.secondsInColonTime(1), '0:01', 'got 0:01' );
+		assert.equal(convert.secondsInColonTime(20), '0:20', 'got 0:20' );
+		assert.equal(convert.secondsInColonTime(60), '1:00', 'got 1:00' );
+		assert.equal(convert.secondsInColonTime(61), '1:01', 'got 1:01' );
+		assert.equal(convert.secondsInColonTime(130), '2:10', 'got 2:10' );
+		assert.equal(convert.secondsInColonTime(7442), '2:04:02', 'got 2:04:02' );
+		assert.equal(convert.secondsInColonTime(Infinity), '?', `Infinity got “?”` );
 	});
 
-	QUnit.test( "document.CPU.convert.SecondsInPaddledColonTime", function( assert ) {
-		assert.equal(convert.SecondsInPaddledColonTime(61), '00:01:01', 'got 00:01:01' );
-		assert.equal(convert.SecondsInPaddledColonTime(7442), '02:04:02', 'got 02:04:02' );
-		assert.equal(convert.SecondsInPaddledColonTime(Infinity), '?', `Infinity got convert.Infinity aka “?”` );
+	QUnit.test( "document.CPU.convert.secondsInPaddledColonTime", function( assert ) {
+		assert.equal(convert.secondsInPaddledColonTime(61), '00:01:01', 'got 00:01:01' );
+		assert.equal(convert.secondsInPaddledColonTime(7442), '02:04:02', 'got 02:04:02' );
+		assert.equal(convert.secondsInPaddledColonTime(Infinity), '?', `Infinity got convert.Infinity aka “?”` );
 	});
 	
-	QUnit.test( "document.CPU.convert.IsoDuration", function( assert ) {
-		assert.equal(convert.IsoDuration(61), 'P1M1S', 'got P1M1S' );
-		assert.equal(convert.IsoDuration(7442), 'P2H4M2S', 'got P2H4M2S' );
+	QUnit.test( "document.CPU.convert.durationIso", function( assert ) {
+		assert.equal(convert.durationIso(61), 'P1M1S', 'got P1M1S' );
+		assert.equal(convert.durationIso(7442), 'P2H4M2S', 'got P2H4M2S' );
 	});
 
 	QUnit.test( "document.CPU.jumpIdAt existing at start", function( assert ) {

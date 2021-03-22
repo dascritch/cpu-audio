@@ -1,7 +1,7 @@
-import {CpuControllerTagName, find_container, selector_audio_in_component, querySelector_apply, absolutize_url, error, escape_html, passive_ev} from './utils.js';
+import {CpuControllerTagName, findContainer, selector_audio_in_component, querySelector_apply, absolutize_url, error, escape_html, passive_ev} from './utils.js';
 import {__} from './i18n.js';
-import {default_dataset} from './default_dataset.js';
-import {SecondsInColonTime, SecondsInTime, IsoDuration} from './convert.js';
+import {defaultDataset} from './default_dataset.js';
+import {secondsInColonTime, secondsInTime, durationIso} from './convert.js';
 import {translate_vtt} from './translate_vtt.js';
 import {trigger} from './trigger.js';
 import {is_audiotag_streamed, add_id_to_audiotag} from './media_element_extension.js';
@@ -48,7 +48,7 @@ function preview_container_hover({target}) {
 	}
 
 	let [plane_name, point_name] = get_point_names_from_id(target.id);
-	find_container(target).highlight_point(plane_name, point_name);
+	findContainer(target).highlight_point(plane_name, point_name);
 }
 
 /**
@@ -128,7 +128,7 @@ export class CPU_element_api {
 		this._planes = {};
 
 		if (!this.audiotag) {
-			document.CPU.global_controller = this;
+			document.CPU.globalController = this;
 			this.audiotag = document.querySelector(selector_audio_in_component);
 		}
 
@@ -161,8 +161,8 @@ export class CPU_element_api {
 	 * @return     boolean			False if no cpu-controller or not mirrored
      */
 	mirrored_in_controller() {
-		let global_controller = document.CPU.global_controller;
-		return (global_controller) && (this.audiotag.isEqualNode(global_controller.audiotag));
+		let globalController = document.CPU.globalController;
+		return (globalController) && (this.audiotag.isEqualNode(globalController.audiotag));
 	}
 
 
@@ -242,7 +242,7 @@ export class CPU_element_api {
 		if (this.act_was === act) {
 			return;
 		}
-		if ( (! document.CPU.had_played) && (this.act_was !== null) && (act === 'loading') ){
+		if ( (! document.CPU.hadPlayed) && (this.act_was !== null) && (act === 'loading') ){
 			return;
 		}
 		let classes = this.container.classList;
@@ -319,7 +319,7 @@ export class CPU_element_api {
 				this.mode_when_play = null;
 			}
 		} else {
-			if (! this.audiotag.isEqualNode(document.CPU.last_used)) {
+			if (! this.audiotag.isEqualNode(document.CPU.lastUsed)) {
 				container_class.remove(hide_panels_except_play_mark);
 			}
 		}
@@ -356,15 +356,15 @@ export class CPU_element_api {
 		let total_duration = false;
 		let _natural = Math.round(audiotag.duration);
 		if (!isNaN(_natural)){
-			total_duration = SecondsInColonTime(_natural);
+			total_duration = secondsInColonTime(_natural);
 		} else {
 			let _forced = Math.round(audiotag.dataset.duration);
 			if (_forced > 0) {
-				total_duration = SecondsInColonTime(_forced);
+				total_duration = secondsInColonTime(_forced);
 			}
 		}
 
-		elapse_element.querySelector('span').innerText = SecondsInColonTime(audiotag.currentTime);
+		elapse_element.querySelector('span').innerText = secondsInColonTime(audiotag.currentTime);
 		let duration_element = elapse_element.querySelector('.nosmaller');
 		duration_element.innerText = total_duration ? `\u00a0/\u00a0${total_duration}` : '…';
 		show_element(duration_element, total_duration);
@@ -380,7 +380,7 @@ export class CPU_element_api {
 		let audiotag = this.audiotag;
 		let plane_name = '_borders';
 		let point_name = 'play';
-		if ((!document.CPU.is_audiotag_global(audiotag)) || (trigger._timecode_end === false)) {
+		if ((!document.CPU.isAudiotagGlobal(audiotag)) || (trigger._timecode_end === false)) {
 			this.remove_plane(plane_name);
 			return;
 		}
@@ -519,8 +519,8 @@ export class CPU_element_api {
 		let phylactere = this.shadowId('popup');
 		phylactere.style.opacity = 1;
 		this.position_time_element(phylactere, seeked_time);
-		phylactere.innerHTML = SecondsInColonTime(seeked_time);
-		phylactere.dateTime = SecondsInTime(seeked_time).toUpperCase();
+		phylactere.innerHTML = secondsInColonTime(seeked_time);
+		phylactere.dateTime = secondsInTime(seeked_time).toUpperCase();
 	}
 
 	/**
@@ -553,7 +553,7 @@ export class CPU_element_api {
 	 * @return     {Object}  dataset
 	 */
 	fetch_audiotag_dataset() {
-		return {...default_dataset, ...this.audiotag.dataset};
+		return {...defaultDataset, ...this.audiotag.dataset};
 	}
 
 	/**
@@ -825,7 +825,7 @@ export class CPU_element_api {
 		}
 
 		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
-			document.CPU.global_controller.draw_plane(plane_name);
+			document.CPU.globalController.draw_plane(plane_name);
 		}
 
 	}
@@ -896,7 +896,7 @@ export class CPU_element_api {
 
 		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
 			// as plane data is removed, it will remove its aside and track
-			document.CPU.global_controller.draw_plane(plane_name);
+			document.CPU.globalController.draw_plane(plane_name);
 		}
 
 		return true;
@@ -1006,7 +1006,7 @@ export class CPU_element_api {
 	 * @param      {string}  point_name  The point name
 	 */
 	draw_point(plane_name, point_name) {
-		let audiotag = this.audiotag ? this.audiotag : document.CPU.global_controller.audiotag;
+		let audiotag = this.audiotag ? this.audiotag : document.CPU.globalController.audiotag;
 		let data = this.get_point(plane_name, point_name);
 		let {start, link, text, image, end} = data;
 
@@ -1054,8 +1054,8 @@ export class CPU_element_api {
 			plane_point_panel.querySelector('a').href = use_link;
 			plane_point_panel.querySelector('strong').innerHTML = text;
 			let time_element = plane_point_panel.querySelector('time');
-			time_element.dateTime = IsoDuration(start);
-			time_element.innerText = SecondsInColonTime(start);
+			time_element.dateTime = durationIso(start);
+			time_element.innerText = secondsInColonTime(start);
 		}
 
 		this.fire_event('draw_point', {
@@ -1067,7 +1067,7 @@ export class CPU_element_api {
 		});
 
 		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
-			document.CPU.global_controller.draw_point(plane_name, point_name);
+			document.CPU.globalController.draw_point(plane_name, point_name);
 		}
 	}
 
@@ -1196,7 +1196,7 @@ export class CPU_element_api {
 		plane._st_max = _st_max;
 
 		if ( (!this.is_controller) && (this.mirrored_in_controller()) ) {
-			document.CPU.global_controller.remove_point(plane_name, point_name);
+			document.CPU.globalController.remove_point(plane_name, point_name);
 		}
 		if (plane.points[point_name]) {
 			delete plane.points[point_name];
@@ -1296,13 +1296,13 @@ export class CPU_element_api {
 			(element) => { element.classList.remove(class_name); },
 			this.container);
 		if ( (mirror) && (this.mirrored_in_controller()) ) {
-			let global_controller = document.CPU.global_controller;
+			let globalController = document.CPU.globalController;
 
 			let on;
 			if (!this.is_controller) {
-				on = global_controller;
+				on = globalController;
 			} else {
-				on = find_container(global_controller.audiotag);
+				on = findContainer(globalController.audiotag);
 			}
 			on.remove_highlights_points(plane_name, class_name, false);
 		}
@@ -1328,12 +1328,12 @@ export class CPU_element_api {
 		this.get_point_panel(plane_name, point_name)?.classList.add(class_name);
 
 		if ( (mirror) && (this.mirrored_in_controller()) ) {
-			let document_CPU = document.CPU;
+			let DocumentCPU = document.CPU;
 			let on;
 			if (!this.is_controller) {
-				on = document_CPU.global_controller;
+				on = DocumentCPU.globalController;
 			} else {
-				on = find_container(document_CPU.global_controller.audiotag);
+				on = findContainer(DocumentCPU.globalController.audiotag);
 			}
 			on.highlight_point(plane_name, point_name, class_name, false);
 		}

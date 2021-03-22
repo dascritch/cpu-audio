@@ -75,7 +75,7 @@ function check_configure(event) {
  * @return     {string}  Timecode colon-separated, zero-paded
  */
 function currentTime_in_colon() {
-    return convert.SecondsInPaddledColonTime(sound_element.currentTime);
+    return convert.secondsInPaddledColonTime(sound_element.currentTime);
 }
 
 /**
@@ -94,7 +94,7 @@ function add_line(time_value=undefined , text_value='') {
     line.id = `line-${line_number++}`;
     line.innerHTML = new_chapter_line;
     line.classList.add('line');
-    line.querySelector('.timecode_input').value = time_value ? convert.SecondsInPaddledColonTime(time_value) : currentTime_in_colon();
+    line.querySelector('.timecode_input').value = time_value ? convert.secondsInPaddledColonTime(time_value) : currentTime_in_colon();
     line.querySelector('.text_input').value = text_value;
     add_events_line(line);
     document.getElementById('list').appendChild(line);
@@ -114,7 +114,7 @@ function check_for_actions(event) {
         let this_line_time_element = this_line_element.querySelector('.timecode_input');
         switch (event.target.className) {
             case 'test' : 
-                document.CPU.jumpIdAt('sound', convert.TimeInSeconds(this_line_time_element.value));
+                document.CPU.jumpIdAt('sound', convert.timeInSeconds(this_line_time_element.value));
                 break ;
             case 'set' : 
                 this_line_time_element.value = currentTime_in_colon();
@@ -204,7 +204,7 @@ function drag_end(event) {
         return ;
     }
     clicked_track = false;
-    this_line_time_element.value = convert.SecondsInPaddledColonTime(seeked_time);
+    this_line_time_element.value = convert.secondsInPaddledColonTime(seeked_time);
     sound_CPU.edit_point('cursors', clicked_point_name, {start : seeked_time});
     //sound_CPU.
 }
@@ -276,18 +276,18 @@ function interpret_line(this_line_element, from_interpret_form=false) {
         text = escape_html(text);
     }
 
-    if ((!from_interpret_form) && (Number(this_line_element.dataset.time) !== Number(convert.TimeInSeconds(time)))) {
+    if ((!from_interpret_form) && (Number(this_line_element.dataset.time) !== Number(convert.timeInSeconds(time)))) {
         interpret_form();
         return ;
     }
 
-    this_line_element.dataset.time = convert.TimeInSeconds(time);
+    this_line_element.dataset.time = convert.timeInSeconds(time);
     if ( (time === '') && (text === '') ) {
         // no time code ? no text ? do not record it yet
         return ;
     }
 
-    let seconds = Math.floor(convert.TimeInSeconds( time ));
+    let seconds = Math.floor(convert.timeInSeconds( time ));
     
     let this_line_data = {
         code: time,
@@ -357,8 +357,8 @@ function interpret_form(_event) {
         let out1=[];
         let out2=[];
         for(let line of chapters) {
-           out1.push(`\n\t<li><a href="#t=${line.time}">${line.text} (${convert.SecondsInColonTime(line.time)})</a></li>`) 
-           out2.push(`\n\t<li>${line.text} — (<a href="#t=${line.time}">${convert.SecondsInColonTime(line.time)}</a>)</li>`) 
+           out1.push(`\n\t<li><a href="#t=${line.time}">${line.text} (${convert.secondsInColonTime(line.time)})</a></li>`) 
+           out2.push(`\n\t<li>${line.text} — (<a href="#t=${line.time}">${convert.secondsInColonTime(line.time)}</a>)</li>`) 
         }
         return `<ol>${out1.join('')}\n</ol>\n<p>Alternate version :</p>\n<ol>${out2.join('')}\n</ol>`;
     }
@@ -384,8 +384,8 @@ function interpret_form(_event) {
         let number = 0;
         for(let line of chapters) {
             number++;
-            let start = convert.SecondsInPaddledColonTime(line.time);
-            let end = convert.SecondsInPaddledColonTime( number < chapters.length ? chapters[number].time : sound_element.duration );
+            let start = convert.secondsInPaddledColonTime(line.time);
+            let end = convert.secondsInPaddledColonTime( number < chapters.length ? chapters[number].time : sound_element.duration );
             out.push(`\n\nchapter-${number}\n${start}.000 --> ${end}.000\n${line.text}`) 
         }
         return `WEBVTT FILE\n${out.join('')}\n`;

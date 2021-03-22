@@ -1,33 +1,33 @@
-import {find_interface, find_container, once_passive_ev, selector_audio_in_component, warn} from './utils.js';
-import {default_document_cpu_parameters} from './default_document_cpu_parameters.js';
-import {default_dataset} from './default_dataset.js';
-import {convert, TimeInSeconds} from './convert.js';
+import {findInterface, findContainer, once_passive_ev, selector_audio_in_component, warn} from './utils.js';
+import {DefaultParametersDocumentCPU} from './default_document_cpu_parameters.js';
+import {defaultDataset} from './default_dataset.js';
+import {convert, timeInSeconds} from './convert.js';
 import {trigger} from './trigger.js';
 import {is_audiotag_streamed} from './media_element_extension.js';
 
-export const document_CPU = {
+export const DocumentCPU = {
 	// global object for global API
 
 	// public, parameters
-	...default_document_cpu_parameters,
+	...DefaultParametersDocumentCPU,
 
 	// public, actual active elements
 	// @public
 	// @type {HTMLAudioElement|null}
-	current_audiotag_playing : null,
+	currentAudiotagPlaying : null,
 	// @type {CpuControllerElement|null}
 	// @public
-	global_controller : null,
+	globalController : null,
 
 	// private, indicate a play already occured in the DOM, so we can start any play
 	// @private
 	// @type boolean
-	had_played : false,
+	hadPlayed : false,
 
 	// private, indicate last used audiotag
 	// @private
 	// @type {HTMLAudioElement|null}
-	last_used : null,
+	lastUsed : null,
 
 	// public, playlists
 	// @public
@@ -40,12 +40,11 @@ export const document_CPU = {
 	// @public
 	trigger,
 
-	// @package, not enough mature
-	default_dataset,
+	defaultDataset,
 
 	// @public utilities to find shadowRoot and CPU API
-	find_interface,
-	find_container,
+	findInterface,
+	findContainer,
 
 	/**
 	 * @public
@@ -54,9 +53,9 @@ export const document_CPU = {
 	 * @param      {HTMLAudioElement}   audiotag  The audiotag
 	 * @return     {boolean}  True if audiotag playing, False otherwise.
 	 */
-	is_audiotag_playing : function(audiotag) {
-		let current_audiotag_playing = document.CPU.current_audiotag_playing;
-		return (current_audiotag_playing) && (audiotag.isEqualNode(current_audiotag_playing));
+	isAudiotagPlaying : function(audiotag) {
+		let currentAudiotagPlaying = document.CPU.currentAudiotagPlaying;
+		return (currentAudiotagPlaying) && (audiotag.isEqualNode(currentAudiotagPlaying));
 	},
 	/**
 	 * @public
@@ -65,10 +64,10 @@ export const document_CPU = {
 	 * @param      {HTMLAudioElement}   audiotag  The audiotag
 	 * @return     {boolean}  True if audiotag global, False otherwise.
 	 */
-	is_audiotag_global : function(audiotag) {
-		return this.global_controller ? 
-			audiotag.isEqualNode(this.global_controller.audiotag) : 
-			this.is_audiotag_playing(audiotag);
+	isAudiotagGlobal : function(audiotag) {
+		return this.globalController ? 
+			audiotag.isEqualNode(this.globalController.audiotag) : 
+			this.isAudiotagPlaying(audiotag);
 	},
 
 	/**
@@ -84,16 +83,16 @@ export const document_CPU = {
 		/**
 		 * @param 	{Object}	event 	triggered event, or mockup
 		 */
-		function do_needle_move({target:audiotag}) {
+		function doNeedleMove({target:audiotag}) {
 			// maybe we should add `timecode` in argument (timecode, event), and bind it to the event listener, moving the function upper
-			let secs = TimeInSeconds(timecode);
+			let secs = timeInSeconds(timecode);
 			document.CPU.seekElementAt(audiotag, secs);
 
 			let mocked_event = {target : audiotag};
 			if (audiotag.readyState >= audiotag.HAVE_FUTURE_DATA) {
-				do_element_play(mocked_event);
+				doElementPlay(mocked_event);
 			} else {
-				audiotag.addEventListener('canplay', do_element_play, once_passive_ev);
+				audiotag.addEventListener('canplay', doElementPlay, once_passive_ev);
 			}
 			trigger.update(mocked_event);
 		}
@@ -101,9 +100,9 @@ export const document_CPU = {
 		/**
 		 * @param 	{Object}	event 	triggered event, or mockup
 		 */
-		function do_element_play(event) {
+		function doElementPlay(event) {
 			let tag = event.target;
-			trigger.play(undefined, tag);
+			trigger.play(null, tag);
 			callback_fx?.();
 		}
 
@@ -117,11 +116,11 @@ export const document_CPU = {
 		let mocked_event = {target : audiotag};
 		if (audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
 			// WHHYYYY ??????
-			audiotag.addEventListener('loadedmetadata', do_needle_move , once_passive_ev);
+			audiotag.addEventListener('loadedmetadata', doNeedleMove , once_passive_ev);
 			audiotag.load();
 			trigger.update(mocked_event);
 		} else {
-			do_needle_move(mocked_event);
+			doNeedleMove(mocked_event);
 		}
 		// No problems
 	},
@@ -140,7 +139,7 @@ export const document_CPU = {
 			return;
 		}
 
-		if (audiotag.fastSeek !== undefined) {
+		if (audiotag.fastSeek) {
 			// HTMLAudioElement.fastSeek() is an experimental but really fast function.
 			audiotag.fastSeek(seconds);
 		} else {
@@ -165,9 +164,9 @@ export const document_CPU = {
 	 *
 	 * @return     {Array}  Array with named id
 	 */
-	find_current_playlist : function() {
+	findCurrentPlaylist : function() {
 
-		let current_audiotag = this.global_controller?.audiotag;
+		let current_audiotag = this.globalController?.audiotag;
 		if (!current_audiotag) {
 			return [];
 		}

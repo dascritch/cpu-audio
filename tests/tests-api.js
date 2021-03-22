@@ -45,8 +45,8 @@ document.addEventListener('CPU_ready', function() {
 			'repeat_delay' : 400,
 			'repeat_factor' : 100,
 			'only_play_one_audiotag' : true,
-			'current_audiotag_playing' : null,
-			'global_controller' : null,
+			'currentAudiotagPlaying' : null,
+			'globalController' : null,
 			'playlists' : {},
 			'advance_in_playlist' : true
 		};
@@ -64,13 +64,13 @@ document.addEventListener('CPU_ready', function() {
 	QUnit.test( "Public API document.CPU maps public methods", function( assert ) {
 		// those public values are assumed to have a constant name
 		let expected = [
-			'is_audiotag_playing',
-			'is_audiotag_global',
+			'isAudiotagPlaying',
+			'isAudiotagGlobal',
 			'jumpIdAt',
 			'seekElementAt',
-			'find_interface',
-			'find_container',
-			'find_current_playlist'
+			'findInterface',
+			'findContainer',
+			'findCurrentPlaylist'
 		];
 		for(let name of expected) {
 			assert.equal(typeof document.CPU[name] , 'function', `document.CPU.${name} method is still a function`);

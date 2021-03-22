@@ -1,6 +1,6 @@
-import {once_passive_ev, find_container, warn} from './utils.js';
+import {once_passive_ev, findContainer, warn} from './utils.js';
 import {is_audiotag_streamed} from './media_element_extension.js';
-import {TimeInSeconds} from './convert.js';
+import {timeInSeconds} from './convert.js';
 import {build_playlist} from './build_playlist.js';
 
 const KEY_LEFT_ARROW = 37;
@@ -50,18 +50,18 @@ function play_once_unlock(event, audiotag) {
  * @param      {audiotag}  HTMLAudioElement   The playing <audio> tag
  */
 function controller_switch_to(audiotag) {
-	let global_controller = document.CPU.global_controller;
-	if (!global_controller) {
+	let globalController = document.CPU.globalController;
+	if (!globalController) {
 		return;
 	}
-	if  (!audiotag.isEqualNode(global_controller.audiotag)) {
-		global_controller.attach_audiotag_to_controller(audiotag);
-		global_controller.audiotag = audiotag;
-		global_controller.show_main();
-		global_controller.redraw_all_planes();
-		global_controller.set_mode_container(); 	// to switch back the display between streamed/not-str medias
+	if  (!audiotag.isEqualNode(globalController.audiotag)) {
+		globalController.attach_audiotag_to_controller(audiotag);
+		globalController.audiotag = audiotag;
+		globalController.show_main();
+		globalController.redraw_all_planes();
+		globalController.set_mode_container(); 	// to switch back the display between streamed/not-str medias
 	}
-	global_controller.build_playlist();
+	globalController.build_playlist();
 }
 
 export const trigger = {
@@ -128,8 +128,8 @@ export const trigger = {
 
 		// we may have a begin,end notation
 		let [timecode_start, timecode_end] = timecode.split(',');
-		trigger._timecode_start = TimeInSeconds(timecode_start);
-		trigger._timecode_end = timecode_end !== undefined ? TimeInSeconds(timecode_end) : false;
+		trigger._timecode_start = timeInSeconds(timecode_start);
+		trigger._timecode_end = timecode_end !== undefined ? timeInSeconds(timecode_end) : false;
 		if (trigger._timecode_end !== false) {
 			trigger._timecode_end = (trigger._timecode_end > trigger._timecode_start) ?
 				trigger._timecode_end :
@@ -139,9 +139,9 @@ export const trigger = {
 		await document.CPU.jumpIdAt(hash, timecode_start, callback_fx);
 
 		// not in document.CPU (yet) to avoid unuseful repaint
-		let global_controller = document.CPU.global_controller;
-		if (global_controller) {
-			build_playlist(global_controller);
+		let globalController = document.CPU.globalController;
+		if (globalController) {
+			build_playlist(globalController);
 		}
 		// scroll to the audio element. Should be reworked, or parametrable , see issue #60
 		// window.location.hash = `#${hash}`;
@@ -153,7 +153,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	hover : function({target, offsetX}) {
-		let container = find_container(target);
+		let container = findContainer(target);
 		let ratio = offsetX / target.clientWidth;
 		let seeked_time = ratio * container.audiotag.duration;
 		container.show_throbber_at(seeked_time);
@@ -165,7 +165,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	out : function({target}) {
-		find_container(target).hide_throbber();
+		findContainer(target).hide_throbber();
 	},
 
 	/**
@@ -176,8 +176,8 @@ export const trigger = {
 	throbble : function(event) {
 		let at = 0;
 		let {target, offsetX} = event;
-		let document_CPU = document.CPU;
-		let audiotag = find_container(target).audiotag;
+		let DocumentCPU = document.CPU;
+		let audiotag = findContainer(target).audiotag;
 
 		if (audiotag.duration === Infinity) {
 			// CAVEAT : we may have improper duration due to a streamed media
@@ -185,10 +185,10 @@ export const trigger = {
 			return ;
 		}
 
-		if ((document_CPU.current_audiotag_playing) && (!document_CPU.is_audiotag_playing(audiotag))) {
+		if ((DocumentCPU.currentAudiotagPlaying) && (!DocumentCPU.isAudiotagPlaying(audiotag))) {
 			// Chrome needs to STOP any other playing tag before seeking
 			//  Very slow seeking on Chrome #89
-			trigger.pause(undefined, document_CPU.current_audiotag_playing);
+			trigger.pause(undefined, DocumentCPU.currentAudiotagPlaying);
 		}
 
 		if ((isNaN(audiotag.duration)) && (!is_audiotag_streamed(audiotag))) {
@@ -218,7 +218,7 @@ export const trigger = {
 			let ratio = event.offsetX / target.clientWidth;
 			at = ratio * audiotag.duration;
 		}
-		document_CPU.seekElementAt(audiotag, at);
+		DocumentCPU.seekElementAt(audiotag, at);
 		trigger.play(event);
 	},
 
@@ -231,10 +231,10 @@ export const trigger = {
 	pause : function(event = null, audiotag = null) {
 		if (!audiotag) {
 			let {target} = event;
-			audiotag = (target.tagName === 'AUDIO') ? target : find_container(target).audiotag;
+			audiotag = (target.tagName === 'AUDIO') ? target : findContainer(target).audiotag;
 		}
 		audiotag.pause();
-		document.CPU.current_audiotag_playing = null;
+		document.CPU.currentAudiotagPlaying = null;
 		window.localStorage.removeItem(audiotag.currentSrc);
 	},
 
@@ -246,16 +246,16 @@ export const trigger = {
 	play_once : function({target}) {
 		let document_cpu = document.CPU;
 		// target, aka audiotag
-		document.CPU.last_used = target;
+		document.CPU.lastUsed = target;
 
 		if ( 
 			(document_cpu.only_play_one_audiotag) && 
-			(document_cpu.current_audiotag_playing) && 
-			(!document_cpu.is_audiotag_playing(target)) 
+			(document_cpu.currentAudiotagPlaying) && 
+			(!document_cpu.isAudiotagPlaying(target)) 
 			) {
-			trigger.pause(undefined, document_cpu.current_audiotag_playing);
+			trigger.pause(undefined, document_cpu.currentAudiotagPlaying);
 		}
-		document_cpu.current_audiotag_playing = target;
+		document_cpu.currentAudiotagPlaying = target;
 	},
 
 	/**
@@ -269,7 +269,7 @@ export const trigger = {
 			warn(`play() prevented because already waiting for focus`);
 			return;
 		}
-		audiotag = audiotag ?? find_container(event.target).audiotag;
+		audiotag = audiotag ?? findContainer(event.target).audiotag;
 
 		trigger._last_play_error = false;
 		remove_timecode_outofborders(audiotag.currentTime);
@@ -280,7 +280,7 @@ export const trigger = {
 			promised.then(
 				() => {
 					// we have a successful play occured, we can display wait event later
-					document.CPU.had_played = true;
+					document.CPU.hadPlayed = true;
 				}
 			).catch(
 				error => {
@@ -320,7 +320,7 @@ export const trigger = {
 			return;
 		}
 
-		let container = find_container(event.target);
+		let container = findContainer(event.target);
 		let audiotag = container.audiotag;
 
 		/** @param      {number}  seconds    Relative position fowards */
@@ -369,7 +369,7 @@ export const trigger = {
 		if (event.keyCode === 13) {
 			return;
 		}
-		let container = find_container(event.target);
+		let container = findContainer(event.target);
 		let audiotag = container.audiotag;
 
 		audiotag.paused ?
@@ -384,7 +384,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	restart : function({target}) {
-		let container = find_container(target);
+		let container = findContainer(target);
 		document.CPU.seekElementAt(container.audiotag, 0);
 	},
 	/**

@@ -12,7 +12,7 @@ HTMLAudioElement.prototype.CPU_connected = false;
  */
 function recall_stored_play(event) {
 	let audiotag = event.target;
-	if ((document.CPU.current_audiotag_playing !== null) || (is_audiotag_streamed(audiotag))) {
+	if ((document.CPU.currentAudiotagPlaying !== null) || (is_audiotag_streamed(audiotag))) {
 		return;
 	}
 	let lasttimecode = Number(window.localStorage.getItem(audiotag.currentSrc));
@@ -139,7 +139,7 @@ HTMLAudioElement.prototype.CPU_update = function() {
 			api.update();
 		}
 	}
-	if (document.CPU.global_controller !== null) {
-		document.CPU.global_controller.update();
+	if (document.CPU.globalController !== null) {
+		document.CPU.globalController.update();
 	}
 };

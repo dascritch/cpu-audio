@@ -1,4 +1,4 @@
-import {acceptable_selector, find_container, info} from './utils.js';
+import {acceptable_selector, findContainer, info} from './utils.js';
 import {CpuControllerElement} from './cpu_controller.class.js';
 import {connect_audiotag} from './media_element_extension.js';
 import {timeInSeconds} from './convert.js';
@@ -10,7 +10,7 @@ import {build_chapters} from './build_chapters.js';
  * @param      {Object}  mutationsList  The mutations list
  */
 function observer_cpuaudio([{target}]) {
-	const container = find_container(target);
+	const container = findContainer(target);
 	let media_tagname = 'audio';
 	let audio_element = container.element.querySelector(media_tagname);
 	if (!audio_element) {
@@ -18,7 +18,7 @@ function observer_cpuaudio([{target}]) {
 		container.element.remove();
 		return;
 	}
-	container.element.copy_attributes_to_media_dataset();
+	container.element.copyAttributesToMediaDataset();
 }
 
 /**
@@ -28,7 +28,7 @@ function observer_cpuaudio([{target}]) {
  * @param      {Object}  mutationsList  The mutations list
  */
 function observer_audio([{target}]) {
-	const container = find_container(target);
+	const container = findContainer(target);
 
 	// in case <track> changed/removed
 	build_chapters(container);
@@ -36,10 +36,10 @@ function observer_audio([{target}]) {
 	// in case attributes changed
 	container.complete_template();
 
-	const global_controller = document.CPU.global_controller;
-	if (container.audiotag.isEqualNode(global_controller?.audiotag)) {
-		build_chapters(global_controller);
-		global_controller.complete_template();
+	const globalController = document.CPU.globalController;
+	if (container.audiotag.isEqualNode(globalController?.audiotag)) {
+		build_chapters(globalController);
+		globalController.complete_template();
 	}
 }
 
@@ -58,9 +58,9 @@ export class CpuAudioElement extends CpuControllerElement {
 		this.observer_audio = null;
 	}
 
-	copy_attributes_to_media_dataset() {
+	copyAttributesToMediaDataset() {
 		// copying personalized data to audio tag
-		for (let key in document.CPU.default_dataset) {
+		for (let key in document.CPU.defaultDataset) {
 			if (this.hasAttribute(key)) {
 				let value = this.getAttribute(key);
 				this._audiotag.dataset[key] = (key !== 'duration') ? value : timeInSeconds(value);
@@ -74,7 +74,7 @@ export class CpuAudioElement extends CpuControllerElement {
 			return;
 		}
 
-		this.copy_attributes_to_media_dataset();
+		this.copyAttributesToMediaDataset();
 
 		super.connectedCallback();
 

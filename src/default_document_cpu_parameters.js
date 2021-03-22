@@ -1,4 +1,4 @@
-export const default_document_cpu_parameters = {
+export const DefaultParametersDocumentCPU = {
 	// those values may be later modified via loading parameters
 
 	// @public

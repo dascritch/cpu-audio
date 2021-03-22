@@ -1,4 +1,4 @@
-export const default_dataset = {
+export const defaultDataset = {
 	get title() {
 		for (const domain of ['og', 'twitter']) {
 			const header_element = document.querySelector(`meta[property="${domain}:title"]`);
