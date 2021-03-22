@@ -12,19 +12,19 @@ License GNU GPL 3
 
 export const CpuAudioTagName = 'CPU-AUDIO';
 export const CpuControllerTagName = 'CPU-CONTROLLER';
-export const selector_interface = '#interface';
-export const acceptable_selector = 'audio[controls]';
+export const selectorInterface = '#interface';
+export const selectorAcceptable = 'audio[controls]';
 export const selectorAudioInComponent = 'cpu-audio audio'; // should be 'audio[controls]' but PHRACK APPLE !
 
 // Parameters for addEventListener
 // @private
-export const passive_ev = {passive: true};
+export const passiveEvent = {passive: true};
 // @private
-export const once_passive_ev = {passive: true, once: true};
+export const oncePassiveEvent = {passive: true, once: true};
 
 // private,to add attributes for unnamed <audio>
 // @private
-export const dynamically_allocated_id_prefix = 'CPU-Audio-tag-';
+export const dynamicallyAllocatedIdPrefix = 'CPU-Audio-tag-';
 
 /**
  * @summary Process a function on each matched CSS selector found in a DOM tree
@@ -44,7 +44,7 @@ export function querySelectorDo(selector, callback, subtree=document) {
  *
  * @return     {boolean}  True if decent browser for webcomponents, False otherwise.
  */
-export function is_decent_browser_for_webcomponents() {
+export function browserIsDecent() {
 	return window.customElements !== undefined;
 }
 
@@ -65,7 +65,7 @@ export function absolutizeUrl(url) {
  *
  * @return     {boolean}  False if have a screen
  */
-export function not_screen_context() {
+export function notScreenContext() {
 	return !window.matchMedia('screen').matches;
 }
 
@@ -74,7 +74,7 @@ export function not_screen_context() {
  *
  * @param      {Event}  event   The event
  */
-function prevent_link_on_same_page(event) {
+function preventLinkToSamePage(event) {
 	if (absolutizeUrl(window.location.href) === absolutizeUrl(event.target.href)) {
 		event.preventDefault();
 	}
@@ -86,7 +86,7 @@ function prevent_link_on_same_page(event) {
  * @param      {Element}  element  The <A> DOM element
  */
 export function preventLinkOnSamePage(element) {
-	element.addEventListener('click', prevent_link_on_same_page);
+	element.addEventListener('click', preventLinkToSamePage);
 }
 
 /**
@@ -122,7 +122,7 @@ function id_in_hash(id) {
  * @return     {Element}  The #interface element
  */
 export function findInterface(child) {
-	return child.closest(selector_interface);
+	return child.closest(selectorInterface);
 }
 
 /**

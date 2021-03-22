@@ -1,4 +1,4 @@
-import {CpuControllerTagName, findContainer, selectorAudioInComponent, querySelectorDo, absolutizeUrl, error, escapeHtml, passive_ev} from './utils.js';
+import {CpuControllerTagName, findContainer, selectorAudioInComponent, querySelectorDo, absolutizeUrl, error, escapeHtml, passiveEvent} from './utils.js';
 import {__} from './i18n.js';
 import {defaultDataset} from './default_dataset.js';
 import {secondsInColonTime, secondsInTime, durationIso} from './convert.js';
@@ -786,10 +786,10 @@ export class CPU_element_api {
 		 * @param      {Element}  element  Impacted element
 		 */
 		function assignEventsOnPlanes(element) {
-			element.addEventListener('mouseover', previewContainerHover, passive_ev);
-			element.addEventListener('focusin', previewContainerHover, passive_ev);
-			element.addEventListener('mouseleave', removeHighlightsPoints_bind, passive_ev);
-			element.addEventListener('focusout', removeHighlightsPoints_bind, passive_ev);
+			element.addEventListener('mouseover', previewContainerHover, passiveEvent);
+			element.addEventListener('focusin', previewContainerHover, passiveEvent);
+			element.addEventListener('mouseleave', removeHighlightsPoints_bind, passiveEvent);
+			element.addEventListener('focusout', removeHighlightsPoints_bind, passiveEvent);
 		}
 
 

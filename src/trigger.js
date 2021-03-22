@@ -1,4 +1,4 @@
-import {once_passive_ev, findContainer, warn} from './utils.js';
+import {oncePassiveEvent, findContainer, warn} from './utils.js';
 import {isAudiotagStreamed} from './media_element_extension.js';
 import {timeInSeconds} from './convert.js';
 import {build_playlist} from './build_playlist.js';
@@ -204,7 +204,7 @@ export const trigger = {
 			audiotag.addEventListener(
 				expected_event,
 				() => {trigger.throbble({offsetX, target});},
-				once_passive_ev);
+				oncePassiveEvent);
 			// loading metadata. May not work on Apples
 			audiotag.setAttribute('preload', 'metadata');
 			return ;
@@ -289,8 +289,8 @@ export const trigger = {
 					switch (error.name) {
 						case 'NotAllowedError':
 							warn(NotAllowedError);
-							document.addEventListener('focus', unlock, once_passive_ev);
-							document.addEventListener('click', unlock, once_passive_ev);
+							document.addEventListener('focus', unlock, oncePassiveEvent);
+							document.addEventListener('click', unlock, oncePassiveEvent);
 
 							if (audiotag.CPU_connected) {
 								let CPU_api = audiotag.CPU_controller().CPU;

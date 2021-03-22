@@ -1,4 +1,4 @@
-import {error, once_passive_ev, passive_ev} from './utils.js';
+import {error, oncePassiveEvent, passiveEvent} from './utils.js';
 import {__, prefered_language} from './i18n.js';
 import {trigger} from './trigger.js';
 import {translateVTT} from './translate_vtt.js';
@@ -18,11 +18,11 @@ export function build_chapters_loader(container) {
 	let this_build_chapters = build_chapters.bind(undefined, container);
 
 	// sometimes, we MAY have loose loading
-	audiotag.addEventListener('loadedmetadata', this_build_chapters, once_passive_ev);
+	audiotag.addEventListener('loadedmetadata', this_build_chapters, oncePassiveEvent);
 
 	let track_element = audiotag.querySelector('track[kind="chapters"]');
 	if ((track_element) && (!track_element._CPU_load_ev)) {
-		track_element._CPU_load_ev = track_element.addEventListener('load', this_build_chapters, passive_ev);
+		track_element._CPU_load_ev = track_element.addEventListener('load', this_build_chapters, passiveEvent);
 	}
 }
 
@@ -69,7 +69,7 @@ export async function build_chapters(container) {
 				// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
 				// adding/reinstall chapter changing event
 				chapter_track.removeEventListener('cuechange', cuechange_event_this);
-				chapter_track.addEventListener('cuechange', cuechange_event_this, passive_ev);
+				chapter_track.addEventListener('cuechange', cuechange_event_this, passiveEvent);
 
 				for (let cue of chapter_track.cues) {
 					if (!container.point(plane_chapters, cue.id)) {

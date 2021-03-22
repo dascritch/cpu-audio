@@ -1,4 +1,4 @@
-import {passive_ev, querySelectorDo, findContainer, preventLinkOnSamePage} from './utils.js';
+import {passiveEvent, querySelectorDo, findContainer, preventLinkOnSamePage} from './utils.js';
 import {trigger} from './trigger.js';
 import {pressManager, touch_manager} from './finger_manager.js';
 import {build_chapters_loader} from './build_chapters.js';
@@ -31,7 +31,7 @@ export function buildController(container) {
 	// hide broken image while not loaded
 	container.shadowId('poster').addEventListener('load', () => {
 		interface_classlist.add('poster-loaded');
-	}, passive_ev);
+	}, passiveEvent);
 
 	let showMain = container.showMain.bind(container);
 
@@ -45,7 +45,7 @@ export function buildController(container) {
 		restart   : trigger.restart,
 	};
 	for (let that in cliquables) {
-		container.shadowId(that).addEventListener('click', cliquables[that], passive_ev);
+		container.shadowId(that).addEventListener('click', cliquables[that], passiveEvent);
 	}
 
 	// handheld nav to allow long press to repeat action
@@ -86,16 +86,16 @@ export function buildController(container) {
 		timeline_element.addEventListener(
 			event_name,
 			do_events[event_name] ? trigger.hover : trigger.out,
-			passive_ev);
+			passiveEvent);
 	}
 	// alternative fine navigation for handhelds
-	timeline_element.addEventListener('touchstart', touch_manager.start, passive_ev);
-	timeline_element.addEventListener('touchend', touch_manager.cancel, passive_ev);
+	timeline_element.addEventListener('touchstart', touch_manager.start, passiveEvent);
+	timeline_element.addEventListener('touchend', touch_manager.cancel, passiveEvent);
 	timeline_element.addEventListener('contextmenu', container.showHandheldNav.bind(container));
 
 	if (navigator.share) {
 		interface_classlist.add('hasnativeshare');
-		container.shadowId('nativeshare').addEventListener('click', native_share, passive_ev);
+		container.shadowId('nativeshare').addEventListener('click', native_share, passiveEvent);
 	}
 
 	if (!container.audiotag)  {
@@ -103,7 +103,7 @@ export function buildController(container) {
 		return;
 	}
 
-	container.audiotag.addEventListener('durationchange', container.repositionTracks.bind(container), passive_ev);
+	container.audiotag.addEventListener('durationchange', container.repositionTracks.bind(container), passiveEvent);
 
 	container.showMain();
 	build_chapters_loader(container);

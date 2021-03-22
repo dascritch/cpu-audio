@@ -1,4 +1,4 @@
-import {CpuAudioTagName, dynamically_allocated_id_prefix, is_decent_browser_for_webcomponents, passive_ev} from './utils.js';
+import {CpuAudioTagName, dynamicallyAllocatedIdPrefix, browserIsDecent, passiveEvent} from './utils.js';
 
 import {trigger} from './trigger.js';
 
@@ -10,7 +10,7 @@ HTMLAudioElement.prototype.CPU_connected = false;
  *
  * @param      {Object}  event   The event
  */
-function recall_stored_play(event) {
+function recallStoredPlay(event) {
 	let audiotag = event.target;
 	if ((document.CPU.currentAudiotagPlaying !== null) || (isAudiotagStreamed(audiotag))) {
 		return;
@@ -31,7 +31,7 @@ let	count_element = 0;
  * @private
  */
 export function	addIdToAudiotag(audiotag) {
-	audiotag.id = audiotag.id || `${dynamically_allocated_id_prefix}${count_element++}`;
+	audiotag.id = audiotag.id || `${dynamicallyAllocatedIdPrefix}${count_element++}`;
 }
 
 
@@ -51,12 +51,12 @@ export function isAudiotagStreamed(audiotag) {
  * @param      {HTMLAudioElement}  audiotag  The audiotag
  */
 export function attach_events_audiotag(audiotag) {
-	audiotag.addEventListener('loadedmetadata', recall_stored_play, passive_ev);
-	audiotag.addEventListener('play', trigger.play_once, passive_ev);
-	audiotag.addEventListener('ended', trigger.ended, passive_ev);
+	audiotag.addEventListener('loadedmetadata', recallStoredPlay, passiveEvent);
+	audiotag.addEventListener('play', trigger.play_once, passiveEvent);
+	audiotag.addEventListener('ended', trigger.ended, passiveEvent);
 	// those ↓ for PHRACKING SAFARI
-	audiotag.addEventListener('ready', recall_stored_play, passive_ev);
-	audiotag.addEventListener('canplay', recall_stored_play, passive_ev);
+	audiotag.addEventListener('ready', recallStoredPlay, passiveEvent);
+	audiotag.addEventListener('canplay', recallStoredPlay, passiveEvent);
 
 	// see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events for list of events
 	[
@@ -65,15 +65,15 @@ export function attach_events_audiotag(audiotag) {
 		'play', 'playing', 'pause', 'ended',
 		'durationchange',  'loadedmetadata', 'timeupdate', 'waiting'
 	].forEach( (on) => {
-		audiotag.addEventListener(on, trigger.update, passive_ev);
+		audiotag.addEventListener(on, trigger.update, passiveEvent);
 	});
 
-	if (!is_decent_browser_for_webcomponents()) {
+	if (!browserIsDecent()) {
 		// in case we are in legacy mode
 		[
 			'pause', 'ended'
 		].forEach( (on) => {
-			audiotag.addEventListener(on, trigger.pause, passive_ev);
+			audiotag.addEventListener(on, trigger.pause, passiveEvent);
 		});
 	}
 
@@ -89,7 +89,7 @@ export function attach_events_audiotag(audiotag) {
  *
  * @param      {HTMLAudioElement}  audiotag  The audiotag
  */
-export function connect_audiotag(audiotag) {
+export function connectAudiotag(audiotag) {
 	if (audiotag.CPU_connected) {
 		return;
 	}

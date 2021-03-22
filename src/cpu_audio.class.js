@@ -1,6 +1,6 @@
-import {acceptable_selector, findContainer, info} from './utils.js';
+import {selectorAcceptable, findContainer, info} from './utils.js';
 import {CpuControllerElement} from './cpu_controller.class.js';
-import {connect_audiotag} from './media_element_extension.js';
+import {connectAudiotag} from './media_element_extension.js';
 import {timeInSeconds} from './convert.js';
 import {build_chapters} from './build_chapters.js';
 
@@ -69,7 +69,7 @@ export class CpuAudioElement extends CpuControllerElement {
 	}
 
 	connectedCallback() {
-		this._audiotag = this.querySelector(acceptable_selector);
+		this._audiotag = this.querySelector(selectorAcceptable);
 		if (!this._audiotag) {
 			return;
 		}
@@ -78,7 +78,7 @@ export class CpuAudioElement extends CpuControllerElement {
 
 		super.connectedCallback();
 
-		connect_audiotag(this.CPU.audiotag);
+		connectAudiotag(this.CPU.audiotag);
 
 		this.observer_cpuaudio = new MutationObserver(observer_cpuaudio);
 		this.observer_cpuaudio.observe(this, {

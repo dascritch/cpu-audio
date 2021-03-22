@@ -1,4 +1,4 @@
-import {findInterface, findContainer, once_passive_ev, selectorAudioInComponent, warn} from './utils.js';
+import {findInterface, findContainer, oncePassiveEvent, selectorAudioInComponent, warn} from './utils.js';
 import {DefaultParametersDocumentCPU} from './default_document_cpu_parameters.js';
 import {defaultDataset} from './default_dataset.js';
 import {convert, timeInSeconds} from './convert.js';
@@ -92,7 +92,7 @@ export const DocumentCPU = {
 			if (audiotag.readyState >= audiotag.HAVE_FUTURE_DATA) {
 				doElementPlay(mocked_event);
 			} else {
-				audiotag.addEventListener('canplay', doElementPlay, once_passive_ev);
+				audiotag.addEventListener('canplay', doElementPlay, oncePassiveEvent);
 			}
 			trigger.update(mocked_event);
 		}
@@ -116,7 +116,7 @@ export const DocumentCPU = {
 		let mocked_event = {target : audiotag};
 		if (audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
 			// WHHYYYY ??????
-			audiotag.addEventListener('loadedmetadata', doNeedleMove , once_passive_ev);
+			audiotag.addEventListener('loadedmetadata', doNeedleMove , oncePassiveEvent);
 			audiotag.load();
 			trigger.update(mocked_event);
 		} else {

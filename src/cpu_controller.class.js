@@ -1,4 +1,4 @@
-import {CpuAudioTagName, acceptable_selector, selector_interface, not_screen_context, warn, } from './utils.js';
+import {CpuAudioTagName, selectorAcceptable, selectorInterface, notScreenContext, warn, } from './utils.js';
 import {CPU_element_api} from './element_cpu.js';
 
 /**
@@ -12,7 +12,7 @@ export class CpuControllerElement extends HTMLElement {
 		super();
 		this.CPU = null;
 
-		if (not_screen_context()) {
+		if (notScreenContext()) {
 			// I'm not in a screen context, as a braille surface
 			// Sorry, but your browser's native controls are surely more accessible
 			this.remove();
@@ -20,7 +20,7 @@ export class CpuControllerElement extends HTMLElement {
 		}
 
 		if (this.tagName === CpuAudioTagName) {
-			if (!this.querySelector(acceptable_selector)) {
+			if (!this.querySelector(selectorAcceptable)) {
 				// Graceful degradation : do not start if no media element OR no native controls
 				warn(`Tag <${CpuAudioTagName}> without <audio controls>.\nSee https://github.com/dascritch/cpu-audio/blob/master/INSTALL.md for a correct installation.`);
 				this.remove();
@@ -34,12 +34,12 @@ export class CpuControllerElement extends HTMLElement {
 	}
 
 	connectedCallback() {
-		if (not_screen_context()) {
+		if (notScreenContext()) {
 			return ;
 		}
 		this.CPU = new CPU_element_api(
 			this,
-			this.shadowRoot.querySelector(selector_interface),
+			this.shadowRoot.querySelector(selectorInterface),
 			{
 				glow : this.hasAttribute('glow'),
 				mode : this.hasAttribute('mode') ? this.getAttribute('mode') : null,
