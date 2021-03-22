@@ -139,7 +139,7 @@ CPU_addPoint        | During `addPoint` method, even private ones          | pla
 CPU_drawPoint       | A point is drawn or redrawn                          | planeName, pointName, pointData, elementPointTrack, elementPointPanel
 CPU_editPoint       | During `editPoint` method                            | planeName, pointName, pointData
 CPU_removePoint     | During `removePoint` method, even private ones       | planeName, pointName
-CPU_chapter_changed | A cue event defined in WebVTT occured                | cue
+CPU_chapterChanged | A cue event defined in WebVTT occured                | cue
 
 (⁵) Returned object informations usually have a `detail` object, it may contains :
 

@@ -110,7 +110,7 @@ export async function build_chapters(container) {
 	if ((active_cue) && (id_in_hash(this.audiotag.id)) ) {
 		// shoud be set ONLY if audiotag is alone in page or if audiotag.id named in hash
 		trigger.cuechange(active_cue, this.audiotag);
-		this.emitEvent('chapter_changed', {
+		this.emitEvent('chapterChanged', {
 			cue : active_cue
 		});
 	}
@@ -148,7 +148,7 @@ function cuechange_event(container, event) {
 	container.removeHighlightsPoints(plane_chapters, activecueClassname);
 	if (active_cue) {
 		trigger.cuechange(active_cue, container.audiotag);
-		container.emitEvent('chapter_changed', {
+		container.emitEvent('chapterChanged', {
 			cue : active_cue
 		});
 		container.highlightPoint(plane_chapters, active_cue.id, activecueClassname);

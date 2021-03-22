@@ -150,7 +150,7 @@ document.addEventListener('CPU_ready', function() {
 		assert.ok(was_done_CPU_addPoint,'CPU_addPoint');
 		assert.ok(was_done_CPU_editPoint,'CPU_editPoint');
 		assert.ok(was_done_CPU_removePoint,'CPU_removePoint');
-		// missing : CPU_chapter_changed
+		// missing : CPU_chapterChanged
 	});
 
 });
