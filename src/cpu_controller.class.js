@@ -1,4 +1,4 @@
-import {CpuAudioTagName, acceptable_selector, selector_interface, selector_audio_in_component, not_screen_context, warn, querySelector_apply, element_prevent_link_on_same_page} from './utils.js';
+import {CpuAudioTagName, acceptable_selector, selector_interface, not_screen_context, warn, querySelector_apply, element_prevent_link_on_same_page} from './utils.js';
 import {CPU_element_api} from './element_cpu.js';
 
 /**
@@ -39,25 +39,18 @@ export class CpuControllerElement extends HTMLElement {
 		}
 		this.CPU = new CPU_element_api(
 			this,
-			this.shadowRoot.querySelector(selector_interface)
+			this.shadowRoot.querySelector(selector_interface),
+			{ glow : this.hasAttribute('glow') }
 		);
-		if (!this.CPU.audiotag) {
-			document.CPU.global_controller = this.CPU;
-			this.CPU.audiotag = document.querySelector(selector_audio_in_component);
-		}
 
-		if (this.getAttribute('glow')) {
-			this.CPU.glow_before_play = true;
-		}
-
-		this.CPU.build_controller();
 		querySelector_apply('#canonical', element_prevent_link_on_same_page, this.shadowRoot);
 
 		this.CPU.attach_audiotag_to_controller(this.CPU.audiotag);
 
 		// mode="" attribute, on general aspect
-		let mode = this.getAttribute('mode');
-		if (mode !== null) {
+		let mode = null;
+		if (this.hasAttribute('mode')) {
+			mode = this.getAttribute('mode');
 			// in case of a mode="still,play" declaration
 			let [mode_still, mode_play] = mode.split(',');
 			if (mode_play) {
@@ -68,9 +61,8 @@ export class CpuControllerElement extends HTMLElement {
 		this.CPU.set_mode_container(mode);
 
 		// hide="" attribute, space separated elements to hide
-		let hide_those = this.getAttribute('hide');
-		if (hide_those) {
-			this.CPU.set_hide_container(hide_those.split(' '));
+		if (this.hasAttribute('hide')) {
+			this.CPU.set_hide_container(this.getAttribute('hide').split(' '));
 		}
 
 	}

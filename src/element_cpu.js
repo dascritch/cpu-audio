@@ -1,12 +1,11 @@
-import {CpuControllerTagName, absolutize_url, error, escape_html, passive_ev, querySelector_apply} from './utils.js';
+import {CpuControllerTagName, selector_audio_in_component, absolutize_url, error, escape_html, passive_ev, querySelector_apply} from './utils.js';
 import {__} from './i18n.js';
 import {default_dataset} from './default_dataset.js';
 import {SecondsInColonTime, SecondsInTime, IsoDuration} from './convert.js';
-import {press_manager, touch_manager} from './finger_manager.js';
 import {translate_vtt} from './translate_vtt.js';
 import {trigger} from './trigger.js';
 import {is_audiotag_streamed, add_id_to_audiotag} from './media_element_extension.js';
-import {build_chapters_loader} from './build_chapters.js';
+import {build_controller} from './build_controller.js';
 
 // Acceptables attributes values for hide="" parameter on webcomponent
 const acceptable_hide_atttributes = ['poster', 'actions', 'timeline', 'chapters', 'panels', 'panels-title', 'panels-except-play'];
@@ -97,21 +96,6 @@ function undraw_all_planes(container) {
 	querySelector_apply('aside, div.panel', (element) => { element.remove(); }, container);
 }
 
-/**
- * @summary Interprets `navigator.share` native API
- *
- * @param      {Object}  event   The event
- */
-function native_share(event) {
-	let {title, canonical} = document.CPU.find_container(event.target).fetch_audiotag_dataset();
-	navigator.share({
-		title,
-		text	: title,
-		url 	: canonical
-	});
-	event.preventDefault();
-}
-
 
 export class CPU_element_api {
 	/**
@@ -122,13 +106,14 @@ export class CPU_element_api {
 	 * @param      {Element}  element              The DOMelement
 	 * @param      {Element}  container_interface  The container interface
 	 */
-	constructor(element, container_interface) {
+	constructor(element, container_interface, element_attributes) {
 		// I hate this style. I rather prefer the object notation
 		this.element = element;
 		this.audiotag = /* @type {HTMLAudioElement} */ element._audiotag;
 		this.container = container_interface;
 		this.mode_when_play = null;
-		this.glow_before_play = false;
+		this.glow_before_play = !! element_attributes.glow;
+		this.glow_before_play = element_attributes.glow;
 		this.current_playlist = [];
 		this._activecue = null;
 		this.mode_was = null;
@@ -141,7 +126,15 @@ export class CPU_element_api {
 		this.is_controller = this.element.tagName === CpuControllerTagName;
 		// only used for CPU-CONTROLLER, for playlist
 		this._planes = {};
+
+		if (!this.audiotag) {
+			document.CPU.global_controller = this;
+			this.audiotag = document.querySelector(selector_audio_in_component);
+		}
+
+		build_controller(this);
 	}
+
 
 	mirrored_in_controller() {
 		let global_controller = document.CPU.global_controller;
@@ -897,7 +890,7 @@ export class CPU_element_api {
 
 	/**
 	 * @summary Gets the point info
-	 * @private
+	 * @public
 	 *
 	 * @param      {string}  plane_name  The plane name
 	 * @param      {string}  point_name  The point name
@@ -952,7 +945,7 @@ export class CPU_element_api {
 
 	/**
 	 * @summary    get point_names from a plane_name
-	 * @private
+	 * @private may goes public later
 	 *
 	 * @param      {string}   plane_name     The plane name
 	 * @return     {[string]} points_names	 Array of point_names
@@ -1321,94 +1314,4 @@ export class CPU_element_api {
 		}
 	}
 
-	/**
-	 * @package, because at start
-	 *
-	 * @summary Builds the controller.
-	 */
-	build_controller() {
-		let interface_classlist = this.shadowId('interface').classList;
-
-		// hide broken image while not loaded
-		this.shadowId('poster').addEventListener('load', () => {
-			interface_classlist.add('poster-loaded');
-		}, passive_ev);
-
-		let show_main = this.show_main.bind(this);
-
-		let cliquables = {
-			pause     : trigger.play,
-			play      : trigger.pause,
-			time      : trigger.throbble,
-			actions   : this.show_actions.bind(this),
-			back      : show_main,
-			poster    : show_main,
-			restart   : trigger.restart,
-		};
-		for (let that in cliquables) {
-			this.shadowId(that).addEventListener('click', cliquables[that], passive_ev);
-		}
-
-		// handheld nav to allow long press to repeat action
-		let _buttons = ['fastreward', 'reward', 'foward', 'fastfoward'];
-		let _actions = {
-			touchstart    : true,
-			touchend      : false,
-			touchcancel   : false,
-			/* PHRACKING IOS PHRACKING SAFARI PHRACKING APPLE */
-			mousedown     : true,
-			mouseup       : false,
-			mouseleave    : false
-		};
-
-		for (let that of _buttons) {
-			const element_id = this.shadowId(that);
-			for (let _act in _actions) {
-				element_id.addEventListener(_act, _actions[_act] ? press_manager.press : press_manager.release);
-			}
-		}
-
-		// keyboard management
-		this.element.addEventListener('keydown', trigger.key);
-
-		// not working correctly :/
-		this.shadowId('control').addEventListener('keydown', trigger.keydownplay);
-		// throbber management
-		let timeline_element = this.shadowId('time');
-		let do_events = {
-			mouseover   : true,
-			mousemove   : true,
-			mouseout    : false,
-
-			touchstart  : true,
-			touchend    : false,
-			touchcancel : false,
-		};
-		for (let event_name in do_events) {
-			timeline_element.addEventListener(
-				event_name,
-				do_events[event_name] ? trigger.hover : trigger.out,
-				passive_ev);
-		}
-		// alternative fine navigation for handhelds
-		timeline_element.addEventListener('touchstart', touch_manager.start, passive_ev);
-		timeline_element.addEventListener('touchend', touch_manager.cancel, passive_ev);
-		timeline_element.addEventListener('contextmenu', this.show_handheld_nav.bind(this));
-
-		if (navigator.share) {
-			interface_classlist.add('hasnativeshare');
-			this.shadowId('nativeshare').addEventListener('click', native_share, passive_ev);
-		}
-
-		if (!this.audiotag)  {
-			// <cpu-controller> without <cpu-audio> , see https://github.com/dascritch/cpu-audio/issues/91
-			return;
-		}
-
-		this.audiotag.addEventListener('durationchange', this.reposition_tracks.bind(this), passive_ev);
-
-		this.show_main();
-		build_chapters_loader(this);
-		this.fire_event('ready');
-	}
 }

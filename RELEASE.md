@@ -21,6 +21,7 @@ Corrections
  * `Element.CPU.remove_highlights_points()` was too generic. Modification in parameters ([#109](#109))
  * `Element.CPU.remove_point()` was terrible
  * `Element.CPU.build_chapters()` and `Element.CPU.build_playlist()` are no more public API
+ * Attributes `hide`, `mode` and `glow` weren't properly checked
 
 Back-end
 --------
@@ -40,6 +41,7 @@ Back-end
  * QUnit-puppeteer integrated into `make.sh`
  * Automated links from MD (or examples.html) to examples and applications
  * Playlist are now using the standard API, with special code for CPU-Controller ([#109](#109))
+ * Removing some builders from `Element.CPU`, to avoid expose them in public API
 
 Todo for this release :
 -----------------------
