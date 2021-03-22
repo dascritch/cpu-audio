@@ -1,7 +1,7 @@
 import {acceptable_selector, find_container, info} from './utils.js';
 import {CpuControllerElement} from './cpu_controller.class.js';
 import {connect_audiotag} from './media_element_extension.js';
-import {TimeInSeconds} from './convert.js';
+import {timeInSeconds} from './convert.js';
 import {build_chapters} from './build_chapters.js';
 
 /**
@@ -60,16 +60,10 @@ export class CpuAudioElement extends CpuControllerElement {
 
 	copy_attributes_to_media_dataset() {
 		// copying personalized data to audio tag
-		/**
-		not working because of null returned values, and because dataset in a setter
-			let def = document.CPU.default_dataset;
-			this._audiotag.dataset = {...def, duration : TimeInSeconds(def.duration || 0)};
-		**/
-
 		for (let key in document.CPU.default_dataset) {
-			let value = this.getAttribute(key);
-			if (value !== null) {
-				this._audiotag.dataset[key] = (key !== 'duration') ? value : TimeInSeconds(value);
+			if (this.hasAttribute(key)) {
+				let value = this.getAttribute(key);
+				this._audiotag.dataset[key] = (key !== 'duration') ? value : timeInSeconds(value);
 			}
 		}
 	}
