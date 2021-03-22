@@ -16,19 +16,19 @@ const Infinity_representation = '?';
  * @summary convert a string empty, with a number, with a colon-coded or an human-coded timecode in seconds
  * @public
  *
- * @class      TimeInSeconds (name)
+ * @class      timeInSeconds (name)
  * @param      {string}  givenTime  The given time
  * @return     {number}  time in seconds
  */
-export const TimeInSeconds = function(givenTime) {
+export const timeInSeconds = function(givenTime) {
 	let seconds = 0;
 	if (givenTime !== '') {
 		if (_is_only_numeric.test(givenTime)) {
 			seconds = Number(givenTime);
 		} else {
 			seconds = givenTime.includes(':') ?
-				convert.ColonTimeInSeconds(givenTime) :
-				convert.SubunitTimeInSeconds(givenTime) ;
+				convert.colontimeInSeconds(givenTime) :
+				convert.subunittimeInSeconds(givenTime) ;
 		}
 	}
 	return seconds;
@@ -38,11 +38,11 @@ export const TimeInSeconds = function(givenTime) {
  * @summary convert a human-coded (`1h2m3s`) time in seconds
  * @public
  *
- * @class      SubunitTimeInSeconds (name)
+ * @class      subunittimeInSeconds (name)
  * @param      {string}  givenTime  The given time
  * @return     {number}  seconds
  */
-export const SubunitTimeInSeconds = function(givenTime) {
+export const subunittimeInSeconds = function(givenTime) {
 	let seconds = 0;
 	let atom;
 	for(let key in units_scale) {
@@ -58,11 +58,11 @@ export const SubunitTimeInSeconds = function(givenTime) {
  * @summary    convert a colon-coded (`01:02:03`) time in seconds
  * @public
  *
- * @class      ColonTimeInSeconds (name)
+ * @class      colontimeInSeconds (name)
  * @param      {string}  givenTime  The given time
  * @return     {number}  Time in seconds
  */
-export const ColonTimeInSeconds = function(givenTime) {
+export const colontimeInSeconds = function(givenTime) {
 	let seconds = 0;
 	let atoms = givenTime.split(':');
 	for (let pos = 0 ; pos < atoms.length ; pos++) {
@@ -75,11 +75,11 @@ export const ColonTimeInSeconds = function(givenTime) {
  * @summary convert a time in seconds in a human-coded time (`1h2m3s`). Zero is `0s`.
  * @public
  *
- * @class      SecondsInTime (name)
+ * @class      secondsInTime (name)
  * @param      {number}   givenSeconds  The given seconds
  * @return     {string}   Converted time
  */
-export const SecondsInTime = function(givenSeconds) {
+export const secondsInTime = function(givenSeconds) {
 	if (givenSeconds === Infinity) {
 		return Infinity_representation;
 	}
@@ -103,11 +103,11 @@ export const SecondsInTime = function(givenSeconds) {
  * @summary    convert a time in seconds in a colon-coded time (`1:02:03s`). Zero is `0:00`.
  * @public
  *
- * @class      SecondsInColonTime (name)
+ * @class      secondsInColonTime (name)
  * @param      {number}          givenSeconds  The given seconds
  * @return     {string}  Converted time
  */
-export const SecondsInColonTime = function(givenSeconds) {
+export const secondsInColonTime = function(givenSeconds) {
 	if (givenSeconds === Infinity) {
 		return Infinity_representation;
 	}
@@ -138,21 +138,21 @@ export const SecondsInColonTime = function(givenSeconds) {
 };
 
 /**
- * @summary same as `SecondsInColonTime`, but suited for `<input type="time"
+ * @summary same as `secondsInColonTime`, but suited for `<input type="time"
  * />`. Zero is `00:00:00`.
  *
  * @public
  *
- * @class      SecondsInPaddledColonTime (name)
+ * @class      secondsInPaddledColonTime (name)
  * @param      {number}  givenSeconds  The given seconds
  * @return     {string}  Converted time
  */
-export const SecondsInPaddledColonTime = function(givenSeconds) {
+export const secondsInPaddledColonTime = function(givenSeconds) {
 	if (givenSeconds === Infinity) {
 		return Infinity_representation;
 	}
 	// principaly needed by <input type="time"> whom needs a really precise HH:MM:SS format
-	let colon_time = convert.SecondsInColonTime(givenSeconds);
+	let colon_time = convert.secondsInColonTime(givenSeconds);
 	return '00:00:00'.substr(0, 8 - colon_time.length ) + colon_time;
 };
 
@@ -161,20 +161,20 @@ export const SecondsInPaddledColonTime = function(givenSeconds) {
  * See spec in https://www.w3.org/TR/html51/infrastructure.html#durations
  * @public
  *
- * @class      IsoDuration (name)
+ * @class      durationIso (name)
  * @param      {number}  givenSeconds  Duration, in seconds
  * @return     {string}  Converted duration
  */
-export const IsoDuration = function(givenSeconds) {
-	return `P${convert.SecondsInTime(givenSeconds).toUpperCase()}`;
+export const durationIso = function(givenSeconds) {
+	return `P${convert.secondsInTime(givenSeconds).toUpperCase()}`;
 };
 
 export const convert = {
-	TimeInSeconds,
-	SubunitTimeInSeconds,
-	ColonTimeInSeconds,
-	SecondsInTime,
-	SecondsInColonTime,
-	SecondsInPaddledColonTime,
-	IsoDuration
+	timeInSeconds,
+	subunittimeInSeconds,
+	colontimeInSeconds,
+	secondsInTime,
+	secondsInColonTime,
+	secondsInPaddledColonTime,
+	durationIso
 };
