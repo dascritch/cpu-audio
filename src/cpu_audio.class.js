@@ -2,7 +2,7 @@ import {acceptable_selector, info} from './utils.js';
 import {CpuControllerElement} from './cpu_controller.class.js';
 import {connect_audiotag} from './media_element_extension.js';
 import {TimeInSeconds} from './convert.js';
-import {build_chapters} from './element_cpu.js';
+import {build_chapters} from './build_chapters.js';
 
 /**
  * @summary Interprets if <cpu-audio> element is modified

@@ -1,5 +1,5 @@
 import {__} from './i18n.js';
-import {activecue_classname} from './element_cpu.js'
+import {activecue_classname} from './element_cpu.js';
 
 // plane for _playlist. Only used in <CPU-Controller>
 const plane_playlist = '_playlist';
