@@ -91,6 +91,23 @@ function show_element({classList}, show) {
 	}
 }
 
+
+/**
+ * @summary Interprets `navigator.share` native API
+ *
+ * @param      {Object}  event   The event
+ */
+function native_share(event) {
+	let {title, canonical} = document.CPU.find_container(event.target).fetch_audiotag_dataset();
+	navigator.share({
+		title,
+		text	: title,
+		url 	: canonical
+	});
+	event.preventDefault();
+}
+
+
 export class CPU_element_api {
 	/**
 	 *
@@ -1295,10 +1312,11 @@ export class CPU_element_api {
 		this.get_point_panel(plane_name, point_name)?.classList.add(class_name);
 
 		if ( (mirror) && (this.mirrored_in_controller()) ) {
+			let document_CPU = document.CPU;
 			if (!this.is_controller) {
-				document.CPU.global_controller.highlight_point(plane_name, point_name, class_name, false);
+				document_CPU.global_controller.highlight_point(plane_name, point_name, class_name, false);
 			} else {
-				document.CPU.find_container(document.CPU.global_controller.audiotag).highlight_point(plane_name, point_name, class_name, false);
+				document_CPU.find_container(document_CPU.global_controller.audiotag).highlight_point(plane_name, point_name, class_name, false);
 			}
 		}
 	}
@@ -1396,21 +1414,24 @@ export class CPU_element_api {
 					if (chapter_track.cues.length > 0) {
 						has = true;
 					}
-					this.cuechange_event({target : {activeCues : chapter_track.cues}});
+					this.cuechange_event({
+						target : {
+							activeCues : chapter_track.cues
+						}
+					});
 				}
 			}
 		}
 
 		let body_class = `cpu_tag_«${audiotag.id}»_chaptered`;
+		let body_classlist = document.body.classList;
 		if (has) {
-			/**
-			 * indicate in host page that audio tag chapters are listed see
-			 * https://github.com/dascritch/cpu-audio/issues/36
-			 */
-			document.body.classList.add(body_class);
+			// indicate in host page that audio tag chapters are listed
+			// see https://github.com/dascritch/cpu-audio/issues/36
+			body_classlist.add(body_class);
 		} else {
 			this.remove_plane(plane_chapters);
-			document.body.classList.remove(body_class);
+			body_classlist.remove(body_class);
 		}
 
 		/*
@@ -1566,7 +1587,7 @@ export class CPU_element_api {
 
 		if (navigator.share) {
 			interface_classlist.add('hasnativeshare');
-			this.shadowId('nativeshare').addEventListener('click', trigger.native_share, passive_ev);
+			this.shadowId('nativeshare').addEventListener('click', native_share, passive_ev);
 		}
 
 		if (!this.audiotag)  {

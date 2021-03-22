@@ -136,6 +136,7 @@ export const trigger = {
 
 		await document.CPU.jumpIdAt(hash, timecode_start, callback_fx);
 
+		// not in document.CPU (yet) to avoid unuseful repaint
 		document.CPU.global_controller?.build_playlist();
 		// scroll to the audio element. Should be reworked, or parametrable , see issue #60
 		// window.location.hash = `#${hash}`;
@@ -170,7 +171,8 @@ export const trigger = {
 	throbble : function(event) {
 		let at = 0;
 		let {target, offsetX} = event;
-		let audiotag = document.CPU.find_container(target).audiotag;
+		let document_CPU = document.CPU;
+		let audiotag = document_CPU.find_container(target).audiotag;
 
 		if (audiotag.duration === Infinity) {
 			// CAVEAT : we may have improper duration due to a streamed media
@@ -178,10 +180,10 @@ export const trigger = {
 			return ;
 		}
 
-		if ((document.CPU.current_audiotag_playing) && (!document.CPU.is_audiotag_playing(audiotag))) {
+		if ((document_CPU.current_audiotag_playing) && (!document_CPU.is_audiotag_playing(audiotag))) {
 			// Chrome needs to STOP any other playing tag before seeking
 			//  Very slow seeking on Chrome #89
-			trigger.pause(undefined, document.CPU.current_audiotag_playing);
+			trigger.pause(undefined, document_CPU.current_audiotag_playing);
 		}
 
 		if ((isNaN(audiotag.duration)) && (!is_audiotag_streamed(audiotag))) {
@@ -496,21 +498,6 @@ export const trigger = {
 		// Play the next media in playlist, starting at zero
 		document.CPU.seekElementAt(next_audiotag, 0);
 		trigger.play({}, next_audiotag);
-	},
-
-	/**
-	 * @summary Interprets `navigator.share` native API
-	 *
-	 * @param      {Object}  event   The event
-	 */
-	native_share : function(event) {
-		let {title, canonical} = document.CPU.find_container(event.target).fetch_audiotag_dataset();
-		navigator.share({
-			title,
-			text	: title,
-			url 	: canonical
-		});
-		event.preventDefault();
 	},
 
 };
