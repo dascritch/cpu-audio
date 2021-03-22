@@ -1,4 +1,4 @@
-import {CpuAudioTagName, CpuControllerTagName, on_debug, once_passive_ev, selector_interface, warn} from './utils.js';
+import {CpuAudioTagName, CpuControllerTagName, on_debug, once_passive_ev, selector_interface, selector_audio_in_component, warn} from './utils.js';
 import {default_document_cpu_parameters} from './default_document_cpu_parameters.js';
 import {default_dataset} from './default_dataset.js';
 import {convert, TimeInSeconds} from './convert.js';
@@ -51,7 +51,8 @@ export const document_CPU = {
 	 * @return     {boolean}  True if audiotag playing, False otherwise.
 	 */
 	is_audiotag_playing : function(audiotag) {
-		return (document.CPU.current_audiotag_playing) && (audiotag.isEqualNode(document.CPU.current_audiotag_playing));
+		let current_audiotag_playing = document.CPU.current_audiotag_playing;
+		return (current_audiotag_playing) && (audiotag.isEqualNode(current_audiotag_playing));
 	},
 	/**
 	 * @public
@@ -100,9 +101,7 @@ export const document_CPU = {
 			on_debug(callback_fx);
 		}
 
-		let selector_fallback = 'cpu-audio audio'; // should be 'audio[controls]' but PHRACK APPLE !
-
-		let audiotag = /** @type {HTMLAudioElement} */ ( (hash !== '') ? document.getElementById(hash)  :  document.querySelector(selector_fallback) );
+		let audiotag = /** @type {HTMLAudioElement} */ ( (hash !== '') ? document.getElementById(hash)  :  document.querySelector(selector_audio_in_component) );
 
 		if ((audiotag == null) || (audiotag.currentTime === undefined)) {
 			warn(`Unknow audiotag ${hash}`);
@@ -110,7 +109,8 @@ export const document_CPU = {
 		}
 
 		let mocked_event = {target : audiotag};
-		if (audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {  /*  WHHYYYY ?????? */
+		if (audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+			// WHHYYYY ??????
 			audiotag.addEventListener('loadedmetadata', do_needle_move , once_passive_ev);
 			audiotag.load();
 			trigger.update(mocked_event);
@@ -142,7 +142,7 @@ export const document_CPU = {
 				// Browsers may not have fastSeek but can set currentTime
 				audiotag.currentTime = seconds;
 			} catch(e) {
-				// exept sometimes, so you must use standard media fragment
+				// except sometimes, so you must use standard media fragment
 				audiotag.src = `${audiotag.currentSrc.split('#')[0]}#t=${seconds}`;
 			}
 		}
@@ -194,9 +194,9 @@ export const document_CPU = {
 		if (!current_audiotag) {
 			return [];
 		}
-		for (let playlist_name in this.playlists) {
-			if (this.playlists[playlist_name].includes(current_audiotag.id)) {
-				return this.playlists[playlist_name];
+		for (let playlist of this.playlists) {
+			if (playlist.includes(current_audiotag.id)) {
+				return playlist;
 			}
 		}
 		return [];

@@ -214,7 +214,7 @@ export const trigger = {
 			let ratio = event.offsetX / target.clientWidth;
 			at = ratio * audiotag.duration;
 		}
-		document.CPU.seekElementAt(audiotag, at);
+		document_CPU.seekElementAt(audiotag, at);
 		trigger.play(event);
 	},
 

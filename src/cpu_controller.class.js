@@ -1,4 +1,4 @@
-import {CpuAudioTagName, acceptable_selector, selector_interface, not_screen_context, warn, querySelector_apply, element_prevent_link_on_same_page} from './utils.js';
+import {CpuAudioTagName, acceptable_selector, selector_interface, selector_audio_in_component, not_screen_context, warn, querySelector_apply, element_prevent_link_on_same_page} from './utils.js';
 import {CPU_element_api} from './element_cpu.js';
 
 /**
@@ -43,7 +43,7 @@ export class CpuControllerElement extends HTMLElement {
 		);
 		if (!this.CPU.audiotag) {
 			document.CPU.global_controller = this.CPU;
-			this.CPU.audiotag = document.querySelector('cpu-audio audio');
+			this.CPU.audiotag = document.querySelector(selector_audio_in_component);
 		}
 
 		if (this.getAttribute('glow')) {

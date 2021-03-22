@@ -328,7 +328,7 @@ export class CPU_element_api {
 		elapse_element.href = 
 			`${ absolutize_url(canonical) }#${ (_is_at < 0) ?
 				audiotag.id :
-				canonical.substr(_is_at+1) }&t=${timecode}`;
+				canonical.substr(_is_at + 1) }&t=${timecode}`;
 
 		let total_duration = false;
 		let _natural = Math.round(audiotag.duration);
@@ -712,7 +712,7 @@ export class CPU_element_api {
 
 	/**
 	 * @summary Gets the plane track element
-	 * @private
+	 * @private but needed in tests
 	 *
 	 * @param      {string}  plane_name   The name
 	 * @return     {Element}    The <aside> track element from ShadowDom interface
@@ -723,7 +723,7 @@ export class CPU_element_api {
 
 	/**
 	 * @summary Gets the plane panel element
-	 * @private
+	 * @private but needed in test
 	 *
 	 * @param      {string}  plane_name   The name
 	 * @return     {Element}    The panel element from ShadowDom interface
@@ -734,7 +734,7 @@ export class CPU_element_api {
 
 	/**
 	 * @summary Gets the <nav><ul> plane panel element
-	 * @private
+	 * @private but needed in tests
 	 *
 	 * @param      {string}  plane_name   The name
 	 * @return     {Element}    The <ul> element from ShadowDom interface, null if inexisting
@@ -1284,11 +1284,13 @@ export class CPU_element_api {
 		if ( (mirror) && (this.mirrored_in_controller()) ) {
 			let global_controller = document.CPU.global_controller;
 
+			let on;
 			if (!this.is_controller) {
-				global_controller.remove_highlights_points(plane_name, class_name, false);
+				on = global_controller;
 			} else {
-				document.CPU.find_container(global_controller.audiotag).remove_highlights_points(class_name, false);
+				on = document.CPU.find_container(global_controller.audiotag);
 			}
+			on.remove_highlights_points(plane_name, class_name, false);
 		}
 	}
 
@@ -1313,11 +1315,13 @@ export class CPU_element_api {
 
 		if ( (mirror) && (this.mirrored_in_controller()) ) {
 			let document_CPU = document.CPU;
+			let on;
 			if (!this.is_controller) {
-				document_CPU.global_controller.highlight_point(plane_name, point_name, class_name, false);
+				on = document_CPU.global_controller;
 			} else {
-				document_CPU.find_container(document_CPU.global_controller.audiotag).highlight_point(plane_name, point_name, class_name, false);
+				on = document_CPU.find_container(document_CPU.global_controller.audiotag);
 			}
+			on.highlight_point(plane_name, point_name, class_name, false);
 		}
 	}
 

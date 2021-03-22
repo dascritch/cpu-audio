@@ -14,6 +14,7 @@ export const CpuAudioTagName = 'CPU-AUDIO';
 export const CpuControllerTagName = 'CPU-CONTROLLER';
 export const selector_interface = '#interface';
 export const acceptable_selector = 'audio[controls]';
+export const selector_audio_in_component = 'cpu-audio audio'; // should be 'audio[controls]' but PHRACK APPLE !
 
 // For addEventListener
 // @private
