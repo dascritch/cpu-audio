@@ -191,16 +191,16 @@ export const trigger = {
 
 			// indicate we are loading something
 			let controller = audiotag.CPU_controller();
-			if ((controller !== null) && (controller.update_loading)) {
+			if ((controller) && (controller.update_loading)) {
 				controller.update_loading(undefined, 100 * offsetX  / target.clientWidth);
 			}
 
 			let expected_event = 'loadedmetadata';
 			let recreated_event = {offsetX, target};
-			let recall_me = function() {
-				trigger.throbble(recreated_event);
-			};
-			audiotag.addEventListener(expected_event, recall_me, once_passive_ev);
+			audiotag.addEventListener(
+				expected_event,
+				() => {trigger.throbble(recreated_event);},
+				once_passive_ev);
 			// loading metadata. May not work on Apples
 			audiotag.setAttribute('preload', 'metadata');
 			return ;
@@ -225,7 +225,7 @@ export const trigger = {
 	 * @param      {Element|undefined}  audiotag  The audiotag, may be omitted
 	 */
 	pause : function(event=undefined, audiotag=undefined) {
-		if (audiotag === undefined) {
+		if (!audiotag) {
 			let {target} = event;
 			audiotag = (target.tagName === 'AUDIO') ? target : document.CPU.find_container(target).audiotag;
 		}
@@ -432,10 +432,11 @@ export const trigger = {
 	 * @suppress {checkTypes}
 	 */
 	cuechange : function(active_cue, audiotag) {
-		document.body.classList.remove(body_className_playing_cue);
+		let body_classes = document.body.classList;
+		body_classes.remove(body_className_playing_cue);
 		// giving a class to document.body, with a syntax according to https://www.w3.org/TR/CSS21/syndata.html#characters
 		body_className_playing_cue = `cpu_playing_tag_«${audiotag.id}»_cue_«${active_cue.id}»`;
-		document.body.classList.add(body_className_playing_cue);
+		body_classes.add(body_className_playing_cue);
 	},
 
 
@@ -486,7 +487,7 @@ export const trigger = {
 			// end of playlist
 			return;
 		}
-		let next_id = playlist[playlist_index+1];
+		let next_id = playlist[ playlist_index+1 ];
 
 		let next_audiotag = /** @type {HTMLAudioElement} */ (document.getElementById(next_id));
 		if (!next_audiotag) {
