@@ -1,4 +1,4 @@
-import {passive_ev} from './utils.js';
+import {passive_ev, querySelector_apply, element_prevent_link_on_same_page} from './utils.js';
 import {trigger} from './trigger.js';
 import {press_manager, touch_manager} from './finger_manager.js';
 import {build_chapters_loader} from './build_chapters.js';
@@ -109,4 +109,6 @@ export function build_controller(container) {
 	container.show_main();
 	build_chapters_loader(container);
 	container.fire_event('ready');
+
+	querySelector_apply('#canonical', element_prevent_link_on_same_page, container.shadowRoot);
 }

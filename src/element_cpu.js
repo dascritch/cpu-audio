@@ -1,4 +1,4 @@
-import {CpuControllerTagName, selector_audio_in_component, absolutize_url, error, escape_html, passive_ev, querySelector_apply} from './utils.js';
+import {CpuControllerTagName, selector_audio_in_component, querySelector_apply, absolutize_url, error, escape_html, passive_ev} from './utils.js';
 import {__} from './i18n.js';
 import {default_dataset} from './default_dataset.js';
 import {SecondsInColonTime, SecondsInTime, IsoDuration} from './convert.js';
@@ -133,9 +133,33 @@ export class CPU_element_api {
 		}
 
 		build_controller(this);
+		this.attach_audiotag_to_controller(this.audiotag);
+
+		// mode="" attribute, on general aspect
+		let mode = element_attributes.mode;
+		if (mode) {
+			// in case of a mode="still,play" declaration
+			let [mode_still, mode_play] = mode.split(',');
+			if (mode_play) {
+				mode = this.audiotag.paused ? mode_still : mode_play;
+				this.mode_when_play = mode_play;
+			}
+		}
+		this.set_mode_container(mode);
+
+		// hide="" attribute, space separated elements to hide
+		if (element_attributes.hide) {
+			this.set_hide_container(element_attributes.hide.split(' '));
+		}
+
 	}
 
-
+	/**
+	 * @summary Check if the actual <cpu-audio> is mirrored in <cpu-controller>. False if no cpu-controller
+	 * @private but next time public ?
+	 *
+	 * @return     boolean			False if no cpu-controller or not mirrored
+     */
 	mirrored_in_controller() {
 		let global_controller = document.CPU.global_controller;
 		return (global_controller) && (this.audiotag.isEqualNode(global_controller.audiotag));
@@ -144,6 +168,7 @@ export class CPU_element_api {
 
 	/**
 	 * @summary Passthru there only for testing purposes.
+	 * @private but needed in tests
 	 *
 	 * @param      {string}            vtt_taged  The vtt tagged
 	 * @return     string                         HTML tagged string
