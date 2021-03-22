@@ -1,6 +1,8 @@
 node_modules/*
 package-lock.json
+src/themes/_*
 dist/cpu-audio.EXPERIMENTAL.*
+dist/_*
 tests-assets/*
 tmp/
 __TEST.html

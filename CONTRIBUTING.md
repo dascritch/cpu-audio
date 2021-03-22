@@ -41,7 +41,7 @@ If you are integrating HTML
  - Try to group CSS properties into CSS varables, and document them : it helps to not repeat yourself, and someone may need to change them.
  - Be wise : SVG path can be declared as symbols to reuse them.
  - Simplify your path in SVG:`<path d="">` : we don't have 10000 dpi screens yet. Use preferably `viewport="0 0 32 32"`, have only one digit precision after decimal point and reduce number of points if your path.
- - You can create you own themes, with specific HTML and/or CSS files stored in `src/themes/your-theme`, see ([#56](#56)). It will help to resolve issues ([#26](#26)) and ([#51](#51)). You may probably create more fancy versions of my player by this way, but you will have to use the `./make.sh --theme your-theme` command to build it.
+ - You can create you own themes, with specific HTML and/or CSS files stored in `src/themes/your-theme`, see ([#56](#56)). It will help to resolve issues ([#26](#26)) and ([#51](#51)). You may probably create more fancy versions of my player by this way, but you will have to use the `./make.sh --theme your-theme` command to build it. Note that themes can be private and not committed if their name start with a `_`.
 
 
 Tests
