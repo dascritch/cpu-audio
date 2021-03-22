@@ -1,4 +1,3 @@
-import {on_debug} from './utils.js';
 import {trigger} from './trigger.js';
 
 // Repeated event allocation
@@ -26,11 +25,7 @@ export class press_manager {
 			window.clearTimeout(pressing);
 		}
 
-		let mini_event = {
-			target : target,
-			preventDefault : on_debug
-		};
-		pressing = window.setTimeout(press_manager.repeat, document.CPU.repeat_delay, mini_event);
+		pressing = window.setTimeout(press_manager.repeat, document.CPU.repeat_delay, { target });
 		event.preventDefault();
 	}
 	/*

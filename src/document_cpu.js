@@ -1,4 +1,4 @@
-import {CpuAudioTagName, CpuControllerTagName, on_debug, once_passive_ev, selector_interface, selector_audio_in_component, warn} from './utils.js';
+import {CpuAudioTagName, CpuControllerTagName, once_passive_ev, selector_interface, selector_audio_in_component, warn} from './utils.js';
 import {default_document_cpu_parameters} from './default_document_cpu_parameters.js';
 import {default_dataset} from './default_dataset.js';
 import {convert, TimeInSeconds} from './convert.js';
@@ -62,7 +62,7 @@ export const document_CPU = {
 	 * @return     {boolean}  True if audiotag global, False otherwise.
 	 */
 	is_audiotag_global : function(audiotag) {
-		return this.global_controller === null ? this.is_audiotag_playing(audiotag) : audiotag.isEqualNode(this.global_controller.audiotag);
+		return this.global_controller ? audiotag.isEqualNode(this.global_controller.audiotag) : this.is_audiotag_playing(audiotag);
 	},
 
 	/**
@@ -98,7 +98,7 @@ export const document_CPU = {
 		function do_element_play(event) {
 			let tag = event.target;
 			trigger.play(undefined, tag);
-			on_debug(callback_fx);
+			callback_fx?.();
 		}
 
 		let audiotag = /** @type {HTMLAudioElement} */ ( (hash !== '') ? document.getElementById(hash)  :  document.querySelector(selector_audio_in_component) );

@@ -27,26 +27,6 @@ export const once_passive_ev = {'passive':true, 'once':true};
 export const dynamically_allocated_id_prefix = 'CPU-Audio-tag-';
 
 /**
- * @summary Do litteraly nothing
- * /
-function noop() {
-}
-*/
-
-/**
- * @summary If run in debug context, launch a function for calback
- *
- * @param      {Function|null|undefined}  callback_fx  The function to call
- */
-export function on_debug(callback_fx) {
-	// may be used as a noop();
-	if (typeof callback_fx === 'function') {
-		// this is needed for testing, as we now run in async tests
-		callback_fx();
-	}
-}
-
-/**
  * @summary Process a function on each matched CSS selector found in a DOM tree
  *
  * @param      {string}                selector             The css selector

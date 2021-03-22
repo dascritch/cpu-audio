@@ -47,7 +47,7 @@ export class CpuControllerElement extends HTMLElement {
 		}
 
 		if (this.getAttribute('glow')) {
-			this.CPU.glow_before_play=true;
+			this.CPU.glow_before_play = true;
 		}
 
 		this.CPU.build_controller();
@@ -58,7 +58,7 @@ export class CpuControllerElement extends HTMLElement {
 		// mode="" attribute, on general aspect
 		let mode = this.getAttribute('mode');
 		if (mode !== null) {
-		// in case of a mode="still,play" declaration
+			// in case of a mode="still,play" declaration
 			let [mode_still, mode_play] = mode.split(',');
 			if (mode_play) {
 				mode = this.CPU.audiotag.paused ? mode_still : mode_play;

@@ -1,4 +1,4 @@
-import {on_debug, once_passive_ev, warn} from './utils.js';
+import {once_passive_ev, warn} from './utils.js';
 import {is_audiotag_streamed} from './media_element_extension.js';
 import {TimeInSeconds} from './convert.js';
 
@@ -120,7 +120,7 @@ export const trigger = {
 
 		if ((timecode === '') || ((at_start) && (!autoplay))) {
 			// this is a normal anchor call. Go back to normal behaviour
-			on_debug(callback_fx);
+			callback_fx?.();
 			return /* false */;
 		}
 
