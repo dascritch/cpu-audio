@@ -159,8 +159,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	out : function({target}) {
-		let container = document.CPU.find_container(target);
-		container.hide_throbber();
+		document.CPU.find_container(target).hide_throbber();
 	},
 
 	/**
@@ -171,8 +170,7 @@ export const trigger = {
 	throbble : function(event) {
 		let at = 0;
 		let {target, offsetX} = event;
-		let container = document.CPU.find_container(target);
-		let audiotag = container.audiotag;
+		let audiotag = document.CPU.find_container(target).audiotag;
 
 		if (audiotag.duration === Infinity) {
 			// CAVEAT : we may have improper duration due to a streamed media
