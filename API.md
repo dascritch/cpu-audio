@@ -22,15 +22,15 @@ Properties :
 name                     | default value | usage
 -------------------------|---------------|----------
 keymove                  | `5`           | Number of seconds skipped in the timeline when <kbd>←</kbd> or <kbd>→</kbd> keys are pressed in an interface
-alternateDelay          | `500`         | Delay for a long press on time-line (in milliseconds) to switch to the handheld alternate browsing interface
-fastFactor              | `4`           | Amplification ratio between <kbd>▸︎▸︎</kbd> and <kbd>▸︎▸︎▸︎</kbd> in handheld alternate browsing interface
-repeatDelay             | `400`         | First repetition delay when clicking a button in handheld alternate browsing interface
-repeatFactor            | `100`         | Next repetitions delay when clicking a button in handheld alternate browsing interface
+alternateDelay           | `500`         | Delay for a long press on time-line (in milliseconds) to switch to the handheld alternate browsing interface
+fastFactor               | `4`           | Amplification ratio between <kbd>▸︎▸︎</kbd> and <kbd>▸︎▸︎▸︎</kbd> in handheld alternate browsing interface
+repeatDelay              | `400`         | First repetition delay when clicking a button in handheld alternate browsing interface
+repeatFactor             | `100`         | Next repetitions delay when clicking a button in handheld alternate browsing interface
 playStopOthers   | `true`        | When a cpu-audio starts to play, any other instances in the same page are paused.
-currentAudiotagPlaying | `null`        | Reference to the playing `<audio>` element, `null` if none
-globalController        | `null`        | Reference to the `<cpu-controller>` in the page if any, `null` elsewhere
+currentAudiotagPlaying   | `null`        | Reference to the playing `<audio>` element, `null` if none
+globalController         | `null`        | Reference to the `<cpu-controller>` in the page if any, `null` elsewhere
 playlists                | `{}`          | Collection of audio tag by playlists (named by the `<cpu-audio playlist="">` attribute). [See playlist feature](./FEATURES#playlists).
-advanceInPlaylist      | `true`        | When an audio is ended in a playlist, starts immediatly the next one.
+advanceInPlaylist        | `true`        | When an audio is ended in a playlist, starts immediatly the next one.
 autoplay                 | `false`       | Will try to play at the start of the page if a temporal url is given or the audio was previously exited
 
 Some properties are still not documented, for internal usage, as they may evolve.
@@ -40,13 +40,13 @@ Methods :
 
 name                             | returns                       | usage
 ---------------------------------|-------------------------------|-----------------
-isAudiotagPlaying(audiotag)    | boolean                       | Indicate if this `<audio>` element is playing and correctly cpu-audio started
-isAudiotagGlobal(audiotag)     | boolean                       | Indicate if this `<audio>` element is displayed by `<cpu-controller>` if installed
+isAudiotagPlaying(audiotag)      | boolean                       | Indicate if this `<audio>` element is playing and correctly cpu-audio started
+isAudiotagGlobal(audiotag)       | boolean                       | Indicate if this `<audio>` element is displayed by `<cpu-controller>` if installed
 jumpIdAt(hash, timecode)         | 	                             | will jump the `<audio id="hash">` to timecode (any convertable format in seconds, colon-coded or human coded)
 seekElementAt(audiotag, seconds) |                               | will jump the `<audio>` to a position in seconds (number only)
-findInterface(child)            | HTMLElement or null           | For any ShadowDOM element, will returns its parent interface container
-findContainer(child)            | CpuAudioElement.`CPU` or null | For any `<audio>` tag or its child tag, will returns the element `CPU` API
-findCurrentPlaylist()          | array                         | Returns an array of the current playing playlist
+findInterface(child)             | HTMLElement or null           | For any ShadowDOM element, will returns its parent interface container
+findContainer(child)             | CpuAudioElement.`CPU` or null | For any `<audio>` tag or its child tag, will returns the element `CPU` API
+findCurrentPlaylist()            | array                         | Returns an array of the current playing playlist
 
 Some methods are still not documented, for internal usage, as they may evolve.
 
@@ -81,33 +81,33 @@ audiotag    | `<audio>`     | Media DOM element
 
 Methods :
 
-name                                         | returns | usage
----------------------------------------------|---------|------
-setModeContainer(string)                   |         | Change the presentation mode, [used for `mode=""` attribute](./INSTALL#attributes-references)
-setActContainer(string)                    |         | Change the presentation style between `'loading'`, `'glow'`, `'pause'` or `'play'`, reflecting the media tag status
-setHideContainer(array)                    |         | Array of strings, may contains `'actions'` or `'chapters'`, [used for `hide=""` attribute](./INSTALL#attributes-references)
-showThrobberAt(number)                     |         | Display the throbber on the timeline at a given time in seconds.
-hideThrobber()                              |         | Hide immediately the throbber
-hideThrobberLater()                        |         | Hide the throbber later (waiting 1 seconds). A newer call will delay the hiding later. News at 11.
-showInterface(string)                       |         | Switch between `'main'`, `'share'` or `'error'` interfaces.
-addPlane(plane, title, data)                | boolean | Create an annotation plane (¹)(²)(³)
-removePlane(plane)                          | boolean | Remove an annotation plane (¹)(²)
-addPoint(plane, timecode, point, data)      | boolean | Add an annotation point to a plane at a timecode (¹)(²)(⁴)
-point(plane, point)						 | object  | Return data for a point (³)
-editPoint(plane, point, data)				 |         | Modify data for a point (³). Only existing keys from point() are updated
-removePoint(plane, point)                   | boolean | Remove an annotation point (¹)(²)
-clearPlane(plane)                           |         | Remove any points from an annotation plane (¹)(²)
-redrawAllPlanes()                          |         | Redraw any annotation planes and points
-highlightPoint(plane, point, class, mirror) |         | Highlight a perticuliar annotation point, class is `with-preview` by default (²)
-removeHighlightsPoints(plane, class, mirror) |         | CHANGED SINCE 6.7! Remove highlights on plane, class is `with-preview` by default (²)
-injectCss(style_key, css)					 |		   | Inject a `<style>` tag into the shadowDom of the component. (²)
-removeCss(style_key)						 |		   | Remove an inject `<style>` from the shadowDom. (²)
+name                                                     | returns | usage
+---------------------------------------------------------|---------|------
+setModeContainer(string)                                 |         | Change the presentation mode, [used for `mode=""` attribute](./INSTALL#attributes-references)
+setActContainer(string)                                  |         | Change the presentation style between `'loading'`, `'glow'`, `'pause'` or `'play'`, reflecting the media tag status
+setHideContainer(array)                                  |         | Array of strings, may contains `'actions'` or `'chapters'`, [used for `hide=""` attribute](./INSTALL#attributes-references)
+showThrobberAt(number)                                   |         | Display the throbber on the timeline at a given time in seconds.
+hideThrobber()                                           |         | Hide immediately the throbber
+hideThrobberLater()                                      |         | Hide the throbber later (waiting 1 seconds). A newer call will delay the hiding later. News at 11.
+showInterface(string)                                    |         | Switch between `'main'`, `'share'` or `'error'` interfaces.
+addPlane(planeName, title, planeData)                    | boolean | Create an annotation plane (¹)(²)(³)
+removePlane(planeName)                                   | boolean | Remove an annotation plane (¹)(²)
+addPoint(planeName, pointName, pointData)                | boolean | Add an annotation point to a plane at a timecode (¹)(²)(⁴)
+point(planeName, pointName) 			                 | object  | Return data for a point (³)
+editPoint(planeName, pointName, data)                    |         | Modify data for a point (³). Only existing keys from point() are updated
+removePoint(planeName, pointName)                        | boolean | Remove an annotation point (¹)(²)
+clearPlane(planeName)                                    |         | Remove any points from an annotation plane (¹)(²)
+redrawAllPlanes()                                        |         | Redraw any annotation planes and points
+highlightPoint(planeName, pointName, className, mirror)  |         | Highlight a perticuliar annotation point, className is `with-preview` by default (²)
+removeHighlightsPoints(planeName, className, mirror)     |         | CHANGED SINCE 6.7! Remove highlights on a plane, className is `with-preview` by default (²)
+injectCss(styleName, css)					             |		   | Inject a `<style>` tag into the shadowDom of the component. (²)
+removeCss(styleName)						             |		   | Remove an inject `<style>` from the shadowDom. (²)
 
 (¹) Only available via `CpuAudioElement.CPU`
 
-(²) `plane`, `point`, `class` and `style_key` accepts only alphanum (`/a-zA-Z0-9\_\-/`). Planes starting with a `_` are reserved for system usage, try avoid creating one or messing too much with them.
+(²) `planeName`, `pointName`, `className` and `styleName` accepts only alphanum (`/a-zA-Z0-9\_\-/`). Planes starting with a `_` are reserved for system usage, try avoid creating one or messing too much with them.
 
-(³) `data` is an object, with detailled keys for planes :
+(³) `planeData` is an object, with detailled keys for planes :
 
 key         | type              | default value | usage
 ------------|-------------------|---------------|-------
@@ -116,12 +116,12 @@ panel       | boolean or string | `true`        | Create a panel under the playe
 highlight   | boolean           | `true`        | Points of this annotation plane can be highlighted with the mouse
 _comp		| boolean			| `false`		| Private use only. Data stored on the component instead of audio element
 
-(⁴) `data` is an object, with detailled keys for points :
+(⁴) `pointData` is an object, with detailled keys for points :
 
 key         | type                        | default value | usage
 ------------|-----------------------------|---------------|-------
 image       | boolean or string           | `false`       | Url of an image, `false` elsewhere
-link        | boolean or string of function | `true`        | Click action :  `false` for nothing, `true` to link moment, url string for an external link
+link        | boolean or string           | `true`        | Click action :  `false` for nothing, `true` to link moment, url string for an external link
 text        | string                      |               | Legend
 start       | number                      |               | The anotation point begins at this timecode (not used in addPoint)
 end         | number                      | `undefined`   | The anotation point ends at this timecode
@@ -135,21 +135,21 @@ Events
 event_name          | description                                          | detail, see next table (⁵)
 --------------------|------------------------------------------------------|------------------------------------------
 CPU_ready	        | The DOM component and its interface are ready        |
-CPU_addPoint       | During `addPoint` method, even private ones         | plane, point, data_point
-CPU_drawPoint      | A point is drawn or redrawn                          | plane, point, data_point, element_pointTrack, element_pointPanel
-CPU_editPoint      | During `editPoint` method                           | plane, point, data_point
-CPU_removePoint    | During `removePoint` method, even private ones      | plane, point
+CPU_addPoint        | During `addPoint` method, even private ones          | planeName, pointName, pointData
+CPU_drawPoint       | A point is drawn or redrawn                          | planeName, pointName, pointData, elementPointTrack, elementPointPanel
+CPU_editPoint       | During `editPoint` method                            | planeName, pointName, pointData
+CPU_removePoint     | During `removePoint` method, even private ones       | planeName, pointName
 CPU_chapter_changed | A cue event defined in WebVTT occured                | cue
 
 (⁵) Returned object informations usually have a `detail` object, it may contains :
 
-detail key          | type    | description
---------------------|---------|-------------
-plane               | string  | the name of the plane, as given in the `addPlane` method, `plane` parameter
-point               | string  | the name of the point, as given in the `addPoint` method, `point` parameter
-data_point          | object  | data for the point, as in `point(plane, point)`
-element_pointTrack | Element | The created or existing point in the time track
-element_pointPanel | Element | The created or existing point in the panel
+detail key         | type    | description
+-------------------|---------|-------------
+planeName          | string  | the name of the plane, as given in the `addPlane` method, `planeName` parameter
+pointName          | string  | the name of the point, as given in the `addPoint` method, `pointName` parameter
+pointData          | object  | data for the point, as in `point(planeName, pointName)`
+elementPointTrack  | Element | The created or existing point in the time track
+elementPointPanel  | Element | The created or existing point in the panel
 
 
 As the `event.target` is the `<cpu-audio>` element, you can reach its API with `event.target.CPU`. Here is a way to do it for asynchronous build :

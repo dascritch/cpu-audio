@@ -399,7 +399,8 @@ export class CPU_element_api {
 			panel   	: false,
 			highlight 	: false
 		});
-		this.addPoint(planeName, trigger._timecode_start, pointName, {
+		this.addPoint(planeName, pointName, {
+			start 		: trigger._timecode_start,
 			link    	: false,
 			end     	: trigger._timecode_end
 		});
@@ -649,18 +650,18 @@ export class CPU_element_api {
 	 *
 	 * Usage example in applications/chapters_editor.js
 	 *
-	 * @param 	{string}  style_key   	A name in the range /[a-zA-Z0-9\-_]+/, key to tag the created <style>
+	 * @param 	{string}  styleName   	A name in the range /[a-zA-Z0-9\-_]+/, key to tag the created <style>
 	 * @param 	{string}  css 			inline CSS to inject
 	 */
-	injectCss(style_key, css) {
-		if (!style_key.match(validId)) {
-			error(`injectCss invalid key "${style_key}"`);
+	injectCss(styleName, css) {
+		if (!styleName.match(validId)) {
+			error(`injectCss invalid key "${styleName}"`);
 			return;
 		}
 
-		this.removeCss(style_key);
+		this.removeCss(styleName);
 		let element = document.createElement('style');
-		element.id = `style_${style_key}`;
+		element.id = `style_${styleName}`;
 		element.innerHTML = css;
 		this.container.appendChild(element);
 	}
@@ -669,10 +670,10 @@ export class CPU_element_api {
 	 * @summary Remove an injected <style> into the shadowDom
 	 * @public
 	 *
-	 * @param 	{string}  style_key   	Key of the created <style> , /[a-zA-Z0-9\-_]+/
+	 * @param 	{string}  styleName   	Key of the created <style> , /[a-zA-Z0-9\-_]+/
 	 */
-	removeCss(style_key) {
-		this.shadowId(`style_${style_key}`)?.remove();
+	removeCss(styleName) {
+		this.shadowId(`style_${styleName}`)?.remove();
 	}
 
 
@@ -833,9 +834,9 @@ export class CPU_element_api {
 	 * @summary Add an annotation plane layer
 	 * @public
 	 *
-	 * @param      {string}   planeName  A name in the range /[a-zA-Z0-9\-_]+/
+	 * @param      {string}   planeName   A name in the range /[a-zA-Z0-9\-_]+/
 	 * @param      {string}   title       The displayed title for the panel
-	 * @param      {Object}   data        { track : true/false/classnames ,
+	 * @param      {Object}   planeData   { track : true/false/classnames ,
 	 * 										panel : true/false/classnames ,
 	 * 										highlight : true/false,
 	 *										_comp : true/false // only stored in component, private use only
@@ -846,7 +847,7 @@ export class CPU_element_api {
 
 	 * @return     {boolean}  success
 	 */
-	addPlane(planeName, title, data = {}) {
+	addPlane(planeName, title, planeData = {}) {
 		if ((! planeName.match(validId)) || (this.plane(planeName))) {
 			return false;
 		}
@@ -861,16 +862,16 @@ export class CPU_element_api {
 			_comp		: false
 		};
 
-		data = { ...default_plane_data, ...data , title};
+		planeData = { ...default_plane_data, ...planeData , title};
 
-		if (!data._comp) {
+		if (!planeData._comp) {
 			if (this.is_controller) {
 				return false;
 			}
 			this.audiotag._CPU_planes = this.audiotag._CPU_planes ?? {};
-			this.audiotag._CPU_planes[planeName] = data;
+			this.audiotag._CPU_planes[planeName] = planeData;
 		} else {
-			this._planes[planeName] = data;
+			this._planes[planeName] = planeData;
 		}
 		this.drawPlane(planeName);
 		return true;
@@ -1006,8 +1007,8 @@ export class CPU_element_api {
 	 */
 	drawPoint(planeName, pointName) {
 		let audiotag = this.audiotag ? this.audiotag : document.CPU.globalController.audiotag;
-		let data = this.point(planeName, pointName);
-		let {start, link, text, image, end} = data;
+		let pointData = this.point(planeName, pointName);
+		let {start, link, text, image, end} = pointData;
 
 		let use_link = '#';
 		if (link === true) {
@@ -1020,49 +1021,49 @@ export class CPU_element_api {
 		}
 
 		let track = this.planeTrack(planeName);
-		let plane_pointTrack;
+		let elementPointTrack;
 		if (track) {
-			plane_pointTrack = this.pointTrack(planeName, pointName);
-			if (!plane_pointTrack) {
-				plane_pointTrack = document.createElement('a');
-				plane_pointTrack.id = getPointId(planeName, pointName, false);
+			elementPointTrack = this.pointTrack(planeName, pointName);
+			if (!elementPointTrack) {
+				elementPointTrack = document.createElement('a');
+				elementPointTrack.id = getPointId(planeName, pointName, false);
 				// TODO : how to do chose index of a point track if there is no link, or a panel but no track??
-				plane_pointTrack.tabIndex = -1; 
-				plane_pointTrack.innerHTML = '<img alt="" /><span></span>';
-				track.appendChild(plane_pointTrack);
+				elementPointTrack.tabIndex = -1; 
+				elementPointTrack.innerHTML = '<img alt="" /><span></span>';
+				track.appendChild(elementPointTrack);
 			}
-			plane_pointTrack.href = use_link;
-			plane_pointTrack.title = text;
-			let track_img = plane_pointTrack.querySelector('img');
+			elementPointTrack.href = use_link;
+			elementPointTrack.title = text;
+			let track_img = elementPointTrack.querySelector('img');
 			showElement(track_img, image);
 			track_img.src = image || '';
-			plane_pointTrack.querySelector('img').innerHTML = text ;
-			this.positionTimeElement(plane_pointTrack, start, end);
+			elementPointTrack.querySelector('img').innerHTML = text ;
+			this.positionTimeElement(elementPointTrack, start, end);
 		}
 
 		let panel = this.planeNav(planeName);
-		let plane_pointPanel;
+		let elementPointPanel;
 		if (panel) {
-			plane_pointPanel = this.pointPanel(planeName, pointName);
-			if (!plane_pointPanel) {
-				plane_pointPanel = document.createElement('li');
-				plane_pointPanel.id = getPointId(planeName, pointName, true);
-				plane_pointPanel.innerHTML = '<a href="#" class="cue"><strong></strong><time></time></a>';
-				panel.appendChild(plane_pointPanel);
+			elementPointPanel = this.pointPanel(planeName, pointName);
+			if (!elementPointPanel) {
+				elementPointPanel = document.createElement('li');
+				elementPointPanel.id = getPointId(planeName, pointName, true);
+				elementPointPanel.innerHTML = '<a href="#" class="cue"><strong></strong><time></time></a>';
+				panel.appendChild(elementPointPanel);
 			}
-			plane_pointPanel.querySelector('a').href = use_link;
-			plane_pointPanel.querySelector('strong').innerHTML = text;
-			let time_element = plane_pointPanel.querySelector('time');
+			elementPointPanel.querySelector('a').href = use_link;
+			elementPointPanel.querySelector('strong').innerHTML = text;
+			let time_element = elementPointPanel.querySelector('time');
 			time_element.dateTime = durationIso(start);
 			time_element.innerText = secondsInColonTime(start);
 		}
 
 		this.emitEvent('drawPoint', {
-			plane : planeName,
-			point : pointName,
-			data_point :  data,
-			element_pointTrack : plane_pointTrack,
-			element_pointPanel : plane_pointPanel,
+			planeName,
+			pointName,
+			pointData,
+			elementPointTrack,
+			elementPointPanel,
 		});
 
 		if ( (!this.is_controller) && (this.mirroredInController()) ) {
@@ -1075,33 +1076,32 @@ export class CPU_element_api {
 	 * @public
 	 *
 	 * @param      {string}   planeName      The existing plane name
-	 * @param      {number}   timecode_start  The timecode start for this annotation
 	 * @param      {string}   pointName      The point name, should conform to /^[a-zA-Z0-9\-_]+$/
-	 * @param      {Object}   data            { 'image' : <url>,
+	 * @param      {Object}   pointData            { 'image' : <url>,
 	 * 											'link' : <url>/true (in audio)/false (none),
 	 * 											'text' : <text>,
 	 * 											'end'  : <seconds> }
 	 *
 	 * @return     {boolean}  success
 	 */
-	addPoint(planeName, timecode_start, pointName, data={}) {
+	addPoint(planeName, pointName, pointData={}) {
 		// TODO major release : move timecode_start in data, add points argument for a bulk insertion
 
-		if ( (!this.plane(planeName)) || (this.point(planeName, pointName)) || (timecode_start < 0) || (!pointName.match(validId)) ) {
+		if ( (!this.plane(planeName)) || (this.point(planeName, pointName)) || (pointData.start < 0) || (!pointName.match(validId)) ) {
 			return false;
 		}
 		if ((!this._planes[planeName]) && (this.is_controller)) {
 			return false;
 		}
 
-		data.start = Number(timecode_start); // TO move into parameter
-		let { start } = data;
-		this.plane(planeName).points[pointName] = data;
+		pointData.start = Number(pointData.start); // TO move into parameter
+		let { start } = pointData;
+		this.plane(planeName).points[pointName] = pointData;
 
 		this.emitEvent('addPoint', {
-			plane : planeName,
-			point : pointName,
-			data_point :  data
+			planeName,
+			pointName,
+			pointData
 		});
 
 		if (this.plane(planeName)._st_max > start) {
@@ -1128,7 +1128,7 @@ export class CPU_element_api {
 	 * 											'end'   : <seconds> }
 	 *										  will only change keys in the list
 	 */
-	editPoint(planeName, pointName, data) {
+	editPoint(planeName, pointName, pointData) {
 		let plane = this.plane(planeName);
 		if (!plane) {
 			return false;
@@ -1139,13 +1139,13 @@ export class CPU_element_api {
 			return false;	
 		}
 
-		let { start } = data;
+		let { start } = pointData;
 		start = Number(start);
 		let will_refresh = ((start != null) && (start !== original_data.start));
 
-		data = {...original_data, ...data};
+		pointData = {...original_data, ...pointData};
 
-		plane.points[pointName] = data;
+		plane.points[pointName] = pointData;
 
 		this.drawPoint(planeName, pointName);
 		if (will_refresh) {
@@ -1153,9 +1153,9 @@ export class CPU_element_api {
 		}
 
 		this.emitEvent('editPoint', {
-			plane : planeName,
-			point : pointName,
-			data_point :  data
+			planeName,
+			pointName,
+			pointData
 		});
 
 		if (plane._st_max < start) {
@@ -1179,8 +1179,8 @@ export class CPU_element_api {
 		}
 
 		this.emitEvent('removePoint', {
-			plane : planeName,
-			point : pointName
+			planeName,
+			pointName
 		});
 
 		this.pointTrack(planeName, pointName)?.remove();
@@ -1286,13 +1286,13 @@ export class CPU_element_api {
 	 * @public
 	 *
 	 * @param			 {string}  planeName The plane name to operate
-	 * @param      {string}  class_name Targeted class name, 'with-preview' by default
+	 * @param      {string}  className Targeted class name, 'with-preview' by default
 	 * @param      {boolean} mirror     Also act on linked cpu-controller/cpu-audio
 	 */
-	removeHighlightsPoints(planeName, class_name=previewClassname, mirror=true) {
+	removeHighlightsPoints(planeName, className=previewClassname, mirror=true) {
 		querySelectorDo(
-			`#track_«${planeName}» .${class_name}, #panel_«${planeName}» .${class_name}`,
-			(element) => { element.classList.remove(class_name); },
+			`#track_«${planeName}» .${className}, #panel_«${planeName}» .${className}`,
+			(element) => { element.classList.remove(className); },
 			this.container);
 		if ( (mirror) && (this.mirroredInController()) ) {
 			let globalController = document.CPU.globalController;
@@ -1303,7 +1303,7 @@ export class CPU_element_api {
 			} else {
 				on = findContainer(globalController.audiotag);
 			}
-			on.removeHighlightsPoints(planeName, class_name, false);
+			on.removeHighlightsPoints(planeName, className, false);
 		}
 	}
 
@@ -1313,18 +1313,18 @@ export class CPU_element_api {
 	 *
 	 * @param      {string}  planeName  The plane name
 	 * @param      {string}  pointName  The point name
-	 * @param      {string}  class_name  class name, 'with-preview' by default
+	 * @param      {string}  className  class name, 'with-preview' by default
 	 * @param      {boolean} mirror     Also act on linked cpu-controller/cpu-audio, true by default
 	 */
-	highlightPoint(planeName, pointName, class_name=previewClassname, mirror=true) {
-		this.removeHighlightsPoints(planeName, class_name, mirror);
+	highlightPoint(planeName, pointName, className=previewClassname, mirror=true) {
+		this.removeHighlightsPoints(planeName, className, mirror);
 
 		if (! this.plane(planeName)?.highlight) {
 			return;
 		}
 
-		this.pointTrack(planeName, pointName)?.classList.add(class_name);
-		this.pointPanel(planeName, pointName)?.classList.add(class_name);
+		this.pointTrack(planeName, pointName)?.classList.add(className);
+		this.pointPanel(planeName, pointName)?.classList.add(className);
 
 		if ( (mirror) && (this.mirroredInController()) ) {
 			let DocumentCPU = document.CPU;
@@ -1334,7 +1334,7 @@ export class CPU_element_api {
 			} else {
 				on = findContainer(DocumentCPU.globalController.audiotag);
 			}
-			on.highlightPoint(planeName, pointName, class_name, false);
+			on.highlightPoint(planeName, pointName, className, false);
 		}
 	}
 

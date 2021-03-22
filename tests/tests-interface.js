@@ -473,20 +473,21 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
 		let data = {
-			'text' : 'Here is some text',
-			'link' : true
+			start : 2,
+			text : 'Here is some text',
+			link : true
 		};
 
-		assert.ok(! secondary_API_CPU.addPoint('hello', 2, 'point', data), 'function cannot works without a created plane');
+		assert.ok(! secondary_API_CPU.addPoint('hello', 'point', data), 'function cannot works without a created plane');
 		secondary_API_CPU.addPlane('hello');
-		assert.ok(! secondary_API_CPU.addPoint('hello', -2, 'point', data), 'function cannot works with a negative timecode');
-		assert.ok(! secondary_API_CPU.addPoint('hello', 2, '', data), 'function cannot works with an empty name');
-		assert.ok(! secondary_API_CPU.addPoint('hello', 2, '*&0f', data), 'function refuse invalid name');
+		assert.ok(! secondary_API_CPU.addPoint('hello', 'point', {...data , start : -2}), 'function cannot works with a negative timecode');
+		assert.ok(! secondary_API_CPU.addPoint('hello', '', data), 'function cannot works with an empty name');
+		assert.ok(! secondary_API_CPU.addPoint('hello', '*&0f', data), 'function refuse invalid name');
 
 		assert.equal(secondary_API_CPU.point('hello', 'world'), undefined, 'point() returns undefined');
 
-		assert.ok(secondary_API_CPU.addPoint('hello', 2, 'world', data), 'function accept when parameters are valid');
-		assert.ok(!secondary_API_CPU.addPoint('hello', 10, 'world', data), 'function refuse another name with the same point name in the same track');
+		assert.ok(secondary_API_CPU.addPoint('hello', 'world', data), 'function accept when parameters are valid');
+		assert.ok(!secondary_API_CPU.addPoint('hello', 'world', {...data, start : 10}), 'function refuse another name with the same point name in the same track');
 
 		assert.notEqual(secondary_API_CPU.point('hello', 'world'), undefined, 'point() returns data');
 		assert.ok(secondary_interfacetag.querySelector('aside#track_«hello» > a#track_«hello»_point_«world»') , 'DOM element point added in aside track');
@@ -523,7 +524,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		secondary_API_CPU.addPlane('hello');
 		assert.ok(! secondary_API_CPU.removePoint('pipo', 'point'), 'function cannot works with a non-existing plane');
 		assert.ok(! secondary_API_CPU.removePoint('hello', 'point'), 'function cannot works with a non-existing point');
-		secondary_API_CPU.addPoint('hello', 2, 'point');
+		secondary_API_CPU.addPoint('hello', 'point', {start : 2});
 		assert.ok(secondary_API_CPU.removePoint('hello', 'point'), 'function accept when parameters are valid');
 
 		assert.equal(secondary_API_CPU.point('hello', 'world'), undefined, 'point() returns undefined');
@@ -545,8 +546,8 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
 		secondary_API_CPU.addPlane('hello');
-		secondary_API_CPU.addPoint('hello', 2, 'point');
-		secondary_API_CPU.addPoint('hello', 20, 'point2');
+		secondary_API_CPU.addPoint('hello', 'point' , {start : 2});
+		secondary_API_CPU.addPoint('hello', 'point2', {start : 20});
 		assert.ok(! secondary_API_CPU.clearPlane('point'), 'function return false when parameter is invalid');
 		assert.ok(secondary_API_CPU.clearPlane('hello'), 'function accept when parameter is valid');
 

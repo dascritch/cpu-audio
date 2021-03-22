@@ -6,9 +6,6 @@ Planned evolutions
 
 - [ ] Standards first
     - [ ] use standard [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) in `hashOrder`, instead of the custom code. We need a strategy to get the anchor, seen as a key without value
-- [ ] DOM manipulation events :
-    - [ ] dynamic modification of `<head>`
-    - [ ] dynamic modification of `document.location.href` (webapp)
 - [ ] add-ons packages
     - [X] [dotclear](https://github.com/dascritch/plugin-dotclear-cpu-audio)
     - [ ] wordpress

@@ -141,7 +141,7 @@ document.addEventListener('CPU_ready', function() {
 		});
 
 		cpuaudio_tag.CPU.addPlane('testplane','');
-		cpuaudio_tag.CPU.addPoint('testplane',0,'testpoint');
+		cpuaudio_tag.CPU.addPoint('testplane','testpoint', {start : 0});
 		cpuaudio_tag.CPU.editPoint('testplane','testpoint', {});
 		cpuaudio_tag.CPU.removePoint('testplane','testpoint');
 

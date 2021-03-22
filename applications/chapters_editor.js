@@ -221,35 +221,35 @@ function CPU_drawPoint(event) {
     // let  CPU_controler = event.target.CPU;
 
     let detail = event.detail;
-    let element_pointTrack = detail.element_pointTrack;
-    let element_pointPanel = detail.element_pointPanel;
+    let elementPointTrack = detail.elementPointTrack;
+    let elementPointPanel = detail.elementPointPanel;
 
-    if ((!element_pointTrack) || (!element_pointPanel)) {
+    if ((!elementPointTrack) || (!elementPointPanel)) {
         // May happen is phracking github pages integration
         return;
     }
 
     // first, we remove pre-existing events    
-    element_pointTrack.removeEventListener('mouseover', cursor_hover);
-    element_pointTrack.removeEventListener('mouseout',cursor_out);
-    element_pointTrack.removeEventListener('click', show_only_line);
-    element_pointPanel.removeEventListener('mouseover', cursor_hover);
-    element_pointPanel.removeEventListener('mouseout',cursor_out);
-    element_pointPanel.removeEventListener('click', show_only_line);
+    elementPointTrack.removeEventListener('mouseover', cursor_hover);
+    elementPointTrack.removeEventListener('mouseout',cursor_out);
+    elementPointTrack.removeEventListener('click', show_only_line);
+    elementPointPanel.removeEventListener('mouseover', cursor_hover);
+    elementPointPanel.removeEventListener('mouseout',cursor_out);
+    elementPointPanel.removeEventListener('click', show_only_line);
 
-    element_pointTrack.removeEventListener('pointerdown', drag_start);
+    elementPointTrack.removeEventListener('pointerdown', drag_start);
     
     // When you click on a point, we show the line editing interface
     // we bind() the function to pass its arguments. 
-    element_pointTrack.addEventListener('mouseover', cursor_hover.bind(event, detail.point));
-    element_pointTrack.addEventListener('mouseout',cursor_out.bind(event, detail.point));
-    element_pointTrack.addEventListener('click', show_only_line.bind(event, detail.point));
+    elementPointTrack.addEventListener('mouseover', cursor_hover.bind(event, detail.point));
+    elementPointTrack.addEventListener('mouseout',cursor_out.bind(event, detail.point));
+    elementPointTrack.addEventListener('click', show_only_line.bind(event, detail.point));
 
-    element_pointTrack.addEventListener('pointerdown', drag_start.bind(undefined, element_pointTrack, detail.point));
+    elementPointTrack.addEventListener('pointerdown', drag_start.bind(undefined, elementPointTrack, detail.point));
 
-    element_pointPanel.addEventListener('mouseover', cursor_hover.bind(event, detail.point));
-    element_pointPanel.addEventListener('mouseout',cursor_out.bind(event, detail.point));
-    element_pointPanel.addEventListener('click', show_only_line.bind(event, detail.point));
+    elementPointPanel.addEventListener('mouseover', cursor_hover.bind(event, detail.point));
+    elementPointPanel.addEventListener('mouseout',cursor_out.bind(event, detail.point));
+    elementPointPanel.addEventListener('click', show_only_line.bind(event, detail.point));
 
 }
 
@@ -297,14 +297,14 @@ function interpret_line(this_line_element, from_interpret_form=false) {
     chapters.push(this_line_data);
 
     let data = {  
-            'image' : '../assets/pointer.png',
-            'text' : text,
-            'link' : true, // on click, should both repoint the player and trigger an action (delegated to event) 
-            'start' : seconds
+            image : '../assets/pointer.png',
+            text : text,
+            link : true, // on click, should both repoint the player and trigger an action (delegated to event) 
+            start : seconds
     }
 
     if (! sound_CPU.point('cursors', this_line_element.id)) {
-        sound_CPU.addPoint('cursors', seconds, this_line_element.id, data);
+        sound_CPU.addPoint('cursors', this_line_element.id, data);
     } else {
         data.start = seconds;
         sound_CPU.editPoint('cursors', this_line_element.id, data);

@@ -12,6 +12,7 @@ Corrections
 -----------
 
  * Production files are now more logically created in `build/` instead of `directory/`
+ * Methods and parameters names have been unified camelCase. Changes are incompatible with versions <7.0 ([#112](#112))
  * Reduce repaints
  * Do not change color when changing mode play→loading→play ([#114](#114)) 
  * Resolving a probable issue on fine navigation panel on handheld
@@ -48,7 +49,6 @@ Todo for this release :
 -----------------------
 
  - Finish drag'n'drop in chapters-editors
- - If we unify name style camelCase or snake_case ([#112](#112)), or as we changed some public API, we go for a major version release (7.0)
  - we still have a flashing chapters before the one clicked in panel. There is something to clean up, probable root cause is my (voluntary) 206 defaillant web server
  - Debug issues in Chrome mobile , as replay position or highlighted chapters in double
  - Can't remember, but to check : regression cpu controller => player (color focus, I believe)
