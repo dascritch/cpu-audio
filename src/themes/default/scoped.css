@@ -575,6 +575,14 @@ aside a, h6, .cue time , aside.ticker *
 	}
 }
 
+
+/* Accessibility : do not display animation;  */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation : none !important;
+  }
+}
+
 a:hover, a:focus, button:hover, button:focus,
 #pageshare div:hover ,
 .active-cue, /* can now ride off its !important on color */
