@@ -1,7 +1,7 @@
 import {oncePassiveEvent, findContainer, warn} from './utils.js';
 import {isAudiotagStreamed} from './media_element_extension.js';
 import {timeInSeconds} from './convert.js';
-import {build_playlist} from './build_playlist.js';
+import {buildPlaylist} from './build_playlist.js';
 
 const KEY_LEFT_ARROW = 37;
 const KEY_RIGHT_ARROW = 39;
@@ -61,7 +61,7 @@ function switchControllerTo(audiotag) {
 		globalController.redrawAllPlanes();
 		globalController.setModeContainer(); 	// to switch back the display between streamed/not-str medias
 	}
-	build_playlist(globalController);
+	buildPlaylist(globalController);
 }
 
 export const trigger = {
@@ -141,7 +141,7 @@ export const trigger = {
 		// not in document.CPU (yet) to avoid unuseful repaint
 		let globalController = document.CPU.globalController;
 		if (globalController) {
-			build_playlist(globalController);
+			buildPlaylist(globalController);
 		}
 		// scroll to the audio element. Should be reworked, or parametrable , see issue #60
 		// window.location.hash = `#${hash}`;

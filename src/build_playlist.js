@@ -12,8 +12,8 @@ const plane_playlist = '_playlist';
  * @param      {Object}  			container  <cpu-controller>.CPU
  *
  */
-export function build_playlist(container) {
-	if (!container.is_controller) {
+export function buildPlaylist(container) {
+	if (!container.isController) {
 		// Note that ONLY the global controller will display the playlist. For now.
 		return;
 	}

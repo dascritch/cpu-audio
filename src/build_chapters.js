@@ -12,7 +12,7 @@ const plane_chapters = '_chapters';
  * 
  * @param      {Object}  container  <cpu-audio>.CPU
  */
-export function build_chapters_loader(container) {
+export function buildChaptersLoader(container) {
 	build_chapters(container);
 	let audiotag = container.audiotag;
 	let this_build_chapters = build_chapters.bind(undefined, container);
@@ -37,7 +37,7 @@ export async function build_chapters(container) {
 	// this functions is called THREE times at load : at build, at loadedmetada event and at load event
 	// and afterwards, we have to reposition track points on duractionchange
 
-	if (container.is_controller) {
+	if (container.isController) {
 		// not your job, CPUController
 		return;
 	}

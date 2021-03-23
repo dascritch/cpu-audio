@@ -1,7 +1,7 @@
 import {CpuAudioTagName, dynamicallyAllocatedIdPrefix, browserIsDecent, passiveEvent} from './utils.js';
 
 import {trigger} from './trigger.js';
-import {build_playlist} from './build_playlist.js';
+import {buildPlaylist} from './build_playlist.js';
 
 // Indicate if media element was extended
 HTMLAudioElement.prototype.CPU_connected = false;
@@ -116,7 +116,7 @@ export function connectAudiotag(audiotag) {
 		// refresh controller playlist if any
 		let globalController = document.CPU.globalController;
 		if ((globalController) && (playlist_name === document.CPU.currentPlaylist())) {
-			build_playlist();
+			buildPlaylist();
 		}
 	}
 }

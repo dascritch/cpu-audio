@@ -1,7 +1,8 @@
 import {passiveEvent, querySelectorDo, findContainer, preventLinkOnSamePage} from './utils.js';
 import {trigger} from './trigger.js';
 import {pressManager, touch_manager} from './finger_manager.js';
-import {build_chapters_loader} from './build_chapters.js';
+import {buildChaptersLoader} from './build_chapters.js';
+import {buildPlaylist} from './build_playlist.js';
 
 /**
  * @summary Interprets `navigator.share` native API
@@ -25,7 +26,7 @@ function native_share(event) {
  *
  * @summary Builds the controller.
  */
-export function buildController(container) {
+export function buildInterface(container) {
 	let interface_classlist = container.shadowId('interface').classList;
 
 	// hide broken image while not loaded
@@ -106,7 +107,11 @@ export function buildController(container) {
 	container.audiotag.addEventListener('durationchange', container.repositionTracks.bind(container), passiveEvent);
 
 	container.showMain();
-	build_chapters_loader(container);
+	container.updatePlayButton();
+	buildChaptersLoader(container);
+	if (container.isController) {
+		buildPlaylist(container);
+	}
 	container.emitEvent('ready');
 
 	querySelectorDo('#canonical', preventLinkOnSamePage, container.shadowRoot);

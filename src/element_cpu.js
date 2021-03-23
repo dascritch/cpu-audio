@@ -5,7 +5,7 @@ import {secondsInColonTime, secondsInTime, durationIso} from './convert.js';
 import {translateVTT} from './translate_vtt.js';
 import {trigger} from './trigger.js';
 import {isAudiotagStreamed, addIdToAudiotag} from './media_element_extension.js';
-import {buildController} from './build_controller.js';
+import {buildInterface} from './build_interface.js';
 
 // Acceptables attributes values for hide="" parameter on webcomponent
 const acceptableHideAtttributes = ['poster', 'actions', 'timeline', 'chapters', 'panels', 'panels-title', 'panels-except-play'];
@@ -122,7 +122,7 @@ export class CPU_element_api {
 			this.audiotag._CPU_planes = {};
 		}
 
-		this.is_controller = this.element.tagName === CpuControllerTagName;
+		this.isController = this.element.tagName === CpuControllerTagName;
 		// only used for CPU-CONTROLLER, for playlist
 		this._planes = {};
 
@@ -131,7 +131,7 @@ export class CPU_element_api {
 			this.audiotag = document.querySelector(selectorAudioInComponent);
 		}
 
-		buildController(this);
+		buildInterface(this);
 		this.attachAudiotagToController(this.audiotag);
 
 		// mode="" attribute, on general aspect
@@ -285,7 +285,7 @@ export class CPU_element_api {
 	 * @public
 	 * @summary update play/pause button according to media status
 	 */
-	updatePlaybutton() {
+	updatePlayButton() {
 		let audiotag = this.audiotag;
 		let _attr = audiotag.getAttribute('preload');
 		let _preload = _attr ? (_attr.toLowerCase() !== 'none') : true ;
@@ -466,7 +466,7 @@ export class CPU_element_api {
 	 */
 	update() {
 		if (!this.updateError()) {
-			this.updatePlaybutton();
+			this.updatePlayButton();
 			this.updateTime();
 			this.updateTimeBorders();
 		}
@@ -825,7 +825,7 @@ export class CPU_element_api {
 			assignEventsOnPlanes(plane_panel);
 		}
 
-		if ( (!this.is_controller) && (this.mirroredInController()) ) {
+		if ( (!this.isController) && (this.mirroredInController()) ) {
 			document.CPU.globalController.drawPlane(planeName);
 		}
 
@@ -866,7 +866,7 @@ export class CPU_element_api {
 		planeData = { ...default_plane_data, ...planeData , title};
 
 		if (!planeData._comp) {
-			if (this.is_controller) {
+			if (this.isController) {
 				return false;
 			}
 			this.audiotag._CPU_planes = this.audiotag._CPU_planes ?? {};
@@ -886,7 +886,7 @@ export class CPU_element_api {
 	 * @return     {boolean}  success
 	 */
 	removePlane(planeName) {
-		if ( (! planeName.match(validId)) || (! this.plane(planeName)) || (this.is_controller && (!this._planes[planeName])) ) {
+		if ( (! planeName.match(validId)) || (! this.plane(planeName)) || (this.isController && (!this._planes[planeName])) ) {
 			return false;
 		}
 
@@ -895,7 +895,7 @@ export class CPU_element_api {
 		this.planeTrack(planeName)?.remove();
 		this.planePanel(planeName)?.remove();
 
-		if ( (!this.is_controller) && (this.mirroredInController()) ) {
+		if ( (!this.isController) && (this.mirroredInController()) ) {
 			// as plane data is removed, it will remove its aside and track
 			document.CPU.globalController.drawPlane(planeName);
 		}
@@ -1067,7 +1067,7 @@ export class CPU_element_api {
 			elementPointPanel,
 		});
 
-		if ( (!this.is_controller) && (this.mirroredInController()) ) {
+		if ( (!this.isController) && (this.mirroredInController()) ) {
 			document.CPU.globalController.drawPoint(planeName, pointName);
 		}
 	}
@@ -1090,7 +1090,7 @@ export class CPU_element_api {
 		if ( (!this.plane(planeName)) || (this.point(planeName, pointName)) || (pointData.start < 0) || (!pointName.match(validId)) ) {
 			return false;
 		}
-		if ((!this._planes[planeName]) && (this.is_controller)) {
+		if ((!this._planes[planeName]) && (this.isController)) {
 			return false;
 		}
 
@@ -1194,7 +1194,7 @@ export class CPU_element_api {
 		}
 		plane._st_max = _st_max;
 
-		if ( (!this.is_controller) && (this.mirroredInController()) ) {
+		if ( (!this.isController) && (this.mirroredInController()) ) {
 			document.CPU.globalController.removePoint(planeName, pointName);
 		}
 		if (plane.points[pointName]) {
@@ -1298,7 +1298,7 @@ export class CPU_element_api {
 			let globalController = document.CPU.globalController;
 
 			let on;
-			if (!this.is_controller) {
+			if (!this.isController) {
 				on = globalController;
 			} else {
 				on = findContainer(globalController.audiotag);
@@ -1329,7 +1329,7 @@ export class CPU_element_api {
 		if ( (mirror) && (this.mirroredInController()) ) {
 			let DocumentCPU = document.CPU;
 			let on;
-			if (!this.is_controller) {
+			if (!this.isController) {
 				on = DocumentCPU.globalController;
 			} else {
 				on = findContainer(DocumentCPU.globalController.audiotag);
