@@ -1,12 +1,12 @@
 import {escapeHtml} from './utils.js';
 
 let acceptables_tags = {
-	'i'     : 'i',
-	'em'    : 'em', // (not in the standard but used in legacy CPU.pm show)
-	'b'     : 'b',
-	'bold'  : 'strong', // (declared in the MDN page, but never saw it in standard pages)
-	'u'     : 'u',
-	'lang'  : 'i' // emphasis for typographic convention
+	i     : 'i',
+	em    : 'em', 	// (not in the standard but used in legacy CPU.pm show)
+	b     : 'b',
+	bold  : 'strong', // (declared in the MDN page, but never saw it in standard pages)
+	u     : 'u',
+	lang  : 'i' 		// emphasis for typographic convention
 };
 
 /**

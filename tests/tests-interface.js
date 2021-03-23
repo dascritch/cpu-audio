@@ -12,6 +12,10 @@ if (!document.hasFocus()) {
 	alert('Please click on the web view, giving focus, to autorize the audio tag. Else, numerous tests will fail. See issue 17 on our github for details : https://github.com/dascritch/cpu-audio/issues/17 .');
 }
 
+function nearlyEqual(value_to_test, value_expected, precision = 1) {
+	return ((value_expected - 1) <= value_to_test) && (value_to_test <= ((value_expected + 1)))
+}
+
 window.addEventListener('load', function() {
 	if (navigator.userAgent === 'puppeteer') {
 		// Tests fails on Chrome browszer is this button is not humanly clicked, except in puppeteer /o\
@@ -102,7 +106,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 
 		function check_needle_moved(e) {
 			assert.ok(! audiotag.paused, 'Audio tag is playing');
-			assert.ok((audiotag.currentTime > 58) && (audiotag.currentTime < 62), `Audio tag is now nearly half time, 58 >  ${audiotag.currentTime}  > 62  `);
+			assert.ok(nearlyEqual(audiotag.currentTime, 60, 2), `Audio tag is now nearly half time, 58 >  ${audiotag.currentTime}  > 62  `);
 			audiotag.removeEventListener('play', check_needle_moved);
 			done();
 		}
@@ -128,38 +132,45 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 	function trigger_key(keycode, play, time_position,  assert) {
 		let done = assert.async();
 		assert.expect(2);
-		let event = document.createEvent('CustomEvent');
-		event.initEvent('keydown', true, false);
-		event.keyCode = keycode;
-		interfacetag.dispatchEvent(event);
+
+
+		interfacetag.dispatchEvent( 
+			new Event('keydown', {
+				target 		: this.element,
+				bubbles 	: true,
+				cancelable 	: false,
+				composed 	: false,
+				keyCode : keycode
+			})
+		);
 
 		setTimeout(function() {
-			assert.ok( (audiotag.currentTime >= time_position) && (audiotag.currentTime < (time_position +2)), `nearly ${time_position} at ${audiotag.currentTime}`);
+			assert.ok(nearlyEqual(audiotag.currentTime, time_position, 1), `nearly ${time_position} at ${audiotag.currentTime}`);
 			assert.ok(audiotag.paused != play, play?'playing':'paused');
 			done;	
 		}, 100);
 	}
 
 	QUnit.test( "Escape key pauses", function( assert ) {
-		cpu.trigger.hashOrder('track&t=0:20', function() {
+		cpu.trigger.hashOrder('track&t=0:20', () => {
 			trigger_key(27, false, 20,  assert);			
 		});
 	});
 
 	QUnit.test( "Left arrow key go backwards 5 seconds", function( assert ) {
-		cpu.trigger.hashOrder('track&t=0:20', function() {
+		cpu.trigger.hashOrder('track&t=0:20', () => {
 			trigger_key(37, true, 15,  assert);			
 		});
 	});
 
 	QUnit.test( "Right arrow key go fowards 5 seconds", function( assert ) {
-		cpu.trigger.hashOrder('track&t=0:20', function() {
+		cpu.trigger.hashOrder('track&t=0:20', () => {
 			trigger_key(39, true, 25, assert);	
 		});
 	});
 
 	// should also check that arrows with modifiers (shift, ctrl and alt) aren't interpreted
-*/
+// */
 
 	let canonical = 'http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore';
 	let link_element = interfacetag.querySelector('#elapse');
@@ -329,8 +340,8 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 			cpu.keymove = 30;
 			cpu.trigger.foward({target : interfacetag, preventDefault:function(){} });
 			setTimeout(function() {
-				// Yes, the magic value 29.5s may suprise you, but, if I compare to 30s, Firefox goes sometimes at 29.992729s , and it fall the test !
-				assert.ok(audiotag.currentTime > 29.5, `Audio tag is now 30 seconds foward  (at ${audiotag.currentTime})`);
+				// Yes, the magic value 29.5s may suprise you, but, if I compare to 30s, Firefox goes sometimes at 29.992729s , and it fall the test ! Chrome may be at... 30.5 !
+				assert.ok(nearlyEqual(audiotag.currentTime, 30, 0.5), `Audio tag is now 30 seconds foward  (at ${audiotag.currentTime})`);
 				done();
 			}, 100);
 		});
