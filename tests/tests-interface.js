@@ -571,8 +571,7 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.equal(secondary_API_CPU.pointTrack('hello', 'point2'), null , 'second point removed');
 	});
 
-	QUnit.skip( "hashOrder end,start create a “private” plane", function (assert){
-		/* WHY THE SECOND TEST DOESN'T WORK ???? WHHYYYYY??????
+	QUnit.test( "hashOrder end,start create a “private” plane", function (assert){
 		assert.expect( 3 );
 		let done = assert.async();
 		assert.equal(componenttag.CPU.plane('_borders'), undefined, 'inexisting _borders plane on undefined end.');
@@ -586,7 +585,6 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 				done();
 			});
 		});
-		*/
 	});
 
 	QUnit.test( "Public API : translateVTT", function( assert ) {
