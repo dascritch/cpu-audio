@@ -48,7 +48,7 @@ export class CpuControllerElement extends HTMLElement {
 		}
 
 		if (!this.shadowRoot) {
-			return // this.disconnectedCallback();
+			return;
 		}
 
 		new CPU_element_api(

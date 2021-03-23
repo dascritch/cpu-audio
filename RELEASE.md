@@ -53,7 +53,6 @@ Back-end
 Todo for this release :
 -----------------------
 
- - `element.CPU.planeSort()` should also recalc plane's `_st_max` 
  - `element.CPU.refreshPlane()` should undraw plane
  - add events on CPU-AUDIO and CPU-CONTROLLER creation / deletion
  - remove audiotag.id from playlist when CPU-AUDIO deleted

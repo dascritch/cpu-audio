@@ -14,6 +14,8 @@ const acceptableHideAtttributes = ['poster', 'actions', 'timeline', 'chapters', 
 const previewClassname = 'with-preview';
 export const activecueClassname = 'active-cue';
 
+let planeNameBorders = '_borders';
+
 // Regex used to validate planes, points and injected css names
 const validId = /^[a-zA-Z0-9\-_]+$/;
 
@@ -388,15 +390,13 @@ export class CPU_element_api {
 	 */
 	updateTimeBorders() {
 		let audiotag = this.audiotag;
-		let planeName = '_borders';
-		let pointName = 'play';
 		if ((!document.CPU.isAudiotagGlobal(audiotag)) || (trigger._timecode_end === false)) {
-			this.removePlane(planeName);
+			this.removePlane(planeNameBorders);
 			return;
 		}
 		// verify if plane exists, and point is invariant
-		if (this.plane(planeName)) {
-			let check = this.point(planeName, pointName);
+		if (this.plane(planeNameBorders)) {
+			let check = this.point(planeNameBorders, planeNameBorders);
 			if (
 				(check) &&
 				(check.start === trigger._timecode_start) &&
@@ -405,12 +405,12 @@ export class CPU_element_api {
 			}
 		}
 
-		this.addPlane(planeName,'',{
+		this.addPlane(planeNameBorders,'',{
 			track   	: 'borders',
 			panel   	: false,
 			highlight 	: false
 		});
-		this.addPoint(planeName, pointName, {
+		this.addPoint(planeNameBorders, planeNameBorders, {
 			start 		: trigger._timecode_start,
 			link    	: false,
 			end     	: trigger._timecode_end
@@ -788,11 +788,11 @@ export class CPU_element_api {
 		this.planeTrack(planeName)?.remove();
 		this.planePanel(planeName)?.remove();
 
-		let data = this.plane(planeName);
-		if (!data) {
+		let planeData = this.plane(planeName);
+		if (!planeData) {
 			return ;
 		}
-		let { track, panel, title } = data;
+		let { track, panel, title } = planeData;
 		let removeHighlightsPoints_bind = this.removeHighlightsPoints.bind(this, planeName, previewClassname, true);
 
 		/**
@@ -968,16 +968,17 @@ export class CPU_element_api {
 	 * @param      {string}   planeName     The plane name
 	 */
 	planeSort(planeName) {
-		let out = Object.fromEntries(
-		    Object.entries(
-		    	this.planePoints(planeName)
-			).sort(
-		    	([, point_a], [, point_b]) => {
-		    		return point_a.start - point_b.start;
-		    	}
-		    )
-		);
-		this.plane(planeName).points = out;
+		this.plane(planeName).points =  Object.fromEntries( Object.entries(
+						    	this.planePoints(planeName)
+							).sort(
+						    	([, point_a], [, point_b]) => {
+						    		return point_a.start - point_b.start;
+						    	}
+						    ));
+
+		console.log(this.plane(planeName))
+		let points = Object.values( this.plane(planeName).points );
+		this.plane(planeName)._st_max = points[points.length - 1]?.start ?? 0;
 	}
 
 	/**
@@ -1159,19 +1160,15 @@ export class CPU_element_api {
 			}
 		}
 
-		pointDataGroup = {...this.plane(planeName).points, ...pointDataGroup};
+		let from_points = this.plane(planeName).points;
+		pointDataGroup = {...from_points, ...pointDataGroup};
 		this.plane(planeName).points = pointDataGroup;
 
 		this.emitEvent('bulkPoints', {
 			planeName,
 			pointDataGroup
 		});
-		this.plane(planeName)._st_max = 0; // in doubt, will recalc next time. should be done in resortPlane
 		this.refreshPlane(planeName);
-/*
-			this.plane(planeName)._st_max = start;
-		}
-*/
 		return true;
 	}
 
