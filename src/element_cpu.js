@@ -886,7 +886,7 @@ export class CPU_element_api {
 	 * @return     {boolean}  success
 	 */
 	removePlane(planeName) {
-		if ( (this.is_controller) || (! planeName.match(validId)) || (! this.plane(planeName))) {
+		if ( (! planeName.match(validId)) || (! this.plane(planeName)) || (this.is_controller && (!this._planes[planeName])) ) {
 			return false;
 		}
 
