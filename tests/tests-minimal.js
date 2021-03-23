@@ -336,15 +336,11 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 			window.addEventListener('hashchange', cpu.trigger.hashOrder, false);
 			done();
 		}
-		// désactiver provisoirement le hashchange event
+		//  temporarily unactivate the usual hashchange event
 		window.removeEventListener('hashchange', cpu.trigger.hashOrder);
 		window.location = '#track&t=10';
 		cpu.trigger.hashOrder({ at_start : true }, check_onstart);
 	});
-
-
-	// Try trigger.hashOrder({ at_start : true }); with in-memory interruptd play and with hash link (hash link should have priority)
-
 
 	QUnit.test( "Playlist features", function(assert) {
 		let done = assert.async();

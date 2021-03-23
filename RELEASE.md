@@ -8,6 +8,7 @@ New features
  * Possibility to change css breakpoints ([#51](#51)) by this way ([#56](#56))
  * Possibility to create RTL version ([#26](#26)) by this way ([#56](#56))
  * A11y : Support reduced motion preferences
+ * Added method `Element.CPU.bulkPoints()`
 
 Corrections
 -----------
@@ -52,6 +53,10 @@ Back-end
 Todo for this release :
 -----------------------
 
+ - `element.CPU.planeSort()` should also recalc plane's `_st_max` 
+ - `element.CPU.refreshPlane()` should undraw plane
+ - add events on CPU-AUDIO and CPU-CONTROLLER creation / deletion
+ - remove audiotag.id from playlist when CPU-AUDIO deleted
  - Finish drag'n'drop in chapters-editors
  - we still have a flashing chapters before the one clicked in panel. There is something to clean up, probable root cause is my (voluntary) 206 defaillant web server
  - Debug issues in Chrome mobile , as replay position or highlighted chapters in double

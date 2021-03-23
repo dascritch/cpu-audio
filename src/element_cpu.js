@@ -96,6 +96,15 @@ function undrawAllPlanes(container) {
 	querySelectorDo('aside, div.panel', (element) => { element.remove(); }, container);
 }
 
+/**
+ * @summary Check acceptance of a pointData for insertion
+ *
+ * @param      {Object} pointData  	normalized pointData to check
+ * @return     boolean 				true is ok
+ */
+function checkPointData({start, end}) {
+	return (((start == null) || (start >= 0)) && ((end == null) || (end >= start)));
+}
 
 export class CPU_element_api {
 	/**
@@ -978,7 +987,7 @@ export class CPU_element_api {
 	 * @param      {string}   planeName     The plane name
 	 * @return     {[string]} points_names	 Array of pointNames
 	 */
-	planePointsnames(planeName) {
+	planePointNames(planeName) {
 		return Object.keys(this.planePoints(planeName));
 	}
 
@@ -994,7 +1003,7 @@ export class CPU_element_api {
 			return;
 		}
 		let previous_element, element;
-		for (let pointName of this.planePointsnames(planeName)) {
+		for (let pointName of this.planePointNames(planeName)) {
 			element = this.pointPanel(planeName, pointName);
 			previous_element?.insertAdjacentElement('afterend', element);
 			previous_element = element;
@@ -1080,24 +1089,30 @@ export class CPU_element_api {
 	 *
 	 * @param      {string}   planeName      The existing plane name
 	 * @param      {string}   pointName      The point name, should conform to /^[a-zA-Z0-9\-_]+$/
-	 * @param      {Object}   pointData            { 'image' : <url>,
-	 * 											'link' : <url>/true (in audio)/false (none),
-	 * 											'text' : <text>,
-	 * 											'end'  : <seconds> }
+	 * @param      {Object}   pointData      {
+	 * 											start : <seconds>,
+	 *										    image : <url>,
+	 * 											link  : <url>/true (in audio)/false (none),
+	 * 											text  : <text>,
+	 * 											end   : <seconds> }
 	 *
 	 * @return     {boolean}  success
 	 */
 	addPoint(planeName, pointName, pointData={}) {
+		let start = Number(pointData.start);
 
-		if ( (!this.plane(planeName)) || (this.point(planeName, pointName)) || (pointData.start < 0) || (!pointName.match(validId)) ) {
+		if ( (!pointName.match(validId)) ||
+			(!this.plane(planeName)) ||
+			(this.point(planeName, pointName)) ||
+			(!checkPointData(pointData)) ) {
 			return false;
 		}
 		if ((!this._planes[planeName]) && (this.isController)) {
+			// accept points adding on controller only for private planes
 			return false;
 		}
-
-		pointData.start = Number(pointData.start); // TO move into parameter
-		let { start } = pointData;
+		
+		pointData.start = start;
 		this.plane(planeName).points[pointName] = pointData;
 
 		this.emitEvent('addPoint', {
@@ -1116,6 +1131,50 @@ export class CPU_element_api {
 
 		return true;
 	}
+
+	/**
+	 * @summary Bulk push (add/modify) points
+	 * @public
+	 *
+	 * @param      {string}   planeName      The existing plane name
+	 * @param      {Object}   Object of pointData      {
+	 	                                         point_1 : pointData_1,
+	 	                                         point_2 : pointData_2,
+	 * 											}
+	 *
+	 * @return     {boolean}  success
+	 */
+	bulkPoints(planeName, pointDataGroup={}) {
+		if (!this.plane(planeName)) {
+			return false;
+		}
+
+		if ((!this._planes[planeName]) && (this.isController)) {
+			return false;
+		}
+
+		for (let [pointName, pointData] of Object.entries(pointDataGroup)) {
+			if ((!pointName.match(validId)) || (!checkPointData(pointData))) {
+				return false;
+			}
+		}
+
+		pointDataGroup = {...this.plane(planeName).points, ...pointDataGroup};
+		this.plane(planeName).points = pointDataGroup;
+
+		this.emitEvent('bulkPoints', {
+			planeName,
+			pointDataGroup
+		});
+		this.plane(planeName)._st_max = 0; // in doubt, will recalc next time. should be done in resortPlane
+		this.refreshPlane(planeName);
+/*
+			this.plane(planeName)._st_max = start;
+		}
+*/
+		return true;
+	}
+
 
 	/**
 	 * @summary Edit an annotation point
@@ -1146,6 +1205,10 @@ export class CPU_element_api {
 		let will_refresh = ((start != null) && (start !== original_data.start));
 
 		pointData = {...original_data, ...pointData};
+
+		if (!checkPointData(pointData)) {
+			return false;
+		}
 
 		plane.points[pointName] = pointData;
 
@@ -1239,7 +1302,7 @@ export class CPU_element_api {
 	 */
 	refreshPlane(planeName) {
 		this.planeSort(planeName);
-		for (let pointName of this.planePointsnames(planeName)) {
+		for (let pointName of this.planePointNames(planeName)) {
 			this.drawPoint(planeName, pointName);
 		}
 	}
@@ -1274,7 +1337,7 @@ export class CPU_element_api {
 		for (let planeName in this.audiotag._CPU_planes) {
 			let plane_data = this.plane(planeName);
 			if (plane_data.track) {
-				for (let pointName of this.planePointsnames(planeName)) {
+				for (let pointName of this.planePointNames(planeName)) {
 					let element = this.pointTrack(planeName, pointName);
 					let {start, end} = this.point(planeName, pointName);
 					this.positionTimeElement(element, start, end);

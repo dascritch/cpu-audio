@@ -140,7 +140,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 				bubbles 	: true,
 				cancelable 	: false,
 				composed 	: false,
-				keyCode : keycode
+				keyCode 	: keycode
 			})
 		);
 
@@ -172,26 +172,27 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 	// should also check that arrows with modifiers (shift, ctrl and alt) aren't interpreted
 // */
 
-	let canonical = 'http://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore';
+	let canonical = 'https://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore';
 	let link_element = interfacetag.querySelector('#elapse');
 
-	/*
-I still have an issue on this test, as the tested code works correctly, and i'm mad about it !
-
 	QUnit.test( "Link to timecode", function( assert ) {
-		// assert.expect( 2 );
+		assert.expect( 2 );
 		let done = assert.async();
+		// Yes I know, this test is really ugly. but hard to test an async'ed function of async'ed
 		cpu.jumpIdAt('track', 0, function() {
-			assert.equal(link_element.href, `${canonical}#track&t=0s`,'at start, link to 0s')
-			// set audio at 0:01:03
-			cpu.jumpIdAt('track', 0*3600 + 60*1 + 3, function() {
-				assert.equal(link_element.href, `${canonical}#track&t=1m3s`,'link at 0:01:03')
-				done();
-			});
+			setTimeout(function() {
+				assert.equal(link_element.href, `${canonical}#track&t=0`,'at start, link to 0s')
+				// set audio at 0:01:03
+				cpu.jumpIdAt('track',  63);
+				setTimeout(function() {
+					assert.equal(link_element.href, `${canonical}#track&t=63`,'link at 0:01:03')
+					done();
+				}, 100);
+			}, 100);
 		});
 	});
 
-*/
+// */
 	QUnit.test( "Cannot start if no <audio> tag included", function( assert ) {
 		playground.innerHTML = '<cpu-audio id="no_check"></cpu-audio>';
 		let done = assert.async();
@@ -442,6 +443,15 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.equal(secondary_API_CPU.planeNav('hello').tagName, 'UL', 'planeNav() returns DOM element and is a <ul>');
 	});
 
+	QUnit.test( "Public API : addPlane on <CPU-CONTROLLER> ", function( assert ) {
+		playground.innerHTML = `<cpu-controller id="control"></cpu-controller>`;
+		let controller_API_CPU = document.querySelector('#control').CPU;
+		assert.ok(! controller_API_CPU.addPlane('test_plane'), 'function refuse to add plane on a <CPU-CONTROLLER>');
+		assert.ok(! controller_API_CPU.plane('test_plane'), 'plane not created');
+		assert.ok(controller_API_CPU.addPlane('test_plane', {_comp : true}), 'function accept to add plane on a <CPU-CONTROLLER> when special parameter _comp is true');
+		assert.ok(controller_API_CPU.plane('test_plane'), 'plane not created');
+	});
+
 	QUnit.test( "Public API : addPlane cannot create an element if a already existing same name exists", function( assert ) {
 		playground.innerHTML = `
 		<cpu-audio>
@@ -507,7 +517,12 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 		assert.ok(! secondary_API_CPU.addPoint('hello', 'point', data), 'function cannot works without a created plane');
 		secondary_API_CPU.addPlane('hello');
+		assert.ok(secondary_API_CPU.addPoint('hello', 'zeo0', {...data , start : 0}), 'function accepts a zero timecode');
 		assert.ok(! secondary_API_CPU.addPoint('hello', 'point', {...data , start : -2}), 'function cannot works with a negative timecode');
+		assert.ok(secondary_API_CPU.addPoint('hello', 'false', {...data , start : false}), 'function accept false start timecode');
+		assert.ok(secondary_API_CPU.addPoint('hello', 'null', {...data , start : null}), 'function accept false start timecode');
+		assert.ok(secondary_API_CPU.addPoint('hello', 'undef', {...data , start : undefined}), 'function accept undefined start timecode');
+		assert.ok(! secondary_API_CPU.addPoint('hello', 'point', {...data , start : 25, end : 1}), 'function cannot works with a start timecode later than its end');
 		assert.ok(! secondary_API_CPU.addPoint('hello', '', data), 'function cannot works with an empty name');
 		assert.ok(! secondary_API_CPU.addPoint('hello', '*&0f', data), 'function refuse invalid name');
 
@@ -537,6 +552,44 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 
 	});
 
+	QUnit.test( "Public API : bulkPoints", function( assert ) {
+		let data = {
+			start : 0,
+			text : 'Here is some text',
+			link : false
+		};
+		let planeName = 'hello_bulk';
+		let points;
+
+		playground.innerHTML = `
+		<cpu-audio>
+			<audio id="secondary" controls="controls" muted>
+				<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
+			</audio>
+		</cpu-audio>`;
+		let secondary_component = document.getElementById('secondary').closest('cpu-audio');
+		let secondary_API_CPU = secondary_component.CPU;
+
+		assert.ok(! secondary_API_CPU.bulkPoints('not_existing_plane'), 'Cannot work on an inexisting plane');
+
+		assert.ok(secondary_API_CPU.addPlane(planeName), 'create plane');
+		assert.ok(secondary_API_CPU.plane(planeName), 'plane created, ready to add and remove');
+		assert.ok(secondary_API_CPU.addPoint(planeName,'point_1', data), 'point 1 created');
+		assert.ok(secondary_API_CPU.addPoint(planeName,'point_7', {...data , end : 75}), 'point 7 created');
+		assert.equal(secondary_API_CPU.planePointNames(planeName).length, 2, 'At start, plane has 2 points');
+
+		points = { hello : data , hi : {a:1 , b:2}}
+		assert.ok(! secondary_API_CPU.bulkPoints('not_existing_plane', points), 'Cannot work on an inexisting plane');
+
+		points = { '#hello' : data  , hi : {a:1 , b:2} }
+		assert.ok(! secondary_API_CPU.bulkPoints(planeName, points), 'Cannot accept a bulk of points where a pointName is not valid');
+
+		points = { hello : data , hi : {a:1 , b:2} , point_1 : {start : 100}}
+		assert.ok(secondary_API_CPU.bulkPoints(planeName, points), 'Works on qualifiable data');
+		assert.equal(secondary_API_CPU.planePointNames(planeName).length, 4, 'Plane should have 4 points : 2 created, one updated');
+		assert.equal(secondary_API_CPU.point(planeName, 'point_1').start, 100, 'Value of point_1 updated (old values are all erased, instead of editPoint())');
+	});
+
 	QUnit.test( "Public API : removePoint", function( assert ) {
 		playground.innerHTML = `
 		<cpu-audio>
@@ -548,9 +601,10 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		let secondary_component = secondary_audiotag.closest('cpu-audio');
 		let secondary_API_CPU = secondary_component.CPU;
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
-		secondary_API_CPU.addPlane('hello');
+		assert.ok(secondary_API_CPU.addPlane('hello'), 'creating plane');
 		assert.ok(! secondary_API_CPU.removePoint('pipo', 'point'), 'function cannot works with a non-existing plane');
 		assert.ok(! secondary_API_CPU.removePoint('hello', 'point'), 'function cannot works with a non-existing point');
+		assert.ok(secondary_API_CPU.plane('hello'), 'plane created, ready to add and remove');
 		secondary_API_CPU.addPoint('hello', 'point', {start : 2});
 		assert.ok(secondary_API_CPU.removePoint('hello', 'point'), 'function accept when parameters are valid');
 
@@ -591,7 +645,6 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.equal(componenttag.CPU.plane('_borders'), undefined, 'inexisting _borders plane on undefined end.');
 		cpu.trigger.hashOrder('track&t=20,100', function() {
 			audiotag.CPU_update(); // may not be fired fast enough 
-			console.log(componenttag.CPU.plane('_borders') , audiotag._CPU_planes)
 			assert.notEqual(componenttag.CPU.plane('_borders'), undefined, 'existing _borders plane on specified end.');
 			cpu.trigger.hashOrder('track&t=40', function() {
 				audiotag.CPU_update();

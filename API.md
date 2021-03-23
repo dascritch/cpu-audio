@@ -138,8 +138,9 @@ CPU_ready	        | The DOM component and its interface are ready        |
 CPU_addPoint        | During `addPoint` method, even private ones          | planeName, pointName, pointData
 CPU_drawPoint       | A point is drawn or redrawn                          | planeName, pointName, pointData, elementPointTrack, elementPointPanel
 CPU_editPoint       | During `editPoint` method                            | planeName, pointName, pointData
+CPU_bulkPoints      | During `bulkPoints` method                           | planeName, pointDataGroup
 CPU_removePoint     | During `removePoint` method, even private ones       | planeName, pointName
-CPU_chapterChanged | A cue event defined in WebVTT occured                | cue
+CPU_chapterChanged  | A cue event defined in WebVTT occured                | cue
 
 (⁵) Returned object informations usually have a `detail` object, it may contains :
 
@@ -148,6 +149,7 @@ detail key         | type    | description
 planeName          | string  | the name of the plane, as given in the `addPlane` method, `planeName` parameter
 pointName          | string  | the name of the point, as given in the `addPoint` method, `pointName` parameter
 pointData          | object  | data for the point, as in `point(planeName, pointName)`
+pointDataGroup     | object  | Object of points in the plane, as `{ pointName : pointData, pointName : pointData…}`
 elementPointTrack  | Element | The created or existing point in the time track
 elementPointPanel  | Element | The created or existing point in the panel
 

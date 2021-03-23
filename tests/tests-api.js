@@ -106,6 +106,7 @@ document.addEventListener('CPU_ready', function() {
 			'removePlane',
 			'addPoint',
 			'point',
+			'bulkPoints',
 			'editPoint',
 			'removePoint',
 			'clearPlane',
