@@ -24,8 +24,8 @@ async function main() {
 		window.customElements.define(CpuControllerTagName.toLowerCase(), CpuControllerElement);
 		document.body.classList.add('cpu-audio-with-webcomponents');
 	}
-	window.addEventListener('hashchange', trigger.hash_order, passiveEvent);
-	trigger.hash_order({ at_start : true });
+	window.addEventListener('hashchange', trigger.hashOrder, passiveEvent);
+	trigger.hashOrder({ at_start : true });
 }
 
 if ((document.CPU) || (window.customElements.get(CpuAudioTagName.toLowerCase()))) {

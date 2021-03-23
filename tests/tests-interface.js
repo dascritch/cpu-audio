@@ -138,19 +138,19 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 	}
 
 	QUnit.test( "Escape key pauses", function( assert ) {
-		cpu.trigger.hash_order('track&t=0:20', function() {
+		cpu.trigger.hashOrder('track&t=0:20', function() {
 			trigger_key(27, false, 20,  assert);			
 		});
 	});
 
 	QUnit.test( "Left arrow key go backwards 5 seconds", function( assert ) {
-		cpu.trigger.hash_order('track&t=0:20', function() {
+		cpu.trigger.hashOrder('track&t=0:20', function() {
 			trigger_key(37, true, 15,  assert);			
 		});
 	});
 
 	QUnit.test( "Right arrow key go fowards 5 seconds", function( assert ) {
-		cpu.trigger.hash_order('track&t=0:20', function() {
+		cpu.trigger.hashOrder('track&t=0:20', function() {
 			trigger_key(39, true, 25, assert);	
 		});
 	});
@@ -558,16 +558,16 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.equal(secondary_API_CPU.pointTrack('hello', 'point2'), null , 'second point removed');
 	});
 
-	QUnit.skip( "hash_order end,start create a “private” plane", function (assert){
+	QUnit.skip( "hashOrder end,start create a “private” plane", function (assert){
 		/* WHY THE SECOND TEST DOESN'T WORK ???? WHHYYYYY??????
 		assert.expect( 3 );
 		let done = assert.async();
 		assert.equal(componenttag.CPU.plane('_borders'), undefined, 'inexisting _borders plane on undefined end.');
-		cpu.trigger.hash_order('track&t=20,100', function() {
+		cpu.trigger.hashOrder('track&t=20,100', function() {
 			audiotag.CPU_update(); // may not be fired fast enough 
 			console.log(componenttag.CPU.plane('_borders') , audiotag._CPU_planes)
 			assert.notEqual(componenttag.CPU.plane('_borders'), undefined, 'existing _borders plane on specified end.');
-			cpu.trigger.hash_order('track&t=40', function() {
+			cpu.trigger.hashOrder('track&t=40', function() {
 				audiotag.CPU_update();
 				assert.equal(componenttag.CPU.plane('_borders'), undefined, '_borders removed out of previous bordered time.');
 				done();

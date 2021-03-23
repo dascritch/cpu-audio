@@ -20,7 +20,7 @@ let	body_className_playing_cue = null;
  *
  * @param      {number}  at      timecode position
  */
-function remove_timecode_outofborders(at) {
+function removeTimecodeOutOfBorders(at) {
 	if (
 		(at < trigger._timecode_start)
 		|| ((trigger._timecode_end !== false) && (at > trigger._timecode_end)) ) {
@@ -36,7 +36,7 @@ function remove_timecode_outofborders(at) {
  * @param      {Object|undefined}  		event    	Unlocking event
  * @param      {HTMLAudioElement|null}  audiotag   	The audiotag to start playing, event's target if not defined
  */
-function play_once_unlock(event, audiotag) {
+function playOnceUnlock(event, audiotag) {
 	trigger._last_play_error = false;
 	if (document.CPU.autoplay) {
 		trigger.play(event, audiotag);
@@ -49,7 +49,7 @@ function play_once_unlock(event, audiotag) {
  *
  * @param      {audiotag}  HTMLAudioElement   The playing <audio> tag
  */
-function controller_switch_to(audiotag) {
+function switchControllerTo(audiotag) {
 	let globalController = document.CPU.globalController;
 	if (!globalController) {
 		return;
@@ -83,7 +83,7 @@ export const trigger = {
 	 * @param      {string|Object}  hashcode     Called hashcode
 	 * @param      {Function|null}  callback_fx  When done, call a function to end the tests (optional).
 	 */
-	hash_order : async function(hashcode, callback_fx = null) {
+	hashOrder : async function(hashcode, callback_fx = null) {
 		let at_start = true;
 		if (typeof hashcode !== 'string') {
 			at_start = 'at_start' in hashcode;
@@ -243,7 +243,7 @@ export const trigger = {
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	play_once : function({target}) {
+	playOnce : function({target}) {
 		let document_cpu = document.CPU;
 		// target, aka audiotag
 		document.CPU.lastUsed = target;
@@ -272,7 +272,7 @@ export const trigger = {
 		audiotag = audiotag ?? findContainer(event.target).audiotag;
 
 		trigger._last_play_error = false;
-		remove_timecode_outofborders(audiotag.currentTime);
+		removeTimecodeOutOfBorders(audiotag.currentTime);
 
 		let promised = audiotag.play();
 
@@ -285,7 +285,7 @@ export const trigger = {
 			).catch(
 				error => {
 					trigger._last_play_error = true;
-					let unlock = play_once_unlock.bind(this, audiotag);
+					let unlock = playOnceUnlock.bind(this, audiotag);
 					switch (error.name) {
 						case 'NotAllowedError':
 							warn(NotAllowedError);
@@ -305,7 +305,7 @@ export const trigger = {
 				}
 			);
 		}
-		controller_switch_to(audiotag);
+		switchControllerTo(audiotag);
 	},
 
 	/**

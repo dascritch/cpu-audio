@@ -53,7 +53,7 @@ export function isAudiotagStreamed(audiotag) {
  */
 export function attach_events_audiotag(audiotag) {
 	audiotag.addEventListener('loadedmetadata', recallStoredPlay, passiveEvent);
-	audiotag.addEventListener('play', trigger.play_once, passiveEvent);
+	audiotag.addEventListener('play', trigger.playOnce, passiveEvent);
 	audiotag.addEventListener('ended', trigger.ended, passiveEvent);
 	// those ↓ for PHRACKING SAFARI
 	audiotag.addEventListener('ready', recallStoredPlay, passiveEvent);

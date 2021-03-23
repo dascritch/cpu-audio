@@ -32,7 +32,6 @@ export function build_playlist(container) {
 
 	if (previous_playlist !== container.current_playlist) {
 		container.clearPlane(plane_playlist);
-
 		if (container.current_playlist.length === 0) {
 			// remove plane to hide panel. Yes, overkill
 			container.removePlane(plane_playlist);
