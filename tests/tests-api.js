@@ -70,7 +70,7 @@ document.addEventListener('CPU_ready', function() {
 			'seekElementAt',
 			'findInterface',
 			'findContainer',
-			'findCurrentPlaylist'
+			'currentPlaylist'
 		];
 		for(let name of expected) {
 			assert.equal(typeof document.CPU[name] , 'function', `document.CPU.${name} method is still a function`);

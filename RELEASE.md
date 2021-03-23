@@ -25,6 +25,7 @@ Corrections
  * `Element.CPU.build_chapters()` and `Element.CPU.build_playlist()` are no more public API
  * Attributes `hide`, `mode` and `glow` weren't properly checked
  * Leave error mode if template is recompleted
+ * Update controller playlist panel if current playlist has changed
 
 Back-end
 --------

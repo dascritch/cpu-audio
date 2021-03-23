@@ -1,6 +1,7 @@
 import {CpuAudioTagName, dynamicallyAllocatedIdPrefix, browserIsDecent, passiveEvent} from './utils.js';
 
 import {trigger} from './trigger.js';
+import {build_playlist} from './build_playlist.js';
 
 // Indicate if media element was extended
 HTMLAudioElement.prototype.CPU_connected = false;
@@ -111,6 +112,12 @@ export function connectAudiotag(audiotag) {
 		// TODO do not rerecord id if already in this playlist. Remove from other playlists
 		// TODO LATER, remove id when cpu-audio or audiotag removed
 		document.CPU.playlists[playlist_name].push(audiotag.id);
+
+		// refresh controller playlist if any
+		let globalController = document.CPU.globalController;
+		if ((globalController) && (playlist_name === document.CPU.currentPlaylist())) {
+			build_playlist();
+		}
 	}
 }
 
@@ -139,7 +146,7 @@ HTMLAudioElement.prototype.CPU_update = function() {
 			api.update();
 		}
 	}
-	if (document.CPU.globalController !== null) {
+	if (document.CPU.globalController) {
 		document.CPU.globalController.update();
 	}
 };

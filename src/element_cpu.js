@@ -365,7 +365,7 @@ export class CPU_element_api {
 
 		elapse_element.querySelector('span').innerText = secondsInColonTime(audiotag.currentTime);
 		let duration_element = elapse_element.querySelector('.nosmaller');
-		duration_element.innerText = total_duration ? `\u00a0/\u00a0${total_duration}` : '…';
+		duration_element.innerText = total_duration ? `\u00a0/\u00a0${total_duration}` : '';
 		showElement(duration_element, total_duration);
 
 		this.updateLine(audiotag.currentTime);
@@ -1086,7 +1086,6 @@ export class CPU_element_api {
 	 * @return     {boolean}  success
 	 */
 	addPoint(planeName, pointName, pointData={}) {
-		// TODO major release : move timecode_start in data, add points argument for a bulk insertion
 
 		if ( (!this.plane(planeName)) || (this.point(planeName, pointName)) || (pointData.start < 0) || (!pointName.match(validId)) ) {
 			return false;

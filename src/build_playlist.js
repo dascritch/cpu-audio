@@ -19,7 +19,7 @@ export function build_playlist(container) {
 	}
 
 	let previous_playlist = container.current_playlist;
-	container.current_playlist = document.CPU.findCurrentPlaylist();
+	container.current_playlist = document.CPU.currentPlaylist();
 
 	if (! container.plane(plane_playlist)) {
 		container.addPlane(plane_playlist, __['playlist'], {
@@ -41,7 +41,7 @@ export function build_playlist(container) {
 
 		for (let audiotag_id of container.current_playlist) {
 			// TODO : when audiotag not here, do not add point
-			container.addPoint(plane_playlist, 0, audiotag_id, {
+			container.addPoint(plane_playlist, audiotag_id, {
 				text : document.getElementById(audiotag_id)?.dataset.title, 
 				link : `#${audiotag_id}&t=0`
 			});

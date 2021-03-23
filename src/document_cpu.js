@@ -164,13 +164,13 @@ export const DocumentCPU = {
 	 *
 	 * @return     {Array}  Array with named id
 	 */
-	findCurrentPlaylist : function() {
+	currentPlaylist : function() {
 
 		let current_audiotag = this.globalController?.audiotag;
 		if (!current_audiotag) {
 			return [];
 		}
-		for (let playlist of this.playlists) {
+		for (let playlist of Object.values(this.playlists)) {
 			if (playlist.includes(current_audiotag.id)) {
 				return playlist;
 			}

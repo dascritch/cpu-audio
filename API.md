@@ -46,7 +46,7 @@ jumpIdAt(hash, timecode)         | 	                             | will jump the
 seekElementAt(audiotag, seconds) |                               | will jump the `<audio>` to a position in seconds (number only)
 findInterface(child)             | HTMLElement or null           | For any ShadowDOM element, will returns its parent interface container
 findContainer(child)             | CpuAudioElement.`CPU` or null | For any `<audio>` tag or its child tag, will returns the element `CPU` API
-findCurrentPlaylist()            | array                         | Returns an array of the current playing playlist
+currentPlaylist()                | array                         | Returns an array of the current playing playlist
 
 Some methods are still not documented, for internal usage, as they may evolve.
 

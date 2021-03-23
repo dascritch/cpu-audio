@@ -61,7 +61,7 @@ function controller_switch_to(audiotag) {
 		globalController.redrawAllPlanes();
 		globalController.setModeContainer(); 	// to switch back the display between streamed/not-str medias
 	}
-	globalController.build_playlist();
+	build_playlist(globalController);
 }
 
 export const trigger = {
