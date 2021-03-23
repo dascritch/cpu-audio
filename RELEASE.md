@@ -27,6 +27,7 @@ Corrections
  * Attributes `hide`, `mode` and `glow` weren't properly checked
  * Leave error mode if template is recompleted
  * Update controller playlist panel if current playlist has changed
+ * `<CPU-Controller>` cannot be instancied twice
 
 Back-end
 --------

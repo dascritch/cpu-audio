@@ -359,6 +359,19 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		secondary_audiotag.play();
 	});
 
+
+	QUnit.test( "Can only have one and only one <cpu-controller> ", function( assert ) {
+		let control1 = document.createElement('cpu-controller');
+		control1.id='control1';
+		playground.appendChild(control1);
+		assert.equal(document.CPU.globalController.element.id, 'control1' , `document.CPU.globalController is connected to the controller`);
+		let control2 = document.createElement('cpu-controller');
+		control2.id='control2';
+		playground.appendChild(control2);
+		assert.equal(document.CPU.globalController.element.id, 'control1' , `document.CPU.globalController retain only first instancied controller`);
+
+	});
+
 	/* wrong test, as we need to test this BEFORE ANY OTHER ONE : .currentAudiotagPlaying is not .isAudiotagPlaying
 	QUnit.test( "Public API : document.CPU.currentAudiotagPlaying", function( assert ) {
 		let done = assert.async();
@@ -591,7 +604,6 @@ I still have an issue on this test, as the tested code works correctly, and i'm 
 		assert.equal(componenttag.CPU.translateVTT('♪ Johnny Mercer, Robert Emmet Dolan <em lang="en">featuring</em> Hedy Lamarr - <em>Just a moment more</em>'), '♪ Johnny Mercer, Robert Emmet Dolan <em>featuring</em> Hedy Lamarr - <em>Just a moment more</em>', 'A valid example with 2 consecutives <em> tags')
 		assert.equal(componenttag.CPU.translateVTT('♪ Johnny Mercer, Robert Emmet Dolan <em lang="en"<featuring</em> Hedy Lamarr - <em>Just a moment more</em>'), '♪ Johnny Mercer, Robert Emmet Dolan &lt;em lang="en"&lt;featuring&lt;/em&gt; Hedy Lamarr - &lt;em&gt;Just a moment more&lt;/em&gt;', 'An invalid example with unmatching < and >, replaced by html escapes')
 	});
-
 
 	QUnit.test( "Download audio link ", function( assert ) {
 		let done = assert.async();

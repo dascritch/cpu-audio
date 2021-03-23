@@ -1,4 +1,4 @@
-import {CpuAudioTagName, selectorAcceptable, selectorInterface, notScreenContext, warn, } from './utils.js';
+import {CpuAudioTagName, CpuControllerTagName, selectorAcceptable, selectorInterface, notScreenContext, warn, } from './utils.js';
 import {CPU_element_api} from './element_cpu.js';
 
 /**
@@ -19,6 +19,8 @@ export class CpuControllerElement extends HTMLElement {
 			return ;
 		}
 
+		/// TODO if a CPU-Controller is still there, do not create
+
 		if (this.tagName === CpuAudioTagName) {
 			if (!this.querySelector(selectorAcceptable)) {
 				// Graceful degradation : do not start if no media element OR no native controls
@@ -26,6 +28,13 @@ export class CpuControllerElement extends HTMLElement {
 				this.remove();
 				return;
 			}
+		}
+
+		if ((this.tagName === CpuControllerTagName) && (document.CPU.globalController)) {
+			// called twice ????
+			warn(`<${CpuControllerTagName}> tag instancied twice.`);
+			this.remove();
+			return ;
 		}
 
 		let template =  document.querySelector('template#CPU__template');
@@ -37,11 +46,11 @@ export class CpuControllerElement extends HTMLElement {
 		if (notScreenContext()) {
 			return ;
 		}
-		if (this.CPU) {
-			// called twice ????
-			// warn(`WTF ? Tag <${this.tagName}> instancied twice.`);
-			return ;
+
+		if (!this.shadowRoot) {
+			return this.disconnectedCallback();
 		}
+
 		new CPU_element_api(
 			this,
 			this.shadowRoot.querySelector(selectorInterface),
