@@ -20,6 +20,7 @@ export function buildPlaylist(container) {
 
 	let previous_playlist = container.current_playlist;
 	container.current_playlist = document.CPU.currentPlaylist();
+	const pointDataGroup = {};
 
 	if (! container.plane(plane_playlist)) {
 		container.addPlane(plane_playlist, __['playlist'], {
@@ -40,11 +41,18 @@ export function buildPlaylist(container) {
 
 		for (let audiotag_id of container.current_playlist) {
 			// TODO : when audiotag not here, do not add point
-			container.addPoint(plane_playlist, audiotag_id, {
+			/*container.addPoint(plane_playlist, audiotag_id, {
 				text : document.getElementById(audiotag_id)?.dataset.title, 
 				link : `#${audiotag_id}&t=0`
 			});
+			*/
+			pointDataGroup[audiotag_id] = {
+				text : document.getElementById(audiotag_id)?.dataset.title, 
+				link : `#${audiotag_id}&t=0`
+			};
 		}
+
+		container.bulkPoints(plane_playlist, pointDataGroup);
 	}
 
 	container.highlightPoint(plane_playlist, container.audiotag.id, activecueClassname);

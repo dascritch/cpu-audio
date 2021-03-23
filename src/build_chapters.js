@@ -42,8 +42,9 @@ export async function build_chapters(container) {
 		return;
 	}
 
-	let audiotag = container.audiotag;
+	const audiotag = container.audiotag;
 	let has = false;
+	const pointDataGroup = {};
 
 	if (audiotag) {
 		if (audiotag.textTracks?.length > 0) {
@@ -75,17 +76,18 @@ export async function build_chapters(container) {
 					if (!container.point(plane_chapters, cue.id)) {
 						// avoid unuseful redraw, again
 						let cuepoint = Math.floor(cue.startTime);
-						container.addPoint(plane_chapters, cue.id,  {
+						pointDataGroup[cue.id] = {
 							start : cuepoint,
 							text  : translateVTT(cue.text),
 							link  : true,          // point the link to start time position
 							end   : cue.endTime    // end timecode of the cue
-						});
+						};
 					}
 				}
 				if (chapter_track.cues.length > 0) {
 					has = true;
 				}
+				container.bulkPoints(plane_chapters, pointDataGroup);
 				cuechange_event(container, {
 					target : {
 						activeCues : chapter_track.cues

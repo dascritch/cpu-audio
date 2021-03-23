@@ -48,7 +48,7 @@ export class CpuControllerElement extends HTMLElement {
 		}
 
 		if (!this.shadowRoot) {
-			return this.disconnectedCallback();
+			return // this.disconnectedCallback();
 		}
 
 		new CPU_element_api(
@@ -63,6 +63,9 @@ export class CpuControllerElement extends HTMLElement {
 	}
 
 	disconnectedCallback() {
+		if ((this.tagName === CpuControllerTagName) && (document.CPU.globalController)) {
+			document.CPU.globalController = null;
+		}
 	}
 
 }
