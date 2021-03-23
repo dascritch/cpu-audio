@@ -39,10 +39,6 @@
 				opacity var(--cpu-background-transitions);
 }
 
-.show-no main {
-	visibility : hidden;
-}
-
 main {
 	display : flex;
 	overflow : hidden;
@@ -94,15 +90,6 @@ b, strong, h5 a {
 
 a {
 	cursor : pointer;
-}
-
-.no,
-#loading, #play, #pause,
-.show-main #pageshare, .show-main #pageerror,
-.show-share #pagemain, .show-share #pageerror,
-.show-error #pagemain, .show-error #pageshare , .show-error #poster,
-#handheld-nav , .show-handheld-nav #titleline {
-	display : none;
 }
 
 .act-loading #loading,
@@ -158,10 +145,6 @@ a {
 
 .poster-loaded #poster {
 	opacity: 1;
-}
-
-.hide-poster #poster {
-	display : none;
 }
 
 #control svg, #actions svg {
@@ -483,6 +466,13 @@ aside a, h6, .cue time , aside.ticker *
 	display : none;
 }
 
+.no,
+#loading, #play, #pause,
+.show-main #pageshare, .show-main #pageerror,
+.show-share #pagemain, .show-share #pageerror,
+.show-error #pagemain, .show-error #pageshare , .show-error #poster,
+#handheld-nav , .show-handheld-nav #titleline,
+.hide-poster #poster, 
 .mode-hidden,
 .hide-chapters .chapters,
 .hide-timeline #line,

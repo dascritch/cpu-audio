@@ -601,7 +601,6 @@ export class CPU_element_api {
 	showInterface(mode) {
 		let classlist = this.container.classList;
 		classlist.remove(
-			'show-no',
 			'show-main',
 			'show-share',
 			'show-error',
@@ -627,6 +626,7 @@ export class CPU_element_api {
 	 * @private
 	 */
 	showMain(/* event */) {
+		showElement(this.container, true);
 		this.showInterface('main');
 	}
 
