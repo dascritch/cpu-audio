@@ -118,6 +118,8 @@ export class CPU_element_api {
 		this.mode_was = null;
 		this.act_was = null;
 
+		element.CPU = this;
+
 		if ( (this.audiotag) && (! this.audiotag._CPU_planes)) {
 			this.audiotag._CPU_planes = {};
 		}

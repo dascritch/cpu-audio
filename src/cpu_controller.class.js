@@ -37,7 +37,12 @@ export class CpuControllerElement extends HTMLElement {
 		if (notScreenContext()) {
 			return ;
 		}
-		this.CPU = new CPU_element_api(
+		if (this.CPU) {
+			// called twice ????
+			// warn(`WTF ? Tag <${this.tagName}> instancied twice.`);
+			return ;
+		}
+		new CPU_element_api(
 			this,
 			this.shadowRoot.querySelector(selectorInterface),
 			{
