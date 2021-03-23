@@ -1,6 +1,5 @@
 QUnit.config.autostart = false;
 
-
 function check_focus() {
 	document.body.style.background = document.hasFocus() ? 'white' : 'grey';
 }
@@ -43,26 +42,30 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 	QUnit.start();
 
 	QUnit.test( "defaultDataset at default", function( assert ) {
+		const temp_head = document.createElement('div');
+		document.head.appendChild(temp_head);
 		assert.equal(cpu.defaultDataset.title, document.title, "title is document title" );
 		assert.equal(cpu.defaultDataset.poster, null, "poster is null without social meta" );
 		assert.equal(cpu.defaultDataset.canonical, window.location.href.split('#')[0], "canonical without social meta is actual address without hash" );
 		assert.equal(cpu.defaultDataset.twitter, null, "twitter account is null without social meta" );
-		/*
-		playground.innerHTML = `
+		
+		temp_head.innerHTML = `
 			<meta property="og:title" content="facebook">
 			<meta property="og:image" content="https://facebook">
 		`;
 		assert.equal(cpu.defaultDataset.title, 'facebook', "title with facebook social meta" );
 		assert.equal(cpu.defaultDataset.poster, 'https://facebook', "poster with facebook social meta" );
-		playground.innerHTML = `
-			<meta property="twitter:title" content="twitter">
-			<meta property="twitter:image:src" content="https://twitter">
-			<meta property="twitter:creator" content="@dascritch">
+
+		temp_head.innerHTML = `
+			<meta name="twitter:title" content="twitter">
+			<meta name="twitter:image:src" content="https://twitter">
+			<meta name="twitter:creator" content="@dascritch">
 		`;
 		assert.equal(cpu.defaultDataset.title, 'twitter', "title with twitter social meta" );
 		assert.equal(cpu.defaultDataset.poster, 'https://twitter', "poster with twitter social meta" );
 		assert.equal(cpu.defaultDataset.twitter, '@dascritch', "twitter account with twitter social meta" );
-		*/
+		temp_head.remove();
+		
 	});
 
 
