@@ -702,6 +702,7 @@ export class CPU_element_api {
 		}
 		this.shadowId('poster').src = dataset.poster || '';
 		this.shadowId('time').style.backgroundImage = waveform ? `url(${waveform})` : '';
+		this.showMain();
 	}
 	/**
 	 * @summary Attach the audiotag to the API

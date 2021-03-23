@@ -24,6 +24,7 @@ Corrections
  * `Element.CPU.removePoint()` was terrible
  * `Element.CPU.build_chapters()` and `Element.CPU.build_playlist()` are no more public API
  * Attributes `hide`, `mode` and `glow` weren't properly checked
+ * Leave error mode if template is recompleted
 
 Back-end
 --------
