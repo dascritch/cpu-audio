@@ -9,7 +9,7 @@ import {buildPlaylist} from './build_playlist.js';
  *
  * @param      {Object}  event   The event
  */
-function native_share(event) {
+function nativeShare(event) {
 	let {title, canonical} = findContainer(event.target).audiotagDataset();
 	navigator.share({
 		title,
@@ -96,7 +96,7 @@ export function buildInterface(container) {
 
 	if (navigator.share) {
 		interface_classlist.add('hasnativeshare');
-		container.shadowId('nativeshare').addEventListener('click', native_share, passiveEvent);
+		container.shadowId('nativeshare').addEventListener('click', nativeShare, passiveEvent);
 	}
 
 	if (!container.audiotag)  {
