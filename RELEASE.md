@@ -53,8 +53,6 @@ Back-end
 Todo for this release :
 -----------------------
 
- - `element.CPU.refreshPlane()` should undraw plane
- - add events on CPU-AUDIO and CPU-CONTROLLER creation / deletion
  - remove audiotag.id from playlist when CPU-AUDIO deleted
  - Finish drag'n'drop in chapters-editors
  - we still have a flashing chapters before the one clicked in panel. There is something to clean up, probable root cause is my (voluntary) 206 defaillant web server

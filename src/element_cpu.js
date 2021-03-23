@@ -1168,6 +1168,10 @@ export class CPU_element_api {
 			planeName,
 			pointDataGroup
 		});
+		let nav = this.planeNav(planeName);
+		if (nav) {
+			nav.innerHTML = '';
+		}
 		this.refreshPlane(planeName);
 		return true;
 	}
