@@ -14,6 +14,7 @@
 
 
  * [applications/chapters_editor.html](applications/chapters_editor.html)
+ * [applications/live_config.html](applications/live_config.html)
 
 
 ### Tests
