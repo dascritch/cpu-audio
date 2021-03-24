@@ -360,26 +360,32 @@ export class CPU_element_api {
 		let canonical = audiotag.dataset.canonical ?? '' ;
 		let _is_at = canonical.indexOf('#');
 		let elapse_element = this.shadowId('elapse');
-		elapse_element.href = 
-			`${ absolutizeUrl(canonical) }#${ (_is_at < 0) ?
-				audiotag.id :
-				canonical.substr(_is_at + 1) }&t=${timecode}`;
-
-		let total_duration = false;
-		let _natural = Math.round(audiotag.duration);
-		if (!isNaN(_natural)){
-			total_duration = secondsInColonTime(_natural);
-		} else {
-			let _forced = Math.round(audiotag.dataset.duration);
-			if (_forced > 0) {
-				total_duration = secondsInColonTime(_forced);
-			}
+		if (elapse_element) {
+			elapse_element.href = 
+				`${ absolutizeUrl(canonical) }#${ (_is_at < 0) ?
+					audiotag.id :
+					canonical.substr(_is_at + 1) }&t=${timecode}`;
 		}
 
-		elapse_element.querySelector('span').innerText = secondsInColonTime(audiotag.currentTime);
-		let duration_element = elapse_element.querySelector('.nosmaller');
-		duration_element.innerText = total_duration ? `\u00a0/\u00a0${total_duration}` : '';
-		showElement(duration_element, total_duration);
+		let currenttime_element = this.shadowId('currenttime');
+		if (currenttime_element) {
+			this.shadowId('currenttime').innerText = secondsInColonTime(audiotag.currentTime);
+		}
+		let duration_element = this.shadowId('totaltime');
+		if (duration_element) {
+			let total_duration = false;
+			let _natural = Math.round(audiotag.duration);
+			if (!isNaN(_natural)){
+				total_duration = secondsInColonTime(_natural);
+			} else {
+				let _forced = Math.round(audiotag.dataset.duration);
+				if (_forced > 0) {
+					total_duration = secondsInColonTime(_forced);
+				}
+			}
+			duration_element.innerText = total_duration ? `\u00a0/\u00a0${total_duration}` : '';
+			showElement(duration_element, total_duration);
+		}
 
 		this.updateLine(audiotag.currentTime);
 	}
