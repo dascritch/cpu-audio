@@ -34,9 +34,9 @@
 	list-style-type: none;
 	user-select: none;
 	transition :
-				color var(--cpu-color-transitions),
-				background-color var(--cpu-background-transitions),
-				opacity var(--cpu-background-transitions);
+		color var(--cpu-color-transitions),
+		background-color var(--cpu-background-transitions),
+		opacity var(--cpu-background-transitions);
 }
 
 main {
@@ -60,7 +60,6 @@ svg {
 	height : var(--cpu-height);
 }
 
-
 i, em {
 	font-style: italic;
 }
@@ -70,7 +69,7 @@ b, strong, h5 a {
 }
 
 [src=''] {
-    visibility: hidden;
+	visibility: hidden;
 }
 
 #pageerror {
@@ -104,9 +103,9 @@ a {
 }
 
 @keyframes glow {
-	0%     {opacity : 0.5;}
-	50%     {opacity : 1;}
-	100%     {opacity : 0.5;}
+	0%   { opacity : 0.5; }
+	50%  { opacity : 1;   }
+	100% { opacity : 0.5; }
 }
 
 .show-share #pageshare,
@@ -131,7 +130,7 @@ a {
 }
 
 @keyframes pulse {
-	50%     {opacity : 0;}
+	50% { opacity : 0; }
 }
 
 #poster {
@@ -160,12 +159,6 @@ a {
 	flex : 1 1 auto;
 	position : relative;
 }
-/*
-#about {
-	overflow : hidden;
-	display:flex;
-	flex-direction : column;
-}*/
 #title {
 	overflow: hidden;
 	text-overflow : '…';
@@ -300,11 +293,11 @@ aside.ticker a.active-cue span {
 
 .act-loading #loadingline #loadingline {
 	background : repeating-linear-gradient(45deg, var(--cpu-color) 0, var(--cpu-background) 15px, var(--cpu-color) 30px);
-	  background-size: 200% 200%;
+	background-size: 200% 200%;
 	animation: loadingline 1s linear infinite;
 }
 @keyframes loadingline {
-  0% { background-position-y : var(--cpu-timeline-height); }
+	0% { background-position-y : var(--cpu-timeline-height); }
 }
 
 #handheld-nav {
@@ -348,23 +341,10 @@ aside.ticker a.active-cue span {
 	text-overflow : clip;
 }
 
-
 #pageshare svg {
 	vertical-align : middle;
 	width : 32px;
 	height : 32px;
-}
-
-#pageshare #nativeshare {
-	display : none;
-}
-
-.hasnativeshare #pageshare #nativeshare {
-	display : flex;
-}
-
-.hasnativeshare #pageshare .nonativeshare {
-	display : none;
 }
 
 #twitter {
@@ -480,11 +460,14 @@ aside a, h6, .cue time , aside.ticker *
 .hide-panels-title h6,
 .hide-panels-except-play .panel,
 .media-streamed #link,
-.media-streamed #line {
+.media-streamed #line,
+#pageshare #nativeshare,
+.hasnativeshare #pageshare .nonativeshare {
 	display : none;
 }
 
-.hide-panels-except-play.last-used .panel {
+.hide-panels-except-play.last-used .panel,
+.hasnativeshare #pageshare #nativeshare {
 	display : flex;
 }
 
@@ -524,28 +507,28 @@ aside a, h6, .cue time , aside.ticker *
 		flex : 0 1 var(--cpu-elapse-width);
 	}
 
-		.mode-default #pagemain {
-			 padding-bottom : 16px;
-		}
-		#titleline {
-			height : 32px;
-		}
-		#line {
-			 position: absolute;
-			 left: calc(0px - var(--cpu-height));
-			 right: calc(0px - var(--cpu-height));
-			 height: 16px;
-			 top: 32px;
-		}
-		aside a {
-			pointer-events: none;
-		}
-		aside.borders {
-			 top : -2px;
-		}
-		aside.chapters {
-			 top : 8px;
-		}
+	.mode-default #pagemain {
+		 padding-bottom : 16px;
+	}
+	#titleline {
+		height : 32px;
+	}
+	#line {
+		 position: absolute;
+		 left: calc(0px - var(--cpu-height));
+		 right: calc(0px - var(--cpu-height));
+		 height: 16px;
+		 top: 32px;
+	}
+	aside a {
+		pointer-events: none;
+	}
+	aside.borders {
+		 top : -2px;
+	}
+	aside.chapters {
+		 top : 8px;
+	}
 	#handheld-nav {
 		padding-bottom: 2px;
 	}
@@ -568,9 +551,9 @@ aside a, h6, .cue time , aside.ticker *
 
 /* Accessibility : do not display animation;  */
 @media (prefers-reduced-motion: reduce) {
-  * {
-    animation : none !important;
-  }
+	* {
+		animation : none !important;
+  	}
 }
 
 a:hover, a:focus, button:hover, button:focus,

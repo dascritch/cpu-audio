@@ -110,6 +110,8 @@ You can change some aspects of the interface [via some handy CSS variables](http
 </cpu-audio>
 </div>
 
+Advanced users can create their own graphic theme UI, [as this one with a direct download button instead of the action panel](examples/Build_with_download_action.html)
+
 
 Highlighting text amond chapters
 --------------------------------

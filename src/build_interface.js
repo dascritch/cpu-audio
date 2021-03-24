@@ -114,5 +114,7 @@ export function buildInterface(container) {
 	container.updatePlayButton();
 	container.emitEvent('ready');
 
+	container.updateLinks();
+	
 	querySelectorDo('#canonical', preventLinkOnSamePage, container.shadowRoot);
 }

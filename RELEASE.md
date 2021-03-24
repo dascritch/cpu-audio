@@ -4,6 +4,7 @@ RELEASE NOTES actual
 New features
 ------------
 
+ * Added a [theme with a direct download button](examples/Build_with_download_action.html), instead of the action button. Example for creating graphic theme ([#56](#56))
  * Possibility to create themed versions with specific html and css files ([#56](#56))
  * Possibility to change css breakpoints ([#51](#51)) by this way ([#56](#56))
  * Possibility to create RTL version ([#26](#26)) by this way ([#56](#56))
@@ -31,6 +32,7 @@ Corrections
  * Leave error mode if template is recompleted
  * Update controller playlist panel if current playlist has changed
  * Removing a `<CPU-Audio>` will remove its reference in playlists
+ * Degradable code, some elements are no more absolutely required in template ([#56](#56))
 
 Back-end
 --------
@@ -50,7 +52,7 @@ Back-end
  * QUnit-puppeteer integrated into `make.sh`
  * Automated links from MD (or examples.html) to examples and applications
  * Playlist are now using the standard API, with special code for CPU-Controller ([#109](#109))
- * Removing some builders from `Element.CPU`, to avoid expose them in public API
+ * Some builders are removed from `Element.CPU`, to avoid expose them in public API
 
 Todo for this release :
 -----------------------

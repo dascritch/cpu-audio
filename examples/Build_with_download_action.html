@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8" />
+<title>CPU-Audio theme example : direct download instead of action button</title>
+
+<script src="../build/cpu-audio.direct-download.js" async></script>
+
+<body>
+    <cpu-audio title="Ex0157 Web, State of the art 2021" canonical="https://cpu.dascritch.net/post/2021/03/11/Ex0157-Web%2C-State-of-the-art-2021" poster="https://cpu.dascritch.net/public/Images/Emissions/.1902-Ex0103-WebStateOfTheArt_s.png" waveform="https://cpu.dascritch.net/public/Sonores/Emissions/waveforms/0157-CPU%2811-03-21%29.png">
+        <audio controls="controls" id="emission-0157">
+            <source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0157-CPU%2811-03-21%29.mp3" type="audio/mpeg" data-downloadable />
+            
+        </audio>
+    </cpu-audio>
+
+<p>How to create a theme :</p>
+
+    <ol>
+        <li>We created a <a href="../src/themes/direct-download"><code>direct-download</code></a> directory into <a href="../src/themes"><code>src/themes</code></a></li>
+        <li>We copied the original <a href="../src/themes/default/template.html"><code>template.html</code></a> from <a href="../src/themes/default"><code>src/themes/default</code></a></li>
+        <li>We do not need to copy the other files from <code>src/themes/default</code>, as they will be transparently used</li>
+        <li><a href="../src/themes/direct-download/template.html"><code>src/themes/direct-download/template.html</code></a> was modified to replace the <q>action</q> button with the <q>download</q> link</li>
+        <li>The theme is build in the shell with <code>./make.sh --theme direct-download</code></li>
+        <li>A <a href="../build/cpu-audio.direct-download.js"><code>build/cpu-audio.direct-download.js</code></a> is created</li>
+        <li>We insert it instead of the usual <code>build/cpu-audio.js</code></li>
+    </ol>
+
+<p>
+    Please note : 
+</p>
+
+    <ul>
+        <li>As we re-use the same layout, properties and css variables, <a href="../applications/live_config.html">live_config</a> generated configs can be used</li>
+        <li>If the first name of the theme is <q>_</q>, it won't be indexed by git. If you want to keep your theme as private, this is the way to do</li>
+        <li>If you want to create a public theme, please avoid external dependencies as in CSS frameworks, or use some fallbacks (as we do for fonts)</li>
+        <li>Your theme will still work with minor release of the versions 7.x.y of cpu-audio. If I change the major version to <q>8</q>, it means themed build may break without ssome changes</li>
+        <li>Some elements, mainly named, are strictly needed. See <q>All named elements in template needed in code</q> in <a href="../tests/test-interface.js">tests/test-interface.js</a>. We try to make some of them optional</li>
+        <li>If you do your own private theme, I don't care if you're introducing dependencies, to, by example, a CSS framework, what else</li>
+        <li>We don't <a href="../tests">test</a> themed-builds yet. This is a miss, and we need some help there</li>
+    </ul>
+</body>
+</html>

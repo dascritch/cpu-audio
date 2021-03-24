@@ -65,6 +65,7 @@ while [ '-' == "${1:0:1}" ] ; do
 			REINDEX=1
 		;;
 		--theme)
+			rm ${PROJECT_DIR}/tmp/*
 			shift
 			THEME_NAME=${1}
 			THEME_OUTPUT=".${THEME_NAME}"

@@ -1,0 +1,109 @@
+<!-- 
+	See examples/Build_with_download_action.html for exmplanation on how to create and build a theme
+-->
+<!--
+	We duplicated the src/thmes/default/template.html to modify it. The others files in the default subdir are used identical
+-->
+<div id="interface" class="no" tabindex="0">
+	<main>
+		<img id="poster" class="nosmall" src="" alt="" loading="lazy" decoding="async" />
+		<section id="pageerror" role="alert">
+		</section>
+		<section id="pagemain">
+			<button type="button" id="control" tabindex="0">
+				<!-- play / pause / loading -->
+				<svg id="loading" aria-label="${__.loading}" viewBox="0 0 32 32" aria-hidden="true">
+					<title>${__.loading}</title>
+					<circle cx="6" cy="22" r="4" />
+					<circle cx="16" cy="22" r="4" />
+					<circle cx="26" cy="22" r="4" />
+				</svg>
+				<svg id="play" aria-label="${__.pause}" viewBox="0 0 32 32" aria-hidden="true">
+					<title>${__.pause}</title>
+					<path d="M 6,6 12.667,6 12.667,26 6,26 z" />
+					<path d="M 19.333,6 26,6 26,26 19.333,26 z" />
+				</svg>
+				<svg id="pause" aria-label="${__.play}" viewBox="0 0 32 32" aria-hidden="true">
+					<title>${__.play}</title>
+					<path d="M 6,6 6,26 26,16 z" />
+				</svg>
+			</button>
+			<div id="about">
+				<div id="titleline">
+					<h5 id="title"><a href="#" id="canonical" aria-label="${__.canonical}"></a></h5>
+					<a id="elapse" aria-label="${__.moment}" tabindex="-1"><span id="currenttime">…</span><span id="totaltime" class="nosmaller"></span></a>
+				</div>
+				<div id="handheld-nav">
+					<button type="button" id="restart">
+						<svg viewBox="0 0 24 16" aria-hidden="true">
+							<polygon points="4,0 8,0 8,16 4,16"/>
+							<path d="M 16,0 8,8 16,16 z" />
+							<path d="M 24,0 16,8 24,16 z" />
+						</svg>
+					</button>
+					<button type="button" id="fastreward">
+						<svg viewBox="0 0 24 16" aria-hidden="true">
+							<path d="M 8,0 0,8 8,16 z" />
+							<path d="M 16,0 8,8 16,16 z" />
+							<path d="M 24,0 16,8 24,16 z" />
+						</svg>
+					</button>
+					<button type="button" id="reward" class="nosmallest">
+						<svg viewBox="0 0 24 16" aria-hidden="true">
+							<path d="M 12,0 4,8 12,16 z" />
+							<path d="M 20,0 12,8 20,16 z" />
+						</svg>
+					</button>
+					<button type="button" id="foward">
+						<svg viewBox="0 0 24 16" aria-hidden="true">
+							<path d="M 4,0 12,8 4,16 z" />
+							<path d="M 12,0 20,8 12,16 z" />
+						</svg>
+					</button>
+					<button type="button" id="fastfoward">
+						<svg viewBox="0 0 24 16" aria-hidden="true">
+							<path d="M 0,0 8,8 0,16 z" />
+							<path d="M 8,0 16,8 8,16 z" />
+							<path d="M 16,0 24,8 16,16 z" />
+						</svg>
+					</button>
+				</div>
+				<div id="line">
+					<div id="time">
+						<div id="loadingline" role="progressbar"></div>
+						<time id="popup">--:--</time>
+					</div>
+				</div>
+			</div>
+			<a href="#" target="social" id="link" aria-label="${__.download}" title="${__.download}" download>
+				<!-- 
+					download link, instead of the actions button.
+					Even if the webcomponent will try to guess which is the prefered source for the clien platform, you can precise which link is to be downloaded :
+					- via a "download” attribute in the <cpu-audio>
+				    - via a “data-downloadable” attribute in a <source> tag
+				-->
+				<svg viewBox="0 0 32 32" aria-hidden="true">
+					<path d="M 6,6 26,6 16,26 z" />
+					<rect x="6" y="22" width="20" height="4" />
+				</svg>
+			</a>
+		</section>
+		<!--
+			We move apart the unnecessary elements in a class="no" container, to hide them.
+			This segment is still unavoidable, to permit the core code to still work.
+		-->
+		<section id="pageshare" class="no">
+			<button id="actions"></button>
+			<a href="#" id="nativeshare"></a>
+			<a href="#" id="twitter"></a>
+			<a href="#" id="facebook"></a>
+			<a href="#" id="email"></a>
+			<a id="back"></a>
+		</section>
+	</main>
+</div>
+<style>
+	/* Not the recommended way, but I didn't want to copy the whole scoped.css for invalidate only one rule */
+	#link { background : var(--cpu-background) !important; }
+	#link:hover, #link:focus { background: var(--cpu-focus-background, var(--cpu-color)) !important; }
+</style>
