@@ -23,12 +23,12 @@ Corrections
  * Issue with intermittent `.replaceAll()` resolved
  * When changing component title, its title="" must follows
  * `Element.CPU.removeHighlightsPoints()` was too generic. Modification in parameters ([#109](#109))
- * `Element.CPU.removePoint()` was terrible
  * `Element.CPU.build_chapters()` and `Element.CPU.build_playlist()` are no more public API
  * Attributes `hide`, `mode` and `glow` weren't properly checked
  * Leave error mode if template is recompleted
  * Update controller playlist panel if current playlist has changed
  * `<CPU-Controller>` cannot be instancied twice
+ * Romoving a `<CPU-Audio>` will remove its reference in playlists
 
 Back-end
 --------
@@ -53,7 +53,6 @@ Back-end
 Todo for this release :
 -----------------------
 
- - remove audiotag.id from playlist when CPU-AUDIO deleted
  - Finish drag'n'drop in chapters-editors
  - we still have a flashing chapters before the one clicked in panel. There is something to clean up, probable root cause is my (voluntary) 206 defaillant web server
  - Debug issues in Chrome mobile , as replay position or highlighted chapters in double

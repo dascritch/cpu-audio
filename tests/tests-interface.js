@@ -735,4 +735,6 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.ok(!componenttag.shadowRoot.querySelector('style#style_injection'), 'removeCss destroyed <style>');
 	});
 
+	playground.innerHTML = `<p><strong>Finished<strong></p>`;
+
 });

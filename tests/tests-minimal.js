@@ -374,4 +374,28 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		}, 100);
 	});
 
+	QUnit.test( "Playlist features", function(assert) {
+		let done = assert.async();
+		playground.innerHTML = `
+			<cpu-audio playlist="plname">
+				<audio id="pl1" controls="controls" muted="muted">
+					<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
+				</audio>
+			</cpu-audio>
+			<cpu-audio playlist="plname" id="comp_to_remove">
+				<audio id="pl2" controls="controls" muted="muted">
+					<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
+				</audio>
+			</cpu-audio>
+			<cpu-audio playlist="plname" id="comp_to_remove">
+				<audio id="pl3" controls="controls" muted="muted">
+					<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
+				</audio>
+			</cpu-audio>
+			`;
+		document.querySelector('#comp_to_remove').remove();
+		assert.equal(cpu.playlists.plname, ['pl1', 'pl3'], 'Removing a <CPU-audio> also clean it\'s audiotag ID from playlist');
+	});
+
+	playground.innerHTML = `<p><strong>Finished<strong></p>`;
 });

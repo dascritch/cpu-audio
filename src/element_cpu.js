@@ -120,7 +120,7 @@ export class CPU_element_api {
 	constructor(element, container_interface, element_attributes) {
 		// I hate this style. I rather prefer the object notation
 		this.element = element;
-		this.audiotag = /* @type {HTMLAudioElement} */ element._audiotag;
+		this.audiotag = /* @type {HTMLAudioElement} */ element.audiotag;
 		this.container = container_interface;
 		this.mode_when_play = null;
 		this.glowBeforePlay = !! element_attributes.glow;
@@ -975,8 +975,6 @@ export class CPU_element_api {
 						    		return point_a.start - point_b.start;
 						    	}
 						    ));
-
-		console.log(this.plane(planeName))
 		let points = Object.values( this.plane(planeName).points );
 		this.plane(planeName)._st_max = points[points.length - 1]?.start ?? 0;
 	}

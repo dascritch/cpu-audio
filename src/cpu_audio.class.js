@@ -52,28 +52,34 @@ export class CpuAudioElement extends CpuControllerElement {
 
 	constructor() {
 		super();
-		this._audiotag = null;
-		this.audiotag = null;
+		this.audiotag = this.querySelector(selectorAcceptable);
+		if (!this.audiotag) {
+			this.remove();
+			return ;
+		}
 		this.observer_cpuaudio = null;
 		this.observer_audio = null;
 	}
 
 	copyAttributesToMediaDataset() {
+		if (!this.audiotag) {
+			this.remove();
+			return ;
+		}
 		// copying personalized data to audio tag
 		for (let key in document.CPU.defaultDataset) {
 			if (this.hasAttribute(key)) {
 				let value = this.getAttribute(key);
-				this._audiotag.dataset[key] = (key !== 'duration') ? value : timeInSeconds(value);
+				this.audiotag.dataset[key] = (key !== 'duration') ? value : timeInSeconds(value);
 			}
 		}
 	}
 
 	connectedCallback() {
-		this._audiotag = this.querySelector(selectorAcceptable);
-		if (!this._audiotag) {
+		if (!this.audiotag) {
 			return;
 		}
-
+		
 		this.copyAttributesToMediaDataset();
 
 		super.connectedCallback();
@@ -92,7 +98,14 @@ export class CpuAudioElement extends CpuControllerElement {
 			attributes	: true,
 			subtree		: true
 		});
+	}
 
-		// this.observer.disconnect();
+	disconnectedCallback() {
+		if (this.audiotag?.id)  {
+			// remove reference in playlists
+			for (let index in document.CPU.playlists) {
+				document.CPU.playlists[index].filter(entry_id => entry_id !== this.audiotag.id);
+			}
+		}
 	}
 }
