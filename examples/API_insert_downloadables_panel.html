@@ -23,19 +23,11 @@ document.addEventListener('CPU_ready', ({target}) => {
 
     index = 0;
     for (downloadable of Array.from(target.querySelectorAll('[data-downloadable]'))) {
-
-        console.log({  
-                start   : 0,              // time position, in seconds
-                text    : downloadable.dataset.downloadable,  // get the text
-                link    : downloadable.src         // its source as URL
-            })
-
         // Now, we can insert some points of interest
         player_API.addPoint(
             'downloadables',              // named reference for the plane
             `entry-${ index++ }`,         // named reference for the point
             {  
-                start   : 0,              // time position, in seconds
                 text    : downloadable.dataset.downloadable,  // get the text
                 link    : downloadable.src         // its source as URL
             });
