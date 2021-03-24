@@ -13,6 +13,10 @@ if (!document.hasFocus()) {
 	alert('Please click on the web view, giving focus, to autorize the audio tag. Else, numerous tests will fail. See issue 17 on our github for details : https://github.com/dascritch/cpu-audio/issues/17 .');
 }
 
+function nearlyEqual(value_to_test, value_expected, precision = 1) {
+	return ((value_expected - 1) <= value_to_test) && (value_to_test <= ((value_expected + 1)))
+}
+
 window.addEventListener('load', function() {
 	if (navigator.userAgent === 'puppeteer') {
 		// Tests fails on Chrome browszer is this button is not humanly clicked, except in puppeteer /o\
@@ -191,7 +195,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.expect( 2 );
 		let done = assert.async();
 		cpu.trigger.hashOrder('track&t=20,10', function() {
-			assert.equal(audiotag.currentTime, 20, 'starts at 0 second');
+			assert.ok(nearlyEqual(audiotag.currentTime, 20, 0.1), 'starts at 0 second');
 			assert.equal(cpu.trigger._timecode_end, false, 'ignored end');
 			done();
 		});
