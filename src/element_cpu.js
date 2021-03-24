@@ -405,7 +405,7 @@ export class CPU_element_api {
 			}
 		}
 
-		this.addPlane(planeNameBorders,'',{
+		this.addPlane(planeNameBorders,{
 			track   	: 'borders',
 			panel   	: false,
 			highlight 	: false
@@ -847,19 +847,17 @@ export class CPU_element_api {
 	 * @public
 	 *
 	 * @param      {string}   planeName   A name in the range /[a-zA-Z0-9\-_]+/
-	 * @param      {string}   title       The displayed title for the panel
-	 * @param      {Object}   planeData   { track : true/false/classnames ,
+	 * @param      {Object}   planeData   { 
+	 										title : The displayed title for the panel,
+	 										track : true/false/classnames ,
 	 * 										panel : true/false/classnames ,
 	 * 										highlight : true/false,
 	 *										_comp : true/false // only stored in component, private use only
 	  }
 	 *
-	* TODO as parameter points : to bulk create points
-	* TODO as parameter _comp : true/false // only stored in component, private use only
-
 	 * @return     {boolean}  success
 	 */
-	addPlane(planeName, title, planeData = {}) {
+	addPlane(planeName, planeData = {}) {
 		if ((! planeName.match(validId)) || (this.plane(planeName))) {
 			return false;
 		}
@@ -874,7 +872,7 @@ export class CPU_element_api {
 			_comp		: false
 		};
 
-		planeData = { ...default_plane_data, ...planeData , title};
+		planeData = { ...default_plane_data, ...planeData};
 
 		if (!planeData._comp) {
 			if (this.isController) {

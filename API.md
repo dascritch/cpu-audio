@@ -90,7 +90,7 @@ showThrobberAt(number)                                   |         | Display the
 hideThrobber()                                           |         | Hide immediately the throbber
 hideThrobberLater()                                      |         | Hide the throbber later (waiting 1 seconds). A newer call will delay the hiding later. News at 11.
 showInterface(string)                                    |         | Switch between `'main'`, `'share'` or `'error'` interfaces.
-addPlane(planeName, title, planeData)                    | boolean | Create an annotation plane (¹)(²)(³)
+addPlane(planeName, planeData)                    		 | boolean | Create an annotation plane (¹)(²)(³)
 removePlane(planeName)                                   | boolean | Remove an annotation plane (¹)(²)
 addPoint(planeName, pointName, pointData)                | boolean | Add an annotation point to a plane at a timecode (¹)(²)(⁴)
 point(planeName, pointName) 			                 | object  | Return data for a point (³)
@@ -111,6 +111,7 @@ removeCss(styleName)						             |		   | Remove an inject `<style>` from t
 
 key         | type              | default value | usage
 ------------|-------------------|---------------|-------
+title 		| 					| `''`			| Title displayed on the panel
 track       | boolean or string | `true`        | Create a track in the time line, string to precise the kind (`chapters`, `borders`, same naming convention than upper (²)), or presentation restriction (`nosmall`, `nosmaller`, `nosmallest`), space separated
 panel       | boolean or string | `true`        | Create a panel under the player, or precise presentation restriction (`nosmall`, `nosmaller`, `nosmallest`, `nocuetime`) space separated
 highlight   | boolean           | `true`        | Points of this annotation plane can be highlighted with the mouse
@@ -159,7 +160,7 @@ As the `event.target` is the `<cpu-audio>` element, you can reach its API with `
 ```js
 function CPU_ready(event) {
 	let CPU = event.target.CPU;
-	CPU.addPlane("hello_world", "Now, we can play !", {});
+	CPU.addPlane("hello_world", { title : "Now, we can play !" });
 }
 
 document.addEventListener('CPU_ready', CPU_ready);

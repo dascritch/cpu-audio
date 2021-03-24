@@ -14,7 +14,11 @@ Corrections
 -----------
 
  * Production files are now more logically created in `build/` instead of `directory/`
+ * `<CPU-Controller>` cannot be instancied twice
  * Methods and parameters names have been unified camelCase. Changes are incompatible with versions <7.0 ([#112](#112))
+ * Title parameter in `Element.CPU.addPlane()` is now in `planePoint`
+ * `Element.CPU.removeHighlightsPoints()` was too generic. Modification in parameters ([#109](#109))
+ * `Element.CPU.build_chapters()` and `Element.CPU.build_playlist()` are no more public API
  * Reduce repaints
  * Do not change color when changing mode play→loading→play ([#114](#114)) 
  * Resolving a probable issue on fine navigation panel on handheld
@@ -22,13 +26,10 @@ Corrections
  * An translation error may occurs in shareable URL. We remove audio id if we are not in same URL
  * Issue with intermittent `.replaceAll()` resolved
  * When changing component title, its title="" must follows
- * `Element.CPU.removeHighlightsPoints()` was too generic. Modification in parameters ([#109](#109))
- * `Element.CPU.build_chapters()` and `Element.CPU.build_playlist()` are no more public API
  * Attributes `hide`, `mode` and `glow` weren't properly checked
  * Leave error mode if template is recompleted
  * Update controller playlist panel if current playlist has changed
- * `<CPU-Controller>` cannot be instancied twice
- * Romoving a `<CPU-Audio>` will remove its reference in playlists
+ * Removing a `<CPU-Audio>` will remove its reference in playlists
 
 Back-end
 --------

@@ -461,7 +461,7 @@ document.addEventListener('CPU_ready', e => {
     // sometimes not fired, so we needed a "ready" event
     component_element = e.target;
     sound_CPU = component_element.CPU;
-    sound_CPU.addPlane('cursors', 'Chapters preview', {track : 'cursors', panel : true});
+    sound_CPU.addPlane('cursors', {title : 'Chapters preview', track : 'cursors', panel : true});
     sound_CPU.injectCss('cursors', `
         .cursors {
             left: -6px;

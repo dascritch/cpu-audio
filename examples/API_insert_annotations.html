@@ -17,8 +17,8 @@ document.addEventListener('CPU_ready', e => {
     // OK,  let's create our plane 
     player_API.addPlane(
     	'annotations',				// named reference
-    	'Personal annotations', 	// Title for the panel
     	{
+            title   : 'Personal annotations',     // Title for the panel
 	    	track   : false, 		// Do not show on the timeline
 	    	panel 	: true, 		// Create a panel
     });
@@ -56,8 +56,8 @@ document.addEventListener('CPU_ready', e => {
     // What about create a second panel ?
     player_API.addPlane(
         'parameters',
-        'Parameters',
         {
+            title   : 'Parameters',
             track   : false,        // Do not show on the timeline
             panel   : 'nocuetime',  // I want a panel with a classname hiding the points times
     });

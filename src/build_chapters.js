@@ -64,7 +64,10 @@ export async function build_chapters(container) {
 			}
 
 			if (chapter_track?.cues.length > 0) {
-				container.addPlane(plane_chapters, __['chapters'], {track : 'chapters'});
+				container.addPlane(plane_chapters, {
+					title : __['chapters'],
+					track : 'chapters'
+				});
 
 				let cuechange_event_this = cuechange_event.bind(undefined, container);
 				// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`

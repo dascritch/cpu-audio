@@ -426,7 +426,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		let secondary_interfacetag = secondary_component.shadowRoot.querySelector('div');
 		assert.deepEqual(secondary_audiotag._CPU_planes, {}, 'empty audio._CPU_planes at start');
 		assert.equal(secondary_API_CPU.plane('zgou'), undefined, 'plane() returns undefined when nothing exists');
-		assert.ok(secondary_API_CPU.addPlane('hello', 'Hello<>&'), 'function accepts');
+		assert.ok(secondary_API_CPU.addPlane('hello', {title : 'Hello<>&' }), 'function accepts raw text');
 		assert.ok(secondary_interfacetag.querySelector('aside#track_«hello»') , 'DOM element aside added in the track line');
 		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello»') , 'DOM element div added as a panel');
 		assert.deepEqual(Object.keys(secondary_audiotag._CPU_planes).length, 1, 'one audio._CPU_planes created');
@@ -448,7 +448,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		let controller_API_CPU = document.querySelector('#control').CPU;
 		assert.ok(! controller_API_CPU.addPlane('test_plane'), 'function refuse to add plane on a <CPU-CONTROLLER>');
 		assert.ok(! controller_API_CPU.plane('test_plane'), 'plane not created');
-		assert.ok(controller_API_CPU.addPlane('test_plane', '',{_comp : true}), 'function accept to add plane on a <CPU-CONTROLLER> when special parameter _comp is true');
+		assert.ok(controller_API_CPU.addPlane('test_plane', {_comp : true}), 'function accept to add plane on a <CPU-CONTROLLER> when special parameter _comp is true');
 		assert.ok(controller_API_CPU.plane('test_plane'), 'plane not created');
 	});
 

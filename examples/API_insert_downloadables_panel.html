@@ -4,9 +4,12 @@
 <title>CPU-Audio API example : insert annotations</title>
 
 <script>
-// In this example, we will create custom time annotations in the player
-
-// First, we'll wait the web-component have created its UI
+/** 
+    In this example, we will create a panel with numerous downloadable versions of the same audio.
+    We re-use <audio data-downloadable> attribute, when present, it says to the component that a source can be used as download option.
+    We 'll look at them, and populate a panel with the results
+    First, we'll wait the web-component have created its UI
+*/
 
 document.addEventListener('CPU_ready', ({target}) => {
     // Let's get the <cpu-audio> API
@@ -15,21 +18,23 @@ document.addEventListener('CPU_ready', ({target}) => {
     // OK,  let's create our plane 
     player_API.addPlane(
         'downloadables',    // named reference
-        'Download',       // Title for the panel
         {
+            title   : 'Download',   // Title for the panel
             track   : false,        // Do not show on the timeline
             panel   : true,         // Create a panel
-    });
+        });
 
+    // to create unique pointNames, we'll use a counter
     index = 0;
-    for (downloadable of Array.from(target.querySelectorAll('[data-downloadable]'))) {
-        // Now, we can insert some points of interest
+    for (let entry of Array.from(target.querySelectorAll('[data-downloadable]'))) {
+        // For each entry element found in the <audio>
+        // Create a line in the panel
         player_API.addPoint(
             'downloadables',              // named reference for the plane
             `entry-${ index++ }`,         // named reference for the point
-            {  
-                text    : downloadable.dataset.downloadable,  // get the text
-                link    : downloadable.src         // its source as URL
+            {
+                text    : entry.dataset.downloadable,  // get the text
+                link    : entry.src         // its source as URL
             });
     }
 });

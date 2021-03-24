@@ -23,7 +23,8 @@ export function buildPlaylist(container) {
 	const pointDataGroup = {};
 
 	if (! container.plane(plane_playlist)) {
-		container.addPlane(plane_playlist, __['playlist'], {
+		container.addPlane(plane_playlist, {
+			title 		: __['playlist'],
 			track 		: false,
 			panel 		: 'nocuetime',
 			highlight 	: true,
