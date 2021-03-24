@@ -4,6 +4,7 @@
 
 
  * [examples/API_insert_annotations.html](examples/API_insert_annotations.html)
+ * [examples/API_insert_downloadables_panel.html](examples/API_insert_downloadables_panel.html)
  * [examples/controller_playlist_and_chapters.html](examples/controller_playlist_and_chapters.html)
  * [examples/iframe_for_dimension.html](examples/iframe_for_dimension.html)
  * [examples/Style_backgrounds.html](examples/Style_backgrounds.html)
