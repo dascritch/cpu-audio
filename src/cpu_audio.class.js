@@ -105,8 +105,13 @@ export class CpuAudioElement extends CpuControllerElement {
 			const playlists = document.CPU.playlists;
 			// remove reference in playlists
 			for (let index in playlists) {
-				document.CPU.playlists[index] = playlists[index].filter(entry_id => entry_id !== this.audiotag.id);
+				const out = playlists[index].filter(entry_id => entry_id !== this.audiotag.id);
+				document.CPU.playlists[index] = out;
+				if (out.length === 0) {
+					delete document.CPU.playlists[index];
+				}
 			}
+
 		}
 	}
 }
