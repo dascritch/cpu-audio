@@ -374,8 +374,11 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		}, 100);
 	});
 
-	QUnit.test( "Playlist features", function(assert) {
-		let done = assert.async();
+	QUnit.test( "Playlist impact when removing a <CPU-audio>", function(assert) {
+		assert.equal(
+			JSON.stringify(document.CPU.playlists),
+			JSON.stringify({}),
+			'Playlists are empty at start');
 		playground.innerHTML = `
 			<cpu-audio playlist="plname">
 				<audio id="pl1" controls="controls" muted="muted">
@@ -394,7 +397,10 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 			</cpu-audio>
 			`;
 		document.querySelector('#comp_to_remove').remove();
-		assert.equal(cpu.playlists.plname, ['pl1', 'pl3'], 'Removing a <CPU-audio> also clean it\'s audiotag ID from playlist');
+		assert.equal(
+			JSON.stringify(document.CPU.playlists),
+			JSON.stringify({plname : ['pl1', 'pl3'] }),
+			'Removing a <CPU-audio> also clean it\'s audiotag ID from playlist');
 	});
 
 	playground.innerHTML = `<p><strong>Finished<strong></p>`;

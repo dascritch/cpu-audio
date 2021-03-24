@@ -102,9 +102,10 @@ export class CpuAudioElement extends CpuControllerElement {
 
 	disconnectedCallback() {
 		if (this.audiotag?.id)  {
+			const playlists = document.CPU.playlists;
 			// remove reference in playlists
-			for (let index in document.CPU.playlists) {
-				document.CPU.playlists[index].filter(entry_id => entry_id !== this.audiotag.id);
+			for (let index in playlists) {
+				document.CPU.playlists[index] = playlists[index].filter(entry_id => entry_id !== this.audiotag.id);
 			}
 		}
 	}
