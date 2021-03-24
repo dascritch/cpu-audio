@@ -9,6 +9,7 @@ New features
  * Possibility to create RTL version ([#26](#26)) by this way ([#56](#56))
  * A11y : Support reduced motion preferences
  * Added method `Element.CPU.bulkPoints()`
+ * Examples added
 
 Corrections
 -----------
