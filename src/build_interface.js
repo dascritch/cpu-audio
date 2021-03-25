@@ -96,7 +96,7 @@ export function buildInterface(container) {
 
 	if (navigator.share) {
 		interface_classlist.add('hasnativeshare');
-		container.shadowId('nativeshare').addEventListener('click', nativeShare, passiveEvent);
+		container.shadowId('nativeshare')?.addEventListener('click', nativeShare, passiveEvent);
 	}
 
 	if (!container.audiotag)  {

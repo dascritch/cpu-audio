@@ -11,6 +11,7 @@ New features
  * A11y : Support reduced motion preferences
  * Added method `Element.CPU.bulkPoints()`
  * Examples added
+ * Degradable code, some elements are no more absolutely required in template ([#56](#56))
 
 Corrections
 -----------
@@ -32,7 +33,6 @@ Corrections
  * Leave error mode if template is recompleted
  * Update controller playlist panel if current playlist has changed
  * Removing a `<CPU-Audio>` will remove its reference in playlists
- * Degradable code, some elements are no more absolutely required in template ([#56](#56))
 
 Back-end
 --------
@@ -59,7 +59,7 @@ Todo for this release :
 
  - Finish drag'n'drop in chapters-editors
  - we still have a flashing chapters before the one clicked in panel. There is something to clean up, probable root cause is my (voluntary) 206 defaillant web server
- - Debug issues in Chrome mobile , as replay position or highlighted chapters in double
+ - Debug issues in Chrome mobile, as replay position or highlighted chapters in double
  - Can't remember, but to check : regression cpu controller => player (color focus, I believe)
  - Click on any chapter in players in examples/controller_playlist_and_chapters.html makes chapter position unfocused in controller
  - Add a style with handheld fine position panel already on
