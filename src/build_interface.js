@@ -30,7 +30,7 @@ export function buildInterface(container) {
 	let interface_classlist = container.shadowId('interface').classList;
 
 	// hide broken image while not loaded
-	container.shadowId('poster').addEventListener('load', () => {
+	container.shadowId('poster')?.addEventListener('load', () => {
 		interface_classlist.add('poster-loaded');
 	}, passiveEvent);
 
@@ -46,7 +46,7 @@ export function buildInterface(container) {
 		restart   : trigger.restart,
 	};
 	for (let that in cliquables) {
-		container.shadowId(that).addEventListener('click', cliquables[that], passiveEvent);
+		container.shadowId(that)?.addEventListener('click', cliquables[that], passiveEvent);
 	}
 
 	// handheld nav to allow long press to repeat action
@@ -62,8 +62,10 @@ export function buildInterface(container) {
 	};
 	for (let that of _buttons) {
 		const element_id = container.shadowId(that);
-		for (let _act in _actions) {
-			element_id.addEventListener(_act, _actions[_act] ? pressManager.press : pressManager.release);
+		if (element_id) {
+			for (let _act in _actions) {
+				element_id.addEventListener(_act, _actions[_act] ? pressManager.press : pressManager.release);
+			}
 		}
 	}
 
