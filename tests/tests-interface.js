@@ -75,12 +75,12 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 
 
 	QUnit.test( "All named elements in template needed in code, accessed via .shadowId()", function( assert ) {
-		for (id of ['loadingline', 'pageerror', 'popup', 'twitter', 'facebook', 'email',  'canonical', 'poster', 'time', 'line', 'interface', 'poster', 'pause', 'play', 'actions', 'back', 'restart' , 'fastreward', 'reward', 'foward', 'fastfoward', 'control']) {
+		for (id of ['loadingline', 'pageerror', 'popup',  'canonical', 'poster', 'time', 'line', 'interface', 'poster', 'pause', 'play', 'actions', 'back', 'restart' , 'fastreward', 'reward', 'foward', 'fastfoward', 'control']) {
 			assert.ok(componenttag.CPU.shadowId(id), `#${id} , callable via Component.CPU.shadowId('${id}')`);
 		}
 	});
 	QUnit.test( "Named elements in template used in code, but not mandatory, accessed via .shadowId()", function( assert ) {
-		for (id of ['elapse', 'currenttime', 'totaltime', 'nativeshare']) {
+		for (id of ['elapse', 'currenttime', 'totaltime', 'nativeshare', 'twitter', 'facebook', 'email', 'link']) {
 			assert.ok(componenttag.CPU.shadowId(id), `#${id} , callable via Component.CPU.shadowId('${id}')`);
 		}
 	});

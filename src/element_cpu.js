@@ -593,19 +593,22 @@ export class CPU_element_api {
 			 /* why did I want an @ in the attribute if I cut it in my code ? to keep HTML readable and comprehensible, instead to developpe attribute name into a "twitter-handler" */
 			_twitter = `&via=${dataset.twitter.substring(1)}`;
 		}
-		let link = audiotag.querySelector('source[data-downloadable]')?.src ||
+		const link = audiotag.querySelector('source[data-downloadable]')?.src ||
 					 dataset.download ||
 					 audiotag.currentSrc;
 
-		let title = dataset.title;
-		let links = {
+		const title = dataset.title;
+		const links = {
 			twitter  : `https://twitter.com/share?text=${title}&url=${_url}${_twitter}`,
 			facebook : `https://www.facebook.com/sharer.php?t=${title}&u=${_url}`,
 			email    : `mailto:?subject=${title}&body=${_url}`,
 			link
 		};
 		for (let key in links) {
-			container.shadowId(key).href = links[key];
+			const element = container.shadowId(key);
+			if (element) {
+				element.href = links[key];
+			}
 		}
 	}
 
