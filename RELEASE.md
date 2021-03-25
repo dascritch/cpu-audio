@@ -1,5 +1,5 @@
-RELEASE NOTES actual
-====================
+RELEASE NOTES actual, pre 7.0
+=============================
 
 New features
 ------------
@@ -62,7 +62,6 @@ Todo for this release :
  - Debug issues in Chrome mobile, as replay position or highlighted chapters in double
  - Can't remember, but to check : regression cpu controller => player (color focus, I believe)
  - Click on any chapter in players in examples/controller_playlist_and_chapters.html makes chapter position unfocused in controller
- - Add a style with handheld fine position panel already on
  - Implement <kbd>↑</kbd> and <kbd>↓</kbd> keys to move on chapters and playlists ([#108](#108))
  - Example of a vocal recorder, with a special template for the record button.
 
