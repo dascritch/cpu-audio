@@ -1,4 +1,4 @@
-import {passiveEvent, querySelectorDo, findContainer, preventLinkOnSamePage} from './utils.js';
+import {passiveEvent, findContainer, preventLinkOnSamePage} from './utils.js';
 import {trigger} from './trigger.js';
 import {pressManager, touch_manager} from './finger_manager.js';
 import {buildChaptersLoader} from './build_chapters.js';
@@ -115,6 +115,9 @@ export function buildInterface(container) {
 	container.emitEvent('ready');
 
 	container.updateLinks();
-	
-	querySelectorDo('#canonical', preventLinkOnSamePage, container.shadowRoot);
+
+	let canonical_element = container.shadowId('canonical'); 
+	if (canonical_element) {
+		preventLinkOnSamePage( canonical_element );
+	}
 }

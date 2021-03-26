@@ -352,9 +352,13 @@ export class CPU_element_api {
 	 * @param      {number|undefined|null=}  	ratio    ratio position in case time position are still unknown
 	 */
 	updateLine(seconds, ratio = null) {
+		let loadingline_element = this.shadowId('loadingline');
+		if (!loadingline_element) {
+			return;
+		}
 		let { duration } = this.audiotag;
 		ratio = ratio ?? ( duration === 0 ? 0 : (100*seconds / duration) );
-		this.shadowId('loadingline').style.width = `${ratio}%`;
+		loadingline_element.style.width = `${ratio}%`;
 	}
 
 	/**
@@ -709,21 +713,21 @@ export class CPU_element_api {
 	 * @package
 	 */
 	completeTemplate() {
-		let dataset = this.audiotagDataset();
+		const dataset = this.audiotagDataset();
 		let { title, waveform } = dataset;
-		let element_canonical = this.shadowId('canonical');
-
-		element_canonical.href = dataset.canonical;
-
-		let classlist = element_canonical.classList;
-
-		if (!title) {
-			classlist.add('untitled');
-			title = __.untitled;
-		} else {
-			classlist.remove('untitled');
+		const element_canonical = this.shadowId('canonical');
+		if (element_canonical) {
+			element_canonical.href = dataset.canonical;
+			let classlist = element_canonical.classList;
+			if (!title) {
+				classlist.add('untitled');
+				title = __.untitled;
+			} else {
+				classlist.remove('untitled');
+			}
+			element_canonical.innerText = title;
 		}
-		element_canonical.innerText = title;
+
 		if (this.element.title !== title) {
 			this.element.title = title; // WATCHOUT ! May goes recursive with observers
 		}
