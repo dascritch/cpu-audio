@@ -107,7 +107,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.expect( 2 );
 		let done = assert.async();
 		cpu.jumpIdAt('track', 0, function() {
-			assert.equal(audiotag.currentTime, 0, 'is at start' );
+			assert.ok(nearlyEqual(audiotag.currentTime, 0, 0.1), 'is at start' );
 			assert.ok(!audiotag.paused, 'not paused afterwards' );
 			done();
 		});
