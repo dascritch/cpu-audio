@@ -54,6 +54,11 @@ button {
 	background : transparent;
 }
 
+
+a:focus,  button:focus {
+	outline : var(--cpu-focus-outline); 
+}
+
 svg {
 	fill : currentColor;
 	width : var(--cpu-height);
@@ -447,13 +452,13 @@ aside a, h6, .cue time , aside.ticker *
 }
 
 .no,
-#loading, #play, #pause,
+.mode-hidden,
+#control svg,
 .show-main #pageshare, .show-main #pageerror,
 .show-share #pagemain, .show-share #pageerror,
 .show-error #pagemain, .show-error #pageshare , .show-error #poster,
 #handheld-nav , .show-handheld-nav #titleline,
 .hide-poster #poster, 
-.mode-hidden,
 .hide-chapters .chapters,
 .hide-timeline #line,
 .hide-panels .panel,
@@ -473,6 +478,14 @@ aside a, h6, .cue time , aside.ticker *
 
 .mode-compact.show-main #pagemain {
 	flex : 0 0 auto;
+}
+
+a:hover, button:hover, a:focus, button:focus, 
+#pageshare div:hover ,
+.active-cue, /* can now ride off its !important on color */
+.with-preview /* !important still needed to simplify css */ {
+	background: var(--cpu-focus-background, var(--cpu-color)) !important;
+	color : var(--cpu-focus-color, var(--cpu-background)) !important;
 }
 
 @media (max-width: 640px) /* , @element #interface and (max-width: 640px) */{
@@ -548,22 +561,9 @@ aside a, h6, .cue time , aside.ticker *
 	}
 }
 
-
 /* Accessibility : do not display animation;  */
 @media (prefers-reduced-motion: reduce) {
 	* {
 		animation : none !important;
   	}
-}
-
-a:hover, button:hover, a:focus, button:focus, 
-#pageshare div:hover ,
-.active-cue, /* can now ride off its !important on color */
-.with-preview /* !important still needed to simplify css */ {
-	background: var(--cpu-focus-background, var(--cpu-color)) !important;
-	color : var(--cpu-focus-color, var(--cpu-background)) !important;
-}
-
-a:focus,  button:focus {
-	outline : var(--cpu-focus-outline); 
 }
