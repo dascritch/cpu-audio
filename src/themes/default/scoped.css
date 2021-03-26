@@ -556,11 +556,14 @@ aside a, h6, .cue time , aside.ticker *
   	}
 }
 
-a:hover, a:focus, button:hover, button:focus,
+a:hover, button:hover, a:focus, button:focus, 
 #pageshare div:hover ,
 .active-cue, /* can now ride off its !important on color */
 .with-preview /* !important still needed to simplify css */ {
 	background: var(--cpu-focus-background, var(--cpu-color)) !important;
 	color : var(--cpu-focus-color, var(--cpu-background)) !important;
-	outline : none;
+}
+
+a:focus,  button:focus {
+	outline : var(--cpu-focus-outline); 
 }

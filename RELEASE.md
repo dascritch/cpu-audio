@@ -10,7 +10,8 @@ New features
  * Possibility to create RTL version ([#26](#26)) by this way ([#56](#56))
  * A11y : Support reduced motion preferences
  * Added method `Element.CPU.bulkPoints()`
- * Examples added
+ * Added a more visible focus outline, stylable via`--cpu-focus-outline` ([#116](#116))
+ * Some examples added
  * Degradable code, some elements are no more absolutely required in template ([#56](#56))
 
 Corrections
