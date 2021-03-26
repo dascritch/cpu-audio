@@ -301,17 +301,22 @@ export class CPU_element_api {
 	updatePlayButton() {
 		let audiotag = this.audiotag;
 		let _attr = audiotag.getAttribute('preload');
+		let control_button = this.shadowId('control');
+		const aria = 'aria-label';
 		let _preload = _attr ? (_attr.toLowerCase() !== 'none') : true ;
 		if (
 				(audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA ) &&
 				((_preload) || (audiotag._CPU_played))
 			) {
 			this.setActContainer('loading');
+			control_button.setAttribute(aria,__.loading);
 			return;
 		}
-
+ 		// warning : play/pause still inverted in "__"
+ 		let label = 'pause';
 		let will_act = 'play';
 		if (audiotag.paused) {
+			label = 'play';
 			will_act = 'pause';
 			if ((!audiotag._CPU_played) && (this.glowBeforePlay)) {
 				// TODO check option
@@ -320,6 +325,7 @@ export class CPU_element_api {
 		}
 
 		this.setActContainer(will_act);
+		control_button.setAttribute(aria, __[label]);
 		let hide_panels_except_play_mark = 'last-used';
 
 		let container_class = this.container.classList;

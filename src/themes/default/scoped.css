@@ -92,9 +92,9 @@ a {
 }
 
 .act-loading #loading,
-.act-play #play,
-.act-glow #pause,
-.act-pause #pause {
+.act-play #pause,
+.act-glow #play,
+.act-pause #play {
 	display : block;
 }
 
