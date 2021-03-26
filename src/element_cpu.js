@@ -727,7 +727,10 @@ export class CPU_element_api {
 		if (this.element.title !== title) {
 			this.element.title = title; // WATCHOUT ! May goes recursive with observers
 		}
-		this.shadowId('poster').src = dataset.poster || '';
+		const poster = this.shadowId('poster');
+		if (poster) {
+					poster.src = dataset.poster || '';
+		}
 		this.shadowId('time').style.backgroundImage = waveform ? `url(${waveform})` : '';
 		this.showMain();
 	}
