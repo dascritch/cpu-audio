@@ -87,20 +87,20 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 
 	QUnit.test( "Press play to start", function( assert ) {
 		assert.ok(audiotag.paused, "Player is paused at start" );
-		interfacetag.querySelector('#pause').dispatchEvent(new Event('click'));
+		interfacetag.querySelector('#play').dispatchEvent(new Event('click'));
 		assert.ok(! audiotag.paused, "Player plays after clicking on the play/pause button" );
 	});
 
 	QUnit.test( "Press play to start", function( assert ) {
 		assert.ok(audiotag.paused, "Player is paused at start" );
-		interfacetag.querySelector('#pause').dispatchEvent(new Event('click'));
+		interfacetag.querySelector('#play').dispatchEvent(new Event('click'));
 		assert.ok(! audiotag.paused, "Player plays after clicking on the play/pause button" );
 	});
 
 	QUnit.test( "Press pause to stop", function( assert ) {
 		audiotag.play();
 		assert.ok(! audiotag.paused, "Player is playing" );
-		interfacetag.querySelector('#play').dispatchEvent(new Event('click'));
+		interfacetag.querySelector('#pause').dispatchEvent(new Event('click'));
 		assert.ok(audiotag.paused, "Player paused" );
 	});
 
