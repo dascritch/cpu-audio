@@ -3,11 +3,9 @@
 /**
 
 TODO
-- AAARG ! Chrome still doesn't keep the moving cursor :(
 - when unfolding generators, expanded panels should be also scrolled to
 - use <textarea> instead of <input type="text"> ?
 - export .csv 
-
 **/
 
 

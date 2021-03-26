@@ -13,6 +13,7 @@ New features
  * Added a more visible focus outline, stylable via`--cpu-focus-outline` ([#116](#116))
  * Some examples added
  * Degradable code, some elements are no more absolutely required in template ([#56](#56))
+ * Revised [chapters-editors application](applications/chapters_editor.html)
 
 Corrections
 -----------
@@ -60,11 +61,9 @@ Back-end
 Todo for this release :
 -----------------------
 
- - Finish drag'n'drop in chapters-editors
  - we still have a flashing chapters before the one clicked in panel. There is something to clean up, probable root cause is my (voluntary) 206 defaillant web server
  - Debug issues in Chrome mobile, as replay position or highlighted chapters in double
  - Can't remember, but to check : regression cpu controller => player (color focus, I believe)
- - Click on any chapter in players in examples/controller_playlist_and_chapters.html makes chapter position unfocused in controller
  - Implement <kbd>↑</kbd> and <kbd>↓</kbd> keys to move on chapters and playlists ([#108](#108))
  - Example of a vocal recorder, with a special template for the record button.
 
