@@ -22,7 +22,7 @@ Corrections
  * Title parameter in `Element.CPU.addPlane()` is now in `planePoint`
  * `Element.CPU.removeHighlightsPoints()` was too generic. Modification in parameters ([#109](#109))
  * `Element.CPU.build_chapters()` and `Element.CPU.build_playlist()` are no more public API
- * Reduce repaints
+ * Reduce repaints, graphic glitches
  * Do not change color when changing mode play→loading→play ([#114](#114)) 
  * Resolving a probable issue on fine navigation panel on handheld
  * Play/pause button may have issues if Chrome got numerous webcomponents in the same page

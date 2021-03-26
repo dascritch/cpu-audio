@@ -562,4 +562,5 @@ a:hover, a:focus, button:hover, button:focus,
 .with-preview /* !important still needed to simplify css */ {
 	background: var(--cpu-focus-background, var(--cpu-color)) !important;
 	color : var(--cpu-focus-color, var(--cpu-background)) !important;
+	outline : none;
 }
