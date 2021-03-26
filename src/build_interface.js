@@ -37,8 +37,8 @@ export function buildInterface(container) {
 	let showMain = container.showMain.bind(container);
 
 	let cliquables = {
-		pause     : trigger.play,
-		play      : trigger.pause,
+		pause     : trigger.pause,
+		play      : trigger.play,
 		time      : trigger.throbble,
 		actions   : container.showActions.bind(container),
 		back      : showMain,
@@ -72,8 +72,6 @@ export function buildInterface(container) {
 	// keyboard management
 	container.element.addEventListener('keydown', trigger.key);
 
-	// not working correctly :/
-	container.shadowId('control').addEventListener('keydown', trigger.keydownplay);
 	// throbber management
 	let timeline_element = container.shadowId('time');
 	let do_events = {

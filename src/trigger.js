@@ -331,16 +331,25 @@ export const trigger = {
 			container.hideThrobberLater();
 		}
 
+		let toggleplay = function() {
+			audiotag.paused ?
+				trigger.play(event, audiotag) :
+				trigger.pause(undefined, audiotag);
+		};
+
 		switch (event.keyCode) {
-			// can't use enter : standard usage
+			case 13 : // enter : standard usage, except if focus is #control
+				if (container.shadow.querySelector(':focus')?.id.toLowerCase() != 'control') {
+					return;
+				}
+				toggleplay();
+				break;
 			case 27 : // esc
 				trigger.restart(event);
 				trigger.pause(undefined, audiotag);
 				break;
 			case 32 : // space
-				audiotag.paused ?
-					trigger.play(event, audiotag) :
-					trigger.pause(undefined, audiotag);
+				toggleplay();
 				break;
 			case 35 : // end
 				document.CPU.seekElementAt(audiotag, audiotag.duration);
@@ -357,24 +366,6 @@ export const trigger = {
 			default:
 				return ;
 		}
-		event.preventDefault();
-	},
-
-	/**
-	 * @summary Interprets keypress on the play/pause button
-	 *
-	 * @param      {Object}  event   The event
-	 */
-	keydownplay : function(event) {
-		if (event.keyCode === 13) {
-			return;
-		}
-		let container = findContainer(event.target);
-		let audiotag = container.audiotag;
-
-		audiotag.paused ?
-			trigger.play(undefined, audiotag) :
-			trigger.pause(undefined, audiotag);
 		event.preventDefault();
 	},
 

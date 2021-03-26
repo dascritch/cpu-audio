@@ -120,6 +120,7 @@ export class CPU_element_api {
 	constructor(element, container_interface, element_attributes) {
 		// I hate this style. I rather prefer the object notation
 		this.element = element;
+		this.shadow = element.shadowRoot;
 		this.audiotag = /* @type {HTMLAudioElement} */ element.audiotag;
 		this.container = container_interface;
 		this.mode_when_play = null;
@@ -225,7 +226,7 @@ export class CPU_element_api {
 	}
 
 	shadowId(id) {
-		return this.element.shadowRoot.getElementById(id);
+		return this.shadow.getElementById(id);
 	}  
 
 	/**
