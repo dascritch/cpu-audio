@@ -3,6 +3,7 @@
 /**
 
 TODO
+- interpret_loaded_tracks
 - when unfolding generators, expanded panels should be also scrolled to
 - use <textarea> instead of <input type="text"> ?
 - export .csv 
@@ -41,6 +42,29 @@ let timecode_input, text_input;
 function interpret_loaded_tracks(event) {
     // PREEEESQUE! faut que j'interprête avant dans le core
     /*
+
+/**
+ * Adds a line in chapter editor
+ *
+ * @param      {number}  [time_value=undefined]  Time position 
+ * @param      {string}  [text_value='']         Text title
+ * @return     {Element} Resulting created <p> element
+ * /
+function add_line(time_value=undefined , text_value='') {
+    if (time_value.preventDefault) {
+        // we have an event, we don't want to badly interpret it
+        time_value = false;
+    }
+
+    let pointName = `line-${line_number++}`;
+    points[pointName] = {
+        ...point_canvas,
+        start : time_value ? Number(time_value) : Number(sound_element.currentTime),
+        text  : text_value
+    };
+    show_only_line(pointName, true);
+}* /
+
     for(let t of sound_element.textTracks[0].cues) {
         interpret_line(null, add_line(t.startTime, t.text));
     }*/
@@ -81,27 +105,6 @@ function check_configure(event) {
     show_only_line();
 }
 
-/**
- * Adds a line in chapter editor
- *
- * @param      {number}  [time_value=undefined]  Time position 
- * @param      {string}  [text_value='']         Text title
- * @return     {Element} Resulting created <p> element
- */
-function add_line(time_value=undefined , text_value='') {
-    if (time_value.preventDefault) {
-        // we have an event, we don't want to badly interpret it
-        time_value = false;
-    }
-
-    let pointName = `line-${line_number++}`;
-    points[pointName] = {
-        ...point_canvas,
-        start : time_value ? Number(time_value) : Number(sound_element.currentTime),
-        text  : text_value
-    };
-    show_only_line(pointName, true);
-}
 
 
 /**
@@ -114,7 +117,7 @@ function check_for_actions(event) {
         switch (event.target.id) {
             case 'add' :
                 pointName_editing = `line-${line_number++}`;
-                points[pointName_editing] = point_canvas;
+                points[pointName_editing] = { ...point_canvas, start : Number(sound_element.currentTime) };
                 interpret_form();
                 show_only_line(pointName_editing, true);
                 break;
