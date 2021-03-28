@@ -3,10 +3,8 @@
 /**
 
 TODO
-- interpret_loaded_tracks
+- add on the fly generated spectrogram
 - when unfolding generators, expanded panels should be also scrolled to
-- use <textarea> instead of <input type="text"> ?
-- export .csv 
 **/
 
 
@@ -41,35 +39,19 @@ let timecode_input, text_input;
  */
 function interpret_loaded_tracks(event) {
     // PREEEESQUE! faut que j'interprête avant dans le core
-    /*
-
-/**
- * Adds a line in chapter editor
- *
- * @param      {number}  [time_value=undefined]  Time position 
- * @param      {string}  [text_value='']         Text title
- * @return     {Element} Resulting created <p> element
- * /
-function add_line(time_value=undefined , text_value='') {
-    if (time_value.preventDefault) {
-        // we have an event, we don't want to badly interpret it
-        time_value = false;
-    }
-
-    let pointName = `line-${line_number++}`;
-    points[pointName] = {
-        ...point_canvas,
-        start : time_value ? Number(time_value) : Number(sound_element.currentTime),
-        text  : text_value
-    };
-    show_only_line(pointName, true);
-}* /
-
+    let line_number = 0;
     for(let t of sound_element.textTracks[0].cues) {
-        interpret_line(null, add_line(t.startTime, t.text));
-    }*/
-    sound_CPU.cleanPlane('cursors');
-    sound_CPU.bulkPoints('cursors', sound_CPU.planePoints('_chapters'));
+        let { startTime, text } = t;
+        let this_pointName = `line-${line_number++}`;
+        points[this_pointName] = {
+            ...point_canvas,
+            start  : Number(startTime),
+            text   : text,
+            _input : text
+        };
+    }
+    sound_CPU.clearPlane('cursors');
+    sound_CPU.bulkPoints('cursors', points);
     show_only_line();
 }
 
