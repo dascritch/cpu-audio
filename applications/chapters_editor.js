@@ -1,14 +1,13 @@
 'use strict'; 
 
 /**
-
 TODO
 - add on the fly generated spectrogram
 - when unfolding generators, expanded panels should be also scrolled to
 **/
 
 
-let sound_element, component_element, list_element, edit_source_audio_element, edit_source_waveform_element, edit_source_webvtt_element;
+let sound_element, component_element, list_element, edit_source_audio_element, edit_source_webvtt_element;
 let sound_CPU;
 let line_number = 1;
 let convert;
@@ -66,7 +65,7 @@ function set_source_audio() {
     
     sound_element.src = url;
     sound_element.dataset.title = decodeURIComponent(url.replace(regex_filename_without_path, '$2'));
-    sound_element.dataset.waveform = edit_source_waveform_element.value;
+    // TODO sound_element.dataset.waveform with generated 
 
     if ( (edit_source_webvtt_element.value) && (track_element.src !== edit_source_webvtt_element.value) )  {
         track_element.src = edit_source_webvtt_element.value;
@@ -379,12 +378,10 @@ document.addEventListener('DOMContentLoaded', e => {
     sound_element = document.getElementById('sound');
 
     edit_source_audio_element = document.getElementById('source_audio');
-    edit_source_waveform_element = document.getElementById('source_waveform');
     edit_source_webvtt_element = document.getElementById('source_webvtt');
 
     /* Settings */
     edit_source_audio_element.addEventListener('change', set_source_audio);
-    edit_source_waveform_element.addEventListener('change', set_source_audio);
     edit_source_webvtt_element.addEventListener('change', set_source_audio);
     document.querySelector('#configure').addEventListener('submit', check_configure);
 
