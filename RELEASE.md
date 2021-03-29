@@ -37,6 +37,7 @@ Corrections
  * Leave error mode if template is recompleted
  * Update controller playlist panel if current playlist has changed
  * Removing a `<CPU-Audio>` will remove its reference in playlists
+ * Heavy simplification of the fine-position panel management
 
 Back-end
 --------
@@ -62,6 +63,8 @@ Back-end
 Todo for this release :
 -----------------------
 
+ - at start of press on time line, popup time display "0:00" ??
+ - Aria roles on fine position buttons
  - We still have a flashing chapters before the one clicked in panel. There is something to clean up, probable root cause is my (voluntary) 206 defaillant web serveror bad seeking/caching by Chrome. Really hard to reduce, the only way to mitigate it correctly is using css transitions :/
  - Debug issues in Chrome mobile, as replay position or highlighted chapters in double
  - Implement <kbd>↑</kbd> and <kbd>↓</kbd> keys to move on chapters and playlists ([#108](#108))

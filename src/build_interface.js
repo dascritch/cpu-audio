@@ -1,6 +1,6 @@
 import {passiveEvent, findContainer, preventLinkOnSamePage} from './utils.js';
 import {trigger} from './trigger.js';
-import {pressManager, touch_manager} from './finger_manager.js';
+import {pressManager} from './finger_manager.js';
 import {buildChaptersLoader} from './build_chapters.js';
 import {buildPlaylist} from './build_playlist.js';
 
@@ -51,22 +51,10 @@ export function buildInterface(container) {
 
 	// handheld nav to allow long press to repeat action
 	let _buttons = ['fastreward', 'reward', 'foward', 'fastfoward'];
-	let _actions = {
-		touchstart    : true,
-		touchend      : false,
-		touchcancel   : false,
-		/* PHRACKING IOS PHRACKING SAFARI PHRACKING APPLE */
-		mousedown     : true,
-		mouseup       : false,
-		mouseleave    : false
-	};
 	for (let that of _buttons) {
-		const element_id = container.shadowId(that);
-		if (element_id) {
-			for (let _act in _actions) {
-				element_id.addEventListener(_act, _actions[_act] ? pressManager.press : pressManager.release);
-			}
-		}
+		const button_element = container.shadowId(that);
+		button_element?.addEventListener('pointerdown', pressManager.press);
+		button_element?.addEventListener('pointerout', pressManager.release);
 	}
 
 	// keyboard management
@@ -90,8 +78,6 @@ export function buildInterface(container) {
 			passiveEvent);
 	}
 	// alternative fine navigation for handhelds
-	timeline_element.addEventListener('touchstart', touch_manager.start, passiveEvent);
-	timeline_element.addEventListener('touchend', touch_manager.cancel, passiveEvent);
 	timeline_element.addEventListener('contextmenu', container.showHandheldNav.bind(container));
 
 	if (navigator.share) {

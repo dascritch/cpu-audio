@@ -1,4 +1,3 @@
-import {findContainer} from './utils.js';
 import {trigger} from './trigger.js';
 
 // Repeated event allocation
@@ -7,14 +6,14 @@ const acceptable_press_actions = ['fastreward', 'reward', 'foward', 'fastfoward'
 
 // Handheld navigation button process
 // @private
-export class pressManager {
+export const pressManager = {
 	/*
 	 * @summary Start handheld navigation button press
 	 * @private
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	press(event) {
+	press : function (event) {
 		let target = event.target.id ? event.target : event.target.closest('button');
 		if ( (!target.id) || (!acceptable_press_actions.includes(target.id))) {
 			// we have been misleaded
@@ -28,56 +27,28 @@ export class pressManager {
 
 		pressing = window.setTimeout(pressManager.repeat, document.CPU.repeatDelay, { target });
 		event.preventDefault();
-	}
+	},
 	/*
 	 * @summary Repeat during pressing handheld navigation button
 	 * @private
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	repeat(event) {
-		//
+	repeat : function (event) {
 		trigger[event.target.id](event);
 		// next call : repetition are closest
 		pressing = window.setTimeout(pressManager.repeat, document.CPU.repeatFactor, event);
-	}
+		event.preventDefault?.();
+	},
 	/*
 	 * @summary Release handheld navigation button
 	 * @private
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	release(event) {
+	release : function (event) {
 		window.clearTimeout(pressing);
 		pressing = null;
 		event.preventDefault();
 	}
-}
-
-// touch is occuring
-let touching = null;
-
-export class touch_manager {
-	/**
-	 * @summary Interprets long play on timeline to reveal alternative fine position panel
-	 */
-	
-	/**
-	 * @summary Press started on the timeline
-	 *
-	 * @param      {Object}  event   The event
-	 */
-	start({target}) {
-		let container = findContainer(target);
-		touching = setTimeout(container.showHandheldNav.bind(container), document.CPU.alternateDelay);
-	}
-	/**
-	 * @summary Press stoped on the timeline
-	 *
-	 * @param      {Object}  event   The event
-	 */
-	cancel() {
-		clearTimeout(touching);
-	}
-
-}
+};

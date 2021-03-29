@@ -366,7 +366,7 @@ export const trigger = {
 			default:
 				return ;
 		}
-		event.preventDefault();
+		event.preventDefault?.();
 	},
 
 	/**
