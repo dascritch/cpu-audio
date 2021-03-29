@@ -10,7 +10,7 @@ TODO
 let sound_element, component_element, list_element, edit_source_audio_element, edit_source_webvtt_element;
 let sound_CPU;
 let line_number = 1;
-let convert;
+let convert = document.CPU;
 
 const point_canvas = {
             text : '',
@@ -54,6 +54,60 @@ function interpret_loaded_tracks(event) {
     show_only_line();
 }
 
+function histogram() {
+    // to complete https://github.com/dascritch/cpu-audio/issues/117
+    // TODO async
+    console.log('histogram')
+    // taken from https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/createAnalyser
+    let audioCtx = new AudioContext();
+    let source = audioCtx.createMediaElementSource(sound_element);
+    let analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 32;
+    let WIDTH = 2000;
+    let HEIGHT = 32;
+    let canvas = document.createElement('canvas');
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+    canvasctx = axis.getContext("2d");
+
+    let bufferLength = analyser.frequencyBinCount;
+    let dataArray = new Uint8Array(bufferLength);
+    analyser.getByteTimeDomainData(dataArray);
+
+    let drawVisual = requestAnimationFrame(draw);
+    analyser.getByteTimeDomainData(dataArray);
+    canvasctx.fillStyle = 'rgb(70, 70, 70)';
+    canvasctx.fillRect(0, 0, WIDTH, HEIGHT);
+    canvasctx.lineWidth = 2;
+    canvasctx.strokeStyle = 'rgb(0, 0, 0)';
+    canvasctx.beginPath();
+    let sliceWidth = WIDTH * 1.0 / bufferLength;
+    let x = 0;
+    for(let i = 0; i < bufferLength; i++) {
+        console.log(i)
+        if (i % 10000 == 0) {
+            console.log(i)
+        }
+
+
+
+        let v = dataArray[i] / 128.0;
+        let y = v * HEIGHT;
+
+        if (i === 0) {
+            canvasctx.moveTo(x, y);
+        } else {
+            canvasctx.lineTo(x, y);
+        }
+        x += sliceWidth;
+    }
+    canvasctx.lineTo(canvasctx.width, canvasctx.height/2);
+    canvasctx.stroke();
+    sound_element.dataset.waveform = canvas.toDataURL();
+    console.log(sound_element.dataset.waveform)
+}
+
+
 /**
  * Fired on any configuration field changed. Mainly for setting audio source, ev, timeline and track source
  */
@@ -69,6 +123,14 @@ function set_source_audio() {
 
     if ( (edit_source_webvtt_element.value) && (track_element.src !== edit_source_webvtt_element.value) )  {
         track_element.src = edit_source_webvtt_element.value;
+    }
+    try {
+        if (url) {
+            // histogram();  CORS issue;, see https://github.com/dascritch/cpu-audio/issues/117
+
+        }
+    } catch {
+
     }
 }
 
