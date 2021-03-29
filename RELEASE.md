@@ -14,6 +14,7 @@ New features
  * Some examples added
  * Degradable code, some elements are no more absolutely required in template ([#56](#56))
  * Revised [chapters-editors application](applications/chapters_editor.html)
+ * [Wonderful example of React integration](https://github.com/scombat/react-cpu-audio)
 
 Corrections
 -----------
@@ -61,10 +62,10 @@ Back-end
 Todo for this release :
 -----------------------
 
- - we still have a flashing chapters before the one clicked in panel. There is something to clean up, probable root cause is my (voluntary) 206 defaillant web serveror bad seeking/caching by Chrome
+ - We still have a flashing chapters before the one clicked in panel. There is something to clean up, probable root cause is my (voluntary) 206 defaillant web serveror bad seeking/caching by Chrome. Really hard to reduce, the only way to mitigate it correctly is using css transitions :/
  - Debug issues in Chrome mobile, as replay position or highlighted chapters in double
  - Implement <kbd>↑</kbd> and <kbd>↓</kbd> keys to move on chapters and playlists ([#108](#108))
- - Example of a vocal recorder, with a special template for the record button.
+ - Create a square player with a very different layout
 
 RELEASE NOTES version 6.6.3
 ===========================
