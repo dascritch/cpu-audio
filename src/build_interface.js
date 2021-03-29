@@ -55,6 +55,7 @@ export function buildInterface(container) {
 		const button_element = container.shadowId(that);
 		button_element?.addEventListener('pointerdown', pressManager.press);
 		button_element?.addEventListener('pointerout', pressManager.release);
+		button_element?.addEventListener('pointerup', pressManager.release);
 	}
 
 	// keyboard management
