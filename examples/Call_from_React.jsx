@@ -2,7 +2,7 @@
 // React will directly target the native web-component if called in lowercase.
 // Don't forget that classes for Web-Component must be inserted via `class` attribute, not `className`
 // More about native Web-Components in React : https://fr.reactjs.org/docs/web-components.html
-// Note that your linter may not like the  build
+// Note that your linter may not like the build, so you may prefer to include it via the public/index.html canvas
 
 import React, { useEffect } from 'react';
 
