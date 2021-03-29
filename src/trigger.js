@@ -325,10 +325,9 @@ export const trigger = {
 
 		/** @param      {number}  seconds    Relative position fowards */
 		function seek_relative(seconds) {
-			let duration = audiotag.duration;
-			// if (!isNaN(duration)) should be limited 
 			let at = container.audiotag.currentTime + seconds;
 			at = at > 0 ? at : 0;
+			let duration = audiotag.duration;
 			if (!isNaN(duration)) {
 				at = at < duration ? at : duration;
 			}
