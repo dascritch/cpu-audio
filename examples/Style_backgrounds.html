@@ -2,6 +2,7 @@
 <html>
 <meta charset="UTF-8" />
 <title>CPU-Audio API example : styling background</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
 <script src="../build/cpu-audio.js" async></script>
 <style>
@@ -13,39 +14,50 @@
     div style {
         display : block;
         font-family: monospace;
-        white-space: pre;
+        white-space: break-spaces;
+        overflow-wrap: break-word;
         margin : 10px;
         border : 2px solid grey;
     }
 
+    code {
+        white-space: nowrap;
+    }
+
     div cpu-audio {
         margin : 10px;
-        width : 80%;
     }
 </style>
 <body>
 
 <div id="example1">
 Perhaps you wish to put a non-solid background to the player&nbsp;? Simply define background variables in any alpha-transparency accepted format.
+
+    <cpu-audio title="Semi-transparent background">
+        <audio controls id="sound">
+            <source src="../tests-assets/blank.mp3" type="audio/mpeg" />
+        </audio>
+    </cpu-audio>
     <style scoped contenteditable> 
     #example1 {
-        --cpu-background : rgba(0, 0, 255, 0.3);
+        /* Ranibow magic values form https://codepen.io/nohoid/pen/kIfto by lkfto */
+        --cpu-background : linear-gradient(124deg, #f207, #e117, #eb77, #ee17, #1e47, #1de7, #21e7, #d0f7, #d0f7);
         /* Do not forget to redefine accordingly "normal color" */
         --cpu-color : black;
         /* And the focused colors, as invert normal background/color will be ugly  */
         --cpu-focus-color : white;
         --cpu-focus-background : black;
+        /* We also want a “plain-er” playing background */
+        --cpu-playing-background : linear-gradient(124deg, #f20a, #e11a, #eb7a, #ee1a, #1e4a, #1dea, #21ea, #d0fa, #d0fa);
+    
     }
     /* This <style> tag is editable, try it ! */
     </style>
-<cpu-audio 
-    title="Semi-transparent background">
-    <audio controls id="sound">
-        <source src="../tests-assets/blank.mp3" type="audio/mpeg" />
-    </audio>
-</cpu-audio>
     <p>
-         Redefining --cpu-color and --cpu-focus-color and --cpu-focus-background may be really useful, for resolving accessibility issues you may encounter, as <a href="https://dascritch.net/post/2019/11/13/Deux-couleurs-bizarres-en-CSS">I wrote about some actual CSS limitations (in French)</a>.
+        Do not forget to redefine also <code>--cpu-playing-color</code> and <code>--cpu-playing-background</code> of the playing interface.
+    </p>
+    <p>
+        Redefining <code>--cpu-color</code>, <code>--cpu-focus-color</code>, and <code>--cpu-focus-background</code> may be really useful, for resolving accessibility issues you may encounter, as <a href="https://dascritch.net/post/2019/11/13/Deux-couleurs-bizarres-en-CSS">I wrote about some actual CSS limitations (in French)</a>.
     </p>
 </div>
 
@@ -54,7 +66,13 @@ Perhaps you wish to put a non-solid background to the player&nbsp;? Simply defin
 
 
 <div id="example2">
-You can also use a background image. But you should also provide a solid color to it
+You can also use a background image. But you should also provide a solid color fallback, in case of slow/failed loading.
+    <cpu-audio 1
+        title="Background with an image">
+        <audio controls id="sound">
+            <source src="../tests-assets/blank.mp3" type="audio/mpeg" />
+        </audio>
+    </cpu-audio>
     <style scoped contenteditable> 
     #example2 {
         --cpu-background : #eee url('data:image/svg+xml,\
@@ -69,12 +87,6 @@ You can also use a background image. But you should also provide a solid color t
     }
 
     </style>
-<cpu-audio 
-    title="Background with an image">
-    <audio controls id="sound">
-        <source src="../tests-assets/blank.mp3" type="audio/mpeg" />
-    </audio>
-</cpu-audio>
 </div>
 
 </body>
