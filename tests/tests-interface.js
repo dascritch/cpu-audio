@@ -353,6 +353,33 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		});
 	});
 
+	QUnit.test( "Public API : trigger.reward before 0 stay on 0", function( assert ) {
+		let done = assert.async();
+		cpu.jumpIdAt('track', 60, function() {
+			cpu.keymove = 100;
+			cpu.trigger.reward({target : interfacetag, preventDefault:function(){} });
+			setTimeout(function() {
+				// Yes, the magic value 29.5s may suprise you, but, if I compare to 30s, Firefox goes sometimes at 29.992729s , and it fall the test ! Chrome may be at... 30.5 !
+				assert.ok(nearlyEqual(audiotag.currentTime, 0, 0.5), `Audio tag is at 0 seconds (at ${audiotag.currentTime})`);
+				done();
+			}, 100);
+		});
+	});
+
+	QUnit.test( "Public API : trigger.foward after duration stay on duration", function( assert ) {
+		let done = assert.async();
+		cpu.jumpIdAt('track', 60, function() {
+			cpu.keymove = 100;
+			cpu.trigger.foward({target : interfacetag, preventDefault:function(){} });
+			setTimeout(function() {
+				// Yes, the magic value 29.5s may suprise you, but, if I compare to 30s, Firefox goes sometimes at 29.992729s , and it fall the test ! Chrome may be at... 30.5 !
+				assert.ok(nearlyEqual(audiotag.currentTime, audiotag.duration, 0.5), `Audio tag is at end of time (at ${audiotag.currentTime})`);
+				done();
+			}, 100);
+		});
+	});
+
+
 	QUnit.test( "Public API : disable no cacophony feature via document.CPU.playStopOthers", function( assert ) {
 		let done = assert.async();
 		document.CPU.playStopOthers = false;
