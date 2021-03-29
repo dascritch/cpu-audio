@@ -105,6 +105,7 @@ function _retarget_src_files() {
 	fi
 }
 
+
 function _clean_too_old() {
 	SRC_FILE=${1}
 	TMP_FILE=${1}
@@ -115,43 +116,44 @@ function _clean_too_old() {
 }
 
 function _clean() {
-	_clean_too_old ${SRC_TEMPLATE} tmp/template.html
-	_clean_too_old ${SRC_GLOBAL}   tmp/global.css 
-	_clean_too_old ${SRC_SCOPED}   tmp/scoped.css 
+	_clean_too_old ${SRC_TEMPLATE} tmp/template.${THEME_NAME}.html
+	_clean_too_old ${SRC_GLOBAL}   tmp/global.${THEME_NAME}.css 
+	_clean_too_old ${SRC_SCOPED}   tmp/scoped.${THEME_NAME}.css 
 }
 
 function _build_template() {
 	echo 'compress'
-	if [ ! -f tmp/global.css ] ; then
-		echo '.. global.css'
-		npx clean-css-cli -o tmp/global.css ${SRC_GLOBAL}
+	if [ ! -f tmp/global.${THEME_NAME}.css ] ; then
+		echo ".. global.${THEME_NAME}.css"
+		npx clean-css-cli -o tmp/global.${THEME_NAME}.css ${SRC_GLOBAL}
 	fi
-	if [ ! -f tmp/scoped.css ] ; then
-		echo '.. scoped.css'
-		npx clean-css-cli -o tmp/scoped.css ${SRC_SCOPED}
+	if [ ! -f tmp/scoped.${THEME_NAME}.css ] ; then
+		echo ".. scoped.${THEME_NAME}.css"
+		npx clean-css-cli -o tmp/scoped.${THEME_NAME}.css ${SRC_SCOPED}
 	fi
-	if [ ! -f tmp/template.html ] ; then
-		echo '.. template.html'
-		npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace ${SRC_TEMPLATE} -o tmp/template.html
+	if [ ! -f tmp/template.${THEME_NAME}.html ] ; then
+		echo ".. template.${THEME_NAME}.html"
+		npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace ${SRC_TEMPLATE} -o tmp/template.${THEME_NAME}.html
 	fi
 
-	global_css=$(cat "${PROJECT_DIR}/tmp/global.css")
-	scoped_css=$(cat "${PROJECT_DIR}/tmp/scoped.css")
-	template_html=$(cat "${PROJECT_DIR}/tmp/template.html")
+	global_css=$(cat "${PROJECT_DIR}/tmp/global.${THEME_NAME}.css")
+	scoped_css=$(cat "${PROJECT_DIR}/tmp/scoped.${THEME_NAME}.css")
+	template_html=$(cat "${PROJECT_DIR}/tmp/template.${THEME_NAME}.html")
 
 	echo "// auto-generated source, done via make.sh
-import {__} from '../src/i18n.js';
-/** @summary insert styles and template into host document */
-export function insert_template(){
-	let style = document.createElement('style');
-	style.innerHTML = \`${global_css}\`;
-	document.head.appendChild(style);
+			import {__} from '../src/i18n.js';
+			/** @summary insert styles and template into host document */
+			export function insert_template(){
+				let style = document.createElement('style');
+				style.innerHTML = \`${global_css}\`;
+				document.head.appendChild(style);
 
-	let template = document.createElement('template');
-	template.id = 'CPU__template';
-	template.innerHTML = \`<style>${scoped_css}</style>${template_html}\`;
-	document.head.appendChild(template);
-}" > "${PROJECT_DIR}/tmp/insert_template.js"
+				let template = document.createElement('template');
+				template.id = 'CPU__template';
+				template.innerHTML = \`<style>${scoped_css}</style>${template_html}\`;
+				document.head.appendChild(template);
+			}
+		" > "${PROJECT_DIR}/tmp/insert_template.js"
 
 }
 
