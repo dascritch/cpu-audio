@@ -325,7 +325,14 @@ export const trigger = {
 
 		/** @param      {number}  seconds    Relative position fowards */
 		function seek_relative(seconds) {
-			event.at = container.audiotag.currentTime + seconds;
+			let duration = audiotag.duration;
+			// if (!isNaN(duration)) should be limited 
+			let at = container.audiotag.currentTime + seconds;
+			at = at > 0 ? at : 0;
+			if (!isNaN(duration)) {
+				at = at < duration ? at : duration;
+			}
+			event.at = at;
 			container.showThrobberAt(event.at);
 			trigger.throbble(event);
 			container.hideThrobberLater();
