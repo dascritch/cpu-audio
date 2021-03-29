@@ -185,7 +185,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.expect( 2 );
 		let done = assert.async();
 		cpu.trigger.hashOrder('track&t=20,', function() {
-			assert.equal(audiotag.currentTime, 20, 'starts at 0 second');
+			assert.ok(nearlyEqual(audiotag.currentTime, 20, 0.1), 'starts at 0 second');
 			assert.equal(cpu.trigger._timecode_end, false, 'natural end');
 			done();
 		});

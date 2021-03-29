@@ -592,7 +592,6 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		pointDataGroup = { hello : data , hi : {start : 0 , a:1 , b:2} , point_1 : {start : 100}}
 		assert.ok(secondary_API_CPU.bulkPoints(planeName, pointDataGroup), 'Works on qualifiable data');
 		assert.equal(secondary_API_CPU.planePointNames(planeName).length, 4, 'Plane should have 4 points : 2 created, one updated');
-		console.log(secondary_API_CPU.plane(planeName))
 		assert.equal(secondary_API_CPU.point(planeName, 'point_1').start, 100, 'Value of point_1 updated (old values are all erased, instead of editPoint())');
 		assert.equal(secondary_API_CPU.plane(planeName)._st_max, 100, 'plane proxy _st_max is updated');
 	});

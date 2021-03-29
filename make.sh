@@ -32,7 +32,6 @@ OTHER_OPTIONS=' --devtool source-map'
 webpack_mode='production'
 
 THEME_NAME="default"
-THEME_OUTPUT=''
 ALL_THEMES=0
 TESTS=0
 REINDEX=0
@@ -68,12 +67,9 @@ while [ '-' == "${1:0:1}" ] ; do
 			rm ${PROJECT_DIR}/tmp/*
 			shift
 			THEME_NAME=${1}
-			THEME_OUTPUT=".${THEME_NAME}"
 		;;
 		--all-themes)
 			ALL_THEMES=1
-			echo "NO YET"
-			exit 1
 		;;
 		--)
 			shift
@@ -87,7 +83,10 @@ while [ '-' == "${1:0:1}" ] ; do
 	shift
 done
 
+tmp_template_html='/dev/null'
+
 function _retarget_src_files() {
+	theme_key="${1}"
 	if [ -f "${PROJECT_DIR}/src/themes/${THEME_NAME}/template.html" ] ; then
 		SRC_TEMPLATE="${PROJECT_DIR}/src/themes/${THEME_NAME}/template.html"
 	else
@@ -103,8 +102,18 @@ function _retarget_src_files() {
 	else
 		echo "No scoped.css in ${THEME_NAME} theme, will use ${SRC_SCOPED} instead"
 	fi
-}
 
+	filename_template_html="${PROJECT_DIR}/tmp/template.${THEME_NAME}.html"
+	filename_global_css="${PROJECT_DIR}/tmp/global.${THEME_NAME}.css"
+	filename_scoped_css="${PROJECT_DIR}/tmp/scoped.${THEME_NAME}.css"
+
+	THEME_OUTPUT=""
+	if [[ "default" != "${THEME_NAME}"  ]] ; then
+		THEME_OUTPUT=".${THEME_NAME}"
+	fi
+
+	build_component_relative_path="cpu-audio${THEME_OUTPUT}.js"
+}
 
 function _clean_too_old() {
 	SRC_FILE=${1}
@@ -116,54 +125,55 @@ function _clean_too_old() {
 }
 
 function _clean() {
-	_clean_too_old ${SRC_TEMPLATE} tmp/template.${THEME_NAME}.html
-	_clean_too_old ${SRC_GLOBAL}   tmp/global.${THEME_NAME}.css 
-	_clean_too_old ${SRC_SCOPED}   tmp/scoped.${THEME_NAME}.css 
+	_clean_too_old ${SRC_TEMPLATE} ${filename_template_html}
+	_clean_too_old ${SRC_GLOBAL}   ${filename_global_css}
+	_clean_too_old ${SRC_SCOPED}   ${filename_scoped_css} 
 }
 
 function _build_template() {
 	echo 'compress'
-	if [ ! -f tmp/global.${THEME_NAME}.css ] ; then
-		echo ".. global.${THEME_NAME}.css"
-		npx clean-css-cli -o tmp/global.${THEME_NAME}.css ${SRC_GLOBAL}
+	if [ ! -f ${filename_global_css} ] ; then
+		echo ".. ${filename_global_css}"
+		npx clean-css-cli -o ${filename_global_css} ${SRC_GLOBAL}
 	fi
-	if [ ! -f tmp/scoped.${THEME_NAME}.css ] ; then
+	if [ ! -f ${filename_scoped_css} ] ; then
 		echo ".. scoped.${THEME_NAME}.css"
-		npx clean-css-cli -o tmp/scoped.${THEME_NAME}.css ${SRC_SCOPED}
+		npx clean-css-cli -o ${filename_scoped_css} ${SRC_SCOPED}
 	fi
-	if [ ! -f tmp/template.${THEME_NAME}.html ] ; then
-		echo ".. template.${THEME_NAME}.html"
-		npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace ${SRC_TEMPLATE} -o tmp/template.${THEME_NAME}.html
+	if [ ! -f ${filename_template_html} ] ; then
+		echo ".. ${filename_template_html}"
+		npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace ${SRC_TEMPLATE} -o ${filename_template_html}
 	fi
 
-	global_css=$(cat "${PROJECT_DIR}/tmp/global.${THEME_NAME}.css")
-	scoped_css=$(cat "${PROJECT_DIR}/tmp/scoped.${THEME_NAME}.css")
-	template_html=$(cat "${PROJECT_DIR}/tmp/template.${THEME_NAME}.html")
+	content_global_css=$(cat "${filename_global_css}")
+	content_scoped_css=$(cat "${filename_scoped_css}")
+	content_template_html=$(cat "${filename_template_html}")
 
 	echo "// auto-generated source, done via make.sh
 			import {__} from '../src/i18n.js';
 			/** @summary insert styles and template into host document */
 			export function insert_template(){
 				let style = document.createElement('style');
-				style.innerHTML = \`${global_css}\`;
+				style.innerHTML = \`${content_global_css}\`;
 				document.head.appendChild(style);
 
 				let template = document.createElement('template');
 				template.id = 'CPU__template';
-				template.innerHTML = \`<style>${scoped_css}</style>${template_html}\`;
+				template.innerHTML = \`<style>${content_scoped_css}</style>${content_template_html}\`;
 				document.head.appendChild(template);
 			}
 		" > "${PROJECT_DIR}/tmp/insert_template.js"
 
+	# TODO symlink to "${PROJECT_DIR}/tmp/insert_template.js"
+
 }
 
 function _build_component_js_webpack() {
-	echo 'webpacking'
-	component_file_js="cpu-audio${THEME_OUTPUT}.js"
-	npx webpack --config ${PROJECT_DIR}/webpack.config.js --mode ${webpack_mode} --target es2020 --entry ${PROJECT_DIR}/src/index.js --output-path ${PROJECT_DIR}/build --output-filename ${component_file_js} ${OTHER_OPTIONS}
-	if [[ "${THEME_NAME}" != "default" ]] ; then
-		echo -e "\n// Generated theme : ${THEME_NAME}\n" >> ${PROJECT_DIR}/build/${component_file_js}
-	fi
+	echo "webpacking to build/${build_component_relative_path}"
+	npx webpack --config ${PROJECT_DIR}/webpack.config.js --mode ${webpack_mode} --target es2020 --entry ${PROJECT_DIR}/src/index.js --output-path ${PROJECT_DIR}/build --output-filename ${build_component_relative_path} ${OTHER_OPTIONS}
+	
+	echo -e "\n// Generated theme : ${THEME_NAME}\n" >> build/${build_component_relative_path}
+	ls -l build/${build_component_relative_path}*
 }
 
 function _tests() {
@@ -202,15 +212,24 @@ function _recreate_index() {
 	echo "</ul>" >> ${EXAMPLES_HTML}
 }
 
-
-_retarget_src_files
-_clean
+function build() {
+	_retarget_src_files ${THEME_NAME}
+	_build_template
+	_build_component_js_webpack
+}
 
 # It fails ? crash
 set -e
 
-_build_template
-_build_component_js_webpack
+if [[ '1' == ${ALL_THEMES} ]] ; then
+	for entry in src/themes/* ; do
+		THEME_NAME=$(basename -- ${entry}) 
+		echo "build theme ${THEME_NAME}"
+		build
+	done
+else
+	build
+fi
 
 if [ "1" == "${TESTS}" ] ; then
 	_tests
