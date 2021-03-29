@@ -107,6 +107,8 @@ function _retarget_src_files() {
 	filename_global_css="${PROJECT_DIR}/tmp/global.${THEME_NAME}.css"
 	filename_scoped_css="${PROJECT_DIR}/tmp/scoped.${THEME_NAME}.css"
 
+	filename_insert_template_js="${PROJECT_DIR}/tmp/insert_template.${THEME_NAME}.js"
+
 	THEME_OUTPUT=""
 	if [[ "default" != "${THEME_NAME}"  ]] ; then
 		THEME_OUTPUT=".${THEME_NAME}"
@@ -162,10 +164,8 @@ function _build_template() {
 				template.innerHTML = \`<style>${content_scoped_css}</style>${content_template_html}\`;
 				document.head.appendChild(template);
 			}
-		" > "${PROJECT_DIR}/tmp/insert_template.js"
-
-	# TODO symlink to "${PROJECT_DIR}/tmp/insert_template.js"
-
+		" > "${filename_insert_template_js}"
+	ln --force -- "${filename_insert_template_js}" "${PROJECT_DIR}/tmp/insert_template.js"
 }
 
 function _build_component_js_webpack() {
