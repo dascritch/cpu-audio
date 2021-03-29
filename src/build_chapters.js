@@ -1,4 +1,4 @@
-import {error, oncePassiveEvent, passiveEvent} from './utils.js';
+import {oncePassiveEvent, passiveEvent} from './utils.js';
 import {__, prefered_language} from './i18n.js';
 import {trigger} from './trigger.js';
 import {translateVTT} from './translate_vtt.js';
@@ -27,6 +27,36 @@ export function buildChaptersLoader(container) {
 }
 
 /**
+ * @summary Extract usable chapter tracks from audiotag
+ * @private
+ *
+ * @param      {HTMLAudioElement} 	audiotag	The <audio> supposed to have a chapter tracj
+ * @return     {TextTrack|null}  				The TextTrack, or null if not applicable
+ */
+function get_chapter_tracks(audiotag) {
+	if (!audiotag) {
+		return null;
+	}
+
+	let chapter_track = null;
+	if (audiotag.textTracks?.length > 0) {
+		for (let tracks of audiotag.textTracks) {
+			if (
+					(tracks.kind.toLowerCase() === 'chapters') &&
+					(tracks.cues) &&  // linked to default="" attribute, only one per set !
+					(
+						(!chapter_track) /* still no active track */
+						|| (tracks.language.toLowerCase() === prefered_language) /* correspond to <html lang> */
+					)
+				) {
+				chapter_track = tracks;
+			}
+		}
+	}
+	return chapter_track;
+}
+
+/**
  * @summary Builds or refresh chapters interface.
  * @private was public
  *
@@ -47,56 +77,41 @@ export async function build_chapters(container) {
 	const pointDataGroup = {};
 
 	if (audiotag) {
-		if (audiotag.textTracks?.length > 0) {
-			let chapter_track = null;
+		const chapter_track = get_chapter_tracks(audiotag);
 
-			for (let tracks of audiotag.textTracks) {
-				if (
-						(tracks.kind.toLowerCase() === 'chapters') &&
-						(tracks.cues) &&  // linked to default="" attribute, only one per set !
-						(
-							(!chapter_track) /* still no active track */
-							|| (tracks.language.toLowerCase() === prefered_language) /* correspond to <html lang> */
-						)
-					) {
-					chapter_track = tracks;
+		if (chapter_track?.cues.length > 0) {
+			container.addPlane(plane_chapters, {
+				title : __['chapters'],
+				track : 'chapters'
+			});
+
+			let cuechange_event_this = cuechange_event.bind(undefined, container);
+			// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
+			// adding/reinstall chapter changing event
+			chapter_track.removeEventListener('cuechange', cuechange_event_this);
+			chapter_track.addEventListener('cuechange', cuechange_event_this, passiveEvent);
+
+			for (let cue of chapter_track.cues) {
+				if (!container.point(plane_chapters, cue.id)) {
+					// avoid unuseful redraw, again
+					let cuepoint = Math.floor(cue.startTime);
+					pointDataGroup[cue.id] = {
+						start : cuepoint,
+						text  : translateVTT(cue.text),
+						link  : true,          // point the link to start time position
+						end   : cue.endTime    // end timecode of the cue
+					};
 				}
 			}
-
-			if (chapter_track?.cues.length > 0) {
-				container.addPlane(plane_chapters, {
-					title : __['chapters'],
-					track : 'chapters'
-				});
-
-				let cuechange_event_this = cuechange_event.bind(undefined, container);
-				// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
-				// adding/reinstall chapter changing event
-				chapter_track.removeEventListener('cuechange', cuechange_event_this);
-				chapter_track.addEventListener('cuechange', cuechange_event_this, passiveEvent);
-
-				for (let cue of chapter_track.cues) {
-					if (!container.point(plane_chapters, cue.id)) {
-						// avoid unuseful redraw, again
-						let cuepoint = Math.floor(cue.startTime);
-						pointDataGroup[cue.id] = {
-							start : cuepoint,
-							text  : translateVTT(cue.text),
-							link  : true,          // point the link to start time position
-							end   : cue.endTime    // end timecode of the cue
-						};
-					}
-				}
-				if (chapter_track.cues.length > 0) {
-					has = true;
-				}
-				container.bulkPoints(plane_chapters, pointDataGroup);
-				cuechange_event(container, {
-					target : {
-						activeCues : chapter_track.cues
-					}
-				});
+			if (chapter_track.cues.length > 0) {
+				has = true;
 			}
+			container.bulkPoints(plane_chapters, pointDataGroup);
+			cuechange_event(container, {
+				target : {
+					activeCues : chapter_track.cues
+				}
+			});
 		}
 	}
 
@@ -118,6 +133,7 @@ export async function build_chapters(container) {
 		this.emitEvent('chapterChanged', {
 			cue : active_cue
 		});
+		// and so, shall we scroll ?
 	}
 	*/
 
@@ -130,32 +146,33 @@ export async function build_chapters(container) {
  * @param      {Object}  container  Element.CPU
  * @param      {Object}  event   	The event
  */
-function cuechange_event(container, event) {
-	let active_cue;
-	try {
-		// Chrome may put more than one activeCue. That's a stupid regression from them, but alas... I have to do with
-		let _time = container.audiotag.currentTime;
-		for (let cue of event.target.activeCues) {
-			if ((cue.startTime <= _time) && (_time < cue.endTime)) {
-				active_cue = cue;
+export function cuechange_event(container, event = null) {
+	// TODO : if not event, based on '_chapters' information from audio
+
+	const activeCues = event ? event.target.activeCues : get_chapter_tracks(container.audiotag)?.activeCues;
+	
+	let cue;
+	// Chrome may put more than one activeCue. That's a stupid regression from them, but alas... I have to do with
+	let currentTime = container.audiotag.currentTime;
+	
+	if (activeCues?.length > 0) {
+		for (let cue_line of activeCues) {
+			if ((cue_line.startTime <= currentTime) && (currentTime < cue_line.endTime)) {
+				cue = cue_line;
 			}
 		}
-		if (Object.is(active_cue, container._activecue)) {
-			return ;
-		}
+	}
 
-		container._activecue = active_cue;
-		// do NOT tell me this is ugly, i know this is ugly. I missed something. Teach me how to do it better
-	} catch (oops) {
-		error(oops);
+	if (cue?.id === container._activecue_id) {
+		return ;
 	}
 
 	container.removeHighlightsPoints(plane_chapters, activecueClassname);
-	if (active_cue) {
-		trigger.cuechange(active_cue, container.audiotag);
-		container.emitEvent('chapterChanged', {
-			cue : active_cue
-		});
-		container.highlightPoint(plane_chapters, active_cue.id, activecueClassname);
+	container._activecue_id = cue?.id;
+
+	if (cue) {
+		trigger.cuechange(cue, container.audiotag);
+		container.emitEvent('chapterChanged', { cue });
+		container.highlightPoint(plane_chapters, cue.id, activecueClassname);
 	}
 }

@@ -6,6 +6,7 @@ import {translateVTT} from './translate_vtt.js';
 import {trigger} from './trigger.js';
 import {isAudiotagStreamed, addIdToAudiotag} from './media_element_extension.js';
 import {buildInterface} from './build_interface.js';
+import {cuechange_event} from './build_chapters.js';
 
 // Acceptables attributes values for hide="" parameter on webcomponent
 const acceptableHideAtttributes = ['poster', 'actions', 'timeline', 'chapters', 'panels', 'panels-title', 'panels-except-play'];
@@ -126,7 +127,7 @@ export class CPU_element_api {
 		this.mode_when_play = null;
 		this.glowBeforePlay = !! element_attributes.glow;
 		this.current_playlist = [];
-		this._activecue = null;
+		this._activecue_id = null;
 		this.mode_was = null;
 		this.act_was = null;
 
@@ -1339,6 +1340,8 @@ export class CPU_element_api {
 			this.drawPlane(planeName);
 			this.refreshPlane(planeName);
 		}
+		// due to a Chrome glitch on chapters panel in cpu-controller while changing playing cpu-audio, we have to refresh a cuechange_event 
+		cuechange_event(this);
 	}
 
 

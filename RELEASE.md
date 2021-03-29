@@ -61,9 +61,8 @@ Back-end
 Todo for this release :
 -----------------------
 
- - we still have a flashing chapters before the one clicked in panel. There is something to clean up, probable root cause is my (voluntary) 206 defaillant web server
+ - we still have a flashing chapters before the one clicked in panel. There is something to clean up, probable root cause is my (voluntary) 206 defaillant web serveror bad seeking/caching by Chrome
  - Debug issues in Chrome mobile, as replay position or highlighted chapters in double
- - Can't remember, but to check : regression cpu controller => player (color focus, I believe)
  - Implement <kbd>↑</kbd> and <kbd>↓</kbd> keys to move on chapters and playlists ([#108](#108))
  - Example of a vocal recorder, with a special template for the record button.
 
