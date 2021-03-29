@@ -173,7 +173,9 @@ function _build_component_js_webpack() {
 	npx webpack --config ${PROJECT_DIR}/webpack.config.js --mode ${webpack_mode} --target es2020 --entry ${PROJECT_DIR}/src/index.js --output-path ${PROJECT_DIR}/build --output-filename ${build_component_relative_path} ${OTHER_OPTIONS}
 	
 	echo -e "\n// Generated theme : ${THEME_NAME}\n" >> build/${build_component_relative_path}
-	ls -l build/${build_component_relative_path}*
+	if [ "1" == "${TESTS}" ] ; then
+		ls -l build/${build_component_relative_path}*
+	fi
 }
 
 function _tests() {
@@ -239,4 +241,8 @@ if [ "1" == "${REINDEX}" ] ; then
 	_recreate_index
 fi
 
-ls -l ${PROJECT_DIR}/build/*
+if [[ '1' == ${ALL_THEMES} ]] ; then
+	ls -l ${PROJECT_DIR}/build/*
+else
+	ls -l ${PROJECT_DIR}/build/${build_component_relative_path}*
+fi
