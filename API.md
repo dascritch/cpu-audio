@@ -88,7 +88,7 @@ setActContainer(string)                                  |         | Change the 
 setHideContainer(array)                                  |         | Array of strings, may contains `'actions'` or `'chapters'`, [used for `hide=""` attribute](./INSTALL#attributes-references)
 showThrobberAt(number)                                   |         | Display the throbber on the timeline at a given time in seconds.
 hideThrobber()                                           |         | Hide immediately the throbber
-hideThrobberLater()                                      |         | Hide the throbber later (waiting 1 seconds). A newer call will delay the hiding later. News at 11.
+hideThrobberLater()                                      |         | Hide the throbber later (waiting 1 seconds). A newer call will delay the hiding later.
 showInterface(string)                                    |         | Switch between `'main'`, `'share'` or `'error'` interfaces.
 addPlane(planeName, planeData)                    		 | boolean | Create an annotation plane (¹)(²)(³)
 removePlane(planeName)                                   | boolean | Remove an annotation plane (¹)(²)
@@ -99,7 +99,7 @@ removePoint(planeName, pointName)                        | boolean | Remove an a
 clearPlane(planeName)                                    |         | Remove any points from an annotation plane (¹)(²)
 redrawAllPlanes()                                        |         | Redraw any annotation planes and points
 highlightPoint(planeName, pointName, className, mirror)  |         | Highlight a perticuliar annotation point, className is `with-preview` by default (²)
-removeHighlightsPoints(planeName, className, mirror)     |         | CHANGED SINCE 6.7! Remove highlights on a plane, className is `with-preview` by default (²)
+removeHighlightsPoints(planeName, className, mirror)     |         | Remove highlights on a plane, className is `with-preview` by default (²)
 injectCss(styleName, css)					             |		   | Inject a `<style>` tag into the shadowDom of the component. (²)
 removeCss(styleName)						             |		   | Remove an inject `<style>` from the shadowDom. (²)
 
