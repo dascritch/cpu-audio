@@ -16,29 +16,16 @@ An audio WebComponent to provide an user-interface, timecoded links and some oth
     <!-- {% include no_component_message.html %} -->
 </cpu-audio>
 
-Some links :
-* [Demonstration site](https://dascritch.github.io/cpu-audio/)
-    * [Features](https://dascritch.github.io/cpu-audio/FEATURES)
-    * [How to install](https://dascritch.github.io/cpu-audio/INSTALL)
-    * [Live configuration](https://dascritch.github.io/cpu-audio/LIVE)
-* [JS installable code](https://dascritch.github.io/cpu-audio/build/cpu-audio.js) 
-* [Code repository](https://github.com/dascritch/cpu-audio/), [Latest stable release](https://github.com/dascritch/cpu-audio/releases/latest)
-* [How to participate to this project](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
-* Blog posts about its creation and development : [Série cpu-audio sur dascritch.net](https://dascritch.net/serie/cpu-audio)
-* [How to cite a podcast](https://www.buzzsprout.com/blog/cite-podcast), now you can support time positions URL
-* Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
-
-Version : 6.99.1 [Licence GPL 3](LICENSE)
 
 Purpose
 -------
 
-An hashtag observer for `<audio>` tags with fancy interface, hyperlinks and share buttons.
+A generic WebComponent crafted with a hashtag observer for `<audio>` tags with fancy interface, hyperlinks, chaptering, playlist and share buttons.
 
 When you load a page :
 
-1. if your URL has an hash with a timecode (`page#tagID&t=10m`), the service will play the named `<audio controls>` at this timecode (here, `#TagID` at 10 minutes) ;
-2. else, if a `<audio controls>` with a url `<source>` was played in your website, and was unexpectedly exited, the service will play the `<audio controls>` at the same timecode.
+1. if your URL has a hash with a timecode (`https://example.com/page#tagID&t=10m`), the service will position the named `<audio controls>` at this timecode (here, `#TagID` at 10 minutes) ;
+2. or, if a audio source (qualified by its url) was played in your website, and was unexpectedly exited, the service will reposition its `<audio controls>` at the same timecode.
 
 During the page life :
 
@@ -46,17 +33,18 @@ During the page life :
 * no cacophony : when a `<audio controls>` starts, it will stop any other `<audio controls>` in the page ;
 * if you have a `<cpu-controller>` in your page, it will clone the playing `<cpu-audio>` interface.
 
-<a href="#sound&t=20m45s">This link starts the upper player at 20:45</a>
+<a href="#sound&t=20m45s">This link starts the upper player at 20:45</a>, and a link can limit <a href="#sound&t=5s,7s">playing between a start (0:05) and end (0:08) marks</a>
 
 
 HOW TO install
 --------------
 
-A unique and lightweight js file to install, without any dependencies, 
+A unique and lightweight js file to install, without any dependencies.
 
 * [How to install, deploy and customize on your server](INSTALL)
 * [You can try playing with our live configurator tool](LIVE)
-* See [basic examples](examples) and [applications with advanced use cases](applications) 
+* See [basic examples](examples.html) and [applications with advanced use cases](applications) 
+* [A React .jsx example](examples/Call_from_React.jsx)
 * [Known problems and misconfigurations](TROUBLESHOOTING)
 
 
@@ -77,6 +65,7 @@ Features
 * playlist with auto-advance ;
 * play only a range between 2 timestamps ;
 * chapters ;
+* alternate navigation for a finest precision on smartphones ;
 * global `<cpu-controller>` .
 
 It could have been done via polyfills or frameworks, but I wanted a plain standard, vanilla javascript, easy to install and configure.
@@ -103,6 +92,23 @@ When the interface got the focus, you can use those keys :
 * <kbd>Escape</kbd> : back to start, stop playing
 
 For handheld users, a long press on the timeline will show you another interface for a more precise navigation.
+
+
+Some links
+----------
+
+* [Demonstration site](https://dascritch.github.io/cpu-audio/)
+    * [Features](https://dascritch.github.io/cpu-audio/FEATURES)
+    * [How to install](https://dascritch.github.io/cpu-audio/INSTALL)
+    * [Live configuration](https://dascritch.github.io/cpu-audio/LIVE)
+* [JS installable code](https://dascritch.github.io/cpu-audio/build/cpu-audio.js) 
+* [Code repository](https://github.com/dascritch/cpu-audio/), [Latest stable release](https://github.com/dascritch/cpu-audio/releases/latest)
+* [How to participate to this project](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
+* Blog posts about its creation and development : [Série cpu-audio sur dascritch.net](https://dascritch.net/serie/cpu-audio)
+* [How to cite a podcast](https://www.buzzsprout.com/blog/cite-podcast), now you can support time positions URL
+* Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
+
+Version : 6.99.1 [Licence GPL 3](LICENSE)
 
 
 Participate
