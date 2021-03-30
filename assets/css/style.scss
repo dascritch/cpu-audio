@@ -37,6 +37,16 @@ audio[control] {
     border : 4px red solid; padding : 4px;
 }
 
+button, input, input[type="checkbox"], input[type="radio"],  optgroup, select, textarea {
+    color: #000;
+    caret-color: #000;
+    background: #ddd;
+}
+::placeholder {
+    color: #333;
+}
+
+
 kbd {
     display: inline-block;
     padding: 3px 5px;

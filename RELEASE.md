@@ -39,11 +39,14 @@ Corrections
  * Update controller playlist panel if current playlist has changed
  * Removing a `<CPU-Audio>` will remove its reference in playlists
  * Heavy simplification of the fine-position panel management
+ * Do not show panels when in error state
+ * Build lib still under 50,000 bytes
 
 Back-end
 --------
 
- * [Made a call on contribulle.org](https://contribulle.org/projects/27) 
+ * [Made a call on contribulle.org](https://contribulle.org/projects/27)
+ * gh-pages jekyll theme changed 
  * Using standard ECMA imports ([#110](#110))
  * Using ECMA5+ classes, getters, setters, rests & spreads ([#115](#115))
  * Renamed files ([#110](#110))
