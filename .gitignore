@@ -1,4 +1,8 @@
-dist/cpu-audio.EXPERIMENTAL.*
+node_modules/*
+package-lock.json
+src/themes/_*
+build/cpu-audio.EXPERIMENTAL.*
+build/_*
 tests-assets/*
 tmp/
 __TEST.html

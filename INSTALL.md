@@ -1,7 +1,7 @@
 How-to install
 ==============
 
-Copy [`dist/cpu-audio.js`](dist/cpu-audio.js) file on your website.
+Copy [`build/cpu-audio.js`](build/cpu-audio.js) file on your website.
 
 Call it in the `<head>` of your html page :
 
@@ -223,13 +223,17 @@ Variable name               | Description                                       
 `--cpu-playing-color`       | Color while playing                                         | `#fff`
 `--cpu-focus-background`    | Background when an active element is hover/focused          | Current color definition
 `--cpu-focus-color`         | Color when an active element is hover/focused               | Current background definition
+`--cpu-focus-outline`       | Outline definition for focused element                      | `none`
 `--cpu-popup-background`    | Background for the time pointer                             | `#aaa`
 `--cpu-popup-color`         | Text color for the time pointer                             | `#333`
 `--cpu-cue`                 | Color for the chapter lines under the time-line             | `#000`
 `--cpu-timeline-limits`     | Color of the bordered playing, if a ending point is defined | `#f00`
 
+If the user prefers a reduced motion interface, the player will remove any motion and transitions. This is an accssibility feature.
+
 Some color/background values are not recommended, as `currentColor` and `transparent` ([explained here in French](https://dascritch.net/post/2019/11/13/Deux-couleurs-bizarres-en-CSS)), except if you also define `--cpu-focus-background` and `--cpu-focus-color` to address accessibility issues.
 
+In case you need to create some specific breakpoints, the best way is to create a theme and make your own version. See [API.md](API) and [CONTRIBUTING.md](CONTRIBUTING).
 
 Using classes on host page
 --------------------------

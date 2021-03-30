@@ -2,7 +2,7 @@ This is a primitive live configurator for CPU-Audio, helping you to tune it for 
 
 See [INSTALL.md](INSTALL) for explanations on attributes and values.
 
-{% include_relative live_config.html %}
+{% include_relative applications/live_config.html %}
 
 
 <!-- {% include footer.html %} -->

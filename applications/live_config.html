@@ -1,5 +1,9 @@
-<script src="./dist/cpu-audio.js" async></script>
-<link rel="stylesheet" href="./src/global.css" />
+<title>CPU-Audio application : Configuration of the player</title>
+<script src="../build/cpu-audio.js" async></script>
+<link rel="stylesheet" href="../src/global.css" />
+
+<p><a href="../examples.html">← back to examples list</a></p>
+<h1>CPU-Audio configuration of the player</h1>
 
 <div id="demo">
 <cpu-audio 
@@ -322,7 +326,7 @@ function configurator_html(event) {
 	}
 
 	let audio_attribs = '';
-	if (cpu_audio_attributes.indexOf(' duration="') > -1) {
+	if (cpu_audio_attributes.includes(' duration="')) {
 		audio_attribs = ' preload="none"';
 	}
 	if (form_html.querySelector(`[name="is_stream"]`).checked) {
@@ -337,9 +341,7 @@ function configurator_html(event) {
 	document.getElementById('code').innerText = code;
 	cpu_audio = document.querySelector('cpu-audio');
 	
-	if (event) {
-		event.preventDefault();
-	}
+	event?.preventDefault();
 }
 
 function configurator_css(event) {
@@ -362,7 +364,7 @@ function configurator_css(event) {
 		if ((input_changed(element)) && (value !== '')) {
 
 			// duration need unit
-			if (['color-transitions', 'background-transitions'].indexOf(attr)>-1) {
+			if (['color-transitions', 'background-transitions'].includes(attr)) {
 				value = value +'s';
 			}
 
@@ -397,9 +399,8 @@ function configurator_css(event) {
 	}
 
 	document.getElementById('style').innerHTML = css;
-	if (event) {
-		event.preventDefault();
-	}
+	
+	event?.preventDefault();
 }
 
 function noop(event) {
@@ -426,21 +427,21 @@ document.addEventListener('DOMContentLoaded', function(){
 
 	document.querySelector('#do_waiting').addEventListener('click', function() {
 		cpu_audio.CPU.audiotag.pause();
-		cpu_audio.CPU.set_act_container('loading');
+		cpu_audio.CPU.setActContainer('loading');
 	});
 	document.querySelector('#do_glow').addEventListener('click', function() {
 		cpu_audio.CPU.audiotag.pause();
-		cpu_audio.CPU.set_act_container('glow');
+		cpu_audio.CPU.setActContainer('glow');
 	});	
 	let in_error = false;
 	document.querySelector('#do_error').addEventListener('click', function() {
 		if (!in_error) {
-			cpu_audio.CPU.show_interface('error');
-			cpu_audio.CPU.elements.pageerror.innerText = 'This is an error message.';
+			cpu_audio.CPU.showInterface('error');
+			cpu_audio.CPU.shadowId('pageerror').innerText = 'This is an error message.';
 			in_error = true;
 		} else {
-			cpu_audio.CPU.show_interface('main');
-			cpu_audio.CPU.elements.pageerror.innerText = '';
+			cpu_audio.CPU.showInterface('main');
+			cpu_audio.CPU.shadowId('pageerror').innerText = '';
 			in_error = false;
 		}
 	});

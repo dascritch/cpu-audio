@@ -1,10 +1,10 @@
 :host {
   all: initial;
   display: block;
-  contain: content; 
+  contain: content;
 }
 
-.act-play {
+.act-play, .act-buffer {
 	--cpu-background : var(--cpu-playing-background);
 	--cpu-color : var(--cpu-playing-color);
 }
@@ -33,14 +33,10 @@
 	text-indent: 0;
 	list-style-type: none;
 	user-select: none;
-	transition : 
-				color var(--cpu-color-transitions),
-				background-color var(--cpu-background-transitions),
-				opacity var(--cpu-background-transitions);
-}
-
-.show-no main {
-	visibility : hidden;
+	transition :
+		color var(--cpu-color-transitions),
+		background-color var(--cpu-background-transitions),
+		opacity var(--cpu-background-transitions);
 }
 
 main {
@@ -58,12 +54,16 @@ button {
 	background : transparent;
 }
 
+
+a:focus,  button:focus {
+	outline : var(--cpu-focus-outline); 
+}
+
 svg {
 	fill : currentColor;
 	width : var(--cpu-height);
 	height : var(--cpu-height);
 }
-
 
 i, em {
 	font-style: italic;
@@ -74,7 +74,7 @@ b, strong, h5 a {
 }
 
 [src=''] {
-    visibility: hidden;
+	visibility: hidden;
 }
 
 #pageerror {
@@ -96,18 +96,10 @@ a {
 	cursor : pointer;
 }
 
-#loading, #play, #pause,
-.show-main #pageshare, .show-main #pageerror,
-.show-share #pagemain, .show-share #pageerror,
-.show-error #pagemain, .show-error #pageshare , .show-error #poster,
-#handheld-nav , .show-handheld-nav #titleline {
-	display : none;
-}
-
 .act-loading #loading,
-.act-play #play,
-.act-glow #pause,
-.act-pause #pause {
+.act-play #pause,
+.act-glow #play,
+.act-pause #play {
 	display : block;
 }
 
@@ -116,9 +108,9 @@ a {
 }
 
 @keyframes glow {
-	0%     {opacity : 0.5;}
-	50%     {opacity : 1;}
-	100%     {opacity : 0.5;}
+	0%   { opacity : 0.5; }
+	50%  { opacity : 1;   }
+	100% { opacity : 0.5; }
 }
 
 .show-share #pageshare,
@@ -143,7 +135,7 @@ a {
 }
 
 @keyframes pulse {
-	50%     {opacity : 0;}
+	50% { opacity : 0; }
 }
 
 #poster {
@@ -159,10 +151,6 @@ a {
 	opacity: 1;
 }
 
-.hide-poster #poster {
-	display : none;
-}
-
 #control svg, #actions svg {
 	vertical-align : middle;
 	max-width : 100%;
@@ -176,12 +164,6 @@ a {
 	flex : 1 1 auto;
 	position : relative;
 }
-/*
-#about {
-	overflow : hidden;
-	display:flex;
-	flex-direction : column;
-}*/
 #title {
 	overflow: hidden;
 	text-overflow : '…';
@@ -230,7 +212,7 @@ a {
 	display : block;
 	outline : var(--cpu-color) 4px solid;
 	z-index : 127;
-	opacity : 0; 
+	opacity : 0;
 }
 
 main:hover #loadingline:after,
@@ -300,7 +282,7 @@ aside.borders a:after {
 
 aside.ticker {
 	height : 16px;
-	top : 30px; 
+	top : 30px;
 }
 
 aside.ticker a.active-cue {
@@ -314,20 +296,13 @@ aside.ticker a.active-cue span {
 	display : inline-block;
 }
 
-/*
-#infoline {
-	flex: 0 0 auto;
-	min-height : 14px;
-}
-*/
-
-.act-loading #loadingline {
+.act-loading #loadingline #loadingline {
 	background : repeating-linear-gradient(45deg, var(--cpu-color) 0, var(--cpu-background) 15px, var(--cpu-color) 30px);
-	  background-size: 200% 200%;
+	background-size: 200% 200%;
 	animation: loadingline 1s linear infinite;
 }
 @keyframes loadingline {
-  0% { background-position-y : var(--cpu-timeline-height); }
+	0% { background-position-y : var(--cpu-timeline-height); }
 }
 
 #handheld-nav {
@@ -371,23 +346,10 @@ aside.ticker a.active-cue span {
 	text-overflow : clip;
 }
 
-
 #pageshare svg {
 	vertical-align : middle;
 	width : 32px;
 	height : 32px;
-}
-
-#pageshare #nativeshare {
-	display : none;
-}
-
-.hasnativeshare #pageshare #nativeshare {
-	display : flex;
-}
-
-.hasnativeshare #pageshare .nonativeshare {
-	display : none;
 }
 
 #twitter {
@@ -417,7 +379,7 @@ aside.ticker a.active-cue span {
 	background : var(--cpu-popup-background);
 	color : var(--cpu-popup-color);
 	opacity : 0;
-} 
+}
 #popup:before {
 	pointer-events : none;
 	content:"";
@@ -431,12 +393,12 @@ aside.ticker a.active-cue span {
 	border-top: 8px solid var(--cpu-popup-background);
 	border-left: 4px solid transparent;
 	border-right: 4px solid transparent;
-} 
+}
 
 .panel {
 	display : flex;
 	list-style: none;
-	flex-direction: column; 
+	flex-direction: column;
 	padding : 0 var(--cpu-min-padding);
 	box-shadow: var(--cpu-inner-shadow);
 }
@@ -464,7 +426,7 @@ h6 {
 	display : none;
 }
 
-aside a, h6, .cue time , aside.ticker * /*, #infoline, #infoline * */
+aside a, h6, .cue time , aside.ticker *
 {
 	font-size : var(--cpu-font-small-size);
 }
@@ -489,23 +451,41 @@ aside a, h6, .cue time , aside.ticker * /*, #infoline, #infoline * */
 	display : none;
 }
 
+.no,
 .mode-hidden,
+#control svg,
+.show-main #pageshare, .show-main #pageerror,
+.show-share #pagemain, .show-share #pageerror,
+.show-error #pagemain, .show-error #pageshare , .show-error #poster,
+#handheld-nav , .show-handheld-nav #titleline,
+.hide-poster #poster, 
 .hide-chapters .chapters,
 .hide-timeline #line,
 .hide-panels .panel,
 .hide-panels-title h6,
 .hide-panels-except-play .panel,
-.media-streamed #link, 
-.media-streamed #line {
+.media-streamed #link,
+.media-streamed #line,
+#pageshare #nativeshare,
+.hasnativeshare #pageshare .nonativeshare {
 	display : none;
 }
 
-.hide-panels-except-play.last-used .panel {
+.hide-panels-except-play.last-used .panel,
+.hasnativeshare #pageshare #nativeshare {
 	display : flex;
 }
 
 .mode-compact.show-main #pagemain {
 	flex : 0 0 auto;
+}
+
+a:hover, button:hover, a:focus, button:focus, 
+#pageshare div:hover ,
+.active-cue, /* can now ride off its !important on color */
+.with-preview /* !important still needed to simplify css */ {
+	background: var(--cpu-focus-background, var(--cpu-color)) !important;
+	color : var(--cpu-focus-color, var(--cpu-background)) !important;
 }
 
 @media (max-width: 640px) /* , @element #interface and (max-width: 640px) */{
@@ -521,7 +501,7 @@ aside a, h6, .cue time , aside.ticker * /*, #infoline, #infoline * */
 	#interface {
 		--cpu-timeline-height : 8px ;
 	}
-	
+
 	#handheld-nav {
 		padding-bottom: 4px;
 	}
@@ -540,28 +520,28 @@ aside a, h6, .cue time , aside.ticker * /*, #infoline, #infoline * */
 		flex : 0 1 var(--cpu-elapse-width);
 	}
 
-		.mode-default #pagemain {
-			 padding-bottom : 16px;
-		}
-		#titleline {
-			height : 32px;
-		}
-		#line {
-			 position: absolute;
-			 left: calc(0px - var(--cpu-height));
-			 right: calc(0px - var(--cpu-height));
-			 height: 16px;
-			 top: 32px;
-		}
-		aside a {
-			pointer-events: none;
-		}
-		aside.borders {
-			 top : -2px;
-		}
-		aside.chapters {
-			 top : 8px;
-		}
+	.mode-default #pagemain {
+		 padding-bottom : 16px;
+	}
+	#titleline {
+		height : 32px;
+	}
+	#line {
+		 position: absolute;
+		 left: calc(0px - var(--cpu-height));
+		 right: calc(0px - var(--cpu-height));
+		 height: 16px;
+		 top: 32px;
+	}
+	aside a {
+		pointer-events: none;
+	}
+	aside.borders {
+		 top : -2px;
+	}
+	aside.chapters {
+		 top : 8px;
+	}
 	#handheld-nav {
 		padding-bottom: 2px;
 	}
@@ -581,10 +561,9 @@ aside a, h6, .cue time , aside.ticker * /*, #infoline, #infoline * */
 	}
 }
 
-a:hover, a:focus, button:hover, button:focus,
-#pageshare div:hover ,
-.active-cue, /* can now ride off its !important on color */
-.with-preview /* !important still needed to simplify css */ {
-	background: var(--cpu-focus-background, var(--cpu-color)) !important;
-	color : var(--cpu-focus-color, var(--cpu-background)) !important;
+/* Accessibility : do not display animation;  */
+@media (prefers-reduced-motion: reduce) {
+	* {
+		animation : none !important;
+  	}
 }

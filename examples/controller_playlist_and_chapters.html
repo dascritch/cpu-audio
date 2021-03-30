@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<meta charset="utf-8">
+	<title>CPU-Audio Interface example : A CPU-Controller with playlists and chapters</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<script src="../build/cpu-audio.js"></script>
+
+	<style>
+		main {display : flex;   flex-direction:row; }
+		.halfs {flex : 49%; margin: 1em;}
+	</style>
+
+<p><a href="../examples.html">← back to examples list</a></p>
+<p>
+	Here is a cpu-controller in a playlist context (each sound when finished is launching the next one) with chapters (when you change of sound, its chapters' track and panel are displayer in controller). We hide panels in the players for ease to read.
+</p>
+
+<p>Note : this demo will work best via a webserver, as chapters won't be loaded in a file:/// context</p>
+<h1 id="highlighting-text-amond-chapters">CPU-Audio Interface example : A CPU-Controller with playlists and chapters</h1>
+
+<p>Example shows taken from <a href="https://cpu.dascritch.net/serie/Radio%20num%C3%A9rique">my radio series about DAB+</a></p>
+
+<main>
+
+<div class="halfs">
+<cpu-controller></cpu-controller>
+
+<hr />
+</div>
+
+<div class="halfs">
+
+<cpu-audio
+	playlist="cpu"
+	title="Ex0117 À la source du son"
+	poster="https://cpu.dascritch.net/public/Images/Emissions/.1910-Ex0117-SourceDuSon_s.jpg"
+	canonical="https://cpu.dascritch.net/post/2019/10/17/Ex0117-%C3%80-la-source-du-son" hide="panels">
+	<audio controls id="ep1" preload="none">
+		<source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0117-CPU%2817-10-19%29.mp3" type="audio/mpeg" />
+        <track kind="chapters" src="../tests-assets/0117-CPU%2817-10-19%29.vtt" default>
+	</audio>
+</cpu-audio>
+
+<cpu-audio
+	playlist="cpu"
+	title="Ex0136 Traitements du son"
+	poster="https://cpu.dascritch.net/public/Images/Emissions/.2004-Ex0136-TraitementsDeSon_s.jpg"
+	canonical="https://cpu.dascritch.net/post/2020/04/30/Ex0136-Traitements-du-son"
+	hide="panels">
+	<audio controls id="ep2" preload="none">
+		<source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0136-CPU%2830-04-20%29.mp3" type="audio/mpeg" />
+        <track kind="chapters" src="../tests-assets/0136-CPU%2830-04-20%29.vtt" default>
+	</audio>
+</cpu-audio>
+
+<cpu-audio
+	playlist="cpu"
+	title="Ex0137 Ingénieur du son"
+	poster="https://cpu.dascritch.net/public/Images/Emissions/.2005-Ex0137-IngenieurDuSon_s.jpg"
+	canonical="https://cpu.dascritch.net/post/2020/05/14/Ex0137-Ing%C3%A9nieur-du-son"
+	hide="panels">
+	<audio controls id="ep3" preload="none">
+		<source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0137-CPU%2814-05-20%29.mp3" type="audio/mpeg" />
+        <track kind="chapters" src="../tests-assets/0137-CPU%2814-05-20%29.vtt" default>
+	</audio>
+</cpu-audio>
+
+<cpu-audio
+	playlist="cpu"
+	title="Ex0143 Le son laser"
+	poster="https://cpu.dascritch.net/public/Images/Chroniques/.2009-Ex0143-CD_s.jpg"
+	canonical="https://cpu.dascritch.net/post/2020/09/24/Ex0143-Le-son-laser"
+	hide="panels">
+	<audio controls id="ep4" preload="none">
+		<source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0143-CPU%2824-09-20%29.mp3" type="audio/mpeg" />
+        <track kind="chapters" src="../tests-assets/0143-CPU%2824-09-20%29.vtt" default>
+	</audio>
+</cpu-audio>
+
+<hr />
+<p>Another playlist. The controller should change its playlist panel</p>
+
+<cpu-audio 
+    playlist="hallu"
+    title="micro @HalluFMR #36 : Placebo"
+    poster="https://dascritch.net/vrac/.blog2/radio/.1409-Hallucinarium-FMR_s.jpg"
+    canonical="https://dascritch.net/post/2015/05/27/micro-%40HalluFMR-36-%3A-Placebo">
+    <audio controls id="pl1" preload="none">
+        <source src="https://dascritch.net/vrac/Emissions/AtHalluFMR/podcast/36-AtHalluFMR%2827-05-15%29.mp3" type="audio/mpeg">
+    </audio>
+</cpu-audio>
+<cpu-audio
+    playlist="hallu"
+    title="micro @HalluFMR #38 : Sensationnel"
+    poster="https://dascritch.net/vrac/.blog2/radio/1411-AtHalluFmr/.1505-PassageF3_m.jpg"
+    canonical="https://dascritch.net/post/2015/06/10/micro-%40HalluFMR-38-%3A-Sensationnel">
+    <audio controls id="pl2" preload="none">
+        <source src="http://dascritch.net/vrac/Emissions/AtHalluFMR/podcast/38-AtHalluFMR(10-06-15).mp3" type="audio/mpeg">
+    </audio>
+</cpu-audio>
+<cpu-audio
+    playlist="hallu"
+    title="micro @HalluFMR #40 : Conditions Générales"
+    poster="https://dascritch.net/vrac/.blog2/radio/.1409-Hallucinarium-FMR_s.jpg"
+    canonical="https://dascritch.net/post/2015/06/24/micro-%40HalluFMR-40-%3A-Conditions-G%C3%A9n%C3%A9rales">
+    <audio controls id="pl3" preload="none">
+        <source src="http://dascritch.net/vrac/Emissions/AtHalluFMR/podcast/40-AtHalluFMR(24-06-15).mp3" type="audio/mpeg">
+    </audio>
+</cpu-audio>
+
+<hr />
+<p>Alone, no playlist</p>
+
+<cpu-audio
+    title="no playlist">
+    <audio controls id="no" preload="none">
+        <source src="../tests-assets/blank.mp3" type="audio/mpeg">
+    </audio>
+</cpu-audio>
+</div>
+</main>
+</html>

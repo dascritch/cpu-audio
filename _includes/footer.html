@@ -10,7 +10,7 @@
     <li><a href="https://github.com/dascritch/cpu-audio/">Code</a></li>
 </ul>
 <p>Crafted with ♥ from Toulouse, France, for <a href="http://cpu.pm">CPU radio show</a></p>
-<script src="./dist/cpu-audio.js" async></script>
+<script src="./build/cpu-audio.js" async></script>
 <style type="text/css">
     h1 {
         word-break: keep-all;
@@ -67,11 +67,11 @@
     }
 </style>
 <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function(){
-        if (document.querySelector('cpu-audio') === null) {
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!document.querySelector('cpu-audio')) {
             return;
         }
-        let controller = document.createElement('cpu-controller');
+        const controller = document.createElement('cpu-controller');
         controller.setAttribute('mode', 'button');
         document.querySelector('h1').prepend(controller);
     });

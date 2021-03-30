@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <meta charset="UTF-8" />
-<title>CPU-Audio API example : insert annotations</title>
+<title>CPU-Audio API example : Insert annotations in panels</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
 <script>
 // In this example, we will create custom time annotations in the player
@@ -15,51 +16,51 @@ document.addEventListener('CPU_ready', e => {
     let player_API = player_element.CPU;
 
     // OK,  let's create our plane 
-    player_API.add_plane(
+    player_API.addPlane(
     	'annotations',				// named reference
-    	'Personal annotations', 	// Title for the panel
     	{
+            title   : 'Personal annotations',     // Title for the panel
 	    	track   : false, 		// Do not show on the timeline
 	    	panel 	: true, 		// Create a panel
     });
 
     // Now, we can insert some points of interest
-    player_API.add_point(
+    player_API.addPoint(
     	'annotations',				// named reference for the plane
-    	0,							// time position, in seconds
     	'note-1',					// named reference for the point
     	{  
-            'text' : '“Enjoy the silence” is the name of a song of Depeche Mode',
-            'link' : true,			// on click, should go to the time position
-           	'end'  : 20				// The point ends at 20 seconds 
+            start   : 0,                          // time position, in seconds
+            text    : '“Enjoy the silence” is the name of a song of Depeche Mode [on click, should go to the time position]',
+            link    : true,			// on click, should go to the time position
+           	end     : 20				// The point ends at 20 seconds 
     	});
 
-    player_API.add_point(
+    player_API.addPoint(
     	'annotations',
-    	15,							// you can overleap points
     	'note-2',					// named reference for the point
     	{  
-            'text' : 'As this song is copyrighted, we used another one',
-            'link' : false,			// no action on click
-           	'end'  : 40
+    	    start : 15,							// you can overleap points
+            text  : 'As this song is copyrighted, we used another one [no action on click]',
+            link  : false,			// no action on click
+           	end   : 40
     	});
 
-    player_API.add_point(
+    player_API.addPoint(
     	'annotations',
-    	40,
     	'note-3',					// remember, those names should be unique
     	{  
-            'text' : 'an excerpt of “<em>4:33</em>” which is <em>also</em> copyrighted! See link for details!', // remember that only a subset of tags may work here
-            'link' : 'https://www.classicalmpr.org/blog/classical-notes/2015/12/02/can-silence-be-copyrighted',	// If link is a string, the url is targeted by your point
+    	    start : 40,
+            text  : 'an excerpt of “<em>4:33</em>” which is <em>also</em> copyrighted! See link for details! [If link is a string, the url is targeted by your point]', // remember that only a subset of tags may work here
+            link  : 'https://www.classicalmpr.org/blog/classical-notes/2015/12/02/can-silence-be-copyrighted',	// If link is a string, the url is targeted by your point
     	});
 
     // What about create a second panel ?
-    player_API.add_plane(
+    player_API.addPlane(
         'parameters',
-        'Parameters',
         {
+            title   : 'Parameters',
             track   : false,        // Do not show on the timeline
-            panel   : 'nocuetime',  // I want a panel with a classname hiding the points' times
+            panel   : 'nocuetime',  // I want a panel with a classname hiding the points times
     });
 
     // I need this, it's for a magick trick 
@@ -67,7 +68,7 @@ document.addEventListener('CPU_ready', e => {
 
     // And, let's say we want to intercept on each panel redraw ?
     // so we add some interactions on them.
-    document.addEventListener('CPU_draw_point', (event) => {
+    document.addEventListener('CPU_drawPoint', (event) => {
         //document.addEventListener('change', (event) => {
         //    console.log(event.target);
         //});
@@ -79,11 +80,11 @@ document.addEventListener('CPU_ready', e => {
             return ;
         }
         // we take the point panel in element
-        let element_point_panel = detail.element_point_panel;
+        let elementPointPanel = detail.elementPointPanel;
         // I need to prevent any drag events, due to some... we'll i keep the surprise
-        element_point_panel.draggable = false;
-        element_point_panel.querySelector('A').draggable = false;
-        let input_element = element_point_panel.querySelector('input');
+        elementPointPanel.draggable = false;
+        elementPointPanel.querySelector('A').draggable = false;
+        let input_element = elementPointPanel.querySelector('input');
         if (detail.point === 'volume') {
             // don't forget to remove this eventListener before putting it again !
             let action = function(e) {
@@ -105,23 +106,23 @@ document.addEventListener('CPU_ready', e => {
 
 
     // Let's have a bit of fun
-    player_API.add_point(
+    player_API.addPoint(
         'parameters',
-        0,
         'volume',
         {  
-            'text' : 'Volume <input id="input_volume" type="range" value="1" min="0" max="1" step="0.1" />', // Yes, I know what I wrote upper, but... let's play !
-            'link' : false
+            start : 0,
+            text  : 'Volume <input id="input_volume" type="range" value="1" min="0" max="1" step="0.1" />', // Yes, I know what I wrote upper, but... let's play !
+            link  : false
         });
 
     // Let's have a SECOND bit of fun
-    player_API.add_point(
+    player_API.addPoint(
         'parameters',
-        0,
         'playbackrate',
         {  
-            'text' : 'Speed <input id="input_rate" type="range" value="1" min="0.5" max="2" step="0.5" />',
-            'link' : false
+            start : 0,
+            text  : 'Speed <input id="input_rate" type="range" value="1" min="0.5" max="2" step="0.5" />',
+            link  : false
         });
 
         // OK. Who still needs a volume and a playrate selector build in the audio player ?
@@ -129,9 +130,12 @@ document.addEventListener('CPU_ready', e => {
 });
 
 </script>
-<script src="../dist/cpu-audio.js" async></script>
+<script src="../build/cpu-audio.js" async></script>
 
 <body>
+<p><a href="../examples.html">← back to examples list</a></p>
+<h1 id="highlighting-text-amond-chapters">CPU-Audio API example : Insert annotations in panels</h1>
+
 <cpu-audio 
     title="Enjoy the silence">
     <audio controls id="sound">

@@ -55,7 +55,7 @@ const sources_i18n = {
 
 
 // First, we'll try to guess the hosting page language
-let prefered_language = document.querySelector('html').lang;
+export let prefered_language = document.querySelector('html').lang;
 
 if ((!prefered_language.length) || (!(prefered_language.toLowerCase() in sources_i18n))) {
 
@@ -65,8 +65,8 @@ if ((!prefered_language.length) || (!(prefered_language.toLowerCase() in sources
 
 	// trying to find the browser preferences
 	let languages = window.navigator.languages;
-	languages = (languages !== undefined) ? 
-				languages : 
+	languages = (languages !== undefined) ?
+				languages :
 				[(navigator.language || navigator.browserLanguage)];
 	let added = false;
 	for (let line of languages) {
@@ -81,4 +81,4 @@ if ((!prefered_language.length) || (!(prefered_language.toLowerCase() in sources
 	}
 }
 
-const __ = sources_i18n[prefered_language];
+export const __ = sources_i18n[prefered_language];

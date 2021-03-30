@@ -1,3 +1,66 @@
+RELEASE NOTES actual, 6.99.1
+============================
+
+New features
+------------
+
+ * Added a [theme with a direct download button](examples/Build_with_download_action.html), instead of the action button. Example for creating graphic theme ([#56](#56))
+ * Possibility to create themed versions with specific html and css files ([#56](#56))
+ * Possibility to change css breakpoints ([#51](#51)) by this way ([#56](#56))
+ * Possibility to create RTL version ([#26](#26)) by this way ([#56](#56))
+ * A11y : Support reduced motion preferences
+ * Added method `Element.CPU.bulkPoints()`
+ * Added a more visible focus outline, stylable via`--cpu-focus-outline` ([#116](#116))
+ * Some examples added
+ * Degradable code, some elements are no more absolutely required in template ([#56](#56))
+ * Revised [chapters-editors application](applications/chapters_editor.html)
+ * [Wonderful example of React integration](https://github.com/scombat/react-cpu-audio) ([#120](#120))
+
+Corrections
+-----------
+
+ * Production files are now more logically created in `build/` instead of `directory/`
+ * `<CPU-Controller>` cannot be instancied twice
+ * Methods and parameters names have been unified camelCase. Changes are incompatible with versions <7.0 ([#112](#112))
+ * Title parameter in `Element.CPU.addPlane()` is now in `planePoint`
+ * `Element.CPU.removeHighlightsPoints()` was too generic. Modification in parameters ([#109](#109))
+ * `Element.CPU.build_chapters()` and `Element.CPU.build_playlist()` are no more public API
+ * Some accessibilities issues on keyboard behavior and time line ([#116](#116))
+ * Reduce repaints, graphic glitches
+ * Do not change color when changing mode play→loading→play ([#114](#114)) 
+ * Resolving a probable issue on fine navigation panel on handheld
+ * Play/pause button may have issues if Chrome got numerous webcomponents in the same page
+ * An translation error may occurs in shareable URL. We remove audio id if we are not in same URL
+ * Issue with intermittent `.replaceAll()` resolved
+ * When changing component title, its title="" must follows
+ * Attributes `hide`, `mode` and `glow` weren't properly checked
+ * Leave error mode if template is recompleted
+ * Update controller playlist panel if current playlist has changed
+ * Removing a `<CPU-Audio>` will remove its reference in playlists
+ * Heavy simplification of the fine-position panel management
+
+Back-end
+--------
+
+ * [Made a call on contribulle.org](https://contribulle.org/projects/27) 
+ * Using standard ECMA imports ([#110](#110))
+ * Using ECMA5+ classes, getters, setters, rests & spreads ([#115](#115))
+ * Renamed files ([#110](#110))
+ * Better separation between public objects and private methods ([#110](#110))
+ * Use `npm` to catch dependencies
+ * Leaving Google Closure for webpack : too many bugs, too old
+ * Using a more aggressive linter
+ * Using `css-minify` for compressing css, instead of home-boiled regex ([#56](#56))
+ * Using `html-minifier` for compressing html, for the exact same reasons ([#56](#56))
+ * Reduce CSS and HTML compressions operations if no need to freshen ([#56](#56))
+ * Re-inverted play/pause button semantic ([#116](#116))
+ * QUnit removed from repo, provided via `npm`
+ * QUnit-puppeteer integrated into `make.sh`
+ * Automated links from MD (or examples.html) to examples and applications
+ * Playlist are now using the standard API, with special code for CPU-Controller ([#109](#109))
+ * Some builders are removed from `Element.CPU`, to avoid expose them in public API
+
+
 RELEASE NOTES version 6.6.3
 ===========================
 
@@ -11,7 +74,7 @@ New features
  * Custom events are fired, (documented in [API page](./API.md)). They are `CPU_` prefixed
  * API get inject specific styles features. Very useful for specific annotations presentations. (Preparatory works for [#76](#76)) 
  * Adding some examples how to use API ([#66](#66), [#101](#101))
- * Adding a `convert.IsoDuration` public method, `datetime=""` attribute in `<time>` needing a specific duration format in ISO 8601
+ * Adding a `convert.durationIso` public method, `datetime=""` attribute in `<time>` needing a specific duration format in ISO 8601
  * User-defined annotation planes can have cue times hidden ([#106](#106))
  * Users can add volume and playrate controls, but we let them program it, [as documented here](examples/API_insert_annotations.html)
 

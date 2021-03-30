@@ -21,14 +21,14 @@ Some links :
     * [Features](https://dascritch.github.io/cpu-audio/FEATURES)
     * [How to install](https://dascritch.github.io/cpu-audio/INSTALL)
     * [Live configuration](https://dascritch.github.io/cpu-audio/LIVE)
-* [JS installable code](https://dascritch.github.io/cpu-audio/dist/cpu-audio.js) 
+* [JS installable code](https://dascritch.github.io/cpu-audio/build/cpu-audio.js) 
 * [Code repository](https://github.com/dascritch/cpu-audio/), [Latest stable release](https://github.com/dascritch/cpu-audio/releases/latest)
 * [How to participate to this project](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
 * Blog posts about its creation and development : [Série cpu-audio sur dascritch.net](https://dascritch.net/serie/cpu-audio)
 * [How to cite a podcast](https://www.buzzsprout.com/blog/cite-podcast), now you can support time positions URL
 * Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 
-Version : 6.6.3 [Licence GPL 3](LICENSE)
+Version : 6.99.1 [Licence GPL 3](LICENSE)
 
 Purpose
 -------
@@ -139,7 +139,9 @@ Thank you to my lovely friends :
 * [Loïc Gerbaud](https://github.com/chibani) for corrections
 * [Guillaume Lemoine and Phonitive](http://www.phonitive.fr/) for helping
 * [Benoît Salles](https://twitter.com/infestedgrunt) and [Michel Poulain](https://twitter.com/MichelPoulain) for testing
-- [@mariejulien](https://twitter.com/mariejulien/status/1047827583126183937) about [CONTRIBUTING.md](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
+* [@mariejulien](https://twitter.com/mariejulien/status/1047827583126183937) about [CONTRIBUTING.md](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
+* [Christophe Porteneuve](https://twitter.com/porteneuve) to kick my ass on modern javascript
+* [scombat for a wonderful wrapper of cpu-audio.js in React](https://github.com/scombat/react-cpu-audio)
 
 Really sorry, [NerOcrO](https://github.com/NerOcrO)
 

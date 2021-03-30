@@ -1,16 +1,24 @@
 TO DO list
 ==========
 
+Todo for this release :
+-----------------------
+
+ - at start of press on time line, popup time display "0:00" ??
+ - Aria roles on fine position buttons
+ - We still have a flashing chapters before the one clicked in panel. There is something to clean up, probable root cause is my (voluntary) 206 defaillant web server or bad seeking/caching by Chrome. Really hard to reduce, the only way to mitigate it correctly is using css transitions :/
+ - [Chrome Android got a failing test #121](#121) 
+ - Debug issues in Chrome mobile, as replay position or highlighted chapters in double
+ - Implement <kbd>↑</kbd> and <kbd>↓</kbd> keys to move on chapters and playlists ([#108](#108))
+ - Create a square player with a very different layout
+
+
 Planned evolutions
 ------------------
 
 - [ ] Standards first
     - [ ] use standard [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) in `hashOrder`, instead of the custom code. We need a strategy to get the anchor, seen as a key without value
-- [ ] DOM manipulation events :
-    - [ ] dynamic modification of `<head>`
-    - [ ] dynamic modification of `document.location.href` (webapp)
 - [ ] add-ons packages
-    - [X] [dotclear](https://github.com/dascritch/plugin-dotclear-cpu-audio)
     - [ ] wordpress
 - [ ] `<video>` support
 - [ ] `<track>` support for subtitles
@@ -19,6 +27,7 @@ Planned evolutions
     - [ ] [Create a real playlist service](https://github.com/dascritch/cpu-audio/issues/8)
     - [ ] [Supporting annotations à la SoundCloud](https://github.com/dascritch/cpu-audio/issues/10)
 - [ ] [Prepare design and key bindings for RTL localizations](https://github.com/dascritch/cpu-audio/issues/26)
-- [ ] Finish `ticker` plane track mode, or propose a code snippet in `examples/`
+- [ ] Propose a code snippet in `examples/` to do a `ticker` plane track mode
+- [ ] Example add-son with FFT analyzer, like in [webcammictester](https://webcammictest.com/check-mic.html)
 
 <!-- {% include footer.html %} -->
