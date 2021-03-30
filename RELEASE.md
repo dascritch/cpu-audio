@@ -60,15 +60,6 @@ Back-end
  * Playlist are now using the standard API, with special code for CPU-Controller ([#109](#109))
  * Some builders are removed from `Element.CPU`, to avoid expose them in public API
 
-Todo for this release :
------------------------
-
- - at start of press on time line, popup time display "0:00" ??
- - Aria roles on fine position buttons
- - We still have a flashing chapters before the one clicked in panel. There is something to clean up, probable root cause is my (voluntary) 206 defaillant web serveror bad seeking/caching by Chrome. Really hard to reduce, the only way to mitigate it correctly is using css transitions :/
- - Debug issues in Chrome mobile, as replay position or highlighted chapters in double
- - Implement <kbd>↑</kbd> and <kbd>↓</kbd> keys to move on chapters and playlists ([#108](#108))
- - Create a square player with a very different layout
 
 RELEASE NOTES version 6.6.3
 ===========================
