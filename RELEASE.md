@@ -1,5 +1,5 @@
-RELEASE NOTES actual, pre 7.0
-=============================
+RELEASE NOTES actual, 6.99.1
+============================
 
 New features
 ------------
