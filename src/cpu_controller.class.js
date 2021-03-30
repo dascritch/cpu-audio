@@ -80,6 +80,7 @@ export class CpuControllerElement extends HTMLElement {
 			childList 	: true,
 			attributes	: true
 		});
+		this.CPU.attributesChanges();
 	}
 
 	disconnectedCallback() {
