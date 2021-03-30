@@ -118,14 +118,14 @@ export class CPU_element_api {
 	 * @param      {Element}  element              The DOMelement
 	 * @param      {Element}  container_interface  The container interface
 	 */
-	constructor(element, container_interface, element_attributes) {
+	constructor(element, container_interface) {
 		// I hate this style. I rather prefer the object notation
 		this.element = element;
 		this.shadow = element.shadowRoot;
 		this.audiotag = /* @type {HTMLAudioElement} */ element.audiotag;
 		this.container = container_interface;
 		this.mode_when_play = null;
-		this.glowBeforePlay = !! element_attributes.glow;
+		this.glowBeforePlay = !! element.hasAttribute('glow');
 		this.current_playlist = [];
 		this._activecue_id = null;
 		this.mode_was = null;
@@ -148,10 +148,14 @@ export class CPU_element_api {
 
 		buildInterface(this);
 		this.attachAudiotagToController(this.audiotag);
+		this.attributesChanges();
+	}
 
-		// mode="" attribute, on general aspect
-		let mode = element_attributes.mode;
-		if (mode) {
+	attributesChanges() {
+		// mode="" attribute, on general aspect. may be coma separated
+		let mode=null;
+		if (this.element.hasAttribute('mode')) {
+			mode = this.element.getAttribute('mode');
 			// in case of a mode="still,play" declaration
 			let [mode_still, mode_play] = mode.split(',');
 			if (mode_play) {
@@ -162,10 +166,9 @@ export class CPU_element_api {
 		this.setModeContainer(mode);
 
 		// hide="" attribute, space separated elements to hide
-		if (element_attributes.hide) {
-			this.setHideContainer(element_attributes.hide.split(' '));
+		if (this.element.hasAttribute('hide')) {
+			this.setHideContainer(this.element.getAttribute('hide').split(' '));
 		}
-
 	}
 
 	/**

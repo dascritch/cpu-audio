@@ -1,25 +1,9 @@
-import {selectorAcceptable, findContainer, info} from './utils.js';
+import {selectorAcceptable, findContainer} from './utils.js';
 import {CpuControllerElement} from './cpu_controller.class.js';
 import {connectAudiotag} from './media_element_extension.js';
 import {timeInSeconds} from './convert.js';
 import {build_chapters} from './build_chapters.js';
 
-/**
- * @summary Interprets if <cpu-audio> element is modified
- *
- * @param      {Object}  mutationsList  The mutations list
- */
-function observer_cpuaudio([{target}]) {
-	const container = findContainer(target);
-	let media_tagname = 'audio';
-	let audio_element = container.element.querySelector(media_tagname);
-	if (!audio_element) {
-		info(`<${media_tagname}> element was removed.`);
-		container.element.remove();
-		return;
-	}
-	container.element.copyAttributesToMediaDataset();
-}
 
 /**
  * @summary Interprets if <audio> element is modified or removed
@@ -57,7 +41,6 @@ export class CpuAudioElement extends CpuControllerElement {
 			this.remove();
 			return ;
 		}
-		this.observer_cpuaudio = null;
 		this.observer_audio = null;
 	}
 
@@ -85,12 +68,6 @@ export class CpuAudioElement extends CpuControllerElement {
 		super.connectedCallback();
 
 		connectAudiotag(this.CPU.audiotag);
-
-		this.observer_cpuaudio = new MutationObserver(observer_cpuaudio);
-		this.observer_cpuaudio.observe(this, {
-			childList 	: true,
-			attributes	: true
-		});
 
 		this.observer_audio = new MutationObserver(observer_audio);
 		this.observer_audio.observe(this, {
