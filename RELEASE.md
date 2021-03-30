@@ -15,6 +15,7 @@ New features
  * Degradable code, some elements are no more absolutely required in template ([#56](#56))
  * Revised [chapters-editors application](applications/chapters_editor.html)
  * [Wonderful example of React integration](https://github.com/scombat/react-cpu-audio) ([#120](#120))
+ * [Attributes for the webcomponent can be live-changed](#128)
 
 Corrections
 -----------

@@ -1,5 +1,26 @@
-import {CpuAudioTagName, CpuControllerTagName, selectorAcceptable, selectorInterface, notScreenContext, warn, } from './utils.js';
+import {CpuAudioTagName, CpuControllerTagName, selectorAcceptable, selectorInterface, notScreenContext, findContainer, info, warn, } from './utils.js';
 import {CPU_element_api} from './element_cpu.js';
+
+
+/**
+ * @summary Interprets if <cpu-audio>/<cpu-controller> element is modified
+ *
+ * @param      {Object}  mutationsList  The mutations list
+ */
+function observer_component([{target}]) {
+	const container = findContainer(target);
+	let component = container.element;
+	let media_tagname = 'audio';
+	let audio_element = component.querySelector(media_tagname);
+	if ((!audio_element) && (component.tagName !== CpuControllerTagName)) {
+		info(`<${media_tagname}> element was removed.`);
+		component.remove();
+		return;
+	}
+
+	component.copyAttributesToMediaDataset?.();
+	container.attributesChanges();
+}
 
 /**
  * Controller without assigned audio element, i.e. global page controller
@@ -11,6 +32,7 @@ export class CpuControllerElement extends HTMLElement {
 	constructor() {
 		super();
 		this.CPU = null;
+		this.observer_component = null;
 
 		if (notScreenContext()) {
 			// I'm not in a screen context, as a braille surface
@@ -51,15 +73,13 @@ export class CpuControllerElement extends HTMLElement {
 			return;
 		}
 
-		new CPU_element_api(
-			this,
-			this.shadowRoot.querySelector(selectorInterface),
-			{
-				glow : this.hasAttribute('glow'),
-				mode : this.hasAttribute('mode') ? this.getAttribute('mode') : null,
-				hide : this.hasAttribute('hide') ? this.getAttribute('hide') : false,
-			}
-		);
+		new CPU_element_api(this, this.shadowRoot.querySelector(selectorInterface));
+
+		this.observer_component = new MutationObserver(observer_component);
+		this.observer_component.observe(this, {
+			childList 	: true,
+			attributes	: true
+		});
 	}
 
 	disconnectedCallback() {
