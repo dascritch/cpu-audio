@@ -22,9 +22,10 @@
 	<a href="#configurator_css">Configure css</a>
 	<a href="#generated_css">Generated css</a>
 	<span id="spacer">&nbsp;</span>
-	<button type="button" id="do_waiting">Do loading</button>
-	<button type="button" id="do_glow">Do glow</button>
-	<button type="button" id="do_error">Do error</button>
+	<button type="button" id="do_fine" title="A long press on the time line will display this alternate interface">Fine position</button>
+	<button type="button" id="do_waiting" title="A state occuring during a play, when the browser is still waiting for audio data">Do loading</button>
+	<button type="button" id="do_glow" title="When a sound was repositionned at load. Can occur at first play with “glow” parameter">Do glow</button>
+	<button type="button" id="do_error" title="Can occurs due to misconfiguration">Do error</button>
 </p>
 
 <form id="configurator_html" action="#generated_html" class="pan" >
@@ -263,9 +264,15 @@
 
 <script>
 
-let form_html = document.getElementById('configurator_html');
-let form_css = document.getElementById('configurator_css');
+const form_html = document.getElementById('configurator_html');
+const form_css = document.getElementById('configurator_css');
 let cpu_audio = document.querySelector('cpu-audio');
+
+function configurator_html(event) {
+}
+document.addEventListener('CPU_ready', () => {
+	cpu_audio = document.querySelector('cpu-audio');	
+})
 
 
 function configurator_html(event) {
@@ -339,7 +346,7 @@ function configurator_html(event) {
 </cpu-audio>`;
 	document.getElementById('demo').innerHTML = code;
 	document.getElementById('code').innerText = code;
-	cpu_audio = document.querySelector('cpu-audio');
+	//cpu_audio = document.querySelector('cpu-audio');
 	
 	event?.preventDefault();
 }
@@ -425,8 +432,13 @@ document.addEventListener('DOMContentLoaded', function(){
 	configurator_html();
 	document.location.hash = '#'+form_html.id; 
 
+	document.querySelector('#do_fine').addEventListener('click', function() {
+		cpu_audio.CPU.showHandheldNav();
+	});
+
 	document.querySelector('#do_waiting').addEventListener('click', function() {
 		cpu_audio.CPU.audiotag.pause();
+		document.CPU.hadPlayed = true;
 		cpu_audio.CPU.setActContainer('loading');
 	});
 	document.querySelector('#do_glow').addEventListener('click', function() {
