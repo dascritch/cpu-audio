@@ -103,7 +103,7 @@ a {
 	display : block;
 }
 
-.act-glow #pause {
+.act-glow #play {
 	animation : glow 2s infinite;
 }
 
@@ -296,7 +296,7 @@ aside.ticker a.active-cue span {
 	display : inline-block;
 }
 
-.act-loading #loadingline #loadingline {
+.act-loading #loadingline {
 	background : repeating-linear-gradient(45deg, var(--cpu-color) 0, var(--cpu-background) 15px, var(--cpu-color) 30px);
 	background-size: 200% 200%;
 	animation: loadingline 1s linear infinite;
@@ -456,7 +456,7 @@ aside a, h6, .cue time , aside.ticker *
 #control svg,
 .show-main #pageshare, .show-main #pageerror,
 .show-share #pagemain, .show-share #pageerror,
-.show-error #pagemain, .show-error #pageshare , .show-error #poster,
+.show-error #pagemain, .show-error #pageshare , .show-error #poster, .show-error .panel,
 #handheld-nav , .show-handheld-nav #titleline,
 .hide-poster #poster, 
 .hide-chapters .chapters,
