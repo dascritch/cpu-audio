@@ -85,17 +85,17 @@
         This is a primitive live chapters editor for CPU-Audio, helping you to build link in page for your website, blog, CMS, etc.
     </p>
     <summary>Configure editor</summary>
-    <form id="configure" action="#edit_chapters" method="post">
+    <form id="configure"><!-- action="#edit_chapters" method="post"> -->
         <fieldset>
             <label for="source_audio">
                 <span>URL source audio</span>
-                <input id="source_audio" name="source_audio" type="url" />
+                <input id="source_audio" name="source_audio" type="file" accept="audio/*,video/*" />
             </label>
         </fieldset>
         <fieldset>
             <label for="source_webvtt">
                 <span>(optional) : URL WebVTT track to re-edit</span>
-                <input id="source_webvtt" name="source_webvtt" type="url" />
+                <input id="source_webvtt" name="source_webvtt" type="file" />
             </label>
         </fieldset>
         <fieldset class="actions">

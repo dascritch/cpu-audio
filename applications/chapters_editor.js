@@ -2,6 +2,8 @@
 
 /**
 TODO
+- "download" local file webvtt via <input type="file">
+- indiquer quand webvtt est en rerreur, notamment « Security Error: Content at https://dascritch.github.io/cpu-audio/applications/chapters_editor.html may not load data from https://cpu.dascritch.net/public/Sonores/Emissions/tracks/0158-CPU%2825-03-21%29.vtt. » mais c'est pour une URL externe en erreur CORS
 - add on the fly generated spectrogram
 - when unfolding generators, expanded panels should be also scrolled to
 **/
@@ -37,7 +39,7 @@ let timecode_input, text_input;
  * @param      {Event}  event   "Load" event on <track>
  */
 function interpret_loaded_tracks(event) {
-    // PREEEESQUE! faut que j'interprête avant dans le core
+console.log('interpret_loaded_tracks')    
     let line_number = 0;
     for(let t of sound_element.textTracks[0].cues) {
         let { startTime, text } = t;
@@ -112,18 +114,34 @@ function histogram() {
  * Fired on any configuration field changed. Mainly for setting audio source, ev, timeline and track source
  */
 function set_source_audio() {
-    let url = edit_source_audio_element.value;
-    let track_element = sound_element.querySelector('track');
-    document.body.classList.add('loaded');
-    track_element.addEventListener('load', interpret_loaded_tracks);
-    
-    sound_element.src = url;
-    sound_element.dataset.title = decodeURIComponent(url.replace(regex_filename_without_path, '$2'));
+    let file_source_audio = edit_source_audio_element.files[0];
+
+    if ( (!file_source_audio.type.startsWith('audio')) && (!file_source_audio.type.startsWith('video'))) {
+        console.warn(`Cannot use file type ${file_source_audio.type}. Is it me or you ?`)
+        return;
+    }
+    sound_element.dataset.title = decodeURIComponent(file_source_audio.name);
+    sound_element.src = URL.createObjectURL(file_source_audio);
     // TODO sound_element.dataset.waveform with generated 
 
+    let file_source_webvtt = edit_source_webvtt_element.files[0];
+
+    if (file_source_webvtt) {
+        let track_element = document.querySelector('track');
+        track_element.addEventListener('load', interpret_loaded_tracks);
+        track_element.default = true;
+        track_element.kind = 'metadata';
+        track_element.src = URL.createObjectURL(edit_source_webvtt_element.files[0]);
+    console.log('track_element.src', track_element.src)
+        sound_element.preload = 'metadata';
+    }
+
+    document.body.classList.add('loaded');
+    
     if ( (edit_source_webvtt_element.value) && (track_element.src !== edit_source_webvtt_element.value) )  {
         track_element.src = edit_source_webvtt_element.value;
     }
+    /*
     try {
         if (url) {
             // histogram();  CORS issue;, see https://github.com/dascritch/cpu-audio/issues/117
@@ -131,7 +149,7 @@ function set_source_audio() {
         }
     } catch {
 
-    }
+    }*/
 }
 
 /**
@@ -140,15 +158,13 @@ function set_source_audio() {
  * @param      {<type>}  event   The event
  */
 function check_configure(event) {
-    set_source_audio();
     event.preventDefault();
+    set_source_audio();
     // test if audio is correctly loaded
     document.querySelector('#at_start').open = false;
     document.querySelector('#chapters').open = true;
     show_only_line();
 }
-
-
 
 /**
  * Special operations on <button type="button">
@@ -169,10 +185,10 @@ function check_for_actions(event) {
                 break ;
             case 'set' : 
                 sound_CPU.editPoint('cursors', pointName_editing, {start : sound_element.currentTime});
-                points[pointName_editing].value = sound_element.currentTime;
                 timecode_input.value = convert.secondsInColonTime( sound_element.currentTime );
+                points[pointName_editing].start = sound_element.currentTime;
+                sound_CPU.editPoint('cursors', pointName_editing, points[pointName_editing]);
                 interpret_form();
-                get_points_reordered();
                 break ;
             case 'remove' :
                 let points_names = Object.keys(points);
@@ -181,7 +197,6 @@ function check_for_actions(event) {
                 sound_CPU.removePoint('cursors', pointName_editing);
                 pointName_editing = now;
                 interpret_form();
-                get_points_reordered();
                 break ;
         }
         event.preventDefault();
@@ -443,8 +458,8 @@ document.addEventListener('DOMContentLoaded', e => {
     edit_source_webvtt_element = document.getElementById('source_webvtt');
 
     /* Settings */
-    edit_source_audio_element.addEventListener('change', set_source_audio);
-    edit_source_webvtt_element.addEventListener('change', set_source_audio);
+    //edit_source_audio_element.addEventListener('change', set_source_audio);
+    //edit_source_webvtt_element.addEventListener('change', set_source_audio);
     document.querySelector('#configure').addEventListener('submit', check_configure);
 
     /* Building addedd events into CPU-audio panels */
