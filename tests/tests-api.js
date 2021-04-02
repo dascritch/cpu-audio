@@ -70,7 +70,8 @@ document.addEventListener('CPU_ready', function() {
 			'seekElementAt',
 			'findInterface',
 			'findContainer',
-			'currentPlaylist'
+			'currentPlaylist',
+			'adjacentKey'
 		];
 		for(let name of expected) {
 			assert.equal(typeof document.CPU[name] , 'function', `document.CPU.${name} method is still a function`);
@@ -155,6 +156,17 @@ document.addEventListener('CPU_ready', function() {
 		assert.ok(was_done_CPU_editPoint,'CPU_editPoint');
 		assert.ok(was_done_CPU_removePoint,'CPU_removePoint');
 		// missing : CPU_chapterChanged
+	});
+
+	QUnit.test( "test document.CPU.adjacentKey utility", function(assert) {
+		const object_test = { a:1, b:2, c:3 };
+		assert.equal(document.CPU.adjacentKey(null, '', -1), null, 'inexisting object gives a null');
+		assert.equal(document.CPU.adjacentKey(5, '', -1), null, 'not an object gives a null');
+		assert.equal(document.CPU.adjacentKey(object_test, 'inexist', -1), null, 'inexisting key in object gives a null');
+		assert.equal(document.CPU.adjacentKey(object_test, 'a', -1), undefined, 'adjacentKey as previousKey,  if pointed key is at start, gives undefined');
+		assert.equal(document.CPU.adjacentKey(object_test, 'b', -1), 'a', 'adjacentKey as previousKey,  returns an existing previous key in object');
+		assert.equal(document.CPU.adjacentKey(object_test, 'c', 1), undefined, 'adjacentKey as nextKey,  if pointed key is at end, gives undefined');
+		assert.equal(document.CPU.adjacentKey(object_test, 'b', 1), 'c', 'adjacentKey as nextKey,  returns an existing next key in object');
 	});
 
 });

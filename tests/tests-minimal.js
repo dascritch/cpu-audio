@@ -407,5 +407,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 			'Removing a <CPU-audio> also clean it\'s audiotag ID from playlist');
 	});
 
+
+
 	playground.innerHTML = `<p><strong>Finished<strong></p>`;
 });

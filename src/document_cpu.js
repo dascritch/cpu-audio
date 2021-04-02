@@ -1,4 +1,4 @@
-import {findInterface, findContainer, oncePassiveEvent, selectorAudioInComponent, warn} from './utils.js';
+import {adjacentKey, findInterface, findContainer, oncePassiveEvent, selectorAudioInComponent, warn} from './utils.js';
 import {DefaultParametersDocumentCPU} from './default_document_cpu_parameters.js';
 import {defaultDataset} from './default_dataset.js';
 import {convert, timeInSeconds} from './convert.js';
@@ -45,6 +45,8 @@ export const DocumentCPU = {
 	// @public utilities to find shadowRoot and CPU API
 	findInterface,
 	findContainer,
+	// @public utilities for manipulations
+	adjacentKey,
 
 	/**
 	 * @public
