@@ -21,7 +21,7 @@ let planeNameBorders = '_borders';
 const validId = /^[a-zA-Z0-9\-_]+$/;
 
 // Regex for extracting plane and point names from an id
-const planePointNamesFromId = /^[a-zA-Z0-9\-_]+_«([a-zA-Z0-9\-_]+)(»_.*_«([a-zA-Z0-9\-_]+))?»$/;
+export const planePointNamesFromId = /^[a-zA-Z0-9\-_]+_«([a-zA-Z0-9\-_]+)(»_.*_«([a-zA-Z0-9\-_]+))?»$/;
 
 /**
  * @summary Gets the plane point names from an id on a ShadowDOM element.
@@ -32,8 +32,8 @@ const planePointNamesFromId = /^[a-zA-Z0-9\-_]+_«([a-zA-Z0-9\-_]+)(»_.*_«([a-
  * @param      {string}  element_id  The element identifier
  * @return     {Array<string>}    An array with two strings : plane name and point name, both can be null. 
  */
-function planeAndPointNamesFromId(element_id) {
-	const [,planeName, , pointName] = element_id.match(planePointNamesFromId) || [];
+export function planeAndPointNamesFromId(element_id) {
+	const [,planeName, , pointName] = element_id?.match(planePointNamesFromId) || [];
 	return [planeName??'', pointName??''];
 }
 
@@ -762,6 +762,18 @@ export class CPU_element_api {
 
 
 	/**
+	 * @summary Gets an array of whole planes
+	 * @private
+	 *
+	 * @return     {Array(string)}        array of planeNames
+	 */
+	planeNames() {
+		// TODO : we need a way to order them, see #123 https://github.com/dascritch/cpu-audio/issues/123
+		// BUG we may have duplicates, it can happens even with protections in addPlane() 
+		return Object.keys(this._planes).concat(Object.keys(this.audiotag._CPU_planes));
+	}
+
+	/**
 	 * @summary Gets the plane info
 	 * @private
 	 *
@@ -947,7 +959,7 @@ export class CPU_element_api {
 	 * @return     {Object}  Data
 	 */
 	planePoints(planeName) {
-		return this.plane(planeName).points;
+		return this.plane(planeName)?.points;
 	}
 
 	/**
@@ -959,7 +971,7 @@ export class CPU_element_api {
 	 * @return     {Object}  Data
 	 */
 	point(planeName, pointName) {
-		return this.plane(planeName).points[pointName];
+		return this.plane(planeName)?.points?.[pointName];
 	}
 
 	/**
@@ -1253,46 +1265,6 @@ export class CPU_element_api {
 	}
 
 	/**
-	 * @summary Give focus on an annotation point
-	 * @public
-	 *
-	 * @param      {string}   planeName      The existing plane name
-	 * @param      {string}   pointName      The existing point name
-	 * @return      boolean    has focus
-	 */
-	focusPoint(planeName, pointName) {
-		// get element, first on the plane, and else on the plane
-		const element = this.pointPanel(planeName, pointName).querySelector('a') ?? this.pointTrack(planeName, pointName);
-console.log(element)
-		if (!element) {
-			return false;
-		}
-		element.focus();
-		return true;
-	}
-
-	/**
-	 * @summary Get focused element in shadow
-	 * @public
-	 *
-	 * @return      {Element|null}   		Focused element, or null
-	 */
-	focused() {
-		return this.shadow.querySelector(':focus');
-	}
-
-	/**
-	 * @summary Get ID of focused element in shadow
-	 * @public
-	 *
-	 * @return      {string|null|undefined}   		Focused ID, or null or undefined
-	 */
-	focusedId() {
-		const target = this.focused();
-		return target.id ?? target?.closest('[id]')?.id;
-	}
-
-	/**
 	 * @summary Remove an annotation point
 	 * @public
 	 *
@@ -1386,7 +1358,6 @@ console.log(element)
 		cuechange_event(this);
 	}
 
-
 	/**
 	 * @summary Needed because Chrome can fire loadedmetadata before knowing audio duration. Fired at durationchange
 	 *
@@ -1466,6 +1437,122 @@ console.log(element)
 			}
 			on.highlightPoint(planeName, pointName, className, false);
 		}
+	}
+
+
+	/**
+	 * @summary Give focus on an annotation point
+	 * @public
+	 *
+	 * @param      {string}   planeName      The existing plane name
+	 * @param      {string}   pointName      The existing point name
+	 * @return      boolean    has focus
+	 */
+	focusPoint(planeName, pointName) {
+		// get element, first on the plane, and else on the plane
+		const element = this.pointPanel(planeName, pointName).querySelector('a') ?? this.pointTrack(planeName, pointName);
+		if (!element) {
+			return false;
+		}
+		element.focus();
+		return true;
+	}
+
+	/**
+	 * @summary Get focused element in shadow
+	 * @public
+	 *
+	 * @return      {Element|null}   		Focused element, or null
+	 */
+	focused() {
+		return this.shadow.querySelector(':focus');
+	}
+
+	/**
+	 * @summary Get ID of focused element in shadow
+	 * @public
+	 *
+	 * @return      {string|null|undefined}   		Focused ID, or null or undefined
+	 */
+	focusedId() {
+		const target = this.focused();
+		return target.id ?? target?.closest('[id]')?.id;
+	}
+
+	/// TODO TDD
+	prevFocus() {
+/*
+		// if nowhere, , previous point from current cue
+		// back in the same plane.
+		// if at start, last point from previous plane
+		// if at top, do nothing
+		let container = findContainer(event.target);
+		console.log('prevcue' , container.focusedId())
+		let [planeName, pointName] = planeAndPointNamesFromId( container.focusedId() );
+		if (!planeName) {
+			if (!container.planePoints('_chapters')) {
+				return ;
+			}
+			planeName = '_chapters';
+			[,pointName] = planeAndPointNamesFromId(body_className_playing_cue);
+		}
+		let points = container.planePoints(planeName);
+		if (!points) {
+			return; /// TODO
+		}
+		container.focusPoint(planeName, adjacentKey( points , pointName, -1) );
+*/
+	}
+
+	/// TODO  TDD
+	nextFocus() {
+		/*
+		const planeNames = this.planeNames();
+		if (!planeNames) {
+			// no planes no gain, as we say in airports
+			return;
+		}
+		const wasFocused = this.focusedId();
+		if ( (!wasFocused) || ( (!wasFocused.closest('aside') && (!wasFocused.closest('.panel') ) ))) {
+			this.focusPoint(planeNames[0]);
+		}*/
+
+/*
+		// we need to separate cues (which relly on chapters) and keys ↑ and ↓ , why is about focus between panels
+
+		// may be must be in element.CPU
+		// may be must be fully tested as this is a sooooo complex segment of code
+
+		// if nowhere, , next point from current cue
+		// next in the same plane.
+		// if at end, first point from next plane
+		// if at end of end, nothing
+		let container = findContainer(event.target);
+		console.log('nextcue' , container.focusedId())
+		let [planeName, pointName] = planeAndPointNamesFromId( container.focusedId() );
+		if (!planeName) {
+			if (!container.planePoints('_chapters')) {
+				return ;
+			}
+			planeName = '_chapters';
+			[,pointName] = planeAndPointNamesFromId(body_className_playing_cue);
+			// if no plane with '_chapters' , get the very first one
+		}
+		// We miss here a adjacentFocusablePlane() , chezcking plane with entries, with track OR panel
+		let points = container.planePoints(planeName);
+		if (!points) {
+			const planeNames = container.planeNames();
+			if (planeName in planeNames) {
+				planeName = adjacentArrayValue(planeNames, planeName, 1);
+			}
+			if (!planeName) {
+				return;
+			}
+			points = container.planePoints(planeName);
+		}
+		// do not try to move if at the end of the last plane
+		container.focusPoint(planeName, adjacentKey( points , pointName, 1) ?? pointName[0] );
+*/
 	}
 
 }

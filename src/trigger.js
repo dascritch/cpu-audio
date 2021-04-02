@@ -1,7 +1,8 @@
-import {oncePassiveEvent, findContainer, warn} from './utils.js';
+import {oncePassiveEvent, adjacentArrayValue, findContainer, warn} from './utils.js';
 import {isAudiotagStreamed} from './media_element_extension.js';
 import {timeInSeconds} from './convert.js';
 import {buildPlaylist} from './build_playlist.js';
+import {planeAndPointNamesFromId} from './element_cpu.js'
 
 const KEY_LEFT_ARROW = 37;
 const KEY_RIGHT_ARROW = 39;
@@ -345,7 +346,7 @@ export const trigger = {
 
 		switch (event.keyCode) {
 			case 13 : // enter : standard usage, except if focus is #control
-				if (container.shadow.querySelector(':focus')?.id.toLowerCase() != 'control') {
+				if (container.focused()?.id.toLowerCase() != 'control') {
 					return;
 				}
 				toggleplay();
@@ -372,10 +373,10 @@ export const trigger = {
 				seek_relative(+ (document.CPU.keymove * mult));
 				break;
 			case 38 : // ↑
-				event.prevcue(event);
+				container.prevFocus(); // ≠  trigger.prevcue(event);
 				break;
 			case 40 : // ↓ 
-				event.nextcue(event);
+				container.nextFocus(); // ≠ trigger.nextcue(event);
 				break;
 			default:
 				return ;
@@ -433,27 +434,57 @@ export const trigger = {
 	},
 
 	/**
-	 * @summary Pressing prevcue button, or hit ↑ key
+	 * @summary Pressing prevcue button, or PROVISOIRE hit ↑ key
 	 * Function associated, see below, DO NOT RENAME
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	prevcue : function(event) {
-		let container = findContainer(event.target);
-		container.focusedId();
-		console.log('prevcue' , container.focusedId())
+	prevcue : function( /* event */) {
+		const container = findContainer(event.target);
+		const audiotag = container.audiotag;
+		const points = container.planePoints('_chapters');
+		if (!points) {
+			return;
+		}
+		const [, pointName] = planeAndPointNamesFromId( body_className_playing_cue );
+		let go = adjacentArrayValue(points, pointName, -1);
+		if (!go) {
+			for (let cue of Object.values(points).reverse()) {
+				if ((!go) && (cue.end <= audiotag.currentTime)) {
+					go = cue;
+				}
+			}
+		}
+		if (go) {
+			document.CPU.jumpIdAt(audiotag.id, go.start);
+		}
 	},
 
 	/**
-	 * @summary Pressing nextcue button, or hit ↓ key
+	 * @summary Pressing nextcue button, or PROVISOIRE hit ↓ key
 	 * Function associated, see below, DO NOT RENAME
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	nextcue : function(event) {
-		let container = findContainer(event.target);
-		container.focusedId();
-		console.log('prevcue' , container.focusedId())
+	nextcue : function(/* event */) {
+		const container = findContainer(event.target);
+		const audiotag = container.audiotag;
+		const points = container.planePoints('_chapters');
+		if (!points) {
+			return;
+		}
+		const [, pointName] = planeAndPointNamesFromId( body_className_playing_cue );
+		let go = adjacentArrayValue(points, pointName, 1);
+		if (!go) {
+			for (let cue of Object.values(points)) {
+				if ((!go) && (cue.start >= audiotag.currentTime)) {
+					go = cue;
+				}
+			}
+		}
+		if (go) {
+			document.CPU.jumpIdAt(audiotag.id, go.start);
+		}
 	},
 
 	/**
