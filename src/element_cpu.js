@@ -1,4 +1,4 @@
-import {CpuControllerTagName, findContainer, selectorAudioInComponent, querySelectorDo, absolutizeUrl, error, escapeHtml, passiveEvent} from './utils.js';
+import {adjacentArrayValue, CpuControllerTagName, findContainer, selectorAudioInComponent, querySelectorDo, absolutizeUrl, error, escapeHtml, passiveEvent} from './utils.js';
 import {__} from './i18n.js';
 import {defaultDataset} from './default_dataset.js';
 import {secondsInColonTime, secondsInTime, durationIso} from './convert.js';
@@ -33,7 +33,10 @@ export const planePointNamesFromId = /^[a-zA-Z0-9\-_]+_«([a-zA-Z0-9\-_]+)(»_.*
  * @return     {Array<string>}    An array with two strings : plane name and point name, both can be null. 
  */
 export function planeAndPointNamesFromId(element_id) {
-	const [,planeName, , pointName] = element_id?.match(planePointNamesFromId) || [];
+	let  planeName, pointName;
+	if (typeof element_id == 'string') {
+		[, planeName, , pointName] = element_id?.match(planePointNamesFromId) || [];
+	}
 	return [planeName??'', pointName??''];
 }
 
@@ -1506,16 +1509,64 @@ export class CPU_element_api {
 
 	/// TODO  TDD
 	nextFocus() {
-		/*
 		const planeNames = this.planeNames();
-		if (!planeNames) {
+		if (planeNames.length == 0) {
 			// no planes no gain, as we say in airports
 			return;
 		}
-		const wasFocused = this.focusedId();
-		if ( (!wasFocused) || ( (!wasFocused.closest('aside') && (!wasFocused.closest('.panel') ) ))) {
-			this.focusPoint(planeNames[0]);
-		}*/
+
+		const scanToNextPlane = (fromPlane) => {
+			for( let id = planeNames.indexOf(fromPlane) ; id < planeNames.length ; id++ ) {
+				let out = planeNames[id];
+				let {track, panel, points} = this.plane(out);
+				if (((track !== false) || (panel !== false)) && (points.length > 0)) {
+					return out;
+				}
+			}
+		};
+
+		let previous_pointName, planeName, pointName, planePointNames;
+		let wasFocused = this.focused();
+		if (wasFocused) {
+			if (!wasFocused.id) {
+				wasFocused = wasFocused.closest('[id]');
+			}
+			[planeName,previous_pointName] = planeAndPointNamesFromId(wasFocused.id);
+		}
+		if (!planeName) {
+			// TODO check we have a focus-qualifiable plane 
+			planeName = scanToNextPlane();
+			if (!planeName) {
+				return;
+			}
+			pointName = this.planePointNames(planeName)[0];
+		}
+
+		if (previous_pointName) {
+			planePointNames = this.planePointNames(planeName);
+			pointName = adjacentArrayValue(planePointNames, previous_pointName, 1);
+			if (!pointName) {
+				planeName = scanToNextPlane(planeName);
+				if (!planeName) {
+					return;
+				}
+				pointName = this.planePointNames(planeName)[0];
+			}
+		} else {
+			pointName = this.planePointNames(planeName)[0]
+		}
+
+		if (pointName) {
+			this.focusPoint(planeName, pointName);
+		}
+
+		//if ( (!wasFocused) || ( (!wasFocused.closest('aside') && (!wasFocused.closest('.panel') ) ))) {
+		//	planeName = planeNames[0];
+		//	console.log('at default'  ,planeName, this.planePointNames(planeName)[0] , pointName)
+		//	this.focusPoint(planeName, this.planePointNames(planeName)[0]);
+		//}
+
+
 
 /*
 		// we need to separate cues (which relly on chapters) and keys ↑ and ↓ , why is about focus between panels

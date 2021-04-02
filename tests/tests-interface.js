@@ -767,6 +767,36 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.ok(!componenttag.shadowRoot.querySelector('style#style_injection'), 'removeCss destroyed <style>');
 	});
 
-	playground.innerHTML = `<p><strong>Finished<strong></p>`;
+	QUnit.test( "element.CPU.nextFocus()", function( assert ) {
+		const points = {
+			a : { text : 'a' },
+			b : { text : 'b' }
+		};
+
+		componenttag.CPU.shadowId('control').focus();
+		componenttag.CPU.nextFocus();
+		assert.equal(componenttag.CPU.focusedId(), 'control', 'nextFocus() without existing planes do not move');
+
+		componenttag.CPU.addPlane('plane1', {track:false, panel:true});
+		componenttag.CPU.bulkPoints('plane1', points);
+		componenttag.CPU.addPlane('plane2', {track:true, panel:true});
+		componenttag.CPU.bulkPoints('plane2', points);
+		componenttag.CPU.addPlane('plane3', {track:true, panel:true});
+		componenttag.CPU.addPlane('plane4', {track:false, panel:false});
+		componenttag.CPU.bulkPoints('plane4', points);
+		componenttag.CPU.addPlane('plane5', {track:true, panel:false});
+		componenttag.CPU.bulkPoints('plane5', points);
+		componenttag.CPU.nextFocus();
+		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'panel_«plane1»_point_«a»', 'nextFocus() with no plane yet focused take the first point of the first listed plane');
+		componenttag.CPU.nextFocus();
+		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'panel_«plane1»_point_«b»', 'nextFocus() within a plane will focus the next point in the same plane');
+		componenttag.CPU.nextFocus();
+		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'panel_«plane2»_point_«a»', 'nextFocus() and the end of a plane take the first point of the next plane');
+
+		componenttag.CPU.removePlane('plane1');
+		componenttag.CPU.removePlane('plane2');
+		componenttag.CPU.removePlane('plane3');
+		componenttag.CPU.removePlane('plane4');
+	});	
 
 });
