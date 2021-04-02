@@ -2,7 +2,7 @@ import {oncePassiveEvent, adjacentArrayValue, findContainer, warn} from './utils
 import {isAudiotagStreamed} from './media_element_extension.js';
 import {timeInSeconds} from './convert.js';
 import {buildPlaylist} from './build_playlist.js';
-import {planeAndPointNamesFromId} from './element_cpu.js'
+import {planeAndPointNamesFromId} from './element_cpu.js';
 
 const KEY_LEFT_ARROW = 37;
 const KEY_RIGHT_ARROW = 39;

@@ -767,7 +767,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.ok(!componenttag.shadowRoot.querySelector('style#style_injection'), 'removeCss destroyed <style>');
 	});
 
-	QUnit.test( "element.CPU.nextFocus()", function( assert ) {
+	QUnit.test( "element.CPU.prevFocus() and element.CPU.nextFocus()", function( assert ) {
 		const points = {
 			a : { text : 'a' },
 			b : { text : 'b' }
@@ -786,6 +786,8 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		componenttag.CPU.bulkPoints('plane4', points);
 		componenttag.CPU.addPlane('plane5', {track:true, panel:false});
 		componenttag.CPU.bulkPoints('plane5', points);
+		componenttag.CPU.prevFocus();
+		assert.equal(componenttag.CPU.focusedId(), 'control', 'prevFocus() out of planes doesnt move');
 		componenttag.CPU.nextFocus();
 		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'panel_«plane1»_point_«a»', 'nextFocus() with no plane yet focused take the first point of the first listed plane');
 		componenttag.CPU.nextFocus();
@@ -798,6 +800,17 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		componenttag.CPU.nextFocus();
 		componenttag.CPU.nextFocus();
 		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'track_«plane5»_point_«b»', 'nextFocus() at the end of panels stays on last focused point');
+		componenttag.CPU.prevFocus();
+		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'track_«plane5»_point_«a»', 'prevFocus() at the end of panels goes back from one point');
+		componenttag.CPU.focusPoint('plane3','a');
+		componenttag.CPU.prevFocus();
+		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'panel_«plane2»_point_«b»', 'prevFocus() at the begining of a panel goes back at the end of previous panel');
+		componenttag.CPU.focusPoint('plane5','a');
+		componenttag.CPU.prevFocus();
+		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'panel_«plane2»_point_«b»', 'prevFocus() at the begining of a panel goes back at the end of the previous panel with points and with or a track or a panel');
+		componenttag.CPU.focusPoint('plane1','a');
+		componenttag.CPU.prevFocus();
+		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'panel_«plane1»_point_«a»', 'prevFocus() at the begining of the first panel does nothing');
 
 		componenttag.CPU.removePlane('plane1');
 		componenttag.CPU.removePlane('plane2');

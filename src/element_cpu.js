@@ -1482,69 +1482,72 @@ export class CPU_element_api {
 		return target.id ?? target?.closest('[id]')?.id;
 	}
 
-	/// TODO TDD
+	/**
+	 * @summary browse yo with focus in panels using ↑ key
+	 * @private
+	 */
 	prevFocus() {
-/*
-		// if nowhere, , previous point from current cue
-		// back in the same plane.
-		// if at start, last point from previous plane
-		// if at top, do nothing
-		let container = findContainer(event.target);
-		console.log('prevcue' , container.focusedId())
-		let [planeName, pointName] = planeAndPointNamesFromId( container.focusedId() );
-		if (!planeName) {
-			if (!container.planePoints('_chapters')) {
-				return ;
-			}
-			planeName = '_chapters';
-			[,pointName] = planeAndPointNamesFromId(body_className_playing_cue);
-		}
-		let points = container.planePoints(planeName);
-		if (!points) {
-			return; /// TODO
-		}
-		container.focusPoint(planeName, adjacentKey( points , pointName, -1) );
-*/
+		relativeFocus(this, false);
 	}
 
-	/// TODO  TDD
+	/**
+	 * @summary browse down with focus in panels using ↓ key
+	 * @private
+	 */
 	nextFocus() {
-		const planeNames = this.planeNames();
-		if (planeNames.length == 0) {
-			// no planes no gain, as we say in airports
-			return;
-		}
-
-		const scanToNextPlane = (fromPlane) => {
-			for(let id = planeNames.indexOf(fromPlane) +1; id < planeNames.length ; id++) {
-				let out = planeNames[id];
-				let {track, panel, points} = this.plane(out);
-				if (((track !== false) || (panel !== false)) && (points) && (Object.keys(points).length > 0)) {
-					return out;
-				}
-			}
-		};
-
-		let previous_pointName, planeName, pointName, planePointNames;
-		let wasFocused = this.focused();
-		if (wasFocused) {
-			if (!wasFocused.id) {
-				wasFocused = wasFocused.closest('[id]');
-			}
-			[planeName,previous_pointName] = planeAndPointNamesFromId(wasFocused.id);
-		}
-		if (previous_pointName) {
-			planePointNames = this.planePointNames(planeName);
-			pointName = adjacentArrayValue(planePointNames, previous_pointName, 1);
-		}
-		if (!pointName) {
-			planeName = scanToNextPlane(planeName);
-			if (!planeName) {
-				return;
-			}
-			pointName = this.planePointNames(planeName)[0];
-		}
-		this.focusPoint(planeName, pointName);
+		relativeFocus(this, true);
 	}
 
 }
+
+function relativeFocus(self, go_foward) {
+	const planeNames = self.planeNames();
+	if (planeNames.length == 0) {
+		return;
+	}
+
+	const validPlane = (data) => {
+		let {track, panel, points} = self.plane(data);
+		return (((track !== false) || (panel !== false)) && (points) && (Object.keys(points).length > 0));
+	};
+
+	const scanToPrevPlane = (fromPlane) => {
+		for(let id = planeNames.indexOf(fromPlane) -1; id > 0 ; id--) {
+			let out = planeNames[id];
+			if (validPlane(out)) {
+				return out;
+			}
+		}
+	};
+	const scanToNextPlane = (fromPlane) => {
+		for(let id = planeNames.indexOf(fromPlane) +1; id < planeNames.length ; id++) {
+			let out = planeNames[id];
+			if (validPlane(out)) {
+				return out;
+			}
+		}
+	};
+
+	let previous_pointName, planeName, pointName, planePointNames;
+	let wasFocused = self.focused();
+	if (wasFocused) {
+		if (!wasFocused.id) {
+			wasFocused = wasFocused.closest('[id]');
+		}
+		[planeName,previous_pointName] = planeAndPointNamesFromId(wasFocused.id);
+	}
+	if (previous_pointName) {
+		planePointNames = self.planePointNames(planeName);
+		pointName = adjacentArrayValue(planePointNames, previous_pointName, go_foward?1:-1);
+	}
+	if (!pointName) {
+		planeName = go_foward ? scanToNextPlane(planeName) : scanToPrevPlane(planeName);
+		if (!planeName) {
+			return;
+		}
+		let points = self.planePointNames(planeName);
+		pointName = points[go_foward ? 0 : (points.length-1)];
+	}
+	self.focusPoint(planeName, pointName);
+}
+
