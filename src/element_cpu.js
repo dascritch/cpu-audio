@@ -1512,7 +1512,7 @@ function relativeFocus(self, go_foward) {
 	};
 
 	const scanToPrevPlane = (fromPlane) => {
-		for(let id = planeNames.indexOf(fromPlane) -1; id > 0 ; id--) {
+		for(let id = planeNames.indexOf(fromPlane) -1; id >= 0 ; id--) {
 			let out = planeNames[id];
 			if (validPlane(out)) {
 				return out;
