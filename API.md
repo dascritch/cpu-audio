@@ -12,8 +12,8 @@ This is the reference page for public accessible methods and properties. You can
 Important : Undocumented feature uses is at your risks, we won't check naming, parameters, actions and outputs continuity. And seriously, keep our webcomponent up to date on the stable version.
 
 
-document.body.CPU
------------------
+document.CPU
+------------
 
 This object is a global configuration interface.
 
@@ -47,6 +47,7 @@ seekElementAt(audiotag, seconds) |                               | will jump the
 findInterface(child)             | HTMLElement or null           | For any ShadowDOM element, will returns its parent interface container
 findContainer(child)             | CpuAudioElement.`CPU` or null | For any `<audio>` tag or its child tag, will returns the element `CPU` API
 currentPlaylist()                | array                         | Returns an array of the current playing playlist
+adjacentKey(object, key, offset) | string or null 				 | Returns the adjacent key of a key in an object (offset -1 for previous, +1 for next)
 
 Some methods are still not documented, for internal usage, as they may evolve.
 
