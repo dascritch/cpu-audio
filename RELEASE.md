@@ -1,4 +1,4 @@
-RELEASE NOTES actual, 6.99.1
+RELEASE NOTES actual, 6.99.2
 ============================
 
 New features
@@ -9,6 +9,8 @@ New features
  * Possibility to change css breakpoints ([#51](#51)) by this way ([#56](#56))
  * Possibility to create RTL version ([#26](#26)) by this way ([#56](#56))
  * A11y : Support reduced motion preferences
+ * Adding support for ↑ and ↓ keys, moving focus among panels
+ * Adding support for prevcue/nextcue facultative buttons
  * Added method `Element.CPU.bulkPoints()`
  * Added a more visible focus outline, stylable via`--cpu-focus-outline` ([#116](#116))
  * Some examples added

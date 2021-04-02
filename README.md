@@ -90,8 +90,10 @@ When the interface got the focus, you can use those keys :
 * <kbd>↖</kbd> : back to start
 * <kbd>End</kbd> : to the end, finish playing, ev. skip to the sound in playlist
 * <kbd>Escape</kbd> : back to start, stop playing
+* <kbd>↑</kbd> : move focus between entries in panels
+* <kbd>↓</kbd> : move focus between entries in panels
 
-For handheld users, a long press on the timeline will show you another interface for a more precise navigation.
+For handheld users, a long press on the timeline will show you another interface for a more precise navigation (Desktop users can try it via a right click on it).
 
 
 Some links
@@ -108,7 +110,7 @@ Some links
 * [How to cite a podcast](https://www.buzzsprout.com/blog/cite-podcast), now you can support time positions URL
 * Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 
-Version : 6.99.1 [Licence GPL 3](LICENSE)
+Version : 6.99.2 [Licence GPL 3](LICENSE)
 
 
 Participate
