@@ -792,6 +792,12 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'panel_«plane1»_point_«b»', 'nextFocus() within a plane will focus the next point in the same plane');
 		componenttag.CPU.nextFocus();
 		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'panel_«plane2»_point_«a»', 'nextFocus() and the end of a plane take the first point of the next plane');
+		componenttag.CPU.nextFocus();
+		componenttag.CPU.nextFocus();
+		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'track_«plane5»_point_«a»', 'nextFocus() and the end of a plane take the first point of the next plane with entries and with track or panel activated');
+		componenttag.CPU.nextFocus();
+		componenttag.CPU.nextFocus();
+		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'track_«plane5»_point_«b»', 'nextFocus() at the end of panels stays on last focused point');
 
 		componenttag.CPU.removePlane('plane1');
 		componenttag.CPU.removePlane('plane2');

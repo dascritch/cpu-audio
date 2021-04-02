@@ -1453,7 +1453,7 @@ export class CPU_element_api {
 	 */
 	focusPoint(planeName, pointName) {
 		// get element, first on the plane, and else on the plane
-		const element = this.pointPanel(planeName, pointName).querySelector('a') ?? this.pointTrack(planeName, pointName);
+		const element = this.pointPanel(planeName, pointName)?.querySelector('a') ?? this.pointTrack(planeName, pointName);
 		if (!element) {
 			return false;
 		}
@@ -1516,10 +1516,10 @@ export class CPU_element_api {
 		}
 
 		const scanToNextPlane = (fromPlane) => {
-			for( let id = planeNames.indexOf(fromPlane) ; id < planeNames.length ; id++ ) {
+			for(let id = planeNames.indexOf(fromPlane) +1; id < planeNames.length ; id++) {
 				let out = planeNames[id];
 				let {track, panel, points} = this.plane(out);
-				if (((track !== false) || (panel !== false)) && (points.length > 0)) {
+				if (((track !== false) || (panel !== false)) && (points) && (Object.keys(points).length > 0)) {
 					return out;
 				}
 			}
@@ -1533,77 +1533,18 @@ export class CPU_element_api {
 			}
 			[planeName,previous_pointName] = planeAndPointNamesFromId(wasFocused.id);
 		}
-		if (!planeName) {
-			// TODO check we have a focus-qualifiable plane 
-			planeName = scanToNextPlane();
+		if (previous_pointName) {
+			planePointNames = this.planePointNames(planeName);
+			pointName = adjacentArrayValue(planePointNames, previous_pointName, 1);
+		}
+		if (!pointName) {
+			planeName = scanToNextPlane(planeName);
 			if (!planeName) {
 				return;
 			}
 			pointName = this.planePointNames(planeName)[0];
 		}
-
-		if (previous_pointName) {
-			planePointNames = this.planePointNames(planeName);
-			pointName = adjacentArrayValue(planePointNames, previous_pointName, 1);
-			if (!pointName) {
-				planeName = scanToNextPlane(planeName);
-				if (!planeName) {
-					return;
-				}
-				pointName = this.planePointNames(planeName)[0];
-			}
-		} else {
-			pointName = this.planePointNames(planeName)[0]
-		}
-
-		if (pointName) {
-			this.focusPoint(planeName, pointName);
-		}
-
-		//if ( (!wasFocused) || ( (!wasFocused.closest('aside') && (!wasFocused.closest('.panel') ) ))) {
-		//	planeName = planeNames[0];
-		//	console.log('at default'  ,planeName, this.planePointNames(planeName)[0] , pointName)
-		//	this.focusPoint(planeName, this.planePointNames(planeName)[0]);
-		//}
-
-
-
-/*
-		// we need to separate cues (which relly on chapters) and keys ↑ and ↓ , why is about focus between panels
-
-		// may be must be in element.CPU
-		// may be must be fully tested as this is a sooooo complex segment of code
-
-		// if nowhere, , next point from current cue
-		// next in the same plane.
-		// if at end, first point from next plane
-		// if at end of end, nothing
-		let container = findContainer(event.target);
-		console.log('nextcue' , container.focusedId())
-		let [planeName, pointName] = planeAndPointNamesFromId( container.focusedId() );
-		if (!planeName) {
-			if (!container.planePoints('_chapters')) {
-				return ;
-			}
-			planeName = '_chapters';
-			[,pointName] = planeAndPointNamesFromId(body_className_playing_cue);
-			// if no plane with '_chapters' , get the very first one
-		}
-		// We miss here a adjacentFocusablePlane() , chezcking plane with entries, with track OR panel
-		let points = container.planePoints(planeName);
-		if (!points) {
-			const planeNames = container.planeNames();
-			if (planeName in planeNames) {
-				planeName = adjacentArrayValue(planeNames, planeName, 1);
-			}
-			if (!planeName) {
-				return;
-			}
-			points = container.planePoints(planeName);
-		}
-		// do not try to move if at the end of the last plane
-		container.focusPoint(planeName, adjacentKey( points , pointName, 1) ?? pointName[0] );
-*/
+		this.focusPoint(planeName, pointName);
 	}
 
 }
