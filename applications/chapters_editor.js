@@ -2,8 +2,6 @@
 
 /**
 TODO
-- "download" local file webvtt via <input type="file">
-- indiquer quand webvtt est en rerreur, notamment « Security Error: Content at https://dascritch.github.io/cpu-audio/applications/chapters_editor.html may not load data from https://cpu.dascritch.net/public/Sonores/Emissions/tracks/0158-CPU%2825-03-21%29.vtt. » mais c'est pour une URL externe en erreur CORS
 - add on the fly generated spectrogram
 - when unfolding generators, expanded panels should be also scrolled to
 **/
@@ -39,7 +37,6 @@ let timecode_input, text_input;
  * @param      {Event}  event   "Load" event on <track>
  */
 function interpret_loaded_tracks(event) {
-console.log('interpret_loaded_tracks')    
     let line_number = 0;
     for(let t of sound_element.textTracks[0].cues) {
         let { startTime, text } = t;
@@ -126,21 +123,17 @@ function set_source_audio() {
 
     let file_source_webvtt = edit_source_webvtt_element.files[0];
 
+    let track_element = document.querySelector('track');
     if (file_source_webvtt) {
-        let track_element = document.querySelector('track');
         track_element.addEventListener('load', interpret_loaded_tracks);
         track_element.default = true;
         track_element.kind = 'metadata';
         track_element.src = URL.createObjectURL(edit_source_webvtt_element.files[0]);
-    console.log('track_element.src', track_element.src)
         sound_element.preload = 'metadata';
     }
 
     document.body.classList.add('loaded');
     
-    if ( (edit_source_webvtt_element.value) && (track_element.src !== edit_source_webvtt_element.value) )  {
-        track_element.src = edit_source_webvtt_element.value;
-    }
     /*
     try {
         if (url) {

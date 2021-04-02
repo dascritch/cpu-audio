@@ -30,7 +30,7 @@ const planePointNamesFromId = /^[a-zA-Z0-9\-_]+_«([a-zA-Z0-9\-_]+)(»_.*_«([a-
  * repeated in the class for testing purposes
  *
  * @param      {string}  element_id  The element identifier
- * @return     {Array<string>}    An array with two strings : plane name and point name.
+ * @return     {Array<string>}    An array with two strings : plane name and point name, both can be null. 
  */
 function planeAndPointNamesFromId(element_id) {
 	const [,planeName, , pointName] = element_id.match(planePointNamesFromId) || [];
