@@ -10,6 +10,7 @@
  * [examples/iframe_for_dimension.html](examples/iframe_for_dimension.html)
  * [examples/Style_backgrounds.html](examples/Style_backgrounds.html)
  * [examples/Style_highlight_page_chapters.html](examples/Style_highlight_page_chapters.html)
+ * [examples/Theme_big-square.html](examples/Theme_big-square.html)
 
 
 ### Applications

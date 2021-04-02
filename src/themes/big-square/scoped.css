@@ -1,0 +1,206 @@
+:host {
+  all: initial;
+  display: block;
+  contain: content;
+}
+
+#interface {
+	--cpu-timeline-height : 10px;
+	/* transition : width var(--cpu-unfold); */
+	color : var(--cpu-color);
+	height : var(--cpu-height);
+}
+
+#interface, * {
+	font-family : var(--cpu-font-family);
+	font-size : var(--cpu-font-size);
+	font-weight: normal;
+	font-style: normal;
+	line-height : 1.2;
+	border : none;
+	padding : 0;
+	margin : 0;
+	text-indent: 0;
+	list-style-type: none;
+	user-select: none;
+	transition :
+		color var(--cpu-color-transitions),
+		background-color var(--cpu-background-transitions),
+		opacity var(--cpu-background-transitions);
+}
+
+main {
+	background : var(--cpu-background);
+
+	display : flex;
+	overflow : hidden;
+	width : var(--cpu-height);
+
+	text-align : center;
+}
+
+a, button {
+	color : currentColor;
+	border : none;
+	text-decoration : none;
+	cursor : pointer;
+	max-height : 32px;
+	vertical-align : middle;
+	background : transparent;
+}
+
+a:focus,  button:focus {
+	outline : var(--cpu-focus-outline); 
+}
+
+a:hover, button:hover, a:focus, button:focus, 
+#pageshare div:hover ,
+.active-cue, /* can now ride off its !important on color */
+.with-preview /* !important still needed to simplify css */ {
+	background: var(--cpu-focus-background, var(--cpu-color)) !important;
+	color : var(--cpu-focus-color, var(--cpu-background)) !important;
+}
+
+svg {
+	fill : currentColor;
+}
+
+i, em {
+	font-style: italic;
+}
+
+b, strong {
+	font-weight: bold;
+}
+
+[src=''] {
+	visibility: hidden;
+}
+
+#poster {
+	display: block;
+	height: 500px;
+	width: 500px;
+	margin: 10px 50px;
+	object-fit: contain;
+	opacity : 0;
+}
+
+.poster-loaded #poster {
+	opacity: 1;
+}
+
+h5 a {
+	font-weight: bold;
+}
+
+.act-loading #loading,
+.act-play #pause,
+.act-glow #play,
+.act-pause #play {
+	display : block;
+}
+
+.act-glow #play {
+	animation : glow 2s infinite;
+}
+
+@keyframes glow {
+	0%   { opacity : 0.5; }
+	50%  { opacity : 1;   }
+	100% { opacity : 0.5; }
+}
+.act-loading #loading circle {
+	fill : #777;
+	opacity : 1;
+	animation: pulse 2s infinite;
+}
+
+#loading circle:nth-child(2) {
+	animation-delay:0.5s;
+}
+
+#loading circle:nth-child(3) {
+	animation-delay:1s;
+}
+
+@keyframes pulse {
+	50% { opacity : 0; }
+}
+
+a svg , button svg{
+	max-width :32px;
+	max-height : 32px;
+}
+
+#controlbar  {
+	display : flex;
+	flex-direction: row;
+	height : 32px;
+	width : 100%;
+}
+
+#control, #restart, #prevtrack , #nexttrack, #link {
+	flex : 32px 0 1;
+}
+
+.expand {
+	flex : auto 1 0;
+}
+
+#elapse {
+	text-align: right;
+	height : 32px;
+}
+
+#elapse span {
+	vertical-align : middle;
+}
+
+.no,
+.mode-hidden,
+#control svg,
+.show-main #pageshare, .show-main #pageerror,
+.show-error #pagemain, .show-error #pageshare , .show-error #poster, .show-error .panel,
+#handheld-nav , .show-handheld-nav #titleline,
+.hide-chapters .chapters,
+.hide-timeline #line,
+.hide-panels .panel,
+.hide-panels-title h6,
+.hide-panels-except-play .panel,
+.media-streamed #link,
+.media-streamed #line {
+	display : none;
+}
+
+
+#popup {
+	pointer-events : none;
+	position: absolute;
+	transform: translate(-25px, -19px);
+	z-index : 127;
+	min-width : 50px;
+	font-size : 11px;
+	text-align : center;
+	padding : 2px;
+	border-radius: 4px;
+	box-shadow: black 2px 2px;
+	background : var(--cpu-popup-background);
+	color : var(--cpu-popup-color);
+	opacity : 0;
+}
+#popup:before {
+	pointer-events : none;
+	content:"";
+	position: absolute;
+	z-index : 127;
+	left: 20px;
+	bottom: -8px;
+	width: 0;
+	height : 0;
+	/* arrow form */
+	border-top: 8px solid var(--cpu-popup-background);
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+}
+

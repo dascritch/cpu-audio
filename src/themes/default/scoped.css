@@ -48,7 +48,8 @@ main {
 a, button {
 	color : currentColor;
 	border : none;
-	text-decoration : none;
+	text-decoration : none;	
+	cursor : pointer;
 }
 button {
 	background : transparent;
@@ -90,10 +91,6 @@ b, strong, h5 a {
 	height : 100%;
 	text-align : center;
 	vertical-align : middle;
-}
-
-a {
-	cursor : pointer;
 }
 
 .act-loading #loading,

@@ -1,0 +1,42 @@
+/* Fallback */
+audio[controls] {
+	display : block;
+	width : 100%;
+}
+
+/* Global default style, usign var. Integrators may override them */
+:root {
+	--cpu-height : 600px;
+	--cpu-font-family : Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+	--cpu-font-size : 15px;
+	--cpu-font-small-size : calc(var(--cpu-font-size) * 0.8);
+	--cpu-background : #555;
+	--cpu-color : #ddd;
+	--cpu-playing-background : #444;
+	--cpu-playing-color : #fff;
+	--cpu-error-background : #a00 ;
+	--cpu-error-color : #ff7 ;
+	--cpu-popup-background : #aaa;
+	--cpu-popup-color : #333;
+	--cpu-cue : #000;
+	--cpu-timeline-limits : #f00;
+	--cpu-color-transitions : 0s;
+	--cpu-background-transitions : 0s;
+	--cpu-unfold : 0s;
+	--cpu-focus-outline : none; /* you can try 8px dashed #f00; */
+}
+
+/* If css element queries not available, fallback to media queries */
+
+@media (max-width: 640px) /*, @element .interface and (max-width: 640px) */ {
+	:root , .interface {
+		--cpu-font-size : 13px;
+		--cpu-height : 480px;
+	}
+
+@media (max-width: 480px) /*, @element .interface and (max-width: 480px) */ {
+	:root , .interface {
+		--cpu-height : 100vh;
+	}
+
+}
