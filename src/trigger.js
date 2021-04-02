@@ -357,6 +357,8 @@ export const trigger = {
 			case 32 : // space
 				toggleplay();
 				break;
+			// pageUp 33
+			// pageDown 34
 			case 35 : // end
 				document.CPU.seekElementAt(audiotag, audiotag.duration);
 				break;
@@ -368,6 +370,12 @@ export const trigger = {
 				break;
 			case KEY_RIGHT_ARROW : // →
 				seek_relative(+ (document.CPU.keymove * mult));
+				break;
+			case 38 : // ↑
+				event.prevcue(event);
+				break;
+			case 40 : // ↓ 
+				event.nextcue(event);
 				break;
 			default:
 				return ;
@@ -422,6 +430,30 @@ export const trigger = {
 	fastfoward : function(event) {
 		event.keyCode = KEY_RIGHT_ARROW;
 		trigger.key(event, document.CPU.fastFactor);
+	},
+
+	/**
+	 * @summary Pressing prevcue button, or hit ↑ key
+	 * Function associated, see below, DO NOT RENAME
+	 *
+	 * @param      {Object}  event   The event
+	 */
+	prevcue : function(event) {
+		let container = findContainer(event.target);
+		container.focusedId();
+		console.log('prevcue' , container.focusedId())
+	},
+
+	/**
+	 * @summary Pressing nextcue button, or hit ↓ key
+	 * Function associated, see below, DO NOT RENAME
+	 *
+	 * @param      {Object}  event   The event
+	 */
+	nextcue : function(event) {
+		let container = findContainer(event.target);
+		container.focusedId();
+		console.log('prevcue' , container.focusedId())
 	},
 
 	/**

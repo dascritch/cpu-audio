@@ -49,8 +49,8 @@ export function buildInterface(container) {
 		container.shadowId(that)?.addEventListener('click', cliquables[that], passiveEvent);
 	}
 
-	// handheld nav to allow long press to repeat action
-	let _buttons = ['fastreward', 'reward', 'foward', 'fastfoward'];
+	//  *ward : handheld nav to allow long press to repeat action
+	let _buttons = ['prevcue', 'fastreward', 'reward', 'foward', 'fastfoward', 'nextcue'];
 	for (let that of _buttons) {
 		const button_element = container.shadowId(that);
 		button_element?.addEventListener('pointerdown', pressManager.press);
