@@ -94,7 +94,9 @@ addPlane(planeName, planeData)                    		 | boolean | Create an annot
 removePlane(planeName)                                   | boolean | Remove an annotation plane (¹)(²)
 addPoint(planeName, pointName, pointData)                | boolean | Add an annotation point to a plane at a timecode (¹)(²)(⁴)
 point(planeName, pointName) 			                 | object  | Return data for a point (³)
-editPoint(planeName, pointName, data)                    |         | Modify data for a point (³). Only existing keys from point() are updated
+editPoint(planeName, pointName, pointData)               |         | Modify data for a point (³). Only existing keys from point() are updated
+focusPoint(planeName, pointName)                         | boolean | Give focus on a point on a plane, else on the track
+focusedId()												 | string  | Give focused Id (element or parent), or null/undefined
 removePoint(planeName, pointName)                        | boolean | Remove an annotation point (¹)(²)
 clearPlane(planeName)                                    |         | Remove any points from an annotation plane (¹)(²)
 redrawAllPlanes()                                        |         | Redraw any annotation planes and points

@@ -1250,7 +1250,46 @@ export class CPU_element_api {
 		if (plane._st_max < start) {
 			plane._st_max = start;
 		}
+	}
 
+	/**
+	 * @summary Give focus on an annotation point
+	 * @public
+	 *
+	 * @param      {string}   planeName      The existing plane name
+	 * @param      {string}   pointName      The existing point name
+	 * @return      boolean    has focus
+	 */
+	focusPoint(planeName, pointName) {
+		// get element, first on the plane, and else on the plane
+		const element = this.pointPanel(planeName, pointName).querySelector('a') ?? this.pointTrack(planeName, pointName);
+console.log(element)
+		if (!element) {
+			return false;
+		}
+		element.focus();
+		return true;
+	}
+
+	/**
+	 * @summary Get focused element in shadow
+	 * @public
+	 *
+	 * @return      {Element|null}   		Focused element, or null
+	 */
+	focused() {
+		return this.shadow.querySelector(':focus');
+	}
+
+	/**
+	 * @summary Get ID of focused element in shadow
+	 * @public
+	 *
+	 * @return      {string|null|undefined}   		Focused ID, or null or undefined
+	 */
+	focusedId() {
+		const target = this.focused();
+		return target.id ?? target?.closest('[id]')?.id;
 	}
 
 	/**
