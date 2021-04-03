@@ -75,15 +75,26 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 
 
 	QUnit.test( "All named elements in template needed in code, accessed via .shadowId()", function( assert ) {
-		for (id of [ 'pageerror', 'popup', 'time', 'line', 'interface', 'control']) {
+		for (id of [ 'pageerror', 'popup',  'interface', 'control']) {
 			assert.ok(componenttag.CPU.shadowId(id), `#${id} , callable via Component.CPU.shadowId('${id}')`);
 		}
 	});
 	QUnit.test( "Named elements in template used in code, but not mandatory, accessed via .shadowId()", function( assert ) {
-		for (id of ['poster', 'canonical', 'elapse', 'currenttime', 'totaltime', 'nativeshare', 'twitter', 'facebook', 'email', 'link', 'actions', 'back', 'pause', 'play', 'restart', 'fastreward', 'reward', 'foward', 'fastfoward', 'loadingline']) {
+		for (id of ['poster', 'canonical', 'elapse', 'currenttime', 'totaltime', 'nativeshare', 'twitter', 'facebook', 'email', 'link', 'actions', 'back', 'pause', 'play', 'restart', 'fastreward', 'reward', 'foward', 'fastfoward', 'loadingline', 'time', 'line']) {
 			assert.ok(componenttag.CPU.shadowId(id), `#${id} , callable via Component.CPU.shadowId('${id}')`);
 		}
 	});
+	QUnit.test( "Trigger actions whose name can be used as element ID via .shadowId()", function( assert ) {
+		for (id of ['restart', 'toggleplay', 'pause' , 'play',  'prevcue', 'nextcue', 'fastreward', 'reward', 'foward', 'fastfoward']) {
+			assert.equal(typeof document.CPU.trigger[id], 'function', `document.CPU.trigger.${id} callable and linkable to an ID`);
+		}
+	});
+	QUnit.test( "Trigger actions internally needed", function( assert ) {
+		for (id of ['hashOrder', 'hover', 'out', 'throbble', 'playOnce', 'cuechange', 'update', 'ended']) {
+			assert.equal(typeof document.CPU.trigger[id], 'function', `document.CPU.trigger.${id} callable`);
+		}
+	});
+
 
 	QUnit.test( "Press play to start", function( assert ) {
 		assert.ok(audiotag.paused, "Player is paused at start" );
