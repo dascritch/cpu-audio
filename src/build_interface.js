@@ -36,6 +36,7 @@ export function buildInterface(container) {
 
 	let showMain = container.showMain.bind(container);
 
+	// main buttons management
 	let cliquables = {
 		pause     : trigger.pause,
 		play      : trigger.play,
@@ -49,6 +50,7 @@ export function buildInterface(container) {
 		container.shadowId(that)?.addEventListener('click', cliquables[that], passiveEvent);
 	}
 
+	// relative browsing buttons management
 	//  *ward : handheld nav to allow long press to repeat action
 	let _buttons = ['prevcue', 'fastreward', 'reward', 'foward', 'fastfoward', 'nextcue'];
 	for (let that of _buttons) {
