@@ -6,9 +6,6 @@
 
 #interface {
 	--cpu-timeline-height : 10px;
-	/* transition : width var(--cpu-unfold); */
-	color : var(--cpu-color);
-	height : var(--cpu-height);
 }
 
 #interface, * {
@@ -29,34 +26,27 @@
 		opacity var(--cpu-background-transitions);
 }
 
-main {
-	background : var(--cpu-background);
-
-	display : flex;
-	overflow : hidden;
-	width : var(--cpu-height);
-
-	text-align : center;
-}
-
-a, button {
+button {
 	color : currentColor;
 	border : none;
 	text-decoration : none;
 	cursor : pointer;
-	max-height : 32px;
 	vertical-align : middle;
-	background : transparent;
+	background : var(--cpu-background);
+	color : var(--cpu-color);
+	display : flex;
+	flex-direction: column;
+	overflow : hidden;
+	width : var(--cpu-height);
+	height: var(--cpu-height);
+	text-align : center;
 }
 
-a:focus,  button:focus {
+button:focus {
 	outline : var(--cpu-focus-outline); 
 }
 
-a:hover, button:hover, a:focus, button:focus, 
-#pageshare div:hover ,
-.active-cue, /* can now ride off its !important on color */
-.with-preview /* !important still needed to simplify css */ {
+button:hover, button:focus {
 	background: var(--cpu-focus-background, var(--cpu-color)) !important;
 	color : var(--cpu-focus-color, var(--cpu-background)) !important;
 }
@@ -65,23 +55,15 @@ svg {
 	fill : currentColor;
 }
 
-i, em {
-	font-style: italic;
-}
-
-b, strong {
-	font-weight: bold;
-}
-
 [src=''] {
 	visibility: hidden;
 }
 
 #poster {
 	display: block;
-	height: 500px;
-	width: 500px;
-	margin: 10px 50px;
+	height: 530px;
+	width: 530px;
+	margin: 10px 35px;
 	object-fit: contain;
 	opacity : 0;
 }
@@ -90,8 +72,17 @@ b, strong {
 	opacity: 1;
 }
 
-h5 a {
+h5 {
 	font-weight: bold;
+}
+
+
+.no,
+.mode-hidden,
+#control svg, #loading, #pause,#play,
+.panel
+{
+	display : none;
 }
 
 .act-loading #loading,
@@ -128,20 +119,18 @@ h5 a {
 	50% { opacity : 0; }
 }
 
-a svg , button svg{
+svg {
 	max-width :32px;
 	max-height : 32px;
 }
 
-#controlbar  {
+#control  {
 	display : flex;
 	flex-direction: row;
 	height : 32px;
-	width : 100%;
-}
-
-#control, #restart, #prevtrack , #nexttrack, #link {
-	flex : 32px 0 1;
+	width : 530px;
+	align-items: center;
+	margin : 0 35px;
 }
 
 .expand {
@@ -157,50 +146,5 @@ a svg , button svg{
 	vertical-align : middle;
 }
 
-.no,
-.mode-hidden,
-#control svg,
-.show-main #pageshare, .show-main #pageerror,
-.show-error #pagemain, .show-error #pageshare , .show-error #poster, .show-error .panel,
-#handheld-nav , .show-handheld-nav #titleline,
-.hide-chapters .chapters,
-.hide-timeline #line,
-.hide-panels .panel,
-.hide-panels-title h6,
-.hide-panels-except-play .panel,
-.media-streamed #link,
-.media-streamed #line {
-	display : none;
-}
 
-
-#popup {
-	pointer-events : none;
-	position: absolute;
-	transform: translate(-25px, -19px);
-	z-index : 127;
-	min-width : 50px;
-	font-size : 11px;
-	text-align : center;
-	padding : 2px;
-	border-radius: 4px;
-	box-shadow: black 2px 2px;
-	background : var(--cpu-popup-background);
-	color : var(--cpu-popup-color);
-	opacity : 0;
-}
-#popup:before {
-	pointer-events : none;
-	content:"";
-	position: absolute;
-	z-index : 127;
-	left: 20px;
-	bottom: -8px;
-	width: 0;
-	height : 0;
-	/* arrow form */
-	border-top: 8px solid var(--cpu-popup-background);
-	border-left: 4px solid transparent;
-	border-right: 4px solid transparent;
-}
 

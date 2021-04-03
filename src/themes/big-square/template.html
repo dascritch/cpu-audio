@@ -1,69 +1,28 @@
 <div id="interface" class="no" tabindex="0">
-	<main>
-		<section id="pageerror" role="alert">
-		</section>
-		<section id="pagemain">
-			<img id="poster" class="nosmall" src="" alt="" loading="lazy" decoding="async" />
-			<h5 id="title"><a href="#" id="canonical" aria-label="${__.canonical}"><!-- title of the track --></a></h5>
-			<div id="controlbar">
-				<button type="button" id="prevtrack" title="Previous track">
-					<svg viewBox="0 0 24 16" aria-hidden="true">
-						<polygon points="4,0 8,0 8,16 4,16"/>
-						<path d="M 16,0 8,8 16,16 z" />
-						<path d="M 24,0 16,8 24,16 z" />
-					</svg>
-				</button>
-				<button type="button" id="restart" title="Restart">
-					<svg viewBox="0 0 24 16" aria-hidden="true">
-						<polygon points="4,0 8,0 8,16 4,16"/>
-						<path d="M 12,0 12,16 20,8 z" />
-					</svg>
-				</button>
-				<span class="expand"></span>
-				<button type="button" id="control" tabindex="0">
-					<!-- play / pause / loading -->
-					<svg id="loading" viewBox="0 0 32 32">
-						<title>${__.loading}</title>
-						<circle cx="6" cy="22" r="4" />
-						<circle cx="16" cy="22" r="4" />
-						<circle cx="26" cy="22" r="4" />
-					</svg>
-					<svg id="pause" viewBox="0 0 32 32">
-						<title>${__.pause}</title>
-						<path d="M 6,6 12.667,6 12.667,26 6,26 z" />
-						<path d="M 19.333,6 26,6 26,26 19.333,26 z" />
-					</svg>
-					<svg id="play" viewBox="0 0 32 32">
-						<title>${__.play}</title>
-						<path d="M 6,6 6,26 26,16 z" />
-					</svg>
-				</button>
-				<a class="expand" id="elapse" aria-label="${__.moment}" tabindex="-1"><span id="currenttime">…<!-- elapsed time --></span><span id="totaltime" class="nosmaller"><!-- total time --></span></a>
-				<a href="#" target="social" download="" id="link" aria-label="${__.download}" title="${__.download}">
-					<!-- download source. you can precise which one is to be downloaded, seek for “data-downloadable” in documentation -->
-					<svg viewBox="0 0 32 32" aria-hidden="true">
-						<path d="M 6,6 26,6 16,22 z" />
-						<rect x="6" y="22" width="20" height="4" />
-					</svg>
-					<span class="nosmall">${__.download}</span>
-				</a>
-				<button type="button" id="nexttrack" title="Next track">
-					<svg viewBox="0 0 24 16" aria-hidden="true">
-						<path d="M 4,0 12,8 4,16 z" />
-						<path d="M 12,0 20,8 12,16 z" />
-						<polygon points="20,0 24,0 24,16 20,16"/>
-					</svg>
-				</button>
+	<button type="button" id="toggleplay">
+		<img id="poster" class="nosmall" src="" alt="" loading="lazy" decoding="async" />
+		<h5 id="title"><span id="canonical"><!-- title of the track --></span></h5>
+		<div id="control">
+			<!-- play / pause / loading -->
+			<svg id="loading" viewBox="0 0 32 32">
+				<title>${__.loading}</title>
+				<circle cx="6" cy="22" r="4" />
+				<circle cx="16" cy="22" r="4" />
+				<circle cx="26" cy="22" r="4" />
+			</svg>
+			<svg id="pause" viewBox="0 0 32 32">
+				<title>${__.pause}</title>
+				<path d="M 6,6 12.667,6 12.667,26 6,26 z" />
+				<path d="M 19.333,6 26,6 26,26 19.333,26 z" />
+			</svg>
+			<svg id="play" viewBox="0 0 32 32">
+				<title>${__.play}</title>
+				<path d="M 6,6 6,26 26,16 z" />
+			</svg>
 
-			</div>
-			<div id="line">
-				<div id="time">
-					<!-- time progression bar -->
-					<div id="loadingline" role="progressbar" aria-labelledby="popup"></div>
-					<time id="popup">--:--</time>
-				</div>
-				<!-- here are inserted tracks for _chapters, cursors,… -->
-			</div>
-		</section>
-	</main>
+			<span class="expand"></span>
+			
+			<span><span id="currenttime">…<!-- elapsed time --></span><span id="totaltime" class="nosmaller"><!-- total time --></span>
+		</div>
+	</button>
 </div>
