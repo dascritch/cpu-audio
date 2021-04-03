@@ -20,8 +20,8 @@ audio[controls] {
 	--cpu-popup-color : #333;
 	--cpu-cue : #000;
 	--cpu-timeline-limits : #f00;
-	--cpu-color-transitions : 0s;
-	--cpu-background-transitions : 0s;
+	--cpu-color-transitions : 0.1s;
+	--cpu-background-transitions : 0.1s;
 	--cpu-unfold : 0s;
 	--cpu-focus-outline : none; /* you can try 8px dashed #f00; */
 }
