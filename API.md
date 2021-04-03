@@ -1,15 +1,16 @@
 API
 ===
 
-How dive into cpu-audio.js :
+How to dive into `cpu-audio.js` :
 
- - cpu-audio.js can be fine-tuned with HTML attributes and CSS variables,
+ - `cpu-audio.js` can be fine-tuned with HTML attributes and CSS variables,
  - its layout and embedded css can be completed or recreated in `src/themes` via themes-built,
- - javascript-savvy developers can use API features to get more precise controls or extend possibilities, as we do in our <a href="applications/chapters_editor.html">chapters editor</a>.
+ - javascript-savvy developers can use API features to get more precise controls or extend possibilities, as we do in our <a href="applications/chapters_editor.html">chapters editor</a>,
+ - theme builders may later easily ([#132](#132)) include their specific code into their custom build librairy.
 
 This is the reference page for public accessible methods and properties. You can read some test cases in the `examples` sub-directory of this project.
 
-Important : Undocumented feature uses is at your risks, we won't check naming, parameters, actions and outputs continuity. And seriously, keep our webcomponent up to date on the stable version.
+Important : Undocumented feature uses is at your risks, we won't check naming, parameters, actions and outputs continuity. We only test methods and properties continuity on those listed below. And seriously, keep our webcomponent up to date on the stable version.
 
 
 document.CPU
@@ -38,16 +39,16 @@ Some properties are still not documented, for internal usage, as they may evolve
 
 Methods :
 
-name                             | returns                       | usage
----------------------------------|-------------------------------|-----------------
-isAudiotagPlaying(audiotag)      | boolean                       | Indicate if this `<audio>` element is playing and correctly cpu-audio started
-isAudiotagGlobal(audiotag)       | boolean                       | Indicate if this `<audio>` element is displayed by `<cpu-controller>` if installed
-jumpIdAt(hash, timecode)         | 	                             | will jump the `<audio id="hash">` to timecode (any convertable format in seconds, colon-coded or human coded)
-seekElementAt(audiotag, seconds) |                               | will jump the `<audio>` to a position in seconds (number only)
-findInterface(child)             | HTMLElement or null           | For any ShadowDOM element, will returns its parent interface container
-findContainer(child)             | CpuAudioElement.`CPU` or null | For any `<audio>` tag or its child tag, will returns the element `CPU` API
-currentPlaylist()                | array                         | Returns an array of the current playing playlist
-adjacentKey(object, key, offset) | string or null 				 | Returns the adjacent key of a key in an object (offset -1 for previous, +1 for next)
+name                             | returns                      	| usage
+---------------------------------|----------------------------------|-----------------
+isAudiotagPlaying(audiotag)      | boolean                       	| Indicate if this `<audio>` element is playing and correctly cpu-audio started
+isAudiotagGlobal(audiotag)       | boolean                       	| Indicate if this `<audio>` element is displayed by `<cpu-controller>` if installed
+jumpIdAt(hash, timecode)         | 	                             	| will jump the `<audio id="hash">` to timecode (any convertable format in seconds, colon-coded or human coded)
+seekElementAt(audiotag, seconds) |                               	| will jump the `<audio>` to a position in seconds (number only)
+findInterface(child)             | HTMLElement or `null`         	| For any ShadowDOM element, will returns its parent interface container
+findContainer(child)             | CpuAudioElement.`CPU` or `null`	| For any `<audio>` tag or its child tag, will returns the element `CPU` API
+currentPlaylist()                | array                       		| Returns an array of the current playing playlist
+adjacentKey(object, key, offset) | string or `null`					| Returns the adjacent key of a key in an object (offset -1 for previous, +1 for next)
 
 Some methods are still not documented, for internal usage, as they may evolve.
 
@@ -68,10 +69,12 @@ durationIso(number)               | string  | Convert a duration in an ISO 8601 
 CpuAudioElement and CpuControllerElement
 ----------------------------------------
 
-Attributes of their DOM elements may be live changed in the same way for the HTML inclusion, but using `CpuAudioElement.setAttribute(<attribute {str}>, <values {str}>)` or `CpuAudioElement.removeAttribute(<attribute {str}>)`. It can be useful for advanced interactions. See *“Attributes references”* in [INSTALL.md](INSTALL.md) of course. 
+Attributes of their DOM elements may be live changed in the same way for the HTML inclusion, but using `CpuAudioElement.setAttribute(attribute, value)` or `CpuAudioElement.removeAttribute(attribute, value)`. It can be useful for advanced interactions. See *“Attributes references”* in [INSTALL.md](INSTALL.md) of course. 
 
- - `mode` can be set afterwards from `default` to `button`
- - `hide` can be used to mask some elements later, as `panels timeline`
+ - `"mode"` can be set afterwards from `"default"` to `"button"`
+ - `"hide"` can be used to mask some elements later, as `"panels timeline"`, if you where only `<cpu-audio hide="timeline">`
+
+Example : `CpuAudioElement.setAttribute("hide", "panels timeline")`
 
 
 CpuAudioElement.CPU and CpuControllerElement.CPU
@@ -110,8 +113,8 @@ focusedId()												 | string  | Give focused Id (element or parent), or null
 removePoint(planeName, pointName)                        | boolean | Remove an annotation point (¹)(²)
 clearPlane(planeName)                                    |         | Remove any points from an annotation plane (¹)(²)
 redrawAllPlanes()                                        |         | Redraw any annotation planes and points
-highlightPoint(planeName, pointName, className, mirror)  |         | Highlight a perticuliar annotation point, className is `with-preview` by default (²)
-removeHighlightsPoints(planeName, className, mirror)     |         | Remove highlights on a plane, className is `with-preview` by default (²)
+highlightPoint(planeName, pointName, className, mirror)  |         | Highlight a perticuliar annotation point, className is `'with-preview'` by default (²)
+removeHighlightsPoints(planeName, className, mirror)     |         | Remove highlights on a plane, className is `'with-preview'` by default (²)
 injectCss(styleName, css)					             |		   | Inject a `<style>` tag into the shadowDom of the component. (²)
 removeCss(styleName)						             |		   | Remove an inject `<style>` from the shadowDom. (²)
 
@@ -168,7 +171,6 @@ elementPointPanel  | Element | The created or existing point in the panel
 
 
 As the `event.target` is the `<cpu-audio>` element, you can reach its API with `event.target.CPU`. Here is a way to do it for asynchronous build :
-
 ```js
 function CPU_ready(event) {
 	let CPU = event.target.CPU;
@@ -177,6 +179,7 @@ function CPU_ready(event) {
 
 document.addEventListener('CPU_ready', CPU_ready);
 ```
+Watch out, as `CPU_ready` is triggered for EACH webcomponent started on the page. If you've got 3 players and 1 controller, you will get 4 calls.
 
 More tricks can be seen in the <applications/chapters_editor.html> source code.
 
@@ -186,4 +189,4 @@ Note : events aren't impacted by `.preventDefault()`, yet.
 Console messages
 ----------------
 
-Any technical messages for cpu-audio.js will begin with `CPU-AUDIO: `. All messages are in English, we won't provide translations in console messages.
+Any technical messages for cpu-audio.js will begin with “*CPU-AUDIO:* ”. All messages are in English, we won't provide translations in console messages.
