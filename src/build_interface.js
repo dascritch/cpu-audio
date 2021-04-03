@@ -76,13 +76,13 @@ export function buildInterface(container) {
 		touchcancel : false,
 	};
 	for (let event_name in do_events) {
-		timeline_element.addEventListener(
+		timeline_element?.addEventListener(
 			event_name,
 			do_events[event_name] ? trigger.hover : trigger.out,
 			passiveEvent);
 	}
 	// alternative fine navigation for handhelds
-	timeline_element.addEventListener('contextmenu', container.showHandheldNav.bind(container));
+	timeline_element?.addEventListener('contextmenu', container.showHandheldNav.bind(container));
 
 	if (navigator.share) {
 		interface_classlist.add('hasnativeshare');

@@ -742,7 +742,10 @@ export class CPU_element_api {
 		if (poster) {
 					poster.src = dataset.poster || '';
 		}
-		this.shadowId('time').style.backgroundImage = waveform ? `url(${waveform})` : '';
+		const time_element = this.shadowId('time');
+		if (time_element) {
+			time_element.style.backgroundImage = waveform ? `url(${waveform})` : '';
+		}
 		this.showMain();
 	}
 	/**
