@@ -65,6 +65,15 @@ secondsInPaddledColonTime(number) | string  | Same as `secondsInColonTime`, but 
 durationIso(number)               | string  | Convert a duration in an ISO 8601 string suitable for `datetime=""` attribute in `<time>`
 
 
+CpuAudioElement and CpuControllerElement
+----------------------------------------
+
+Attributes of their DOM elements may be live changed in the same way for the HTML inclusion, but using `CpuAudioElement.setAttribute(<attribute {str}>, <values {str}>)` or `CpuAudioElement.removeAttribute(<attribute {str}>)`. It can be useful for advanced interactions. See *“Attributes references”* in [INSTALL.md](INSTALL.md) of course. 
+
+ - `mode` can be set afterwards from `default` to `button`
+ - `hide` can be used to mask some elements later, as `panels timeline`
+
+
 CpuAudioElement.CPU and CpuControllerElement.CPU
 ------------------------------------------------
 
