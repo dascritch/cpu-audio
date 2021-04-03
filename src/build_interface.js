@@ -96,9 +96,7 @@ export function buildInterface(container) {
 	container.audiotag.addEventListener('durationchange', container.repositionTracks.bind(container), passiveEvent);
 
 	buildChaptersLoader(container);
-	if (container.isController) {
-		buildPlaylist(container);
-	}
+	buildPlaylist();
 	container.showMain();
 	container.updatePlayButton();
 	container.emitEvent('ready');

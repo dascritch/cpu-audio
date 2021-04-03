@@ -1,5 +1,5 @@
 import {__} from './i18n.js';
-import {activecueClassname} from './element_cpu.js';
+import {activecueClassname, planeAndPointNamesFromId} from './element_cpu.js';
 
 // plane for _playlist. Only used in <CPU-Controller>
 const plane_playlist = '_playlist';
@@ -9,21 +9,22 @@ const plane_playlist = '_playlist';
  Should be called only for <cpu-controller>
  * @private was public
  *
- * @param      {Object}  			container  <cpu-controller>.CPU
+ * @param       {Object}  	container  		<cpu-controller>.CPU
  *
  */
-export function buildPlaylist(container) {
-	if (!container.isController) {
+export function buildPlaylist(wasFocusedId) {
+	const globalController = document.CPU.globalController;
+	if ((!globalController) || (!globalController.isController)) {
 		// Note that ONLY the global controller will display the playlist. For now.
 		return;
 	}
 
-	let previous_playlist = container.current_playlist;
-	container.current_playlist = document.CPU.currentPlaylist();
+	let previous_playlist = globalController.current_playlist;
+	globalController.current_playlist = document.CPU.currentPlaylist();
 	const pointDataGroup = {};
 
-	if (! container.plane(plane_playlist)) {
-		container.addPlane(plane_playlist, {
+	if (! globalController.plane(plane_playlist)) {
+		globalController.addPlane(plane_playlist, {
 			title 		: __['playlist'],
 			track 		: false,
 			panel 		: 'nocuetime',
@@ -32,15 +33,15 @@ export function buildPlaylist(container) {
 		});
 	}
 
-	if (previous_playlist !== container.current_playlist) {
-		container.clearPlane(plane_playlist);
-		if (container.current_playlist.length === 0) {
+	if (previous_playlist !== globalController.current_playlist) {
+		globalController.clearPlane(plane_playlist);
+		if (globalController.current_playlist.length === 0) {
 			// remove plane to hide panel. Yes, overkill
-			container.removePlane(plane_playlist);
+			globalController.removePlane(plane_playlist);
 			return;
 		}
 
-		for (let audiotag_id of container.current_playlist) {
+		for (let audiotag_id of globalController.current_playlist) {
 			// TODO : when audiotag not here, do not add point
 			/*container.addPoint(plane_playlist, audiotag_id, {
 				text : document.getElementById(audiotag_id)?.dataset.title, 
@@ -53,12 +54,17 @@ export function buildPlaylist(container) {
 			};
 		}
 
-		container.bulkPoints(plane_playlist, pointDataGroup);
+		globalController.bulkPoints(plane_playlist, pointDataGroup);
+		// move _playlist on top. Hoping it will insert it RIGHT AFTER the main element.
+		globalController.element.shadowRoot.querySelector('main').insertAdjacentElement(
+			'afterend', globalController.planePanel(plane_playlist) );
 	}
 
-	container.highlightPoint(plane_playlist, container.audiotag.id, activecueClassname);
+	globalController.highlightPoint(plane_playlist, globalController.audiotag.id, activecueClassname);
 
-	// move _playlist on top. Hoping it will insert it RIGHT AFTER the main element.
-	container.element.shadowRoot.querySelector('main').insertAdjacentElement(
-		'afterend', container.planePanel(plane_playlist) );
+	if (wasFocusedId) {
+		// we need to give back focus to the points, as they disapeared
+		const [planeName, pointName] = planeAndPointNamesFromId(wasFocusedId);
+		globalController.focusPoint(planeName, pointName);
+	}
 }

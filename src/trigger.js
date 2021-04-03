@@ -51,18 +51,19 @@ function playOnceUnlock(event, audiotag) {
  * @param      {audiotag}  HTMLAudioElement   The playing <audio> tag
  */
 function switchControllerTo(audiotag) {
-	let globalController = document.CPU.globalController;
+	const globalController = document.CPU.globalController;
 	if (!globalController) {
 		return;
 	}
 	if  (!audiotag.isEqualNode(globalController.audiotag)) {
+		const wasFocused = globalController.focusedId();
 		globalController.attachAudiotagToController(audiotag);
 		globalController.audiotag = audiotag;
 		globalController.showMain();
 		globalController.redrawAllPlanes();
 		globalController.setModeContainer(); 	// to switch back the display between streamed/not-str medias
+		buildPlaylist(wasFocused);
 	}
-	buildPlaylist(globalController);
 }
 
 export const trigger = {
@@ -140,10 +141,7 @@ export const trigger = {
 		await document.CPU.jumpIdAt(hash, timecode_start, callback_fx);
 
 		// not in document.CPU (yet) to avoid unuseful repaint
-		let globalController = document.CPU.globalController;
-		if (globalController) {
-			buildPlaylist(globalController);
-		}
+		buildPlaylist();
 		// scroll to the audio element. Should be reworked, or parametrable , see issue #60
 		// window.location.hash = `#${hash}`;
 	},

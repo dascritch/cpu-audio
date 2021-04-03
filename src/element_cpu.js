@@ -1357,6 +1357,7 @@ export class CPU_element_api {
 			this.drawPlane(planeName);
 			this.refreshPlane(planeName);
 		}
+
 		// due to a Chrome glitch on chapters panel in cpu-controller while changing playing cpu-audio, we have to refresh a cuechange_event 
 		cuechange_event(this);
 	}
@@ -1479,7 +1480,11 @@ export class CPU_element_api {
 	 */
 	focusedId() {
 		const target = this.focused();
-		return target.id ?? target?.closest('[id]')?.id;
+		if (!target) {
+			return
+		}
+		const out = target.id  != '' ? target.id : target.closest('[id]').id;
+		return out == '' ? null : out;
 	}
 
 	/**
@@ -1536,7 +1541,7 @@ function relativeFocus(self, go_foward) {
 		}
 		[planeName,previous_pointName] = planeAndPointNamesFromId(wasFocused.id);
 	}
-	if (previous_pointName) {
+	if (previous_pointName != '') {
 		planePointNames = self.planePointNames(planeName);
 		pointName = adjacentArrayValue(planePointNames, previous_pointName, go_foward?1:-1);
 	}
