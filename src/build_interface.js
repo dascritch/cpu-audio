@@ -38,13 +38,14 @@ export function buildInterface(container) {
 
 	// main buttons management
 	let cliquables = {
-		pause     : trigger.pause,
-		play      : trigger.play,
-		time      : trigger.throbble,
-		actions   : container.showActions.bind(container),
-		back      : showMain,
-		poster    : showMain,
-		restart   : trigger.restart,
+		pause      : trigger.pause,
+		play       : trigger.play,
+		time       : trigger.throbble,
+		actions    : container.showActions.bind(container),
+		back       : showMain,
+		poster     : showMain,
+		restart    : trigger.restart,
+		toggleplay : trigger.toggleplay
 	};
 	for (let that in cliquables) {
 		container.shadowId(that)?.addEventListener('click', cliquables[that], passiveEvent);

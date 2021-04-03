@@ -307,6 +307,13 @@ export const trigger = {
 		switchControllerTo(audiotag);
 	},
 
+	toggleplay : function({target}) {
+		const audiotag = findContainer(target).audiotag;
+		audiotag.paused ?
+			trigger.play(event, audiotag) :
+			trigger.pause(undefined, audiotag);
+	},
+
 	/**
 	 * @summary Interprets pressed key
 	 *
@@ -336,25 +343,19 @@ export const trigger = {
 			container.hideThrobberLater();
 		}
 
-		let toggleplay = function() {
-			audiotag.paused ?
-				trigger.play(event, audiotag) :
-				trigger.pause(undefined, audiotag);
-		};
-
 		switch (event.keyCode) {
 			case 13 : // enter : standard usage, except if focus is #control
 				if (container.focused()?.id.toLowerCase() != 'control') {
 					return;
 				}
-				toggleplay();
+				trigger.toggleplay(event);
 				break;
 			case 27 : // esc
 				trigger.restart(event);
 				trigger.pause(undefined, audiotag);
 				break;
 			case 32 : // space
-				toggleplay();
+				trigger.toggleplay(event);
 				break;
 			// pageUp 33
 			// pageDown 34
