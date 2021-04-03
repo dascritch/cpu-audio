@@ -17,7 +17,7 @@ New features
  * Added a more visible focus outline, stylable via`--cpu-focus-outline` ([#116](#116))
  * Some examples added
  * Degradable code, some elements are no more absolutely required in template ([#56](#56))
- * Revised [chapters-editors application](applications/chapters_editor.html)
+ * Revised [chapters-editors application](applications/chapters_editor.html), can now accept “uploaded” files [#126](#126)
  * [Wonderful example of React integration](https://github.com/scombat/react-cpu-audio) ([#120](#120))
  * [Attributes for the webcomponent can be live-changed](#128)
 
