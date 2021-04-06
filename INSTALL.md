@@ -17,7 +17,15 @@ Invoking element
 
 Encapsulate your usual `<audio control>` with `<cpu-audio>`. 
 
-Example : 
+The bare minimal call code : 
+
+```html
+<cpu-audio>
+    <audio controls src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3"></audio>
+</cpu-audio>
+```
+
+A most elaborated example :
 
 ```html
 <cpu-audio 
@@ -30,6 +38,7 @@ Example :
     </audio>
 </cpu-audio>
 ```
+
 
 **Important Note** : Put one and only one `<audio>` tag into `<cpu-audio>`, or you may have unexpected issues. **We recommend to set an `id` attribute** to the `<audio>` tag for the anchoring feature, elsewhere cpu-audio.js will autoset an `id`, that may cause later some problems for deep-linking sound into your page or your web-app. Please set an ID to the `<audio>` tag by yourself.
 
