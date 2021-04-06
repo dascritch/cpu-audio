@@ -45,6 +45,30 @@ audio[controls] {
 You can play with our [live configurator tool](https://dascritch.github.io/cpu-audio/applications/live_config.html), to build a HTML and CSS canvas ready to be copy-pasted in your website code.
 
 
+How to link
+-----------
+
+In the upper example, `<audio>` tag is ID-entified as `audiodemo`. Usually, you link to its anchor with `#audiodemo`. Add a parameter `t=` with the expected timecode, with a `&` as separator. By example, for 5 minutes from the start, you should target `#audiodemo&t=5m` : 
+
+```html
+<p>
+    Jump at <a href="#audiodemo&amp;t=5m">5 minutes</a> in the sound
+</p>
+```
+
+Original purpose of the ancestor of this WebComponent [was to link any media element of any webpage to a specific moment](https://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore). It uses the [W3C standard Media Fragments](https://www.w3.org/TR/media-frags/) notation, extending the URL. 
+
+We accept different notations for the time segment of the hash :
+
+* `page.html#tagID&t=7442` : seconds without unit ;
+* `page.html#tagID&t=02:04:02` : colon (“professional”) timecode as `02:04:02` (2 hours, 4 minutes and 2 seconds) ;
+* `page.html#tagID&t=2h4m2s` : human-readable units, sub-units availables : `s`econds, `m`inutes, `h`ours and `d`ays
+
+A playable range can be indicated, with a coma separator between the start and the end position : `page.html#tagID&t=5m,5m5s` will <a href="#sound&t=5m,5m5s">play the sound starting at 5 minutes, and stops it at 5 minutes and 5 seconds</a>
+
+**Note** : if a timecode without any named anchor is given, as in `href="#t=2h4m2s"`, the very first `<audio controls>` element of the document will be addressed. If you are absolutely sure you will only have one audio tag in your page and it will never vary, you can omit the ID : `<a href="#t=5m">`. But **we strongly recommend to precise an `id` attribute to each `<audio>`, and use an explicit id to a time position.**
+
+
 Attributes references
 ---------------------
 
@@ -73,34 +97,6 @@ Some attributes enhance the component :
 * `duration="<seconds|coloncoded|humanreadable>"` : force displayed duration instead to load it from the media resource before playing (add a `preload="none"` attribute to the `<audio>` tag). Metadata will be loaded in case of hover on the timeline if a duration nor steamed-media indication are given ;
 * `twitter="@<account>"` : twitter handle for social sharing (fallback on the declared one in your page) ;
 * `glow` : will make the play button glowing before the first play, even if autoplay is not prevented.
-
-
-How to link
------------
-
-In the upper example, `<audio>` tag is ID-entified as `audiodemo`. Usually, you link to its anchor with `#audiodemo`. Add a parameter `t=` with the expected timecode, with a `&` as separator. By example, for 5 minutes from the start, you should target `#audiodemo&t=5m` : 
-
-```html
-<p>
-    Jump at <a href="#audiodemo&amp;t=5m">5 minutes</a> in the sound
-</p>
-```
-
-
-Permitted hash notations
-------------------------
-
-Original purpose [was to link any media element of any webpage to a specific moment](https://dascritch.net/post/2014/09/03/Timecodehash-%3A-Lier-vers-un-moment-d-un-sonore). It uses the [W3C standard Media Fragments](https://www.w3.org/TR/media-frags/) notation, extending the URL. 
-
-For the timecode, you can use :
-
-* `page.html#tagID&t=7442` : seconds without unit ;
-* `page.html#tagID&t=02:04:02` : colon (“professional”) timecode as `02:04:02` (2 hours, 4 minutes and 2 seconds) ;
-* `page.html#tagID&t=2h4m2s` : human-readable units, sub-units availables : `s`econds, `m`inutes, `h`ours and `d`ays
-
-A playable range can be indicated : `page.html#tagID&t=5m,5m5s` will <a href="#sound&t=5m,5m5s">play the sound starting at 5 minutes, and stops it at 5 minutes and 5 seconds</a>
-
-**Note** : if a timecode without any named anchor is given, as in `href="#t=2h4m2s"`, the very first `<audio controls>` element of the document will be addressed. If you are absolutely sure you will only have one audio tag in your page, you can omit the ID : `<a href="#t=5m">`
 
 
 Cloned player
