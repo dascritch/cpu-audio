@@ -46,11 +46,6 @@ button:focus {
 	outline : var(--cpu-focus-outline); 
 }
 
-button:hover, button:focus {
-	background: var(--cpu-focus-background, var(--cpu-color)) !important;
-	color : var(--cpu-focus-color, var(--cpu-background)) !important;
-}
-
 svg {
 	fill : currentColor;
 }
