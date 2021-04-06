@@ -73,7 +73,7 @@ Modes
 </cpu-audio>
 
 
-No need to use `title=""`, `canonical=""` or `twitter=""` attributes for the two previous examples _excepted_ when you also use `<cpu-controller>`. Other modes exists, and some feature may be hidden. [See INSTALL.md](INSTALL)
+No need to use `title=""`, `canonical=""` or `twitter=""` attributes for the two previous examples _excepted_ when you also use `<cpu-controller>`. Other modes exists, and some feature may be hidden. [See INSTALL.md](https://github.com/dascritch/cpu-audio/blob/master/INSTALL.md)
 
 ↓ Unfoldable mode, by example : `mode="compact,default"`  , the component will be displayed in `compact` mode in stand-by, but will unfold to `default` once it plays.
 

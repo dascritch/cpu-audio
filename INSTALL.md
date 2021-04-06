@@ -1,7 +1,7 @@
 How-to install
 ==============
 
-Copy [`build/cpu-audio.js`](build/cpu-audio.js) file on your website.
+Copy [`build/cpu-audio.js`](https://github.com/dascritch/cpu-audio/blob/master/build/cpu-audio.js) file on your website.
 
 Call it in the `<head>` of your html page :
 
