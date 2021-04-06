@@ -1,8 +1,7 @@
 RELEASE NOTES actual, 6.99.2
 ============================
 
-**INCOMPATIBLES CHANGES** : Nothing incompatible changed is you only used HTML layout or CSS variables. But, there may be some work to adapt previous cpu-audio.js to cpu-audio version and above 7, **only and only if** you used the javascript API on `document.CPU` or component`.CPU` . Javascript coders will enjoy most of thoses changes.  
-
+**INCOMPATIBLES CHANGES** : Nothing incompatible changed is you only used HTML layout or CSS variables. But, there may be some work to adapt previous cpu-audio.js (< 6.7) to cpu-audio version and above 7, **only and only if** you used the javascript API on `document.CPU` or component`.CPU`. We hope Javascript coders will enjoy most of thoses changes, and [discuss about them in our tickets](https://github.com/dascritch/cpu-audio/issues).
 
 New features
 ------------

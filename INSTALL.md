@@ -9,7 +9,7 @@ Call it in the `<head>` of your html page :
 <script src="./cpu-audio.js" async></script>
 ```
 
-Do not forget to add a `lang=""` attribute in the hosting `<html>` tag. Elsewhere, the component will try to guess user's language via the browser preferences. Actual version only have english and french locales, [may be can you help us ?](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
+Do not forget to add a `lang=""` attribute in the hosting `<html>` tag. Elsewhere, the component will try to guess user's language via the browser preferences, which may cause funny rendering (in English because so was configurated the client system, as your website is in French). Actual version only have english and french locales, [may be can you help us ?](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
 
 
 Invoking element
@@ -31,9 +31,9 @@ Example :
 </cpu-audio>
 ```
 
-**Important Note** : Put one and only one `<audio>` tag into `<cpu-audio>`, or you may have unexpected issues. We recommend to set an `id` attribute to the `<audio>` tag for the anchoring feature.
+**Important Note** : Put one and only one `<audio>` tag into `<cpu-audio>`, or you may have unexpected issues. **We recommend to set an `id` attribute** to the `<audio>` tag for the anchoring feature, elsewhere cpu-audio.js will autoset an `id`, that may cause later some problems for deep-linking sound into your page or your web-app. Please set an ID to the `<audio>` tag by yourself.
 
-You **must** put a `control` attribute to the included `<audio>` tag as a fallback in case of malfunction. Please also add this rule in your css :
+You **must** put a `control` attribute to the included `<audio>` tag ; this is a good practice for having a functional fallback in case of malfunction, we wish you to comply. Please also add this rule in your css, even if our included css will put it :
 
 ```css
 audio[controls] {
@@ -42,7 +42,7 @@ audio[controls] {
 }
 ```
 
-You can try playing with our [live configurator tool](LIVE.md), to build a HTML and CSS canvas.
+You can play with our [live configurator tool](https://dascritch.github.io/cpu-audio/applications/live_config.html), to build a HTML and CSS canvas ready to be copy-pasted in your website code.
 
 
 Attributes references
