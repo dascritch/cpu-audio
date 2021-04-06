@@ -1484,7 +1484,7 @@ export class CPU_element_api {
 	focusedId() {
 		const target = this.focused();
 		if (!target) {
-			return
+			return;
 		}
 		const out = target.id  != '' ? target.id : target.closest('[id]').id;
 		return out == '' ? null : out;
@@ -1508,6 +1508,10 @@ export class CPU_element_api {
 
 }
 
+/**
+ * @summary relatively browse up or down with focus
+ * @private
+ */
 function relativeFocus(self, go_foward) {
 	const planeNames = self.planeNames();
 	if (planeNames.length == 0) {

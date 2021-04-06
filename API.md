@@ -5,7 +5,7 @@ How to dive into `cpu-audio.js` :
 
  - `cpu-audio.js` can be fine-tuned with HTML attributes and CSS variables,
  - its layout and embedded css can be completed or recreated in `src/themes` via themes-built,
- - javascript-savvy developers can use API features to get more precise controls or extend possibilities, as we do in our <a href="applications/chapters_editor.html">chapters editor</a>,
+ - javascript-savvy developers can use API features to get more precise controls or extend possibilities, as we do in our <a href="https://dascritch.github.io/cpu-audio/applications/chapters_editor.html">chapters editor</a>,
  - theme builders may later easily ([#132](#132)) include their specific code into their custom build librairy.
 
 This is the reference page for public accessible methods and properties. You can read some test cases in the `examples` sub-directory of this project.
