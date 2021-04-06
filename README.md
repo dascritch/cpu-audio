@@ -41,17 +41,17 @@ HOW TO install
 
 A unique and lightweight js file to install, without any dependencies.
 
-* [How to install, deploy and customize on your server](INSTALL)
-* [You can try playing with our live configurator tool](LIVE)
-* See [basic examples](examples.html) and [applications with advanced use cases](applications) 
+* [How to install, deploy and customize on your server](https://dascritch.github.io/cpu-audio/INSTALL)
+* [You can try playing with our live configurator tool](https://dascritch.github.io/cpu-audio/applications/live_config.html)
+* See [basic examples](https://dascritch.github.io/cpu-audio/examples.html) and applications with advanced use cases
 * [A React .jsx example](https://github.com/dascritch/cpu-audio/blob/master/examples/Call_from_React.jsx)
-* [Known problems and misconfigurations](TROUBLESHOOTING)
+* [Known problems and misconfigurations](https://github.com/dascritch/cpu-audio/blob/master/TROUBLESHOOTING.md)
 
 
 Features
 ---------
 
-[TL;DR ? See it in action](FEATURES)
+[TL;DR ? See it in action](https://dascritch.github.io/cpu-audio/FEATURES)
 
 * hyperlink `<audio>` tags to a specific time, [Media Fragment standards](https://www.w3.org/TR/media-frags/) ;
 * standards first, future-proof ;
@@ -103,7 +103,7 @@ Some links
     * [Features](https://dascritch.github.io/cpu-audio/FEATURES)
     * [How to install](https://dascritch.github.io/cpu-audio/INSTALL)
     * [Live configuration](https://dascritch.github.io/cpu-audio/applications/live_config.html)
-* [JS installable code](https://dascritch.github.io/cpu-audio/build/cpu-audio.js) 
+* [JS installable code](https://github.com/dascritch/cpu-audio/build/cpu-audio.js) 
 * [Code repository](https://github.com/dascritch/cpu-audio/), [Latest stable release](https://github.com/dascritch/cpu-audio/releases/latest)
 * [How to participate to this project](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
 * Blog posts about its creation and development : [Série cpu-audio sur dascritch.net](https://dascritch.net/serie/cpu-audio)
