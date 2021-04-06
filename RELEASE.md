@@ -18,7 +18,7 @@ New features
  * Added a more visible focus outline, stylable via`--cpu-focus-outline` ([#116](#116))
  * Some examples added
  * Degradable code, some elements are no more absolutely required in template ([#56](#56))
- * Revised [chapters-editors application](applications/chapters_editor.html), can now accept “uploaded” files [#126](#126)
+ * Revised [chapters-editors application](https://dascritch.github.io/cpu-audio/applications/chapters_editor.html), can now accept “uploaded” files [#126](#126)
  * [Wonderful example of React integration](https://github.com/scombat/react-cpu-audio) ([#120](#120))
  * [Attributes for the webcomponent can be live-changed](#128)
 
@@ -45,6 +45,7 @@ Corrections
  * Update controller playlist panel if current playlist has changed
  * Removing a `<CPU-Audio>` will remove its reference in playlists
  * Heavy simplification of the fine-position panel management
+ * Too many problems in documentations in gh-pages, links to config and chaptering applications are now absolute ([#135](#135))
  * Do not show panels when in error state
  * Build lib still under 50,000 bytes
 

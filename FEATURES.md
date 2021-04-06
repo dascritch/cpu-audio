@@ -116,7 +116,7 @@ Advanced users can create their own graphic theme UI, [as this one with a direct
 Highlighting text amond chapters
 --------------------------------
 
-If you use a chapter track with name chapters <a href="applications/chapters_editor.html">(you can generate them here)</a>, you can use a CSS rule to highlight a portion of your text with the playing audio.
+If you use a chapter track with name chapters <a href="https://dascritch.github.io/cpu-audio/applications/chapters_editor.html">(you can generate them here)</a>, you can use a CSS rule to highlight a portion of your text with the playing audio.
 
 
 <cpu-audio

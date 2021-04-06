@@ -104,14 +104,17 @@ Cloned player
 
 You can invoke a global media controller by creating a `<cpu-controller>` without `<audio>` tag. 
 
-It may be useful if, as [in the CPU website](http://cpu.pm), you have a player in the main content and a cloned one in a fixed element.
+It may be useful if, as [in the CPU website](http://cpu.pm), you have a player in the main content and a cloned one in a fixed element, in the header/menu of your website, by example.
 
 Note that a `<cpu-controller>` invoked without any valid `<cpu-audio>` player will just display a plain placeholder, until a vali `<cpu-audio>` is created in the page.
+
 
 Chapters
 --------
 
-You can add a chapters track into the `<audio control>` tag : 
+One poorly used native HTML feature is chapters track. A `<track>` tag is mostly used as native closed-caption feature in `<video>` tag, but you may also create a `<track>` for chaptering in an `<audio>` tag. Everything is natively managed by any major browser, except display it. So we are doing it with cpu-audio.js.
+
+Here is the code you can put into the `<audio control>` tag : 
 
 ```html
 <track kind="chapters" src="chapters.vtt" default />
@@ -119,9 +122,9 @@ You can add a chapters track into the `<audio control>` tag :
 
 Note that `default` attribute **is really needed**. In case you've got more than one `<track kind="chapters" default />` declared in a `<audio>` tag, only the very first one will be interpreted by the browser (blocking us to catch the one according to its `srclang=""` [see #69](#69) ).
 
-You can create VTT files with [our online editor](https://dascritch.github.io/cpu-audio/LIVE).
+You can create VTT files with [our online editor](https://dascritch.github.io/cpu-audio/applications/chapters_editor.html).
 
-**Note** : The chapters info will only appears with `mode="default"` settings in `<cpu-audio>`.
+**Note** : The chapters info will only appears with `mode="default"` aspect settings in `<cpu-audio>`. You can hide them with the `hide=""` attribute, set to `panels` or `chapters`.
 
 
 Indicate a prefered downloadable audio resource
@@ -129,9 +132,9 @@ Indicate a prefered downloadable audio resource
 
 The player will check which audio source is used, to link it as downloadable. By example, if you set a source in `.mp3` format and another one in `.ogg` format, the browsers will get the `.ogg` files as source, except Safari who can only play the `.mp3` one. So the “*download*” link in the player will be `.ogg` except for Safari, getting the `.mp3` instead.
 
-In case you offer multiple `<source>` to your `<audio>` tag (by example, you can offer DASH or HLS “streamed” sources alternatives, but your `index.mpd` or `index.m3u8` won't be useful to your visitors), but there is still a downloadable one-file source, you can indicate to the component which link can be downloaded for listening in any app. 
+In case you offer multiple `<source>` to your `<audio>` tag (by example, you can offer DASH or HLS “streamed” sources alternatives, but your `index.mpd` or `index.m3u8` won't be useful to download for your visitors), but there is still a downloadable one-file source, you can indicate to the component which link can be downloaded for listening in any app. 
 
-We have two methods : `download` attribute on `<cpu-audio>`, or add a `data-downloadable` on a `<source>`.
+We have two methods : `download` attribute on `<cpu-audio>`, or add a `data-downloadable` attribute on the relevant `<source>`.
 
 Please note that you **SHOULD NOT** put a `data-streamed` attribute in this case : It would be unuseful, as it blocks access to the download link.
 
@@ -182,7 +185,7 @@ When you put a live streamed media as an audio source, some functions in the pla
  - Some `<cpu-audio>` attributes will be unuseful : `waveform=""` and `duration=""`.
 
 Some recommendations :
- - Avoid using the default mode, use `compact` instead, or hide the share panel.
+ - Avoid using the default mode, use `compact` instead, or hide the share panel with `hide="actions"` attribute.
  - Add a `preload="none"` attribute to your `<audio>` tag, to avoid unuseful buffering.
  - Add a `data-streamed` attribute to your `<audio>` tag, some browsers on some codecs [cannot detect correctly](https://bugzilla.mozilla.org/show_bug.cgi?id=1568527) if a media is streamed and the player may interact not nicely with it.
 
@@ -200,7 +203,7 @@ Here is a nice example, with a pure streamed source :
 Personnalization via CSS variables
 ----------------------------------
 
-You can change some presentation features of the interface [with CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables). Check their effects [with the live editor](https://dascritch.github.io/cpu-audio/LIVE)
+You can change some presentation features of the interface [with CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables). Check their effects [with the live editor](https://dascritch.github.io/cpu-audio/applications/live_config.html)
 
 Variable name               | Description                                                 | Default value 
 ----------------------------|-------------------------------------------------------------|---------------------------------------------------------------------------------
@@ -229,7 +232,7 @@ If the user prefers a reduced motion interface, the player will remove any motio
 
 Some color/background values are not recommended, as `currentColor` and `transparent` ([explained here in French](https://dascritch.net/post/2019/11/13/Deux-couleurs-bizarres-en-CSS)), except if you also define `--cpu-focus-background` and `--cpu-focus-color` to address accessibility issues.
 
-In case you need to create some specific breakpoints, the best way is to create a theme and make your own version. See [API.md](API) and [CONTRIBUTING.md](CONTRIBUTING).
+In case you need to create some specific breakpoints, the best way is to create a theme and make your own version. See [API.md](https://github.com/dascritch/cpu-audio/blob/master/API.md) and [CONTRIBUTING.md](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md).
 
 Using classes on host page
 --------------------------
@@ -277,13 +280,13 @@ The `<audio id="audiotag_id">` has its `<track kind="chapters">` decoded and dis
 
 The `<audio id="audiotag_id">` is actually playing the `cue_id` chapter. The `cue_id` is the cue (chapter) name described in the .VTT file in its `<track kind="chapters">` . 
 
-This function was meant to build effects as in [BBC Computer Literacy archive](https://computer-literacy-project.pilots.bbcconnectedstudio.co.uk/) : During a play of a show, each chapter is highlighting its text resumee.
+This function was meant to build effects as in [BBC Computer Literacy archive](https://computer-literacy-project.pilots.bbcconnectedstudio.co.uk/) : During a play of a show, each chapter was highlighting its text resumee.
 
 
 Using javascript API
 --------------------
 
-cpu-audio.js can be used only with HTML attributes and CSS variables, but javascript savvy developers have [API features to get a more precise control or even extend functionnalities](./API).
+cpu-audio.js can be used only with HTML attributes and CSS variables, but javascript savvy developers have [API features to get a more precise control or even extend functionnalities](https://github.com/dascritch/cpu-audio/blob/master/API.md).
 
 
 <!-- {% include footer.html %} -->
