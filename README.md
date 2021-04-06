@@ -44,7 +44,7 @@ A unique and lightweight js file to install, without any dependencies.
 * [How to install, deploy and customize on your server](INSTALL)
 * [You can try playing with our live configurator tool](LIVE)
 * See [basic examples](examples.html) and [applications with advanced use cases](applications) 
-* [A React .jsx example](examples/Call_from_React.jsx)
+* [A React .jsx example](https://github.com/dascritch/cpu-audio/blob/master/examples/Call_from_React.jsx)
 * [Known problems and misconfigurations](TROUBLESHOOTING)
 
 
@@ -151,6 +151,7 @@ Thank you to my lovely friends :
 * [@mariejulien](https://twitter.com/mariejulien/status/1047827583126183937) about [CONTRIBUTING.md](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
 * [Christophe Porteneuve](https://twitter.com/porteneuve) to kick my ass on modern javascript
 * [scombat for a wonderful wrapper of cpu-audio.js in React](https://github.com/scombat/react-cpu-audio)
+* [Éric Daspet for its remarks on documentation](https://github.com/edas)
 
 Really sorry, [NerOcrO](https://github.com/NerOcrO)
 
