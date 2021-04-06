@@ -190,7 +190,6 @@ b, strong, h5 a {
 	height : var(--cpu-timeline-height);
 	display : block;
 	position : relative;
-	cursor:none;
 }
 #loadingline {
 	background : currentColor;
