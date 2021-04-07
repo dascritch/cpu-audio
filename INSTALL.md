@@ -151,13 +151,13 @@ Please note that you **SHOULD NOT** put a `data-streamed` attribute in this case
 Here is an example with the `<cpu-audio download="<url>">` method :
 
 ```html
-<cpu-audio title="Ex0155 Cyberpunk" canonical="https://cpu.dascritch.net/post/2020/12/17/Ex0155-Cyberpunk" download="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0155-CPU%2817-12-20%29.mp3">
+<cpu-audio title="CPU Ex0155 Cyberpunk" canonical="https://cpu.pm/0155" download=".../podcast/0155-CPU%2817-12-20%29.mp3">
     <audio controls>
         <!-- Here is our “streamed” HLS source, linking to a playlist of files -->
-        <source src="https://cpu.dascritch.net/public/Sonores/Emissions/hls/0155-CPU%2817-12-20%29/index.m3u8" type="application/x-mpegurl" />
+        <source src=".../hls/0155-CPU%2817-12-20%29/index.m3u8" type="application/x-mpegurl" />
         <!-- Here are our conventional, one-file sources -->
-        <source src="https://cpu.dascritch.net/public/Sonores/Emissions/0155-CPU%2817-12-20%29.ogg" type="audio/ogg" />
-        <source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0155-CPU%2817-12-20%29.mp3" type="audio/mp3" />
+        <source src=".../0155-CPU%2817-12-20%29.ogg" type="audio/ogg" />
+        <source src=".../podcast/0155-CPU%2817-12-20%29.mp3" type="audio/mp3" />
     </audio>
 </cpu-audio>
 ```
@@ -165,14 +165,14 @@ Here is an example with the `<cpu-audio download="<url>">` method :
 Here is the `<source data-downloadable>` method. It is recommended for dynamic source changes, and will take priority on `<cpu-audio download="<url>">`. Only the first indicated `<source>` will be used :
 
 ```html
-<cpu-audio title="Ex0155 Cyberpunk" canonical="https://cpu.dascritch.net/post/2020/12/17/Ex0155-Cyberpunk">
+<cpu-audio title="CPU Ex0155 Cyberpunk" canonical="https://cpu.pm/0155">
     <audio controls>
         <!-- Here is the HLS source -->
-        <source src="https://cpu.dascritch.net/public/Sonores/Emissions/hls/0155-CPU%2817-12-20%29/index.m3u8" type="application/x-mpegurl" />
+        <source src=".../hls/0155-CPU%2817-12-20%29/index.m3u8" type="application/x-mpegurl" />
         <!-- There, a high-quality ogg source -->
-        <source src="https://cpu.dascritch.net/public/Sonores/Emissions/0155-CPU%2817-12-20%29.ogg" type="audio/ogg" />
+        <source src=".../0155-CPU%2817-12-20%29.ogg" type="audio/ogg" />
         <!-- And the usual and downloadable mp3 -->
-        <source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0155-CPU%2817-12-20%29.mp3" data-downloadable type="audio/mp3" />
+        <source src=".../podcast/0155-CPU%2817-12-20%29.mp3" data-downloadable type="audio/mp3" />
     </audio>
 </cpu-audio>
 ```

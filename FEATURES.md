@@ -5,7 +5,7 @@ An example with chapters.
 
 <!-- calling the webcomponent -->
 <cpu-audio
-    title="Ex0085 Le Mystère Enigma"
+    title="CPU Ex0085 Le Mystère Enigma"
     poster="https://cpu.dascritch.net/public/Images/Emissions/.1805-Ex0085-Enigma_m.jpg"
     canonical="https://cpu.dascritch.net/post/2018/05/17/Ex0085-Histoires-de-la-cryptographie%2C-2%C3%A8me-partie-%3A-Le-myst%C3%A8re-d-Enigma"
     twitter="@cpuprogramme">
