@@ -32,6 +32,7 @@
 	margin : 0;
 	text-indent: 0;
 	list-style-type: none;
+	-webkit-user-select: none;
 	user-select: none;
 	transition :
 		color var(--cpu-color-transitions),
@@ -517,17 +518,17 @@ a:hover, button:hover, a:focus, button:focus,
 	}
 
 	.mode-default #pagemain {
-		 padding-bottom : 16px;
+		padding-bottom : 16px;
 	}
 	#titleline {
 		height : 32px;
 	}
 	#line {
-		 position: absolute;
-		 left: calc(0px - var(--cpu-height));
-		 right: calc(0px - var(--cpu-height));
-		 height: 16px;
-		 top: 32px;
+		position: absolute;
+		left: calc(0px - var(--cpu-height));
+		right: calc(0px - var(--cpu-height));
+		height: 16px;
+		top: 32px;
 	}
 	aside a {
 		pointer-events: none;
