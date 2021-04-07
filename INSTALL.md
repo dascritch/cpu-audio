@@ -153,7 +153,7 @@ Here is an example with the `<cpu-audio download="<url>">` method :
 ```html
 <cpu-audio title="CPU Ex0155 Cyberpunk" canonical="https://cpu.pm/0155" download=".../podcast/0155-CPU%2817-12-20%29.mp3">
     <audio controls>
-        <!-- Here is our “streamed” HLS source, linking to a playlist of files -->
+        <!-- Here is our “streamed” HLS source, linking to a playlist of files. Not suitable for user downloading -->
         <source src=".../hls/0155-CPU%2817-12-20%29/index.m3u8" type="application/x-mpegurl" />
         <!-- Here are our conventional, one-file sources -->
         <source src=".../0155-CPU%2817-12-20%29.ogg" type="audio/ogg" />
@@ -169,14 +169,15 @@ Here is the `<source data-downloadable>` method. It is recommended for dynamic s
     <audio controls>
         <!-- Here is the HLS source -->
         <source src=".../hls/0155-CPU%2817-12-20%29/index.m3u8" type="application/x-mpegurl" />
-        <!-- There, a high-quality ogg source -->
+        <!-- There, a high-quality ogg source. Perhaps overkill for most users in my settings -->
         <source src=".../0155-CPU%2817-12-20%29.ogg" type="audio/ogg" />
-        <!-- And the usual and downloadable mp3 -->
+        <!-- And the usual and downloadable mp3. We chose it because this format is universal -->
         <source src=".../podcast/0155-CPU%2817-12-20%29.mp3" data-downloadable type="audio/mp3" />
     </audio>
 </cpu-audio>
 ```
 
+Note that we have [a code snippet extending this attribute for displaying multiple choices to the visitor](examples/API_insert_downloadables_panel.html)
 
 Special case for live streamed media
 ------------------------------------
@@ -203,8 +204,7 @@ Here is a nice example, with a pure streamed source :
 
 ```html
 <cpu-audio title="Radio &lt;FMR&gt;, live from Toulouse France on 89.1 FM" mode="compact" poster="http://radio-fmr.net/param/pix/shared/logofmr.png">
-    <audio controls preload="none" data-streamed>
-        <source src="http://stream.radio-fmr.net:8000/radio-fmr.mp3" />
+    <audio controls preload="none" data-streamed src="http://stream.radio-fmr.net:8000/radio-fmr.mp3">
     </audio>
 </cpu-audio>
 ```

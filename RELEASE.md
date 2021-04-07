@@ -8,7 +8,7 @@ Still To Do to 7.0
 ------------------
 
  * Grapĥic glitches on Safari iOS ([#138](#138))
- * Resolve failing test only on Chrome Android ([#121](#121))
+ * Resolve failing test only on Chrome Android ([#121](#121)) may be linked to previous event management. Recheck
  * Full test coparing campaign of all available platforms ([#138](#138)), ([#113](#113))
  * Documentation re-reading ([#134](#134))
  * gh-pages re-organization ([#135](#135))
@@ -59,6 +59,7 @@ Corrections
  * Update controller playlist panel if current playlist has changed
  * Removing a `<CPU-Audio>` will remove its reference in playlists
  * Heavy simplification of the fine-position panel management
+ * Pop-up on time-line may have incorrectly displayed “0:00”
  * Too many problems in documentations in gh-pages, links to config and chaptering applications are now absolute ([#135](#135))
  * Do not show panels when in error state
  * Build lib still under 50,000 bytes
