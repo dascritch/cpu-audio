@@ -32,14 +32,12 @@
 	margin : 0;
 	text-indent: 0;
 	list-style-type: none;
+	-webkit-user-select: none;  /* Diplodocus Safarius iOs */
 	user-select: none;
 	transition :
 		color var(--cpu-color-transitions),
 		background-color var(--cpu-background-transitions),
 		opacity var(--cpu-background-transitions);
-	/* Safari iOS mess */
-	-webkit-user-select: none;
-	-webkit-touch-callout: none;
 }
 
 main {
@@ -53,6 +51,8 @@ a, button {
 	border : none;
 	text-decoration : none;	
 	cursor : pointer;
+	/* Prevent Safari iOS preview mess */
+	-webkit-touch-callout: none;
 }
 button {
 	background : transparent;
