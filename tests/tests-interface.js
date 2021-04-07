@@ -116,27 +116,29 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 	});
 
 	QUnit.test( "Click at the middle of the timeline ", function( assert ) {
-		let done = assert.async();
+		const done = assert.async();
 		assert.expect(2);
-		let time_element = interfacetag.querySelector('#time');
+		const time_element = componenttag.CPU.shadowId('time');
 
 		function check_needle_moved(e) {
 			assert.ok(! audiotag.paused, 'Audio tag is playing');
 			assert.ok(nearlyEqual(audiotag.currentTime, 60, 2), `Audio tag is now nearly half time, 58 >  ${audiotag.currentTime}  > 62  `);
-			audiotag.removeEventListener('play', check_needle_moved);
 			done();
 		}
 
-		cpu.jumpIdAt('track', 0, function() {
+		cpu.jumpIdAt('track', 0, () => {
 			audiotag.pause()
-			audiotag.addEventListener('play', check_needle_moved);
-			let pos = time_element.getClientRects()[0];
+			audiotag.addEventListener('play', check_needle_moved, {once: true});
+			const pos = time_element.getClientRects()[0];
+			console.log('pos', pos)
+			time_element.addEventListener('click', console.log)
 			time_element.dispatchEvent(
 				new MouseEvent('click', {
 					bubbles: true,
 					cancelable: true,
-					clientX: pos.left + (time_element.clientWidth / 2),
-					clientY: pos.top + 1
+					clientX: (pos.width / 2) + pos.x,
+					clientY: 2 + pos.y,
+				 // 	offsetX: (pos.width / 2)
 				})
 			);
 		})
