@@ -32,12 +32,14 @@
 	margin : 0;
 	text-indent: 0;
 	list-style-type: none;
-	-webkit-user-select: none;
 	user-select: none;
 	transition :
 		color var(--cpu-color-transitions),
 		background-color var(--cpu-background-transitions),
 		opacity var(--cpu-background-transitions);
+	/* Safari iOS mess */
+	-webkit-user-select: none;
+	-webkit-touch-callout: none;
 }
 
 main {
