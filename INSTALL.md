@@ -172,7 +172,7 @@ Here is the `<source data-downloadable>` method. It is recommended for dynamic s
         <!-- There, a high-quality ogg source -->
         <source src="https://cpu.dascritch.net/public/Sonores/Emissions/0155-CPU%2817-12-20%29.ogg" type="audio/ogg" />
         <!-- And the usual and downloadable mp3 -->
-        <source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0155-CPU%2817-12-20%29.mp3" data-downloadable />
+        <source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0155-CPU%2817-12-20%29.mp3" data-downloadable type="audio/mp3" />
     </audio>
 </cpu-audio>
 ```
