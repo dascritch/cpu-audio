@@ -190,7 +190,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event, may be mocked
 	 */
 	throbble : function(event) {
-		let {target, offsetX} = event;
+		const {target, offsetX} = event;
 		const DocumentCPU = document.CPU;
 		const audiotag = findContainer(target).audiotag;
 
@@ -200,27 +200,23 @@ export const trigger = {
 			trigger.pause(undefined, DocumentCPU.currentAudiotagPlaying);
 		}
 
-		if (uncertainDuration(audiotag.duration)) {
-			if (isAudiotagStreamed(audiotag)) {
-				// we may have improper duration due to a streamed media, so let's start directly !
-				trigger.play(event);
-				return ;
-			}
+		const ratio = offsetX / target.clientWidth;
+		const duration = audiotagDuration(audiotag); // we get the real or supposed duration
 
+		if (uncertainDuration(duration)) {
 			// Correct play from position on the timeline when metadata not preloaded #88
-			// indicate we are loading something
-			audiotag.CPU_controller()?.updateLoading?.(undefined, 100 * offsetX  / target.clientWidth);
-			// we'll be back later
-			audiotagPreloadMetadata(audiotag, trigger.throbble, event);
+			// indicate we are loading something. We set a full width bar
+			audiotag.CPU_controller()?.updateLoading?.(undefined, 100);
+			// we may have improper duration due to a streamed media, so let's start directly !
+			trigger.play(event);
 			return ;
 		}
 
-		
 		DocumentCPU.seekElementAt(audiotag, 
 			// We know the media length → normal execution. 
 			event.at ?? 
 				// Else : normal trigger usage, via an event
-				( (event.offsetX / target.clientWidth) * audiotag.duration )
+				( ratio * duration )
 			);
 		trigger.play(event);
 	},
