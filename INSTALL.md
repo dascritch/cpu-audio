@@ -6,7 +6,7 @@ Copy [`build/cpu-audio.js`](https://github.com/dascritch/cpu-audio/blob/master/b
 Call it in the `<head>` of your html page :
 
 ```html
-<script src="./cpu-audio.js" async></script>
+<script src="cpu-audio.js" async></script>
 ```
 
 Do not forget to add a `lang=""` attribute in the hosting `<html>` tag. Elsewhere, the component will try to guess user's language via the browser preferences, which may cause funny rendering (in English because so was configurated the client system, as your website is in French). Actual version only have english and french locales, [may be can you help us ?](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
@@ -17,7 +17,7 @@ Invoking element
 
 Encapsulate your usual `<audio control>` with `<cpu-audio>`. 
 
-The bare minimal call code : 
+The bare minimal code for invoking : 
 
 ```html
 <cpu-audio>
@@ -25,7 +25,7 @@ The bare minimal call code :
 </cpu-audio>
 ```
 
-A most elaborated example :
+A more elaborated example :
 
 ```html
 <cpu-audio 
@@ -39,10 +39,11 @@ A most elaborated example :
 </cpu-audio>
 ```
 
+**Important Notes** : 
 
-**Important Note** : Put one and only one `<audio>` tag into `<cpu-audio>`, or you may have unexpected issues. **We recommend to set an `id` attribute** to the `<audio>` tag for the anchoring feature, elsewhere cpu-audio.js will autoset an `id`, that may cause later some problems for deep-linking sound into your page or your web-app. Please set an ID to the `<audio>` tag by yourself.
-
-You **must** put a `control` attribute to the included `<audio>` tag ; this is a good practice for having a functional fallback in case of malfunction, we wish you to comply. Please also add this rule in your css, even if our included css will put it :
+* Put one and only one `<audio>` tag into `<cpu-audio>`, or you may have unexpected issues.
+* **We recommend to set an `id` attribute** to the `<audio>` tag for the anchoring feature, elsewhere cpu-audio.js will autoset an `id`, that may cause later some problems for deep-linking sound into your page or your web-app. Please set an ID to the `<audio>` tag by yourself.
+* You **must** put a `control` attribute to the included `<audio>` tag ; this is a good practice for having a functional fallback in case of malfunction, we wish you to comply. Please also add this rule in your css, even if our included css will put it :
 
 ```css
 audio[controls] {
