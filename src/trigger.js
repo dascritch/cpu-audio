@@ -307,8 +307,8 @@ export const trigger = {
 	toggleplay : function({target}) {
 		const audiotag = findContainer(target).audiotag;
 		audiotag.paused ?
-			trigger.play(event, audiotag) :
-			trigger.pause(undefined, audiotag);
+			trigger.play(null, audiotag) :
+			trigger.pause(null, audiotag);
 	},
 
 	/**
