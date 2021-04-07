@@ -1,5 +1,5 @@
 import {oncePassiveEvent, adjacentArrayValue, findContainer, warn} from './utils.js';
-import {isAudiotagStreamed} from './media_element_extension.js';
+import {isAudiotagStreamed, audiotagPreloadMetadata, audiotagDuration, uncertainDuration} from './media_element_extension.js';
 import {timeInSeconds} from './convert.js';
 import {buildPlaylist} from './build_playlist.js';
 import {planeAndPointNamesFromId} from './element_cpu.js';
@@ -65,6 +65,7 @@ function switchControllerTo(audiotag) {
 		buildPlaylist(wasFocused);
 	}
 }
+
 
 export const trigger = {
 
@@ -151,11 +152,27 @@ export const trigger = {
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	hover : function({target, offsetX}) {
-		let container = findContainer(target);
-		let ratio = offsetX / target.clientWidth;
-		let seeked_time = ratio * container.audiotag.duration;
-		container.showThrobberAt(seeked_time);
+	hover : function(event) {
+		const {target, clientX, targetTouches} = event;
+		if (!target) {
+			// pointerenter event may be fired without target. Strange for a pointer
+			return;
+		}
+		const container = findContainer(target);
+		const audiotag = container.audiotag;
+		const duration = audiotagDuration(audiotag);
+		if (uncertainDuration(duration)) {
+			if (!isAudiotagStreamed(audiotag)) {
+				audiotagPreloadMetadata(audiotag, trigger.hover, event);
+			}
+			return;
+		}
+		const {x, width} = container.shadowId('time').getBoundingClientRect();
+		// clientX - x ⇒ x position of cursor in the #time element 
+		// Xoffset / width ⇒ ratio in the timeline
+		const ratio = ((clientX ?? targetTouches?.[0]?.clientX) - x) / width;
+		// ratio * duration = time position in the audio
+		container.showThrobberAt(ratio * container.audiotag.duration);
 	},
 
 	/**
@@ -173,16 +190,9 @@ export const trigger = {
 	 * @param      {Object}  event   The event, may be mocked
 	 */
 	throbble : function(event) {
-		let at = 0;
 		let {target, offsetX} = event;
-		let DocumentCPU = document.CPU;
-		let audiotag = findContainer(target).audiotag;
-
-		if (audiotag.duration === Infinity) {
-			// CAVEAT : we may have improper duration due to a streamed media
-			trigger.play(event);
-			return ;
-		}
+		const DocumentCPU = document.CPU;
+		const audiotag = findContainer(target).audiotag;
 
 		if ((DocumentCPU.currentAudiotagPlaying) && (!DocumentCPU.isAudiotagPlaying(audiotag))) {
 			// Chrome needs to STOP any other playing tag before seeking
@@ -190,34 +200,28 @@ export const trigger = {
 			trigger.pause(undefined, DocumentCPU.currentAudiotagPlaying);
 		}
 
-		if ((isNaN(audiotag.duration)) && (!isAudiotagStreamed(audiotag))) {
-			// Correct play from position on the timeline when metadata not preloaded #88
-
-			// indicate we are loading something
-			let controller = audiotag.CPU_controller();
-			if ((controller) && (controller.updateLoading)) {
-				controller.updateLoading(undefined, 100 * offsetX  / target.clientWidth);
+		if (uncertainDuration(audiotag.duration)) {
+			if (isAudiotagStreamed(audiotag)) {
+				// we may have improper duration due to a streamed media, so let's start directly !
+				trigger.play(event);
+				return ;
 			}
 
-			let expected_event = 'loadedmetadata';
-			audiotag.addEventListener(
-				expected_event,
-				() => {trigger.throbble({offsetX, target});},
-				oncePassiveEvent);
-			// loading metadata. May not work on Apples
-			audiotag.setAttribute('preload', 'metadata');
+			// Correct play from position on the timeline when metadata not preloaded #88
+			// indicate we are loading something
+			audiotag.CPU_controller()?.updateLoading?.(undefined, 100 * offsetX  / target.clientWidth);
+			// we'll be back later
+			audiotagPreloadMetadata(audiotag, trigger.throbble, event);
 			return ;
 		}
 
-		// We know the media length, normal execution
-		if (event.at != undefined) {
-			at = event.at;
-		} else {
-			// normal usage, via an event
-			let ratio = event.offsetX / target.clientWidth;
-			at = ratio * audiotag.duration;
-		}
-		DocumentCPU.seekElementAt(audiotag, at);
+		
+		DocumentCPU.seekElementAt(audiotag, 
+			// We know the media length → normal execution. 
+			event.at ?? 
+				// Else : normal trigger usage, via an event
+				( (event.offsetX / target.clientWidth) * audiotag.duration )
+			);
 		trigger.play(event);
 	},
 

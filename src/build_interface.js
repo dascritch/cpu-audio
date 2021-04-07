@@ -47,15 +47,15 @@ export function buildInterface(container) {
 		restart    : trigger.restart,
 		toggleplay : trigger.toggleplay
 	};
-	for (let that in cliquables) {
-		container.shadowId(that)?.addEventListener('click', cliquables[that], passiveEvent);
+	for (let elementId in cliquables) {
+		container.shadowId(elementId)?.addEventListener('click', cliquables[elementId], passiveEvent);
 	}
 
 	// relative browsing buttons management
 	//  *ward : handheld nav to allow long press to repeat action
-	let _buttons = ['prevcue', 'fastreward', 'reward', 'foward', 'fastfoward', 'nextcue'];
-	for (let that of _buttons) {
-		const button_element = container.shadowId(that);
+	const _buttons = ['prevcue', 'fastreward', 'reward', 'foward', 'fastfoward', 'nextcue'];
+	for (let elementId of _buttons) {
+		const button_element = container.shadowId(elementId);
 		button_element?.addEventListener('pointerdown', pressManager.press);
 		button_element?.addEventListener('pointerout', pressManager.release);
 		button_element?.addEventListener('pointerup', pressManager.release);
@@ -65,22 +65,10 @@ export function buildInterface(container) {
 	container.element.addEventListener('keydown', trigger.key);
 
 	// throbber management
-	let timeline_element = container.shadowId('time');
-	let do_events = {
-		mouseover   : true,
-		mousemove   : true,
-		mouseout    : false,
-
-		touchstart  : true,
-		touchend    : false,
-		touchcancel : false,
-	};
-	for (let event_name in do_events) {
-		timeline_element?.addEventListener(
-			event_name,
-			do_events[event_name] ? trigger.hover : trigger.out,
-			passiveEvent);
-	}
+	const timeline_element = container.shadowId('time');
+	timeline_element?.addEventListener('pointerenter', trigger.hover, passiveEvent);
+	timeline_element?.addEventListener('pointermove', trigger.hover, passiveEvent);
+	timeline_element?.addEventListener('pointerout', trigger.out, passiveEvent);
 	// alternative fine navigation for handhelds
 	timeline_element?.addEventListener('contextmenu', container.showHandheldNav.bind(container));
 

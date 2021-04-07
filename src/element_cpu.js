@@ -4,7 +4,7 @@ import {defaultDataset} from './default_dataset.js';
 import {secondsInColonTime, secondsInTime, durationIso} from './convert.js';
 import {translateVTT} from './translate_vtt.js';
 import {trigger} from './trigger.js';
-import {isAudiotagStreamed, addIdToAudiotag} from './media_element_extension.js';
+import {isAudiotagStreamed, audiotagDuration, uncertainDuration, addIdToAudiotag, audiotagPreloadMetadata} from './media_element_extension.js';
 import {buildInterface} from './build_interface.js';
 import {cuechange_event} from './build_chapters.js';
 
@@ -21,7 +21,7 @@ let planeNameBorders = '_borders';
 const validId = /^[a-zA-Z0-9\-_]+$/;
 
 // Regex for extracting plane and point names from an id
-export const planePointNamesFromId = /^[a-zA-Z0-9\-_]+_«([a-zA-Z0-9\-_]+)(»_.*_«([a-zA-Z0-9\-_]+))?»$/;
+const planePointNamesFromId = /^[a-zA-Z0-9\-_]+_«([a-zA-Z0-9\-_]+)(»_.*_«([a-zA-Z0-9\-_]+))?»$/;
 
 /**
  * @summary Gets the plane point names from an id on a ShadowDOM element.
@@ -216,11 +216,6 @@ export class CPU_element_api {
 	 * @return     {Promise}           { description_of_the_return_value }
 	 */
 	async emitEvent(event_name, detail = undefined) {
-		/**
-		 * Events to be created :
-		 *  - plane CRUD
-		 *  - point CRUD
-		 */
 		this.element.dispatchEvent(
 			new CustomEvent(`CPU_${event_name}`, {
 				target 		: this.element,
@@ -313,11 +308,11 @@ export class CPU_element_api {
 		const aria = 'aria-label';
 		let _preload = _attr ? (_attr.toLowerCase() !== 'none') : true ;
 		if (
-				(audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA ) &&
+				(audiotag.readyState < audiotag.HAVE_CURRENT_DATA ) &&
 				((_preload) || (audiotag._CPU_played))
 			) {
 			this.setActContainer('loading');
-			control_button.setAttribute(aria,__.loading);
+			control_button.setAttribute(aria, __.loading);
 			return;
 		}
  		// warning : play/pause still inverted in "__"
@@ -391,20 +386,10 @@ export class CPU_element_api {
 		}
 		let duration_element = this.shadowId('totaltime');
 		if (duration_element) {
-			let total_duration = false;
-			let _natural = Math.round(audiotag.duration);
-			if (!isNaN(_natural)){
-				total_duration = secondsInColonTime(_natural);
-			} else {
-				let _forced = Math.round(audiotag.dataset.duration);
-				if (_forced > 0) {
-					total_duration = secondsInColonTime(_forced);
-				}
-			}
-			duration_element.innerText = total_duration ? `\u00a0/\u00a0${total_duration}` : '';
-			showElement(duration_element, total_duration);
+			const duration = audiotagDuration(audiotag);
+			duration_element.innerText = uncertainDuration(duration) ? '' : `\u00a0/\u00a0${secondsInColonTime(duration)}`;
+			showElement(duration_element, duration);
 		}
-
 		this.updateLine(audiotag.currentTime);
 	}
 
@@ -462,33 +447,36 @@ export class CPU_element_api {
 	 * @return     {boolean}  True if an error is displayed
 	 */
 	updateError() {
-		let audiotag = this.audiotag;
+		const audiotag = this.audiotag;
 		if (!audiotag) {
 			return true;
 		}
 		let error_object = audiotag.error;
 		if (error_object) {
 			let error_message;
-			let pageerror = this.shadowId('pageerror');
 			this.showInterface('error');
+			const m = MediaError;
 			switch (error_object.code) {
-				case MediaError.MEDIA_ERR_ABORTED:
+				case m.MEDIA_ERR_ABORTED:
 					error_message = __.media_err_aborted;
 					break;
-				case MediaError.MEDIA_ERR_NETWORK:
+				case m.MEDIA_ERR_NETWORK:
 					error_message = __.media_err_network;
 					break;
-				case MediaError.MEDIA_ERR_DECODE:
+				case m.MEDIA_ERR_DECODE:
 					error_message = __.media_err_decode;
 					break;
-				case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
+				case m.MEDIA_ERR_SRC_NOT_SUPPORTED:
 					error_message = __.media_err_src_not_supported;
 					break;
 				default:
 					error_message = __.media_err_unknow;
 					break;
 			}
-			pageerror.innerText = error_message;
+			const pageerror = this.shadowId('pageerror');
+			if (pageerror) {
+				pageerror.innerText = error_message;
+			}
 			return true;
 		}
 		return false;
@@ -516,11 +504,11 @@ export class CPU_element_api {
 	 * @param      {number|null|undefined|boolean}	seconds_end     Ends position in seconds, do not apply if NaN
 	 */
 	positionTimeElement(element, seconds_begin = null, seconds_end = null) {
-		let { duration } = this.audiotag;
+		const { duration } = this.audiotag;
 
-		if ((duration === 0) || (isNaN(duration))) {
+		if (uncertainDuration(duration)) {
+			// duration still unkown ! We will need to redraw later the tracks
 			return;
-			// duration still unkonw ! We will need to redraw later the tracks
 		}
 
 		if (isSeconds(seconds_begin)) {
@@ -540,7 +528,7 @@ export class CPU_element_api {
 	 * @param      {number}  seeked_time  The seeked time
 	 */
 	async showThrobberAt(seeked_time) {
-		let audiotag = this.audiotag;
+		const audiotag = this.audiotag;
 		if (audiotag.duration < 1) {
 			// do not try to show if no metadata
 			return;
@@ -549,11 +537,12 @@ export class CPU_element_api {
 			// as we navigate on the timeline, we wish to know its total duration
 			// yes, this is twice calling, as of trigger.throbble()
   			audiotag.setAttribute('preload', 'metadata');
+			audiotagPreloadMetadata(audiotag, trigger.hover, event);
 		}
 
-		let phylactere = this.shadowId('popup');
-		phylactere.style.opacity = 1;
+		const phylactere = this.shadowId('popup');
 		this.positionTimeElement(phylactere, seeked_time);
+		phylactere.style.opacity = 1;
 		phylactere.innerHTML = secondsInColonTime(seeked_time);
 		phylactere.dateTime = secondsInTime(seeked_time).toUpperCase();
 	}
@@ -573,7 +562,7 @@ export class CPU_element_api {
 	 */
 	hideThrobberLater() {
 		let hideThrobber_delay = 1000;
-		let phylactere = this.shadowId('popup');
+		const phylactere = this.shadowId('popup');
 		if (phylactere._hider) {
 			window.clearTimeout(phylactere._hider);
 		}
@@ -598,14 +587,13 @@ export class CPU_element_api {
 	 * @summary Update links for sharing
 	 */
 	updateLinks() {
-		let container = this;
-		let audiotag = this.audiotag;
-		let dataset = this.audiotagDataset();
-		let canonical = absolutizeUrl( dataset.canonical ?? '' );
-		let timepos = (audiotag.currentTime === 0)  ? '' : `&t=${Math.floor(audiotag.currentTime)}`;
+		const audiotag = this.audiotag;
+		const dataset = this.audiotagDataset();
+		const canonical = absolutizeUrl( dataset.canonical ?? '' );
+		const timepos = (audiotag.currentTime === 0)  ? '' : `&t=${Math.floor(audiotag.currentTime)}`;
 		// watch out : we should put the ID only if canonical URL is strictly identical to this page
-		let tag_id = (canonical === absolutizeUrl(window.location.href)) ? audiotag.id : '';
-		let _url = encodeURIComponent(`${canonical}#${tag_id}${timepos}`);
+		const tag_id = (canonical === absolutizeUrl(window.location.href)) ? audiotag.id : '';
+		const _url = encodeURIComponent(`${canonical}#${tag_id}${timepos}`);
 		let _twitter = '';
 		if (dataset.twitter?.[0]==='@') {
 			 /* why did I want an @ in the attribute if I cut it in my code ? to keep HTML readable and comprehensible, instead to developpe attribute name into a "twitter-handler" */
@@ -623,7 +611,7 @@ export class CPU_element_api {
 			link
 		};
 		for (let key in links) {
-			const element = container.shadowId(key);
+			const element = this.shadowId(key);
 			if (element) {
 				element.href = links[key];
 			}
@@ -698,7 +686,7 @@ export class CPU_element_api {
 		}
 
 		this.removeCss(styleName);
-		let element = document.createElement('style');
+		const element = document.createElement('style');
 		element.id = `style_${styleName}`;
 		element.innerHTML = css;
 		this.container.appendChild(element);
@@ -736,11 +724,11 @@ export class CPU_element_api {
 		}
 
 		if (this.element.title !== title) {
-			this.element.title = title; // WATCHOUT ! May goes recursive with observers
+			this.element.title = title; // WATCHOUT ! May goes recursive with observers on the wbecomponent
 		}
 		const poster = this.shadowId('poster');
 		if (poster) {
-					poster.src = dataset.poster || '';
+			poster.src = dataset.poster || '';
 		}
 		const time_element = this.shadowId('time');
 		if (time_element) {
@@ -1011,13 +999,15 @@ export class CPU_element_api {
 	 * @param      {string}   planeName     The plane name
 	 */
 	planeSort(planeName) {
-		this.plane(planeName).points =  Object.fromEntries( Object.entries(
-						    	this.planePoints(planeName)
-							).sort(
-						    	([, point_a], [, point_b]) => {
-						    		return point_a.start - point_b.start;
-						    	}
-						    ));
+		this.plane(planeName).points =  Object.fromEntries( 
+								Object.entries(
+							    	this.planePoints(planeName)
+								).sort(
+							    	([, point_a], [, point_b]) => {
+							    		return point_a.start - point_b.start;
+							    	}
+							    )
+						    );
 		let points = Object.values( this.plane(planeName).points );
 		this.plane(planeName)._st_max = points[points.length - 1]?.start ?? 0;
 	}
@@ -1040,6 +1030,7 @@ export class CPU_element_api {
 	 * @param      {string}   planeName     The plane name
 	 */
 	panelReorder(planeName) {
+		// TODO we may lose focused element. Store it to refocus it at the end
 		this.planeSort(planeName);
 		if (!this.planePanel(planeName)) {
 			return;
@@ -1060,9 +1051,9 @@ export class CPU_element_api {
 	 * @param      {string}  pointName  The point name
 	 */
 	drawPoint(planeName, pointName) {
-		let audiotag = this.audiotag ? this.audiotag : document.CPU.globalController.audiotag;
-		let pointData = this.point(planeName, pointName);
-		let {start, link, text, image, end} = pointData;
+		const audiotag = this.audiotag ?? document.CPU.globalController.audiotag;
+		const pointData = this.point(planeName, pointName);
+		const {start, link, text, image, end} = pointData;
 
 		let use_link = '#';
 		if (link === true) {
@@ -1372,7 +1363,7 @@ export class CPU_element_api {
 	 */
 	repositionTracks() {
 		let duration = this.audiotag.duration;
-		if ((duration === 0) || (isNaN(duration))) {
+		if (uncertainDuration(duration)) {
 			// duration still unkown
 			return ;
 		}

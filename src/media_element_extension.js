@@ -1,4 +1,4 @@
-import {CpuAudioTagName, dynamicallyAllocatedIdPrefix, browserIsDecent, passiveEvent} from './utils.js';
+import {CpuAudioTagName, dynamicallyAllocatedIdPrefix, browserIsDecent, passiveEvent, oncePassiveEvent} from './utils.js';
 
 import {trigger} from './trigger.js';
 import {buildPlaylist} from './build_playlist.js';
@@ -46,13 +46,69 @@ export function isAudiotagStreamed(audiotag) {
 	return ((audiotag == null) || (audiotag.duration === Infinity) || (audiotag.dataset.streamed != null));
 }
 
+
+/**
+ * @summary Checks if an audiotag's duration is suitable for ratio maths
+ * A media may have unusable duration for ratio because 
+ * - media is unreadable
+ * - media is streamed
+ * - even if it is a fishied file, its duration is still unknown (Chrome may be late)
+ * @private
+ *
+ * @param      {number|null}  	duration   	`duration` of an audiotag, or result of `audiotagDuration(audiotag)`
+ * @return     {boolean}       				Unusable duration
+ */
+export function uncertainDuration(duration) {
+
+	return (duration === 0) || (duration === Infinity) || (duration === null) || (isNaN(duration));
+}
+
+/**
+ * @summary Try to find audiotag duration, or its manually declared duration
+ * @private
+ *
+ * @param      {HTMLAudioElement}  	audiotag   	Audio to check length
+ * @return     {Number|null}       			Result in seconds. Null if non applicable
+ */
+export function audiotagDuration(audiotag) {
+	let out = null;
+	let _natural = Number(audiotag.duration);
+	if (!isNaN(_natural)){
+		out = _natural;
+	} else {
+		const _forced = Number(audiotag.dataset.duration);
+		if (_forced > 0) {
+			out = _forced;
+		}
+	}
+	return out;
+}
+
+
+/**
+ * @summary Force <audio> to preload its metadata, and so its duration, then callback the event
+ * @private
+ *
+ * @param       {HTMLAudioElement}	audiotag    The playing <audio> tag
+ * @param       {function}			callback   	Once metadata loaded, function to callback
+ * @param 		{any}				event 		...with it main parameter, usually an event
+ */
+export function audiotagPreloadMetadata(audiotag, callback=null, event=null) {
+	audiotag.addEventListener(
+		'loadedmetadata',
+		() => {callback?.(event);},
+		oncePassiveEvent);
+	// loading metadata. May not work on Apples
+	audiotag.setAttribute('preload', 'metadata');
+}
+
 /**
  * @summary Attach events on a <audio> tag
  *
  * @param      {HTMLAudioElement}  audiotag  The audiotag
  */
 export function attach_events_audiotag(audiotag) {
-	audiotag.addEventListener('loadedmetadata', recallStoredPlay, passiveEvent);
+	audiotag.addEventListener('loadedmetadata', recallStoredPlay, oncePassiveEvent);
 	audiotag.addEventListener('play', trigger.playOnce, passiveEvent);
 	audiotag.addEventListener('ended', trigger.ended, passiveEvent);
 	// those ↓ for PHRACKING SAFARI
@@ -80,8 +136,7 @@ export function attach_events_audiotag(audiotag) {
 
 	// ask ASAP metadata about media
 	if (audiotag.getAttribute('preload') === '') {
-		audiotag.preload = 'metadata';
-		audiotag.load();
+		audiotagPreloadMetadata(audiotag);
 	}
 }
 
