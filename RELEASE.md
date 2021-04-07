@@ -3,6 +3,20 @@ RELEASE NOTES actual, 6.99.2
 
 **INCOMPATIBLES CHANGES** : Nothing incompatible changed is you only used HTML layout or CSS variables. But, there may be some work to adapt previous cpu-audio.js (< 6.7) to cpu-audio version and above 7, **only and only if** you used the javascript API on `document.CPU` or component`.CPU`. We hope Javascript coders will enjoy most of thoses changes, and [discuss about them in our tickets](https://github.com/dascritch/cpu-audio/issues).
 
+
+Still To Do to 7.0
+------------------
+
+ * Grapĥic glitches on Safari iOS ([#138](#138))
+ * Resolve failing test only on Chrome Android ([#121](#121))
+ * Full test coparing campaign of all available platforms ([#138](#138)), ([#113](#113))
+ * Documentation re-reading ([#134](#134))
+ * gh-pages re-organization ([#135](#135))
+ * Writing how-to theme documentation
+ * Finish playlist buttons with a debug theme ([#108](#108))
+ * Persistent CPU controller ([#87](#87))
+ * Upate dotclear addon companion ([#67](#67))
+
 New features
 ------------
 

@@ -152,6 +152,7 @@ Thank you to my lovely friends :
 * [Christophe Porteneuve](https://twitter.com/porteneuve) to kick my ass on modern javascript
 * [scombat for a wonderful wrapper of cpu-audio.js in React](https://github.com/scombat/react-cpu-audio)
 * [Éric Daspet for its remarks on documentation](https://github.com/edas)
+* [Gabi Boyer for helping me avery a lot to debug iOS issues](https://twitter.com/GabiBoyer)
 
 Really sorry, [NerOcrO](https://github.com/NerOcrO)
 
