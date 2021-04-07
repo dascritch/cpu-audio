@@ -193,6 +193,8 @@ export const trigger = {
 		const {target, offsetX} = event;
 		const DocumentCPU = document.CPU;
 		const audiotag = findContainer(target).audiotag;
+		const ratio = offsetX / target.clientWidth;
+		const duration = audiotagDuration(audiotag); // we get the real or supposed duration
 
 		if ((DocumentCPU.currentAudiotagPlaying) && (!DocumentCPU.isAudiotagPlaying(audiotag))) {
 			// Chrome needs to STOP any other playing tag before seeking
@@ -200,25 +202,20 @@ export const trigger = {
 			trigger.pause(undefined, DocumentCPU.currentAudiotagPlaying);
 		}
 
-		const ratio = offsetX / target.clientWidth;
-		const duration = audiotagDuration(audiotag); // we get the real or supposed duration
-
+		// we may have improper duration due to a streamed media, so let's start directly !
+		trigger.play(event);
 		if (uncertainDuration(duration)) {
 			// Correct play from position on the timeline when metadata not preloaded #88
 			// indicate we are loading something. We set a full width bar
 			audiotag.CPU_controller()?.updateLoading?.(undefined, 100);
-			// we may have improper duration due to a streamed media, so let's start directly !
-			trigger.play(event);
-			return ;
+			return;
 		}
-
 		DocumentCPU.seekElementAt(audiotag, 
 			// We know the media length → normal execution. 
 			event.at ?? 
 				// Else : normal trigger usage, via an event
 				( ratio * duration )
-			);
-		trigger.play(event);
+		);
 	},
 
 	/**
