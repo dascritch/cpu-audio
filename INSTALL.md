@@ -153,9 +153,14 @@ Here is an example with the `<cpu-audio download="<url>">` method :
 ```html
 <cpu-audio title="CPU Ex0155 Cyberpunk" canonical="https://cpu.pm/0155" download=".../podcast/0155-CPU%2817-12-20%29.mp3">
     <audio controls>
-        <!-- Here is our “streamed” HLS source, linking to a playlist of files. Not suitable for user downloading -->
+        <!-- 
+            Here is our “streamed” HLS source, linking to a playlist of files. Not suitable for user downloading.
+            We put it in first position, as the HLS source is really the better option for smartphones,
+            instead of heavier complete files. -->
         <source src=".../hls/0155-CPU%2817-12-20%29/index.m3u8" type="application/x-mpegurl" />
-        <!-- Here are our conventional, one-file sources -->
+        <!-- Here are our conventional, one-file sources.
+            Ogg is in second, for most modern browsers as Chrome and Firefox. Overkill for most users due to my high-quality settings.
+            MP3 is the last resort source, for older browsers as UC Browser, Safari and Nintendo DS. We chose it because this format is universal -->
         <source src=".../0155-CPU%2817-12-20%29.ogg" type="audio/ogg" />
         <source src=".../podcast/0155-CPU%2817-12-20%29.mp3" type="audio/mp3" />
     </audio>
@@ -167,12 +172,11 @@ Here is the `<source data-downloadable>` method. It is recommended for dynamic s
 ```html
 <cpu-audio title="CPU Ex0155 Cyberpunk" canonical="https://cpu.pm/0155">
     <audio controls>
-        <!-- Here is the HLS source -->
+        <!-- The HLS source and the too high quality ogg -->
         <source src=".../hls/0155-CPU%2817-12-20%29/index.m3u8" type="application/x-mpegurl" />
-        <!-- There, a high-quality ogg source. Perhaps overkill for most users in my settings -->
         <source src=".../0155-CPU%2817-12-20%29.ogg" type="audio/ogg" />
-        <!-- And the usual and downloadable mp3. We chose it because this format is universal -->
-        <source src=".../podcast/0155-CPU%2817-12-20%29.mp3" data-downloadable type="audio/mp3" />
+        <!--  And the mp3, that we declare downloadable  -->
+        <source data-downloadable src=".../podcast/0155-CPU%2817-12-20%29.mp3" type="audio/mp3" />
     </audio>
 </cpu-audio>
 ```
