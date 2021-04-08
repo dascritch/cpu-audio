@@ -3,8 +3,29 @@
 <meta charset="UTF-8" />
 <title>CPU-Audio API example : Insert annotations in panels</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<style>
+    script.showme {
+        display : block;
+        font-family: monospace;
+        white-space: pre;
+    }
+</style>
 
-<script>
+
+<script src="../build/cpu-audio.js" async></script>
+
+<body>
+<p><a href="../examples.html">← back to examples list</a></p>
+<h1 id="highlighting-text-amond-chapters">CPU-Audio API example : Insert annotations in panels</h1>
+
+<cpu-audio 
+    title="Enjoy the silence">
+    <audio controls id="sound">
+        <source src="../tests-assets/blank.mp3" type="audio/mpeg" />
+    </audio>
+</cpu-audio>
+
+<script class="showme">
 // In this example, we will create custom time annotations in the player
 
 // First, we'll wait the web-component have created its UI
@@ -17,42 +38,42 @@ document.addEventListener('CPU_ready', e => {
 
     // OK,  let's create our plane 
     player_API.addPlane(
-    	'annotations',				// named reference
-    	{
+        'annotations',              // named reference
+        {
             title   : 'Personal annotations',     // Title for the panel
-	    	track   : false, 		// Do not show on the timeline
-	    	panel 	: true, 		// Create a panel
+            track   : false,        // Do not show on the timeline
+            panel   : true,         // Create a panel
     });
 
     // Now, we can insert some points of interest
     player_API.addPoint(
-    	'annotations',				// named reference for the plane
-    	'note-1',					// named reference for the point
-    	{  
+        'annotations',              // named reference for the plane
+        'note-1',                   // named reference for the point
+        {  
             start   : 0,                          // time position, in seconds
             text    : '“Enjoy the silence” is the name of a song of Depeche Mode [on click, should go to the time position]',
-            link    : true,			// on click, should go to the time position
-           	end     : 20				// The point ends at 20 seconds 
-    	});
+            link    : true,         // on click, should go to the time position
+            end     : 20                // The point ends at 20 seconds 
+        });
 
     player_API.addPoint(
-    	'annotations',
-    	'note-2',					// named reference for the point
-    	{  
-    	    start : 15,							// you can overleap points
+        'annotations',
+        'note-2',                   // named reference for the point
+        {  
+            start : 15,                         // you can overleap points
             text  : 'As this song is copyrighted, we used another one [no action on click]',
-            link  : false,			// no action on click
-           	end   : 40
-    	});
+            link  : false,          // no action on click
+            end   : 40
+        });
 
     player_API.addPoint(
-    	'annotations',
-    	'note-3',					// remember, those names should be unique
-    	{  
-    	    start : 40,
+        'annotations',
+        'note-3',                   // remember, those names should be unique
+        {  
+            start : 40,
             text  : 'an excerpt of “<em>4:33</em>” which is <em>also</em> copyrighted! See link for details! [If link is a string, the url is targeted by your point]', // remember that only a subset of tags may work here
-            link  : 'https://www.classicalmpr.org/blog/classical-notes/2015/12/02/can-silence-be-copyrighted',	// If link is a string, the url is targeted by your point
-    	});
+            link  : 'https://www.classicalmpr.org/blog/classical-notes/2015/12/02/can-silence-be-copyrighted',  // If link is a string, the url is targeted by your point
+        });
 
     // What about create a second panel ?
     player_API.addPlane(
@@ -130,17 +151,6 @@ document.addEventListener('CPU_ready', e => {
 });
 
 </script>
-<script src="../build/cpu-audio.js" async></script>
 
-<body>
-<p><a href="../examples.html">← back to examples list</a></p>
-<h1 id="highlighting-text-amond-chapters">CPU-Audio API example : Insert annotations in panels</h1>
-
-<cpu-audio 
-    title="Enjoy the silence">
-    <audio controls id="sound">
-        <source src="../tests-assets/blank.mp3" type="audio/mpeg" />
-    </audio>
-</cpu-audio>
 </body>
 </html>

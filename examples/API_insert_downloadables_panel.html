@@ -3,7 +3,34 @@
 <meta charset="UTF-8" />
 <title>CPU-Audio API example : Insert downloadable links in panel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<script>
+<script src="../build/cpu-audio.js" async></script>
+    <style>
+        script.showme {
+            display : block;
+            font-family: monospace;
+            white-space: pre;
+        }
+    </style>
+<body>
+<p><a href="../examples.html">← back to examples list</a></p>
+<h1>CPU-Audio API example : Insert downloadable links in panel</h1>
+
+    <cpu-audio title="Ex0157 Web, State of the art 2021" canonical="https://cpu.dascritch.net/post/2021/03/11/Ex0157-Web%2C-State-of-the-art-2021" poster="https://cpu.dascritch.net/public/Images/Emissions/.1902-Ex0103-WebStateOfTheArt_s.png" waveform="https://cpu.dascritch.net/public/Sonores/Emissions/waveforms/0157-CPU%2811-03-21%29.png">
+        <audio controls="controls" id="emission-0157">
+            <!-- This source is not downloadable -->
+            <source src="https://cpu.dascritch.net/public/Sonores/Emissions/hls/0157-CPU%2811-03-21%29/index.m3u8" type="application/x-mpegurl" /> 
+            <!-- OGG Vorbis version, this high-quality audio is also served for broadcast purposes -->
+            <source src="https://cpu.dascritch.net/public/Sonores/Emissions/0157-CPU%2811-03-21%29.ogg" type="audio/ogg; codecs=vorbis" data-downloadable="OGG Vorbis, 68,146 Mb" />
+            <!-- MP3 version, the legacy and universal usable version -->
+            <source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0157-CPU%2811-03-21%29.mp3" type="audio/mpeg" data-downloadable=".mp3, 39,644 Mb" />
+
+            <!-- Chapters indication -->
+            <track kind="chapters" src="https://cpu.dascritch.net/public/Sonores/Emissions/tracks/0157-CPU%2811-03-21%29.vtt" default>
+            
+        </audio>
+    </cpu-audio>
+
+<script class="showme">
 /** 
     In this example, we will create a panel with numerous downloadable versions of the same audio.
     We re-use <audio data-downloadable> attribute, when present, it says to the component that a source can be used as download option.
@@ -40,25 +67,6 @@ document.addEventListener('CPU_ready', ({target}) => {
 });
 
 </script>
-<script src="../build/cpu-audio.js" async></script>
 
-<body>
-<p><a href="../examples.html">← back to examples list</a></p>
-<h1 id="highlighting-text-amond-chapters">CPU-Audio API example : Insert downloadable links in panel</h1>
-
-    <cpu-audio title="Ex0157 Web, State of the art 2021" canonical="https://cpu.dascritch.net/post/2021/03/11/Ex0157-Web%2C-State-of-the-art-2021" poster="https://cpu.dascritch.net/public/Images/Emissions/.1902-Ex0103-WebStateOfTheArt_s.png" waveform="https://cpu.dascritch.net/public/Sonores/Emissions/waveforms/0157-CPU%2811-03-21%29.png">
-        <audio controls="controls" id="emission-0157">
-            <!-- This source is not downloadable -->
-            <source src="https://cpu.dascritch.net/public/Sonores/Emissions/hls/0157-CPU%2811-03-21%29/index.m3u8" type="application/x-mpegurl" /> 
-            <!-- OGG Vorbis version, this high-quality audio is also served for broadcast purposes -->
-            <source src="https://cpu.dascritch.net/public/Sonores/Emissions/0157-CPU%2811-03-21%29.ogg" type="audio/ogg; codecs=vorbis" data-downloadable="OGG Vorbis, 68,146 Mb" />
-            <!-- MP3 version, the legacy and universal usable version -->
-            <source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0157-CPU%2811-03-21%29.mp3" type="audio/mpeg" data-downloadable=".mp3, 39,644 Mb" />
-
-            <!-- Chapters indication -->
-            <track kind="chapters" src="https://cpu.dascritch.net/public/Sonores/Emissions/tracks/0157-CPU%2811-03-21%29.vtt" default>
-            
-        </audio>
-    </cpu-audio>
 </body>
 </html>
