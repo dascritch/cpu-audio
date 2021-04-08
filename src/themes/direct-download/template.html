@@ -10,7 +10,7 @@
 		<section id="pageerror" role="alert">
 		</section>
 		<section id="pagemain">
-			<button type="button" id="control" tabindex="0">
+			<button type="button" id="control" tabindex="0" class="siders">
 				<!-- play / pause / loading -->
 				<svg id="loading" viewBox="0 0 32 32" aria-hidden="true">
 					<title>${__.loading}</title>
@@ -75,7 +75,7 @@
 					</div>
 				</div>
 			</div>
-			<a href="#" target="social" id="link" aria-label="${__.download}" title="${__.download}" download>
+			<a href="#" target="social" id="link" aria-label="${__.download}" title="${__.download}" download class="siders">
 				<!-- 
 					download link, instead of the actions button.
 					Even if the webcomponent will try to guess which is the prefered source for the clien platform, you can precise which link is to be downloaded :
@@ -97,17 +97,7 @@
 <style>
 	/* Not the recommended way, but I didn't want to copy the whole scoped.css for invalidate only one^w a couple of rules */
 	#link {
-		background : none !important;,
-		flex : 0 0 var(--cpu-height);
-		width : var(--cpu-height);
-		max-height : var(--cpu-height);
-		height : 100%;
-		text-align : center;
-		vertical-align : middle;
-	}
-	#link svg {
-		max-width: 100%;
-		max-height: 100%;
+		background : none !important;
 	}
 	#link:hover, #link:focus {
 		background: var(--cpu-focus-background, var(--cpu-color)) !important;
