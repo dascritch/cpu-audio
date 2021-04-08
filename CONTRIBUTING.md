@@ -56,6 +56,8 @@ As I'm not perfect, some tests were written for non-regressions, conformity and 
  - [Graphic interface and webcomponents-dependant features](./tests/tests-interface.html)
  - [API method names](./tests/tests-api.html)
 
+Those tests [can be run from our mini-site](https://dascritch.github.io/cpu-audio/tests/tests-minimal.html). On certain configurations, we still have strange hicks we still don't know how to correct ([#121](#121)), some others may be missed by us.
+
 Please note that tests aren't done yet on non-default themes.
 
 Development
@@ -67,5 +69,3 @@ You will need to add packages via `npm install` to finalize `build/*` files.
 
 If you're not working on `master` or `preprod` original branches, try to avoid to commit `build/*` files, to avoid conflicts during merge.
 
-
-<!-- {% include footer.html %} -->
