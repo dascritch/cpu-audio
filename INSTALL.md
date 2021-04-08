@@ -318,6 +318,3 @@ Using javascript API
 --------------------
 
 cpu-audio.js can be used only with HTML attributes and CSS variables, but javascript savvy developers have [API features to get a more precise control or even extend functionnalities](API.md).
-
-
-<!-- {% include footer.html %} -->
