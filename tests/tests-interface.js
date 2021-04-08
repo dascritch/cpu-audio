@@ -85,12 +85,12 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		}
 	});
 	QUnit.test( "Trigger actions whose name can be used as element ID via .shadowId()", function( assert ) {
-		for (id of ['restart', 'toggleplay', 'pause' , 'play',  'prevcue', 'nextcue', 'fastreward', 'reward', 'foward', 'fastfoward']) {
+		for (id of ['restart', 'toggleplay', 'pause' , 'play',  'prevcue', 'nextcue', 'fastreward', 'reward', 'foward', 'fastfoward', 'prevtrack', 'nexttrack']) {
 			assert.equal(typeof document.CPU.trigger[id], 'function', `document.CPU.trigger.${id} callable and linkable to an ID`);
 		}
 	});
 	QUnit.test( "Trigger actions internally needed", function( assert ) {
-		for (id of ['hashOrder', 'hover', 'out', 'throbble', 'playOnce', 'cuechange', 'update', 'ended']) {
+		for (id of ['hashOrder', 'hover', 'out', 'throbble', 'playOnce', 'cuechange', 'update', 'nexttrack']) {
 			assert.equal(typeof document.CPU.trigger[id], 'function', `document.CPU.trigger.${id} callable`);
 		}
 	});
@@ -408,15 +408,12 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
 		secondary_audiotag.volume = 0;
-		let check_only_one_play_this;
-
 		function check_only_one_play() {
 			assert.ok(! secondary_audiotag.paused, 'Second player should play');
 			assert.ok(! audiotag.paused, 'First player should have NOT been paused');
 			done();
 		}
-		check_only_one_play_this = check_only_one_play.bind(this);
-		setTimeout(check_only_one_play_this, 100);
+		setTimeout(check_only_one_play, 100);
 		secondary_audiotag.play();
 	});
 
