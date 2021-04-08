@@ -27,25 +27,25 @@ function nativeShare(event) {
  * @summary Builds the controller.
  */
 export function buildInterface(container) {
-	let interface_classlist = container.shadowId('interface').classList;
+	const interface_classlist = container.shadowId('interface').classList;
 
 	// hide broken image while not loaded
 	container.shadowId('poster')?.addEventListener('load', () => {
 		interface_classlist.add('poster-loaded');
 	}, passiveEvent);
 
-	let showMain = container.showMain.bind(container);
-
 	// main buttons management
 	let cliquables = {
 		pause      : trigger.pause,
 		play       : trigger.play,
 		time       : trigger.throbble,
-		actions    : container.showActions.bind(container),
-		back       : showMain,
-		poster     : showMain,
+		actions    : () => {container.showActions();},
+		back       : () => {container.showMain();},
+		poster     : () => {container.showMain();},
 		restart    : trigger.restart,
-		toggleplay : trigger.toggleplay
+		toggleplay : trigger.toggleplay,
+		prevtrack  : trigger.prevtrack,
+		nexttrack  : trigger.nexttrack
 	};
 	for (let elementId in cliquables) {
 		container.shadowId(elementId)?.addEventListener('click', cliquables[elementId], passiveEvent);
@@ -70,7 +70,7 @@ export function buildInterface(container) {
 	timeline_element?.addEventListener('pointermove', trigger.hover, passiveEvent);
 	timeline_element?.addEventListener('pointerout', trigger.out, passiveEvent);
 	// alternative fine navigation for handhelds
-	timeline_element?.addEventListener('contextmenu', container.showHandheldNav.bind(container));
+	timeline_element?.addEventListener('contextmenu', () => {container.showHandheldNav();});
 
 	if (navigator.share) {
 		interface_classlist.add('hasnativeshare');
@@ -82,7 +82,7 @@ export function buildInterface(container) {
 		return;
 	}
 
-	container.audiotag.addEventListener('durationchange', container.repositionTracks.bind(container), passiveEvent);
+	container.audiotag.addEventListener('durationchange', () => {container.repositionTracks(); }, passiveEvent);
 
 	buildChaptersLoader(container);
 	buildPlaylist();
