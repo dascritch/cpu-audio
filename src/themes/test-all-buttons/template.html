@@ -69,7 +69,7 @@
 	<div class="testing">
 		<h5>Navigation via chapters</h5>
 		<p>
-			Those buttons are active only if chapters are loaded for that audio.
+			Active only if chapters are loaded for that audio.
 		</p>
 		<p>
 			<button type="button" id="prevcue">
@@ -83,7 +83,7 @@
 	<div class="testing">
 		<h5>Navigation via playlist</h5>
 		<p>
-			Those buttons are active only if the current audio is in a playlist, and obviously not alone.
+			Active only if the current audio is in a playlist, and obviously not alone.
 		</p>
 		<p>
 			<button type="button" id="prevtrack">
@@ -97,7 +97,7 @@
 	<div class="testing">
 		<h5>panel #pageshare</h5>
 		<p>
-			This sharing panel appears in default theme when you press on the #actions button on the right of the time-line. #nativeshare appears and #twitter, #facebook and #email are hidden if navigator accepts the use of share API.
+			This sharing panel appears in default theme when you press on the #actions button on the right of the time-line. #nativeshare appears, #twitter, #facebook and #email are hidden if navigator accepts the use of share API.
 		</p>
 		<p>
 
@@ -236,9 +236,11 @@
 	}
 
 	.mode-default .testing {
-		display : block;
+		display : inline-block;
+		background: #333;
 		border : 2px solid black;
 		text-align : center;
+		max-width : 800px;
 	}
 
 	.testing h5 {
@@ -249,6 +251,8 @@
 		display : inline-block !important;
 		border : 2px outset grey;
 		min-height : 40px;
+		background: #222;
+		padding : 0 10px;
 	}
 
 	.testing button span, .testing button svg,
@@ -256,5 +260,4 @@
 		vertical-align: middle;
 	}
 
-	/* cancels some of the styles */
 </style>

@@ -11,10 +11,9 @@ Still To Do to 7.0
 ------------------
 
  * Graphic glitches on Safari iOS ([#138](#138))
- * Resolve failing test only on Chrome Android ([#121](#121)) may be linked to previous event management. Recheck
+ * Resolve failing test only on Chrome Android ([#121](#121)) may be linked to event engine on this very specific software.
  * Full test comparing campaign of all available platforms ([#138](#138)), ([#113](#113))
  * Writing how-to theme documentation
- * Finish playlist buttons with a debug theme ([#108](#108))
  * Persistent CPU controller ([#87](#87))
  * Upate dotclear addon companion ([#67](#67))
 
@@ -28,9 +27,10 @@ New features
  * Possibility to create RTL version ([#26](#26)) by this way ([#56](#56))
  * A11y : Support reduced motion preferences
  * Adding support for ↑ and ↓ keys, moving focus among panels
- * Adding support for prevcue/nextcue facultative buttons
+ * Adding support for prevcue/nextcue facultative buttons ([#108](#108))
+ * Adding support for prevtrack/nexttrack facultative buttons ([#125](#125))
  * Added method `Element.CPU.bulkPoints()`
- * Added a more visible focus outline, stylable via`--cpu-focus-outline` ([#116](#116))
+ * Stylable focus outline via `--cpu-focus-outline` ([#116](#116))
  * Some examples added
  * Degradable code, some elements are no more absolutely required in template ([#56](#56))
  * Revised [chapters-editors application](https://dascritch.github.io/cpu-audio/applications/chapters_editor.html), can now accept “uploaded” files [#126](#126)

@@ -281,7 +281,7 @@ export const trigger = {
 			).catch(
 				error => {
 					trigger._last_play_error = true;
-					let unlock = playOnceUnlock.bind(this, audiotag);
+					const unlock = () => { playOnceUnlock(event, audiotag); };
 					switch (error.name) {
 						case 'NotAllowedError':
 							warn(NotAllowedError);
@@ -518,46 +518,66 @@ export const trigger = {
 	},
 
 	/**
-	 * @summary When an audiotag is ended, advance in playlist
+	 * @summary When #prevtrack button is clicked, bgo back in playlist
 	 *
 	 * @param      {Object}  							event     The event
 	 * @param      {HTMLAudioElement|null|undefined}  	audiotag  The audiotag, mays be omitted, will be calculated from event
 	 */
-	ended : function({target}, audiotag=null) {
-		// the media element reached its end
-		audiotag = audiotag ?? target;
-		let {dataset, id} = audiotag;
+	prevtrack : function({target}, audiotag=null) {
+		playRelativeTrackInPlaylist(audiotag ?? findContainer(target).audiotag, -1);
+	},
 
-		if (!dataset.playlist) {
-			return;
-		}
-		// and is in a declarated playlist
-		let playlist_name = dataset.playlist;
-		let playlist = document.CPU.playlists[playlist_name];
-		if (playlist === undefined) { 
-			// test strict : we may have a funnily 'undefined' named playlist ;)
-			warn(`Named playlist ${playlist_name} not created. WTF ?`);
-			return;
-		}
-		let playlist_index = playlist.indexOf(id);
-		if (playlist_index < 0) {
-			warn(`Audiotag ${id} not in playlist ${playlist_name}. WTF ?`);
-			return;
-		}
-		if ((playlist_index +1) === playlist.length) {
-			// end of playlist
-			return;
-		}
-		let next_id = playlist[ playlist_index+1 ];
-
-		let next_audiotag = /** @type {HTMLAudioElement} */ (document.getElementById(next_id));
-		if (!next_audiotag) {
-			warn(`Audiotag #${next_id} doesn't exists. WTF ?`);
-			return;
-		}
-		// Play the next media in playlist, starting at zero
-		document.CPU.seekElementAt(next_audiotag, 0);
-		trigger.play({}, next_audiotag);
+	/**
+	 * @summary When an audiotag is ended, advance in playlist. Also when #nexttrack button clicked
+	 *
+	 * @param      {Object}  							event     The event
+	 * @param      {HTMLAudioElement|null|undefined}  	audiotag  The audiotag, mays be omitted, will be calculated from event
+	 */
+	nexttrack : function({target}, audiotag=null) {
+		playRelativeTrackInPlaylist(audiotag ?? findContainer(target).audiotag, +1);
 	},
 
 };
+
+/**
+ * @summary Common code for trigger.prevtrack and trigger.nexttrack
+ *
+ * @param      {HTMLAudioElement}  	audiotag  	The audiotag we're leaving
+ * @param      {Number}			  	offset  	The offset to apply on the index
+ */
+function playRelativeTrackInPlaylist(audiotag, offset) {
+	const {id} = audiotag;
+
+	const playlist_name = audiotag.dataset.playlist;
+	if (!playlist_name) {
+		// should I test strict ? We may have a funnily 'undefined' named playlist ;)
+		return;
+	}
+
+	// and is in a declarated playlist
+	const playlist = document.CPU.playlists[playlist_name];
+	if (!playlist) { 
+		warn(`Named playlist ${playlist_name} not created. WTF ?`);
+		return;
+	}
+	let playlist_index = playlist.indexOf(id);
+	if (playlist_index < 0) {
+		warn(`Audiotag ${id} not in playlist ${playlist_name}. WTF ?`);
+		return;
+	}
+
+	const next_id = playlist[playlist_index + offset];
+	if (!next_id) {
+		// out of playlist
+		return;
+	}
+
+	let next_audiotag = /** @type {HTMLAudioElement} */ (document.getElementById(next_id));
+	if (!next_audiotag) {
+		warn(`Audiotag #${next_id} doesn't exists. WTF ?`);
+		return;
+	}
+	// Play the next media in playlist, starting at zero
+	document.CPU.seekElementAt(next_audiotag, 0);
+	trigger.play({}, next_audiotag);
+}

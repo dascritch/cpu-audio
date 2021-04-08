@@ -8,6 +8,11 @@
 <style>
     cpu-audio {display : inline-block !important;}
 </style>
+<script>
+    document.addEventListener('CPU_ready', ({target}) => {
+        target.CPU.shadow.querySelector('#pagemain #control').addEventListener('click', (e) => { document.CPU.trigger.toggleplay(e); });
+    });
+</script>
 
 <body>
     <p><a href="../examples.html">← back to examples list</a></p>
