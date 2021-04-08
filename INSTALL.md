@@ -43,7 +43,7 @@ A more elaborated example :
 
 * Put one and only one `<audio>` tag into `<cpu-audio>`, or you may have unexpected issues.
 * **We recommend to set an `id` attribute** to the `<audio>` tag for the anchoring feature, elsewhere cpu-audio.js will autoset an `id`, that may cause later some problems for deep-linking sound into your page or your web-app. Please set an ID to the `<audio>` tag by yourself.
-* You **must** put a `control` attribute to the included `<audio>` tag ; this is a good practice for having a functional fallback in case of malfunction, we wish you to comply. Please also add this rule in your css, even if our included css will put it :
+* You **must** put a `controls` attribute to the included `<audio>` tag ; this is a good practice for having a functional fallback in case of malfunction, we wish you to comply. Please also add this rule in your css, even if our included css will put it :
 
 ```css
 audio[controls] {
@@ -124,7 +124,7 @@ Chapters
 
 One poorly used native HTML feature is chapters track. A `<track>` tag is mostly used as native closed-caption feature in `<video>` tag, but you may also create a `<track>` for chaptering in an `<audio>` tag. Everything is natively managed by any major browser, except display it. So we are doing it with cpu-audio.js.
 
-Here is the code you can put into the `<audio control>` tag : 
+Here is the code you can put into the `<audio controls>` tag : 
 
 ```html
 <track kind="chapters" src="chapters.vtt" default />
@@ -265,7 +265,7 @@ Here is an example :
 
 ```css
     /* fallback style for browsers without webcomponents */
-    audio[control] {
+    audio[controls] {
         display : block;
         width : 100%;
     }
