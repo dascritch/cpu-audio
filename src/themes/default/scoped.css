@@ -545,6 +545,10 @@ a:hover, button:hover, a:focus, button:focus,
 		padding-bottom: 2px;
 	}
 
+	#control svg, #actions svg {
+		/* Safari iOS is unable to recalc correctly. Keep this.. See https://github.com/dascritch/cpu-audio/issues/138  */
+		height : calc(var(--cpu-height) - 16px);
+	}
 }
 @media (max-width: 320px) /*, @element #interface and (max-width: 320px) */ {
 	.nosmallest,

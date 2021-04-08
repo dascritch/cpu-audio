@@ -39,6 +39,8 @@ New features
 Corrections
 -----------
 
+ * Removing annoying interactions from Safari iOS ([#138](#138))
+ * Resolving graphic glitches on Safari, SVG aren't correctly calculated on iOS ([#138](#138))
  * Production files are now more logically created in `build/` instead of `directory/`
  * `<CPU-Controller>` cannot be instancied twice
  * Methods and parameters names have been unified camelCase. Changes are incompatible with versions <7.0 ([#112](#112))
