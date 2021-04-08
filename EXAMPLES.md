@@ -5,12 +5,12 @@
 
  * [examples/API_insert_annotations.html](examples/API_insert_annotations.html)
  * [examples/API_insert_downloadables_panel.html](examples/API_insert_downloadables_panel.html)
- * [examples/Build_with_download_action.html](examples/Build_with_download_action.html)
- * [examples/controller_playlist_and_chapters.html](examples/controller_playlist_and_chapters.html)
  * [examples/iframe_for_dimension.html](examples/iframe_for_dimension.html)
  * [examples/Style_backgrounds.html](examples/Style_backgrounds.html)
  * [examples/Style_highlight_page_chapters.html](examples/Style_highlight_page_chapters.html)
  * [examples/Theme_big-square.html](examples/Theme_big-square.html)
+ * [examples/Theme_direct-download.html](examples/Theme_direct-download.html)
+ * [examples/Usage_controller_playlist_and_chapters.html](examples/Usage_controller_playlist_and_chapters.html)
  * [examples/Usage_for_streaming.html](examples/Usage_for_streaming.html)
 
 
