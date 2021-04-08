@@ -41,11 +41,11 @@ HOW TO install
 
 A unique and lightweight js file to install, without any dependencies.
 
-* [How to install, deploy and customize on your server](https://dascritch.github.io/cpu-audio/INSTALL)
+* [How to install, deploy and customize on your server](https://github.com/dascritch/cpu-audio/blob/master/INSTALL.md)
 * [You can try playing with our live configurator tool](https://dascritch.github.io/cpu-audio/applications/live_config.html)
+* [See it running in our demonstration site](https://dascritch.github.io/cpu-audio/)
 * See [basic examples](https://dascritch.github.io/cpu-audio/examples.html) and applications with advanced use cases
 * [A React .jsx example](https://github.com/dascritch/cpu-audio/blob/master/examples/Call_from_React.jsx)
-* [Known problems and misconfigurations](https://github.com/dascritch/cpu-audio/blob/master/TROUBLESHOOTING.md)
 
 
 Features
@@ -53,7 +53,7 @@ Features
 
 [TL;DR ? See it in action](https://dascritch.github.io/cpu-audio/FEATURES)
 
-* hyperlink `<audio>` tags to a specific time, [Media Fragment standards](https://www.w3.org/TR/media-frags/) ;
+* hyperlink `<audio>` tags to a specific time, using not well-known [Media Fragment standards](https://www.w3.org/TR/media-frags/) ;
 * standards first, future-proof ;
 * only one single file to deploy ;
 * pure vanilla, no dependencies to any framework ;
@@ -103,41 +103,25 @@ Some links
     * [Features](https://dascritch.github.io/cpu-audio/FEATURES)
     * [How to install](https://dascritch.github.io/cpu-audio/INSTALL)
     * [Live configuration](https://dascritch.github.io/cpu-audio/applications/live_config.html)
-* [JS installable code](https://github.com/dascritch/cpu-audio/build/cpu-audio.js) 
+* [JS installable code](https://github.com/dascritch/cpu-audio/blob/master/build/cpu-audio.js) 
 * [Code repository](https://github.com/dascritch/cpu-audio/), [Latest stable release](https://github.com/dascritch/cpu-audio/releases/latest)
 * [How to participate to this project](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
 * Blog posts about its creation and development : [Série cpu-audio sur dascritch.net](https://dascritch.net/serie/cpu-audio)
 * [How to cite a podcast](https://www.buzzsprout.com/blog/cite-podcast), now you can support time positions URL
 * Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
 
-Version : 6.99.3 [Licence GPL 3](LICENSE)
+Version : 6.99.3 [Licence GPL 3](https://github.com/dascritch/cpu-audio/blob/master/LICENSE.md)
 
 
 Participate
 -----------
 
 * [Contribute in any way](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
+* [Where we are now](https://github.com/dascritch/cpu-audio/blob/master/RELEASE.md)
 * [Tests](tests/tests-minimal.html)
 * [Bugs, issues, tickets and features](https://github.com/dascritch/cpu-audio/issues)
 * [What to do, next](https://github.com/dascritch/cpu-audio/blob/master/TODO.md)
 
-
-Versions history
-----------------
-
-* March 2021 : 7 , review and rewrite in ES2021
-* June 2019 : 6 , plane and points, public API stabilization
-* April 2018 : 5 , [forking to cpu-audio, WebComponent version](https://github.com/dascritch/ondemiroir-audio-tag/issues/7#issuecomment-382043789)
-* August 2017 : 4 , i18n, modularization, clone
-* August 2015 : 3 , forking to ondemiroir-audio-tag, for launching [CPU radio show](http://cpu.pm)
-* October 2014 : Final version of timecodehash
-* September 2014 : 2 , correcting to standard separator
-* September 2014 : 1 , public announcing
-* July 2014 : 1.a , public release
-* June 2014 : 0.2 , proof of concept
-* October 2012 : first version, trashed
-
-[See releases for detailled changes](https://github.com/dascritch/cpu-audio/releases)
 
 
 Credits

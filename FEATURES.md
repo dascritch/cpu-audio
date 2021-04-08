@@ -87,7 +87,7 @@ No need to use `title=""`, `canonical=""` or `twitter=""` attributes for the two
 Personnalization
 ----------------
 
-You can change some aspects of the interface [via some handy CSS variables](https://dascritch.github.io/cpu-audio/INSTALL.html#personnalization-via-css-variables), even only in a region of your page.
+You can change some aspects of the interface [via some handy CSS variables](https://github.com/dascritch/cpu-audio/blob/master/INSTALL.md#user-content-personnalization-via-css-variables), even only in a region of your page.
 
 <div id="personnalization-demo">
 <pre><style class="showcode" scoped contenteditable>/* you can edit to test it right now */
@@ -110,13 +110,13 @@ You can change some aspects of the interface [via some handy CSS variables](http
 </cpu-audio>
 </div>
 
-Advanced users can create their own graphic theme UI, [as this one with a direct download button instead of the action panel](examples/Build_with_download_action.html)
+Advanced users can create their own graphic theme UI, [as this one, minimilized in a single big button](examples/Theme_big-square.html)
 
 
 Highlighting text amond chapters
 --------------------------------
 
-If you use a chapter track with name chapters <a href="https://dascritch.github.io/cpu-audio/applications/chapters_editor.html">(you can generate them here)</a>, you can use a CSS rule to highlight a portion of your text with the playing audio.
+If you use a chapter track with name chapters ([you can generate them here](https://dascritch.github.io/cpu-audio/applications/chapters_editor.html))</a>, you can use a CSS rule to highlight a portion of your text with the playing audio.
 
 
 <cpu-audio

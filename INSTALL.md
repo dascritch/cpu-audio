@@ -9,11 +9,11 @@ Call it in the `<head>` of your html page :
 <script src="cpu-audio.js" async></script>
 ```
 
-Do not forget to add a `lang=""` attribute in the hosting `<html>` tag. Elsewhere, the component will try to guess user's language via the browser preferences, which may cause funny rendering (in English because so was configurated the client system, as your website is in French). Actual version only have english and french locales, [may be can you help us ?](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
+Do not forget to add a `lang=""` attribute in the hosting `<html>` tag. Elsewhere, the component will try to guess user's language via the browser preferences, which may cause funny rendering (in English because so was configurated the client system, as your website is in French). Actual version only have english and french locales, [may be can you help us ?](CONTRIBUTING.md)
 
 
-Invoking element
-----------------
+Invoking element in pure HTML
+-----------------------------
 
 Encapsulate your usual `<audio control>` with `<cpu-audio>`. 
 
@@ -53,6 +53,23 @@ audio[controls] {
 ```
 
 You can play with our [live configurator tool](https://dascritch.github.io/cpu-audio/applications/live_config.html), to build a HTML and CSS canvas ready to be copy-pasted in your website code.
+
+
+Invoking element in a javascript framework
+------------------------------------------
+
+Most frameworks as React can now co-op friendly with WebComponents. cpu-audio can be [easily called as in this example](examples/Call_from_React.jsx) :
+
+```jsx
+export const CpuAudio = () => {
+    useEffect(() => import("…/cpu-audio.js"), []);
+    return (
+        <cpu-audio>
+            <audio controls src='…/sound.mp3'></audio>
+        </cpu-audio>
+    )
+};
+```
 
 
 How to link
@@ -116,7 +133,7 @@ You can invoke a global media controller by creating a `<cpu-controller>` withou
 
 It may be useful if, as [in the CPU website](http://cpu.pm), you have a player in the main content and a cloned one in a fixed element, in the header/menu of your website, by example.
 
-Note that a `<cpu-controller>` invoked without any valid `<cpu-audio>` player will just display a plain placeholder, until a vali `<cpu-audio>` is created in the page.
+Note that a `<cpu-controller>` invoked without any valid `<cpu-audio>` player will just display a plain placeholder, until a valid `<cpu-audio>` is created in the page.
 
 
 Chapters
@@ -300,7 +317,7 @@ This function was meant to build effects as in [BBC Computer Literacy archive](h
 Using javascript API
 --------------------
 
-cpu-audio.js can be used only with HTML attributes and CSS variables, but javascript savvy developers have [API features to get a more precise control or even extend functionnalities](https://github.com/dascritch/cpu-audio/blob/master/API.md).
+cpu-audio.js can be used only with HTML attributes and CSS variables, but javascript savvy developers have [API features to get a more precise control or even extend functionnalities](API.md).
 
 
 <!-- {% include footer.html %} -->
