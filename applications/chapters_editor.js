@@ -306,16 +306,15 @@ function CPU_drawPoint({detail}) {
     elementPointTrack.removeEventListener('pointerdown', drag_start);
     
     // When you click on a point, we show the line editing interface
-    // we bind() the function to pass its arguments. 
-    elementPointTrack.addEventListener('mouseover', cursor_hover.bind(null, pointName));
-    elementPointTrack.addEventListener('mouseout',cursor_out.bind(null, pointName));
-    elementPointTrack.addEventListener('click', show_only_line.bind(null, pointName, true));
+    elementPointTrack.addEventListener('mouseover', () => { cursor_hover(pointName); });
+    elementPointTrack.addEventListener('mouseout', () => {cursor_out(pointName); });
+    elementPointTrack.addEventListener('click', () => { show_only_line(pointName, true); });
 
-    elementPointTrack.addEventListener('pointerdown', drag_start.bind(null, elementPointTrack, pointName));
+    elementPointTrack.addEventListener('pointerdown', () => { drag_start(elementPointTrack, pointName); });
 
-    elementPointPanel.addEventListener('mouseover', cursor_hover.bind(null, pointName));
-    elementPointPanel.addEventListener('mouseout',cursor_out.bind(null, pointName));
-    elementPointPanel.addEventListener('click', show_only_line.bind(null, pointName, true));
+    elementPointPanel.addEventListener('mouseover', () => { cursor_hover(pointName); });
+    elementPointPanel.addEventListener('mouseout',() => { cursor_out(pointName); });
+    elementPointPanel.addEventListener('click', () => { show_only_line(pointName, true); });
 
 }
 
