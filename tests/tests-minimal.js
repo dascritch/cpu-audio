@@ -217,14 +217,12 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.expect(1);
 		audiotag.play();
 
-		let check_only_one_play_this;
 		function check_only_one_play() {
 			assert.ok(audiotag.paused, 'Player should have been paused');
 			done();
 		}
-		check_only_one_play_this = check_only_one_play.bind(this);
 		cpu.trigger.hashOrder('track&t=20,21', function() {
-			setTimeout(check_only_one_play_this, 1500);
+			setTimeout(check_only_one_play, 1500);
 		});
 	});
 
@@ -242,15 +240,13 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		</cpu-audio>`;
 		let secondary_audiotag = document.getElementById('secondary');
 		secondary_audiotag.volume = 0;
-		let check_only_one_play_this;
 
 		function check_only_one_play() {
 			assert.ok(! secondary_audiotag.paused, 'Second player should continue to play');
 			assert.ok(audiotag.paused, 'First player should have been paused');
 			done();
 		}
-		check_only_one_play_this = check_only_one_play.bind(this);
-		setTimeout(check_only_one_play_this, 100);
+		setTimeout( check_only_one_play, 100);
 		secondary_audiotag.play();
 	});
 

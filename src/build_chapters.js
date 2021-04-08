@@ -13,9 +13,9 @@ const plane_chapters = '_chapters';
  * @param      {Object}  container  <cpu-audio>.CPU
  */
 export function buildChaptersLoader(container) {
-	build_chapters(container);
+	const this_build_chapters = () => { build_chapters(container); };
+	this_build_chapters();
 	let audiotag = container.audiotag;
-	let this_build_chapters = build_chapters.bind(undefined, container);
 
 	// sometimes, we MAY have loose loading
 	audiotag.addEventListener('loadedmetadata', this_build_chapters, oncePassiveEvent);
@@ -85,7 +85,7 @@ export async function build_chapters(container) {
 				track : 'chapters'
 			});
 
-			let cuechange_event_this = cuechange_event.bind(undefined, container);
+			const cuechange_event_this = () => {cuechange_event(container);};
 			// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
 			// adding/reinstall chapter changing event
 			chapter_track.removeEventListener('cuechange', cuechange_event_this);

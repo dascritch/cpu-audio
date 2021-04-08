@@ -566,7 +566,7 @@ export class CPU_element_api {
 		if (phylactere._hider) {
 			window.clearTimeout(phylactere._hider);
 		}
-		phylactere._hider = window.setTimeout(this.hideThrobber.bind(this), hideThrobber_delay);
+		phylactere._hider = window.setTimeout( () => { this.hideThrobber(); }, hideThrobber_delay);
 	}
 
 	/**
@@ -826,7 +826,7 @@ export class CPU_element_api {
 			return ;
 		}
 		let { track, panel, title } = planeData;
-		let removeHighlightsPoints_bind = this.removeHighlightsPoints.bind(this, planeName, previewClassname, true);
+		const removeHighlightsPoints_bind = () => { this.removeHighlightsPoints(planeName, previewClassname, true); };
 
 		/**
 		 * @param      {Element}  element  Impacted element
