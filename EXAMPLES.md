@@ -10,6 +10,7 @@
  * [examples/Style_highlight_page_chapters.html](examples/Style_highlight_page_chapters.html)
  * [examples/Theme_big-square.html](examples/Theme_big-square.html)
  * [examples/Theme_direct-download.html](examples/Theme_direct-download.html)
+ * [examples/Theme_test-all-buttons.html](examples/Theme_test-all-buttons.html)
  * [examples/Usage_controller_playlist_and_chapters.html](examples/Usage_controller_playlist_and_chapters.html)
  * [examples/Usage_for_streaming.html](examples/Usage_for_streaming.html)
 
