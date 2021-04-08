@@ -110,7 +110,7 @@ export function audiotagPreloadMetadata(audiotag, callback=null, event=null) {
 export function attach_events_audiotag(audiotag) {
 	audiotag.addEventListener('loadedmetadata', recallStoredPlay, oncePassiveEvent);
 	audiotag.addEventListener('play', trigger.playOnce, passiveEvent);
-	audiotag.addEventListener('ended', trigger.ended, passiveEvent);
+	audiotag.addEventListener('ended', trigger.nexttrack, passiveEvent);
 	// those ↓ for PHRACKING SAFARI
 	audiotag.addEventListener('ready', recallStoredPlay, passiveEvent);
 	audiotag.addEventListener('canplay', recallStoredPlay, passiveEvent);
