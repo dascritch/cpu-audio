@@ -57,10 +57,8 @@ a, button {
 button {
 	background : transparent;
 }
-
-
 a:focus,  button:focus {
-	outline : var(--cpu-focus-outline); 
+	outline : none;
 }
 
 svg {

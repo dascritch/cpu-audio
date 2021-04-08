@@ -29,6 +29,12 @@ audio[controls] {
 	--cpu-focus-outline : none; /* you can try 8px dashed #f00; */
 }
 
+
+cpu-audio:focus, cpu-controller:focus, cpu-audio:active, cpu-controller:active  {
+	outline : var(--cpu-focus-outline); 
+}
+
+
 /* If css element queries not available, fallback to media queries */
 
 @media (max-width: 640px) /*, @element .interface and (max-width: 640px) */ {
