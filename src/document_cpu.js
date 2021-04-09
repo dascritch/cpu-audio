@@ -110,13 +110,14 @@ export const DocumentCPU = {
 
 		let audiotag = /** @type {HTMLAudioElement} */ ( (hash !== '') ? document.getElementById(hash)  :  document.querySelector(selectorAudioInComponent) );
 
-		if ((audiotag == null) || (audiotag.currentTime === undefined)) {
+		//if ((audiotag == null) || (audiotag.currentTime === undefined)) {
+		if ( ( audiotag?.currentTime ?? null ) == null ) {
 			warn(`Unknow audiotag ${hash}`);
 			return;
 		}
 
 		let mocked_event = {target : audiotag};
-		if (audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+		if (audiotag.readyState < audiotag.HAVE_CURRENT_DATA) {
 			// WHHYYYY ??????
 			audiotag.addEventListener('loadedmetadata', doNeedleMove , oncePassiveEvent);
 			audiotag.load();
