@@ -133,11 +133,11 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 
 	function hashOrder_test(expected_string, hash , expected_time)
 	{
-		QUnit.test( `document.CPU.trigger.hashOrder ${expected_string}`, function( assert ) {
+		QUnit.test( `document.CPU.trigger.hashOrder ${expected_string} at ${audiotag.currentTime} expected near ${expected_time}`, function( assert ) {
 			assert.expect( 1 );
 			let done = assert.async();
 			cpu.trigger.hashOrder(hash, function() {
-				assert.equal(audiotag.currentTime, expected_time, expected_string);
+				assert.ok(nearlyEqual( audiotag.currentTime, expected_time), expected_string);
 				done();
 			});
 		});
@@ -154,7 +154,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.expect( 2 );
 		let done = assert.async();
 		cpu.trigger.hashOrder('track&t=0:20,0:30', function() {
-			assert.equal(audiotag.currentTime , 20, 'starts at 20 seconds');
+			assert.ok(nearlyEqual( audiotag.currentTime , 20), 'starts at 20 seconds');
 			assert.equal(cpu.trigger._timecode_end, 30, 'ends at 30 seconds');
 			done();
 		});
