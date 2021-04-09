@@ -26,12 +26,6 @@ audio[controls] {
 	--cpu-color-transitions : 0s;
 	--cpu-background-transitions : 0s;
 	--cpu-unfold : 0s;
-	--cpu-focus-outline : none; /* you can try 8px dashed #f00; */
-}
-
-
-cpu-audio:focus, cpu-controller:focus, cpu-audio:active, cpu-controller:active  {
-	outline : var(--cpu-focus-outline); 
 }
 
 

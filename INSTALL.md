@@ -253,7 +253,6 @@ Variable name               | Description                                       
 `--cpu-playing-color`       | Color while playing                                         | `#fff`
 `--cpu-focus-background`    | Background when an active element is hover/focused          | Current color definition
 `--cpu-focus-color`         | Color when an active element is hover/focused               | Current background definition
-`--cpu-focus-outline`       | Outline definition for focused element                      | `none`
 `--cpu-popup-background`    | Background for the time pointer                             | `#aaa`
 `--cpu-popup-color`         | Text color for the time pointer                             | `#333`
 `--cpu-cue`                 | Color for the chapter lines under the time-line             | `#000`

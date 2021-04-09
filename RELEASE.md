@@ -30,7 +30,6 @@ New features
  * Adding support for prevcue/nextcue facultative buttons ([#108](#108))
  * Adding support for prevtrack/nexttrack facultative buttons ([#125](#125))
  * Added method `Element.CPU.bulkPoints()`
- * Stylable focus outline via `--cpu-focus-outline` ([#116](#116))
  * Some examples added
  * Degradable code, some elements are no more absolutely required in template ([#56](#56))
  * Revised [chapters-editors application](https://dascritch.github.io/cpu-audio/applications/chapters_editor.html), can now accept “uploaded” files [#126](#126)
