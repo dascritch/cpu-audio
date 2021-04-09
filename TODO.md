@@ -1,13 +1,20 @@
 TO DO list
 ==========
 
-Todo for this release :
------------------------
+Todo for this release
+---------------------
 
- - Finish keys and events to move between playlists and players ([#108](#108))
+ - Writing how-to theme documentation
+ - Persistent CPU controller ([#87](#87))
+
+Todo later
+----------
+
  - Aria roles on fine position buttons
  - [Automated example page generated for each theme from make.sh #124](#124)
-
+ - Full test comparing campaign of all available platforms ([#138](#138)), ([#113](#113))
+ - Upate dotclear addon companion ([#67](#67))
+ - Resolve failing test only on Chrome Android ([#121](#121)) may be linked to event engine on this very specific software.
 
 Planned evolutions
 ------------------
