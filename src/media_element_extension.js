@@ -86,11 +86,11 @@ export function uncertainDuration(duration) {
 export function audiotagDuration({duration, dataset}) {
 	let out = null;
 	let _natural = Number(duration);
-	if (!isNaN(_natural)){
+	if (!uncertainDuration(_natural)) {
 		out = _natural;
 	} else {
 		const _forced = Number(dataset.duration);
-		if (_forced > 0) {
+		if (!uncertainDuration(_forced)) {  // yes, because isNaN(Number('Infinity')) !
 			out = _forced;
 		}
 	}
