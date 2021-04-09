@@ -16,7 +16,7 @@ New features
  * Possibility to change css breakpoints ([#51](#51)) by this way ([#56](#56))
  * Possibility to create RTL version ([#26](#26)) by this way ([#56](#56))
  * A11y : Support reduced motion preferences
- * Adding support for ↑ and ↓ keys, moving focus among panels
+ * Adding support for <kbd>↑</kbd> and <kbd>↓</kbd> keys, moving focus among panels
  * Adding support for prevcue/nextcue facultative buttons ([#108](#108))
  * Adding support for prevtrack/nexttrack facultative buttons ([#125](#125))
  * Added method `Element.CPU.bulkPoints()`
