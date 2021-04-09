@@ -116,6 +116,10 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 	});
 
 	QUnit.test( "Click at the middle of the timeline ", function( assert ) {
+		// TODO : This test is simple, but has a very strange bug only on Chrome Android :
+		// It seems related to the way on this platform Google integrated the mouse API
+		// Because, yes, since the very first Chrome, you can attach a mouse on your phone and use a cursor !
+		// May be should I instead use pointer events, as they are now enough supported https://caniuse.com/pointer
 		const done = assert.async();
 		assert.expect(2);
 		const time_element = componenttag.CPU.shadowId('time');
@@ -130,7 +134,6 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 			audiotag.pause()
 			audiotag.addEventListener('play', check_needle_moved, {once: true});
 			const pos = time_element.getClientRects()[0];
-			console.log('pos', pos)
 			time_element.addEventListener('click', console.log)
 			time_element.dispatchEvent(
 				new MouseEvent('click', {
