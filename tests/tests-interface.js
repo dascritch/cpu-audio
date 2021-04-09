@@ -787,15 +787,20 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		componenttag.CPU.nextFocus();
 		assert.equal(componenttag.CPU.focusedId(), 'control', 'nextFocus() without existing planes do not move');
 
+		// NOTE : to be visible, tracks must be set to `"chapters"` instead of `true`
 		componenttag.CPU.addPlane('plane1', {track:false, panel:true});
 		componenttag.CPU.bulkPoints('plane1', points);
-		componenttag.CPU.addPlane('plane2', {track:true, panel:true});
+		componenttag.CPU.addPlane('plane2', {track:"chapters", panel:true});
 		componenttag.CPU.bulkPoints('plane2', points);
-		componenttag.CPU.addPlane('plane3', {track:true, panel:true});
+		componenttag.CPU.addPlane('plane3', {track:"chapters", panel:true});
 		componenttag.CPU.addPlane('plane4', {track:false, panel:false});
 		componenttag.CPU.bulkPoints('plane4', points);
-		componenttag.CPU.addPlane('plane5', {track:true, panel:false});
+		componenttag.CPU.addPlane('plane5', {track:false, panel:'no'});
 		componenttag.CPU.bulkPoints('plane5', points);
+		componenttag.CPU.addPlane('plane6', {track:'no', panel:false});
+		componenttag.CPU.bulkPoints('plane6', points);
+		componenttag.CPU.addPlane('plane7', {track:"chapters", panel:false});
+		componenttag.CPU.bulkPoints('plane7', points);
 		componenttag.CPU.prevFocus();
 		assert.equal(componenttag.CPU.focusedId(), 'control', 'prevFocus() out of planes doesnt move');
 		componenttag.CPU.nextFocus();
@@ -806,26 +811,26 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'panel_«plane2»_point_«a»', 'nextFocus() and the end of a plane take the first point of the next plane');
 		componenttag.CPU.nextFocus();
 		componenttag.CPU.nextFocus();
-		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'track_«plane5»_point_«a»', 'nextFocus() and the end of a plane take the first point of the next plane with entries and with track or panel activated');
+		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'track_«plane7»_point_«a»', 'nextFocus() and the end of a plane take the first point of the next plane with entries and with track or panel activated and visible');
 		componenttag.CPU.nextFocus();
 		componenttag.CPU.nextFocus();
-		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'track_«plane5»_point_«b»', 'nextFocus() at the end of panels stays on last focused point');
+		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'track_«plane7»_point_«b»', 'nextFocus() at the end of panels stays on last focused point');
 		componenttag.CPU.prevFocus();
-		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'track_«plane5»_point_«a»', 'prevFocus() at the end of panels goes back from one point');
+		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'track_«plane7»_point_«a»', 'prevFocus() at the end of panels goes back from one point');
 		componenttag.CPU.focusPoint('plane3','a');
 		componenttag.CPU.prevFocus();
 		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'panel_«plane2»_point_«b»', 'prevFocus() at the begining of a panel goes back at the end of previous panel');
-		componenttag.CPU.focusPoint('plane5','a');
+		componenttag.CPU.focusPoint('plane7','a');
 		componenttag.CPU.prevFocus();
 		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'panel_«plane2»_point_«b»', 'prevFocus() at the begining of a panel goes back at the end of the previous panel with points and with or a track or a panel');
 		componenttag.CPU.focusPoint('plane1','a');
 		componenttag.CPU.prevFocus();
 		assert.equal(componenttag.CPU.focused().closest('[id]').id, 'panel_«plane1»_point_«a»', 'prevFocus() at the begining of the first panel does nothing');
 
-		componenttag.CPU.removePlane('plane1');
-		componenttag.CPU.removePlane('plane2');
-		componenttag.CPU.removePlane('plane3');
-		componenttag.CPU.removePlane('plane4');
+		for (let id = 1; id < 8; id++) {
+			componenttag.CPU.removePlane(`plane${id}`);	
+		}
+		
 	});	
 
 });
