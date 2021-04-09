@@ -257,8 +257,12 @@ export class CPU_element_api {
 		if (this.act_was === act) {
 			return;
 		}
-		if ( (! document.CPU.hadPlayed) && (this.act_was !== null) && (act === 'loading') ){
-			return;
+		if ( (! document.CPU.hadPlayed) && (act === 'loading') ){
+			if (this.act_was !== null) {
+				return;
+			}
+			// correction for iOS, stuck in "loading" state at the beginning, see #138
+			act = 'glow';
 		}
 		let classes = this.container.classList;
 		classes.remove(
