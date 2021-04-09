@@ -1513,9 +1513,12 @@ function relativeFocus(self, go_foward) {
 		return;
 	}
 
-	const validPlane = (data) => {
-		let {track, panel, points} = self.plane(data);
-		return (((track !== false) || (panel !== false)) && (points) && (Object.keys(points).length > 0));
+	const validPlane = (id) => {
+		let {track, panel, points} = self.plane(id);
+		return (((track !== false) || (panel !== false))
+				&& ((self.planePanel(id)?.clientHeight > 0) || (self.planeTrack(id)?.clientHeight > 0))
+				&& (points)
+				&& (Object.keys(points).length > 0));
 	};
 
 	const scanToPrevPlane = (fromPlane) => {

@@ -48,6 +48,19 @@ export function isAudiotagStreamed(audiotag) {
 
 
 /**
+ * @summary Checks if a time position is seekabe into an audiotag 
+ * @private
+ *
+ * @param      {number|null}  	time   	Expected time to seek in an audiotag
+ * @return     {boolean}       			Unusable time
+ */
+export function uncertainPosition(time) {
+
+	return (time === Infinity) || (time === null) || (isNaN(time));
+}
+
+
+/**
  * @summary Checks if an audiotag's duration is suitable for ratio maths
  * A media may have unusable duration for ratio because 
  * - media is unreadable
@@ -60,7 +73,7 @@ export function isAudiotagStreamed(audiotag) {
  */
 export function uncertainDuration(duration) {
 
-	return (duration === 0) || (duration === Infinity) || (duration === null) || (isNaN(duration));
+	return (duration === 0) || (uncertainPosition(duration));
 }
 
 /**
@@ -73,11 +86,11 @@ export function uncertainDuration(duration) {
 export function audiotagDuration({duration, dataset}) {
 	let out = null;
 	let _natural = Number(duration);
-	if (!isNaN(_natural)){
+	if (!uncertainDuration(_natural)) {
 		out = _natural;
 	} else {
 		const _forced = Number(dataset.duration);
-		if (_forced > 0) {
+		if (!uncertainDuration(_forced)) {  // yes, because isNaN(Number('Infinity')) !
 			out = _forced;
 		}
 	}

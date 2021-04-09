@@ -3,7 +3,7 @@ import {DefaultParametersDocumentCPU} from './default_document_cpu_parameters.js
 import {defaultDataset} from './default_dataset.js';
 import {convert, timeInSeconds} from './convert.js';
 import {trigger} from './trigger.js';
-import {isAudiotagStreamed, normalizeSeekTime} from './media_element_extension.js';
+import {isAudiotagStreamed, uncertainPosition, normalizeSeekTime} from './media_element_extension.js';
 
 export const DocumentCPU = {
 	// global object for global API
@@ -110,13 +110,14 @@ export const DocumentCPU = {
 
 		let audiotag = /** @type {HTMLAudioElement} */ ( (hash !== '') ? document.getElementById(hash)  :  document.querySelector(selectorAudioInComponent) );
 
-		if ((audiotag == null) || (audiotag.currentTime === undefined)) {
+		//if ((audiotag == null) || (audiotag.currentTime === undefined)) {
+		if ( ( audiotag?.currentTime ?? null ) == null ) {
 			warn(`Unknow audiotag ${hash}`);
 			return;
 		}
 
 		let mocked_event = {target : audiotag};
-		if (audiotag.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+		if (audiotag.readyState < audiotag.HAVE_CURRENT_DATA) {
 			// WHHYYYY ??????
 			audiotag.addEventListener('loadedmetadata', doNeedleMove , oncePassiveEvent);
 			audiotag.load();
@@ -136,7 +137,7 @@ export const DocumentCPU = {
 	 *
 	 */
 	seekElementAt : function (audiotag, seconds) {
-		if ((isNaN(seconds)) || // may happens, if the audio track is not loaded/loadable
+		if ((uncertainPosition(seconds)) || // may happens, if the audio track is not loaded/loadable
 			(isAudiotagStreamed(audiotag))) { // never try to set a position on a streamed media
 			return;
 		}
