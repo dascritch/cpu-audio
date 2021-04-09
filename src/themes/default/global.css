@@ -25,9 +25,8 @@ audio[controls] {
 	--cpu-inner-shadow : inset 0px 5px 10px -5px black;
 	--cpu-color-transitions : 0s;
 	--cpu-background-transitions : 0s;
-	--cpu-unfold : 0s;
+	/* --cpu-unfold : 0s; not actived */
 }
-
 
 /* If css element queries not available, fallback to media queries */
 
