@@ -2,7 +2,7 @@
 
 /**
 TODO
-- Do round data.start, especially visible on HTML export. 
+- customValidator when time is before zero or upper than the duration
 - add on the fly generated spectrogram
 - do not enter a timeline greater than duration
 - when unfolding generators, expanded panels should be also scrolled to
@@ -32,6 +32,18 @@ const regex_filename_without_path = /(^.*\/)([^\/]+)/;
 
 let timecode_input, text_input;
 
+/**
+ * Floor time entry and keep it positive. We may floor it to 1/100s later
+ * 
+ * @param      {string|Number|undefined|null}  currentTime      Time position in seconds to interpret
+ * @return     {Number|null}                                    Normalized time or null if entry was empty
+ */
+function normalize_time(currentTime) {
+    if ((currentTime === '') || (!currentTime)) {
+        return null;
+    }
+    return Math.abs(Math.floor(Number(currentTime)));
+}
 
 /**
  * Fired once <track> is loaded
@@ -45,7 +57,7 @@ function interpret_loaded_tracks(event) {
         let this_pointName = `line-${line_number++}`;
         points[this_pointName] = {
             ...point_canvas,
-            start  : Number(startTime),
+            start  : normalize_time(startTime),
             text   : text,
             _input : text
         };
@@ -171,7 +183,7 @@ function check_for_actions(event) {
         switch (event.target.id) {
             case 'add' :
                 pointName_editing = `line-${line_number++}`;
-                points[pointName_editing] = { ...point_canvas, start : Number(sound_element.currentTime) };
+                points[pointName_editing] = { ...point_canvas, start : normalize_time(sound_element.currentTime) };
                 interpret_form();
                 show_only_line(pointName_editing, true);
                 break;
@@ -179,9 +191,9 @@ function check_for_actions(event) {
                 document.CPU.jumpIdAt('sound', convert.timeInSeconds(timecode_input.value));
                 break ;
             case 'set' : 
-                sound_CPU.editPoint('cursors', pointName_editing, {start : sound_element.currentTime});
+                sound_CPU.editPoint('cursors', pointName_editing, {start : normalize_time(sound_element.currentTime)});
                 timecode_input.value = convert.secondsInColonTime( sound_element.currentTime );
-                points[pointName_editing].start = sound_element.currentTime;
+                points[pointName_editing].start = normalize_time(sound_element.currentTime);
                 sound_CPU.editPoint('cursors', pointName_editing, points[pointName_editing]);
                 interpret_form();
                 break ;
@@ -271,7 +283,7 @@ function drag_end(event) {
         return ;
     }
     timecode_input.value = convert.secondsInPaddledColonTime(seeked_time);
-    points[clicked_pointName].start = Math.floor(seeked_time);
+    points[clicked_pointName].start = normalize_time(seeked_time);
     sound_CPU.bulkPoints('cursors', points);
     clicked_pointName = null;
     interpret_form();
@@ -332,12 +344,12 @@ function escapeHtml(text) {
  *
  */
 function interpret_line(event=null, this_line_element=undefined) {
-    let start = convert.timeInSeconds( timecode_input.value ?? '0' );
+    let start = convert.timeInSeconds( normalize_time(timecode_input.value) ?? '0' );
     let _input = text_input.value ?? '';
     let text = _input;
 
     if (this_line_element) {
-        start = this_line_element.time;
+        start = normalize_time(this_line_element.time);
         text = this_line_element.text;
     }
 
