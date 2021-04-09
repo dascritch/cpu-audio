@@ -360,21 +360,20 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 				</audio>
 			</cpu-audio>
 			`;
+		const audiotag_pl1 = document.getElementById('pl1');
+		const audiotag_pl2 = document.getElementById('pl2');
 		assert.ok('plname' in cpu.playlists, 'Playlist “plname” created');
 		assert.equal(cpu.playlists.plname.length, 2 , 'Playlist “plname” with 2 items');
 		assert.equal(JSON.stringify(cpu.playlists.plname),
 					JSON.stringify(['pl1', 'pl2']), 'Playlist “plname” with "pl1" and "pl2"');
-		setTimeout(function() {
-			let audiotag_pl1 = document.getElementById('pl1');
-			let audiotag_pl2 = document.getElementById('pl2');
-			
+//		setTimeout(() => {
 			cpu.jumpIdAt('pl1', 119);
-			setTimeout(function() {
+			setTimeout(() => {
 				assert.ok(audiotag_pl1.paused, '#pl1 paused');
 				assert.ok(!audiotag_pl2.paused, '#pl2 playing');
 				done();
 			}, 2000);
-		}, 100);
+//		}, 100);
 	});
 
 	QUnit.test( "Playlist impact when removing a <CPU-audio>", function(assert) {

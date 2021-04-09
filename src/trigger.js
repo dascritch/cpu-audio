@@ -1,5 +1,5 @@
 import {oncePassiveEvent, adjacentArrayValue, findContainer, warn} from './utils.js';
-import {isAudiotagStreamed, audiotagPreloadMetadata, audiotagDuration, uncertainDuration} from './media_element_extension.js';
+import {isAudiotagStreamed, audiotagPreloadMetadata, audiotagDuration, uncertainDuration, normalizeSeekTime} from './media_element_extension.js';
 import {timeInSeconds} from './convert.js';
 import {buildPlaylist} from './build_playlist.js';
 import {planeAndPointNamesFromId} from './element_cpu.js';
@@ -172,7 +172,7 @@ export const trigger = {
 		// Xoffset / width ⇒ ratio in the timeline
 		const ratio = ((clientX ?? targetTouches?.[0]?.clientX) - x) / width;
 		// ratio * duration = time position in the audio
-		container.showThrobberAt(ratio * container.audiotag.duration);
+		container.showThrobberAt(normalizeSeekTime(audiotag, ratio * duration));
 	},
 
 	/**
@@ -190,9 +190,17 @@ export const trigger = {
 	 * @param      {Object}  event   The event, may be mocked
 	 */
 	throbble : function(event) {
-		const {target, offsetX} = event;
+		const {target, offsetX, at} = event;
 		const DocumentCPU = document.CPU;
 		const audiotag = findContainer(target).audiotag;
+
+		// We know the media length¸because the event is faked → normal execution. 
+		if (at) {
+			DocumentCPU.seekElementAt(audiotag, at);
+			return;
+		}
+		// Else : normal trigger usage, via an event
+
 		const ratio = offsetX / target.clientWidth;
 		const duration = audiotagDuration(audiotag); // we get the real or supposed duration
 
@@ -210,12 +218,7 @@ export const trigger = {
 			audiotag.CPU_controller()?.updateLoading?.(undefined, 100);
 			return;
 		}
-		DocumentCPU.seekElementAt(audiotag, 
-			// We know the media length → normal execution. 
-			event.at ?? 
-				// Else : normal trigger usage, via an event
-				( ratio * duration )
-		);
+		DocumentCPU.seekElementAt(audiotag, normalizeSeekTime(audiotag, ratio * duration));
 	},
 
 	/**
@@ -579,5 +582,5 @@ function playRelativeTrackInPlaylist(audiotag, offset) {
 	}
 	// Play the next media in playlist, starting at zero
 	document.CPU.seekElementAt(next_audiotag, 0);
-	trigger.play({}, next_audiotag);
+	trigger.play(null, next_audiotag);
 }

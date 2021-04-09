@@ -84,6 +84,20 @@ export function audiotagDuration(audiotag) {
 	return out;
 }
 
+/**
+ * @summary Normalize  a seeked time  between limits of an audiotag
+ * @private
+ *
+ * @param      {HTMLAudioElement}  	audiotag   		Audio to check length
+ * @param      {Number}			  	time_seeked		Time position to check
+ * @return     {Number}       		Result in seconds
+ */
+export function normalizeSeekTime(audiotag, time_seeked) {
+	time_seeked = Math.max(0, time_seeked);
+	time_seeked = Math.min(time_seeked, audiotagDuration(audiotag));
+	return time_seeked;
+}
+
 
 /**
  * @summary Force <audio> to preload its metadata, and so its duration, then callback the event
