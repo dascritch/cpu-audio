@@ -3,7 +3,7 @@ import {DefaultParametersDocumentCPU} from './default_document_cpu_parameters.js
 import {defaultDataset} from './default_dataset.js';
 import {convert, timeInSeconds} from './convert.js';
 import {trigger} from './trigger.js';
-import {isAudiotagStreamed, normalizeSeekTime} from './media_element_extension.js';
+import {isAudiotagStreamed, uncertainPosition, normalizeSeekTime} from './media_element_extension.js';
 
 export const DocumentCPU = {
 	// global object for global API
@@ -137,7 +137,7 @@ export const DocumentCPU = {
 	 *
 	 */
 	seekElementAt : function (audiotag, seconds) {
-		if ((isNaN(seconds)) || // may happens, if the audio track is not loaded/loadable
+		if ((uncertainPosition(seconds)) || // may happens, if the audio track is not loaded/loadable
 			(isAudiotagStreamed(audiotag))) { // never try to set a position on a streamed media
 			return;
 		}
