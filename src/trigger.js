@@ -78,6 +78,22 @@ export const trigger = {
 	_last_play_error : false,
 
 	/**
+	 * @summary Updatting time position. Pause if a end position was defined
+	 *
+	 * @param      {Object}  event   The event
+	 */
+	update : function({target:audiotag}) {
+		if ((trigger._timecode_end !== false) && (audiotag.currentTime > trigger._timecode_end)) {
+			trigger.pause(undefined, audiotag);
+		}
+
+		audiotag.CPU_update();
+		if ((!audiotag.paused) && (!isAudiotagStreamed(audiotag))) {
+			window.localStorage.setItem(audiotag.currentSrc, String(audiotag.currentTime));
+		}
+	},
+
+	/**
 	 * @summary    Interprets the hash part of the URL, when loaded or changed
 	 * @package
 	 *
@@ -195,7 +211,7 @@ export const trigger = {
 		const audiotag = findContainer(target).audiotag;
 
 		// We know the media length¸because the event is faked → normal execution. 
-		if (at) {
+		if (at >= 0) {
 			DocumentCPU.seekElementAt(audiotag, at);
 			return;
 		}
@@ -207,7 +223,7 @@ export const trigger = {
 		if ((DocumentCPU.currentAudiotagPlaying) && (!DocumentCPU.isAudiotagPlaying(audiotag))) {
 			// Chrome needs to STOP any other playing tag before seeking
 			//  Very slow seeking on Chrome #89
-			trigger.pause(undefined, DocumentCPU.currentAudiotagPlaying);
+			trigger.pause(null, DocumentCPU.currentAudiotagPlaying);
 		}
 
 		// we may have improper duration due to a streamed media, so let's start directly !
@@ -218,7 +234,7 @@ export const trigger = {
 			audiotag.CPU_controller()?.updateLoading?.(undefined, 100);
 			return;
 		}
-		DocumentCPU.seekElementAt(audiotag, normalizeSeekTime(audiotag, ratio * duration));
+		DocumentCPU.seekElementAt(audiotag, ratio * duration);
 	},
 
 	/**
@@ -331,12 +347,7 @@ export const trigger = {
 
 		/** @param      {number}  seconds    Relative position fowards */
 		function seek_relative(seconds) {
-			let at = container.audiotag.currentTime + seconds;
-			at = at > 0 ? at : 0;
-			let duration = audiotag.duration;
-			if (!isNaN(duration)) {
-				at = at < duration ? at : duration;
-			}
+			let at =  normalizeSeekTime(audiotag, audiotag.currentTime + seconds );
 			event.at = at;
 			container.showThrobberAt(event.at);
 			trigger.throbble(event);
@@ -433,57 +444,21 @@ export const trigger = {
 	},
 
 	/**
-	 * @summary Pressing prevcue button, or PROVISOIRE hit ↑ key
-	 * Function associated, see below, DO NOT RENAME
+	 * @summary Pressing prevcue button
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	prevcue : function( /* event */) {
-		const container = findContainer(event.target);
-		const audiotag = container.audiotag;
-		const points = container.planePoints('_chapters');
-		if (!points) {
-			return;
-		}
-		const [, pointName] = planeAndPointNamesFromId( body_className_playing_cue );
-		let go = adjacentArrayValue(points, pointName, -1);
-		if (!go) {
-			for (let cue of Object.values(points).reverse()) {
-				if ((!go) && (cue.end <= audiotag.currentTime)) {
-					go = cue;
-				}
-			}
-		}
-		if (go) {
-			document.CPU.jumpIdAt(audiotag.id, go.start);
-		}
+	prevcue : function(event) {
+		playRelativeCueInPlayer(findContainer(event.target), -1);
 	},
 
 	/**
-	 * @summary Pressing nextcue button, or PROVISOIRE hit ↓ key
-	 * Function associated, see below, DO NOT RENAME
+	 * @summary Pressing nextcue button
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	nextcue : function(/* event */) {
-		const container = findContainer(event.target);
-		const audiotag = container.audiotag;
-		const points = container.planePoints('_chapters');
-		if (!points) {
-			return;
-		}
-		const [, pointName] = planeAndPointNamesFromId( body_className_playing_cue );
-		let go = adjacentArrayValue(points, pointName, 1);
-		if (!go) {
-			for (let cue of Object.values(points)) {
-				if ((!go) && (cue.start >= audiotag.currentTime)) {
-					go = cue;
-				}
-			}
-		}
-		if (go) {
-			document.CPU.jumpIdAt(audiotag.id, go.start);
-		}
+	nextcue : function(event) {
+		playRelativeCueInPlayer(findContainer(event.target), 1);
 	},
 
 	/**
@@ -503,25 +478,8 @@ export const trigger = {
 		body_classes.add(body_className_playing_cue);
 	},
 
-
 	/**
-	 * @summary Updatting time position. Pause if a end position was defined
-	 *
-	 * @param      {Object}  event   The event
-	 */
-	update : function({target:audiotag}) {
-		if ((trigger._timecode_end !== false) && (audiotag.currentTime > trigger._timecode_end)) {
-			trigger.pause(undefined, audiotag);
-		}
-
-		audiotag.CPU_update();
-		if ((!audiotag.paused) && (!isAudiotagStreamed(audiotag))) {
-			window.localStorage.setItem(audiotag.currentSrc, String(audiotag.currentTime));
-		}
-	},
-
-	/**
-	 * @summary When #prevtrack button is clicked, bgo back in playlist
+	 * @summary When #prevtrack button is clicked, go back in playlist
 	 *
 	 * @param      {Object}  							event     The event
 	 * @param      {HTMLAudioElement|null|undefined}  	audiotag  The audiotag, mays be omitted, will be calculated from event
@@ -541,6 +499,41 @@ export const trigger = {
 	},
 
 };
+
+
+
+/**
+ * @summary Common code for trigger.prevcue and trigger.nextcue
+ *
+ * @param      {HTMLAudioElement}  	audiotag  	The audiotag we're leaving
+ * @param      {Number}			  	offset  	The offset to apply on the index
+ */
+function playRelativeCueInPlayer(container, offset) {
+	const audiotag = container.audiotag;
+	const points = container.planePoints('_chapters');
+	if (!points) {
+		return;
+	}
+	const [, pointName] = planeAndPointNamesFromId( body_className_playing_cue );
+	let go = adjacentArrayValue(points, pointName, offset);
+	let pointList = Object.values(points);
+	if (offset < 0) {
+		pointList = pointList.reverse();
+	}
+	if (!go) {
+	for (let cue of pointList) {
+		if ( (!go) && (
+				((offset < 0) && (cue.end <= audiotag.currentTime))  || 
+				(((offset > 0) && (cue.start >= audiotag.currentTime)) )
+			) ) {
+				go = cue;
+			}
+		}
+	}
+	if (go) {
+		document.CPU.jumpIdAt(audiotag.id, go.start);
+	}
+}
 
 /**
  * @summary Common code for trigger.prevtrack and trigger.nexttrack
@@ -584,3 +577,4 @@ function playRelativeTrackInPlaylist(audiotag, offset) {
 	document.CPU.seekElementAt(next_audiotag, 0);
 	trigger.play(null, next_audiotag);
 }
+

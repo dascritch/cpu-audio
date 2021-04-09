@@ -70,13 +70,13 @@ export function uncertainDuration(duration) {
  * @param      {HTMLAudioElement}  	audiotag   	Audio to check length
  * @return     {Number|null}       			Result in seconds. Null if non applicable
  */
-export function audiotagDuration(audiotag) {
+export function audiotagDuration({duration, dataset}) {
 	let out = null;
-	let _natural = Number(audiotag.duration);
+	let _natural = Number(duration);
 	if (!isNaN(_natural)){
 		out = _natural;
 	} else {
-		const _forced = Number(audiotag.dataset.duration);
+		const _forced = Number(dataset.duration);
 		if (_forced > 0) {
 			out = _forced;
 		}
@@ -93,8 +93,11 @@ export function audiotagDuration(audiotag) {
  * @return     {Number}       		Result in seconds
  */
 export function normalizeSeekTime(audiotag, time_seeked) {
-	time_seeked = Math.max(0, time_seeked);
-	time_seeked = Math.min(time_seeked, audiotagDuration(audiotag));
+	time_seeked = time_seeked < 0 ? 0 : time_seeked;
+	const duration = audiotagDuration(audiotag);
+	if (!uncertainDuration(duration)) {
+		time_seeked = time_seeked < duration ? time_seeked :  duration ;
+	}
 	return time_seeked;
 }
 

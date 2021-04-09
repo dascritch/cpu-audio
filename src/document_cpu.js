@@ -3,7 +3,7 @@ import {DefaultParametersDocumentCPU} from './default_document_cpu_parameters.js
 import {defaultDataset} from './default_dataset.js';
 import {convert, timeInSeconds} from './convert.js';
 import {trigger} from './trigger.js';
-import {isAudiotagStreamed} from './media_element_extension.js';
+import {isAudiotagStreamed, normalizeSeekTime} from './media_element_extension.js';
 
 export const DocumentCPU = {
 	// global object for global API
@@ -140,6 +140,7 @@ export const DocumentCPU = {
 			(isAudiotagStreamed(audiotag))) { // never try to set a position on a streamed media
 			return;
 		}
+		seconds = normalizeSeekTime(audiotag, seconds);
 
 		if (audiotag.fastSeek) {
 			// HTMLAudioElement.fastSeek() is an experimental but really fast function. Firefox only, alas
