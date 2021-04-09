@@ -347,7 +347,7 @@ export const trigger = {
 
 		/** @param      {number}  seconds    Relative position fowards */
 		function seek_relative(seconds) {
-			let at =  normalizeSeekTime(audiotag, audiotag.currentTime + seconds );
+			let at =  normalizeSeekTime(audiotag, audiotag.currentTime + seconds);
 			event.at = at;
 			container.showThrobberAt(event.at);
 			trigger.throbble(event);
@@ -363,7 +363,7 @@ export const trigger = {
 				break;
 			case 27 : // esc
 				trigger.restart(event);
-				trigger.pause(undefined, audiotag);
+				trigger.pause(null, audiotag);
 				break;
 			case 32 : // space
 				trigger.toggleplay(event);
@@ -484,7 +484,7 @@ export const trigger = {
 	 * @param      {Object}  							event     The event
 	 * @param      {HTMLAudioElement|null|undefined}  	audiotag  The audiotag, mays be omitted, will be calculated from event
 	 */
-	prevtrack : function({target}, audiotag=null) {
+	prevtrack : function({target}, audiotag = null) {
 		playRelativeTrackInPlaylist(audiotag ?? findContainer(target).audiotag, -1);
 	},
 
@@ -494,7 +494,7 @@ export const trigger = {
 	 * @param      {Object}  							event     The event
 	 * @param      {HTMLAudioElement|null|undefined}  	audiotag  The audiotag, mays be omitted, will be calculated from event
 	 */
-	nexttrack : function({target}, audiotag=null) {
+	nexttrack : function({target}, audiotag = null) {
 		playRelativeTrackInPlaylist(audiotag ?? findContainer(target).audiotag, +1);
 	},
 
@@ -520,11 +520,12 @@ function playRelativeCueInPlayer(container, offset) {
 	if (offset < 0) {
 		pointList = pointList.reverse();
 	}
+	const {currentTime} = audiotag;
 	if (!go) {
-	for (let cue of pointList) {
-		if ( (!go) && (
-				((offset < 0) && (cue.end <= audiotag.currentTime))  || 
-				(((offset > 0) && (cue.start >= audiotag.currentTime)) )
+		for (let cue of pointList) {
+			if ( (!go) && (
+				((offset < 0) && (cue.end <= currentTime))  || 
+				(((offset > 0) && (cue.start >= currentTime)) )
 			) ) {
 				go = cue;
 			}
