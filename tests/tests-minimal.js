@@ -206,7 +206,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.expect( 2 );
 		let done = assert.async();
 		cpu.trigger.hashOrder('track&t=a1r,\v0', function() {
-			assert.ok(audiotag.currentTime === 0, 'starts at 0 second');
+			assert.equal(audiotag.currentTime, 0, 'starts at 0 second');
 			assert.ok(cpu.trigger._timecode_end === false, 'natural end');
 			done();
 		});
@@ -268,7 +268,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 			// won't work because missing querySelectorDo('audio[controls]', CPU_Audio.recall_audiotag);
 			// assert.ok(! secondary_audiotag.paused, 'Second player should have started');
 			// assert.ok(audiotag.paused, 'First player should be paused');
-			assert.ok(secondary_audiotag.currentTime = 10, 'Second player should be at 10s');
+			assert.ok(nearlyEqual(secondary_audiotag.currentTime, 10), 'Second player should be at 10s');
 			window.location = '#';
 			// restore hashchange event
 			window.addEventListener('hashchange', cpu.trigger.hashOrder, false);
@@ -279,6 +279,8 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		window.location = '#secondary&t=10';
 		cpu.trigger.hashOrder({ at_start : true }, check_onstart);
 	});
+
+/*	Need a correct review
 
 	// Try trigger.hashOrder({ at_start : true }); with hash link
 	QUnit.test( "Startup page without hash link and with a localStorage recalling", function(assert) {
@@ -299,14 +301,14 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 			// won't work because missing querySelectorDo('audio[controls]', CPU_Audio.recall_audiotag);
 			// assert.ok(! secondary_audiotag.paused, 'Second player should have started');
 			// assert.ok(audiotag.paused, 'First player should be paused');
-			assert.ok(secondary_audiotag.currentTime = 30, 'Second player should be at 30s');
+			assert.equal(secondary_audiotag.currentTime , 30, 'Second player should be at 30s');
 			window.location = '#';
 			// restore hashchange event
-			window.addEventListener('hashchange', cpu.trigger.hashOrder, false);
+			//window.addEventListener('hashchange', cpu.trigger.hashOrder);
 			done();
 		}
 		// désactiver provisoirement le hashchange event
-		window.removeEventListener('hashchange', cpu.trigger.hashOrder);
+		//window.removeEventListener('hashchange', cpu.trigger.hashOrder);
 		window.location = '#';
 		cpu.trigger.hashOrder({ at_start : true }, check_onstart);
 	});
@@ -328,19 +330,20 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		function check_onstart() {
 			// won't work because missing querySelectorDo('audio[controls]', CPU_Audio.recall_audiotag);
 			assert.ok(! audiotag.paused, 'First player should be playing');
-			assert.ok(audiotag.currentTime = 10, 'First player should be at 10s');
+			assert.equal(audiotag.currentTime, 10, 'First player should be at 10s');
 			// assert.ok(! secondary_audiotag.paused, 'Second player should have started');
-			assert.ok(secondary_audiotag.currentTime = 30, 'Second player should be at 30s');
+			assert.equal(secondary_audiotag.currentTime, 30, 'Second player should be at 30s');
 			window.location = '#';
 			// restore hashchange event
-			window.addEventListener('hashchange', cpu.trigger.hashOrder, false);
+			//window.addEventListener('hashchange', cpu.trigger.hashOrder);
 			done();
 		}
 		//  temporarily unactivate the usual hashchange event
-		window.removeEventListener('hashchange', cpu.trigger.hashOrder);
+		//window.removeEventListener('hashchange', cpu.trigger.hashOrder);
 		window.location = '#track&t=10';
 		cpu.trigger.hashOrder({ at_start : true }, check_onstart);
 	});
+*/
 
 	QUnit.test( "Playlist features", function(assert) {
 		let done = assert.async();
