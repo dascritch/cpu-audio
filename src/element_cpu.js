@@ -119,14 +119,13 @@ export class CPU_element_api {
 	 * @public
 	 *
 	 * @param      {Element}  element              The DOMelement
-	 * @param      {Element}  container_interface  The container interface
 	 */
-	constructor(element, container_interface) {
+	constructor(element) {
 		// I hate this style. I rather prefer the object notation
 		this.element = element;  
 		this.shadow = element.shadowRoot;
 		this.audiotag = /* @type {HTMLAudioElement} */ element.audiotag;
-		this.container = container_interface;   // TODO remove and use the shadow direct
+		this.container = this.shadowId('interface');
 		this.mode_when_play = null;
 		this.glowBeforePlay = !! element.hasAttribute('glow');
 		this.current_playlist = [];
@@ -656,10 +655,7 @@ export class CPU_element_api {
 	 * @private
 	 */
 	showMain(/* event */) {
-		const main = this.shadow.querySelector('main');
-		if (main) {
-			main.style.opacity = 1;
-		}
+		this.container.style.opacity = 1;
 		this.showInterface('main');
 	}
 

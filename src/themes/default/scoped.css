@@ -19,6 +19,8 @@
 	/* transition : width var(--cpu-unfold); */
 	background : var(--cpu-background);
 	color : var(--cpu-color);
+
+	opacity : 1;
 }
 
 #interface, * {
@@ -41,7 +43,6 @@
 }
 
 main {
-	opacity : 1;
 	display : flex;
 	overflow : hidden;
 	height : var(--cpu-height);
