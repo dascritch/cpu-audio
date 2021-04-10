@@ -97,7 +97,7 @@ document.addEventListener('CPU_ready', function() {
 		let expected = [
 			'setMode',
 			'setAct',
-			'setHideContainer',
+			'setHide',
 			'showThrobberAt',
 			'hideThrobber',
 			'hideThrobberLater',

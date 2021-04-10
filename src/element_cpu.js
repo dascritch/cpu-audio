@@ -169,7 +169,7 @@ export class CPU_element_api {
 
 		// hide="" attribute, space separated elements to hide
 		if (this.element.hasAttribute('hide')) {
-			this.setHideContainer(this.element.getAttribute('hide').split(' '));
+			this.setHide(this.element.getAttribute('hide').split(' '));
 		}
 	}
 
@@ -285,7 +285,7 @@ export class CPU_element_api {
 	 * @param      {Array<string>}  hide_elements  Array of strings, may contains
 	 *                                        'actions' or 'chapters'
 	 */
-	setHideContainer(hide_elements) {
+	setHide(hide_elements) {
 		let container_class = this.container.classList;
 
 		for (let hide_this of acceptableHideAtttributes) {
