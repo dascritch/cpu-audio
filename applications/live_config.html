@@ -445,11 +445,11 @@ document.addEventListener('DOMContentLoaded', function(){
 	document.querySelector('#do_waiting').addEventListener('click', function() {
 		cpu_audio.CPU.audiotag.pause();
 		document.CPU.hadPlayed = true;
-		cpu_audio.CPU.setActContainer('loading');
+		cpu_audio.CPU.setAct('loading');
 	});
 	document.querySelector('#do_glow').addEventListener('click', function() {
 		cpu_audio.CPU.audiotag.pause();
-		cpu_audio.CPU.setActContainer('glow');
+		cpu_audio.CPU.setAct('glow');
 	});	
 	let in_error = false;
 	document.querySelector('#do_error').addEventListener('click', function() {
