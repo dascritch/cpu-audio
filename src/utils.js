@@ -12,7 +12,6 @@ License GNU GPL 3
 
 export const CpuAudioTagName = 'CPU-AUDIO';
 export const CpuControllerTagName = 'CPU-CONTROLLER';
-export const selectorInterface = '#interface';
 export const selectorAcceptable = 'audio[controls]';
 export const selectorAudioInComponent = 'cpu-audio audio'; // should be 'audio[controls]' but PHRACK APPLE !
 

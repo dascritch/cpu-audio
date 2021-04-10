@@ -1,4 +1,4 @@
-import {CpuAudioTagName, CpuControllerTagName, selectorAcceptable, selectorInterface, notScreenContext, findCPU, info, warn, } from './utils.js';
+import {CpuAudioTagName, CpuControllerTagName, selectorAcceptable, notScreenContext, findCPU, info, warn, } from './utils.js';
 import {CPU_element_api} from './element_cpu.js';
 
 
@@ -73,7 +73,7 @@ export class CpuControllerElement extends HTMLElement {
 			return;
 		}
 
-		new CPU_element_api(this, this.shadowRoot.querySelector(selectorInterface));
+		new CPU_element_api(this);
 
 		this.observer_component = new MutationObserver(observer_component);
 		this.observer_component.observe(this, {
