@@ -79,6 +79,7 @@ Back-end
  * Playlist are now using the standard API, with special code for CPU-Controller ([#109](#109))
  * Some builders are removed from `Element.CPU`, to avoid expose them in public API
  * gh-pages re-organized ([#135](#135))
+ * A [INTERNALS.md](INTERNALS.md) documentation for theme builders
 
 
 RELEASE NOTES version 6.6.3
