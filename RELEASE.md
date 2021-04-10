@@ -54,6 +54,7 @@ Corrections
  * Pop-up on time-line may have incorrectly displayed “0:00”
  * Too many problems in documentations in gh-pages, links to config and chaptering applications are now absolute ([#135](#135))
  * Do not show panels when in error state
+ * Disambiguation in renaming `findContainer()` in `findCPU()` ([#142](#142))
  * Documentation re-formated ([#134](#134))
  * Build lib still under 50,000 bytes
 
