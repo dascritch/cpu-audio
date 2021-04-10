@@ -33,4 +33,3 @@ Planned evolutions
 - [ ] Propose a code snippet in `examples/` to do a `ticker` plane track mode
 - [ ] Example add-on with FFT analyzer, like in [webcammictester](https://webcammictest.com/check-mic.html)
 
-<!-- {% include footer.html %} -->
