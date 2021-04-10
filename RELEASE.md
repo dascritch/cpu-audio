@@ -16,7 +16,7 @@ New features
  * Possibility to change css breakpoints ([#51](#51)) by this way ([#56](#56))
  * Possibility to create RTL version ([#26](#26)) by this way ([#56](#56))
  * A11y : Support reduced motion preferences
- * Adding support for ↑ and ↓ keys, moving focus among panels
+ * Adding support for <kbd>↑</kbd> and <kbd>↓</kbd> keys, moving focus among panels
  * Adding support for prevcue/nextcue facultative buttons ([#108](#108))
  * Adding support for prevtrack/nexttrack facultative buttons ([#125](#125))
  * Added method `Element.CPU.bulkPoints()`
@@ -79,6 +79,7 @@ Back-end
  * Playlist are now using the standard API, with special code for CPU-Controller ([#109](#109))
  * Some builders are removed from `Element.CPU`, to avoid expose them in public API
  * gh-pages re-organized ([#135](#135))
+ * A [INTERNALS.md](INTERNALS.md) documentation for theme builders
 
 
 RELEASE NOTES version 6.6.3

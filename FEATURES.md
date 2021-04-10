@@ -201,12 +201,9 @@ Notes :
 Global page controller
 ----------------------
 
-↓ Controller only on the playing / last played `<audio>`
+Controller only on the playing / last played `<audio>` (except those included via `<iframe>`)
 
-<cpu-controller>
-</cpu-controller>
-
-(except those included via `<iframe>`)
+You can see it in action in the header of our mini-site.
 
 
 <!-- {% include footer.html %} -->

@@ -36,6 +36,29 @@ During the page life :
 <a href="#sound&t=20m45s">This link starts the upper player at 20:45</a>, and a link can limit <a href="#sound&t=5s,7s">playing between a start (0:05) and end (0:08) marks</a>
 
 
+Features
+---------
+
+[TL;DR ? See it in action](https://dascritch.github.io/cpu-audio/FEATURES)
+
+* hyperlink `<audio>` tags to a specific time, using not well-known [Media Fragment standards](https://www.w3.org/TR/media-frags/) ;
+* standards first, future-proof ;
+* only one single file to deploy ;
+* pure vanilla, no dependencies to any framework, so usable in *any* JS framework ;
+* progressive enhancement, can works even without proper WebComponent support ;
+* add an UI, customizable via attributes and CSS variables ;
+* responsive liquid design ;
+* recall the player where it was unexpectedly left (click on a link when playing) ;
+* play only one sound in the page ;
+* playlist with auto-advance ;
+* play only a range between 2 timestamps ;
+* chapters, using standards WebVTT ;
+* alternate navigation for a finest precision on smartphones ;
+* global `<cpu-controller>` .
+
+It could have been done via polyfills or frameworks, but I wanted a plain standard, vanilla javascript, easy to install and configure.
+
+
 HOW TO install
 --------------
 
@@ -46,36 +69,6 @@ A unique and lightweight js file to install, without any dependencies.
 * [See it running in our demonstration site](https://dascritch.github.io/cpu-audio/)
 * See [basic examples](https://dascritch.github.io/cpu-audio/examples.html) and applications with advanced use cases
 * [A React .jsx example](https://github.com/dascritch/cpu-audio/blob/master/examples/Call_from_React.jsx)
-
-
-Features
----------
-
-[TL;DR ? See it in action](https://dascritch.github.io/cpu-audio/FEATURES)
-
-* hyperlink `<audio>` tags to a specific time, using not well-known [Media Fragment standards](https://www.w3.org/TR/media-frags/) ;
-* standards first, future-proof ;
-* only one single file to deploy ;
-* pure vanilla, no dependencies to any framework ;
-* progressive enhancement, can works even without proper WebComponent support ;
-* add an UI, customizable via attributes and CSS variables ;
-* responsive liquid design ;
-* recall the player where it was unexpectedly left (click on a link when playing) ;
-* play only one sound in the page ;
-* playlist with auto-advance ;
-* play only a range between 2 timestamps ;
-* chapters ;
-* alternate navigation for a finest precision on smartphones ;
-* global `<cpu-controller>` .
-
-It could have been done via polyfills or frameworks, but I wanted a plain standard, vanilla javascript, easy to install and configure.
-
-WebComponents will work on : 
-
-* Chrome
-* Firefox
-* Safari
-* Edge (version > 80) 
 
 
 Keyboard functions
@@ -90,8 +83,7 @@ When the interface got the focus, you can use those keys :
 * <kbd>↖</kbd> : back to start
 * <kbd>End</kbd> : to the end, finish playing, ev. skip to the sound in playlist
 * <kbd>Escape</kbd> : back to start, stop playing
-* <kbd>↑</kbd> : move focus between entries in panels
-* <kbd>↓</kbd> : move focus between entries in panels
+* <kbd>↑</kbd> and <kbd>↓</kbd> : move focus between entries in panels (<kbd>Enter</kbd> to select)
 
 For handheld users, a long press on the timeline will show you another interface for a more precise navigation (Desktop users can try it via a right click on it).
 

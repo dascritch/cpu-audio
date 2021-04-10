@@ -103,9 +103,12 @@ export function audiotagDuration({duration, dataset}) {
  *
  * @param      {HTMLAudioElement}  	audiotag   		Audio to check length
  * @param      {Number}			  	time_seeked		Time position to check
- * @return     {Number}       		Result in seconds
+ * @return     {Number|null} 	  		    		Result in seconds, null if totally innaplicable
  */
 export function normalizeSeekTime(audiotag, time_seeked) {
+	if (uncertainPosition(time_seeked)) {
+		return null;
+	}
 	time_seeked = time_seeked < 0 ? 0 : time_seeked;
 	const duration = audiotagDuration(audiotag);
 	if (!uncertainDuration(duration)) {

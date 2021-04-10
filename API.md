@@ -30,7 +30,7 @@ repeatFactor             | `100`         | Next repetitions delay when clicking 
 playStopOthers   | `true`        | When a cpu-audio starts to play, any other instances in the same page are paused.
 currentAudiotagPlaying   | `null`        | Reference to the playing `<audio>` element, `null` if none
 globalController         | `null`        | Reference to the `<cpu-controller>` in the page if any, `null` elsewhere
-playlists                | `{}`          | Collection of audio tag by playlists (named by the `<cpu-audio playlist="">` attribute). [See playlist feature](./FEATURES#playlists).
+playlists                | `{}`          | Collection of audio tag by playlists (named by the `<cpu-audio playlist="">` attribute). [See playlist feature](https://dascritch.github.io/cpu-audio/FEATURES#playlists).
 advanceInPlaylist        | `true`        | When an audio is ended in a playlist, starts immediatly the next one.
 autoplay                 | `false`       | Will try to play at the start of the page if a temporal url is given or the audio was previously exited
 
