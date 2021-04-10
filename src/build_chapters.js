@@ -1,7 +1,7 @@
 import {oncePassiveEvent, passiveEvent} from './utils.js';
 import {__, prefered_language} from './i18n.js';
 import {trigger} from './trigger.js';
-import {normalizeSeekTime} from './media_element_extension.js'
+import {normalizeSeekTime} from './media_element_extension.js';
 import {translateVTT} from './translate_vtt.js';
 import {activecueClassname} from './element_cpu.js';
 
