@@ -1,6 +1,7 @@
 import {oncePassiveEvent, passiveEvent} from './utils.js';
 import {__, prefered_language} from './i18n.js';
 import {trigger} from './trigger.js';
+import {normalizeSeekTime} from './media_element_extension.js'
 import {translateVTT} from './translate_vtt.js';
 import {activecueClassname} from './element_cpu.js';
 
@@ -93,13 +94,11 @@ export async function build_chapters(container) {
 
 			for (let cue of chapter_track.cues) {
 				if (!container.point(plane_chapters, cue.id)) {
-					// avoid unuseful redraw, again
-					let cuepoint = Math.floor(cue.startTime);
 					pointDataGroup[cue.id] = {
-						start : cuepoint,
+						start : normalizeSeekTime(audiotag, Math.floor(cue.startTime)),
 						text  : translateVTT(cue.text),
-						link  : true,          // point the link to start time position
-						end   : cue.endTime    // end timecode of the cue
+						link  : true,          								// point the link to start time position
+						end   : normalizeSeekTime(audiotag, Math.floor(cue.endTime))    // end timecode of the cue
 					};
 				}
 			}
