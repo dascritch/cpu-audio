@@ -14,10 +14,10 @@ DOM elements
 Classes
 -------
 
-Class name | Importance                  | Usage
------------|-----------------------------|--------
-`no`       | Needed in code              | This class is for hiding elements, usable for any elements, even shadow.
-`chapters` | Attributed by build_chapters| Aspect class used for the points under the timeline. Only tracks and panels
+Class name | Importance  | Usage
+-----------|-------------|--------
+`no`       | Needed      | This class is for hiding elements, usable for any elements, even shadow.
+`chapters` | Important   | Attributed by build_chapters, aspect used for the points under the timeline. Only tracks and panels
 
 (to do)
 
@@ -27,36 +27,38 @@ ID elements
 
 Those elements can be targeted via `<cpu-audio>.CPU.shadowId()` . You will need to dive into it for building a new theme
 
-ID           | Importance    | Usage
--------------|---------------|--------------------------------------------
-`interface`  | Needed        | englobing `<div>` for the `<main>` and panels. Support for classes. May be later placed in facultative
-`pageerror`  | Important     | This section is shown if the media has got an issue
-`pagemain`   | Important     | The front control panel of the player
-`pageshare`  | Facultative   | This section is shown when `#actions` is clicked
-`canonical`  | Facultative	 | `<a>` with a link (if provided) to the canonical page of this media. Kind of `longdesc=""`
-`elapse`     | Facultative	 | `<a>` link to the current listened time for this media. May link to the canonical or the actual page.
-`currenttime`| Facultative	 | Display the actual playing time of the media
-`totaltime`  | Facultative	 | Display the duration time of the media
-`poster`     | Facultative	 | `<img>`. Clicking on it will go back from `#pageshare` to `#pagemain`
-`control`    | Facultative   | `<button>` with start/stop
-`actions`    | Facultative   | `<button>` to display `#pageshare` instead of `#pagemain`
-`nativeshare`| Facultative   | `<button>` that trigger the native sharing functions of the browser
-`twitter`    | Facultative	 | `<a>` link for editing a new tweet with the current media time position
-`facebook`   | Facultative	 | `<a>` link for editing a new post with the current media time position
-`email`		 | Facultative	 | `<a>` link for launching the client e-mail with a new e-mail, containing the current media time position
-`link` 		 | Facultative	 | `<a>` link to download the media source
-`back`		 | Facultative	 | `<button>` for going back from `#pageshare` to `#pagemain`
-`pause` 	 | Needed	     | `<button>` for pausing the attached media if playing
-`play`   	 | Needed	     | `<button>` for playing the attached media if playing
-`restart`	 | Facultative	 | `<button>` for restarting and playing the attached media. Used in handheld-nav
-`fastreward` | Facultative	 | `<button>` for fast rewarding into the media. Used in handheld-nav
-`reward`     | Facultative	 | `<button>` for rewarding into the media. Used in handheld-nav
-`foward`     | Facultative	 | `<button>` for fowarding into the media. Used in handheld-nav
-`fastfoward` | Facultative	 | `<button>` for fast fowarding into the media. Used in handheld-nav
-`line`		 | Facultative	 | `<div>` supporting the progress bars, `#popup` and the track planes (chapters, pointers, etc).
-`popup`      | Facultative   | Element shown when the cursor is over the timeline to indicate the pointed time
-`time`		 | Facultative	 | `<div>` to show what position is reading in the media
-`loadingline`| Facultative	 | `<div role="progressbar">` to show that media is buffering
-`prevcue`    | Facultative   | `<button>` for jumping to next chapter
-`nextcue`    | Facultative   | `<button>` for jumping to previous chapter
+Selector            | Importance  | Usage
+--------------------|-------------|--------------------------------------------
+`main`		  		| Important   | Englobing the whole controls, except the plane panels. `opacity:0` at start
+`#interface`  		| Needed      | englobing `<div>` for the `<main>` and panels. Support for classes.
+`#pageerror`  		| Important   | This section is shown if the media has got an issue
+`#pagemain`   		| Important   | The front control panel of the player
+`#pageshare`  		| Facultative | This section is shown when `#actions` is clicked
+`a#canonical` 		| Facultative | Link (if provided) to the canonical page of this media. Kind of `longdesc=""`
+`æ#elapse`    		| Facultative | Link to the current listened time for this media. May link to the canonical or the actual page.
+`#currenttime`		| Facultative | Display the actual playing time of the media
+`#totaltime`  		| Facultative | Display the duration time of the media
+`img#poster`  		| Facultative | how the provider cover. Clicking on it will go back from `#pageshare` to `#pagemain`
+`button#control`    | Facultative | Start/stop playing, should have `#play` and `#pause` , or `#playpause`
+`button#actions`    | Facultative | Click to display `#pageshare` instead of `#pagemain`
+`button#nativeshare`| Facultative | Triggers the native sharing functions of the browser
+`a#twitter`    		| Facultative | Link for editing a new tweet with the current media time position
+`a#facebook`   		| Facultative | Link for editing a new post with the current media time position
+`a#email`		 	| Facultative | Link for launching the client e-mail with a new e-mail, containing the current media time position
+`#link` 		 	| Facultative | Link to download the media source
+`button#back`		| Facultative | Going back from `#pageshare` to `#pagemain`
+`button#pause` 	 	| Important   | Pausing the attached media if playing. Needed if no `#playpause`
+`button#play`   	| Important	  | Playing the attached media if playing. Needed if no `#playpause`
+`button#play`   	| Important	  | Toggle play/pause  Needed if no `#playpause`
+`button#restart`	| Facultative | Restart and playing the attached media. Used in handheld-nav
+`button#fastreward` | Facultative | Fast rewarding into the media. Used in handheld-nav
+`button#reward`     | Facultative | Rewarding into the media. Used in handheld-nav
+`button#foward`     | Facultative | Fowarding into the media. Used in handheld-nav
+`button#fastfoward` | Facultative | Fast fowarding into the media. Used in handheld-nav
+`#line`				| Facultative | Element supporting the progress bars, `#popup` and the track planes (chapters, pointers, etc).
+`#popup`      		| Facultative | Element shown when the cursor is over the timeline to indicate the pointed time
+`#time`		 		| Facultative | Show what position is reading in the media
+`#loadingline`		| Facultative | Show that media is buffering. Recommended to have `role="progressbar"`
+`button#prevcue`    | Facultative | Jumping to next chapter in media if chaptered
+`button#nextcue`    | Facultative | Jumping to previous chapter in media if chaptered
 
