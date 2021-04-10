@@ -1,4 +1,4 @@
-import {passiveEvent, findContainer, preventLinkOnSamePage} from './utils.js';
+import {passiveEvent, findCPU, preventLinkOnSamePage} from './utils.js';
 import {trigger} from './trigger.js';
 import {pressManager} from './finger_manager.js';
 import {buildChaptersLoader} from './build_chapters.js';
@@ -10,7 +10,7 @@ import {buildPlaylist} from './build_playlist.js';
  * @param      {Object}  event   The event
  */
 function nativeShare(event) {
-	let {title, canonical} = findContainer(event.target).audiotagDataset();
+	let {title, canonical} = findCPU(event.target).audiotagDataset();
 	navigator.share({
 		title,
 		text	: title,

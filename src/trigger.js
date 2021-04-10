@@ -1,4 +1,4 @@
-import {oncePassiveEvent, adjacentArrayValue, findContainer, warn} from './utils.js';
+import {oncePassiveEvent, adjacentArrayValue, findCPU, warn} from './utils.js';
 import {isAudiotagStreamed, audiotagPreloadMetadata, audiotagDuration, uncertainDuration, normalizeSeekTime} from './media_element_extension.js';
 import {timeInSeconds} from './convert.js';
 import {buildPlaylist} from './build_playlist.js';
@@ -174,7 +174,7 @@ export const trigger = {
 			// pointerenter event may be fired without target. Strange for a pointer
 			return;
 		}
-		const container = findContainer(target);
+		const container = findCPU(target);
 		const audiotag = container.audiotag;
 		const duration = audiotagDuration(audiotag);
 		if (uncertainDuration(duration)) {
@@ -197,7 +197,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	out : function({target}) {
-		findContainer(target).hideThrobber();
+		findCPU(target).hideThrobber();
 	},
 
 	/**
@@ -208,7 +208,7 @@ export const trigger = {
 	throbble : function(event) {
 		const {target, offsetX, at} = event;
 		const DocumentCPU = document.CPU;
-		const audiotag = findContainer(target).audiotag;
+		const audiotag = findCPU(target).audiotag;
 
 		// We know the media length¸because the event is faked → normal execution. 
 		if (at >= 0) {
@@ -246,7 +246,7 @@ export const trigger = {
 	pause : function(event = null, audiotag = null) {
 		if (!audiotag) {
 			let {target} = event;
-			audiotag = (target.tagName === 'AUDIO') ? target : findContainer(target).audiotag;
+			audiotag = (target.tagName == 'AUDIO') ? target : findCPU(target).audiotag;
 		}
 		audiotag.pause();
 		document.CPU.currentAudiotagPlaying = null;
@@ -284,7 +284,7 @@ export const trigger = {
 			warn(`play() prevented because already waiting for focus`);
 			return;
 		}
-		audiotag = audiotag ?? findContainer(event.target).audiotag;
+		audiotag = audiotag ?? findCPU(event.target).audiotag;
 
 		trigger._last_play_error = false;
 		removeTimecodeOutOfBorders(audiotag.currentTime);
@@ -324,7 +324,7 @@ export const trigger = {
 	},
 
 	toggleplay : function({target}) {
-		const audiotag = findContainer(target).audiotag;
+		const audiotag = findCPU(target).audiotag;
 		audiotag.paused ?
 			trigger.play(null, audiotag) :
 			trigger.pause(null, audiotag);
@@ -342,7 +342,7 @@ export const trigger = {
 			return;
 		}
 
-		let container = findContainer(event.target);
+		let container = findCPU(event.target);
 		let audiotag = container.audiotag;
 
 		/** @param      {number}  seconds    Relative position fowards */
@@ -400,7 +400,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	restart : function({target}) {
-		let container = findContainer(target);
+		let container = findCPU(target);
 		document.CPU.seekElementAt(container.audiotag, 0);
 	},
 	/**
@@ -449,7 +449,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	prevcue : function(event) {
-		playRelativeCueInPlayer(findContainer(event.target), -1);
+		playRelativeCueInPlayer(findCPU(event.target), -1);
 	},
 
 	/**
@@ -458,7 +458,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	nextcue : function(event) {
-		playRelativeCueInPlayer(findContainer(event.target), 1);
+		playRelativeCueInPlayer(findCPU(event.target), 1);
 	},
 
 	/**
@@ -485,7 +485,7 @@ export const trigger = {
 	 * @param      {HTMLAudioElement|null|undefined}  	audiotag  The audiotag, mays be omitted, will be calculated from event
 	 */
 	prevtrack : function({target}, audiotag = null) {
-		playRelativeTrackInPlaylist(audiotag ?? findContainer(target).audiotag, -1);
+		playRelativeTrackInPlaylist(audiotag ?? findCPU(target).audiotag, -1);
 	},
 
 	/**
@@ -495,7 +495,7 @@ export const trigger = {
 	 * @param      {HTMLAudioElement|null|undefined}  	audiotag  The audiotag, mays be omitted, will be calculated from event
 	 */
 	nexttrack : function({target}, audiotag = null) {
-		playRelativeTrackInPlaylist(audiotag ?? findContainer(target).audiotag, +1);
+		playRelativeTrackInPlaylist(audiotag ?? findCPU(target).audiotag, +1);
 	},
 
 };

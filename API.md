@@ -45,8 +45,7 @@ isAudiotagPlaying(audiotag)      | boolean                       	| Indicate if 
 isAudiotagGlobal(audiotag)       | boolean                       	| Indicate if this `<audio>` element is displayed by `<cpu-controller>` if installed
 jumpIdAt(hash, timecode)         | 	                             	| will jump the `<audio id="hash">` to timecode (any convertable format in seconds, colon-coded or human coded)
 seekElementAt(audiotag, seconds) |                               	| will jump the `<audio>` to a position in seconds (number only)
-findInterface(child)             | HTMLElement or `null`         	| For any ShadowDOM element, will returns its parent interface container
-findContainer(child)             | CpuAudioElement.`CPU` or `null`	| For any `<audio>` tag or its child tag, will returns the element `CPU` API
+findCPU(child)             		 | CpuAudioElement.`CPU` or `null`	| For any `<audio>` tag or its child tag, will returns the element `CPU` API
 currentPlaylist()                | array                       		| Returns an array of the current playing playlist
 adjacentKey(object, key, offset) | string or `null`					| Returns the adjacent key of a key in an object (offset -1 for previous, +1 for next)
 

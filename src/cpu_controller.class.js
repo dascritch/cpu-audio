@@ -1,4 +1,4 @@
-import {CpuAudioTagName, CpuControllerTagName, selectorAcceptable, selectorInterface, notScreenContext, findContainer, info, warn, } from './utils.js';
+import {CpuAudioTagName, CpuControllerTagName, selectorAcceptable, selectorInterface, notScreenContext, findCPU, info, warn, } from './utils.js';
 import {CPU_element_api} from './element_cpu.js';
 
 
@@ -8,10 +8,10 @@ import {CPU_element_api} from './element_cpu.js';
  * @param      {Object}  mutationsList  The mutations list
  */
 function observer_component([{target}]) {
-	const container = findContainer(target);
-	let component = container.element;
-	let media_tagname = 'audio';
-	let audio_element = component.querySelector(media_tagname);
+	const elCPU = findCPU(target);
+	const component = elCPU.element;
+	const media_tagname = 'audio';
+	const audio_element = component.querySelector(media_tagname);
 	if ((!audio_element) && (component.tagName !== CpuControllerTagName)) {
 		info(`<${media_tagname}> element was removed.`);
 		component.remove();
@@ -19,7 +19,7 @@ function observer_component([{target}]) {
 	}
 
 	component.copyAttributesToMediaDataset?.();
-	container.attributesChanges();
+	elCPU.attributesChanges();
 }
 
 /**

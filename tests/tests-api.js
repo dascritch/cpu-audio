@@ -68,8 +68,7 @@ document.addEventListener('CPU_ready', function() {
 			'isAudiotagGlobal',
 			'jumpIdAt',
 			'seekElementAt',
-			'findInterface',
-			'findContainer',
+			'findCPU',
 			'currentPlaylist',
 			'adjacentKey'
 		];

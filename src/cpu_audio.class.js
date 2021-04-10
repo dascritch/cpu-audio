@@ -1,4 +1,4 @@
-import {selectorAcceptable, findContainer} from './utils.js';
+import {selectorAcceptable, findCPU} from './utils.js';
 import {CpuControllerElement} from './cpu_controller.class.js';
 import {connectAudiotag} from './media_element_extension.js';
 import {timeInSeconds} from './convert.js';
@@ -12,16 +12,16 @@ import {build_chapters} from './build_chapters.js';
  * @param      {Object}  mutationsList  The mutations list
  */
 function observer_audio([{target}]) {
-	const container = findContainer(target);
+	const elCPU = findCPU(target);
 
 	// in case <track> changed/removed
-	build_chapters(container);
+	build_chapters(elCPU);
 
 	// in case attributes changed
-	container.completeTemplate();
+	elCPU.completeTemplate();
 
 	const globalController = document.CPU.globalController;
-	if (container.audiotag.isEqualNode(globalController?.audiotag)) {
+	if (elCPU.audiotag.isEqualNode(globalController?.audiotag)) {
 		build_chapters(globalController);
 		globalController.completeTemplate();
 	}

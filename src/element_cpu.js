@@ -1,4 +1,4 @@
-import {adjacentArrayValue, CpuControllerTagName, findContainer, selectorAudioInComponent, querySelectorDo, absolutizeUrl, error, escapeHtml, passiveEvent} from './utils.js';
+import {adjacentArrayValue, CpuControllerTagName, findCPU, selectorAudioInComponent, querySelectorDo, absolutizeUrl, error, escapeHtml, passiveEvent} from './utils.js';
 import {__} from './i18n.js';
 import {defaultDataset} from './default_dataset.js';
 import {secondsInColonTime, secondsInTime, durationIso} from './convert.js';
@@ -54,7 +54,7 @@ function previewContainerHover({target}) {
 	}
 
 	let [planeName, pointName] = planeAndPointNamesFromId(target.id);
-	findContainer(target).highlightPoint(planeName, pointName);
+	findCPU(target).highlightPoint(planeName, pointName);
 }
 
 /**
@@ -123,10 +123,10 @@ export class CPU_element_api {
 	 */
 	constructor(element, container_interface) {
 		// I hate this style. I rather prefer the object notation
-		this.element = element;
+		this.element = element;  
 		this.shadow = element.shadowRoot;
 		this.audiotag = /* @type {HTMLAudioElement} */ element.audiotag;
-		this.container = container_interface;
+		this.container = container_interface;   // TODO remove and use the shadow direct
 		this.mode_when_play = null;
 		this.glowBeforePlay = !! element.hasAttribute('glow');
 		this.current_playlist = [];
@@ -652,19 +652,22 @@ export class CPU_element_api {
 	}
 
 	/**
-	 * @summary Shows the main manel
+	 * @summary Shows the main interface
 	 * @private
 	 */
 	showMain(/* event */) {
-		showElement(this.container, true);
+		const main = this.shadow.querySelector('main');
+		if (main) {
+			main.style.opacity = 1;
+		}
 		this.showInterface('main');
 	}
 
 	/**
-	 * @package not mature enough
      * @summary Shows the handheld fine navigation
+     * @private
 	 *
-	 * @param      {Object}  event   The event
+	 * @param      {Object|undefined}  event   Triggering event
 	 */
 	showHandheldNav(event) {
 		if (isAudiotagStreamed(this.audiotag)) {
@@ -1398,14 +1401,8 @@ export class CPU_element_api {
 			(element) => { element.classList.remove(className); },
 			this.container);
 		if ( (mirror) && (this.mirroredInController()) ) {
-			let globalController = document.CPU.globalController;
-
-			let on;
-			if (!this.isController) {
-				on = globalController;
-			} else {
-				on = findContainer(globalController.audiotag);
-			}
+			const globalController = document.CPU.globalController;
+			const on = this.isController ? findCPU(globalController.audiotag) : globalController;
 			on.removeHighlightsPoints(planeName, className, false);
 		}
 	}
@@ -1430,13 +1427,8 @@ export class CPU_element_api {
 		this.pointPanel(planeName, pointName)?.classList.add(className);
 
 		if ( (mirror) && (this.mirroredInController()) ) {
-			let DocumentCPU = document.CPU;
-			let on;
-			if (!this.isController) {
-				on = DocumentCPU.globalController;
-			} else {
-				on = findContainer(DocumentCPU.globalController.audiotag);
-			}
+			const globalController = document.CPU.globalController;
+			const on = this.isController ? findCPU(globalController.audiotag) : globalController;
 			on.highlightPoint(planeName, pointName, className, false);
 		}
 	}
