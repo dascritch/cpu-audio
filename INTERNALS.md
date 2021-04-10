@@ -29,8 +29,7 @@ Those elements can be targeted via `<cpu-audio>.CPU.shadowId()` . You will need 
 
 Selector            | Importance  | Usage
 --------------------|-------------|--------------------------------------------
-`main`		  		| Important   | Englobing the whole controls, except the plane panels. `opacity:0` at start
-`#interface`  		| Needed      | englobing `<div>` for the `<main>` and panels. Support for classes.
+`#interface`  		| Needed      | englobing `<div>` for the `<main>` and panels. Support for classes. `opacity:0` at start
 `#pageerror`  		| Important   | This section is shown if the media has got an issue
 `#pagemain`   		| Important   | The front control panel of the player
 `#pageshare`  		| Facultative | This section is shown when `#actions` is clicked
