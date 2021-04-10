@@ -310,7 +310,7 @@ export const trigger = {
 							if (audiotag.CPU_connected) {
 								let CPU_api = audiotag.CPU_controller().CPU;
 								CPU_api.glowBeforePlay = true;
-								CPU_api.setActContainer('glow');
+								CPU_api.setAct('glow');
 							}
 							break;
 						case 'NotSupportedError':

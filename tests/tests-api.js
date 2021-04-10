@@ -96,7 +96,7 @@ document.addEventListener('CPU_ready', function() {
 		// those public values are assumed to have a constant name
 		let expected = [
 			'setModeContainer',
-			'setActContainer',
+			'setAct',
 			'setHideContainer',
 			'showThrobberAt',
 			'hideThrobber',

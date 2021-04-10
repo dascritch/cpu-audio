@@ -96,7 +96,7 @@ Methods :
 name                                                     | returns | usage
 ---------------------------------------------------------|---------|------
 setModeContainer(string)                                 |         | Change the presentation mode, [used for `mode=""` attribute](./INSTALL#attributes-references)
-setActContainer(string)                                  |         | Change the presentation style between `'loading'`, `'glow'`, `'pause'` or `'play'`, reflecting the media tag status
+setAct(string)			                                 |         | Change the presentation style between `'loading'`, `'glow'`, `'pause'` or `'play'`, reflecting the media tag status
 setHideContainer(array)                                  |         | Array of strings, may contains `'actions'` or `'chapters'`, [used for `hide=""` attribute](./INSTALL#attributes-references)
 showThrobberAt(number)                                   |         | Display the throbber on the timeline at a given time in seconds.
 hideThrobber()                                           |         | Hide immediately the throbber

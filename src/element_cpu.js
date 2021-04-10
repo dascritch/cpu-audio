@@ -252,7 +252,7 @@ export class CPU_element_api {
 	 *
 	 * @param      {string}  act     can be 'loading', 'pause', 'glow' or 'play'
 	 */
-	setActContainer(act) {
+	setAct(act) {
 		if (this.act_was === act) {
 			return;
 		}
@@ -314,7 +314,7 @@ export class CPU_element_api {
 				(audiotag.readyState < audiotag.HAVE_CURRENT_DATA ) &&
 				((_preload) || (audiotag._CPU_played))
 			) {
-			this.setActContainer('loading');
+			this.setAct('loading');
 			control_button.setAttribute(aria, __.loading);
 			return;
 		}
@@ -330,7 +330,7 @@ export class CPU_element_api {
 			}
 		}
 
-		this.setActContainer(will_act);
+		this.setAct(will_act);
 		control_button.setAttribute(aria, __[label]);
 		let hide_panels_except_play_mark = 'last-used';
 
@@ -437,7 +437,7 @@ export class CPU_element_api {
 	 */
 	updateLoading(seconds, ratio) {
 		this.updateLine(seconds, ratio);
-		this.setActContainer('loading');
+		this.setAct('loading');
 	}
 
 	/**
