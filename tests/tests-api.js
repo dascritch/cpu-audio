@@ -95,7 +95,7 @@ document.addEventListener('CPU_ready', function() {
 	QUnit.test( "Public API CpuAudioElement.CPU maps public methods", function( assert ) {
 		// those public values are assumed to have a constant name
 		let expected = [
-			'setModeContainer',
+			'setMode',
 			'setAct',
 			'setHideContainer',
 			'showThrobberAt',

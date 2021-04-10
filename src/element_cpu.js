@@ -165,7 +165,7 @@ export class CPU_element_api {
 				this.mode_when_play = mode_play;
 			}
 		}
-		this.setModeContainer(mode);
+		this.setMode(mode);
 
 		// hide="" attribute, space separated elements to hide
 		if (this.element.hasAttribute('hide')) {
@@ -236,7 +236,7 @@ export class CPU_element_api {
 	 *
 	 * @param      {string|null}  mode    Accepted are only in `/\w+/` format, 'default' by default
 	 */
-	setModeContainer(mode = null) {
+	setMode(mode = null) {
 		mode = mode ?? 'default';
 		if (this.mode_was === mode) {
 			return;
@@ -339,7 +339,7 @@ export class CPU_element_api {
 			audiotag._CPU_played = true;
 			container_class.add(hide_panels_except_play_mark);
 			if (this.mode_when_play) {
-				this.setModeContainer(this.mode_when_play);
+				this.setMode(this.mode_when_play);
 				this.mode_when_play = null;
 			}
 		} else {

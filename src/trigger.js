@@ -61,7 +61,7 @@ function switchControllerTo(audiotag) {
 		globalController.audiotag = audiotag;
 		globalController.showMain();
 		globalController.redrawAllPlanes();
-		globalController.setModeContainer(); 	// to switch back the display between streamed/not-str medias
+		globalController.setMode(); 	// to switch back the display between streamed/not-str medias
 		buildPlaylist(wasFocused);
 	}
 }
