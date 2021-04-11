@@ -278,6 +278,8 @@ aside.borders a:after {
 	left : 100%;
 }
 
+/*
+Unused feature track "ticker". May be later
 aside.ticker {
 	height : 16px;
 	top : 30px;
@@ -287,12 +289,12 @@ aside.ticker a.active-cue {
 	left : 0px !important;
 	right : 0px !important;
 	background : inherit !important;
-	color : inherit !important; /* I know */
+	color : inherit !important; 
 }
-
 aside.ticker a.active-cue span {
 	display : inline-block;
 }
+*/
 
 .act-loading #loadingline {
 	background : repeating-linear-gradient(45deg, var(--cpu-color) 0, var(--cpu-background) 15px, var(--cpu-color) 30px);
@@ -424,7 +426,7 @@ h6 {
 	display : none;
 }
 
-aside a, h6, .cue time , aside.ticker *
+aside a, h6, .cue time /*, aside.ticker **/
 {
 	font-size : var(--cpu-font-small-size);
 }
@@ -503,10 +505,12 @@ a:hover, button:hover, a:focus, button:focus,
 	#handheld-nav {
 		padding-bottom: 4px;
 	}
-
+	/*
+	Unused feature track "ticker". May be later
 	aside.ticker {
 		top: 22px;
 	}
+	*/
 
 }
 @media (max-width: 480px)/* , @element #interface and (max-width: 480px) */{
