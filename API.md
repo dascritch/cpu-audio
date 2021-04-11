@@ -10,6 +10,8 @@ How to dive into `cpu-audio.js` :
 
 This is the reference page for public accessible methods and properties. You can read some test cases in the `examples` sub-directory of this project.
 
+Some informations can be also found in the [INTERNALS.md](INTERNALS.md) page. Some of them are usefull to create a brand new theme, as we are describing elemnt ID and class names usages.
+
 Important : Undocumented feature uses is at your risks, we won't check naming, parameters, actions and outputs continuity. We only test methods and properties continuity on those listed below. And seriously, keep our webcomponent up to date on the stable version.
 
 

@@ -3,9 +3,22 @@ INTERNALS
 
 The way cpu-audio.js is working internally. If you want to create a themed build, you should read this.
 
-WARNING : this documentation is provided as this. And lot of elemnts may change during a non major release.
+Most of the informations about how to use JS to enhance externally the player can be find in the [API.md](API.md) page.
 
-And YES, it is not complete yet
+Guidelines to create a theme
+============================
+
+- Create a sub-directory in `src/themes` for your theme
+- If the name of the theme starts with the underscore char `_`, it won't be indexed by git. If you want to keep your theme as private, this is the way to do
+- You don't need to copy all the files in a new theme : any missing file will be completed by the `default` theme one
+- The final build should always stay compact, never upper than 200 kb. We always try to have a standard build under 50 kb
+- Please be kind : avoid too many elements and classes, check usability with accessibility features.
+- If you want to create a public theme, please avoid external dependencies as in CSS frameworks, or use some fallbacks (as we do for fonts)
+- Your theme will still work with minor release of the versions 7.x.y of cpu-audio. If I change the major version to "8", it means themed build may break without some changes
+- Some elements, mainly named, are strictly needed. See "All named elements in template needed in code" in `tests/test-interface.js`. We try to make some of them optional. The lists below will help you
+- If you do your own private theme, I don't care if you're introducing dependencies, to, by example, a CSS framework, what else. But a public theme should avoid any external dependencies
+- We don't test themed-builds yet. This is a miss, and we need some help there
+
 
 
 DOM elements
@@ -22,7 +35,7 @@ Class name 		| Importance  | Usage
 `panel` 		| Needed      | A plane with panels will generate `div#panel`
 `cue` 			| Needed      | Every point may have a `time#cue` indicating the `start` timecode
 `chapters` 		| Important   | Attributed by build_chapters, aspect used for the points under the timeline. Only tracks and panels
-`borders`       | Needed 	  | Attributed when a media link indicate a start time and a end time. Only tracks.
+`borders`       | Needed 	  | Attributed when a media link indicate a start time and a end time as in `page.html#id&t=0,100`. Only tracks.
 `nocuetime`     | Needed 	  | As in playlist panels, we sometimes need to hide the start time in the panel
 `active-cue`    | Needed 	  | Indicate focus on a point
 `with-preview`  | Needed 	  | Indicate hover on a point
