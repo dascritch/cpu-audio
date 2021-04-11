@@ -471,7 +471,7 @@ aside a, h6, .cue time /*, aside.ticker **/
 	display : none;
 }
 
-.hide-panels-except-play.last-used .panel,
+/* .hide-panels-except-play.last-used .panel, cannot remember. probably for hide="panels-except-play" once started and still focus */
 .hasnativeshare #pageshare #nativeshare {
 	display : flex;
 }
