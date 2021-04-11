@@ -101,7 +101,7 @@ document.addEventListener('CPU_ready', function() {
 			'showThrobberAt',
 			'hideThrobber',
 			'hideThrobberLater',
-			'showInterface',
+			'show',
 			'addPlane',
 			'removePlane',
 			'addPoint',

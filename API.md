@@ -101,7 +101,7 @@ setHide(array)											 |         | Array of strings, may contains `'actions'`
 showThrobberAt(number)                                   |         | Display the throbber on the timeline at a given time in seconds.
 hideThrobber()                                           |         | Hide immediately the throbber
 hideThrobberLater()                                      |         | Hide the throbber later (waiting 1 seconds). A newer call will delay the hiding later.
-showInterface(string)                                    |         | Switch between `'main'`, `'share'` or `'error'` interfaces.
+show(string)                                    		 |         | Switch between `'main'`, `'share'` or `'error'` interfaces.
 addPlane(planeName, planeData)                    		 | boolean | Create an annotation plane (¹)(²)(³)
 removePlane(planeName)                                   | boolean | Remove an annotation plane (¹)(²)
 addPoint(planeName, pointName, pointData)                | boolean | Add an annotation point to a plane at a timecode (¹)(²)(⁴)

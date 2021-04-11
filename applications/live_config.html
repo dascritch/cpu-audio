@@ -454,11 +454,11 @@ document.addEventListener('DOMContentLoaded', function(){
 	let in_error = false;
 	document.querySelector('#do_error').addEventListener('click', function() {
 		if (!in_error) {
-			cpu_audio.CPU.showInterface('error');
+			cpu_audio.CPU.show('error');
 			cpu_audio.CPU.shadowId('pageerror').innerText = 'This is an error message.';
 			in_error = true;
 		} else {
-			cpu_audio.CPU.showInterface('main');
+			cpu_audio.CPU.show('main');
 			cpu_audio.CPU.shadowId('pageerror').innerText = '';
 			in_error = false;
 		}

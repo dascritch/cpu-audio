@@ -457,7 +457,7 @@ export class CPU_element_api {
 		let error_object = audiotag.error;
 		if (error_object) {
 			let error_message;
-			this.showInterface('error');
+			this.show('error');
 			const m = MediaError;
 			switch (error_object.code) {
 				case m.MEDIA_ERR_ABORTED:
@@ -627,7 +627,7 @@ export class CPU_element_api {
 	 * @public
 	 * @param      {string}  mode    The mode, can be 'main', 'share' or 'error'
 	 */
-	showInterface(mode) {
+	show(mode) {
 		let classlist = this.container.classList;
 		classlist.remove(
 			'show-main',
@@ -646,7 +646,7 @@ export class CPU_element_api {
 	 * @private
 	 */
 	showActions(/* event */) {
-		this.showInterface('share');
+		this.show('share');
 		this.updateLinks();
 	}
 
@@ -656,7 +656,7 @@ export class CPU_element_api {
 	 */
 	showMain(/* event */) {
 		this.container.style.opacity = 1;
-		this.showInterface('main');
+		this.show('main');
 	}
 
 	/**
