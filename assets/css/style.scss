@@ -7,13 +7,13 @@
 	max-width: 80rem;
 }
 
-h1 {
+.project-name {
     word-break: keep-all;
     position : sticky;
     top : 0px;
 }
 
-h1 cpu-controller {
+.project-name cpu-controller {
     display : inline-block;
     vertical-align: middle;
 }
