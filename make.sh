@@ -154,15 +154,14 @@ function _build_template() {
 	echo "// auto-generated source, done via make.sh
 			import {__} from '../src/i18n.js';
 			/** @summary insert styles and template into host document */
-			export function insert_template(){
-				let style = document.createElement('style');
+			export function insert_style() {
+				const style = document.createElement('style');
 				style.innerHTML = \`${content_global_css}\`;
 				document.head.appendChild(style);
+			}
 
-				let template = document.createElement('template');
-				template.id = 'CPU__template';
-				template.innerHTML = \`<style>${content_scoped_css}</style>${content_template_html}\`;
-				document.head.appendChild(template);
+			export function template() {
+				return \`<style>${content_scoped_css}</style>${content_template_html}\`;
 			}
 		" > "${filename_insert_template_js}"
 	ln --force -- "${filename_insert_template_js}" "${PROJECT_DIR}/tmp/insert_template.js"

@@ -101,8 +101,7 @@ Some links
 * Blog posts about its creation and development : [Série cpu-audio sur dascritch.net](https://dascritch.net/serie/cpu-audio)
 * [How to cite a podcast](https://www.buzzsprout.com/blog/cite-podcast), now you can support time positions URL
 * Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
-
-Version : 6.99.3 [Licence GPL 3](https://github.com/dascritch/cpu-audio/blob/master/LICENSE.md)
+* [Licence GPL 3](https://github.com/dascritch/cpu-audio/blob/master/LICENSE.md)
 
 
 Participate

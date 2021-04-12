@@ -1,7 +1,7 @@
 REMONTER LA VERSION HISTORY DES RELASE
 
 
-RELEASE NOTES actual, 6.99.3
+RELEASE NOTES actual, 6.99.4
 ============================
 
 **INCOMPATIBLES CHANGES** : Nothing incompatible changed is you only used HTML layout or CSS variables. But, there may be some work to adapt previous cpu-audio.js (< 6.7) to cpu-audio version and above 7, **only and only if** you used the javascript API on `document.CPU` or component`.CPU`. We hope Javascript coders will enjoy most of thoses changes, and [discuss about them in our tickets](https://github.com/dascritch/cpu-audio/issues).
@@ -55,6 +55,7 @@ Corrections
  * Too many problems in documentations in gh-pages, links to config and chaptering applications are now absolute ([#135](#135))
  * Do not show panels when in error state
  * Disambiguation in renaming `findContainer()` in `findCPU()` ([#142](#142))
+ * Faster instanciation time ([#148](#148))
  * Documentation re-formated ([#134](#134))
  * Build lib still under 50,000 bytes
 

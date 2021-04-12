@@ -1,4 +1,5 @@
 import {CpuAudioTagName, CpuControllerTagName, selectorAcceptable, notScreenContext, findCPU, info, warn, } from './utils.js';
+import {template} from '../tmp/insert_template.js';
 import {CPU_element_api} from './element_cpu.js';
 
 
@@ -59,9 +60,8 @@ export class CpuControllerElement extends HTMLElement {
 			return ;
 		}
 
-		let template =  document.querySelector('template#CPU__template');
-		let shadow_element = this.attachShadow({mode: 'open'});
-		shadow_element.innerHTML = template.innerHTML;
+		this.shadow = this.attachShadow({mode: 'open'});
+		this.shadow.innerHTML = template();
 	}
 
 	connectedCallback() {
