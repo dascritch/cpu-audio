@@ -19,8 +19,15 @@
 	/* transition : width var(--cpu-unfold); */
 	background : var(--cpu-background);
 	color : var(--cpu-color);
+}
 
-	opacity : 1;
+#interface.no {
+	display : block;
+	pointer-events: none;
+}
+
+#interface.no main {
+	visibility : hidden;
 }
 
 #interface, * {

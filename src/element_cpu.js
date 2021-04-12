@@ -655,7 +655,7 @@ export class CPU_element_api {
 	 * @private
 	 */
 	showMain(/* event */) {
-		this.container.style.opacity = 1;
+		showElement(this.container, true);
 		this.show('main');
 	}
 

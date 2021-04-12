@@ -44,7 +44,8 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 	QUnit.start();
 
 	QUnit.test( "CPU-Controller at start without player", function( assert ) {
-		assert.equal(controllertag.CPU.shadowId('interface').style.opacity, 0, '#interface has a 0 opacity');
+		const elInterface = controllertag.CPU.shadowId('interface');
+		assert.ok(! elInterface.classList.has('no'), `#interface is in "no" class state`);
 	});
 
 
