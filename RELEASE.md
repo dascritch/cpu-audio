@@ -25,6 +25,7 @@ New features
  * Revised [chapters-editors application](https://dascritch.github.io/cpu-audio/applications/chapters_editor.html), can now accept “uploaded” files [#126](#126)
  * [Wonderful example of React integration](https://github.com/scombat/react-cpu-audio) ([#120](#120))
  * [Attributes for the webcomponent can be live-changed](#128)
+ * `<CPU-Controller>` has a specific CSS class ([#87](#87))
 
 Corrections
 -----------

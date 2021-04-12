@@ -36,18 +36,26 @@ window.addEventListener('load', function() {
 
 	
 	QUnit.test( "CPU-Controller at start without player", function( assert ) {
+		assert.ok(elInterface.classList.contains('controller'), `#interface has "controller" class state`);
 		assert.ok(elInterface.classList.contains('no'), `#interface is in "no" class state`);
 		assert.equal(controllertag.CPU.audiotag, null, 'audiotag is null');
 		assert.deepEqual(controllertag.CPU.planeNames(), [], 'planeNames() should return an empty array');
 	});
 
-	QUnit.test( "Inserting a CPU-Audio made it replicated in the controller", function( assert ) {
+	QUnit.test( "Inserting a CPU-Audio made it replicated in the controller, if it still doesn't have an audiotag", function( assert ) {
+		assert.expect( 1 );
+		let done = assert.async();
+		document.addEventListener('CPU_ready', function() {
+			assert.ok(!elInterface.classList.contains('no'), `controller #interface doesn't have "no" class anymore`);
+			done();
+		}, {once: true});
+
 		playground.innerHTML = `<cpu-audio title="Hello">
 									<audio muted controls src="../tests-assets/blank.mp3">
 								</audio>
 							</cpu-audio>`;
 		let player_element = playground.querySelector('cpu-audio');
-		assert.ok(!elInterface.classList.contains('no'), `controller #interface doesn't have "no" class anymore`);
+
 	});	
 
 	// TODO : untitled audiotag in playlist should display "untitled" in <em>

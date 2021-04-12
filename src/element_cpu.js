@@ -1,4 +1,4 @@
-import {adjacentArrayValue, CpuControllerTagName, findCPU, selectorAudioInComponent, querySelectorDo, absolutizeUrl, error, escapeHtml, passiveEvent} from './utils.js';
+import {adjacentArrayValue, findCPU, selectorAudioInComponent, querySelectorDo, absolutizeUrl, error, escapeHtml, passiveEvent} from './utils.js';
 import {__} from './i18n.js';
 import {defaultDataset} from './default_dataset.js';
 import {secondsInColonTime, secondsInTime, durationIso} from './convert.js';
@@ -132,6 +132,7 @@ export class CPU_element_api {
 		this._activecue_id = null;
 		this.mode_was = null;
 		this.act_was = null;
+		this.isController = false;
 
 		element.CPU = this;
 
@@ -139,11 +140,12 @@ export class CPU_element_api {
 			this.audiotag._CPU_planes = {};
 		}
 
-		this.isController = this.element.tagName === CpuControllerTagName;
 		// only used for CPU-CONTROLLER, for playlist
 		this._planes = {};
 
-		if (!this.audiotag) {
+		if (!this.audiotag) { // Implicitely a CPU-CONTROLLER
+			this.isController = true;
+			this.container.classList.add('controller');
 			document.CPU.globalController = this;
 			this.audiotag = document.querySelector(selectorAudioInComponent);
 			audiotagPreloadMetadata(this.audiotag);

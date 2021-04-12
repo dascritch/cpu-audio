@@ -30,6 +30,7 @@ Those class names are used by code. You can perfectly create a theme without any
 
 Class name 		| Importance  | Usage
 ----------------|-------------|--------
+`controller`    | Cosmetic    | Attributed only to `<CPU-Controller>` interface
 `no`       		| Needed      | This class is for hiding elements, usable for any elements, even shadow.
 `panel` 		| Needed      | A plane with panels will generate `div#panel`
 `cue` 			| Needed      | Every point may have a `time#cue` indicating the `start` timecode
