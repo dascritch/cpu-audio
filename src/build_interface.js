@@ -22,15 +22,15 @@ function nativeShare(event) {
 /**
  * @private, because at start
  *
- * @param      {Object}  			container  <cpu-audio>.CPU
+ * @param      {Object}  			elCPU  <cpu-audio>.CPU
  *
  * @summary Builds the controller.
  */
-export function buildInterface(container) {
-	const interface_classlist = container.shadowId('interface').classList;
+export function buildInterface(elCPU) {
+	const interface_classlist = elCPU.shadowId('interface').classList;
 
 	// hide broken image while not loaded
-	container.shadowId('poster')?.addEventListener('load', () => {
+	elCPU.shadowId('poster')?.addEventListener('load', () => {
 		interface_classlist.add('poster-loaded');
 	}, passiveEvent);
 
@@ -39,60 +39,60 @@ export function buildInterface(container) {
 		pause      : trigger.pause,
 		play       : trigger.play,
 		time       : trigger.throbble,
-		actions    : () => {container.showActions();},
-		back       : () => {container.showMain();},
-		poster     : () => {container.showMain();},
+		actions    : () => {elCPU.showActions();},
+		back       : () => {elCPU.showMain();},
+		poster     : () => {elCPU.showMain();},
 		restart    : trigger.restart,
 		toggleplay : trigger.toggleplay,
 		prevtrack  : trigger.prevtrack,
 		nexttrack  : trigger.nexttrack
 	};
 	for (let elementId in cliquables) {
-		container.shadowId(elementId)?.addEventListener('click', cliquables[elementId], passiveEvent);
+		elCPU.shadowId(elementId)?.addEventListener('click', cliquables[elementId], passiveEvent);
 	}
 
 	// relative browsing buttons management
 	//  *ward : handheld nav to allow long press to repeat action
 	const _buttons = ['prevcue', 'fastreward', 'reward', 'foward', 'fastfoward', 'nextcue'];
 	for (let elementId of _buttons) {
-		const button_element = container.shadowId(elementId);
+		const button_element = elCPU.shadowId(elementId);
 		button_element?.addEventListener('pointerdown', pressManager.press);
 		button_element?.addEventListener('pointerout', pressManager.release);
 		button_element?.addEventListener('pointerup', pressManager.release);
 	}
 
 	// keyboard management
-	container.element.addEventListener('keydown', trigger.key);
+	elCPU.element.addEventListener('keydown', trigger.key);
 
 	// throbber management
-	const timeline_element = container.shadowId('time');
+	const timeline_element = elCPU.shadowId('time');
 	timeline_element?.addEventListener('pointerenter', trigger.hover, passiveEvent);
 	timeline_element?.addEventListener('pointermove', trigger.hover, passiveEvent);
 	timeline_element?.addEventListener('pointerout', trigger.out, passiveEvent);
 	// alternative fine navigation for handhelds
-	timeline_element?.addEventListener('contextmenu', () => {container.showHandheldNav();});
+	timeline_element?.addEventListener('contextmenu', () => {elCPU.showHandheldNav();});
 
 	if (navigator.share) {
 		interface_classlist.add('hasnativeshare');
-		container.shadowId('nativeshare')?.addEventListener('click', nativeShare, passiveEvent);
+		elCPU.shadowId('nativeshare')?.addEventListener('click', nativeShare, passiveEvent);
 	}
 
-	if (!container.audiotag)  {
+	if (!elCPU.audiotag)  {
 		// <cpu-controller> without <cpu-audio> , see https://github.com/dascritch/cpu-audio/issues/91
 		return;
 	}
 
-	container.audiotag.addEventListener('durationchange', () => {container.repositionTracks(); }, passiveEvent);
+	elCPU.audiotag.addEventListener('durationchange', () => {elCPU.repositionTracks(); }, passiveEvent);
 
-	buildChaptersLoader(container);
+	buildChaptersLoader(elCPU);
 	buildPlaylist();
-	container.showMain();
-	container.updatePlayButton();
-	container.emitEvent('ready');
+	elCPU.showMain();
+	elCPU.updatePlayButton();
+	elCPU.emitEvent('ready');
 
-	container.updateLinks();
+	elCPU.updateLinks();
 
-	let canonical_element = container.shadowId('canonical'); 
+	let canonical_element = elCPU.shadowId('canonical'); 
 	if (canonical_element) {
 		preventLinkOnSamePage( canonical_element );
 	}
