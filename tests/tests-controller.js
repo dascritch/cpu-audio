@@ -8,31 +8,22 @@ check_focus();
 document.addEventListener('focus', check_focus);
 document.addEventListener('blur', check_focus);
 
-if (!document.hasFocus()) {
-	alert('Please click on the web view, giving focus, to autorize the audio tag. Else, numerous tests will fail. See issue 17 on our github for details : https://github.com/dascritch/cpu-audio/issues/17 .');
-}
 
 function nearlyEqual(value_to_test, value_expected, precision = 1) {
 	return ((value_expected - 1) <= value_to_test) && (value_to_test <= ((value_expected + 1)))
 }
 
 window.addEventListener('load', function() {
-	if (navigator.userAgent === 'puppeteer') {
-		// Tests fails on Chrome browszer is this button is not humanly clicked, except in puppeteer /o\
-		document.querySelector('#get_focus').click();
-	}
-});
-
-document.querySelector('#get_focus').addEventListener('click', function() {
 	QUnit.config.autostart = false;
 	window.location = '#';
 
 	document.getElementById('get_focus').closest('p').remove();
 
-	let controllertag = document.querySelector('cpu-controller');
-	let playground = document.getElementById('playground');
+	const controllertag = document.querySelector('cpu-controller');
+	const elInterface = controllertag.CPU.shadowId('interface');
+	const playground = document.getElementById('playground');
 
-	let cpu = document.CPU;
+	const cpu = document.CPU;
 
 	function stopPlayer() {
 		// audiotag.pause();
@@ -43,11 +34,20 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 	stopPlayer();
 	QUnit.start();
 
+	
 	QUnit.test( "CPU-Controller at start without player", function( assert ) {
-		const elInterface = controllertag.CPU.shadowId('interface');
 		assert.ok(elInterface.classList.contains('no'), `#interface is in "no" class state`);
 		assert.equal(controllertag.CPU.audiotag, null, 'audiotag is null');
 	});
+
+	QUnit.test( "Inserting a CPU-Audio made it replicated in the controller", function( assert ) {
+		playground.innerHTML = `<cpu-audio title="Hello">
+									<audio muted controls src="../tests-assets/blank.mp3">
+								</audio>
+							</cpu-audio>`;
+		let player_element = playground.querySelector('cpu-audio');
+		assert.ok(!elInterface.classList.contains('no'), `controller #interface doesn't have "no" class anymore`);
+	});	
 
 
 });
