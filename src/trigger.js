@@ -57,7 +57,7 @@ function switchControllerTo(audiotag) {
 	}
 	if  (!audiotag.isEqualNode(globalController.audiotag)) {
 		const wasFocused = globalController.focusedId();
-		globalController.attachAudiotagToController(audiotag);
+		globalController.attachAudiotagToInterface(audiotag);
 		// globalController.audiotag = audiotag; unuseful : done upper
 		globalController.showMain();
 		globalController.redrawAllPlanes();

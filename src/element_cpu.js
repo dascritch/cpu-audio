@@ -149,7 +149,7 @@ export class CPU_element_api {
 		}
 
 		buildInterface(this);
-		this.attachAudiotagToController(this.audiotag);
+		this.attachAudiotagToInterface(this.audiotag);
 		this.attributesChanges();
 	}
 
@@ -745,7 +745,7 @@ export class CPU_element_api {
 	 *
 	 * @param      {Element}  audiotag  The audiotag
 	 */
-	attachAudiotagToController(audiotag) {
+	attachAudiotagToInterface(audiotag) {
 		if (!audiotag) {
 			return;
 		}
