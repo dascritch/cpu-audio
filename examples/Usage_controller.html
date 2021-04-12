@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
 <script src="../build/cpu-audio.js" async></script>
+<style>
+	cpu-audio { max-width : 800px; }
+
+</style>
 
 <body>
 <p><a href="../examples.html">← back to examples list</a></p>
@@ -16,5 +20,40 @@
 
     <cpu-controller></cpu-controller>
 
+    <div id="zone">
+    </div>
+
+    <button type="button" id="add">Add a source</button>
+
 </body>
+
+<script>
+	const sources = [
+		{src : 'https://dascritch.net/vrac/Emissions/AtHalluFMR/podcast/25-AtHalluFMR%2818-03-15%29.mp3', title : 'micro @HalluFMR #25 : Finance'},
+		{src : 'https://dascritch.net/vrac/Emissions/AtHalluFMR/podcast/26-AtHalluFMR%2825-03-15%29.mp3', title : 'micro @HalluFMR #26 : Brevet'},
+		{src : 'https://dascritch.net/vrac/Emissions/AtHalluFMR/podcast/30-AtHalluFMR%2822-04-15%29.mp3', title : 'micro @HalluFMR #30 : Scam'},
+		{src : 'https://dascritch.net/vrac/Emissions/AtHalluFMR/podcast/31-AtHalluFMR%2829-04-15%29.mp3', title : 'micro @HalluFMR #31 : Vidéo'},
+	];
+	i = 0;
+	const zone = document.querySelector('#zone');
+
+	document.querySelector('#add').addEventListener('click', () => {
+		source = sources[i++];
+		p = document.createElement('p');
+		p.innerHTML = `
+		<cpu-audio title="${source.title}" playlist="unique">
+			<audio src="${source.src}" controls></audio>
+		</cpu-audio>
+		<button type="button" class="remove">×</button>
+		`;
+		p.querySelector('.remove').addEventListener('click', ({target}) => { target.closest('p').remove() });
+		zone.appendChild(p);	
+
+		if ( i > sources.length ) { 
+			i = 0;
+		}
+	});
+
+
+</script>
 </html>
