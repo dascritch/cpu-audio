@@ -11,12 +11,12 @@ const plane_chapters = '_chapters';
  * @summary Add listeners on tracks to build chapters when loaded
  * @private
  * 
- * @param      {Object}  container  <cpu-audio>.CPU
+ * @param      {Object}  elCPU  <cpu-audio>.CPU
  */
-export function buildChaptersLoader(container) {
-	const this_build_chapters = () => { build_chapters(container); };
+export function buildChaptersLoader(elCPU) {
+	const this_build_chapters = () => { build_chapters(elCPU); };
 	this_build_chapters();
-	let audiotag = container.audiotag;
+	let audiotag = elCPU.audiotag;
 
 	// sometimes, we MAY have loose loading
 	audiotag.addEventListener('loadedmetadata', this_build_chapters, oncePassiveEvent);
@@ -61,19 +61,19 @@ function get_chapter_tracks(audiotag) {
  * @summary Builds or refresh chapters interface.
  * @private was public
  *
- * @param      {Object}  			container  <cpu-audio>.CPU
+ * @param      {Object}  			elCPU  <cpu-audio>.CPU
  * @param      {Object|undefined}  	event          The event
  */
-export async function build_chapters(container) {
+export async function build_chapters(elCPU) {
 	// this functions is called THREE times at load : at build, at loadedmetada event and at load event
 	// and afterwards, we have to reposition track points on duractionchange
 
-	if (container.isController) {
+	if (elCPU.isController) {
 		// not your job, CPUController
 		return;
 	}
 
-	const audiotag = container.audiotag;
+	const audiotag = elCPU.audiotag;
 	let has = false;
 	const pointDataGroup = {};
 
@@ -81,19 +81,19 @@ export async function build_chapters(container) {
 		const chapter_track = get_chapter_tracks(audiotag);
 
 		if (chapter_track?.cues.length > 0) {
-			container.addPlane(plane_chapters, {
+			elCPU.addPlane(plane_chapters, {
 				title : __['chapters'],
 				track : 'chapters'
 			});
 
-			const cuechange_event_this = () => {cuechange_event(container);};
+			const cuechange_event_this = () => {cuechange_event(elCPU);};
 			// ugly, but best way to catch the DOM element, as the `cuechange` event won't give it to you via `this` or `event`
 			// adding/reinstall chapter changing event
 			chapter_track.removeEventListener('cuechange', cuechange_event_this);
 			chapter_track.addEventListener('cuechange', cuechange_event_this, passiveEvent);
 
 			for (let cue of chapter_track.cues) {
-				if (!container.point(plane_chapters, cue.id)) {
+				if (!elCPU.point(plane_chapters, cue.id)) {
 					pointDataGroup[cue.id] = {
 						start : normalizeSeekTime(audiotag, Math.floor(cue.startTime)),
 						text  : translateVTT(cue.text),
@@ -105,8 +105,8 @@ export async function build_chapters(container) {
 			if (chapter_track.cues.length > 0) {
 				has = true;
 			}
-			container.bulkPoints(plane_chapters, pointDataGroup);
-			cuechange_event(container, {
+			elCPU.bulkPoints(plane_chapters, pointDataGroup);
+			cuechange_event(elCPU, {
 				target : {
 					activeCues : chapter_track.cues
 				}
@@ -121,7 +121,7 @@ export async function build_chapters(container) {
 		// see https://github.com/dascritch/cpu-audio/issues/36
 		body_classlist.add(body_class);
 	} else {
-		container.removePlane(plane_chapters);
+		elCPU.removePlane(plane_chapters);
 		body_classlist.remove(body_class);
 	}
 
@@ -142,17 +142,17 @@ export async function build_chapters(container) {
  * @summary Call when a chapter is changed, to trigger the changes
  * @private
  *
- * @param      {Object}  container  Element.CPU
+ * @param      {Object}  elCPU  Element.CPU
  * @param      {Object}  event   	The event
  */
-export function cuechange_event(container, event = null) {
+export function cuechange_event(elCPU, event = null) {
 	// TODO : if not event, based on '_chapters' information from audio
 
-	const activeCues = event ? event.target.activeCues : get_chapter_tracks(container.audiotag)?.activeCues;
+	const activeCues = event ? event.target.activeCues : get_chapter_tracks(elCPU.audiotag)?.activeCues;
 	
 	let cue;
 	// Chrome may put more than one activeCue. That's a stupid regression from them, but alas... I have to do with
-	let currentTime = container.audiotag.currentTime;
+	let currentTime = elCPU.audiotag.currentTime;
 	
 	if (activeCues?.length > 0) {
 		for (let cue_line of activeCues) {
@@ -162,16 +162,16 @@ export function cuechange_event(container, event = null) {
 		}
 	}
 
-	if (cue?.id === container._activecue_id) {
+	if (cue?.id === elCPU._activecue_id) {
 		return ;
 	}
 
-	container.removeHighlightsPoints(plane_chapters, activecueClassname);
-	container._activecue_id = cue?.id;
+	elCPU.removeHighlightsPoints(plane_chapters, activecueClassname);
+	elCPU._activecue_id = cue?.id;
 
 	if (cue) {
-		trigger.cuechange(cue, container.audiotag);
-		container.emitEvent('chapterChanged', { cue });
-		container.highlightPoint(plane_chapters, cue.id, activecueClassname);
+		trigger.cuechange(cue, elCPU.audiotag);
+		elCPU.emitEvent('chapterChanged', { cue });
+		elCPU.highlightPoint(plane_chapters, cue.id, activecueClassname);
 	}
 }
