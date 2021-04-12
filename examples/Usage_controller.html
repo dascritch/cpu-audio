@@ -6,7 +6,7 @@
 
 <script src="../build/cpu-audio.js" async></script>
 <style>
-	cpu-audio { max-width : 800px; }
+	cpu-audio { max-width : 800px; display : inline-block; }
 
 </style>
 
@@ -34,7 +34,7 @@
 		{src : 'https://dascritch.net/vrac/Emissions/AtHalluFMR/podcast/30-AtHalluFMR%2822-04-15%29.mp3', title : 'micro @HalluFMR #30 : Scam'},
 		{src : 'https://dascritch.net/vrac/Emissions/AtHalluFMR/podcast/31-AtHalluFMR%2829-04-15%29.mp3', title : 'micro @HalluFMR #31 : Vidéo'},
 	];
-	i = 0;
+	let i = 0;
 	const zone = document.querySelector('#zone');
 
 	document.querySelector('#add').addEventListener('click', () => {
@@ -49,11 +49,10 @@
 		p.querySelector('.remove').addEventListener('click', ({target}) => { target.closest('p').remove() });
 		zone.appendChild(p);	
 
-		if ( i > sources.length ) { 
+		if ( i >= sources.length ) { 
 			i = 0;
 		}
 	});
-
 
 </script>
 </html>
