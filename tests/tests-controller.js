@@ -45,7 +45,8 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 
 	QUnit.test( "CPU-Controller at start without player", function( assert ) {
 		const elInterface = controllertag.CPU.shadowId('interface');
-		assert.ok(! elInterface.classList.has('no'), `#interface is in "no" class state`);
+		assert.ok(elInterface.classList.contains('no'), `#interface is in "no" class state`);
+		assert.equal(controllertag.CPU.audiotag, null, 'audiotag is null');
 	});
 
 
