@@ -15,12 +15,12 @@ let NotSupportedError = 'The browser refuses the audio source, probably due to a
 // @type {string|null}
 let	body_className_playing_cue = null;
 
-
+// @private
 export let timecodeStart = 0;
-// @private   MAY GO OUT OF THIS OBJECT IF NOT TESTED OUTSIDE
+// @private 
 export let timecodeEnd = false;
 
-// @private   MAY GO OUT OF THIS OBJECT IF NOT TESTED OUTSIDE
+// @private
 export let lastPlayError = false;
 
 /**
@@ -53,7 +53,7 @@ function playOnceUnlock(event, audiotag) {
 }
 
 export const trigger = {
-	// @private   MAY GO OUT OF THIS OBJECT IF NOT TESTED OUTSIDE
+	// @private   Needed for tests
 	_end : () => { return timecodeEnd; },
 
 
