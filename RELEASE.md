@@ -56,7 +56,7 @@ Corrections
  * Too many problems in documentations in gh-pages, links to config and chaptering applications are now absolute ([#135](#135))
  * Do not show panels when in error state
  * Disambiguation in renaming `findContainer()` in `findCPU()` ([#142](#142))
- * Faster instanciation time ([#148](#148))
+ * Faster instanciation time, removing `<template>` from host page ([#148](#148))
  * Documentation re-formated ([#134](#134))
  * Build lib still under 50,000 bytes
 
