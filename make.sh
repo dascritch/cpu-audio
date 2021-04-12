@@ -122,7 +122,9 @@ function _clean_too_old() {
 	TMP_FILE=${2}
 	if [ "${TMP_FILE}" -ot "${SRC_FILE}" ]; then
 		echo "${TMP_FILE} needs refresh"
-		rm ${TMP_FILE}
+		if [ -f ${TMP_FILE} ] ; then
+			rm ${TMP_FILE}
+		fi
 	fi
 }
 
@@ -153,13 +155,13 @@ function _build_template() {
 
 	echo "// auto-generated source, done via make.sh
 			import {__} from '../src/i18n.js';
-			/** @summary insert styles and template into host document */
+			/** @summary insert styles into host document */
 			export function insert_style() {
 				const style = document.createElement('style');
 				style.innerHTML = \`${content_global_css}\`;
 				document.head.appendChild(style);
 			}
-
+			/** @summary template to be inserted into webcomponent */
 			export function template() {
 				return \`<style>${content_scoped_css}</style>${content_template_html}\`;
 			}
