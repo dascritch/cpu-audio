@@ -28,5 +28,6 @@
 
  * [tests/tests-api.html](tests/tests-api.html)
  * [tests/tests-browser.html](tests/tests-browser.html)
+ * [tests/tests-controller.html](tests/tests-controller.html)
  * [tests/tests-interface.html](tests/tests-interface.html)
  * [tests/tests-minimal.html](tests/tests-minimal.html)
