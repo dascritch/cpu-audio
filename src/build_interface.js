@@ -83,6 +83,11 @@ export function buildInterface(elCPU) {
 		elCPU.shadowId('nativeshare')?.addEventListener('click', nativeShare, passiveEvent);
 	}
 
+	let canonical_element = elCPU.shadowId('canonical'); 
+	if (canonical_element) {
+		preventLinkOnSamePage( canonical_element );
+	}
+
 	if (!elCPU.audiotag)  {
 		// <cpu-controller> without <cpu-audio> , see https://github.com/dascritch/cpu-audio/issues/91
 		return;
@@ -98,8 +103,4 @@ export function buildInterface(elCPU) {
 
 	elCPU.updateLinks();
 
-	let canonical_element = elCPU.shadowId('canonical'); 
-	if (canonical_element) {
-		preventLinkOnSamePage( canonical_element );
-	}
 }
