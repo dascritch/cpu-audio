@@ -1,6 +1,5 @@
 import {CpuAudioTagName, dynamicallyAllocatedIdPrefix, browserIsDecent, passiveEvent, oncePassiveEvent} from './utils.js';
-
-import {trigger} from './trigger.js';
+import {trigger, lastPlayError} from './trigger.js';
 import {buildPlaylist} from './build_playlist.js';
 
 // Indicate if media element was extended
@@ -18,7 +17,7 @@ function recallStoredPlay(event) {
 	}
 	let lasttimecode = Number(window.localStorage.getItem(audiotag.currentSrc));
 	// TODO and no hashed time
-	if ((lasttimecode > 0) && (!trigger._last_play_error)) {
+	if ((lasttimecode > 0) && (!lastPlayError)) {
 		document.CPU.seekElementAt(audiotag, lasttimecode);
 		trigger.play(null, audiotag);
 	}

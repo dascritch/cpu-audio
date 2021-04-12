@@ -16,6 +16,13 @@ let NotSupportedError = 'The browser refuses the audio source, probably due to a
 let	body_className_playing_cue = null;
 
 
+export let timecodeStart = 0;
+// @private   MAY GO OUT OF THIS OBJECT IF NOT TESTED OUTSIDE
+export let timecodeEnd = false;
+
+// @private   MAY GO OUT OF THIS OBJECT IF NOT TESTED OUTSIDE
+export let lastPlayError = false;
+
 /**
  * @summary If audio position out of begin/end borders, remove borders
  * @private
@@ -24,10 +31,10 @@ let	body_className_playing_cue = null;
  */
 function removeTimecodeOutOfBorders(at) {
 	if (
-		(at < trigger._timecode_start)
-		|| ((trigger._timecode_end !== false) && (at > trigger._timecode_end)) ) {
-		trigger._timecode_start = 0;
-		trigger._timecode_end = false;
+		(at < timecodeStart)
+		|| ((timecodeEnd !== false) && (at > timecodeEnd)) ) {
+		timecodeStart = 0;
+		timecodeEnd = false;
 	}
 }
 
@@ -39,21 +46,16 @@ function removeTimecodeOutOfBorders(at) {
  * @param      {HTMLAudioElement|null}  audiotag   	The audiotag to start playing, event's target if not defined
  */
 function playOnceUnlock(event, audiotag) {
-	trigger._last_play_error = false;
+	lastPlayError = false;
 	if (document.CPU.autoplay) {
 		trigger.play(event, audiotag);
 	}
 }
 
 export const trigger = {
+	// @private   MAY GO OUT OF THIS OBJECT IF NOT TESTED OUTSIDE
+	_end : () => { return timecodeEnd; },
 
-	// @private   MAY GO OUT OF THIS OBJECT IF NOT TESTED OUTSIDE
-	_timecode_start : 0,
-	// @private   MAY GO OUT OF THIS OBJECT IF NOT TESTED OUTSIDE
-	_timecode_end : false,
-
-	// @private   MAY GO OUT OF THIS OBJECT IF NOT TESTED OUTSIDE
-	_last_play_error : false,
 
 	/**
 	 * @summary Updatting time position. Pause if a end position was defined
@@ -61,7 +63,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	update : function({target:audiotag}) {
-		if ((trigger._timecode_end !== false) && (audiotag.currentTime > trigger._timecode_end)) {
+		if ((timecodeEnd !== false) && (audiotag.currentTime > timecodeEnd)) {
 			trigger.pause(undefined, audiotag);
 		}
 
@@ -125,11 +127,11 @@ export const trigger = {
 
 		// we may have a begin,end notation
 		let [timecode_start, timecode_end] = timecode.split(',');
-		trigger._timecode_start = timeInSeconds(timecode_start);
-		trigger._timecode_end = timecode_end !== undefined ? timeInSeconds(timecode_end) : false;
-		if (trigger._timecode_end !== false) {
-			trigger._timecode_end = (trigger._timecode_end > trigger._timecode_start) ?
-				trigger._timecode_end :
+		timecodeStart = timeInSeconds(timecode_start);
+		timecodeEnd = timecode_end !== undefined ? timeInSeconds(timecode_end) : false;
+		if (timecodeEnd !== false) {
+			timecodeEnd = (timecodeEnd > timecodeStart) ?
+				timecodeEnd :
 				false;
 		}
 
@@ -258,13 +260,13 @@ export const trigger = {
 	 * @param      {Element|undefined|null}  audiotag  The audiotag
 	 */
 	play : function(event=null, audiotag=null) {
-		if ( (!event) && (trigger._last_play_error)) {
+		if ( (!event) && (lastPlayError)) {
 			warn(`play() prevented because already waiting for focus`);
 			return;
 		}
 		audiotag = audiotag ?? findCPU(event.target).audiotag;
 
-		trigger._last_play_error = false;
+		lastPlayError = false;
 		removeTimecodeOutOfBorders(audiotag.currentTime);
 
 		let promised = audiotag.play();
@@ -277,7 +279,7 @@ export const trigger = {
 				}
 			).catch(
 				error => {
-					trigger._last_play_error = true;
+					lastPlayError = true;
 					const unlock = () => { playOnceUnlock(event, audiotag); };
 					switch (error.name) {
 						case 'NotAllowedError':

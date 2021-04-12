@@ -3,7 +3,7 @@ import {__} from './i18n.js';
 import {defaultDataset} from './default_dataset.js';
 import {secondsInColonTime, secondsInTime, durationIso} from './convert.js';
 import {translateVTT} from './translate_vtt.js';
-import {trigger} from './trigger.js';
+import {trigger, timecodeStart, timecodeEnd} from './trigger.js';
 import {isAudiotagStreamed, audiotagDuration, uncertainDuration, addIdToAudiotag, audiotagPreloadMetadata} from './media_element_extension.js';
 import {switchControllerTo} from './cpu_controller.class.js';
 import {buildInterface} from './build_interface.js';
@@ -144,8 +144,8 @@ export class CPU_element_api {
 		// only used for CPU-CONTROLLER, for playlist
 		this._planes = {};
 
-		let globalController = document.CPU.globalController
-		if ((this.audiotag) && (document.CPU.globalController) && (!globalController.audiotag)) {
+		const globalController = document.CPU.globalController;
+		if ((this.audiotag) && (globalController) && (!globalController.audiotag)) {
 			// CPU-Controller was intancied before any audiotag was available
 			switchControllerTo(this.audiotag);
 		}
@@ -412,7 +412,7 @@ export class CPU_element_api {
 	 */
 	updateTimeBorders() {
 		let audiotag = this.audiotag;
-		if ((!document.CPU.isAudiotagGlobal(audiotag)) || (trigger._timecode_end === false)) {
+		if ((!document.CPU.isAudiotagGlobal(audiotag)) || (timecodeEnd === false)) {
 			this.removePlane(planeNameBorders);
 			return;
 		}
@@ -421,8 +421,8 @@ export class CPU_element_api {
 			let check = this.point(planeNameBorders, planeNameBorders);
 			if (
 				(check) &&
-				(check.start === trigger._timecode_start) &&
-				(check.end === trigger._timecode_end)) {
+				(check.start === timecodeStart) &&
+				(check.end === timecodeEnd)) {
 				return;
 			}
 		}
@@ -433,9 +433,9 @@ export class CPU_element_api {
 			highlight 	: false
 		});
 		this.addPoint(planeNameBorders, planeNameBorders, {
-			start 		: trigger._timecode_start,
+			start 		: timecodeStart,
 			link    	: false,
-			end     	: trigger._timecode_end
+			end     	: timecodeEnd
 		});
 
 	}

@@ -155,7 +155,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		let done = assert.async();
 		cpu.trigger.hashOrder('track&t=0:20,0:30', function() {
 			assert.ok(nearlyEqual( audiotag.currentTime , 20), 'starts at 20 seconds');
-			assert.equal(cpu.trigger._timecode_end, 30, 'ends at 30 seconds');
+			assert.equal(cpu.trigger._end(), 30, 'ends at 30 seconds');
 			done();
 		});
 	});
@@ -166,7 +166,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		let done = assert.async();
 		cpu.trigger.hashOrder('track&t=0:10,20', function() {
 			assert.equal(audiotag.currentTime , 10, 'starts at 10 seconds');
-			assert.equal(cpu.trigger._timecode_end, 20, 'ends at 20 seconds');
+			assert.equal(cpu.trigger._end(), 20, 'ends at 20 seconds');
 			done();
 		});
 	});
@@ -176,7 +176,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		let done = assert.async();
 		cpu.trigger.hashOrder('track&t=,20', function() {
 			assert.equal(audiotag.currentTime, 0, 'starts at 0 second');
-			assert.equal(cpu.trigger._timecode_end, 20, 'ends at 20 seconds');
+			assert.equal(cpu.trigger._end(), 20, 'ends at 20 seconds');
 			done();
 		});
 	});
@@ -186,7 +186,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		let done = assert.async();
 		cpu.trigger.hashOrder('track&t=20,', function() {
 			assert.ok(nearlyEqual(audiotag.currentTime, 20, 0.1), 'starts at 0 second');
-			assert.equal(cpu.trigger._timecode_end, false, 'natural end');
+			assert.equal(cpu.trigger._end(), false, 'natural end');
 			done();
 		});
 	});
@@ -196,7 +196,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		let done = assert.async();
 		cpu.trigger.hashOrder('track&t=20,10', function() {
 			assert.ok(nearlyEqual(audiotag.currentTime, 20, 0.1), 'starts at 0 second');
-			assert.equal(cpu.trigger._timecode_end, false, 'ignored end');
+			assert.equal(cpu.trigger._end(), false, 'ignored end');
 			done();
 		});
 	});
@@ -207,7 +207,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		let done = assert.async();
 		cpu.trigger.hashOrder('track&t=a1r,\v0', function() {
 			assert.equal(audiotag.currentTime, 0, 'starts at 0 second');
-			assert.ok(cpu.trigger._timecode_end === false, 'natural end');
+			assert.ok(cpu.trigger._end() === false, 'natural end');
 			done();
 		});
 	});
