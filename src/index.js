@@ -36,7 +36,7 @@ if ((document.CPU) || (window.customElements.get(CpuAudioTagName.toLowerCase()))
 	// Here comes document.CPU
 	HTMLDocument.prototype.CPU = DocumentCPU;
 
-	if (document.body !== null) {
+	if (document.body) {
 		main();
 	} else {
 		// needed in cpu-audio.js context
