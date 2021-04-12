@@ -20,7 +20,6 @@ Guidelines to create a theme
 - We don't test themed-builds yet. This is a miss, and we need some help there
 
 
-
 DOM elements
 ============
 
@@ -68,12 +67,12 @@ Those class names are not used by code but are important in our `default` theme,
 ID elements
 -----------
 
-Those elements can be targeted via `<cpu-audio>.CPU.shadowId()` . You will need to dive into it for building a new theme.
-The reported tag names are used in default theme, but nothing forbid you to use another tag name for the same ID.
+Those elements can be targeted via `<cpu-audio>.CPU.shadowId()` . You will need them to create interactions for your new theme.
+The tag names are those used in default theme, we recommend to use them but nothing forbid you to use another tag name for the same ID.
 
 Selector            | Importance  | Usage
 --------------------|-------------|--------------------------------------------
-`#interface`  		| Needed      | englobing `<div>` for the `<main>` and panels. Support for classes. `opacity:0` at start
+`#interface`  		| Needed      | englobing `<div>` for the `<main>` and panels. Support for classes, got `no` at start
 `#pageerror`  		| Important   | This section is shown if the media has got an issue
 `#pagemain`   		| Important   | The front control panel of the player
 `#pageshare`  		| Facultative | This section is shown when `#actions` is clicked
