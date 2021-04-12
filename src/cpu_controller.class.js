@@ -15,7 +15,11 @@ export function switchControllerTo(audiotag) {
 	if (!globalController) {
 		return;
 	}
-	if  (!audiotag.isEqualNode(globalController.audiotag)) {
+
+	// remove previous orphan audio tag
+	document.CPU.globalController.element.querySelector('audio')?.remove();
+
+	if (!audiotag.isEqualNode(globalController.audiotag)) {
 		const wasFocused = globalController.focusedId();
 		globalController.attachAudiotagToInterface(audiotag);
 		// globalController.audiotag = audiotag; unuseful : done upper
