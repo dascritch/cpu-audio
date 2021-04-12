@@ -58,7 +58,7 @@ function switchControllerTo(audiotag) {
 	if  (!audiotag.isEqualNode(globalController.audiotag)) {
 		const wasFocused = globalController.focusedId();
 		globalController.attachAudiotagToController(audiotag);
-		globalController.audiotag = audiotag;
+		// globalController.audiotag = audiotag; unuseful : done upper
 		globalController.showMain();
 		globalController.redrawAllPlanes();
 		globalController.setMode(); 	// to switch back the display between streamed/not-str medias
