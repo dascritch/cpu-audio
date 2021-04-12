@@ -31,7 +31,9 @@ function nativeShare(event) {
 export function buildInterface(elCPU) {
 	const interface_classlist = elCPU.shadowId('interface').classList;
 
-	elCPU.container.addEventListener('pointerenter', () => { audiotagPreloadMetadata(elCPU.audiotag); }, oncePassiveEvent);
+	elCPU.container.addEventListener('pointerenter', () => { 
+		audiotagPreloadMetadata(elCPU.audiotag);
+	}, oncePassiveEvent);
 
 	// hide broken image while not loaded
 	elCPU.shadowId('poster')?.addEventListener('load', () => {
