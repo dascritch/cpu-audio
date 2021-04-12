@@ -158,6 +158,7 @@ CPU_editPoint       | During `editPoint` method                            | pla
 CPU_bulkPoints      | During `bulkPoints` method                           | planeName, pointDataGroup
 CPU_removePoint     | During `removePoint` method, even private ones       | planeName, pointName
 CPU_chapterChanged  | A cue event defined in WebVTT occured                | cue
+CPU_removed  		| A `<cpu-audio>` or a `<cpu-controller>` vanished     | 
 
 (⁵) Returned object informations usually have a `detail` object, it may contains :
 

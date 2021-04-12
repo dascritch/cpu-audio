@@ -31,7 +31,7 @@ export function switchControllerTo(audiotag) {
  *
  * @param      {Object}  mutationsList  The mutations list
  */
-function observer_component([{target}]) {
+function modifiedController([{target}]) {
 	const elCPU = findCPU(target);
 	const component = elCPU.element;
 	const media_tagname = 'audio';
@@ -56,7 +56,7 @@ export class CpuControllerElement extends HTMLElement {
 	constructor() {
 		super();
 		this.CPU = null;
-		this.observer_component = null;
+		this.observer = null;
 
 		if (notScreenContext()) {
 			// I'm not in a screen context, as a braille surface
@@ -98,8 +98,8 @@ export class CpuControllerElement extends HTMLElement {
 
 		new CPU_element_api(this);
 
-		this.observer_component = new MutationObserver(observer_component);
-		this.observer_component.observe(this, {
+		this.observer = new MutationObserver(modifiedController);
+		this.observer.observe(this, {
 			childList 	: true,
 			attributes	: true
 		});
@@ -107,6 +107,7 @@ export class CpuControllerElement extends HTMLElement {
 	}
 
 	disconnectedCallback() {
+		this.CPU.emitEvent('removed');
 		if ((this.tagName === CpuControllerTagName) && (document.CPU.globalController)) {
 			document.CPU.globalController = null;
 		}

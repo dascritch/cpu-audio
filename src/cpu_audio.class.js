@@ -11,7 +11,7 @@ import {build_chapters} from './build_chapters.js';
  *
  * @param      {Object}  mutationsList  The mutations list
  */
-function observer_audio([{target}]) {
+function modifiedAudio([{target}]) {
 	const elCPU = findCPU(target);
 
 	// in case <track> changed/removed
@@ -41,7 +41,7 @@ export class CpuAudioElement extends CpuControllerElement {
 			this.remove();
 			return ;
 		}
-		this.observer_audio = null;
+		this.observer = null;
 	}
 
 	copyAttributesToMediaDataset() {
@@ -69,8 +69,8 @@ export class CpuAudioElement extends CpuControllerElement {
 
 		connectAudiotag(this.CPU.audiotag);
 
-		this.observer_audio = new MutationObserver(observer_audio);
-		this.observer_audio.observe(this, {
+		this.observer = new MutationObserver(modifiedAudio);
+		this.observer.observe(this, {
 			childList	: true,
 			attributes	: true,
 			subtree		: true
@@ -88,7 +88,7 @@ export class CpuAudioElement extends CpuControllerElement {
 					delete document.CPU.playlists[index];
 				}
 			}
-
 		}
+		super.disconnectedCallback();
 	}
 }
