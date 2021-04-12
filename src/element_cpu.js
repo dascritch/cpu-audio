@@ -146,7 +146,7 @@ export class CPU_element_api {
 		if (!this.audiotag) {
 			document.CPU.globalController = this;
 			this.audiotag = document.querySelector(selectorAudioInComponent);
-			this.audiotag.load();
+			audiotagPreloadMetadata(this.audiotag);
 		}
 
 		buildInterface(this);
