@@ -35,30 +35,53 @@ window.addEventListener('load', function() {
 	QUnit.start();
 
 	
-	QUnit.test( "CPU-Controller at start without player", function( assert ) {
+	QUnit.test( "CPU-Controller at start without player", ( assert ) => {
 		assert.ok(elInterface.classList.contains('controller'), `#interface has "controller" class state`);
 		assert.ok(elInterface.classList.contains('no'), `#interface is in "no" class state`);
 		assert.equal(controllertag.CPU.audiotag, null, 'audiotag is null');
 		assert.deepEqual(controllertag.CPU.planeNames(), [], 'planeNames() should return an empty array');
 	});
 
-	QUnit.test( "Inserting a CPU-Audio made it replicated in the controller, if it still doesn't have an audiotag", function( assert ) {
-		assert.expect( 3 );
+	QUnit.test( "Inserting a CPU-Audio made it replicated in the controller, if it still doesn't have an audiotag", (assert) => {
+		assert.expect( 4 );
 		let done = assert.async();
-		document.addEventListener('CPU_ready', function() {
+		document.addEventListener('CPU_ready', ({target}) => {
 			assert.ok(!elInterface.classList.contains('no'), `controller #interface doesn't have "no" class anymore`);
 			assert.equal(controllertag.CPU.shadowId('canonical').innerText, 'Hello', 'Title replicated');
-			assert.equal(controllertag.CPU.shadowId('canonical').href, 'http://perdu.com/', 'Canonical link replicated');
+			assert.equal(controllertag.CPU.shadowId('canonical').href, 'http://cpu.pm/', 'Canonical link replicated');
+			assert.ok(controllertag.CPU.audiotag.src.endsWith('tests-assets/blank.mp3'), 'Audiotag in controller got same source');
 			done();
 		}, {once: true});
 
-		playground.innerHTML = `<cpu-audio title="Hello" canonical="http://perdu.com/">
+		playground.innerHTML = `
+								<cpu-audio title="Hello" canonical="http://cpu.pm/">
 									<audio muted controls src="../tests-assets/blank.mp3">
-								</audio>
-							</cpu-audio>`;
+									</audio>
+								</cpu-audio>`;
 		let player_element = playground.querySelector('cpu-audio');
-
 	});	
+
+			/*
+	QUnit.test( "Removing a CPU-Audio should not stop CPU-Controller, audiotag goes persistent",(assert) => {
+		//assert.expect(1 );
+		//let done = assert.async();
+
+		document.addEventListener('CPU_removed', function() {
+			assert.equal(controllertag.CPU.shadowId('canonical').innerText, 'Hello', 'Title replicated');
+			assert.equal(controllertag.CPU.shadowId('canonical').href, 'http://perdu.com/', 'Canonical link replicated');
+			assert.equal(controllertag.CPU.audiotag.paused, false, 'Audiotag still playing');
+			done();
+		}, {once: true});
+
+		playground.innerHTML = `
+								<cpu-audio title="Hello" canonical="http://perdu.com/">
+									<audio muted controls src="../tests-assets/blank.mp3">
+									</audio>
+								</cpu-audio>`;
+		let player_element = playground.querySelector('cpu-audio');
+		player_element.remove();
+	});	
+			*/
 
 	// TODO : untitled audiotag in playlist should display "untitled" in <em>
 
