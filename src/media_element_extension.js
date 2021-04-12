@@ -127,12 +127,21 @@ export function normalizeSeekTime(audiotag, time_seeked) {
  * @param 		{any}				event 		...with it main parameter, usually an event
  */
 export function audiotagPreloadMetadata(audiotag, callback=null, event=null) {
-	audiotag.addEventListener(
-		'loadedmetadata',
-		() => {callback?.(event);},
-		oncePassiveEvent);
+	if (!audiotag) {
+		return;
+	}
+	if (audiotag.readyState > audiotag.HAVE_NOTHING) {
+		callback?.(event);
+	}
+	if (callback) {
+		audiotag.addEventListener(
+			'loadedmetadata',
+			() => {callback?.(event);},
+			oncePassiveEvent);
+	}
 	// loading metadata. May not work on Apples
-	audiotag.setAttribute('preload', 'metadata');
+	//audiotag.setAttribute('preload', 'metadata');
+	audiotag.load();
 }
 
 /**
