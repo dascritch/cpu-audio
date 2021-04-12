@@ -119,7 +119,7 @@ function _retarget_src_files() {
 
 function _clean_too_old() {
 	SRC_FILE=${1}
-	TMP_FILE=${1}
+	TMP_FILE=${2}
 	if [ "${TMP_FILE}" -ot "${SRC_FILE}" ]; then
 		echo "${TMP_FILE} needs refresh"
 		rm ${TMP_FILE}
@@ -215,6 +215,7 @@ function _recreate_index() {
 
 function build() {
 	_retarget_src_files ${THEME_NAME}
+	_clean
 	_build_template
 	_build_component_js_webpack
 }
