@@ -133,13 +133,14 @@ export function audiotagPreloadMetadata(audiotag, callback=null, event=null) {
 	if (audiotag.readyState > audiotag.HAVE_NOTHING) {
 		callback?.(event);
 	}
+	// loading metadata. May not work on Apples : 'loadedmetadata'
 	if (callback) {
 		audiotag.addEventListener(
 			'loadedmetadata',
 			() => {callback?.(event);},
 			oncePassiveEvent);
 	}
-	// loading metadata. May not work on Apples
+	
 	//audiotag.setAttribute('preload', 'metadata');
 	audiotag.load();
 }

@@ -1,5 +1,6 @@
-import {passiveEvent, findCPU, preventLinkOnSamePage} from './utils.js';
+import {passiveEvent, oncePassiveEvent, findCPU, preventLinkOnSamePage} from './utils.js';
 import {trigger} from './trigger.js';
+import {audiotagPreloadMetadata} from './media_element_extension.js';
 import {pressManager} from './finger_manager.js';
 import {buildChaptersLoader} from './build_chapters.js';
 import {buildPlaylist} from './build_playlist.js';
@@ -19,6 +20,7 @@ function nativeShare(event) {
 	event.preventDefault();
 }
 
+
 /**
  * @private, because at start
  *
@@ -28,6 +30,8 @@ function nativeShare(event) {
  */
 export function buildInterface(elCPU) {
 	const interface_classlist = elCPU.shadowId('interface').classList;
+
+	elCPU.container.addEventListener('pointerenter', () => { audiotagPreloadMetadata(elCPU.audiotag); }, oncePassiveEvent);
 
 	// hide broken image while not loaded
 	elCPU.shadowId('poster')?.addEventListener('load', () => {
