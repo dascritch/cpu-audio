@@ -49,7 +49,7 @@ export function buildPlaylist(wasFocusedId) {
 			});
 			*/
 			pointDataGroup[audiotag_id] = {
-				text : document.getElementById(audiotag_id)?.dataset.title, 
+				text : document.getElementById(audiotag_id)?.dataset.title, // TODO "untitled"
 				link : `#${audiotag_id}&t=0`
 			};
 		}

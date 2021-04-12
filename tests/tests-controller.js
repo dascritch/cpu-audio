@@ -38,6 +38,7 @@ window.addEventListener('load', function() {
 	QUnit.test( "CPU-Controller at start without player", function( assert ) {
 		assert.ok(elInterface.classList.contains('no'), `#interface is in "no" class state`);
 		assert.equal(controllertag.CPU.audiotag, null, 'audiotag is null');
+		assert.deepEqual(controllertag.CPU.planeNames(), [], 'planeNames() should return an empty array');
 	});
 
 	QUnit.test( "Inserting a CPU-Audio made it replicated in the controller", function( assert ) {
@@ -49,5 +50,6 @@ window.addEventListener('load', function() {
 		assert.ok(!elInterface.classList.contains('no'), `controller #interface doesn't have "no" class anymore`);
 	});	
 
+	// TODO : untitled audiotag in playlist should display "untitled" in <em>
 
 });

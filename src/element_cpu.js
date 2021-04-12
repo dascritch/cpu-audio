@@ -768,7 +768,8 @@ export class CPU_element_api {
 	planeNames() {
 		// TODO : we need a way to order them, see #123 https://github.com/dascritch/cpu-audio/issues/123
 		// BUG we may have duplicates, it can happens even with protections in addPlane() 
-		return Object.keys(this._planes).concat(Object.keys(this.audiotag._CPU_planes));
+		// BUG will crash if no audiotag
+		return Object.keys(this._planes).concat(Object.keys(this.audiotag?._CPU_planes ?? {}));
 	}
 
 	/**
@@ -779,7 +780,7 @@ export class CPU_element_api {
 	 * @return     {Object}                 data of the plane
 	 */
 	plane(planeName) {
-		return this._planes[planeName] ?? this.audiotag._CPU_planes[planeName];
+		return this._planes[planeName] ?? this.audiotag?._CPU_planes[planeName];
 	}
 
 	/**
