@@ -3,6 +3,7 @@ import {isAudiotagStreamed, audiotagPreloadMetadata, audiotagDuration, uncertain
 import {timeInSeconds} from './convert.js';
 import {buildPlaylist} from './build_playlist.js';
 import {planeAndPointNamesFromId} from './element_cpu.js';
+import {switchControllerTo} from './cpu_controller.class.js';
 
 const KEY_LEFT_ARROW = 37;
 const KEY_RIGHT_ARROW = 39;
@@ -43,29 +44,6 @@ function playOnceUnlock(event, audiotag) {
 		trigger.play(event, audiotag);
 	}
 }
-
-/**
- * @summary When a <cpu-audio> plays, attach it to the eventual <cpu-controller>
- * @private
- *
- * @param      {audiotag}  HTMLAudioElement   The playing <audio> tag
- */
-function switchControllerTo(audiotag) {
-	const globalController = document.CPU.globalController;
-	if (!globalController) {
-		return;
-	}
-	if  (!audiotag.isEqualNode(globalController.audiotag)) {
-		const wasFocused = globalController.focusedId();
-		globalController.attachAudiotagToInterface(audiotag);
-		// globalController.audiotag = audiotag; unuseful : done upper
-		globalController.showMain();
-		globalController.redrawAllPlanes();
-		globalController.setMode(); 	// to switch back the display between streamed/not-str medias
-		buildPlaylist(wasFocused);
-	}
-}
-
 
 export const trigger = {
 

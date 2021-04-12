@@ -43,14 +43,16 @@ window.addEventListener('load', function() {
 	});
 
 	QUnit.test( "Inserting a CPU-Audio made it replicated in the controller, if it still doesn't have an audiotag", function( assert ) {
-		assert.expect( 1 );
+		assert.expect( 3 );
 		let done = assert.async();
 		document.addEventListener('CPU_ready', function() {
 			assert.ok(!elInterface.classList.contains('no'), `controller #interface doesn't have "no" class anymore`);
+			assert.equal(controllertag.CPU.shadowId('canonical').innerText, 'Hello', 'Title replicated');
+			assert.equal(controllertag.CPU.shadowId('canonical').href, 'http://perdu.com/', 'Canonical link replicated');
 			done();
 		}, {once: true});
 
-		playground.innerHTML = `<cpu-audio title="Hello">
+		playground.innerHTML = `<cpu-audio title="Hello" canonical="http://perdu.com/">
 									<audio muted controls src="../tests-assets/blank.mp3">
 								</audio>
 							</cpu-audio>`;

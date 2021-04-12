@@ -1,7 +1,30 @@
 import {CpuAudioTagName, CpuControllerTagName, selectorAcceptable, notScreenContext, findCPU, info, warn, } from './utils.js';
 import {template} from '../tmp/insert_template.js';
 import {CPU_element_api} from './element_cpu.js';
+import {buildPlaylist} from './build_playlist.js';
 
+
+/**
+ * @summary When a <cpu-audio> plays, attach it to the eventual <cpu-controller>
+ * @private
+ *
+ * @param      {audiotag}  HTMLAudioElement   The playing <audio> tag
+ */
+export function switchControllerTo(audiotag) {
+	const globalController = document.CPU.globalController;
+	if (!globalController) {
+		return;
+	}
+	if  (!audiotag.isEqualNode(globalController.audiotag)) {
+		const wasFocused = globalController.focusedId();
+		globalController.attachAudiotagToInterface(audiotag);
+		// globalController.audiotag = audiotag; unuseful : done upper
+		globalController.showMain();
+		globalController.redrawAllPlanes();
+		globalController.setMode(); 	// to switch back the display between streamed/not-str medias
+		buildPlaylist(wasFocused);
+	}
+}
 
 /**
  * @summary Interprets if <cpu-audio>/<cpu-controller> element is modified

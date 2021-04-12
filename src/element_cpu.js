@@ -5,6 +5,7 @@ import {secondsInColonTime, secondsInTime, durationIso} from './convert.js';
 import {translateVTT} from './translate_vtt.js';
 import {trigger} from './trigger.js';
 import {isAudiotagStreamed, audiotagDuration, uncertainDuration, addIdToAudiotag, audiotagPreloadMetadata} from './media_element_extension.js';
+import {switchControllerTo} from './cpu_controller.class.js';
 import {buildInterface} from './build_interface.js';
 import {cuechange_event} from './build_chapters.js';
 
@@ -142,6 +143,12 @@ export class CPU_element_api {
 
 		// only used for CPU-CONTROLLER, for playlist
 		this._planes = {};
+
+		let globalController = document.CPU.globalController
+		if ((this.audiotag) && (document.CPU.globalController) && (!globalController.audiotag)) {
+			// CPU-Controller was intancied before any audiotag was available
+			switchControllerTo(this.audiotag);
+		}
 
 		if (!this.audiotag) { // Implicitely a CPU-CONTROLLER
 			this.isController = true;
