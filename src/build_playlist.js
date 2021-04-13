@@ -7,6 +7,54 @@ export const plane_playlist = '_playlist';
 /**
  * @private
  */
+export function addToPlaylist(audiotag) {
+	if (typeof(audiotag.dataset.playlist) === 'string') {
+		const playlist_name = audiotag.dataset.playlist;
+		if (!(playlist_name in document.CPU.playlists)) {
+			document.CPU.playlists[playlist_name] = [];
+		}
+		// TODO do not rerecord id if already in this playlist. Remove from other playlists
+		// TODO LATER, remove id when cpu-audio or audiotag removed
+		document.CPU.playlists[playlist_name].push(audiotag.id);
+
+		// refresh controller playlist if any
+		const globalController = document.CPU.globalController;
+		if ((globalController) && (playlist_name === document.CPU.currentPlaylistID())) {
+			buildPlaylist();
+		}
+	}
+}
+
+/**
+ * @private
+ */
+export function removeOfPlaylists({id}) {
+	// Is it the good place to remove the playlist reference ?
+	const playlists = document.CPU.playlists;
+	const currentPlaylistID = document.CPU.currentPlaylistID();
+	let redraw = false;
+	// remove reference in playlists
+	for (let index in playlists) {
+		const previous_length = playlists[index].length;
+		const out = playlists[index].filter(entry_id => entry_id !== id);
+		if ( (previous_length !== out.length) && (index === currentPlaylistID)) {
+			redraw = true;
+		}
+		document.CPU.playlists[index] = out;
+		if (out.length === 0) {
+			delete document.CPU.playlists[index];
+		}
+	}
+	if (redraw) {
+		buildPlaylist();
+	}
+}
+
+
+
+/**
+ * @private
+ */
 export function rePointsPlaylist() {
 // TODO check if focus in playlist pane
 	const globalController = document.CPU.globalController;

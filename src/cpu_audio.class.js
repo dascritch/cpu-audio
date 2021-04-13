@@ -3,7 +3,7 @@ import {CpuControllerElement} from './cpu_controller.class.js';
 import {connectAudiotag} from './media_element_extension.js';
 import {timeInSeconds} from './convert.js';
 import {build_chapters} from './build_chapters.js';
-import {rePointsPlaylist} from './build_playlist.js';
+import {removeOfPlaylists, rePointsPlaylist} from './build_playlist.js';
 
 
 /**
@@ -91,20 +91,8 @@ export class CpuAudioElement extends CpuControllerElement {
 			globalController.element.appendChild(this.audiotag);
 		} else {
 			if (playlist_id) {
-				// Is it the good place to remove the playlist reference ?
-				const playlists = document.CPU.playlists;
-				// remove reference in playlists
-				for (let index in playlists) {
-					const out = playlists[index].filter(entry_id => entry_id !== this.audiotag.id);
-					document.CPU.playlists[index] = out;
-					if (out.length === 0) {
-						delete document.CPU.playlists[index];
-					}
-				}
+				removeOfPlaylists(this.audiotag);
 			}
-		}
-		if (document.CPU.currentPlaylistID() === playlist_id) {
-			rePointsPlaylist();
 		}
 		super.disconnectedCallback();
 	}
