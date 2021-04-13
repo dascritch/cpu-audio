@@ -1,6 +1,3 @@
-REMONTER LA VERSION HISTORY DES RELASE
-
-
 RELEASE NOTES actual, 6.99.4
 ============================
 
