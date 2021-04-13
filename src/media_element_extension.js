@@ -213,7 +213,7 @@ export function connectAudiotag(audiotag) {
 
 		// refresh controller playlist if any
 		let globalController = document.CPU.globalController;
-		if ((globalController) && (playlist_name === document.CPU.currentPlaylist())) {
+		if ((globalController) && (playlist_name === document.CPU.currentPlaylistID())) {
 			buildPlaylist();
 		}
 	}

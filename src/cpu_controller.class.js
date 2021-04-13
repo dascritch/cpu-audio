@@ -1,8 +1,7 @@
 import {CpuAudioTagName, CpuControllerTagName, selectorAcceptable, notScreenContext, findCPU, warn, info } from './utils.js';
 import {template} from '../tmp/insert_template.js';
 import {CPU_element_api} from './element_cpu.js';
-import {buildPlaylist} from './build_playlist.js';
-
+import {buildPlaylist, rePointsPlaylist} from './build_playlist.js';
 
 /**
  * @summary When a <cpu-audio> plays, attach it to the eventual <cpu-controller>
@@ -40,13 +39,21 @@ function modifiedController([{target}]) {
 	const component = elCPU.element;
 	const media_tagname = 'audio';
 	const audio_element = component.querySelector(media_tagname);
+	const globalController = document.CPU.globalController;
 	if ((!audio_element) && (component.tagName !== CpuControllerTagName)) {
-		info(`<${media_tagname} #${audio_element.id}> element was removed.`);		
+		info(`<${media_tagname}> element was removed.`);		
 		component.remove();
+		if (globalController) {
+			rePointsPlaylist();
+		}
 		return;
 	}
 	component.copyAttributesToMediaDataset?.();
 	elCPU.attributesChanges();
+
+	if (document.CPU.currentPlaylistID() === audio_element?.dataset.playlist) {
+		rePointsPlaylist();
+	}
 }
 
 /**

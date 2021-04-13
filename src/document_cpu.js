@@ -174,7 +174,7 @@ export const DocumentCPU = {
 
 
 	/**
->	 * @summary Return the current playing playlist array
+	 * @summary Return the current playing playlist array
 	 * @public
 	 *
 	 * @return     {Array}  Array with named id
@@ -191,5 +191,25 @@ export const DocumentCPU = {
 			}
 		}
 		return [];
+	},
+
+	/**
+	 * @summary Return the current playing playlist ID
+	 * @public
+	 *
+	 * @return     string|null		Named id
+	 */
+	currentPlaylistID : function() {
+
+		let current_audiotag = this.globalController?.audiotag;
+		if (!current_audiotag) {
+			return [];
+		}
+		for (let playlist_name of Object.keys(this.playlists)) {
+			if (this.playlists[playlist_name].includes(current_audiotag.id)) {
+				return playlist_name;
+			}
+		}
+		return null;
 	}
 };

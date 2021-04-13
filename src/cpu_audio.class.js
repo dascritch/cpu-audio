@@ -3,6 +3,7 @@ import {CpuControllerElement} from './cpu_controller.class.js';
 import {connectAudiotag} from './media_element_extension.js';
 import {timeInSeconds} from './convert.js';
 import {build_chapters} from './build_chapters.js';
+import {rePointsPlaylist} from './build_playlist.js';
 
 
 /**
@@ -49,10 +50,10 @@ export class CpuAudioElement extends CpuControllerElement {
 			this.remove();
 			return ;
 		}
-		// copying personalized data to audio tag
+		// copying personalized data to audio tag for persistence
 		for (let key in document.CPU.defaultDataset) {
 			if (this.hasAttribute(key)) {
-				let value = this.getAttribute(key);
+				const value = this.getAttribute(key);
 				this.audiotag.dataset[key] = (key !== 'duration') ? value : timeInSeconds(value);
 			}
 		}
@@ -75,25 +76,35 @@ export class CpuAudioElement extends CpuControllerElement {
 			attributes	: true,
 			subtree		: true
 		});
+
+		if (document.CPU.currentPlaylistID() === this.audiotag.dataset.playlist) {
+			rePointsPlaylist();
+		}
 	}
 
 	disconnectedCallback() {
 		const globalController = document.CPU.globalController;
+		const playlist_id = this.audiotag.dataset.playlist;
 		if ((this.audiotag) && (globalController) && (this.audiotag.isEqualNode(globalController.audiotag))) {
 			// we mode the audiotag into the global controller to keep the continuity status.
 			// This audiotag will be released at the next switchControllerTo() call
 			globalController.element.appendChild(this.audiotag);
-		}
-		if (this.audiotag?.id)  {
-			const playlists = document.CPU.playlists;
-			// remove reference in playlists
-			for (let index in playlists) {
-				const out = playlists[index].filter(entry_id => entry_id !== this.audiotag.id);
-				document.CPU.playlists[index] = out;
-				if (out.length === 0) {
-					delete document.CPU.playlists[index];
+		} else {
+			if (playlist_id) {
+				// Is it the good place to remove the playlist reference ?
+				const playlists = document.CPU.playlists;
+				// remove reference in playlists
+				for (let index in playlists) {
+					const out = playlists[index].filter(entry_id => entry_id !== this.audiotag.id);
+					document.CPU.playlists[index] = out;
+					if (out.length === 0) {
+						delete document.CPU.playlists[index];
+					}
 				}
 			}
+		}
+		if (document.CPU.currentPlaylistID() === playlist_id) {
+			rePointsPlaylist();
 		}
 		super.disconnectedCallback();
 	}

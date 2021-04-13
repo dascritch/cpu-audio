@@ -1013,9 +1013,14 @@ export class CPU_element_api {
 	 * @param      {string}   planeName     The plane name
 	 */
 	planeSort(planeName) {
+		const old_points = this.planePoints(planeName);
+		if (!old_points) {
+			return ;
+		}
+
 		this.plane(planeName).points =  Object.fromEntries( 
 								Object.entries(
-							    	this.planePoints(planeName)
+									old_points							    	
 								).sort(
 							    	([, point_a], [, point_b]) => {
 							    		return point_a.start - point_b.start;

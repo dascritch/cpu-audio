@@ -49,6 +49,7 @@ jumpIdAt(hash, timecode)         | 	                             	| will jump th
 seekElementAt(audiotag, seconds) |                               	| will jump the `<audio>` to a position in seconds (number only)
 findCPU(child)             		 | CpuAudioElement.`CPU` or `null`	| For any `<audio>` tag or its child tag, will returns the element `CPU` API
 currentPlaylist()                | array                       		| Returns an array of the current playing playlist
+currentPlaylistID()				 | string or `null`					| Returns the name of the current playing playlist
 adjacentKey(object, key, offset) | string or `null`					| Returns the adjacent key of a key in an object (offset -1 for previous, +1 for next)
 
 Some methods are still not documented, for internal usage, as they may evolve.
