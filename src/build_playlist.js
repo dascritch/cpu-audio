@@ -36,7 +36,7 @@ export function removeOfPlaylists({id}) {
 	// remove reference in playlists
 	for (let index in playlists) {
 		const previous_length = playlists[index].length;
-		const out = playlists[index].filter(entry_id => entry_id !== id);
+		const out = playlists[index].filter(entry_id => ((entry_id !== id) && (document.getElementById(entry_id)) ));
 		if ( (previous_length !== out.length) && (index === currentPlaylistID)) {
 			redraw = true;
 		}
@@ -71,12 +71,6 @@ export function rePointsPlaylist() {
 	}
 
 	for (let audiotag_id of current_playlist) {
-		// TODO : when audiotag not here, do not add point
-		/*container.addPoint(plane_playlist, audiotag_id, {
-			text : document.getElementById(audiotag_id)?.dataset.title, 
-			link : `#${audiotag_id}&t=0`
-		});
-		*/
 		pointDataGroup[audiotag_id] = {
 			text : document.getElementById(audiotag_id)?.dataset.title, // TODO "untitled"
 			link : `#${audiotag_id}&t=0`

@@ -1,7 +1,7 @@
 import {CpuAudioTagName, CpuControllerTagName, selectorAcceptable, notScreenContext, findCPU, warn, info } from './utils.js';
 import {template} from '../tmp/insert_template.js';
 import {CPU_element_api} from './element_cpu.js';
-import {buildPlaylist, rePointsPlaylist} from './build_playlist.js';
+import {removeOfPlaylists, buildPlaylist, rePointsPlaylist} from './build_playlist.js';
 
 /**
  * @summary When a <cpu-audio> plays, attach it to the eventual <cpu-controller>
@@ -17,7 +17,11 @@ export function switchControllerTo(audiotag) {
 
 	if (!audiotag.isEqualNode(globalController.audiotag)) {
 		// remove previous orphan audio tag
-		document.CPU.globalController.element.querySelector('audio')?.remove();
+		const previous_audiotag = document.CPU.globalController.element.querySelector('audio');
+		if (previous_audiotag) {
+			removeOfPlaylists(previous_audiotag);
+			previous_audiotag.remove();
+		}
 
 		const wasFocused = globalController.focusedId();
 		globalController.attachAudiotagToInterface(audiotag);
