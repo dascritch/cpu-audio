@@ -2,9 +2,6 @@
 
 /**
 TODO
-- customValidator when time is before zero or upper than the duration
-- add on the fly generated spectrogram
-- do not enter a timeline greater than duration
 - when unfolding generators, expanded panels should be also scrolled to
 **/
 
