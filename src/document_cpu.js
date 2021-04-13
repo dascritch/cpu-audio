@@ -109,7 +109,6 @@ export const DocumentCPU = {
 
 		let audiotag = /** @type {HTMLAudioElement} */ ( (hash !== '') ? document.getElementById(hash)  :  document.querySelector(selectorAudioInComponent) );
 
-		//if ((audiotag == null) || (audiotag.currentTime === undefined)) {
 		if ( ( audiotag?.currentTime ?? null ) == null ) {
 			warn(`Unknow audiotag ${hash}`);
 			return;

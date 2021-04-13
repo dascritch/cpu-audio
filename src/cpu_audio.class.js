@@ -84,7 +84,6 @@ export class CpuAudioElement extends CpuControllerElement {
 			// This audiotag will be released at the next switchControllerTo() call
 			globalController.element.appendChild(this.audiotag);
 		}
-
 		if (this.audiotag?.id)  {
 			const playlists = document.CPU.playlists;
 			// remove reference in playlists

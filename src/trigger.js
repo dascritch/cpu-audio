@@ -189,7 +189,6 @@ export const trigger = {
 		const {target, offsetX, at} = event;
 		const DocumentCPU = document.CPU;
 		const audiotag = findCPU(target).audiotag;
-
 		// We know the media length¸because the event is faked → normal execution. 
 		if (at >= 0) {
 			DocumentCPU.seekElementAt(audiotag, at);
@@ -207,7 +206,7 @@ export const trigger = {
 		}
 
 		// we may have improper duration due to a streamed media, so let's start directly !
-		trigger.play(event);
+		trigger.play(event, audiotag);
 		if (uncertainDuration(duration)) {
 			// Correct play from position on the timeline when metadata not preloaded #88
 			// indicate we are loading something. We set a full width bar
@@ -265,12 +264,9 @@ export const trigger = {
 			return;
 		}
 		audiotag = audiotag ?? findCPU(event.target).audiotag;
-
 		lastPlayError = false;
 		removeTimecodeOutOfBorders(audiotag.currentTime);
-
 		let promised = audiotag.play();
-
 		if (promised) {
 			promised.then(
 				() => {

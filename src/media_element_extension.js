@@ -1,4 +1,4 @@
-import {CpuAudioTagName, dynamicallyAllocatedIdPrefix, browserIsDecent, passiveEvent, oncePassiveEvent} from './utils.js';
+import {CpuAudioTagName, CpuControllerTagName, dynamicallyAllocatedIdPrefix, browserIsDecent, passiveEvent, oncePassiveEvent} from './utils.js';
 import {trigger, lastPlayError} from './trigger.js';
 import {buildPlaylist} from './build_playlist.js';
 
@@ -227,7 +227,7 @@ export function connectAudiotag(audiotag) {
  * @return     {Element}  <cpu-audio> DOM element
  */
 HTMLAudioElement.prototype.CPU_controller = function() {
-	return this.closest(CpuAudioTagName);
+	return this.closest(CpuAudioTagName) ?? this.closest(CpuControllerTagName);
 };
 
 /**

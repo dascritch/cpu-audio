@@ -31,10 +31,6 @@ function nativeShare(event) {
 export function buildInterface(elCPU) {
 	const interface_classlist = elCPU.shadowId('interface').classList;
 
-	elCPU.container.addEventListener('pointerenter', () => { 
-		audiotagPreloadMetadata(elCPU.audiotag);
-	}, oncePassiveEvent);
-
 	// hide broken image while not loaded
 	elCPU.shadowId('poster')?.addEventListener('load', () => {
 		interface_classlist.add('poster-loaded');
@@ -92,6 +88,11 @@ export function buildInterface(elCPU) {
 		// <cpu-controller> without <cpu-audio> , see https://github.com/dascritch/cpu-audio/issues/91
 		return;
 	}
+
+
+	elCPU.container.addEventListener('pointerenter', () => { 
+		audiotagPreloadMetadata(elCPU.audiotag);
+	}, oncePassiveEvent);
 
 	elCPU.audiotag.addEventListener('durationchange', () => {elCPU.repositionTracks(); }, passiveEvent);
 

@@ -1,4 +1,4 @@
-import {CpuAudioTagName, CpuControllerTagName, selectorAcceptable, notScreenContext, findCPU, info, warn, } from './utils.js';
+import {CpuAudioTagName, CpuControllerTagName, selectorAcceptable, notScreenContext, findCPU, warn } from './utils.js';
 import {template} from '../tmp/insert_template.js';
 import {CPU_element_api} from './element_cpu.js';
 import {buildPlaylist} from './build_playlist.js';
@@ -16,10 +16,10 @@ export function switchControllerTo(audiotag) {
 		return;
 	}
 
-	// remove previous orphan audio tag
-	document.CPU.globalController.element.querySelector('audio')?.remove();
-
 	if (!audiotag.isEqualNode(globalController.audiotag)) {
+		// remove previous orphan audio tag
+		document.CPU.globalController.element.querySelector('audio')?.remove();
+
 		const wasFocused = globalController.focusedId();
 		globalController.attachAudiotagToInterface(audiotag);
 		// globalController.audiotag = audiotag; unuseful : done upper
@@ -41,11 +41,10 @@ function modifiedController([{target}]) {
 	const media_tagname = 'audio';
 	const audio_element = component.querySelector(media_tagname);
 	if ((!audio_element) && (component.tagName !== CpuControllerTagName)) {
-		info(`<${media_tagname}> element was removed.`);
+		info(`<${media_tagname} #${audio_element.id}> element was removed.`);		
 		component.remove();
 		return;
 	}
-
 	component.copyAttributesToMediaDataset?.();
 	elCPU.attributesChanges();
 }
@@ -111,6 +110,7 @@ export class CpuControllerElement extends HTMLElement {
 	}
 
 	disconnectedCallback() {
+		this.observer.disconnect();
 		this.CPU.emitEvent('removed');
 		if ((this.tagName === CpuControllerTagName) && (document.CPU.globalController)) {
 			document.CPU.globalController = null;
