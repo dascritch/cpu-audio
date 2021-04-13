@@ -4,10 +4,6 @@
   contain: content;
 }
 
-#interface {
-	--cpu-timeline-height : 10px;
-}
-
 #interface, * {
 	font-family : var(--cpu-font-family);
 	font-size : var(--cpu-font-size);
@@ -37,13 +33,9 @@ button {
 	display : flex;
 	flex-direction: column;
 	overflow : hidden;
-	width : var(--cpu-height);
-	height: var(--cpu-height);
+	max-width : var(--cpu-height);
+	max-height: var(--cpu-height);
 	text-align : center;
-}
-
-button:focus {
-	outline : var(--cpu-focus-outline); 
 }
 
 svg {
@@ -56,8 +48,8 @@ svg {
 
 #poster {
 	display: block;
-	height: 530px;
-	width: 530px;
+	/*height: 530px;*/
+	max-width: 530px;
 	margin: 10px 35px;
 	object-fit: contain;
 	opacity : 0;
@@ -70,7 +62,6 @@ svg {
 h5 {
 	font-weight: bold;
 }
-
 
 .no,
 .mode-hidden,
@@ -123,7 +114,6 @@ svg {
 	display : flex;
 	flex-direction: row;
 	height : 32px;
-	width : 530px;
 	align-items: center;
 	margin : 0 35px;
 }
@@ -140,6 +130,3 @@ svg {
 #elapse span {
 	vertical-align : middle;
 }
-
-
-

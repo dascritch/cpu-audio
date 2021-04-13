@@ -24,7 +24,7 @@ audio[controls] {
 @media (max-width: 640px) {
 	:root , .interface {
 		--cpu-font-size : 13px;
-		--cpu-height : 480px;
+		--cpu-height : 100%;
 	}
 
 }
