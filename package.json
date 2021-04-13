@@ -39,6 +39,7 @@
     "eslint-webpack-plugin": "^2.5.2",
     "html-minifier": "^4.0.0",
     "node-qunit-puppeteer": "^2.0.3",
+    "npm": "^7.9.0",
     "qunit": "^2.14.0",
     "terser-webpack-plugin": "^5.1.1",
     "webpack": "^5.28.0"
