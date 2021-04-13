@@ -424,8 +424,8 @@ export const trigger = {
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	prevcue : function(event) {
-		playRelativeCueInPlayer(findCPU(event.target), -1);
+	prevcue : function({target}) {
+		playRelativeCueInPlayer(findCPU(target), -1);
 	},
 
 	/**
@@ -433,8 +433,8 @@ export const trigger = {
 	 *
 	 * @param      {Object}  event   The event
 	 */
-	nextcue : function(event) {
-		playRelativeCueInPlayer(findCPU(event.target), 1);
+	nextcue : function({target}) {
+		playRelativeCueInPlayer(findCPU(target), 1);
 	},
 
 	/**

@@ -46,8 +46,10 @@ export function buildInterface(elCPU) {
 		poster     : () => {elCPU.showMain();},
 		restart    : trigger.restart,
 		toggleplay : trigger.toggleplay,
+		prevcue    : trigger.prevcue,
+		nextcue    : trigger.nextcue,
 		prevtrack  : trigger.prevtrack,
-		nexttrack  : trigger.nexttrack
+		nexttrack  : trigger.nexttrack,
 	};
 	for (let elementId in cliquables) {
 		elCPU.shadowId(elementId)?.addEventListener('click', cliquables[elementId], passiveEvent);
@@ -55,7 +57,7 @@ export function buildInterface(elCPU) {
 
 	// relative browsing buttons management
 	//  *ward : handheld nav to allow long press to repeat action
-	const _buttons = ['prevcue', 'fastreward', 'reward', 'foward', 'fastfoward', 'nextcue'];
+	const _buttons = ['fastreward', 'reward', 'foward', 'fastfoward'];
 	for (let elementId of _buttons) {
 		const button_element = elCPU.shadowId(elementId);
 		button_element?.addEventListener('pointerdown', pressManager.press);
