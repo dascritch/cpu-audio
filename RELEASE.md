@@ -10,6 +10,7 @@ RELEASE NOTES actual, 6.99.4
 New features
 ------------
 
+ * Persistant `<CPU-Controller>` for single page web-app, with current playing remanence ([#87](#87))
  * Added a [theme with a direct download button](examples/Build_with_download_action.html), instead of the action button. Example for creating graphic theme ([#56](#56))
  * Added a [theme with a simple big square button](examples/Theme_big-square.html). Example for creating leaner graphic theme ([#56](#56))
  * Possibility to create themed versions with specific html and css files ([#56](#56))
