@@ -1,10 +1,10 @@
 import {escapeHtml} from './utils.js';
 
-let acceptables_tags = {
+const acceptables_tags = {
 	i     : 'i',
 	em    : 'em', 	// (not in the standard but used in legacy CPU.pm show)
 	b     : 'b',
-	bold  : 'strong', // (declared in the MDN page, but never saw it in standard pages)
+	bold  : 'strong', // (declared in the MDN page, but never seen it in standard pages)
 	u     : 'u',
 	lang  : 'i' 		// emphasis for typographic convention
 };
@@ -44,7 +44,7 @@ function opentag(tag, name, class_name, attribute) {
 		return '';
 	}
 	let $_attr = '';
-	if (name === 'lang') {
+	if (name == 'lang') {
 		$_attr = ` lang="${attribute.trim()}"`;
 	}
 	return `<${acceptables_tags[name]}${$_attr}>`;
