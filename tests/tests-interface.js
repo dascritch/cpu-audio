@@ -716,7 +716,9 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.equal(componenttag.CPU.translateVTT('Hello <a href=".">World</a>'), 'Hello World', 'remove <a href>');
 		assert.equal(componenttag.CPU.translateVTT('Hello\nWorld\nHow are you ?'), 'Hello<br/>World<br/>How are you ?', 'transform CR into <br>');
 		assert.equal(componenttag.CPU.translateVTT('♪ Johnny Mercer, Robert Emmet Dolan <em lang="en">featuring</em> Hedy Lamarr - <em>Just a moment more</em>'), '♪ Johnny Mercer, Robert Emmet Dolan <em>featuring</em> Hedy Lamarr - <em>Just a moment more</em>', 'A valid example with 2 consecutives <em> tags')
-		assert.equal(componenttag.CPU.translateVTT('♪ Johnny Mercer, Robert Emmet Dolan <em lang="en"<featuring</em> Hedy Lamarr - <em>Just a moment more</em>'), '♪ Johnny Mercer, Robert Emmet Dolan &lt;em lang="en"&lt;featuring&lt;/em&gt; Hedy Lamarr - &lt;em&gt;Just a moment more&lt;/em&gt;', 'An invalid example with unmatching < and >, replaced by html escapes')
+		assert.equal(componenttag.CPU.translateVTT('♪ Johnny Mercer, Robert Emmet Dolan <em lang="en"<featuring</em> Hedy Lamarr - <em>Just a moment more</em>'), '♪ Johnny Mercer, Robert Emmet Dolan &lt;em lang="en"&lt;featuring&lt;/em&gt; Hedy Lamarr - &lt;em&gt;Just a moment more&lt;/em&gt;', 'An invalid example with unmatching < and >, replaced by html escapes');
+		assert.equal(componenttag.CPU.translateVTT('Hello <i>World</i>', false), 'Hello <i>World</i>', 'revert mode pass-thru');
+		assert.equal(componenttag.CPU.translateVTT('Hello <strong.classname>World</strong>', false), 'Hello <b>World</b>', 'revert mode with substitution');
 	});
 
 	QUnit.test( "Download audio link ", function( assert ) {

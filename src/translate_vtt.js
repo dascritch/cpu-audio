@@ -1,6 +1,6 @@
 import {escapeHtml} from './utils.js';
 
-const acceptables_tags = {
+const acceptables_tags_normal = {
 	i     : 'i',
 	em    : 'em', 	// (not in the standard but used in legacy CPU.pm show)
 	b     : 'b',
@@ -8,6 +8,16 @@ const acceptables_tags = {
 	u     : 'u',
 	lang  : 'i' 		// emphasis for typographic convention
 };
+
+const acceptables_tags_revert = {
+	i     : 'i',
+	em    : 'i', 	// (correct  to the standard)
+	b     : 'b',
+	strong: 'b', 	// (correct  to the standard)
+	u     : 'u',
+};
+
+let acceptables_tags = acceptables_tags_normal;
 
 /**
  *
@@ -20,6 +30,7 @@ const acceptables_tags = {
 const vtt_opentag = /<(\w+)(\.[^>]+)?( [^>]+)?>/gi;
 const vtt_closetag = /<\/(\w+)( [^>]*)?>/gi;
 const vtt_cr = /\n/gi;
+const vtt_br = /<br\s*[^>]*>/gi;
 
 /**
  * Checks if a WebVTT candidate tag name is acceptable or not
@@ -68,9 +79,11 @@ function closetag(tag, name) {
  * (needed @public mainly for tests. Moving it up and do those tests in CLI will make it @private-izable)
  *
  * @param      {string}            vtt_taged  The vtt tagged
+ * @param      {boolean}           normal  	  Mode HTML→VTT if true, VTT→HTML if false (true by default)
  * @return     string                         HTML tagged string
  */
-export function translateVTT(vtt_taged) {
+export function translateVTT(vtt_taged, normal = true) {
+	acceptables_tags = normal ? acceptables_tags_normal : acceptables_tags_revert;
 
 	if ((vtt_taged.split('<').length) !== (vtt_taged.split('>').length)) {
 		// unmatching < and >, probably badly written tags, or in full text
@@ -78,8 +91,9 @@ export function translateVTT(vtt_taged) {
 		return escapeHtml(vtt_taged);
 	}
 
-	return vtt_taged.
+	const out = vtt_taged.
 			replace(vtt_opentag, opentag).
-			replace(vtt_closetag, closetag).
-			replace(vtt_cr, '<br/>');
+			replace(vtt_closetag, closetag);
+
+	return normal ? out.replace(vtt_cr, '<br/>') : out.replace(vtt_br, '\n');
 }

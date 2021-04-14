@@ -202,8 +202,8 @@ export class CPU_element_api {
 	 * @param      {string}            vtt_taged  The vtt tagged
 	 * @return     string                         HTML tagged string
      */
-	translateVTT(vtt_taged) {
-		return translateVTT(vtt_taged);
+	translateVTT(vtt_taged, normal) {
+		return translateVTT(vtt_taged, normal);
 	}
 
 	/**

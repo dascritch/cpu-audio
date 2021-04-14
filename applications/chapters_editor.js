@@ -414,9 +414,10 @@ function interpret_form(_event) {
         let number = 0;
         for (let {start, text} of array_points) {
             number++;
-            let end = convert.secondsInPaddledColonTime( (number < array_points.length) ? array_points[number].start : sound_element.duration );
+            const end = convert.secondsInPaddledColonTime( (number < array_points.length) ? array_points[number].start : sound_element.duration );
+            const vtt = sound_CPU.translateVTT(text, false);
             // TODO re-interpret tags from html to webvtt
-            out.push(`\n\nchapter-${number}\n${convert.secondsInPaddledColonTime(start)}.000 --> ${end}.000\n${text}`) 
+            out.push(`\n\nchapter-${number}\n${convert.secondsInPaddledColonTime(start)}.000 --> ${end}.000\n${vtt}`) 
         }
         return `WEBVTT FILE\n${out.join('')}\n`;
     }
@@ -514,3 +515,5 @@ document.addEventListener('CPU_ready', e => {
         }
     `);
 });
+
+
