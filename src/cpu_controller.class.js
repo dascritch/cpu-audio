@@ -121,6 +121,10 @@ export class CpuControllerElement extends HTMLElement {
 	}
 
 	disconnectedCallback() {
+		if (!this.observer) {
+			// was already deleted because instancied twice
+			return;
+		}
 		this.observer.disconnect();
 		this.CPU.emitEvent('removed');
 		if ((this.tagName === CpuControllerTagName) && (document.CPU.globalController)) {
