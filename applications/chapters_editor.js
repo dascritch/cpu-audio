@@ -319,7 +319,7 @@ function CPU_drawPoint({detail}) {
     elementPointTrack.addEventListener('mouseout', () => {cursor_out(pointName); });
     elementPointTrack.addEventListener('click', () => { show_only_line(pointName, true); });
 
-    elementPointTrack.addEventListener('pointerdown', () => { drag_start(elementPointTrack, pointName); });
+    elementPointTrack.addEventListener('pointerdown', (e) => { drag_start(elementPointTrack, pointName, e); });
 
     elementPointPanel.addEventListener('mouseover', () => { cursor_hover(pointName); });
     elementPointPanel.addEventListener('mouseout',() => { cursor_out(pointName); });
