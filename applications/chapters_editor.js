@@ -99,8 +99,6 @@ function histogram() {
             console.log(i)
         }
 
-
-
         let v = dataArray[i] / 128.0;
         let y = v * HEIGHT;
 
@@ -341,10 +339,9 @@ function escapeHtml(text) {
  *
  */
 function interpret_line(event=null, this_line_element=undefined) {
-    let start = convert.timeInSeconds( normalize_time(timecode_input.value) ?? '0' );
+    let start = convert.timeInSeconds( String(normalize_time(timecode_input.value)) ?? '0' );
     let _input = text_input.value ?? '';
     let text = _input;
-
     if (this_line_element) {
         start = normalize_time(this_line_element.time);
         text = this_line_element.text;
@@ -359,6 +356,7 @@ function interpret_line(event=null, this_line_element=undefined) {
         // no time code ? no text ? do not record it yet
         return ;
     }
+
     points[pointName_editing] =  { ...point_canvas, start, text, /* recall for text_input */ _input }
 
     sound_CPU.bulkPoints('cursors', points);
@@ -417,6 +415,7 @@ function interpret_form(_event) {
         for (let {start, text} of array_points) {
             number++;
             let end = convert.secondsInPaddledColonTime( (number < array_points.length) ? array_points[number].start : sound_element.duration );
+            // TODO re-interpret tags from html to webvtt
             out.push(`\n\nchapter-${number}\n${convert.secondsInPaddledColonTime(start)}.000 --> ${end}.000\n${text}`) 
         }
         return `WEBVTT FILE\n${out.join('')}\n`;
@@ -461,8 +460,6 @@ document.addEventListener('DOMContentLoaded', e => {
     edit_source_webvtt_element = document.getElementById('source_webvtt');
 
     /* Settings */
-    //edit_source_audio_element.addEventListener('change', set_source_audio);
-    //edit_source_webvtt_element.addEventListener('change', set_source_audio);
     document.querySelector('#configure').addEventListener('submit', check_configure);
 
     /* Building addedd events into CPU-audio panels */
