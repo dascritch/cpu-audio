@@ -708,14 +708,14 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.equal(componenttag.CPU.translateVTT('Hello <i>World</i>'), 'Hello <i>World</i>', 'bypass simple <i> tag');
 		assert.equal(componenttag.CPU.translateVTT('Hello <I>World</I>'), 'Hello <i>World</i>', 'Accept capitalized tags');
 		assert.equal(componenttag.CPU.translateVTT('Hello <i.classname>World</i>'), 'Hello <i>World</i>', 'remove classnames');
-		assert.equal(componenttag.CPU.translateVTT('Hello <em>World</em>'), 'Hello <em>World</em>', 'bypass <em>, used in some legacy CPU shows');
+		assert.equal(componenttag.CPU.translateVTT('Hello <i>World</i>'), 'Hello <i>World</i>', 'bypass <i>');
 		assert.equal(componenttag.CPU.translateVTT('Hello <b>World</b>'), 'Hello <b>World</b>', 'bypass <b>');
 		assert.equal(componenttag.CPU.translateVTT('Hello <bold>World</bold>'), 'Hello <strong>World</strong>', 'transform <bold> → <strong> (declared in the MDN page, but never seen in standards pages)');
 		assert.equal(componenttag.CPU.translateVTT('Hello <u>World</u>'), 'Hello <u>World</u>', 'bypass <u>');
 		assert.equal(componenttag.CPU.translateVTT('Hello <lang fr>Monde</lang>'), 'Hello <i lang="fr">Monde</i>', 'transform <lang xx> into <i lang="xx">, emphasis for typographic convention');
 		assert.equal(componenttag.CPU.translateVTT('Hello <a href=".">World</a>'), 'Hello World', 'remove <a href>');
 		assert.equal(componenttag.CPU.translateVTT('Hello\nWorld\nHow are you ?'), 'Hello<br/>World<br/>How are you ?', 'transform CR into <br>');
-		assert.equal(componenttag.CPU.translateVTT('♪ Johnny Mercer, Robert Emmet Dolan <em lang="en">featuring</em> Hedy Lamarr - <em>Just a moment more</em>'), '♪ Johnny Mercer, Robert Emmet Dolan <em>featuring</em> Hedy Lamarr - <em>Just a moment more</em>', 'A valid example with 2 consecutives <em> tags')
+		assert.equal(componenttag.CPU.translateVTT('♪ Johnny Mercer, Robert Emmet Dolan <em lang="en">featuring</em> Hedy Lamarr - <i>Just a moment more</i>'), '♪ Johnny Mercer, Robert Emmet Dolan <i>featuring</i> Hedy Lamarr - <i>Just a moment more</i>', 'A valid example with 2 consecutives <i> tags')
 		assert.equal(componenttag.CPU.translateVTT('♪ Johnny Mercer, Robert Emmet Dolan <em lang="en"<featuring</em> Hedy Lamarr - <em>Just a moment more</em>'), '♪ Johnny Mercer, Robert Emmet Dolan &lt;em lang="en"&lt;featuring&lt;/em&gt; Hedy Lamarr - &lt;em&gt;Just a moment more&lt;/em&gt;', 'An invalid example with unmatching < and >, replaced by html escapes');
 		assert.equal(componenttag.CPU.translateVTT('Hello <i>World</i>', false), 'Hello <i>World</i>', 'revert mode pass-thru');
 		assert.equal(componenttag.CPU.translateVTT('Hello <strong.classname>World</strong>', false), 'Hello <b>World</b>', 'revert mode with substitution');

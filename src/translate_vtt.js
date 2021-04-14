@@ -2,7 +2,7 @@ import {escapeHtml} from './utils.js';
 
 const acceptables_tags_normal = {
 	i     : 'i',
-	em    : 'em', 	// (not in the standard but used in legacy CPU.pm show)
+	em    : 'i',
 	b     : 'b',
 	bold  : 'strong', // (declared in the MDN page, but never seen it in standard pages)
 	u     : 'u',
@@ -11,9 +11,9 @@ const acceptables_tags_normal = {
 
 const acceptables_tags_revert = {
 	i     : 'i',
-	em    : 'i', 	// (correct  to the standard)
+	em    : 'i',
 	b     : 'b',
-	strong: 'b', 	// (correct  to the standard)
+	strong: 'b',
 	u     : 'u',
 };
 

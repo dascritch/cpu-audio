@@ -24,6 +24,7 @@ New features
  * [Wonderful example of React integration](https://github.com/scombat/react-cpu-audio) ([#120](#120))
  * [Attributes for the webcomponent can be live-changed](#128)
  * `<CPU-Controller>` has a specific CSS class ([#87](#87))
+ * WebVTT tag translation in chapters editor ([#152](#152))
 
 Corrections
 -----------
