@@ -686,17 +686,24 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.equal(secondary_API_CPU.pointTrack('hello', 'point2'), null , 'second point removed');
 	});
 
-/*  was working, but no more :/
+/*
 	QUnit.test( "hashOrder end,start create a “private” plane", function (assert){
 		assert.expect( 3 );
 		let done = assert.async();
+		audiotag.play();
 		assert.equal(componenttag.CPU.plane('_borders'), undefined, 'inexisting _borders plane on undefined end.');
+		audiotag.pause();
 		cpu.trigger.hashOrder('track&t=20,100', function() {
+			audiotag.play();
 			audiotag.CPU_update(); // may not be fired fast enough 
+			console.log(componenttag.CPU.audiotag?._CPU_planes);
 			assert.notEqual(componenttag.CPU.plane('_borders'), undefined, 'existing _borders plane on specified end.');
+			audiotag.pause();
 			cpu.trigger.hashOrder('track&t=40', function() {
+				audiotag.play();
 				audiotag.CPU_update();
 				assert.equal(componenttag.CPU.plane('_borders'), undefined, '_borders removed out of previous bordered time.');
+				audiotag.pause();
 				done();
 			});
 		});
