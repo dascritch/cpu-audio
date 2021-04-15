@@ -15,8 +15,8 @@ New features
  * Possibility to create RTL version ([#26](#26)) by this way ([#56](#56))
  * A11y : Support reduced motion preferences
  * Adding support for <kbd>↑</kbd> and <kbd>↓</kbd> keys, moving focus among panels
- * Adding support for prevcue/nextcue facultative buttons ([#108](#108))
- * Adding support for prevtrack/nexttrack facultative buttons ([#125](#125))
+ * Adding support for `prevcue`/`nextcue` facultative buttons ([#108](#108))
+ * Adding support for `prevtrack`/`nexttrack` facultative buttons ([#125](#125))
  * Added method `Element.CPU.bulkPoints()`
  * Some examples added
  * Degradable code, some elements are no more absolutely required in template ([#56](#56))
@@ -40,6 +40,7 @@ Corrections
  * Some accessibilities issues on keyboard behavior and time line ([#116](#116))
  * Don't hide nymore the mouse cursor over the time-line ([#133](#133))
  * Reduce repaints, graphic glitches
+ * An unuseful focusable was removed
  * Do not change color when changing mode play→loading→play ([#114](#114)) 
  * Resolving a probable issue on fine navigation panel on handheld
  * Play/pause button may have issues if Chrome got numerous webcomponents in the same page
