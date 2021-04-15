@@ -6,7 +6,7 @@ FAQ
 What means « CPU » in « CPU-Audio » ?
 -------------------------------------
 
-« CPU » Is the radio program I've started in 2015 with a bunch of friends for a local punk radio station (Radio FMR in Toulouse, France). « CPU » is the accronym for « Carré Petit Utile » (Square, Small, Useful).
+[« CPU » is the radio program](http://cpu.pm) I've started in 2015 [with a bunch of friends](https://cpu.dascritch.net/pages/Dev-team) for a [notorious local punk radio station (Radio FMR in Toulouse, France)](http://www.radio-fmr.net). **« CPU » is the accronym for « Carré Petit Utile » (Square, Small, Useful)**.
 
 This radio program was started with numerous projects, as some tools for producing, some liquid soap code for programming a radio feed with excerpts with tags and themes, and so, a rewrite for cpu-audio.js
 
@@ -16,7 +16,7 @@ In fact, the basis of cpu-audio.js are back from 2010, from my previous radio sh
 Why using URL ?
 ---------------
 
-Because URL is a standard, actually mesestimated. But it's universal, portable, for both local and internet usage. I wish people will start pointing some moment in an audio content of a webpage by giving a standard URL with a timecode in it.
+**Because URL is a standard**, actually mesestimated. But it's universal, portable, for both local and internet usage. I wish people will start pointing some moment in an audio content of a webpage by giving a standard URL with a timecode in it.
 
 
 Why have you done (x) choice ?
@@ -30,33 +30,37 @@ May be I didn't explained what is interesting you. Write me, I'll respond.
 The player is ugly
 ------------------
 
-Yes ! It is only a proof of concept. That why version 7 sports a theme system. I'm sure someone will do a very better looking one than mine !
+Yes ! It is only a proof of concept and I'm only a coder. **That why version 7 sports a theme system.** I'm sure someone will do a very better looking one than mine !
 
 
 You're talking about SoundClound in some code comments and tickets
 ------------------------------------------------------------------
 
-It's true.
+**It's true.**
 
-I'm piss of that musicians, benevolent radio producers and community reporters are using SoundCloud or (even worst) MixCloud. The main issue was commenting onsome time points. At this moment, Mastodon didn't start but we already have its decentralized system, and there also was a W3C standard written for comments in a webpage.
+I'm piss of that musicians, benevolent radio producers and community reporters are using SoundCloud or (even worst) MixCloud. Why don't they are opening their websites with their graphical universe and without profiling web habits from their fans ?
+
+The main issue was commenting on some time points to engage their community. At this moment, Mastodon didn't start but we already have its decentralized system, and there also was a W3C standard written for comments in a webpage.
 
 
 I want to use it in my (professionnal) service, but i'm needing help. Will you ?
 --------------------------------------------------------------------------------
 
-Yes, I can. And you can write me.
+Yes, **I can.** And you can write me.
 
 
 Is it portable to video ?
 -------------------------
 
-Yes.
+**Yes.**
 
 In fact, most of standards used in cpu-audio.js are simply polyfills because the `<audio>` tag is less considerated than the `<video>` grand-brother. 
 
 If someone needs it, I'm ready to work with him to complete.
 
+Who are you ?
+-------------
 
+A web dev from Toulouse, France, in the quest for a better code, better practices and a better web.
 
-Sincerely, Xavier Mouton-Dubosc
-aka "Da Scritch"
+Sincerely, Xavier Mouton-Dubosc, *aka* "Da Scritch".
