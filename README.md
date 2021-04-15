@@ -1,7 +1,7 @@
 CPU-Audio WebComponent
 ======================
 
-An audio WebComponent to provide an user-interface, timecoded links and some other features to an `<audio>` tag.
+[An audio WebComponent to provide an user-interface, timecoded links and some other features to an `<audio>` tag.](https://dascritch.github.io/cpu-audio/)
 
 <!-- calling the webcomponent -->
 <cpu-audio 
