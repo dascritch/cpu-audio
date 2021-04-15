@@ -25,6 +25,7 @@ New features
  * [Attributes for the webcomponent can be live-changed](#128)
  * `<CPU-Controller>` has a specific CSS class ([#87](#87))
  * WebVTT tag translation in chapters editor ([#152](#152))
+ * Added a [FAQ page](FAQ.md)
 
 Corrections
 -----------
