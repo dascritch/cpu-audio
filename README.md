@@ -29,11 +29,11 @@ When you load a page :
 
 During the page life :
 
-* if an `<audio controls>` anchor <a href="#sound&t=10m">is linked with a timecode, as `<a href="#sound&t=10m">`</a>, the service will play this tag at this timecode ;
+* if an `<audio controls>` anchor <a href="https://dascritch.github.io/cpu-audio/#sound&t=10m">is linked with a timecode, as `<a href="#sound&t=10m">`</a>, the service will play this tag at this timecode ;
 * no cacophony : when a `<audio controls>` starts, it will stop any other `<audio controls>` in the page ;
 * if you have a `<cpu-controller>` in your page, it will clone the playing `<cpu-audio>` interface.
 
-<a href="#sound&t=20m45s">This link starts the upper player at 20:45</a>, and a link can limit <a href="#sound&t=5s,7s">playing between a start (0:05) and end (0:08) marks</a>
+<a href="https://dascritch.github.io/cpu-audio/#sound&t=20m45s">This link starts the upper player at 20:45</a>, and a link can limit <a href="https://dascritch.github.io/cpu-audio/#sound&t=5s,7s">playing between a start (0:05) and end (0:08) marks</a>
 
 
 Features
@@ -97,6 +97,7 @@ Some links
     * [Live configuration](https://dascritch.github.io/cpu-audio/applications/live_config.html)
 * [JS installable code](https://github.com/dascritch/cpu-audio/blob/master/build/cpu-audio.js) 
 * [Code repository](https://github.com/dascritch/cpu-audio/), [Latest stable release](https://github.com/dascritch/cpu-audio/releases/latest)
+* [Frequently Asked Questions](https://github.com/dascritch/cpu-audio/blob/master/FAQ.md)
 * [How to participate to this project](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
 * Blog posts about its creation and development : [Série cpu-audio sur dascritch.net](https://dascritch.net/serie/cpu-audio)
 * [How to cite a podcast](https://www.buzzsprout.com/blog/cite-podcast), now you can support time positions URL
