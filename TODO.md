@@ -5,7 +5,6 @@ For release 7.1
 ---------------
 
  - On-the-fly generated spectrogram, as add-on and on the chapters_editor ([#117](#117))
- - Alternative fine browsing mode on Safari ([#150](#150))
  - Focus outline of WebComponent on Safari ([#151](#151))
  - Aria roles on fine position buttons
  - [Automated example page generated for each theme from make.sh #124](#124)

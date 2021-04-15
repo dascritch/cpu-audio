@@ -1,3 +1,4 @@
+import {findCPU} from './utils.js';
 import {trigger} from './trigger.js';
 
 // Repeated event allocation
@@ -52,3 +53,21 @@ export const pressManager = {
 		event.preventDefault();
 	}
 };
+
+export const timeBarManager = {
+	ev : null,
+	down : function ({target}) {
+		// const latence = document.CPU.alternateDelay;
+		// const elCPU = findCPU(target);
+		timeBarManager.ev = setTimeout(timeBarManager.do, document.CPU.alternateDelay, findCPU(target))
+		// event.preventDefault();
+	},
+	do : function (elCPU) {
+		elCPU.showHandheldNav();
+		timeBarManager.ev = null;
+	},
+	up : function () {
+		clearTimeout(timeBarManager.ev);
+		timeBarManager.ev = null;
+	}
+}

@@ -1,7 +1,7 @@
 import {passiveEvent, oncePassiveEvent, findCPU, preventLinkOnSamePage} from './utils.js';
 import {trigger} from './trigger.js';
 import {audiotagPreloadMetadata} from './media_element_extension.js';
-import {pressManager} from './finger_manager.js';
+import {pressManager, timeBarManager} from './finger_manager.js';
 import {buildChaptersLoader} from './build_chapters.js';
 import {buildPlaylist} from './build_playlist.js';
 
@@ -73,8 +73,9 @@ export function buildInterface(elCPU) {
 	timeline_element?.addEventListener('pointerenter', trigger.hover, passiveEvent);
 	timeline_element?.addEventListener('pointermove', trigger.hover, passiveEvent);
 	timeline_element?.addEventListener('pointerout', trigger.out, passiveEvent);
-	// alternative fine navigation for handhelds
-	timeline_element?.addEventListener('contextmenu', () => {elCPU.showHandheldNav();});
+	timeline_element?.addEventListener('pointerdown', timeBarManager.down, passiveEvent);
+	timeline_element?.addEventListener('pointerup', timeBarManager.up, passiveEvent);
+	// timeline_element?.addEventListener('contextmenu', () => {elCPU.showHandheldNav();});
 
 	if (navigator.share) {
 		interface_classlist.add('hasnativeshare');
