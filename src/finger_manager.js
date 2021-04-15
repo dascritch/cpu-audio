@@ -59,7 +59,7 @@ export const timeBarManager = {
 	down : function ({target}) {
 		// const latence = document.CPU.alternateDelay;
 		// const elCPU = findCPU(target);
-		timeBarManager.ev = setTimeout(timeBarManager.do, document.CPU.alternateDelay, findCPU(target))
+		timeBarManager.ev = setTimeout(timeBarManager.do, document.CPU.alternateDelay, findCPU(target));
 		// event.preventDefault();
 	},
 	do : function (elCPU) {
@@ -70,4 +70,4 @@ export const timeBarManager = {
 		clearTimeout(timeBarManager.ev);
 		timeBarManager.ev = null;
 	}
-}
+};
