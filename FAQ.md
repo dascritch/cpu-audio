@@ -16,7 +16,7 @@ In fact, the basis of cpu-audio.js are back from 2010, from my previous radio sh
 Why using URL ?
 ---------------
 
-**Because URL is a standard**, actually mesestimated. But it's universal, portable, for both local and internet usage. I wish people will start pointing some moment in an audio content of a webpage by giving a standard URL with a timecode in it.
+**Because URL is a standard**, actually mesestimated. But it's universal, accessible, portable, for both local and internet usage. I wish people will start pointing some moment in an audio content of a webpage by giving a standard URL with a timecode in it.
 
 
 Why have you done (x) choice ?
@@ -27,10 +27,22 @@ May be [I've written about it on my blog.](https://www.w3.org/TR/media-frags/) B
 May be I didn't explained what is interesting you. Write me, I'll respond.
 
 
+Is it GDPR compliant ?
+----------------------
+
+**Yes.** 
+
+cpu-audio is storing curently playing audio source and position, in order to set the same playing audio at the exact same position later. But that data is stored only in the client browser, is not nominative and never transmitted to a third-part service.
+
+As I was involved to GDPR compliance in my day job and co-hosting some cryptoparties, It is an important point for me.
+
+
 The player is ugly
 ------------------
 
 Yes ! It is only a proof of concept and I'm only a coder. **That why version 7 sports a theme system.** I'm sure someone will do a very better looking one than mine !
+
+If you wish to participate to this project, please have a look to [CONTRIBUTING.md](CONTRIBUTING.md).
 
 
 You're talking about SoundClound in some code comments and tickets
@@ -57,6 +69,7 @@ Is it portable to video ?
 In fact, most of standards used in cpu-audio.js are simply polyfills because the `<audio>` tag is less considerated than the `<video>` grand-brother. 
 
 If someone needs it, I'm ready to work with him to complete.
+
 
 Who are you ?
 -------------
