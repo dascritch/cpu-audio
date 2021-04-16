@@ -61,6 +61,20 @@ I want to use it in my (professionnal) service, but i'm needing help. Will you ?
 Yes, **I can.** And you can write me.
 
 
+What happens is the client browser is a little old ?
+----------------------------------------------------
+
+If the client browser is old enough to not [support WebComponents](https://caniuse.com/custom-elementsv1) but still supports `<audio>` tag features, cpu-audio.js will run in [graceful degradation mode (even it was written in progressive enhancement fashion)](https://www.w3.org/wiki/Graceful_degradation_versus_progressive_enhancement) :
+
+- The standard interface for the `<audio>` tag will be shown
+- Hash timecoded URL will work
+- Listening position will be stored and recalled
+
+It is the case of Internet Explorer 11. Other browsers since the last 4 years must be enough. Yes, even for Safari.
+
+The best practice is to write an informative message inside `<cpu-audio>` tag to ask visitors to update the software in their computers for their own security.
+
+
 Is it portable to video ?
 -------------------------
 
