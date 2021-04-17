@@ -74,15 +74,6 @@ function getPointId(planeName, pointName, panel) {
 }
 
 /**
-  * @param  {number|undefined|boolean} sec  Is it a "seconds" value ?
-  * @return {boolean}
-  */
-function isSeconds(sec = false) {
-	// completely ugly... but « WAT » ! as in https://www.destroyallsoftware.com/talks/wat
-	return ((sec !== undefined) && (sec !== false));
-}
-
-/**
  * @summary Show or hide an element
  *
  * @param      {Element} element  	The element to show or hide
@@ -528,6 +519,9 @@ export class CPU_element_api {
 			// duration still unkown ! We will need to redraw later the tracks
 			return;
 		}
+
+		// completely ugly... but « WAT » ! as in https://www.destroyallsoftware.com/talks/wat
+		const isSeconds = (sec) => ((sec != undefined) && (sec !== false));
 
 		if (isSeconds(seconds_begin)) {
 			element.style.left =  `${100 * (seconds_begin / duration)}%`;
