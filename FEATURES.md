@@ -20,7 +20,7 @@ An example with chapters.
 Size constraints
 ----------------
 
-Aspect changes when page's width is under 640px, 480px and 320px wide. The element must be able to insert itself in any width constraints, in liquid responsive web-design fashion.
+The default theme's aspect changes when page width is under 640px, 480px and 320px wide. The element must be able to insert itself in any width constraints, in liquid responsive web-design fashion.
 
 Some examples using <code>&lt;iframe&gt;</code>s :
 
