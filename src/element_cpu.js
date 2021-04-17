@@ -184,6 +184,8 @@ export class CPU_element_api {
 		if (this.element.hasAttribute('hide')) {
 			this.setHide(this.element.getAttribute('hide').split(' '));
 		}
+
+		// TODO : waveform, poster, title, mirroring it to audiotag
 	}
 
 	/**
