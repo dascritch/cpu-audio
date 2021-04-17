@@ -2,9 +2,6 @@ import {CpuAudioTagName, CpuControllerTagName, dynamicallyAllocatedIdPrefix, bro
 import {trigger, lastPlayError} from './trigger.js';
 import {addToPlaylist} from './build_playlist.js';
 
-// Indicate if media element was extended
-HTMLAudioElement.prototype.CPU_connected = false;
-
 /**
  * @summary At start, will start the last playing <audio> tag at its last known position
  *
@@ -205,6 +202,9 @@ export function connectAudiotag(audiotag) {
 	addToPlaylist(audiotag);
 }
 
+
+// Indicate if media element was extended
+HTMLAudioElement.prototype.CPU_connected = false;
 
 /**
  * @summary Return the parent <cpu-audio> DOM element
