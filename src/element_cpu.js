@@ -1514,16 +1514,15 @@ function relativeFocus(self, go_foward) {
 	}
 
 	const validPlane = (id) => {
-		let {track, panel, points} = self.plane(id);
+		const {track, panel, points} = self.plane(id);
 		return (((track !== false) || (panel !== false))
 				&& ((self.planePanel(id)?.clientHeight > 0) || (self.planeTrack(id)?.clientHeight > 0))
 				&& (points)
 				&& (Object.keys(points).length > 0));
 	};
-
 	const scanToPrevPlane = (fromPlane) => {
 		for(let id = planeNames.indexOf(fromPlane) -1; id >= 0 ; id--) {
-			let out = planeNames[id];
+			const out = planeNames[id];
 			if (validPlane(out)) {
 				return out;
 			}
@@ -1531,7 +1530,7 @@ function relativeFocus(self, go_foward) {
 	};
 	const scanToNextPlane = (fromPlane) => {
 		for(let id = planeNames.indexOf(fromPlane) +1; id < planeNames.length ; id++) {
-			let out = planeNames[id];
+			const out = planeNames[id];
 			if (validPlane(out)) {
 				return out;
 			}
@@ -1555,7 +1554,7 @@ function relativeFocus(self, go_foward) {
 		if (!planeName) {
 			return;
 		}
-		let points = self.planePointNames(planeName);
+		const points = self.planePointNames(planeName);
 		pointName = points[go_foward ? 0 : (points.length-1)];
 	}
 	self.focusPoint(planeName, pointName);
