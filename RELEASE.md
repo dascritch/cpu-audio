@@ -60,7 +60,7 @@ Corrections
  * Disambiguation in renaming `findContainer()` in `findCPU()` ([#142](#142))
  * Faster instanciation time, removing `<template>` from host page ([#148](#148))
  * Documentation re-formated ([#134](#134))
- * `HTMLAudioElement.CPU_Update()` going private (vestigial use)
+ * `HTMLAudioElement.CPU_Update()` and `HTMLAudioElement.CPU_Controller()` going private (vestigial use) ([#143](#143))
  * Build lib still under 50,000 bytes
 
 Back-end

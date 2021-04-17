@@ -40,7 +40,7 @@ document.addEventListener('CPU_ready', function() {
 		// those public values are assumed to have a constant name
 		let expected = {
 			'keymove' : 5,
-			'alternateDelay' : 500,
+			'alternateDelay' : 1000,
 			'fastFactor' : 4,
 			'repeatDelay' : 400,
 			'repeatFactor' : 100,

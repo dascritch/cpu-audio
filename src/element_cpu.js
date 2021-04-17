@@ -30,15 +30,18 @@ const planePointNamesFromId = /^[a-zA-Z0-9\-_]+_«([a-zA-Z0-9\-_]+)(»_.*_«([a-
 
  * repeated in the class for testing purposes
  *
- * @param      {string}  element_id  The element identifier
- * @return     {Array<string>}    An array with two strings : plane name and point name, both can be null. 
+ * @param      {string}  element_id  	The element identifier
+ * @return     {Object}    				An object with two strings : planeName and pointName
  */
 export function planeAndPointNamesFromId(element_id) {
 	let  planeName, pointName;
 	if (typeof element_id == 'string') {
 		[, planeName, , pointName] = element_id?.match(planePointNamesFromId) || [];
 	}
-	return [planeName??'', pointName??''];
+	return {
+		planeName : planeName??'',
+		pointName : pointName??''
+	};
 }
 
 /**
@@ -54,7 +57,7 @@ function previewContainerHover({target}) {
 		return;
 	}
 
-	let [planeName, pointName] = planeAndPointNamesFromId(target.id);
+	const {planeName, pointName} = planeAndPointNamesFromId(target.id);
 	findCPU(target).highlightPoint(planeName, pointName);
 }
 
@@ -68,15 +71,6 @@ function previewContainerHover({target}) {
  */
 function getPointId(planeName, pointName, panel) {
 	return `${ panel?'panel':'track' }_«${planeName}»_point_«${pointName}»`;
-}
-
-/**
-  * @param  {number|undefined|boolean} sec  Is it a "seconds" value ?
-  * @return {boolean}
-  */
-function isSeconds(sec = false) {
-	// completely ugly... but « WAT » ! as in https://www.destroyallsoftware.com/talks/wat
-	return ((sec !== undefined) && (sec !== false));
 }
 
 /**
@@ -181,6 +175,8 @@ export class CPU_element_api {
 		if (this.element.hasAttribute('hide')) {
 			this.setHide(this.element.getAttribute('hide').split(' '));
 		}
+
+		// TODO : waveform, poster, title, mirroring it to audiotag
 	}
 
 	/**
@@ -524,6 +520,9 @@ export class CPU_element_api {
 			return;
 		}
 
+		// completely ugly... but « WAT » ! as in https://www.destroyallsoftware.com/talks/wat
+		const isSeconds = (sec) => ((sec != undefined) && (sec !== false));
+
 		if (isSeconds(seconds_begin)) {
 			element.style.left =  `${100 * (seconds_begin / duration)}%`;
 		}
@@ -835,30 +834,27 @@ export class CPU_element_api {
 		this.planeTrack(planeName)?.remove();
 		this.planePanel(planeName)?.remove();
 
-		let planeData = this.plane(planeName);
+		const planeData = this.plane(planeName);
 		if (!planeData) {
 			return ;
 		}
-		let { track, panel, title } = planeData;
-		const removeHighlightsPoints_bind = () => { this.removeHighlightsPoints(planeName, previewClassname, true); };
-
-		/**
-		 * @param      {Element}  element  Impacted element
-		 */
-		function assignEventsOnPlanes(element) {
+		const { track, panel, title } = planeData;
+		const doRemoveHighlightsPoints = () => { 
+			this.removeHighlightsPoints(planeName, previewClassname, true);
+		};
+		const assignEventsOnPlanes = (element) => {
 			element.addEventListener('mouseover', previewContainerHover, passiveEvent);
 			element.addEventListener('focusin', previewContainerHover, passiveEvent);
-			element.addEventListener('mouseleave', removeHighlightsPoints_bind, passiveEvent);
-			element.addEventListener('focusout', removeHighlightsPoints_bind, passiveEvent);
-		}
-
+			element.addEventListener('mouseleave', doRemoveHighlightsPoints, passiveEvent);
+			element.addEventListener('focusout', doRemoveHighlightsPoints, passiveEvent);
+		};
 
 		if (track !== false) {
 			// we have to create the track timeline
 			let plane_track = document.createElement('aside');
 			plane_track.id = `track_«${planeName}»`;
 			if (track !== true) {
-				// …with a class list
+				// …with a class list, space separated
 				plane_track.classList.add(track.split(' '));
 			}
 
@@ -910,7 +906,7 @@ export class CPU_element_api {
 		}
 
 		// I don't understand (yet) why, when I move this declaration at top of file, tests will fail
-		const default_plane_data = {
+		const planeDataDefault = {
 			track       : true,
 			panel       : true,
 			title       : '',
@@ -919,7 +915,7 @@ export class CPU_element_api {
 			_comp		: false
 		};
 
-		planeData = { ...default_plane_data, ...planeData};
+		planeData = { ...planeDataDefault, ...planeData};
 
 		if (!planeData._comp) {
 			if (this.isController) {
@@ -933,6 +929,7 @@ export class CPU_element_api {
 		this.drawPlane(planeName);
 		return true;
 	}
+
 	/**
 	 * @summary Remove an annotation plane layer
 	 * @public
@@ -1027,7 +1024,7 @@ export class CPU_element_api {
 							    	}
 							    )
 						    );
-		let points = Object.values( this.plane(planeName).points );
+		const points = Object.values( this.plane(planeName).points );
 		this.plane(planeName)._st_max = points[points.length - 1]?.start ?? 0;
 	}
 
@@ -1211,8 +1208,7 @@ export class CPU_element_api {
 			}
 		}
 
-		let from_points = this.plane(planeName).points;
-		pointDataGroup = {...from_points, ...pointDataGroup};
+		pointDataGroup = {...this.plane(planeName).points, ...pointDataGroup};
 		this.plane(planeName).points = pointDataGroup;
 
 		this.emitEvent('bulkPoints', {
@@ -1305,7 +1301,7 @@ export class CPU_element_api {
 		//  recalc _start_max for caching repaints
 		let _st_max = 0;
 		for (let s of Object.values(this.planePoints(planeName))) {
-			let that_start = Number(s.start);
+			const that_start = Number(s.start);
 			_st_max = _st_max < that_start ? that_start : _st_max;
 		}
 		plane._st_max = _st_max;
@@ -1326,7 +1322,7 @@ export class CPU_element_api {
 	 * @param      {string}  planeName  The plane name
 	 */
 	clearPlane(planeName) {
-		let plane = this.plane(planeName);
+		const plane = this.plane(planeName);
 		if (!plane) {
 			return false;
 		}
@@ -1335,7 +1331,7 @@ export class CPU_element_api {
 			this.removePoint(planeName, pointName);
 		}
 		// need to repass in case of badly removed / malformed entries
-		let nav = this.planeNav(planeName);
+		const nav = this.planeNav(planeName);
 		if (nav) {
 			nav.innerHTML = '';
 		}
@@ -1388,12 +1384,11 @@ export class CPU_element_api {
 		}
 
 		for (let planeName in this.audiotag._CPU_planes) {
-			let plane_data = this.plane(planeName);
+			const plane_data = this.plane(planeName);
 			if (plane_data.track) {
 				for (let pointName of this.planePointNames(planeName)) {
-					let element = this.pointTrack(planeName, pointName);
-					let {start, end} = this.point(planeName, pointName);
-					this.positionTimeElement(element, start, end);
+					const {start, end} = this.point(planeName, pointName);
+					this.positionTimeElement(this.pointTrack(planeName, pointName), start, end);
 				}
 			}
 		}
@@ -1518,16 +1513,15 @@ function relativeFocus(self, go_foward) {
 	}
 
 	const validPlane = (id) => {
-		let {track, panel, points} = self.plane(id);
+		const {track, panel, points} = self.plane(id);
 		return (((track !== false) || (panel !== false))
 				&& ((self.planePanel(id)?.clientHeight > 0) || (self.planeTrack(id)?.clientHeight > 0))
 				&& (points)
 				&& (Object.keys(points).length > 0));
 	};
-
 	const scanToPrevPlane = (fromPlane) => {
 		for(let id = planeNames.indexOf(fromPlane) -1; id >= 0 ; id--) {
-			let out = planeNames[id];
+			const out = planeNames[id];
 			if (validPlane(out)) {
 				return out;
 			}
@@ -1535,31 +1529,31 @@ function relativeFocus(self, go_foward) {
 	};
 	const scanToNextPlane = (fromPlane) => {
 		for(let id = planeNames.indexOf(fromPlane) +1; id < planeNames.length ; id++) {
-			let out = planeNames[id];
+			const out = planeNames[id];
 			if (validPlane(out)) {
 				return out;
 			}
 		}
 	};
 
-	let previous_pointName, planeName, pointName, planePointNames;
+	let planeName, pointName, planePointNames;
 	let wasFocused = self.focused();
 	if (wasFocused) {
 		if (!wasFocused.id) {
 			wasFocused = wasFocused.closest('[id]');
 		}
-		[planeName,previous_pointName] = planeAndPointNamesFromId(wasFocused.id);
+		({planeName, pointName} = planeAndPointNamesFromId(wasFocused.id));
 	}
-	if (previous_pointName != '') {
+	if (pointName != '') {
 		planePointNames = self.planePointNames(planeName);
-		pointName = adjacentArrayValue(planePointNames, previous_pointName, go_foward?1:-1);
+		pointName = adjacentArrayValue(planePointNames, pointName, go_foward?1:-1);
 	}
 	if (!pointName) {
 		planeName = go_foward ? scanToNextPlane(planeName) : scanToPrevPlane(planeName);
 		if (!planeName) {
 			return;
 		}
-		let points = self.planePointNames(planeName);
+		const points = self.planePointNames(planeName);
 		pointName = points[go_foward ? 0 : (points.length-1)];
 	}
 	self.focusPoint(planeName, pointName);

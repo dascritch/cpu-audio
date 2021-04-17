@@ -214,3 +214,6 @@ export function connectAudiotag(audiotag) {
 
 // Indicate if media element was extended
 HTMLAudioElement.prototype.CPU_connected = false;
+
+// Indicate if media element was already played, and so is prone to re-autoplay later
+HTMLAudioElement.prototype._CPU_played = false;
