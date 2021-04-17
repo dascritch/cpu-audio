@@ -12,7 +12,7 @@ An example with chapters :
     <audio controls id="emission">
         <source src="https://cpu.dascritch.net/public/Sonores/Emissions/hls/0117-CPU%2817-10-19%29/index.m3u8" type="application/x-mpegurl" /> 
         <source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0117-CPU%2817-10-19%29.mp3" type="audio/mpeg" data-downloadable />
-        <track kind="chapters" src="https://cpu.dascritch.net/public/Sonores/Emissions/tracks/0117-CPU%2817-10-19%29.vtt" default />
+        <track kind="chapters" src="./tests-assets/0117-CPU%2817-10-19%29.vtt" default />
     </audio>
     <!-- {% include no_component_message.html %} -->
 </cpu-audio>
