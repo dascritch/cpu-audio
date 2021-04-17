@@ -25,7 +25,7 @@ Properties :
 name                     | default value | usage
 -------------------------|---------------|----------
 keymove                  | `5`           | Number of seconds skipped in the timeline when <kbd>←</kbd> or <kbd>→</kbd> keys are pressed in an interface
-alternateDelay           | `500`         | Delay for a long press on time-line (in milliseconds) to switch to the handheld alternate browsing interface
+alternateDelay           | `1000`        | Delay for a long press on time-line (in milliseconds) to switch to the handheld alternate browsing interface
 fastFactor               | `4`           | Amplification ratio between <kbd>▸︎▸︎</kbd> and <kbd>▸︎▸︎▸︎</kbd> in handheld alternate browsing interface
 repeatDelay              | `400`         | First repetition delay when clicking a button in handheld alternate browsing interface
 repeatFactor             | `100`         | Next repetitions delay when clicking a button in handheld alternate browsing interface

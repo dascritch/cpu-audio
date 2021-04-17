@@ -13,8 +13,7 @@ export const DefaultParametersDocumentCPU = {
 	playStopOthers : true,
 	// @public
 	// @type number
-	// why 500ms ? Because Chrome will trigger a touchcancel event at 800ms to show a context menu
-	alternateDelay : 500,
+	alternateDelay : 1000,
 
 	// @public
 	// @type number
