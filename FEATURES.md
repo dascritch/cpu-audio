@@ -52,6 +52,8 @@ Some examples using <code>&lt;iframe&gt;</code>s :
 Modes
 -----
 
+Most of the themes accept different kinds of presentation, via the `mode=""` attribute
+
 ↓ `mode="compact"` 
 
 <cpu-audio  mode="compact"
