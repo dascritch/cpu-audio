@@ -30,15 +30,18 @@ const planePointNamesFromId = /^[a-zA-Z0-9\-_]+_«([a-zA-Z0-9\-_]+)(»_.*_«([a-
 
  * repeated in the class for testing purposes
  *
- * @param      {string}  element_id  The element identifier
- * @return     {Array<string>}    An array with two strings : plane name and point name, both can be null. 
+ * @param      {string}  element_id  	The element identifier
+ * @return     {Object}    				An object with two strings : planeName and pointName
  */
 export function planeAndPointNamesFromId(element_id) {
 	let  planeName, pointName;
 	if (typeof element_id == 'string') {
 		[, planeName, , pointName] = element_id?.match(planePointNamesFromId) || [];
 	}
-	return [planeName??'', pointName??''];
+	return {
+		planeName : planeName??'',
+		pointName : pointName??''
+	};
 }
 
 /**
@@ -54,7 +57,7 @@ function previewContainerHover({target}) {
 		return;
 	}
 
-	let [planeName, pointName] = planeAndPointNamesFromId(target.id);
+	const {planeName, pointName} = planeAndPointNamesFromId(target.id);
 	findCPU(target).highlightPoint(planeName, pointName);
 }
 
@@ -1537,17 +1540,17 @@ function relativeFocus(self, go_foward) {
 		}
 	};
 
-	let previous_pointName, planeName, pointName, planePointNames;
+	let planeName, pointName, planePointNames;
 	let wasFocused = self.focused();
 	if (wasFocused) {
 		if (!wasFocused.id) {
 			wasFocused = wasFocused.closest('[id]');
 		}
-		[planeName,previous_pointName] = planeAndPointNamesFromId(wasFocused.id);
+		({planeName, pointName} = planeAndPointNamesFromId(wasFocused.id));
 	}
-	if (previous_pointName != '') {
+	if (pointName != '') {
 		planePointNames = self.planePointNames(planeName);
-		pointName = adjacentArrayValue(planePointNames, previous_pointName, go_foward?1:-1);
+		pointName = adjacentArrayValue(planePointNames, pointName, go_foward?1:-1);
 	}
 	if (!pointName) {
 		planeName = go_foward ? scanToNextPlane(planeName) : scanToPrevPlane(planeName);

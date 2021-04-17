@@ -491,7 +491,7 @@ function playRelativeCueInPlayer(container, offset) {
 	if (!points) {
 		return;
 	}
-	const [, pointName] = planeAndPointNamesFromId( body_className_playing_cue );
+	const {pointName} = planeAndPointNamesFromId( body_className_playing_cue );
 	let go = adjacentArrayValue(points, pointName, offset);
 	let pointList = Object.values(points);
 	if (offset < 0) {

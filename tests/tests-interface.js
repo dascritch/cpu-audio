@@ -515,11 +515,11 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 	});
 
 	QUnit.test("planeAndPointNamesFromId", function( assert ) {
-		assert.deepEqual(componenttag.CPU.planeAndPointNamesFromId(''), ["",""], 'on empty, returns ["",""]');
-		assert.deepEqual(componenttag.CPU.planeAndPointNamesFromId('track_«_chapters»'), ["_chapters",""], 'on track_«_chapters», returns ["_chapters",""]');
-		assert.deepEqual(componenttag.CPU.planeAndPointNamesFromId('track_«_chapters»_point_«chap-3»'), ["_chapters","chap-3"], 'on track_«_chapters», returns ["_chapters","chap-3"]');
-		assert.deepEqual(componenttag.CPU.planeAndPointNamesFromId('panel_«_chapters»'), ["_chapters",""], 'on panel_«_chapters», returns ["_chapters",""]');
-		assert.deepEqual(componenttag.CPU.planeAndPointNamesFromId('panel_«_chapters»_point_«chap-3»'), ["_chapters","chap-3"], 'on plane name panel_«_chapters»_point_«chap-3», returns ["_chapters","chap-3"]');
+		assert.deepEqual(componenttag.CPU.planeAndPointNamesFromId(''), {planeName:"",pointName:""}, 'on empty, returns {planeName:"",pointName:""}');
+		assert.deepEqual(componenttag.CPU.planeAndPointNamesFromId('track_«_chapters»'), {planeName:"_chapters", pointName:""}, 'on track_«_chapters», returns {planeName:"_chapters",,pointName:""}');
+		assert.deepEqual(componenttag.CPU.planeAndPointNamesFromId('track_«_chapters»_point_«chap-3»'), {planeName:"_chapters",pointName:"chap-3"}, 'on track_«_chapters», returns {planeName:"_chapters",pointName:"chap-3"}');
+		assert.deepEqual(componenttag.CPU.planeAndPointNamesFromId('panel_«_chapters»'), {planeName:"_chapters",pointName:""}, 'on panel_«_chapters», returns {planeName:"_chapters",pointName:""}');
+		assert.deepEqual(componenttag.CPU.planeAndPointNamesFromId('panel_«_chapters»_point_«chap-3»'), {planeName:"_chapters",pointName:"chap-3"}, 'on plane name panel_«_chapters»_point_«chap-3», returns {planeName:"_chapters",pointName:"chap-3"}');
 	});
 
 	QUnit.test( "Public API : removePlane", function( assert ) {

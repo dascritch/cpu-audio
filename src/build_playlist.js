@@ -118,7 +118,7 @@ export function buildPlaylist(wasFocusedId) {
 
 	if (wasFocusedId) {
 		// we need to give back focus to the points, as they disapeared
-		const [planeName, pointName] = planeAndPointNamesFromId(wasFocusedId);
+		const {planeName, pointName} = planeAndPointNamesFromId(wasFocusedId);
 		globalController.focusPoint(planeName, pointName);
 	}
 }
