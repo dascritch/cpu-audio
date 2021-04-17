@@ -8,6 +8,7 @@ An example with chapters :
     title="Ex0117 À la source du son"
     poster="https://cpu.dascritch.net/public/Images/Emissions/.1910-Ex0117-SourceDuSon_s.jpg"
     canonical="https://cpu.dascritch.net/post/2019/10/17/Ex0117-%C3%80-la-source-du-son"
+    waveform="https://cpu.dascritch.net/public/Sonores/Emissions/waveforms/0117-CPU%2817-10-19%29.png"
     twitter="@cpuprogramme">
     <audio controls id="emission">
         <source src="https://cpu.dascritch.net/public/Sonores/Emissions/hls/0117-CPU%2817-10-19%29/index.m3u8" type="application/x-mpegurl" /> 
