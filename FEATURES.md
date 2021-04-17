@@ -5,15 +5,14 @@ An example with chapters.
 
 <!-- calling the webcomponent -->
 <cpu-audio
-    title="CPU Ex0085 Le Mystère Enigma"
-    poster="https://cpu.dascritch.net/public/Images/Emissions/.1805-Ex0085-Enigma_m.jpg"
-    canonical="https://cpu.dascritch.net/post/2018/05/17/Ex0085-Histoires-de-la-cryptographie%2C-2%C3%A8me-partie-%3A-Le-myst%C3%A8re-d-Enigma"
+    title="Ex0117 À la source du son"
+    poster="https://cpu.dascritch.net/public/Images/Emissions/.1910-Ex0117-SourceDuSon_s.jpg"
+    canonical="https://cpu.dascritch.net/post/2019/10/17/Ex0117-%C3%80-la-source-du-son"
     twitter="@cpuprogramme">
-    <!-- Pour des raisons  de compatibilité arrière, il *faut* garder la balise <audio controls> dans la déclaration. -->
     <audio controls id="emission">
-        <source src="https://dascritch.net/vrac/Emissions/CPU/0085-CPU%2817-05-18%29.ogg" type="audio/ogg">
-        <source src="https://dascritch.net/vrac/Emissions/CPU/podcast/0085-CPU%2817-05-18%29.mp3" type="audio/mpeg">
-        <track kind="chapters" src="./tests-assets/chapters-ex0085.vtt" default>
+        <source src="https://cpu.dascritch.net/public/Sonores/Emissions/hls/0117-CPU%2817-10-19%29/index.m3u8" type="application/x-mpegurl" /> 
+        <source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0117-CPU%2817-10-19%29.mp3" type="audio/mpeg" data-downloadable />
+        <track kind="chapters" src="../tests-assets/0117-CPU%2817-10-19%29.vtt" default />
     </audio>
     <!-- {% include no_component_message.html %} -->
 </cpu-audio>
