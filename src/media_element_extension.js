@@ -222,15 +222,6 @@ HTMLAudioElement.prototype.CPU_controller = function() {
  * @class      CPU_update (name)
  */
 HTMLAudioElement.prototype.CPU_update = function() {
-	let controller = this.CPU_controller();
-	if (controller) {
-		let api = controller.CPU;
-		if ((api) && (api.update)) {
-			// i don't like try catch
-			api.update();
-		}
-	}
-	if (document.CPU.globalController) {
-		document.CPU.globalController.update();
-	}
+	this.CPU_controller()?.CPU?.update();
+	document.CPU.globalController?.update();
 };
