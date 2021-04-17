@@ -1,4 +1,4 @@
-import {CpuAudioTagName, CpuControllerTagName, dynamicallyAllocatedIdPrefix, browserIsDecent, passiveEvent, oncePassiveEvent} from './utils.js';
+import {dynamicallyAllocatedIdPrefix, browserIsDecent, findCPU, passiveEvent, oncePassiveEvent} from './utils.js';
 import {trigger, lastPlayError} from './trigger.js';
 import {addToPlaylist} from './build_playlist.js';
 
@@ -183,9 +183,10 @@ export function attach_events_audiotag(audiotag) {
 /**
  * @summary Trigger display updates in the interface
  * @private
+ * @param      {HTMLAudioElement}  	audiotag   		Tag to refresh interface
  */
 export function updateAudiotag(audiotag) {
-	audiotag.CPU_controller()?.CPU?.update();
+	findCPU(audiotag)?.update();
 	document.CPU.globalController?.update();
 }
 
@@ -211,17 +212,5 @@ export function connectAudiotag(audiotag) {
 	addToPlaylist(audiotag);
 }
 
-
 // Indicate if media element was extended
 HTMLAudioElement.prototype.CPU_connected = false;
-
-/**
- * @summary Return the parent <cpu-audio> DOM element
- *
- * @class      CPU_controller (name)
- * @return     {Element}  <cpu-audio> DOM element
- */
-HTMLAudioElement.prototype.CPU_controller = function() {
-	return this.closest(CpuAudioTagName) ?? this.closest(CpuControllerTagName);
-};
-
