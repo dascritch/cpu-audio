@@ -12,7 +12,7 @@ An example with chapters.
     <audio controls id="emission">
         <source src="https://cpu.dascritch.net/public/Sonores/Emissions/hls/0117-CPU%2817-10-19%29/index.m3u8" type="application/x-mpegurl" /> 
         <source src="https://cpu.dascritch.net/public/Sonores/Emissions/podcast/0117-CPU%2817-10-19%29.mp3" type="audio/mpeg" data-downloadable />
-        <track kind="chapters" src="../tests-assets/0117-CPU%2817-10-19%29.vtt" default />
+        <track kind="chapters" src="https://cpu.dascritch.net/public/Sonores/Emissions/tracks/0117-CPU%2817-10-19%29.vtt" default />
     </audio>
     <!-- {% include no_component_message.html %} -->
 </cpu-audio>
@@ -20,7 +20,7 @@ An example with chapters.
 Size constraints
 ----------------
 
-Aspect changes when page's width is under 640px, 480px and 320px wide. The element must be able to insert itself in any width constraints, in liquid responsive web-design fashion.
+The default theme's aspect changes when page width is under 640px, 480px and 320px wide. The element must be able to insert itself in any width constraints, in liquid responsive web-design fashion.
 
 Some examples using <code>&lt;iframe&gt;</code>s :
 
