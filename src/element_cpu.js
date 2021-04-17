@@ -930,6 +930,7 @@ export class CPU_element_api {
 		this.drawPlane(planeName);
 		return true;
 	}
+
 	/**
 	 * @summary Remove an annotation plane layer
 	 * @public
@@ -1024,7 +1025,7 @@ export class CPU_element_api {
 							    	}
 							    )
 						    );
-		let points = Object.values( this.plane(planeName).points );
+		const points = Object.values( this.plane(planeName).points );
 		this.plane(planeName)._st_max = points[points.length - 1]?.start ?? 0;
 	}
 
@@ -1208,8 +1209,7 @@ export class CPU_element_api {
 			}
 		}
 
-		let from_points = this.plane(planeName).points;
-		pointDataGroup = {...from_points, ...pointDataGroup};
+		pointDataGroup = {...this.plane(planeName).points, ...pointDataGroup};
 		this.plane(planeName).points = pointDataGroup;
 
 		this.emitEvent('bulkPoints', {
@@ -1302,7 +1302,7 @@ export class CPU_element_api {
 		//  recalc _start_max for caching repaints
 		let _st_max = 0;
 		for (let s of Object.values(this.planePoints(planeName))) {
-			let that_start = Number(s.start);
+			const that_start = Number(s.start);
 			_st_max = _st_max < that_start ? that_start : _st_max;
 		}
 		plane._st_max = _st_max;
@@ -1323,7 +1323,7 @@ export class CPU_element_api {
 	 * @param      {string}  planeName  The plane name
 	 */
 	clearPlane(planeName) {
-		let plane = this.plane(planeName);
+		const plane = this.plane(planeName);
 		if (!plane) {
 			return false;
 		}
@@ -1332,7 +1332,7 @@ export class CPU_element_api {
 			this.removePoint(planeName, pointName);
 		}
 		// need to repass in case of badly removed / malformed entries
-		let nav = this.planeNav(planeName);
+		const nav = this.planeNav(planeName);
 		if (nav) {
 			nav.innerHTML = '';
 		}
@@ -1385,12 +1385,11 @@ export class CPU_element_api {
 		}
 
 		for (let planeName in this.audiotag._CPU_planes) {
-			let plane_data = this.plane(planeName);
+			const plane_data = this.plane(planeName);
 			if (plane_data.track) {
 				for (let pointName of this.planePointNames(planeName)) {
-					let element = this.pointTrack(planeName, pointName);
-					let {start, end} = this.point(planeName, pointName);
-					this.positionTimeElement(element, start, end);
+					const {start, end} = this.point(planeName, pointName);
+					this.positionTimeElement(this.pointTrack(planeName, pointName), start, end);
 				}
 			}
 		}
