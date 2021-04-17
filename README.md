@@ -98,7 +98,6 @@ Some links
 * [JS installable code](https://github.com/dascritch/cpu-audio/blob/master/build/cpu-audio.js) 
 * [Code repository](https://github.com/dascritch/cpu-audio/), [Latest stable release](https://github.com/dascritch/cpu-audio/releases/latest)
 * [Frequently Asked Questions](https://github.com/dascritch/cpu-audio/blob/master/FAQ.md)
-* [How to participate to this project](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
 * Blog posts about its creation and development : [Série cpu-audio sur dascritch.net](https://dascritch.net/serie/cpu-audio)
 * [How to cite a podcast](https://www.buzzsprout.com/blog/cite-podcast), now you can support time positions URL
 * Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
@@ -113,7 +112,6 @@ Participate
 * [Tests](tests/tests-minimal.html)
 * [Bugs, issues, tickets and features](https://github.com/dascritch/cpu-audio/issues)
 * [What to do, next](https://github.com/dascritch/cpu-audio/blob/master/TODO.md)
-
 
 
 Credits

@@ -2,9 +2,6 @@ import {CpuAudioTagName, CpuControllerTagName, dynamicallyAllocatedIdPrefix, bro
 import {trigger, lastPlayError} from './trigger.js';
 import {addToPlaylist} from './build_playlist.js';
 
-// Indicate if media element was extended
-HTMLAudioElement.prototype.CPU_connected = false;
-
 /**
  * @summary At start, will start the last playing <audio> tag at its last known position
  *
@@ -184,6 +181,15 @@ export function attach_events_audiotag(audiotag) {
 }
 
 /**
+ * @summary Trigger display updates in the interface
+ * @private
+ */
+export function updateAudiotag(audiotag) {
+	audiotag.CPU_controller()?.CPU?.update();
+	document.CPU.globalController?.update();
+}
+
+/**
  * @summary Connects an audiotag to CPU APIs, launched at start or when the webcomponent appears
  *
  * @param      {HTMLAudioElement}  audiotag  The audiotag
@@ -206,6 +212,9 @@ export function connectAudiotag(audiotag) {
 }
 
 
+// Indicate if media element was extended
+HTMLAudioElement.prototype.CPU_connected = false;
+
 /**
  * @summary Return the parent <cpu-audio> DOM element
  *
@@ -216,21 +225,3 @@ HTMLAudioElement.prototype.CPU_controller = function() {
 	return this.closest(CpuAudioTagName) ?? this.closest(CpuControllerTagName);
 };
 
-/**
- * @summary Trigger display updates in the interface
- *
- * @class      CPU_update (name)
- */
-HTMLAudioElement.prototype.CPU_update = function() {
-	let controller = this.CPU_controller();
-	if (controller) {
-		let api = controller.CPU;
-		if ((api) && (api.update)) {
-			// i don't like try catch
-			api.update();
-		}
-	}
-	if (document.CPU.globalController) {
-		document.CPU.globalController.update();
-	}
-};
