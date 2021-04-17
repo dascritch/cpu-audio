@@ -835,30 +835,27 @@ export class CPU_element_api {
 		this.planeTrack(planeName)?.remove();
 		this.planePanel(planeName)?.remove();
 
-		let planeData = this.plane(planeName);
+		const planeData = this.plane(planeName);
 		if (!planeData) {
 			return ;
 		}
-		let { track, panel, title } = planeData;
-		const removeHighlightsPoints_bind = () => { this.removeHighlightsPoints(planeName, previewClassname, true); };
-
-		/**
-		 * @param      {Element}  element  Impacted element
-		 */
-		function assignEventsOnPlanes(element) {
+		const { track, panel, title } = planeData;
+		const doRemoveHighlightsPoints = () => { 
+			this.removeHighlightsPoints(planeName, previewClassname, true);
+		};
+		const assignEventsOnPlanes = (element) => {
 			element.addEventListener('mouseover', previewContainerHover, passiveEvent);
 			element.addEventListener('focusin', previewContainerHover, passiveEvent);
-			element.addEventListener('mouseleave', removeHighlightsPoints_bind, passiveEvent);
-			element.addEventListener('focusout', removeHighlightsPoints_bind, passiveEvent);
-		}
-
+			element.addEventListener('mouseleave', doRemoveHighlightsPoints, passiveEvent);
+			element.addEventListener('focusout', doRemoveHighlightsPoints, passiveEvent);
+		};
 
 		if (track !== false) {
 			// we have to create the track timeline
 			let plane_track = document.createElement('aside');
 			plane_track.id = `track_«${planeName}»`;
 			if (track !== true) {
-				// …with a class list
+				// …with a class list, space separated
 				plane_track.classList.add(track.split(' '));
 			}
 
@@ -910,7 +907,7 @@ export class CPU_element_api {
 		}
 
 		// I don't understand (yet) why, when I move this declaration at top of file, tests will fail
-		const default_plane_data = {
+		const planeDataDefault = {
 			track       : true,
 			panel       : true,
 			title       : '',
@@ -919,7 +916,7 @@ export class CPU_element_api {
 			_comp		: false
 		};
 
-		planeData = { ...default_plane_data, ...planeData};
+		planeData = { ...planeDataDefault, ...planeData};
 
 		if (!planeData._comp) {
 			if (this.isController) {
