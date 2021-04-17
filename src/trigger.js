@@ -1,5 +1,5 @@
 import {oncePassiveEvent, adjacentArrayValue, findCPU, warn} from './utils.js';
-import {isAudiotagStreamed, audiotagPreloadMetadata, audiotagDuration, uncertainDuration, normalizeSeekTime} from './media_element_extension.js';
+import {isAudiotagStreamed, audiotagPreloadMetadata, audiotagDuration, uncertainDuration, normalizeSeekTime, updateAudiotag} from './media_element_extension.js';
 import {timeInSeconds} from './convert.js';
 import {buildPlaylist} from './build_playlist.js';
 import {planeAndPointNamesFromId} from './element_cpu.js';
@@ -67,7 +67,7 @@ export const trigger = {
 			trigger.pause(undefined, audiotag);
 		}
 
-		audiotag.CPU_update();
+		updateAudiotag(audiotag);
 		if ((!audiotag.paused) && (!isAudiotagStreamed(audiotag))) {
 			window.localStorage.setItem(audiotag.currentSrc, String(audiotag.currentTime));
 		}

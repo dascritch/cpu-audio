@@ -181,6 +181,15 @@ export function attach_events_audiotag(audiotag) {
 }
 
 /**
+ * @summary Trigger display updates in the interface
+ * @private
+ */
+export function updateAudiotag(audiotag) {
+	audiotag.CPU_controller()?.CPU?.update();
+	document.CPU.globalController?.update();
+}
+
+/**
  * @summary Connects an audiotag to CPU APIs, launched at start or when the webcomponent appears
  *
  * @param      {HTMLAudioElement}  audiotag  The audiotag
@@ -216,12 +225,3 @@ HTMLAudioElement.prototype.CPU_controller = function() {
 	return this.closest(CpuAudioTagName) ?? this.closest(CpuControllerTagName);
 };
 
-/**
- * @summary Trigger display updates in the interface
- *
- * @class      CPU_update (name)
- */
-HTMLAudioElement.prototype.CPU_update = function() {
-	this.CPU_controller()?.CPU?.update();
-	document.CPU.globalController?.update();
-};
