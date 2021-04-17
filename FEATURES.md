@@ -1,7 +1,7 @@
 CPU-Audio features
 ==================
 
-An example with chapters.
+An example with chapters :
 
 <!-- calling the webcomponent -->
 <cpu-audio
