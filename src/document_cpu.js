@@ -167,9 +167,8 @@ export const DocumentCPU = {
 			}
 		}
 
-		let controller = audiotag.CPU_controller();
 		// it may be still constructing it, so be precautionous
-		controller?.updateLoading?.(seconds);
+		findCPU(audiotag)?.updateLoading?.(seconds);
 	},
 
 

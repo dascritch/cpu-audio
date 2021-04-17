@@ -188,8 +188,9 @@ export const trigger = {
 	throbble : function(event) {
 		const {target, offsetX, at} = event;
 		const DocumentCPU = document.CPU;
-		const audiotag = findCPU(target).audiotag;
-		// We know the media length¸because the event is faked → normal execution. 
+		const elCPU = findCPU(target);
+		const audiotag = elCPU.audiotag;
+		// We know the media length, because the event is faked → normal execution. 
 		if (at >= 0) {
 			DocumentCPU.seekElementAt(audiotag, at);
 			return;
@@ -210,7 +211,7 @@ export const trigger = {
 		if (uncertainDuration(duration)) {
 			// Correct play from position on the timeline when metadata not preloaded #88
 			// indicate we are loading something. We set a full width bar
-			audiotag.CPU_controller()?.updateLoading?.(undefined, 100);
+			elCPU.updateLoading(undefined, 100);
 			return;
 		}
 		DocumentCPU.seekElementAt(audiotag, ratio * duration);
@@ -284,7 +285,7 @@ export const trigger = {
 							document.addEventListener('click', unlock, oncePassiveEvent);
 
 							if (audiotag.CPU_connected) {
-								let CPU_api = audiotag.CPU_controller().CPU;
+								let CPU_api = findCPU(audiotag);
 								CPU_api.glowBeforePlay = true;
 								CPU_api.setAct('glow');
 							}
