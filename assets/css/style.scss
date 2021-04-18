@@ -72,11 +72,13 @@ kbd {
 #pieddepage {
     padding : 0;
     display : flex;
+    flex-wrap: wrap;
 }
 
 #pieddepage li {
     list-style :none;
     flex : 1 0 auto;
+    padding : 8px;
 }
 
 .main-content table th, .main-content table td {
