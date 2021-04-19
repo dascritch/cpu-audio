@@ -2,6 +2,16 @@ import {dynamicallyAllocatedIdPrefix, browserIsDecent, findCPU, passiveEvent, on
 import {trigger, lastPlayError} from './trigger.js';
 import {addToPlaylist} from './build_playlist.js';
 
+// Indicate if media element was already played, and so is prone to re-autoplay later
+// null or undefined if not yet connected to cpu-audio.js
+// false if connected but not played yet
+// true if connected and already played once
+HTMLAudioElement.prototype._CPU_played = null;
+
+// Support for planes and points. Changed to {} at webcomponent instantiation
+HTMLAudioElement.prototype._CPU_planes = null;
+
+
 /**
  * @summary At start, will start the last playing <audio> tag at its last known position
  *
@@ -61,7 +71,7 @@ export function uncertainPosition(time) {
  * A media may have unusable duration for ratio because 
  * - media is unreadable
  * - media is streamed
- * - even if it is a fishied file, its duration is still unknown (Chrome may be late)
+ * - even if it is a finished file, its duration is still unknown (Chrome may be late)
  * @private
  *
  * @param      {number|null}  	duration   	`duration` of an audiotag, or result of `audiotagDuration(audiotag)`
@@ -196,24 +206,19 @@ export function updateAudiotag(audiotag) {
  * @param      {HTMLAudioElement}  audiotag  The audiotag
  */
 export function connectAudiotag(audiotag) {
-	if (audiotag.CPU_connected) {
+	if (audiotag._CPU_played != null) {
 		return;
 	}
-	audiotag.CPU_connected = true;
+	audiotag._CPU_played = false;
 
 	attach_events_audiotag(audiotag);
 
 	// hide native controls
-	audiotag.hidden = true;
-	// PHRACK SAFARI
+	audiotag.hidden = true;  
+	// PHRACK SAFARI // may be we should remove upper line ?
 	audiotag.removeAttribute('controls');
 
 	// playlist
 	addToPlaylist(audiotag);
 }
 
-// Indicate if media element was extended
-HTMLAudioElement.prototype.CPU_connected = false;
-
-// Indicate if media element was already played, and so is prone to re-autoplay later
-HTMLAudioElement.prototype._CPU_played = false;
