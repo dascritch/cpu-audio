@@ -284,7 +284,7 @@ export const trigger = {
 							document.addEventListener('focus', unlock, oncePassiveEvent);
 							document.addEventListener('click', unlock, oncePassiveEvent);
 
-							if (audiotag.CPU_connected) {
+							if (audiotag._CPU_played != null) {
 								let CPU_api = findCPU(audiotag);
 								CPU_api.glowBeforePlay = true;
 								CPU_api.setAct('glow');
