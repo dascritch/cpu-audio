@@ -16,7 +16,7 @@ const acceptableHideAtttributes = ['poster', 'actions', 'timeline', 'chapters', 
 const previewClassname = 'with-preview';
 export const activecueClassname = 'active-cue';
 
-let planeNameBorders = '_borders';
+const planeNameBorders = '_borders';
 
 // Regex used to validate planes, points and injected css names
 const validId = /^[a-zA-Z0-9\-_]+$/;
@@ -159,11 +159,11 @@ export class CPU_element_api {
 
 	attributesChanges() {
 		// mode="" attribute, on general aspect. may be coma separated
-		let mode=null;
+		let mode = null;
 		if (this.element.hasAttribute('mode')) {
 			mode = this.element.getAttribute('mode');
 			// in case of a mode="still,play" declaration
-			let [mode_still, mode_play] = mode.split(',');
+			const [mode_still, mode_play] = mode.split(',');
 			if (mode_play) {
 				mode = this.audiotag.paused ? mode_still : mode_play;
 				this.mode_when_play = mode_play;
@@ -186,7 +186,7 @@ export class CPU_element_api {
 	 * @return     boolean			False if no cpu-controller or not mirrored
      */
 	mirroredInController() {
-		let globalController = document.CPU.globalController;
+		const globalController = document.CPU.globalController;
 		return (globalController) && (this.audiotag.isEqualNode(globalController.audiotag));
 	}
 
@@ -247,7 +247,7 @@ export class CPU_element_api {
 		if (this.mode_was === mode) {
 			return;
 		}
-		let classes = this.container.classList;
+		const classes = this.container.classList;
 		classes.remove(`mode-${this.mode_was}`);
 		classes.add(`mode-${mode}`);
 		this.mode_was = mode;
@@ -269,7 +269,7 @@ export class CPU_element_api {
 			// correction for iOS, stuck in "loading" state at the beginning, see #138
 			act = 'glow';
 		}
-		let classes = this.container.classList;
+		const classes = this.container.classList;
 		classes.remove(
 			'act-loading',
 			'act-buffer',
@@ -292,7 +292,7 @@ export class CPU_element_api {
 	 *                                        'actions' or 'chapters'
 	 */
 	setHide(hide_elements) {
-		let container_class = this.container.classList;
+		const container_class = this.container.classList;
 
 		for (let hide_this of acceptableHideAtttributes) {
 			container_class.remove(`hide-${hide_this}`);
@@ -311,9 +311,9 @@ export class CPU_element_api {
 	 * @summary update play/pause button according to media status
 	 */
 	updatePlayButton() {
-		let audiotag = this.audiotag;
-		let _attr = audiotag.getAttribute('preload');
-		let control_button = this.shadowId('control');
+		const audiotag = this.audiotag;
+		const _attr = audiotag.getAttribute('preload');
+		const control_button = this.shadowId('control');
 		const aria = 'aria-label';
 		let _preload = _attr ? (_attr.toLowerCase() !== 'none') : true ;
 		if (
@@ -340,7 +340,7 @@ export class CPU_element_api {
 		control_button.setAttribute(aria, __[label]);
 		let hide_panels_except_play_mark = 'last-used';
 
-		let container_class = this.container.classList;
+		const container_class = this.container.classList;
 		if (!audiotag.paused) {
 			audiotag._CPU_played = true;
 			container_class.add(hide_panels_except_play_mark);
@@ -363,11 +363,11 @@ export class CPU_element_api {
 	 * @param      {number|undefined|null=}  	ratio    ratio position in case time position are still unknown
 	 */
 	updateLine(seconds, ratio = null) {
-		let loadingline_element = this.shadowId('loadingline');
+		const loadingline_element = this.shadowId('loadingline');
 		if (!loadingline_element) {
 			return;
 		}
-		let { duration } = this.audiotag;
+		const { duration } = this.audiotag;
 		ratio = ratio ?? ( duration === 0 ? 0 : (100*seconds / duration) );
 		loadingline_element.style.width = `${ratio}%`;
 	}
@@ -377,11 +377,11 @@ export class CPU_element_api {
 	 * @private
 	 */
 	updateTime() {
-		let audiotag = this.audiotag;
-		let timecode = isAudiotagStreamed(audiotag) ? 0 : Math.floor(audiotag.currentTime);
-		let canonical = audiotag.dataset.canonical ?? '' ;
-		let _is_at = canonical.indexOf('#');
-		let elapse_element = this.shadowId('elapse');
+		const audiotag = this.audiotag;
+		const timecode = isAudiotagStreamed(audiotag) ? 0 : Math.floor(audiotag.currentTime);
+		const canonical = audiotag.dataset.canonical ?? '' ;
+		const _is_at = canonical.indexOf('#');
+		const elapse_element = this.shadowId('elapse');
 		if (elapse_element) {
 			elapse_element.href = 
 				`${ absolutizeUrl(canonical) }#${ (_is_at < 0) ?
@@ -389,11 +389,11 @@ export class CPU_element_api {
 					canonical.substr(_is_at + 1) }&t=${timecode}`;
 		}
 
-		let currenttime_element = this.shadowId('currenttime');
+		const currenttime_element = this.shadowId('currenttime');
 		if (currenttime_element) {
 			this.shadowId('currenttime').innerText = secondsInColonTime(audiotag.currentTime);
 		}
-		let duration_element = this.shadowId('totaltime');
+		const duration_element = this.shadowId('totaltime');
 		if (duration_element) {
 			const duration = audiotagDuration(audiotag);
 			duration_element.innerText = uncertainDuration(duration) ? '' : `\u00a0/\u00a0${secondsInColonTime(duration)}`;
@@ -407,14 +407,14 @@ export class CPU_element_api {
 	 * @private
 	 */
 	updateTimeBorders() {
-		let audiotag = this.audiotag;
+		const audiotag = this.audiotag;
 		if ((!document.CPU.isAudiotagGlobal(audiotag)) || (timecodeEnd === false)) {
 			this.removePlane(planeNameBorders);
 			return;
 		}
 		// verify if plane exists, and point is invariant
 		if (this.plane(planeNameBorders)) {
-			let check = this.point(planeNameBorders, planeNameBorders);
+			const check = this.point(planeNameBorders, planeNameBorders);
 			if (
 				(check) &&
 				(check.start === timecodeStart) &&
@@ -460,7 +460,7 @@ export class CPU_element_api {
 		if (!audiotag) {
 			return true;
 		}
-		let error_object = audiotag.error;
+		const error_object = audiotag.error;
 		if (error_object) {
 			let error_message;
 			this.show('error');
@@ -573,7 +573,7 @@ export class CPU_element_api {
 	 * @public
 	 */
 	hideThrobberLater() {
-		let hideThrobber_delay = 1000;
+		const hideThrobber_delay = 1000;
 		const phylactere = this.shadowId('popup');
 		if (phylactere._hider) {
 			window.clearTimeout(phylactere._hider);
@@ -851,7 +851,7 @@ export class CPU_element_api {
 
 		if (track !== false) {
 			// we have to create the track timeline
-			let plane_track = document.createElement('aside');
+			const plane_track = document.createElement('aside');
 			plane_track.id = `track_«${planeName}»`;
 			if (track !== true) {
 				// …with a class list, space separated
@@ -864,13 +864,12 @@ export class CPU_element_api {
 
 		if (panel !== false) {
 			// we have to create the panel area
-			let plane_panel = document.createElement('div');
+			const plane_panel = document.createElement('div');
 			plane_panel.id = `panel_«${planeName}»`;
 			if (panel !== true) {
 				// …with a class list
 				plane_panel.classList.add(panel.split(' '));
 			}
-
 			plane_panel.classList.add('panel');
 
 			plane_panel.innerHTML = `<h6>${escapeHtml(title)}</h6><nav><ul></ul></nav>`;
@@ -1081,7 +1080,7 @@ export class CPU_element_api {
 			use_link = link;
 		}
 
-		let track = this.planeTrack(planeName);
+		const track = this.planeTrack(planeName);
 		let elementPointTrack;
 		if (track) {
 			elementPointTrack = this.pointTrack(planeName, pointName);
@@ -1095,14 +1094,14 @@ export class CPU_element_api {
 			}
 			elementPointTrack.href = use_link;
 			elementPointTrack.title = text;
-			let track_img = elementPointTrack.querySelector('img');
+			const track_img = elementPointTrack.querySelector('img');
 			showElement(track_img, image);
 			track_img.src = image || '';
 			elementPointTrack.querySelector('img').innerHTML = text ;
 			this.positionTimeElement(elementPointTrack, start, end);
 		}
 
-		let panel = this.planeNav(planeName);
+		const panel = this.planeNav(planeName);
 		let elementPointPanel;
 		if (panel) {
 			elementPointPanel = this.pointPanel(planeName, pointName);
@@ -1114,7 +1113,7 @@ export class CPU_element_api {
 			}
 			elementPointPanel.querySelector('a').href = use_link;
 			elementPointPanel.querySelector('strong').innerHTML = text;
-			let time_element = elementPointPanel.querySelector('time');
+			const time_element = elementPointPanel.querySelector('time');
 			time_element.dateTime = durationIso(start);
 			time_element.innerText = secondsInColonTime(start);
 		}
@@ -1148,7 +1147,7 @@ export class CPU_element_api {
 	 * @return     {boolean}  success
 	 */
 	addPoint(planeName, pointName, pointData={}) {
-		let start = Number(pointData.start);
+		const start = Number(pointData.start);
 
 		if ( (!pointName.match(validId)) ||
 			(!this.plane(planeName)) ||
@@ -1215,7 +1214,7 @@ export class CPU_element_api {
 			planeName,
 			pointDataGroup
 		});
-		let nav = this.planeNav(planeName);
+		const nav = this.planeNav(planeName);
 		if (nav) {
 			nav.innerHTML = '';
 		}
@@ -1238,19 +1237,19 @@ export class CPU_element_api {
 	 *										  will only change keys in the list
 	 */
 	editPoint(planeName, pointName, pointData) {
-		let plane = this.plane(planeName);
+		const plane = this.plane(planeName);
 		if (!plane) {
 			return false;
 		}
 
-		let original_data = this.point(planeName, pointName);
+		const original_data = this.point(planeName, pointName);
 		if (!original_data) {
 			return false;	
 		}
 
 		let { start } = pointData;
 		start = Number(start);
-		let will_refresh = ((start != null) && (start !== original_data.start));
+		const will_refresh = ((start != null) && (start !== original_data.start));
 
 		pointData = {...original_data, ...pointData};
 
@@ -1285,7 +1284,7 @@ export class CPU_element_api {
 	 * @return     {boolean}  success
 	 */
 	removePoint(planeName, pointName) {
-		let plane = this.plane(planeName);
+		const plane = this.plane(planeName);
 		if ((!plane) || (!this.point(planeName, pointName))) {
 			return false;
 		}
@@ -1377,8 +1376,7 @@ export class CPU_element_api {
 	 * @private
 	 */
 	repositionTracks() {
-		let duration = this.audiotag.duration;
-		if (uncertainDuration(duration)) {
+		if (uncertainDuration(this.audiotag.duration)) {
 			// duration still unkown
 			return ;
 		}
