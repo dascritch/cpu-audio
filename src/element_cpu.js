@@ -1388,7 +1388,10 @@ export class CPU_element_api {
 			if (plane_data.track) {
 				for (let pointName of this.planePointNames(planeName)) {
 					const {start, end} = this.point(planeName, pointName);
-					this.positionTimeElement(this.pointTrack(planeName, pointName), start, end);
+					const pointTrack = this.pointTrack(planeName, pointName);
+					if (pointTrack) {
+						this.positionTimeElement(pointTrack, start, end);
+					}
 				}
 			}
 		}
