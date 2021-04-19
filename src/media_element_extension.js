@@ -71,7 +71,7 @@ export function uncertainPosition(time) {
  * A media may have unusable duration for ratio because 
  * - media is unreadable
  * - media is streamed
- * - even if it is a fishied file, its duration is still unknown (Chrome may be late)
+ * - even if it is a finished file, its duration is still unknown (Chrome may be late)
  * @private
  *
  * @param      {number|null}  	duration   	`duration` of an audiotag, or result of `audiotagDuration(audiotag)`
