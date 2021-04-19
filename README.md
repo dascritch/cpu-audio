@@ -93,7 +93,7 @@ Some links
 
 * [Demonstration site](https://dascritch.github.io/cpu-audio/)
     * [Features](https://dascritch.github.io/cpu-audio/FEATURES)
-    * [How to install](https://dascritch.github.io/cpu-audio/INSTALL)
+    * [How to install](https://github.com/dascritch/cpu-audio/blob/master/INSTALL.md)
     * [Live configuration](https://dascritch.github.io/cpu-audio/applications/live_config.html)
 * [JS installable code](https://github.com/dascritch/cpu-audio/blob/master/build/cpu-audio.js) 
 * [Code repository](https://github.com/dascritch/cpu-audio/), [Latest stable release](https://github.com/dascritch/cpu-audio/releases/latest)
