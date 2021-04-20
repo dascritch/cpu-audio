@@ -18,7 +18,7 @@
         At start, a &lt;cpu-controller&gt; without any valid &lt;cpu-audio&gt; should only be a placeholder.
     </p>
 
-    <cpu-controller></cpu-controller>
+    <cpu-controller hide="poster"></cpu-controller>
 
     <div id="zone">
     </div>
@@ -52,7 +52,7 @@
 		source = sources[i++];
 		p = document.createElement('p');
 		p.innerHTML = `
-		<cpu-audio title="${source.title}" playlist="unique">
+		<cpu-audio title="${source.title}" playlist="unique" hide="poster">
 			<audio src="${source.src}" controls></audio>
 		</cpu-audio>
 		<button type="button" class="remove">×</button>
