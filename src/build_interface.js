@@ -29,7 +29,13 @@ function nativeShare(event) {
  * @summary Builds the controller.
  */
 export function buildInterface(elCPU) {
-	const interface_classlist = elCPU.shadowId('interface').classList;
+	// #interface SHOULD have a tabindex="-1" attribute. This is mandatory for getting keyboard browsing. Any attempt to give it focus will focus #control or #toggleplay instead. 
+	elCPU.container.addEventListener('focus', (event) => {
+		(elCPU.shadowId('control') ?? elCPU.shadowId('toggleplay'))?.focus();
+		event.preventDefault();
+	});
+
+	const interface_classlist = elCPU.container.classList;
 
 	// hide broken image while not loaded
 	elCPU.shadowId('poster')?.addEventListener('load', () => {

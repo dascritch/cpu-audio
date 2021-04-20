@@ -96,6 +96,12 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 	});
 
 
+	QUnit.test( "#interface focus service", function( assert ) {
+		assert.equal(componenttag.CPU.container.tabIndex, -1 , `#interface must have tabindex="-1" attribute`);
+		componenttag.CPU.container.focus()
+		assert.equal(componenttag.CPU.focusedId(), 'control' , `When #interface is focused, #control (or #toggleplay) got focus instead`);
+	});
+
 	QUnit.test( "Press play to start", function( assert ) {
 		assert.ok(audiotag.paused, "Player is paused at start" );
 		interfacetag.querySelector('#play').dispatchEvent(new Event('click'));
