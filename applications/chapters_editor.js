@@ -1,11 +1,5 @@
 'use strict'; 
 
-/**
-TODO
-- when unfolding generators, expanded panels should be also scrolled to
-**/
-
-
 let sound_element, component_element, list_element, edit_source_audio_element, edit_source_webvtt_element;
 let sound_CPU;
 let line_number = 1;
