@@ -48,7 +48,7 @@ export function buildInterface(elCPU) {
 		play       : trigger.play,
 		time       : trigger.throbble,
 		actions    : () => {elCPU.showActions();},
-		back       : () => {elCPU.showMain();},
+		back       : (event) => {elCPU.showMain(); console.log(event); event.preventDefault();},
 		poster     : () => {elCPU.showMain();},
 		restart    : trigger.restart,
 		toggleplay : trigger.toggleplay,
@@ -58,7 +58,8 @@ export function buildInterface(elCPU) {
 		nexttrack  : trigger.nexttrack,
 	};
 	for (let elementId in cliquables) {
-		elCPU.shadowId(elementId)?.addEventListener('click', cliquables[elementId], passiveEvent);
+		const el = elCPU.shadowId(elementId);
+		el?.addEventListener('click', cliquables[elementId], el.tagName == 'A' ? {} : passiveEvent);
 	}
 
 	// relative browsing buttons management
