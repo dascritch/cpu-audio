@@ -1,9 +1,10 @@
 INTERNALS
 =========
 
-The way cpu-audio.js is working internally. If you want to create a themed build, you should read this.
+The way cpu-audio.js is working internally, mainly on its use of shadowed DOM elements per tag names, ID and class names. If you want to create a themed build, you should read this.
 
 Most of the informations about how to use JS to enhance externally the player can be find in the [API.md](API.md) page.
+
 
 Guidelines to create a theme
 ============================
@@ -72,7 +73,7 @@ Those class names are used by code. You can perfectly create a theme without any
 Class name 		| Importance  | Usage
 ----------------|-------------|--------
 `controller`    | Cosmetic    | Attributed only to `<CPU-Controller>` interface
-`media-streamed`| Needed      | Indicate a streaming media, so no total duration, no time-line bar, etc…
+`media-streamed`| Important   | Indicate a streaming media, should hide total duration, time-line bar, etc…
 `act-pause` 	| Needed      | Set by setAct(), indicate media is in pause
 `act-glow` 	    | Cosmetic    | Set by setAct() and the `glow` attribute. As `act-pause` but before first interaction
 `act-loading`   | Important   | Set by setAct(), indicate media is loading
@@ -80,7 +81,7 @@ Class name 		| Importance  | Usage
 `act-buffer`	| Important   | Set by setAct(), indicate media is buffering (loading will playing)
 `show-main` 	| Needed	  | Set by show(), the usual panel with controls and timeline
 `show-error` 	| Important	  | Set by show(), indicate the media is in error
-`show-share` 	| Important	  | Set by show(), for showing an action panel, as “shares”, or “more infos”
+`show-share` 	| Cosmetic	  | Set by show(), for showing an action panel, as “shares”, or “more infos”
 `show-handheld-nav` | Cosmetic | For altenate fine position handheld buttons
 `mode-default`  | Cosmetic	  | User set via `mode=""` attribute, or when not mentionned
 `mode-compact`  | Cosmetic	  | User set via `mode=""` attribute
@@ -103,13 +104,13 @@ Classes attributed to some shadow elements
 Class name 		| Importance  | Usage
 ----------------|-------------|--------
 `no`       		| Needed      | This class is for hiding elements, usable for any elements, even shadow.
-`panel` 		| Needed      | A plane with panels will generate `div#panel`
-`cue` 			| Needed      | Every point may have a `.cue time` indicating the `start` timecode
+`panel` 		| Important   | A plane with panels will generate `div#panel`
+`cue` 			| Important   | Every point may have a `.cue time` indicating the `start` timecode
 `chapters` 		| Important   | Attributed by build_chapters, aspect used for the points under the timeline. Only tracks and panels
 `borders`       | Needed 	  | Attributed when a media link indicate a start time and a end time as in `page.html#id&t=0,100`. Only tracks.
-`nocuetime`     | Needed 	  | As in playlist panels, we sometimes need to hide the start time in the panel
-`active-cue`    | Needed 	  | Indicate focus on a point
-`with-preview`  | Needed 	  | Indicate hover on a point
+`nocuetime`     | Important   | As in playlist panels, we sometimes need to hide the start time in the panel
+`active-cue`    | Important	  | Indicate focus on a point
+`with-preview`  | Important   | Indicate hover on a point
 `untitled`		| Cosmetic 	  | Set on `a#canonical` if no `title=""` attribute set for this sound
 
 Those class names are not used by code but are important in our `default` theme, they help for building a responsive interface : `siders`, `nosmall`, `nosmaller`, and `nosmallest`
