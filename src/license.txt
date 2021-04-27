@@ -1,6 +1,6 @@
 /** @license
 Cpu-Audio: an extension to the hash system to address timecode into audio/video elements and a player WebComponent
-Version 7.0
+Version 7.0.1
 Copyright (C) 2014-2021 Xavier "dascritch" Mouton-Dubosc & contributors.
 License GNU GPL 3
 
