@@ -119,8 +119,7 @@ Credits
 
 Thank you to my lovely friends :
 * [Thomas Parisot](https://oncletom.io/) for suggestions
-* [Loïc Gerbaud](https://github.com/chibani) for corrections
-* [Guillaume Lemoine and Phonitive](http://www.phonitive.fr/) for helping
+* [Loïc Gerbaud](https://github.com/chibani), [Guillaume Lemoine](https://www.linkedin.com/in/glguillaumelemoine/) and [Guillaume de Jabrun](https://github.com/Wykks) for bug-hunting
 * [Benoît Salles](https://twitter.com/infestedgrunt) and [Michel Poulain](https://twitter.com/MichelPoulain) for testing
 * [@mariejulien](https://twitter.com/mariejulien/status/1047827583126183937) about [CONTRIBUTING.md](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
 * [Christophe Porteneuve](https://twitter.com/porteneuve) to kick my ass on modern javascript
