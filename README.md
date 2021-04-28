@@ -122,7 +122,7 @@ Thank you to my lovely friends :
 * [Loïc Gerbaud](https://github.com/chibani), [Guillaume Lemoine](https://www.linkedin.com/in/glguillaumelemoine/) and [Guillaume de Jabrun](https://github.com/Wykks) for bug-hunting
 * [Benoît Salles](https://twitter.com/infestedgrunt) and [Michel Poulain](https://twitter.com/MichelPoulain) for testing
 * [@mariejulien](https://twitter.com/mariejulien/status/1047827583126183937) about [CONTRIBUTING.md](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
-* [Christophe Porteneuve](https://twitter.com/porteneuve) to kick my ass on modern javascript
+* [Christophe Porteneuve](https://github.com/tdd) of [Delicious Insights](http://delicious-insights.com/) to kick my ass on modern javascript.
 * [scombat for a wonderful wrapper of cpu-audio.js in React](https://github.com/scombat/react-cpu-audio)
 * [Éric Daspet for its remarks on documentation](https://github.com/edas)
 * [Gabi Boyer for helping me avery a lot to debug iOS issues](https://twitter.com/GabiBoyer)
