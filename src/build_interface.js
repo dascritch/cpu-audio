@@ -89,7 +89,7 @@ export function buildInterface(elCPU) {
 		elCPU.shadowId('nativeshare')?.addEventListener('click', nativeShare, passiveEvent);
 	}
 
-	let canonical_element = elCPU.shadowId('canonical'); 
+	const canonical_element = elCPU.shadowId('canonical'); 
 	if (canonical_element) {
 		preventLinkOnSamePage( canonical_element );
 	}
