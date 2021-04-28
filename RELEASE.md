@@ -1,7 +1,7 @@
 RELEASE NOTES version 7.0.1
 ===========================
 
-* Regression on `<a>` tags with actions ([#170](#170)), released as 7.0.1
+* Regression on `<a>` tags with actions ([#170](#170)), thanks [Guillaume de Jabrun](https://github.com/Wykks)
 * Simplify [examples/Usage_controller.html](examples/Usage_controller.html)
 
 RELEASE NOTES version 7.0
