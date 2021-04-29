@@ -8,6 +8,7 @@ CPU-Audio WebComponent
     title="Au carnaval avec Samba Résille (2003)"
     poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
     canonical="https://dascritch.net/post/2014/04/08/Au-Carnaval-avec-Samba-R%C3%A9sille"
+    waveform="./tests-assets/waveform-sambaresille.png"
     twitter="@dascritch"
     >
     <audio controls id="sound">
@@ -47,6 +48,7 @@ Features
 * pure vanilla, no dependencies to any framework, so usable in *any* JS framework ;
 * progressive enhancement, can works even without proper WebComponent support ;
 * add an UI, customizable via attributes and CSS variables ;
+* exists in different graphic themes ;
 * responsive liquid design ;
 * recall the player where it was unexpectedly left (click on a link when playing) ;
 * play only one sound in the page ;

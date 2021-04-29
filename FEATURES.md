@@ -79,7 +79,7 @@ No need to use `title=""`, `canonical=""` or `twitter=""` attributes for the two
 
 ↓ Unfoldable mode, by example : `mode="compact,default"`  , the component will be displayed in `compact` mode in stand-by, but will unfold to `default` once it plays.
 
-<cpu-audio mode="compact,default">
+<cpu-audio mode="compact,default" waveform="./tests-assets/waveform-sambaresille.png">
     <audio controls id="b2">
         <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
     </audio>
@@ -105,6 +105,7 @@ You can change some aspects of the interface [via some handy CSS variables](http
         title="Au carnaval avec Samba Résille (2003)"
         poster="https://dascritch.net/vrac/.blog2/entendu/.1404-SambaResille_m.jpg"
         canonical="https://dascritch.net/post/2014/04/08/Au-Carnaval-avec-Samba-R%C3%A9sille"
+        waveform="./tests-assets/waveform-sambaresille.png"
     >
     <audio controls id="p1">
         <source src="https://dascritch.net/vrac/sonores/podcast/1404-SambaResille2003.mp3" type="audio/mpeg">
