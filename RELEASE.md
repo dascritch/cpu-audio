@@ -1,3 +1,8 @@
+RELEASE NOTES version 7.0.2
+===========================
+
+*  Changing license from GPL to LGPL ([#174](#174))
+
 RELEASE NOTES version 7.0.1
 ===========================
 
