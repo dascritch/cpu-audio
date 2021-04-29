@@ -48,7 +48,7 @@ export function buildInterface(elCPU) {
 		play       : trigger.play,
 		time       : trigger.throbble,
 		actions    : () => {elCPU.showActions();},
-		back       : (event) => {elCPU.showMain(); console.log(event); event.preventDefault();},
+		back       : (event) => {elCPU.showMain(); event.preventDefault();},
 		poster     : () => {elCPU.showMain();},
 		restart    : trigger.restart,
 		toggleplay : trigger.toggleplay,
@@ -89,7 +89,7 @@ export function buildInterface(elCPU) {
 		elCPU.shadowId('nativeshare')?.addEventListener('click', nativeShare, passiveEvent);
 	}
 
-	let canonical_element = elCPU.shadowId('canonical'); 
+	const canonical_element = elCPU.shadowId('canonical'); 
 	if (canonical_element) {
 		preventLinkOnSamePage( canonical_element );
 	}

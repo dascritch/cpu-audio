@@ -101,7 +101,7 @@ Some links
 * Blog posts about its creation and development : [Série cpu-audio sur dascritch.net](https://dascritch.net/serie/cpu-audio)
 * [How to cite a podcast](https://www.buzzsprout.com/blog/cite-podcast), now you can support time positions URL
 * Main author : [Xavier "dascritch" Mouton-Dubosc](http://dascritch.com)
-* [Licence GPL 3](https://github.com/dascritch/cpu-audio/blob/master/LICENSE.md)
+* [Licence LGPL 3](https://github.com/dascritch/cpu-audio/blob/master/LICENSE.md)
 
 
 Participate
@@ -119,11 +119,10 @@ Credits
 
 Thank you to my lovely friends :
 * [Thomas Parisot](https://oncletom.io/) for suggestions
-* [Loïc Gerbaud](https://github.com/chibani) for corrections
-* [Guillaume Lemoine and Phonitive](http://www.phonitive.fr/) for helping
+* [Loïc Gerbaud](https://github.com/chibani), [Guillaume Lemoine](https://www.linkedin.com/in/glguillaumelemoine/) and [Guillaume de Jabrun](https://github.com/Wykks) for bug-hunting
 * [Benoît Salles](https://twitter.com/infestedgrunt) and [Michel Poulain](https://twitter.com/MichelPoulain) for testing
 * [@mariejulien](https://twitter.com/mariejulien/status/1047827583126183937) about [CONTRIBUTING.md](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md)
-* [Christophe Porteneuve](https://twitter.com/porteneuve) to kick my ass on modern javascript
+* [Christophe Porteneuve](https://github.com/tdd) of [Delicious Insights](http://delicious-insights.com/) to kick my ass on modern javascript.
 * [scombat for a wonderful wrapper of cpu-audio.js in React](https://github.com/scombat/react-cpu-audio)
 * [Éric Daspet for its remarks on documentation](https://github.com/edas)
 * [Gabi Boyer for helping me avery a lot to debug iOS issues](https://twitter.com/GabiBoyer)

@@ -28,7 +28,7 @@
     "vanilla"
   ],
   "author": "Xavier \"dascritch\" Mouton-Dubosc",
-  "license": "GPL-3.0-or-later",
+  "license": "LGPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/dascritch/cpu-audio/issues"
   },

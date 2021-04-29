@@ -1,7 +1,14 @@
+RELEASE NOTES version 7.0.2
+===========================
+
+* Changing license from GPL to LGPL ([#174](#174))
+* Removing an example that incits a bad habit
+* Correct credit for [@tdd](https://github.com/tdd)
+
 RELEASE NOTES version 7.0.1
 ===========================
 
-* Regression on `<a>` tags with actions ([#170](#170)), released as 7.0.1
+* Regression on `<a>` tags with actions ([#170](#170)), thanks [Guillaume de Jabrun](https://github.com/Wykks)
 * Simplify [examples/Usage_controller.html](examples/Usage_controller.html)
 
 RELEASE NOTES version 7.0
