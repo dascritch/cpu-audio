@@ -1,7 +1,9 @@
 RELEASE NOTES version 7.0.2
 ===========================
 
-*  Changing license from GPL to LGPL ([#174](#174))
+* Changing license from GPL to LGPL ([#174](#174))
+* Removing an example that incits a bad habit
+* Correct credit for [@tdd](https://github.com/tdd)
 
 RELEASE NOTES version 7.0.1
 ===========================
