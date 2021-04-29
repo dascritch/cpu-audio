@@ -1,15 +1,12 @@
-RELEASE NOTES version 7.0.2
-===========================
+RELEASE NOTES versions 7.0 to 7.0.2
+===================================
 
 * Changing license from GPL to LGPL ([#174](#174))
 * Removing an example that incits a bad habit
 * Correct credit for [@tdd](https://github.com/tdd)
-
-RELEASE NOTES version 7.0.1
-===========================
-
-* Regression on `<a>` tags with actions ([#170](#170)), thanks [Guillaume de Jabrun](https://github.com/Wykks)
+* Regression on `<a>` tags with actions ([#170](#170)), released as 7.0.1
 * Simplify [examples/Usage_controller.html](examples/Usage_controller.html)
+
 
 RELEASE NOTES version 7.0
 =========================
@@ -20,7 +17,7 @@ RELEASE NOTES version 7.0
 New features
 ------------
 
- * Persistant `<CPU-Controller>` for single page web-app, with current playing remanence ([#87](#87))
+ * Persistent `<CPU-Controller>` for single page web-app, with current playing remanence ([#87](#87))
  * Added a [theme with a direct download button](examples/Build_with_download_action.html), instead of the action button. Example for creating graphic theme ([#56](#56))
  * Added a [theme with a simple big square button](examples/Theme_big-square.html). Example for creating leaner graphic theme ([#56](#56))
  * Possibility to create themed versions with specific html and css files ([#56](#56))
@@ -46,7 +43,7 @@ Corrections
  * Removing annoying interactions from Safari iOS ([#138](#138))
  * Resolving graphic glitches on Safari, SVG aren't correctly calculated on iOS ([#138](#138))
  * Production files are now more logically created in `build/` instead of `directory/`
- * `<CPU-Controller>` cannot be instancied twice
+ * `<CPU-Controller>` cannot be instanced twice
  * Methods and parameters names have been unified camelCase. Changes are incompatible with versions <7.0 ([#112](#112))
  * Title parameter in `Element.CPU.addPlane()` is now in `planePoint`
  * `Element.CPU.removeHighlightsPoints()` was too generic. Modification in parameters ([#109](#109))
@@ -71,7 +68,7 @@ Corrections
  * Too many problems in documentations in gh-pages, links to config and chaptering applications are now absolute ([#135](#135))
  * Do not show panels when in error state
  * Disambiguation in renaming `findContainer()` in `findCPU()` ([#142](#142))
- * Faster instanciation time, removing `<template>` from host page ([#148](#148))
+ * Faster instantiation time, removing `<template>` from host page ([#148](#148))
  * Documentation re-formated ([#134](#134))
  * `HTMLAudioElement.CPU_Update()` and `HTMLAudioElement.CPU_Controller()` going private (vestigial use) ([#143](#143))
  * Build lib still under 50,000 bytes
