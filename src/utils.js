@@ -132,11 +132,25 @@ export function preventLinkOnSamePage(element) {
  * @return     {string}  HTML escaped text
  */
 export function escapeHtml(text) {
-	let burn_after_reading = document.createElement('span');
+	let burn_after_reading = document.createElement('p');
 	burn_after_reading.innerText = text;
-	let out = burn_after_reading.innerHTML;
+	const { innerHTML } = burn_after_reading;
 	burn_after_reading.remove();
-	return out;
+	return innerHTML;
+}
+
+/**
+ * @summary Remove HTML elements and entities from a text.
+ *
+ * @param      {string}  html    HTML source
+ * @return     {string}  text
+ */
+export function removeHtml(html) {
+	let burn_after_reading = document.createElement('p');
+	burn_after_reading.innerHTML = html;
+	const { innerText } = burn_after_reading;
+	burn_after_reading.remove();
+	return innerText;
 }
 
 /**

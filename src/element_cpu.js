@@ -1,4 +1,4 @@
-import {adjacentArrayValue, findCPU, selectorAudioInComponent, querySelectorDo, absolutizeUrl, error, escapeHtml, passiveEvent} from './utils.js';
+import {adjacentArrayValue, findCPU, selectorAudioInComponent, querySelectorDo, absolutizeUrl, error, escapeHtml, removeHtml, passiveEvent} from './utils.js';
 import {__} from './i18n.js';
 import {defaultDataset} from './default_dataset.js';
 import {secondsInColonTime, secondsInTime, durationIso} from './convert.js';
@@ -94,7 +94,7 @@ function showElement({classList}, show) {
  * @param      {Element} container  The webcontainer to clean-up
  */
 function undrawAllPlanes(container) {
-	querySelectorDo('aside, div.panel', (element) => { element.remove(); }, container);
+	querySelectorDo('aside, details.panel', (element) => { element.remove(); }, container);
 }
 
 /**
@@ -864,17 +864,17 @@ export class CPU_element_api {
 
 		if (panel !== false) {
 			// we have to create the panel area
-			const plane_panel = document.createElement('div');
+			const plane_panel = document.createElement('details');
+			plane_panel.open = true;
 			plane_panel.id = `panel_«${planeName}»`;
 			if (panel !== true) {
 				// …with a class list
 				plane_panel.classList.add(panel.split(' '));
 			}
 			plane_panel.classList.add('panel');
-
-			plane_panel.innerHTML = `<h6>${escapeHtml(title)}</h6><nav><ul></ul></nav>`;
+			plane_panel.innerHTML = `<summary>${escapeHtml(title)}</summary><nav><ul></ul></nav>`;
 			this.container.appendChild(plane_panel);
-			showElement( plane_panel.querySelector('h6') , title);
+			showElement( plane_panel.querySelector('summary') , title);
 			assignEventsOnPlanes(plane_panel);
 		}
 
@@ -1093,7 +1093,7 @@ export class CPU_element_api {
 				track.appendChild(elementPointTrack);
 			}
 			elementPointTrack.href = use_link;
-			elementPointTrack.title = text;
+			elementPointTrack.title = removeHtml(text);
 			const track_img = elementPointTrack.querySelector('img');
 			showElement(track_img, image);
 			track_img.src = image || '';

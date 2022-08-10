@@ -171,6 +171,10 @@
 		<span>Font families</span>
 		<input id="css_font-family" name="css_font-family" type="text" value='Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif' />
 	</label>
+	<label for="css_line-height">
+		<span>Font line height</span>
+		<input id="css_line-height" name="css_line-height" type="number" step="0.01" value="1.2" />
+	</label>
 	<label for="css_inner-shadow">
 		<span>Shadow between horizontal panels</span>
 		<input id="css_inner-shadow" name="css_inner-shadow" type="text" value="inset 0px 5px 10px -5px black" />
@@ -364,7 +368,7 @@ function configurator_css(event) {
 	}
 
 	let css = '';
-	let attrs = ['font-family', 'inner-shadow' ,'color-transitions','background-transitions' ];
+	let attrs = ['font-family', 'inner-shadow' ,'color-transitions','background-transitions', 'line-height'];
 	for (let key of ['','error-','playing-','focus-','popup-']) {
 		for (let attr of ['color','background']) {
 			attrs.push(`${key}${attr}`);

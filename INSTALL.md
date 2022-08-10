@@ -247,6 +247,7 @@ Variable name               | Description                                       
 `--cpu-font-family`         | Font families                                               | `Lato, "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif`
 `--cpu-font-size`           | Font size                                                   | `15px`
 `--cpu-font-small-size`     | Small font size                                             | `calc(var(--cpu-font-size) * 0.8)`
+`--cpu-line-height`         | Line height for the font                                    | `1.2`
 `--cpu-height`              | Height and width of the square buttons                      | `64px` (`48px` under 640px width)
 `--cpu-inner-shadow`        | Shadow between horizontal panels                            | `inset 0px 5px 10px -5px black`
 `--cpu-playing-background`  | Background while playing                                    | `#444`

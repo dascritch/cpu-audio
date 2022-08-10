@@ -480,18 +480,18 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 		assert.equal(secondary_API_CPU.plane('zgou'), undefined, 'plane() returns undefined when nothing exists');
 		assert.ok(secondary_API_CPU.addPlane('hello', {title : 'Hello<>&' }), 'function accepts raw text');
 		assert.ok(secondary_interfacetag.querySelector('aside#track_«hello»') , 'DOM element aside added in the track line');
-		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello»') , 'DOM element div added as a panel');
+		assert.ok(secondary_interfacetag.querySelector('details.panel#panel_«hello»') , 'DOM element div added as a panel');
 		assert.deepEqual(Object.keys(secondary_audiotag._CPU_planes).length, 1, 'one audio._CPU_planes created');
 		assert.ok('hello' in secondary_audiotag._CPU_planes, 'audio._CPU_planes named “hello”');
 		
 
-		assert.equal(secondary_interfacetag.querySelector('div.panel#panel_«hello» h6').innerText, 'Hello<>&', 'panel as a h6 with a properly escaped title');
+		assert.equal(secondary_interfacetag.querySelector('details.panel#panel_«hello» summary').innerText, 'Hello<>&', 'panel as a summary with a properly escaped title');
 		secondary_API_CPU.addPlane('untitled');
-		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«untitled» h6').classList.contains('no'), 'Untitled panel have an hidden h6');
+		assert.ok(secondary_interfacetag.querySelector('details.panel#panel_«untitled» summary').classList.contains('no'), 'Untitled panel have an hidden summary');
 
 		assert.notEqual(secondary_API_CPU.plane('hello'), undefined, 'plane() returns object');
 		assert.equal(secondary_API_CPU.planeTrack('hello').tagName, 'ASIDE', 'planeTrack() returns DOM element and is a <aside>');
-		assert.equal(secondary_API_CPU.planePanel('hello').tagName, 'DIV', 'planePanel() returns DOM element and is a <div>');
+		assert.equal(secondary_API_CPU.planePanel('hello').tagName, 'DETAILS', 'planePanel() returns DOM element and is a <details>');
 		assert.equal(secondary_API_CPU.planeNav('hello').tagName, 'UL', 'planeNav() returns DOM element and is a <ul>');
 	});
 
@@ -585,7 +585,7 @@ document.querySelector('#get_focus').addEventListener('click', function() {
 
 		assert.notEqual(secondary_API_CPU.point('hello', 'world'), undefined, 'point() returns data');
 		assert.ok(secondary_interfacetag.querySelector('aside#track_«hello» > a#track_«hello»_point_«world»') , 'DOM element point added in aside track');
-		assert.ok(secondary_interfacetag.querySelector('div.panel#panel_«hello» > nav > ul > li#panel_«hello»_point_«world»'), 'DOM element point added in panel');
+		assert.ok(secondary_interfacetag.querySelector('details.panel#panel_«hello» > nav > ul > li#panel_«hello»_point_«world»'), 'DOM element point added in panel');
 
 		let point_in_track = secondary_API_CPU.pointTrack('hello', 'world');
 		let point_in_panel = secondary_API_CPU.pointPanel('hello', 'world');

@@ -19,5 +19,10 @@ module.exports = {
         extractComments: false,
       }),
     ],
-  }
+  },
+  target: ['web', 'es2021'],
+output:{
+	chunkFormat: 'array-push'
+}
+
 };

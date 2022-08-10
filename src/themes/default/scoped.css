@@ -35,7 +35,7 @@
 	font-size : var(--cpu-font-size);
 	font-weight: normal;
 	font-style: normal;
-	line-height : 1.2;
+	line-height : var(--cpu-line-height);
 	border : none;
 	padding : 0;
 	margin : 0;
@@ -80,7 +80,7 @@ i, em {
 	font-style: italic;
 }
 
-b, strong, h5 a {
+b, strong {
 	font-weight: bold;
 }
 
@@ -409,8 +409,19 @@ aside.ticker a.active-cue span {
 	padding : 0 var(--cpu-min-padding);
 	box-shadow: var(--cpu-inner-shadow);
 }
-h6 {
+
+summary {
 	text-align : center;
+	list-style-type: revert;
+}
+
+summary::marker { /* do not use standard triangle icon, as it may be mismatch with the play button ! */
+	font-size : smaller;
+	content: '[+]\u00A0';
+}
+
+[open] > summary::marker {
+	content: '[-]\u00A0';
 }
 
 .cue {
@@ -433,7 +444,7 @@ h6 {
 	display : none;
 }
 
-aside a, h6, .cue time /*, aside.ticker **/
+aside a, summary, .cue time /*, aside.ticker **/
 {
 	font-size : var(--cpu-font-small-size);
 }

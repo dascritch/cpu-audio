@@ -1,5 +1,21 @@
-RELEASE NOTES versions 7.0 to 7.0.2
-===================================
+Upcoming version 7.0.3
+======================
+
+Corrections
+-----------
+
+* Should no more use numbered headers `<hx>`, but generic tags instead, to not confuse a11y tools
+* Should no more use `<h5>` for title `<strong id="title">` must be enough
+* Panels unfoldable via the use of `<details open><summary>` ([#75](#75))
+* Adding a CSS variable `--cpu-line-height` to fine tune `line-height` property (was hard-coded to `1.2`, I needed a `1.0` for Roboto on [CPU website](https://cpu.pm))
+* Correcting `title=""` on cue points, should not put HTML tags anymore ([#178](#178))
+* Updating npm version [due to a vulnerability](https://github.com/dascritch/cpu-audio/security/dependabot/1)
+* Updating webpack parameters, to really use native imports
+* Alas, the `cpu.audio.js` built goes upper than 50 000 bytes. But so close ;)
+ 
+RELEASE NOTES version 7.0.2
+===========================
+
 
 * Changing license from GPL to LGPL ([#174](#174))
 * Removing an example that incits a bad habit
