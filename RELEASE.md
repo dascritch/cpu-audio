@@ -1,4 +1,4 @@
-Upcoming version 7.0.3
+RELEASE NOTES version 7.0.3
 ======================
 
 New features
