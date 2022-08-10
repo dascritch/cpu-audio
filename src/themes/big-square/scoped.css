@@ -59,8 +59,9 @@ svg {
 	opacity: 1;
 }
 
-h5 {
+strong {
 	font-weight: bold;
+	display : block;
 }
 
 .no,
