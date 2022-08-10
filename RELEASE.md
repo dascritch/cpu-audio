@@ -1,3 +1,22 @@
+Upcoming
+========
+
+Objectives
+----------
+
+* Should no more use numbered headers `<hx>`, but generic `<header>` instead
+* Panels unfoldable and scrollable, via the use of `<details open><summary>` ([#75](#75)) and in conformance with hide-panels-title summary must have list-style-type: revert; ::after content: '[…]';
+
+
+Corrections
+-----------
+
+* Should no more use `<h5>` for title `<strong id="title">` must be enough
+* Adding a CSS variable to fine tune `line-height` property (was hard-coded to `1.2`, I needed a `1.0` for Roboto)
+* Correcting `title=""` on cue points, should not put HTML tags anymore ([#178](#178))
+* Updating npm version [due to a vulnerability](https://github.com/dascritch/cpu-audio/security/dependabot/1)
+* Updating webpack parameters, to really use native imports
+ 
 RELEASE NOTES version 7.0.2
 ===========================
 

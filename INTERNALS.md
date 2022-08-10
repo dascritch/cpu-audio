@@ -91,7 +91,7 @@ Class name 		| Importance  | Usage
 `hide-actions`  | Cosmetic	  | User set via `hide=""` attribute. Should hide `#actions` button and its panel
 `hide-timeline` | Cosmetic	  | User set via `hide=""` attribute. Should hide timeline, as in `media-streamed`, except the total duration
 `hide-chapters` | Cosmetic	  | User set via `hide=""` attribute. Should hide chapters plane (track and panel)
-`hide-panels-title` | Cosmetic	  | User set via `hide=""` attribute. Should hide `h6` panel titles
+`hide-panels-title` | Cosmetic	  | User set via `hide=""` attribute. Should hide panel titles
 `hide-panels` 	| Cosmetic	  | User set via `hide=""` attribute. Should hide any panels
 `hide-panels-except-play` 	| Cosmetic	  | User set via `hide=""` attribute. Should hide any panels except when media is playing
 `poster-loaded` | Cosmetic    | Indicate the `img#poster` has been fully loaded
