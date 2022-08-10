@@ -1,4 +1,4 @@
-import {adjacentArrayValue, findCPU, selectorAudioInComponent, querySelectorDo, absolutizeUrl, error, escapeHtml, passiveEvent} from './utils.js';
+import {adjacentArrayValue, findCPU, selectorAudioInComponent, querySelectorDo, absolutizeUrl, error, escapeHtml, removeHtml, passiveEvent} from './utils.js';
 import {__} from './i18n.js';
 import {defaultDataset} from './default_dataset.js';
 import {secondsInColonTime, secondsInTime, durationIso} from './convert.js';
@@ -1093,7 +1093,7 @@ export class CPU_element_api {
 				track.appendChild(elementPointTrack);
 			}
 			elementPointTrack.href = use_link;
-			elementPointTrack.title = text;
+			elementPointTrack.title = removeHtml(text);
 			const track_img = elementPointTrack.querySelector('img');
 			showElement(track_img, image);
 			track_img.src = image || '';
