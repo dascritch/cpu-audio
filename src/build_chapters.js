@@ -41,7 +41,7 @@ function get_chapter_tracks(audiotag) {
 
 	let chapter_track = null;
 	if (audiotag.textTracks?.length > 0) {
-		for (let tracks of audiotag.textTracks) {
+		for (const tracks of audiotag.textTracks) {
 			if (
 					(tracks.kind.toLowerCase() === 'chapters') &&
 					(tracks.cues) &&  // linked to default="" attribute, only one per set !

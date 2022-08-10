@@ -53,6 +53,13 @@ main {
 	display : flex;
 	overflow : hidden;
 	height : var(--cpu-height);
+	top :0;
+	z-index : 2; /** needed for sticky scroll **/
+}
+
+main, summary {
+	position: sticky;
+	background : var(--cpu-background); /* this repetition is needed to opacify the sticky main */
 }
 
 a, button {
@@ -413,6 +420,8 @@ aside.ticker a.active-cue span {
 summary {
 	text-align : center;
 	list-style-type: revert;
+	top : var(--cpu-height);
+	box-shadow: var(--cpu-inner-shadow); /* this repetition is needed for kedeping shadow aspect on sticky scrolling  */
 }
 
 summary::marker { /* do not use standard triangle icon, as it may be mismatch with the play button ! */
@@ -480,7 +489,7 @@ aside a, summary, .cue time /*, aside.ticker **/
 .hide-chapters .chapters,
 .hide-timeline #line,
 .hide-panels .panel,
-.hide-panels-title h6,
+.hide-panels-title summary,
 .hide-panels-except-play .panel,
 .media-streamed #link,
 .media-streamed #line,
@@ -589,5 +598,5 @@ a:hover, button:hover, a:focus, button:focus,
 @media (prefers-reduced-motion: reduce) {
 	* {
 		animation : none !important;
-  	}
+	}
 }

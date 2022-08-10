@@ -7,6 +7,7 @@ Corrections
 * Should no more use numbered headers `<hx>`, but generic tags instead, to not confuse a11y tools
 * Should no more use `<h5>` for title `<strong id="title">` must be enough
 * Panels unfoldable via the use of `<details open><summary>` ([#75](#75))
+* Sticky panel title
 * Adding a CSS variable `--cpu-line-height` to fine tune `line-height` property (was hard-coded to `1.2`, I needed a `1.0` for Roboto on [CPU website](https://cpu.pm))
 * Correcting `title=""` on cue points, should not put HTML tags anymore ([#178](#178))
 * Updating npm version [due to a vulnerability](https://github.com/dascritch/cpu-audio/security/dependabot/1)

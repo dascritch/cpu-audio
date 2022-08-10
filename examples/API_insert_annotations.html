@@ -75,6 +75,17 @@ document.addEventListener('CPU_ready', e => {
             link  : 'https://www.classicalmpr.org/blog/classical-notes/2015/12/02/can-silence-be-copyrighted',  // If link is a string, the url is targeted by your point
         });
 
+    // We test a very big panel from pinned parts
+    player_API.addPlane(
+        'bigscroll', {title : 'Big long scroll', track   : false, panel   : true,
+    });
+
+    for (let i=0; i<100 ; i++) {
+        player_API.addPoint( 'bigscroll', `line-${i}`, {
+            text  : `line number ${i}`,
+        });
+    }
+
 
 });
 
