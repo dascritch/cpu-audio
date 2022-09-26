@@ -16,13 +16,13 @@ In fact, the basis of cpu-audio.js are back from 2010, from my previous radio sh
 Why using URL ?
 ---------------
 
-**Because URL is a standard**, actually mesestimated. But it's universal, accessible, portable, for both local and internet usage. I wish people will start pointing some moment in an audio content of a webpage by giving a standard URL with a timecode in it.
+**Because URL is a standard**, actually mesestimated. But it's universal, accessible, portable, for both local and internet usage. And there is [a W3C standard for pointing geometric or timestamp position : Media Fragments](https://www.w3.org/TR/media-frags/). I wish people will start pointing some moment in an audio content of a webpage by giving a standard URL with a timecode in it.
 
 
 Why have you done (x) choice ?
 ------------------------------
 
-May be [I've written about it on my blog.](https://www.w3.org/TR/media-frags/) But It's in French. What is really fun with the web is the ability to remix webpages contents, so you can use any translator on it.
+May be [I've written about it on my blog.](https://dascritch.net/post/2018/11/06/Reconstruire-son-lecteur-audio-pour-le-web) But It's in French. What is really fun with the web is the ability to remix webpages contents, so you can use any translator on it.
 
 May be I didn't explained what is interesting you. Write me, I'll respond.
 
