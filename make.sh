@@ -8,6 +8,7 @@ Build the cpu-audio webcomponent source.
 
 Projet repo
   → http://github.com/dascritch/cpu-audio
+Please read CONTRIBUTING.md first
 
 Options:
   -h, --help            Display this message
@@ -43,7 +44,7 @@ SRC_SCOPED="${PROJECT_DIR}/src/themes/default/scoped.css"
 mkdir -p ${PROJECT_DIR}/tmp
 
 while [ '-' == "${1:0:1}" ] ; do
-	case "${1}" in
+	case "${1,,}" in
 		-h|--help)
 			echo "${HELP}"
 			exit 0
