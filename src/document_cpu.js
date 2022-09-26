@@ -143,6 +143,7 @@ export const DocumentCPU = {
 
 		if (audiotag.fastSeek) {
 			// HTMLAudioElement.fastSeek() is an experimental but really fast function. Firefox only, alas
+			// Note that since the writing of this part, Safari aslo knows fastSeek(). It may be the root cause of some of my issues, as #149
 			audiotag.fastSeek(seconds);
 		} else {
 			try {
