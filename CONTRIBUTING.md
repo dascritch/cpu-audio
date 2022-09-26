@@ -7,10 +7,6 @@ If you are not a developer
  - You may be have a disability and you're using some accessibility tools… You're super useful ! For sure, I missed something important for you.
  - Perhaps you can help me on translations, the design or the logos.
  - Install in your own website, test, note the bugs, [report them in the issues section of the repo](https://github.com/dascritch/cpu-audio/issues). If you're not enough GitHub savvy, you can [write me via this page](https://cpu.dascritch.net/pages/CPU-Audio-Player)
- - If you can, test on your computer with a local server. In a shell opened in the directory of cpu-audio code :
- 	- PHP (for local testing) : `php -S 0.0.0.0:8000`
- 	- Node.js : `npx http-server .`
- 	- Python : `python -m http.server`  (check your python version, 3+)
 
 
 If you are a developer
@@ -26,8 +22,13 @@ If you are a developer
  - Document everything, even dead-ends. Someone can find interesting your regrets.
  - Work by cloning the `preprod` branch. We merge in `master` when everything is alright.
  - Check first in [TODO.md](TODO.md) which lists some priorities and objectives. I usually [create bugs](https://github.com/dascritch/cpu-audio/issues) and refers to them in my commits. Most of the time.
+ - If you can, test on your computer with a local server. In a shell opened in the directory of cpu-audio code :
+ 	- PHP (for local testing) : `php -S 0.0.0.0:8000`
+ 	- Node.js : `npx http-server .`
+ 	- Python : `python -m http.server`  (check your python version, 3+)
  - Node.js 14 is mandatory to run CLI tests with modules.
  - Most of functions and methods are now javadoc-style commented, be kind about it.
+
 
 
 If you are integrating HTML
