@@ -70,8 +70,8 @@ function histogram() {
     let source = audioCtx.createMediaElementSource(sound_element);
     let analyser = audioCtx.createAnalyser();
     analyser.fftSize = 32;
-    let WIDTH = 2000;
-    let HEIGHT = 32;
+    const WIDTH = 2000;
+    const HEIGHT = 32;
     let canvas = document.createElement('canvas');
     canvas.width = WIDTH;
     canvas.height = HEIGHT;
