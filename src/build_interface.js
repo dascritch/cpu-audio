@@ -11,7 +11,7 @@ import {buildPlaylist} from './build_playlist.js';
  * @param      {Object}  event   The event
  */
 function nativeShare(event) {
-	let {title, canonical} = findCPU(event.target).audiotagDataset();
+	const {title, canonical} = findCPU(event.target).audiotagDataset();
 	navigator.share({
 		title,
 		text	: title,

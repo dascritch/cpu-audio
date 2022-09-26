@@ -533,7 +533,7 @@ function playRelativeTrackInPlaylist(audiotag, offset) {
 		warn(`Named playlist ${playlist_name} not created. WTF ?`);
 		return;
 	}
-	let playlist_index = playlist.indexOf(id);
+	const playlist_index = playlist.indexOf(id);
 	if (playlist_index < 0) {
 		warn(`Audiotag ${id} not in playlist ${playlist_name}. WTF ?`);
 		return;
@@ -545,7 +545,7 @@ function playRelativeTrackInPlaylist(audiotag, offset) {
 		return;
 	}
 
-	let next_audiotag = /** @type {HTMLAudioElement} */ (document.getElementById(next_id));
+	const next_audiotag = /** @type {HTMLAudioElement} */ (document.getElementById(next_id));
 	if (!next_audiotag) {
 		warn(`Audiotag #${next_id} doesn't exists. WTF ?`);
 		return;
