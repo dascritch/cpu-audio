@@ -40,7 +40,7 @@ As I was involved to GDPR compliance in my day job and co-hosting some cryptopar
 The player is ugly
 ------------------
 
-Yes ! It is only a proof of concept and I'm only a coder. **That why version 7 sports a theme system.** I'm sure someone will do a very better looking one than mine !
+I agree. It is only a proof of concept and I'm only a coder. **That why version 7 sports a theme system.** I'm sure someone will do a very better looking one than mine !
 
 If you wish to participate to this project, please have a look to [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -50,11 +50,11 @@ You're talking about SoundCloud in some code comments and tickets
 
 **It's true.**
 
-I'm piss of that musicians, benevolent radio producers and community reporters are using SoundCloud or (even worst) MixCloud. Why don't they are opening their websites with their graphical universe and without profiling web habits from their fans ?
+I'm piss of that musicians, benevolent radio producers and community reporters are using SoundCloud or (even worst) MixCloud. Why don't they are opening their websites with their graphical universe and without tracking web habits from their fans ?
 
 The main issue was commenting on some time points to engage their community. At this moment, Mastodon didn't start but we already have its decentralized system, and there also was a W3C standard written for comments in a webpage.
 
-At the beginning of version 3, we were also thinking about a really decentralized playlist system : The user should have a WebExtension companion, and can select some sounds among surfing.
+At the beginning of version 3, we were also thinking about a really decentralized playlist system : The user may have a WebExtension companion, and can select some sounds among surfing.
 
 **It's up to you** to make those projects alive ! See ([#8](#8)), ([#10](#10)), and ([#76](#76))
 
