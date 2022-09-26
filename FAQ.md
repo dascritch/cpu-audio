@@ -32,9 +32,9 @@ Is it GDPR compliant ?
 
 **Yes.** 
 
-cpu-audio is storing curently playing audio source and position, in order to set the same playing audio at the exact same position later. But that data is stored only in the client browser, is not nominative and never transmitted to a third-part service.
+cpu-audio is storing currently playing audio source and position, in order to set the same playing audio at the exact same position later. But that data is stored only in the client browser, is not nominative and never transmitted to a third-part service.
 
-As I was involved to GDPR compliance in my day job and co-hosting some cryptoparties, It is an important point for me.
+As I was involved to GDPR compliance in my day job and co-hosting some cryptoparties, this is an important point for me.
 
 
 The player is ugly
