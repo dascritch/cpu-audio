@@ -30,7 +30,6 @@ If you are a developer
  - Most of functions and methods are now javadoc-style commented, be kind about it.
 
 
-
 If you are integrating HTML
 ---------------------------
 
