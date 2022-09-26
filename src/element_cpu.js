@@ -678,6 +678,7 @@ export class CPU_element_api {
 		if (isAudiotagStreamed(this.audiotag)) {
 			return;
 		}
+		// For resolving #180 , <details>.open != <details>.open will do the trick
 		this.container.classList.toggle('show-handheld-nav');
 		event?.preventDefault();
 	}
@@ -865,6 +866,7 @@ export class CPU_element_api {
 		if (panel !== false) {
 			// we have to create the panel area
 			const plane_panel = document.createElement('details');
+			// TODO  #180 : We may be able to hide by default, or have de details closed
 			plane_panel.open = true;
 			plane_panel.id = `panel_«${planeName}»`;
 			if (panel !== true) {
