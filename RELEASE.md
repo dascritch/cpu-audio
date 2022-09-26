@@ -1,5 +1,15 @@
+Dev
+===========================
+
+Corrections
+-----------
+
+* Instanciation may be missed during the page lifecyle. Better way to check if host page DOM is really ready or not
+* Application chapters_builder should stop zero-ing time input in some situations
+
+
 RELEASE NOTES version 7.0.3
-======================
+===========================
 
 New features
 ------------
