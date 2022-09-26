@@ -166,22 +166,20 @@ export function attach_events_audiotag(audiotag) {
 	audiotag.addEventListener('canplay', recallStoredPlay, passiveEvent);
 
 	// see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events for list of events
-	[
+	for (let on of [
 		'ready', 'load', 'loadeddata', 'canplay', 'abort',
 		'error', 'emptied',
 		'play', 'playing', 'pause', 'ended',
 		'durationchange',  'loadedmetadata', 'timeupdate', 'waiting'
-	].forEach( (on) => {
+	]) {
 		audiotag.addEventListener(on, trigger.update, passiveEvent);
-	});
+	}
 
 	if (!browserIsDecent()) {
 		// in case we are in legacy mode
-		[
-			'pause', 'ended'
-		].forEach( (on) => {
+		for (let on of ['pause', 'ended']) {
 			audiotag.addEventListener(on, trigger.pause, passiveEvent);
-		});
+		}
 	}
 
 	// ask ASAP metadata about media
