@@ -338,7 +338,7 @@ export class CPU_element_api {
 
 		this.setAct(will_act);
 		control_button.setAttribute(aria, __[label]);
-		let hide_panels_except_play_mark = 'last-used';
+		const hide_panels_except_play_mark = 'last-used';
 
 		const container_class = this.container.classList;
 		if (!audiotag.paused) {
@@ -449,7 +449,7 @@ export class CPU_element_api {
 	/**
 	 * @summary Show the current media error status. NOTE : this is not working, even on non supported media type
 	 * Chrome logs an error « Uncaught (in promise) DOMException: Failed to load because no supported source was found. »
-	 * but don't update message
+	 * but won't update message
 	 *
 	 * @private
 	 *
@@ -606,11 +606,9 @@ export class CPU_element_api {
 		// watch out : we should put the ID only if canonical URL is strictly identical to this page
 		const tag_id = (canonical === absolutizeUrl(window.location.href)) ? audiotag.id : '';
 		const _url = encodeURIComponent(`${canonical}#${tag_id}${timepos}`);
-		let _twitter = '';
-		if (dataset.twitter?.[0]==='@') {
-			 /* why did I want an @ in the attribute if I cut it in my code ? to keep HTML readable and comprehensible, instead to developpe attribute name into a "twitter-handler" */
-			_twitter = `&via=${dataset.twitter.substring(1)}`;
-		}
+		/* why did I want an @ in the attribute if I cut it in my code ? to keep HTML readable and comprehensible, instead to develop attribute name into a "twitter-handler" */
+		const _twitter = (dataset.twitter?.[0]!=='@') ? '' : `&via=${dataset.twitter.substring(1)}`;
+
 		const link = audiotag.querySelector('source[data-downloadable]')?.src ||
 					 dataset.download ||
 					 audiotag.currentSrc;
@@ -637,17 +635,17 @@ export class CPU_element_api {
 	 * @param      {string}  mode    The mode, can be 'main', 'share' or 'error'
 	 */
 	show(mode) {
-		let classlist = this.container.classList;
-		classlist.remove(
+		const { classList } = this.container;
+		classList.remove(
 			'show-main',
 			'show-share',
 			'show-error',
 			'media-streamed'
 		);
 		if (isAudiotagStreamed(this.audiotag)) {
-			classlist.add('media-streamed');
+			classList.add('media-streamed');
 		}
-		classlist.add(`show-${mode}`);
+		classList.add(`show-${mode}`);
 	}
 
 	/**
@@ -749,6 +747,7 @@ export class CPU_element_api {
 		}
 		this.showMain();
 	}
+
 	/**
 	 * @summary Attach the audiotag to the API
 	 * @package
@@ -766,7 +765,6 @@ export class CPU_element_api {
 		// throw simplified event
 		trigger.update({target : audiotag});
 	}
-
 
 	/**
 	 * @summary Gets an array of whole planes
@@ -906,7 +904,7 @@ export class CPU_element_api {
 			return false;
 		}
 
-		// I don't understand (yet) why, when I move this declaration at top of file, tests will fail
+		// I don't understand (yet) why, when I move this declaration at the top of this source file, tests will fail
 		const planeDataDefault = {
 			track       : true,
 			panel       : true,
@@ -1547,9 +1545,9 @@ function relativeFocus(self, go_foward) {
 		}
 		({planeName, pointName} = planeAndPointNamesFromId(wasFocused.id));
 	}
-	if (pointName != '') {
+	if (pointName != '') {  // NOTE : loosy comparison is important
 		planePointNames = self.planePointNames(planeName);
-		pointName = adjacentArrayValue(planePointNames, pointName, go_foward?1:-1);
+		pointName = adjacentArrayValue(planePointNames, pointName, go_foward ? 1 : -1);
 	}
 	if (!pointName) {
 		planeName = go_foward ? scanToNextPlane(planeName) : scanToPrevPlane(planeName);
@@ -1557,7 +1555,7 @@ function relativeFocus(self, go_foward) {
 			return;
 		}
 		const points = self.planePointNames(planeName);
-		pointName = points[go_foward ? 0 : (points.length-1)];
+		pointName = points[go_foward ? 0 : (points.length - 1)];
 	}
 	self.focusPoint(planeName, pointName);
 }

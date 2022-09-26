@@ -91,7 +91,7 @@ export function uncertainDuration(duration) {
  */
 export function audiotagDuration({duration, dataset}) {
 	let out = null;
-	let _natural = Number(duration);
+	const _natural = Number(duration);
 	if (!uncertainDuration(_natural)) {
 		out = _natural;
 	} else {
@@ -125,7 +125,7 @@ export function normalizeSeekTime(audiotag, time_seeked) {
 
 
 /**
- * @summary Force <audio> to preload its metadata, and so its duration, then callback the event
+ * @summary Force <audio> to preload its metadata, and so its duration, then call the callback() with the event parameter
  * @private
  *
  * @param       {HTMLAudioElement}	audiotag    The playing <audio> tag

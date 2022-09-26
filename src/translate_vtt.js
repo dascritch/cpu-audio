@@ -87,7 +87,7 @@ export function translateVTT(vtt_taged, normal = true) {
 
 	if ((vtt_taged.split('<').length) !== (vtt_taged.split('>').length)) {
 		// unmatching < and >, probably badly written tags, or in full text
-		// unsurprisingly, (vtt_taged.split('<').length) is a lot faster than using regex. JS needs a standard property for counting substring occurences in a string
+		// unsurprisingly, (vtt_taged.split('<').length) is a lot faster than using regex. JS needs a native property for counting substring occurences in a string
 		return escapeHtml(vtt_taged);
 	}
 

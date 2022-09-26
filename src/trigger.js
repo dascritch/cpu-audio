@@ -58,7 +58,7 @@ export const trigger = {
 
 
 	/**
-	 * @summary Updatting time position. Pause if a end position was defined
+	 * @summary Updatting time position. Pause the playing element if a end position was defined
 	 *
 	 * @param      {Object}  event   The event
 	 */
@@ -80,7 +80,7 @@ export const trigger = {
 	 * still exposed in public for tests
 	 *
 	 * @param      {string|Object}  hashcode     Called hashcode
-	 * @param      {Function|null}  callback_fx  When done, call a function to end the tests (optional).
+	 * @param      {Function|null}  callback_fx  When done, call a function (optional, to end the tests).
 	 */
 	hashOrder : async function(hashcode, callback_fx = null) {
 		let at_start = true;
@@ -146,7 +146,7 @@ export const trigger = {
 	/**
 	 * @summary Update throbber position when hovering the timeline interface
 	 *
-	 * @param      {Object}  event   The event
+	 * @param      {Object}  event   The calling event
 	 */
 	hover : function(event) {
 		const {target, clientX, targetTouches} = event;
@@ -174,7 +174,7 @@ export const trigger = {
 	/**
 	 * @summary Hide the throbber when leaving the timeline interface
 	 *
-	 * @param      {Object}  event   The event
+	 * @param      {Object}  event   The calling event
 	 */
 	out : function({target}) {
 		findCPU(target).hideThrobber();
@@ -183,7 +183,7 @@ export const trigger = {
 	/**
 	 * @summary Change play position of a audio tag
 	 *
-	 * @param      {Object}  event   The event, may be mocked
+	 * @param      {Object}  event   The calling event, may be mocked
 	 */
 	throbble : function(event) {
 		const {target, offsetX, at} = event;
@@ -319,13 +319,12 @@ export const trigger = {
 			return;
 		}
 
-		let container = findCPU(event.target);
-		let audiotag = container.audiotag;
+		const container = findCPU(event.target);
+		const audiotag = container.audiotag;
 
 		/** @param      {number}  seconds    Relative position fowards */
 		function seek_relative(seconds) {
-			let at =  normalizeSeekTime(audiotag, audiotag.currentTime + seconds);
-			event.at = at;
+			event.at = normalizeSeekTime(audiotag, audiotag.currentTime + seconds);
 			container.showThrobberAt(event.at);
 			trigger.throbble(event);
 			container.hideThrobberLater();

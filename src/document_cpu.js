@@ -55,7 +55,7 @@ export const DocumentCPU = {
 	 * @return     {boolean}  True if audiotag playing, False otherwise.
 	 */
 	isAudiotagPlaying : function(audiotag) {
-		let currentAudiotagPlaying = document.CPU.currentAudiotagPlaying;
+		const currentAudiotagPlaying = document.CPU.currentAudiotagPlaying;
 		return (currentAudiotagPlaying) && (audiotag.isEqualNode(currentAudiotagPlaying));
 	},
 	/**
@@ -86,10 +86,10 @@ export const DocumentCPU = {
 		 */
 		function doNeedleMove({target:audiotag}) {
 			// maybe we should add `timecode` in argument (timecode, event), and bind it to the event listener, moving the function upper
-			let secs = timeInSeconds(timecode);
+			const secs = timeInSeconds(timecode);
 			document.CPU.seekElementAt(audiotag, secs);
 
-			let mocked_event = {target : audiotag};
+			const mocked_event = {target : audiotag};
 			if (audiotag.readyState >= audiotag.HAVE_FUTURE_DATA) {
 				doElementPlay(mocked_event);
 			} else {
@@ -102,19 +102,18 @@ export const DocumentCPU = {
 		 * @param 	{Object}	event 	triggered event, or mockup
 		 */
 		function doElementPlay(event) {
-			let tag = event.target;
-			trigger.play(null, tag);
+			trigger.play(null, event.target);
 			callback_fx?.();
 		}
 
-		let audiotag = /** @type {HTMLAudioElement} */ ( (hash !== '') ? document.getElementById(hash)  :  document.querySelector(selectorAudioInComponent) );
+		const audiotag = /** @type {HTMLAudioElement} */ ( (hash !== '') ? document.getElementById(hash)  :  document.querySelector(selectorAudioInComponent) );
 
 		if ( ( audiotag?.currentTime ?? null ) == null ) {
 			warn(`Unknow audiotag ${hash}`);
 			return;
 		}
 
-		let mocked_event = {target : audiotag};
+		const mocked_event = {target : audiotag};
 		if (audiotag.readyState < audiotag.HAVE_CURRENT_DATA) {
 			// WHHYYYY ??????
 			audiotag.addEventListener('loadedmetadata', doNeedleMove , oncePassiveEvent);
@@ -159,7 +158,7 @@ export const DocumentCPU = {
 					audiotag.load();
 				    settime();
 				    if (audiotag.currentTime < seconds){
-				        audiotag.addEventListener("loadedmetadata", settime, {once:true});
+				        audiotag.addEventListener("loadedmetadata", settime, { once: true });
 				    }
 				}
 			} catch(e) {
@@ -181,15 +180,17 @@ export const DocumentCPU = {
 	 */
 	currentPlaylist : function() {
 
-		let current_audiotag = this.globalController?.audiotag;
+		const current_audiotag = this.globalController?.audiotag;
 		if (!current_audiotag) {
 			return [];
 		}
-		for (let playlist of Object.values(this.playlists)) {
+
+		for (const playlist of Object.values(this.playlists)) {
 			if (playlist.includes(current_audiotag.id)) {
 				return playlist;
 			}
 		}
+
 		return [];
 	},
 
@@ -200,16 +201,17 @@ export const DocumentCPU = {
 	 * @return     string|null		Named id
 	 */
 	currentPlaylistID : function() {
-
-		let current_audiotag = this.globalController?.audiotag;
+		const current_audiotag = this.globalController?.audiotag;
 		if (!current_audiotag) {
 			return [];
 		}
+
 		for (let playlist_name of Object.keys(this.playlists)) {
 			if (this.playlists[playlist_name].includes(current_audiotag.id)) {
 				return playlist_name;
 			}
 		}
+
 		return null;
 	}
 };
