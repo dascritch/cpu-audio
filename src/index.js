@@ -36,10 +36,10 @@ if ((document.CPU) || (window.customElements.get(CpuAudioTagName.toLowerCase()))
 	// Here comes document.CPU
 	HTMLDocument.prototype.CPU = DocumentCPU;
 
-	if (document.body) {
+	document.addEventListener('DOMContentLoaded', main, passiveEvent);
+//	if (document.body) {
+	if ( document.readyState !== 'loading' ) {
+		// document may already be loaded and DOMContentLoaded fired.
 		main();
-	} else {
-		// needed in cpu-audio.js context
-		document.addEventListener('DOMContentLoaded', main, passiveEvent);
 	}
 }
