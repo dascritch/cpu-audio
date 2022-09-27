@@ -19,10 +19,11 @@ export const activecueClassname = 'active-cue';
 const planeNameBorders = '_borders';
 
 // Regex used to validate planes, points and injected css names
-const validId = /^[a-zA-Z0-9\-_]+$/;
+// NOTE : [\w-] === [a-zA-Z0-9_\-]
+const validId = /^[\w-]+$/;
 
 // Regex for extracting plane and point names from an id
-const planePointNamesFromId = /^[a-zA-Z0-9\-_]+_«([a-zA-Z0-9\-_]+)(»_.*_«([a-zA-Z0-9\-_]+))?»$/;
+const planePointNamesFromId = /^[\w-]+_«([\w-]+)(»_.*_«([\w-]+))?»$/;
 
 /**
  * @summary Gets the plane point names from an id on a ShadowDOM element.
@@ -1201,7 +1202,7 @@ export class CPU_element_api {
 			return false;
 		}
 
-		for (let [pointName, pointData] of Object.entries(pointDataGroup)) {
+		for (const [pointName, pointData] of Object.entries(pointDataGroup)) {
 			if ((!pointName.match(validId)) || (!checkPointData(pointData))) {
 				return false;
 			}
@@ -1299,7 +1300,7 @@ export class CPU_element_api {
 
 		//  recalc _start_max for caching repaints
 		let _st_max = 0;
-		for (let s of Object.values(this.planePoints(planeName))) {
+		for (const s of Object.values(this.planePoints(planeName))) {
 			const that_start = Number(s.start);
 			_st_max = _st_max < that_start ? that_start : _st_max;
 		}
