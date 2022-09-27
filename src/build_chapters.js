@@ -92,7 +92,7 @@ export async function build_chapters(elCPU) {
 			chapter_track.removeEventListener('cuechange', cuechange_event_this);
 			chapter_track.addEventListener('cuechange', cuechange_event_this, passiveEvent);
 
-			for (let cue of chapter_track.cues) {
+			for (const cue of chapter_track.cues) {
 				if (!elCPU.point(plane_chapters, cue.id)) {
 					pointDataGroup[cue.id] = {
 						start : normalizeSeekTime(audiotag, Math.floor(cue.startTime)),
@@ -114,8 +114,8 @@ export async function build_chapters(elCPU) {
 		}
 	}
 
-	let body_class = `cpu_tag_«${audiotag.id}»_chaptered`;
-	let body_classlist = document.body.classList;
+	const body_class = `cpu_tag_«${audiotag.id}»_chaptered`;
+	const body_classlist = document.body.classList;
 	if (has) {
 		// indicate in host page that audio tag chapters are listed
 		// see https://github.com/dascritch/cpu-audio/issues/36
