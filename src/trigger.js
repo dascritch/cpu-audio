@@ -90,17 +90,16 @@ export const trigger = {
 		}
 		let hash = '';
 		let timecode = '';
-		let segments = hashcode.split('&');
 		let autoplay = false;
 
-		for (let parameter of segments) {
-			if ((!parameter.includes('=')) && (hash === '')) {
+		// watch out to NOT use URLSearchParams too fast ! 
+		/*
+				for (const [p_key, p_value] of URLSearchParams.searchParams.entries(hashcode) ) {
+			if (p_value === '') {
 				// should reference to the ID of the element
-				hash = parameter;
+				hash = p_key;
 			} else {
-				// should be a key=value parameter
-				let [p_key, p_value] = parameter.split('=');
-				switch (p_key) {
+				switch (p_key.toLowerCase()) {
 					case 't':
 						// is a time index
 						timecode = p_value || '0';
@@ -114,6 +113,33 @@ export const trigger = {
 					case 'auto_play':
 						// is a card from a social network, run now
 						autoplay = p_value === 'true';
+						break;
+				}
+			}
+		}
+		*/
+
+		for (const parameter of hashcode.split('&')) {
+			if ((!parameter.includes('=')) && (hash === '')) {
+				// should reference to the ID of the element
+				hash = parameter;
+			} else {
+				// should be a key=value parameter
+				const [p_key, p_value] = parameter.split('=');
+				switch (p_key.toLowerCase()) {
+					case 't':
+						// is a time index
+						timecode = p_value || '0';
+						// we make autoplay at requested timecode, simplier of the user
+						autoplay = true;
+						break;
+					case 'autoplay':
+						// is a card from a social network, run now
+						autoplay = p_value === '1';
+						break;
+					case 'auto_play':
+						// is a card from a social network, run now
+						autoplay = (p_value.toLowerCase()) === 'true';
 						break;
 				}
 			}
