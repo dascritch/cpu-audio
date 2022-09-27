@@ -162,12 +162,13 @@ export const trigger = {
 				false;
 		}
 
+		// scroll to the audio element. Should be reworked, or parametrable , see issue #60
+		// window.location.hash = `#${hash}`;
+
 		await document.CPU.jumpIdAt( hash??'', timecode_start, callback_fx);
 
 		// not in document.CPU (yet) to avoid unuseful repaint
 		buildPlaylist();
-		// scroll to the audio element. Should be reworked, or parametrable , see issue #60
-		// window.location.hash = `#${hash}`;
 	},
 
 	/**
