@@ -8,7 +8,7 @@ import {buildPlaylist} from './build_playlist.js';
 /**
  * @summary Interprets `navigator.share` native API
  *
- * @param      {Object}  event   The event
+ * @param      {Object}  event   Activation event
  */
 function nativeShare(event) {
 	const {title, canonical} = findCPU(event.target).audiotagDataset();
@@ -35,15 +35,15 @@ export function buildInterface(elCPU) {
 		event.preventDefault();
 	});
 
-	const interface_classlist = elCPU.container.classList;
+	const { classList } = elCPU.container;
 
 	// hide broken image while not loaded
 	elCPU.shadowId('poster')?.addEventListener('load', () => {
-		interface_classlist.add('poster-loaded');
+		classList.add('poster-loaded');
 	}, passiveEvent);
 
 	// main buttons management
-	let cliquables = {
+	const cliquables = {
 		pause      : trigger.pause,
 		play       : trigger.play,
 		time       : trigger.throbble,
@@ -57,15 +57,15 @@ export function buildInterface(elCPU) {
 		prevtrack  : trigger.prevtrack,
 		nexttrack  : trigger.nexttrack,
 	};
-	for (let elementId in cliquables) {
+	for (const [elementId, elementAction] of Object.entries(cliquables)) {
 		const el = elCPU.shadowId(elementId);
-		el?.addEventListener('click', cliquables[elementId], el.tagName == 'A' ? {} : passiveEvent);
+		el?.addEventListener('click', elementAction, el.tagName == 'A' ? {} : passiveEvent);
 	}
 
 	// relative browsing buttons management
 	//  *ward : handheld nav to allow long press to repeat action
 	const _buttons = ['fastreward', 'reward', 'foward', 'fastfoward'];
-	for (let elementId of _buttons) {
+	for (const elementId of _buttons) {
 		const button_element = elCPU.shadowId(elementId);
 		button_element?.addEventListener('pointerdown', pressManager.press);
 		button_element?.addEventListener('pointerout', pressManager.release);
@@ -82,10 +82,9 @@ export function buildInterface(elCPU) {
 	timeline_element?.addEventListener('pointerout', trigger.out, passiveEvent);
 	timeline_element?.addEventListener('pointerdown', timeBarManager.down, passiveEvent);
 	timeline_element?.addEventListener('pointerup', timeBarManager.up, passiveEvent);
-	// timeline_element?.addEventListener('contextmenu', () => {elCPU.showHandheldNav();});
 
 	if (navigator.share) {
-		interface_classlist.add('hasnativeshare');
+		classList.add('hasnativeshare');
 		elCPU.shadowId('nativeshare')?.addEventListener('click', nativeShare, passiveEvent);
 	}
 
@@ -98,7 +97,6 @@ export function buildInterface(elCPU) {
 		// <cpu-controller> without <cpu-audio> , see https://github.com/dascritch/cpu-audio/issues/91
 		return;
 	}
-
 
 	elCPU.container.addEventListener('pointerenter', () => { 
 		audiotagPreloadMetadata(elCPU.audiotag);

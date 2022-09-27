@@ -1381,10 +1381,10 @@ export class CPU_element_api {
 			return ;
 		}
 
-		for (let planeName in this.audiotag._CPU_planes) {
+		for (const planeName in this.audiotag._CPU_planes) {
 			const plane_data = this.plane(planeName);
 			if (plane_data.track) {
-				for (let pointName of this.planePointNames(planeName)) {
+				for (const pointName of this.planePointNames(planeName)) {
 					const {start, end} = this.point(planeName, pointName);
 					const pointTrack = this.pointTrack(planeName, pointName);
 					if (pointTrack) {
