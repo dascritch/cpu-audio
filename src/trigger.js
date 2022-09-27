@@ -88,16 +88,16 @@ export const trigger = {
 			at_start = 'at_start' in hashcode;
 			hashcode = location.hash.substr(1);
 		}
-		let hash = '';
+		let hash = null;
 		let timecode = '';
 		let autoplay = false;
 
-		// watch out to NOT use URLSearchParams too fast ! 
 		/*
-				for (const [p_key, p_value] of URLSearchParams.searchParams.entries(hashcode) ) {
+		// watch out to NOT use URLSearchParams too fast ! 
+		for (const [p_key, p_value] of URLSearchParams.searchParams.entries(hashcode) ) {
 			if (p_value === '') {
 				// should reference to the ID of the element
-				hash = p_key;
+				hash = hash ?? p_key;
 			} else {
 				switch (p_key.toLowerCase()) {
 					case 't':
@@ -112,17 +112,18 @@ export const trigger = {
 						break;
 					case 'auto_play':
 						// is a card from a social network, run now
-						autoplay = p_value === 'true';
+						autoplay = p_value.toLowerCase() === 'true';
 						break;
 				}
 			}
 		}
 		*/
-
+		
+		// legacy
 		for (const parameter of hashcode.split('&')) {
-			if ((!parameter.includes('=')) && (hash === '')) {
+			if (!parameter.includes('=')) {
 				// should reference to the ID of the element
-				hash = parameter;
+				hash = hash ?? parameter;
 			} else {
 				// should be a key=value parameter
 				const [p_key, p_value] = parameter.split('=');
@@ -139,7 +140,7 @@ export const trigger = {
 						break;
 					case 'auto_play':
 						// is a card from a social network, run now
-						autoplay = (p_value.toLowerCase()) === 'true';
+						autoplay = p_value.toLowerCase() === 'true';
 						break;
 				}
 			}
@@ -152,7 +153,7 @@ export const trigger = {
 		}
 
 		// we may have a begin,end notation
-		let [timecode_start, timecode_end] = timecode.split(',');
+		const [timecode_start, timecode_end] = timecode.split(',');
 		timecodeStart = timeInSeconds(timecode_start);
 		timecodeEnd = timecode_end !== undefined ? timeInSeconds(timecode_end) : false;
 		if (timecodeEnd !== false) {
@@ -161,7 +162,7 @@ export const trigger = {
 				false;
 		}
 
-		await document.CPU.jumpIdAt(hash, timecode_start, callback_fx);
+		await document.CPU.jumpIdAt( hash??'', timecode_start, callback_fx);
 
 		// not in document.CPU (yet) to avoid unuseful repaint
 		buildPlaylist();
