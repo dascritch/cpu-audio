@@ -15,7 +15,7 @@ export const pressManager = {
 	 * @param      {Object}  event   The event
 	 */
 	press : function (event) {
-		let target = event.target.id ? event.target : event.target.closest('button');
+		const target = event.target.id ? event.target : event.target.closest('button');
 		if ( (!target.id) || (!acceptable_press_actions.includes(target.id))) {
 			// we have been misleaded
 			return;
@@ -57,10 +57,7 @@ export const pressManager = {
 export const timeBarManager = {
 	ev : null,
 	down : function ({target}) {
-		// const latence = document.CPU.alternateDelay;
-		// const elCPU = findCPU(target);
 		timeBarManager.ev = setTimeout(timeBarManager.do, document.CPU.alternateDelay, findCPU(target));
-		// event.preventDefault();
 	},
 	do : function (elCPU) {
 		elCPU.showHandheldNav();

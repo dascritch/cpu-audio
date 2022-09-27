@@ -53,7 +53,6 @@ const sources_i18n = {
 	},
 };
 
-
 // First, we'll try to guess the hosting page language
 export let prefered_language = document.querySelector('html').lang;
 
@@ -64,18 +63,16 @@ if ((!prefered_language.length) || (!(prefered_language.toLowerCase() in sources
 	// We will use english in last resort
 
 	// trying to find the browser preferences
-	let languages = window.navigator.languages;
-	languages = (languages !== undefined) ?
-				languages :
-				[(navigator.language || navigator.browserLanguage)];
+	const languages = window.navigator.languages ?? [(navigator.language || navigator.browserLanguage)];
 	let added = false;
-	for (let line of languages) {
+	for (const line of languages) {
 		if (line.split) {
 			// we will only look (yes, this is bad) at the first level xx of any locale xx-YY code
-			let code = line.split('-')[0];
+			const [code] = line.split('-');
 			if ( (!added) && (code in sources_i18n)) {
 				// we still don't have a locale selected and this one is in our register, we can use it
 				prefered_language = code;
+				added = true;
 			}
 		}
 	}
