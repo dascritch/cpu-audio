@@ -60,6 +60,7 @@ Those tests [can be run from our mini-site](https://dascritch.github.io/cpu-audi
 
 Please note that tests aren't done yet on non-default themes.
 
+
 Development
 -----------
 
@@ -70,3 +71,20 @@ You will need to add packages via `npm install` to finalize `build/*` files.
 If you're not working on `master` or `preprod` original branches, try to avoid to commit `build/*` files, to avoid conflicts during merge.
 
 The cleanest way to make files for a new release is `./make.sh --clean --all-themes --test --index`
+
+
+Code acceptability
+------------------
+
+ - Respect of standards
+ - Simplicity
+ - Atomicity
+ - Re-usability
+ - Tests
+ - In code documentation (function annotations, etc…)
+ - Documentation
+ - Examples
+ - Parametrable thru [`live_config`](applications/live_config.html)
+
+Some of the ballot-box won't apply on your patch, and you may need help to fullfill some of them. We can help you, the goal is to learn together and understand good practices and standards.
+
