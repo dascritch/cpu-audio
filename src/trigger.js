@@ -225,7 +225,7 @@ export const trigger = {
 	 */
 	pause : function(event = null, audiotag = null) {
 		if (!audiotag) {
-			let {target} = event;
+			const {target} = event;
 			audiotag = (target.tagName == 'AUDIO') ? target : findCPU(target).audiotag;
 		}
 		audiotag.pause();
@@ -301,7 +301,7 @@ export const trigger = {
 	},
 
 	toggleplay : function({target}) {
-		const audiotag = findCPU(target).audiotag;
+		const { audiotag } = findCPU(target);
 		audiotag.paused ?
 			trigger.play(null, audiotag) :
 			trigger.pause(null, audiotag);
@@ -314,13 +314,13 @@ export const trigger = {
 	 * @param      {number}  mult    Multiply the keypressed act, 1 by default
 	 */
 	key : function(event, mult=1) {
-		// do not interpret key when there is a modifier, for not preventing browsers shortcurs
+		// do not interpret key when there is a modifier, for not preventing browsers shortcuts
 		if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
 			return;
 		}
 
 		const container = findCPU(event.target);
-		const audiotag = container.audiotag;
+		const { audiotag } = container;
 
 		/** @param      {number}  seconds    Relative position fowards */
 		function seek_relative(seconds) {
@@ -385,8 +385,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	reward : function(event) {
-		event.keyCode = KEY_LEFT_ARROW;
-		trigger.key(event);
+		trigger.key({...event, keyCode: KEY_LEFT_ARROW });
 	},
 	/**
 	 * @summary Pressing foward button
@@ -395,8 +394,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	foward : function(event) {
-		event.keyCode = KEY_RIGHT_ARROW;
-		trigger.key(event);
+		trigger.key({...event, keyCode: KEY_RIGHT_ARROW });
 	},
 	/**
 	 * @summary Pressing fastreward button
@@ -405,8 +403,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	fastreward : function(event) {
-		event.keyCode = KEY_LEFT_ARROW;
-		trigger.key(event, document.CPU.fastFactor);
+		trigger.key({...event, keyCode: KEY_LEFT_ARROW }, document.CPU.fastFactor);
 	},
 	/**
 	 * @summary Pressing fastfoward button
@@ -415,8 +412,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	fastfoward : function(event) {
-		event.keyCode = KEY_RIGHT_ARROW;
-		trigger.key(event, document.CPU.fastFactor);
+		trigger.key({...event, keyCode: KEY_RIGHT_ARROW }, document.CPU.fastFactor);
 	},
 
 	/**
@@ -447,11 +443,11 @@ export const trigger = {
 	 * @suppress {checkTypes}
 	 */
 	cuechange : function(active_cue, audiotag) {
-		let body_classes = document.body.classList;
-		body_classes.remove(body_className_playing_cue);
+		const { classList } = document.body;
+		classList.remove(body_className_playing_cue);
 		// giving a class to document.body, with a syntax according to https://www.w3.org/TR/CSS21/syndata.html#characters
 		body_className_playing_cue = `cpu_playing_tag_«${audiotag.id}»_cue_«${active_cue.id}»`;
-		body_classes.add(body_className_playing_cue);
+		classList.add(body_className_playing_cue);
 	},
 
 	/**
