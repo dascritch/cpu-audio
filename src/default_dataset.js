@@ -1,4 +1,4 @@
-let head = document.head;
+const head = document.head;
 
 export const defaultDataset = {
 	get title() {

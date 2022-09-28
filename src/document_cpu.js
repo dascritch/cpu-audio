@@ -5,11 +5,34 @@ import {convert, timeInSeconds} from './convert.js';
 import {trigger} from './trigger.js';
 import {isAudiotagStreamed, uncertainPosition, normalizeSeekTime} from './media_element_extension.js';
 
+/**
+ * @private
+ * @summary Get the global parameters stored in the <head> of the host document, else returns {}
+ *
+ * @return     {object}  The content of the stored content, else an empty object
+ */
+function UserParametersDocumentCPU() {
+	const selector = 'script[data-cpu-audio]';
+	const tag = document.head.querySelector(selector);
+	if (!tag) {
+		return {};
+	}
+	try {
+		return JSON.parse(tag.innerHTML);
+	} catch {
+		warn(`invalid ${selector} parameter tag`);
+		return {};
+	}
+}
+
+
 export const DocumentCPU = {
 	// global object for global API
 
 	// public, parameters
 	...DefaultParametersDocumentCPU,
+	// overrided parameters by integrator
+	...UserParametersDocumentCPU(),
 
 	// public, actual active elements
 	// @public
