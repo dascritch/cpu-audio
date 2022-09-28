@@ -163,9 +163,11 @@ export const trigger = {
 		}
 
 		// scroll to the audio element. Should be reworked, or parametrable , see issue #60
-		if ((document.CPU.scrollTo) && (hash)) {
+		if (document.CPU.scrollTo) {
 			// if the hash was not found, rely on the actual player
-			(document.querySelector(`#${hash}`) ?? document.CPU.currentAudiotagPlaying).closest('cpu-audio, cpu-controller').scrollIntoView();
+			( 
+				(hash?.length > 0) ? document.querySelector(`#${hash}`) : document.CPU.currentAudiotagPlaying
+			)?.closest('cpu-audio, cpu-controller').scrollIntoView();
 		}
 
 		await document.CPU.jumpIdAt( hash??'', timecode_start, callback_fx);
