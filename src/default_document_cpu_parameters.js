@@ -25,7 +25,7 @@ export const DefaultParametersDocumentCPU = {
 	// @type number
 	keymove : 5,
 
-	// Fine navigation
+	// Precise navigation with fingers
 
 	// @public
 	// @type number
