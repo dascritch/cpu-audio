@@ -285,6 +285,17 @@
 		Please note : Some of those parameters cannot be changed live in this page.
 	</p>
 
+</fieldset>
+
+<fieldset>
+	<legend>Basic player</legend>
+	<p>
+		<span class="what">playStopOthers</span>
+		<label for="global_playStopOthers">
+			<input type="checkbox" value="true" checked id="global_playStopOthers" name="global_playStopOthers" />
+				When a <code>&lt;cpu-audio&gt;</code> starts to play, any other instances in the same page are paused. Default : activated
+		</label>
+	</p>
 	<p>
 		<span class="what">scrollTo</span>
 		<label for="global_scrollTo">
@@ -299,6 +310,21 @@
 				Will try to play at the start of the page if a temporal URL is given or the audio was previously exited. Default : unactivated. This may be prevented by your browser.
 		</label>
 	</p>
+</fieldset>
+
+<fieldset>
+	<legend>Playlist interactions</legend>
+	<p>
+		<span class="what">advanceInPlaylist</span>
+		<label for="global_advanceInPlaylist">
+			<input type="checkbox" value="true" checked id="global_advanceInPlaylist" name="global_advanceInPlaylist" />
+				When an audio is ended in a playlist, starts immediatly the next one. Default : activated.
+		</label>
+	</p>
+</fieldset>
+
+<fieldset>
+	<legend>Keyboard navigation</legend>
 	<p>
 		<span class="what">keymove</span>
 		<label for="global_keymove">
@@ -306,13 +332,10 @@
 			 seconds skipped in the timeline with <kbd>←</kbd> or <kbd>→</kbd> keys. Default : 5 seconds.
 		</label>
 	</p>
-	<p>
-		<span class="what">playStopOthers</span>
-		<label for="global_playStopOthers">
-			<input type="checkbox" value="true" checked id="global_playStopOthers" name="global_playStopOthers" />
-				When a <code>&lt;cpu-audio&gt;</code> starts to play, any other instances in the same page are paused. Default : activated
-		</label>
-	</p>
+</fieldset>
+
+<fieldset>
+	<legend>Fine navigation</legend>
 	<p>
 		<span class="what">alternateDelay</span>
 		<label for="global_alternateDelay">
@@ -339,13 +362,6 @@
 		<label for="global_repeatFactor">
 			<input type="number" value="100" min="10" max="2000" step="10" id="global_repeatFactor" name="global_repeatFactor" size="5" />
 				milliseconds delay before repeating when clicking a button in handheld alternate browsing interface. Default : 100 ms
-		</label>
-	</p>
-	<p>
-		<span class="what">advanceInPlaylist</span>
-		<label for="global_advanceInPlaylist">
-			<input type="checkbox" value="true" checked id="global_advanceInPlaylist" name="global_advanceInPlaylist" />
-				When an audio is ended in a playlist, starts immediatly the next one. Default : activated.
 		</label>
 	</p>
 
