@@ -43,7 +43,7 @@ A more elaborated example :
 
 * Put one and only one `<audio>` tag into `<cpu-audio>`, or you may have unexpected issues.
 * **We recommend to set an `id` attribute** to the `<audio>` tag for the anchoring feature, elsewhere cpu-audio.js will autoset an `id`, that may cause later some problems for deep-linking sound into your page or your web-app. Please set an ID to the `<audio>` tag by yourself.
-* You **must** put a `controls` attribute to the included `<audio>` tag ; this is a good practice for having a functional fallback in case of malfunction, we wish you to comply. Please also add this rule in your css, even if our included css will put it :
+* You **must** put a `controls` attribute to the included `<audio>` tag ; this is a good practice for having a functional fallback in case of malfunction ; we wish you to comply. Please also add this rule in your css, even if our included css will put it :
 
 ```css
 audio[controls] {
