@@ -40,6 +40,7 @@
     "html-minifier": "^4.0.0",
     "node-qunit-puppeteer": "^2.1.0",
     "npm": "^8.16.0",
+    "nvm": "^0.0.4",
     "qunit": "^2.14.0",
     "terser-webpack-plugin": "^5.1.1",
     "webpack": "^5.28.0"
