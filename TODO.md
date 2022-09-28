@@ -16,8 +16,6 @@ For release 7.1
 Planned evolutions
 ------------------
 
-- [ ] Standards first
-    - [ ] use standard [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) in `hashOrder`, instead of the custom code. We need a strategy to get the anchor, seen as a key without value
 - [ ] add-ons packages
     - [ ] wordpress
 - [ ] `<video>` support
