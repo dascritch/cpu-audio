@@ -13,7 +13,7 @@ import {trigger} from './trigger.js';
  * @return     {Promise}  No returned value
  */
 async function main() {
-	insert_style();
+	// TO DO : Try to load here global parameters, cf #185
 
 	let global_class_indicator;
 	if (!browserIsDecent()) {
@@ -21,6 +21,8 @@ async function main() {
 		querySelectorDo(selectorAcceptable, attach_events_audiotag);
 		global_class_indicator = 'without-webcomponents';
 	} else {
+		// TO DO : do not run it if not permited #181
+		insert_style();
 		global_class_indicator = 'with-webcomponents';
 		window.customElements.define(CpuAudioTagName.toLowerCase(), CpuAudioElement);
 		window.customElements.define(CpuControllerTagName.toLowerCase(), CpuControllerElement);
