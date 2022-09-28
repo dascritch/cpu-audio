@@ -413,7 +413,9 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	reward : function(event) {
-		trigger.key({...event, keyCode: KEY_LEFT_ARROW });
+		// NEVER try to use a {...event, keyCode:} notation for extending an event : it kills the event.target
+		event.keyCode = KEY_LEFT_ARROW;
+		trigger.key(event);
 	},
 	/**
 	 * @summary Pressing foward button
@@ -422,7 +424,8 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	foward : function(event) {
-		trigger.key({...event, keyCode: KEY_RIGHT_ARROW });
+		event.keyCode = KEY_RIGHT_ARROW;
+		trigger.key(event);
 	},
 	/**
 	 * @summary Pressing fastreward button
@@ -431,7 +434,8 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	fastreward : function(event) {
-		trigger.key({...event, keyCode: KEY_LEFT_ARROW }, document.CPU.fastFactor);
+		event.keyCode = KEY_LEFT_ARROW;
+		trigger.key(event, document.CPU.fastFactor);
 	},
 	/**
 	 * @summary Pressing fastfoward button
@@ -440,7 +444,8 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	fastfoward : function(event) {
-		trigger.key({...event, keyCode: KEY_RIGHT_ARROW }, document.CPU.fastFactor);
+		event.keyCode = KEY_RIGHT_ARROW;
+		trigger.key(event, document.CPU.fastFactor);
 	},
 
 	/**
