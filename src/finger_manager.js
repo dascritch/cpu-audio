@@ -3,7 +3,7 @@ import {trigger} from './trigger.js';
 
 // Repeated event allocation
 let pressing = null;
-const acceptable_press_actions = ['fastreward', 'reward', 'foward', 'fastfoward'];
+export const acceptable_press_actions = ['fastreward', 'reward', 'foward', 'fastfoward'];
 
 // Handheld navigation button process
 // @private
@@ -25,8 +25,7 @@ export const pressManager = {
 		if (pressing) {
 			window.clearTimeout(pressing);
 		}
-
-		pressing = window.setTimeout(pressManager.repeat, document.CPU.repeatDelay, { target });
+		pressing = window.setTimeout(pressManager.repeat, document.CPU.repeatDelay, event);
 		event.preventDefault();
 	},
 	/*

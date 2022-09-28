@@ -349,7 +349,6 @@ export const trigger = {
 
 		const container = findCPU(event.target);
 		const { audiotag } = container;
-
 		/** @param      {number}  seconds    Relative position fowards */
 		function seek_relative(seconds) {
 			event.at = normalizeSeekTime(audiotag, audiotag.currentTime + seconds);
@@ -360,7 +359,7 @@ export const trigger = {
 
 		switch (event.keyCode) {
 			case 13 : // enter : standard usage, except if focus is #control
-				if (container.focused()?.id.toLowerCase() != 'control') {
+				if (container.focused()?.id.toLowerCase() !== 'control') {
 					return;
 				}
 				trigger.toggleplay(event);
@@ -404,7 +403,7 @@ export const trigger = {
 	 * @param      {Object}  event   The event
 	 */
 	restart : function({target}) {
-		let container = findCPU(target);
+		const container = findCPU(target);
 		document.CPU.seekElementAt(container.audiotag, 0);
 	},
 	/**

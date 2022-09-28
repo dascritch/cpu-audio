@@ -1,7 +1,7 @@
 import {passiveEvent, oncePassiveEvent, findCPU, preventLinkOnSamePage} from './utils.js';
 import {trigger} from './trigger.js';
 import {audiotagPreloadMetadata} from './media_element_extension.js';
-import {pressManager, timeBarManager} from './finger_manager.js';
+import {acceptable_press_actions, pressManager, timeBarManager} from './finger_manager.js';
 import {buildChaptersLoader} from './build_chapters.js';
 import {buildPlaylist} from './build_playlist.js';
 
@@ -59,13 +59,12 @@ export function buildInterface(elCPU) {
 	};
 	for (const [elementId, elementAction] of Object.entries(cliquables)) {
 		const el = elCPU.shadowId(elementId);
-		el?.addEventListener('click', elementAction, el.tagName == 'A' ? {} : passiveEvent);
+		el?.addEventListener('click', elementAction, el.tagName === 'A' ? {} : passiveEvent);
 	}
 
 	// relative browsing buttons management
 	//  *ward : handheld nav to allow long press to repeat action
-	const _buttons = ['fastreward', 'reward', 'foward', 'fastfoward'];
-	for (const elementId of _buttons) {
+	for (const elementId of acceptable_press_actions) {
 		const button_element = elCPU.shadowId(elementId);
 		button_element?.addEventListener('pointerdown', pressManager.press);
 		button_element?.addEventListener('pointerout', pressManager.release);
