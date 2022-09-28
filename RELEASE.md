@@ -1,5 +1,11 @@
-Dev
+Dev 7.1pre
 ===========================
+
+
+New features
+------------
+
+* You can set some global parameters via a `<script data-cpu-audio>` tag in the `<head>` of the host page ([#185](#185))
 
 Corrections
 -----------
