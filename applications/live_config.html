@@ -426,8 +426,8 @@ function noop(event) {
 }
 
 function reset(event) {
-	let event_change = new Event('change');
-	setTimeout( function(){ event.target.dispatchEvent(event_change); }, 100);
+	const event_change = new Event('change');
+	setTimeout( () => event.target.dispatchEvent(event_change), 100);
 }
 
 document.addEventListener('DOMContentLoaded', function(){
