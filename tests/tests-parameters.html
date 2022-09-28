@@ -2,20 +2,28 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>cpu-audio tests browser</title>
+	<title>cpu-audio tests</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="../node_modules/qunit/qunit/qunit.css">
 	<style>
 		#qunit {position : relative !important ;}
 	</style>
+	<script type="application/json" data-cpu-audio>
+		{
+			"keymove" : 100,
+			"hadPlayed" : "faked"
+		}
+	</script>
+	<script src="../build/cpu-audio.js"></script>
 </head>
 <body>
 
 	<p><a href="..">CPU-Audio Webcomponent</a></p>
 
 	<p>
-		Those are some browser tests. <strong>Your browser may fail some tests, this is <q>normal</q></strong>, but the webcomponent may work even not degraded.
+		This is testing global CPU parameters overload via a <code>&lt;script type="application/json" data-cpu-audio&gt;</code> tag with a JSON content.
 	</p>
+
 	<p>
 		See also :
 	</p>
@@ -24,20 +32,16 @@
 		<li><a href="./tests-interface.html">Graphic interface, if WebComponent fully supported</a></li>
 		<li><a href="./tests-controller.html">Controller interface</a></li>
 		<li><a href="./tests-api.html">API</a></li>
-		<li><a href="./tests-parameters.html">Parameters in &lt;head&gt; test</a></li>
-		<li>Browser compliance and implementation tests</li>
+		<li>Parameters in &lt;head&gt; test</li>
+		<li><a href="./tests-browser.html">Browser compliance and implementation tests</a></li>
 		<li><a href="../examples.html">Back to examples lists</a></li>
 	</ul>
 
-	<cpu-audio>
-		<audio id="track" controls="controls" preload="auto" muted="muted">
-			<source src="../tests-assets/blank.mp3" type="audio/mpeg" />
-		</audio>
-	</cpu-audio>
+	<div id="playground"></div>	
 
 	<div id="qunit"></div>
 	<div id="qunit-fixture"></div>
 	<script src="../node_modules/qunit/qunit/qunit.js"></script>
-	<script src="./tests-browser.js"></script>
+	<script src="./tests-parameters.js"></script>
 </body>
 </html>

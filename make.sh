@@ -182,7 +182,7 @@ function _build_component_js_webpack() {
 
 function _tests() {
 	# watchout to NOT inclue "browser", which is only a browsder comptability test, and Chrome fails it
-	for chapter in minimal api interface controller; do
+	for chapter in minimal parameters api interface controller; do
     	npx node-qunit-puppeteer "tests/tests-${chapter}.html" 150000 "--allow-file-access-from-files --no-sandbox --autoplay-policy=no-user-gesture-required --user-agent=puppeteer"
 	done
 }
