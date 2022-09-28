@@ -3,6 +3,10 @@ export const DefaultParametersDocumentCPU = {
 
 	// @public
 	// @type boolean
+	scrollTo : true,
+
+	// @public
+	// @type boolean
 	autoplay : false,
 
 	// @public
