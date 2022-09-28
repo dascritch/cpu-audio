@@ -13,7 +13,7 @@ For release 7.1
  - Scroll viewport to the audio element ([#60](#60))
  - Panels order ([#123](#123))
  - Being able to not include global.css on host page ([#181](#181))
- - Make parametrables auto-id prefix ([#186](#186)) and webcomponent tag-names ([#187](#187))
+ - Make parametrables auto-id prefix ([#186](#186))
  - If not existing, automated example page generated for each theme from make.sh ([#124](#124))
  - Udpate dotclear addon companion ([#67](#67))
 
