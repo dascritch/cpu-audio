@@ -3,7 +3,7 @@ export const DefaultParametersDocumentCPU = {
 
 	// @public
 	// @type boolean
-	scrollTo : true,
+	scrollTo : false,
 
 	// @public
 	// @type boolean
