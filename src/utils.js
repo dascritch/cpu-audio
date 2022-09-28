@@ -13,7 +13,7 @@ License LGPL 3
 export const CpuAudioTagName = 'CPU-AUDIO';
 export const CpuControllerTagName = 'CPU-CONTROLLER';
 export const selectorAcceptable = 'audio[controls]';
-export const selectorAudioInComponent = 'cpu-audio audio'; // should be 'audio[controls]' but PHRACK APPLE !
+export const selectorAudioInComponent = `${CpuAudioTagName} audio`; // should be 'audio[controls]' but PHRACK APPLE !
 
 // Parameters for addEventListener
 // @private
