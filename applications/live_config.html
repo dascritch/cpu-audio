@@ -442,29 +442,38 @@ document.addEventListener('DOMContentLoaded', function(){
 	configurator_html();
 	document.location.hash = '#'+form_html.id; 
 
+
+	let in_error = false;
+	function leave_in_error_mode() {
+		if (in_error) {
+			cpu_audio.CPU.show('main');
+			cpu_audio.CPU.shadowId('pageerror').innerText = '';
+			in_error = false;
+		}
+	}
+
 	document.querySelector('#do_fine').addEventListener('click', function() {
+		leave_in_error_mode();
 		cpu_audio.CPU.showHandheldNav();
 	});
-
 	document.querySelector('#do_waiting').addEventListener('click', function() {
+		leave_in_error_mode();
 		cpu_audio.CPU.audiotag.pause();
 		document.CPU.hadPlayed = true;
 		cpu_audio.CPU.setAct('loading');
 	});
 	document.querySelector('#do_glow').addEventListener('click', function() {
+		leave_in_error_mode();
 		cpu_audio.CPU.audiotag.pause();
 		cpu_audio.CPU.setAct('glow');
 	});	
-	let in_error = false;
 	document.querySelector('#do_error').addEventListener('click', function() {
 		if (!in_error) {
 			cpu_audio.CPU.show('error');
 			cpu_audio.CPU.shadowId('pageerror').innerText = 'This is an error message.';
 			in_error = true;
 		} else {
-			cpu_audio.CPU.show('main');
-			cpu_audio.CPU.shadowId('pageerror').innerText = '';
-			in_error = false;
+			leave_in_error_mode();
 		}
 	});
 }, false);
