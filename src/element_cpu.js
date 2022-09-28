@@ -15,6 +15,7 @@ const acceptableHideAtttributes = ['poster', 'actions', 'timeline', 'chapters', 
 // should be put in CPU-controller ?
 const previewClassname = 'with-preview';
 export const activecueClassname = 'active-cue';
+const hidingClassname = 'no';
 
 const planeNameBorders = '_borders';
 
@@ -82,9 +83,9 @@ function getPointId(planeName, pointName, panel) {
  */
 function showElement({classList}, show) {
 	if (show) {
-		classList.remove('no');
+		classList.remove(hidingClassname);
 	} else {
-		classList.add('no');
+		classList.add(hidingClassname);
 	}
 }
 
