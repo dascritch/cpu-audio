@@ -22,21 +22,16 @@ This object is a global configuration interface.
 
 Properties :
 
+Some of them are not listed below, as they may be overloaded at start via a `<script type="application/json" data-cpu-audio>` tag, see [INSTALL.md](INSTALL.md) documentation, chapter *«
+	Setting global application parameters via a tag »*.
+
 name                     | default value | usage
 -------------------------|---------------|----------
-keymove                  | `5`           | Number of seconds skipped in the timeline when <kbd>←</kbd> or <kbd>→</kbd> keys are pressed in an interface
-alternateDelay           | `1000`        | Delay for a long press on time-line (in milliseconds) to switch to the handheld alternate browsing interface
-fastFactor               | `4`           | Amplification ratio between <kbd>▸︎▸︎</kbd> and <kbd>▸︎▸︎▸︎</kbd> in handheld alternate browsing interface
-repeatDelay              | `400`         | First repetition delay when clicking a button in handheld alternate browsing interface
-repeatFactor             | `100`         | Next repetitions delay when clicking a button in handheld alternate browsing interface
-playStopOthers           | `true`        | When a cpu-audio starts to play, any other instances in the same page are paused.
 currentAudiotagPlaying   | `null`        | Reference to the playing `<audio>` element, `null` if none
 globalController         | `null`        | Reference to the `<cpu-controller>` in the page if any, `null` elsewhere
 playlists                | `{}`          | Collection of audio tag by playlists (named by the `<cpu-audio playlist="">` attribute). [See playlist feature](https://dascritch.github.io/cpu-audio/FEATURES#playlists).
-advanceInPlaylist        | `true`        | When an audio is ended in a playlist, starts immediatly the next one.
-autoplay                 | `false`       | Will try to play at the start of the page if a temporal url is given or the audio was previously exited
 
-Some properties are still not documented, for internal usage, as they may evolve.
+Some properties for internal usage are still not documented, as they may evolve. Avoid to use them, we may change their name, values and usage.
 
 
 Methods :
