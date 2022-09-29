@@ -1,6 +1,6 @@
 import {oncePassiveEvent, adjacentArrayValue, findCPU, warn} from './utils.js';
 import {isAudiotagStreamed, audiotagPreloadMetadata, audiotagDuration, uncertainDuration, normalizeSeekTime, updateAudiotag} from './media_element_extension.js';
-import {timeInSeconds} from './convert.js';
+import { timeInSeconds } from './primitives/convert.js';
 import {buildPlaylist} from './build_playlist.js';
 import {planeAndPointNamesFromId} from './element_cpu.js';
 import {switchControllerTo} from './cpu_controller.class.js';

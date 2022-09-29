@@ -1,7 +1,7 @@
 import {adjacentKey, findCPU, oncePassiveEvent, selectorAudioInComponent, warn} from './utils.js';
 import {DefaultParametersDocumentCPU} from './default_document_cpu_parameters.js';
 import {defaultDataset} from './default_dataset.js';
-import {convert, timeInSeconds} from './convert.js';
+import { convert, timeInSeconds } from './primitives/convert.js';
 import {trigger} from './trigger.js';
 import {isAudiotagStreamed, uncertainPosition, normalizeSeekTime} from './media_element_extension.js';
 

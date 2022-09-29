@@ -1,7 +1,7 @@
 import {adjacentArrayValue, findCPU, selectorAudioInComponent, querySelectorDo, absolutizeUrl, error, escapeHtml, removeHtml, passiveEvent} from './utils.js';
 import {__} from './i18n.js';
 import {defaultDataset} from './default_dataset.js';
-import {secondsInColonTime, secondsInTime, durationIso} from './convert.js';
+import { secondsInColonTime, secondsInTime, durationIso } from './primitives/convert.js';
 import {translateVTT} from './translate_vtt.js';
 import {trigger, timecodeStart, timecodeEnd} from './trigger.js';
 import {isAudiotagStreamed, audiotagDuration, uncertainDuration, addIdToAudiotag, audiotagPreloadMetadata} from './media_element_extension.js';
