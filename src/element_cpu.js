@@ -1,4 +1,5 @@
-import { adjacentArrayValue, findCPU, selectorAudioInComponent, querySelectorDo, absolutizeUrl, escapeHtml, removeHtml, passiveEvent } from './primitives/utils.js';
+import { adjacentArrayValue, findCPU, selectorAudioInComponent, querySelectorDo, passiveEvent } from './primitives/utils.js';
+import { absolutizeUrl, escapeHtml, removeHtml } from './primitives/filters.js';
 import { error } from './primitives/console.js';
 import {__} from './i18n.js';
 import {defaultDataset} from './default_dataset.js';

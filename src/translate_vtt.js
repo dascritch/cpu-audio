@@ -1,4 +1,4 @@
-import { escapeHtml } from './primitives/utils.js';
+import { escapeHtml } from './primitives/filters.js';
 
 const acceptables_tags_normal = {
 	i     : 'i',
