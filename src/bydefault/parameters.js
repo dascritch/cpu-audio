@@ -41,3 +41,5 @@ export const DefaultParametersDocumentCPU = {
 	repeatFactor : 100,
 
 };
+
+export default DefaultParametersDocumentCPU;
