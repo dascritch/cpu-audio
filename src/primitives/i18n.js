@@ -1,5 +1,5 @@
-import fr from './locales/fr.js';
-import en from './locales/en.js';
+import fr from '../locales/fr.js';
+import en from '../locales/en.js';
 
 const sources_i18n = {
 	fr, en
@@ -36,3 +36,4 @@ function guess_preferable_language() {
 
 export let prefered_language = guess_preferable_language();
 export const __ = sources_i18n[prefered_language];
+export default __;

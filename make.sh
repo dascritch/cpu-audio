@@ -158,7 +158,7 @@ function _build_template() {
 	content_template_html=$(cat "${filename_template_html}")
 
 	echo "// auto-generated source, done via make.sh
-			import {__} from '../src/i18n.js';
+			import {__} from '../src/primitives/i18n.js';
 			/** @summary insert styles into host document */
 			export function insert_style() {
 				const style = document.createElement('style');
