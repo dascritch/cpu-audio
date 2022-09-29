@@ -1,4 +1,5 @@
-import { oncePassiveEvent, adjacentArrayValue, findCPU } from './primitives/utils.js';
+import { adjacentArrayValue, findCPU } from './primitives/utils.js';
+import { oncePassiveEvent } from './primitives/events.js';
 import { warn } from './primitives/console.js';
 import {isAudiotagStreamed, audiotagPreloadMetadata, audiotagDuration, uncertainDuration, normalizeSeekTime, updateAudiotag} from './media_element_extension.js';
 import { timeInSeconds } from './primitives/convert.js';

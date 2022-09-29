@@ -1,4 +1,4 @@
-import { oncePassiveEvent, passiveEvent } from './primitives/utils.js';
+import { oncePassiveEvent, passiveEvent } from './primitives/events.js';
 import {__, prefered_language} from './i18n.js';
 import {trigger} from './trigger.js';
 import {normalizeSeekTime} from './media_element_extension.js';

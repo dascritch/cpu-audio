@@ -10,18 +10,11 @@ License LGPL 3
 - blog post : https://dascritch.net/post/2018/11/06/Reconstruire-son-lecteur-audio-pour-le-web
 **/
 
-import { absolutizeUrl } from './filters.js';
-
 export const CpuAudioTagName = 'CPU-AUDIO';
 export const CpuControllerTagName = 'CPU-CONTROLLER';
 export const selectorAcceptable = 'audio[controls]';
 export const selectorAudioInComponent = `${CpuAudioTagName} audio`; // should be 'audio[controls]' but PHRACK APPLE !
 
-// Parameters for addEventListener
-// @private
-export const passiveEvent = { passive: true };
-// @private
-export const oncePassiveEvent = { ...passiveEvent, once: true };
 
 // private,to add attributes for unnamed <audio> , will be superseeded with #186 
 // @private
@@ -74,27 +67,6 @@ export function adjacentArrayValue(arr, value, offset) {
 		return null;
 	}
 	return arr[index + offset];
-}
-
-
-/**
- * @summary Will prevent a link in a page if linked to the same absolute URL
- *
- * @param      {Event}  event   The event
- */
-function preventLinkToSamePage(event) {
-	if (absolutizeUrl(window.location.href) === absolutizeUrl(event.target.href)) {
-		event.preventDefault();
-	}
-}
-
-/**
- * @summary Cancel any action on this link if its href is in this page
- *
- * @param      {Element}  element  The <A> DOM element
- */
-export function preventLinkOnSamePage(element) {
-	element.addEventListener('click', preventLinkToSamePage);
 }
 
 /**

@@ -1,4 +1,5 @@
-import { CpuAudioTagName, CpuControllerTagName, selectorAcceptable, passiveEvent, querySelectorDo } from './primitives/utils.js';
+import { CpuAudioTagName, CpuControllerTagName, selectorAcceptable, querySelectorDo } from './primitives/utils.js';
+import { passiveEvent } from './primitives/events.js';
 import { browserIsDecent } from './primitives/checkers.js';
 import { warn } from './primitives/console.js';
 
