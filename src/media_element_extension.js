@@ -1,4 +1,4 @@
-import {dynamicallyAllocatedIdPrefix, browserIsDecent, findCPU, passiveEvent, oncePassiveEvent} from './utils.js';
+import { dynamicallyAllocatedIdPrefix, browserIsDecent, findCPU, passiveEvent, oncePassiveEvent } from './primitives/utils.js';
 import {trigger, lastPlayError} from './trigger.js';
 import {addToPlaylist} from './build_playlist.js';
 
@@ -175,7 +175,7 @@ export function attach_events_audiotag(audiotag) {
 		audiotag.addEventListener(on, trigger.update, passiveEvent);
 	}
 
-	if (!browserIsDecent()) {
+	if (!browserIsDecent) {
 		// in case we are in legacy mode
 		for (let on of ['pause', 'ended']) {
 			audiotag.addEventListener(on, trigger.pause, passiveEvent);

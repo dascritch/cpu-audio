@@ -1,4 +1,4 @@
-import {adjacentArrayValue, findCPU, selectorAudioInComponent, querySelectorDo, absolutizeUrl, error, escapeHtml, removeHtml, passiveEvent} from './utils.js';
+import { adjacentArrayValue, findCPU, selectorAudioInComponent, querySelectorDo, absolutizeUrl, error, escapeHtml, removeHtml, passiveEvent } from './primitives/utils.js';
 import {__} from './i18n.js';
 import {defaultDataset} from './default_dataset.js';
 import { secondsInColonTime, secondsInTime, durationIso } from './primitives/convert.js';

@@ -21,6 +21,7 @@ Back-end
 
 * Node 18 support for build
 * Locales are modularized : each language has its own file, in `src/locales` ([#189](#189))
+* Some libs moved as `./src/primitives`
 
 
 RELEASE NOTES version 7.0.3

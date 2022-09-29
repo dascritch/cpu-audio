@@ -1,4 +1,4 @@
-import {passiveEvent, oncePassiveEvent, findCPU, preventLinkOnSamePage} from './utils.js';
+import { passiveEvent, oncePassiveEvent, findCPU, preventLinkOnSamePage } from './primitives/utils.js';
 import {trigger} from './trigger.js';
 import {audiotagPreloadMetadata} from './media_element_extension.js';
 import {acceptable_press_actions, pressManager, timeBarManager} from './finger_manager.js';

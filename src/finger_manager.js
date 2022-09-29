@@ -1,4 +1,4 @@
-import {findCPU} from './utils.js';
+import { findCPU } from './primitives/utils.js';
 import {trigger} from './trigger.js';
 
 // Repeated event allocation

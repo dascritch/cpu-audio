@@ -1,4 +1,4 @@
-import {selectorAcceptable, findCPU} from './utils.js';
+import { selectorAcceptable, findCPU } from './primitives/utils.js';
 import {CpuControllerElement} from './cpu_controller.class.js';
 import {connectAudiotag} from './media_element_extension.js';
 import { timeInSeconds } from './primitives/convert.js';

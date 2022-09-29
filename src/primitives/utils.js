@@ -1,6 +1,6 @@
 /** @license
 Cpu-Audio: an extension to the hash system to address timecode into audio/video elements and a player WebComponent
-Version 7.0.3
+Version 7.1pre
 Copyright (C) 2014-2021 Xavier "dascritch" Mouton-Dubosc & contributors.
 License LGPL 3
 
@@ -21,7 +21,7 @@ export const passiveEvent = {passive: true};
 // @private
 export const oncePassiveEvent = {passive: true, once: true};
 
-// private,to add attributes for unnamed <audio>
+// private,to add attributes for unnamed <audio> , will be superseeded with #186 
 // @private
 export const dynamicallyAllocatedIdPrefix = 'CPU-Audio-tag-';
 
@@ -76,13 +76,9 @@ export function adjacentArrayValue(arr, value, offset) {
 
 
 /**
- * @summary Determines if the hosting browser can use webcomponents.
- *
- * @return     {boolean}  True if decent browser for webcomponents, False otherwise.
+ * Determines if the hosting browser can use webcomponents.
  */
-export function browserIsDecent() {
-	return window.customElements !== undefined;
-}
+export const browserIsDecent = window.customElements !== undefined;
 
 /**
  * @summary Transform a possibily relative URL to an absolute URL, including server name, but removing hash part
@@ -91,7 +87,7 @@ export function browserIsDecent() {
  * @return     {string}  url     Absolute url
  */
 export function absolutizeUrl(url) {
-	let test_element = document.createElement('a');
+	const test_element = document.createElement('a');
 	test_element.href = (typeof url !== 'string') ? url : url.split('#')[0];
 	return test_element.href;
 }
@@ -132,10 +128,10 @@ export function preventLinkOnSamePage(element) {
  * @return     {string}  HTML escaped text
  */
 export function escapeHtml(text) {
-	let burn_after_reading = document.createElement('p');
+	const burn_after_reading = document.createElement('p');
 	burn_after_reading.innerText = text;
 	const { innerHTML } = burn_after_reading;
-	burn_after_reading.remove();
+	// burn_after_reading.remove(); implicit
 	return innerHTML;
 }
 
@@ -146,23 +142,12 @@ export function escapeHtml(text) {
  * @return     {string}  text
  */
 export function removeHtml(html) {
-	let burn_after_reading = document.createElement('p');
+	const burn_after_reading = document.createElement('p');
 	burn_after_reading.innerHTML = html;
 	const { innerText } = burn_after_reading;
-	burn_after_reading.remove();
+	// burn_after_reading.remove(); implicit
 	return innerText;
 }
-
-/**
- * @summary check if an element.id is cited in hash url
- *
- * @param      {string}   id      element id to check
- * @return     {boolean}  is in hash
- * /
-function id_in_hash(id) {
-	return location.hash.substr(1).split('&').includes(id);
-}*/
-
 
 /**
  * @summary For any <audio> tag or its child tag or shadowDOM element, returns the element `CPU` API
@@ -190,24 +175,19 @@ export function findCPU(child) {
  *
  * @param      {string}  message  The message
  */
-export function info(message) {
-	window.console.info(`${CpuAudioTagName}: `,message);
-}
+export const info = (message) => window.console.info(`${CpuAudioTagName}: `,message);
 
 /**
  * @summary Shortcut for console warning
  *
  * @param      {string}  message  The message
  */
-export function warn(message) {
-	window.console.warn(`${CpuAudioTagName}: `,message);
-}
+export const warn = (message) => window.console.warn(`${CpuAudioTagName}: `,message);
 
 /**
  * @summary Shortcut for console error
  *
  * @param      {string}  message  The message
  */
-export function error(message) {
-	window.console.error(`${CpuAudioTagName}: `,message);
-}
+export const error = (message) => window.console.error(`${CpuAudioTagName}: `,message);
+

@@ -1,4 +1,4 @@
-import {CpuAudioTagName, CpuControllerTagName, selectorAcceptable, notScreenContext, findCPU, warn, info } from './utils.js';
+import { CpuAudioTagName, CpuControllerTagName, selectorAcceptable, notScreenContext, findCPU, warn, info } from './primitives/utils.js';
 import {template} from '../tmp/insert_template.js';
 import {CPU_element_api} from './element_cpu.js';
 import {removeOfPlaylists, buildPlaylist, rePointsPlaylist} from './build_playlist.js';
