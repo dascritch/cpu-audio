@@ -25,6 +25,12 @@ export const oncePassiveEvent = {passive: true, once: true};
 // @private
 export const dynamicallyAllocatedIdPrefix = 'CPU-Audio-tag-';
 
+// Determines if the hosting browser can use webcomponents.
+export const browserIsDecent = window.customElements !== undefined;
+// Checks if we are in a screen context, and not a vocal or braille interface
+export const notScreenContext = !window.matchMedia('screen').matches;
+
+
 /**
  * @summary Process a function on each matched CSS selector found in a DOM tree
  *
@@ -74,12 +80,6 @@ export function adjacentArrayValue(arr, value, offset) {
 	return arr[index + offset];
 }
 
-
-/**
- * Determines if the hosting browser can use webcomponents.
- */
-export const browserIsDecent = window.customElements !== undefined;
-
 /**
  * @summary Transform a possibily relative URL to an absolute URL, including server name, but removing hash part
  *
@@ -90,15 +90,6 @@ export function absolutizeUrl(url) {
 	const test_element = document.createElement('a');
 	test_element.href = (typeof url !== 'string') ? url : url.split('#')[0];
 	return test_element.href;
-}
-
-/**
- * @summary Checks if we are in a screen context, and not a vocal or braille interface
- *
- * @return     {boolean}  False if have a screen
- */
-export function notScreenContext() {
-	return !window.matchMedia('screen').matches;
 }
 
 /**

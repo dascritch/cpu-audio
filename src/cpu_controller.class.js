@@ -73,7 +73,7 @@ export class CpuControllerElement extends HTMLElement {
 		this.CPU = null;
 		this.observer = null;
 
-		if (notScreenContext()) {
+		if (notScreenContext) {
 			// I'm not in a screen context, as a braille surface
 			// Sorry, but your browser's native controls are surely more accessible
 			this.remove();
@@ -103,7 +103,7 @@ export class CpuControllerElement extends HTMLElement {
 	}
 
 	connectedCallback() {
-		if (notScreenContext()) {
+		if (notScreenContext) {
 			return ;
 		}
 
