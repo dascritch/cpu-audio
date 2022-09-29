@@ -3,7 +3,7 @@ import { adjacentKey } from './primitives/operators.js';
 import convert from './primitives/convert.js';
 import head_parameters from './primitives/head_parameters.js';
 
-import DefaultParametersDocumentCPU from './bydefault/parameters.js';
+import defaultParametersDocumentCPU from './bydefault/parameters.js';
 import defaultDataset from './bydefault/dataset.js';
 
 import { isAudiotagPlaying } from './mediatag/status.js';
@@ -17,9 +17,11 @@ export const DocumentCPU = {
 	// global object for global API
 
 	// public, parameters
-	...DefaultParametersDocumentCPU,
+	...defaultParametersDocumentCPU,
 	// overrided parameters by integrator
 	...head_parameters(),
+
+	defaultDataset,
 
 	// public, actual active elements
 	// @public
@@ -49,8 +51,6 @@ export const DocumentCPU = {
 	convert,
 	// @public
 	trigger,
-
-	defaultDataset,
 
 	// @public utilities to find CPU API
 	findCPU,

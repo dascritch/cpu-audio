@@ -1,18 +1,22 @@
 import { findCPU, selectorAudioInComponent, querySelectorDo } from './primitives/utils.js';
 import { passiveEvent } from './primitives/events.js';
 import { absolutizeUrl, escapeHtml, removeHtml } from './primitives/filters.js';
-import { error } from './primitives/console.js';
-import __ from './primitives/i18n.js';
-import defaultDataset from './bydefault/dataset.js';
 import { secondsInColonTime, secondsInTime, durationIso } from './primitives/convert.js';
 import translateVTT from './primitives/translate_vtt.js';
-import { trigger, timecodeStart, timecodeEnd } from './trigger.js';
+import __ from './primitives/i18n.js';
+import { error } from './primitives/console.js';
+
+import defaultDataset from './bydefault/dataset.js';
+
 import { isAudiotagStreamed, audiotagDuration, uncertainDuration } from './mediatag/time.js';
 import { addIdToAudiotag, audiotagPreloadMetadata } from './mediatag/extension.js';
-import relativeFocus from './component/relativeFocus.js';
+
+import relative_focus from './component/relative_focus.js';
 import { planeAndPointNamesFromId, getPointId } from './component/planename.js';
+
+import { trigger, timecodeStart, timecodeEnd } from './trigger.js';
 import { switchControllerTo } from './cpu_controller.class.js';
-import { buildInterface } from './build_interface.js';
+import buildInterface from './build_interface.js';
 import { cuechange_event } from './build_chapters.js';
 
 // Acceptables attributes values for hide="" parameter on webcomponent
@@ -1465,7 +1469,7 @@ export class CPU_element_api {
 	 * @private
 	 */
 	prevFocus() {
-		relativeFocus(this, false);
+		relative_focus(this, false);
 	}
 
 	/**
@@ -1473,7 +1477,7 @@ export class CPU_element_api {
 	 * @private
 	 */
 	nextFocus() {
-		relativeFocus(this, true);
+		relative_focus(this, true);
 	}
 
 }

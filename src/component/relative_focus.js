@@ -5,7 +5,7 @@ import { planeAndPointNamesFromId } from './planename.js';
  * @summary relatively browse up or down with focus
  * @private
  */
-export function relativeFocus(self, go_foward) {
+export function relative_focus(self, go_foward) {
 	const planeNames = self.planeNames();
 	if (planeNames.length == 0) {
 		return;
@@ -58,4 +58,4 @@ export function relativeFocus(self, go_foward) {
 	self.focusPoint(planeName, pointName);
 }
 
-export default relativeFocus;
+export default relative_focus;

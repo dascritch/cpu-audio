@@ -1,4 +1,4 @@
-export const DefaultParametersDocumentCPU = {
+export const defaultParametersDocumentCPU = {
 	// those values may be later modified via loading parameters
 
 	// player basic
@@ -42,4 +42,4 @@ export const DefaultParametersDocumentCPU = {
 
 };
 
-export default DefaultParametersDocumentCPU;
+export default defaultParametersDocumentCPU;

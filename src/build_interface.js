@@ -116,3 +116,5 @@ export function buildInterface(elCPU) {
 	elCPU.updateLinks();
 
 }
+
+export default buildInterface;
