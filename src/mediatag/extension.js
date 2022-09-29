@@ -1,8 +1,11 @@
 import { dynamicallyAllocatedIdPrefix, findCPU } from '../primitives/utils.js';
 import { passiveEvent, oncePassiveEvent } from '../primitives/events.js';
 import { browserIsDecent } from '../primitives/checkers.js';
+
 import { isAudiotagStreamed } from './time.js';
-import { trigger, lastPlayError } from '../trigger.js';
+import { lastPlayError } from './actions.js';
+
+import trigger from '../trigger.js';
 import { addToPlaylist } from '../build_playlist.js';
 
 // Indicate if media element was already played, and so is prone to re-autoplay later

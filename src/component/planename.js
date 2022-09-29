@@ -2,6 +2,10 @@
 // Regex for extracting plane and point names from an id
 export const planePointNamesFromId = /^[\w-]+_«([\w-]+)(»_.*_«([\w-]+))?»$/;
 
+// Regex used to validate planes, points and injected css names
+// NOTE : [\w-] === [a-zA-Z0-9_\-]
+export const validId = /^[\w-]+$/;
+
 /**
  * @summary Gets the plane point names from an id on a ShadowDOM element.
  * @package

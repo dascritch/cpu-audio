@@ -10,11 +10,13 @@ import defaultDataset from './bydefault/dataset.js';
 
 import { isAudiotagStreamed, audiotagDuration, uncertainDuration } from './mediatag/time.js';
 import { addIdToAudiotag, audiotagPreloadMetadata } from './mediatag/extension.js';
+import { timecodeStart, timecodeEnd } from './mediatag/actions.js';
 
 import relative_focus from './component/relative_focus.js';
-import { planeAndPointNamesFromId, getPointId } from './component/planename.js';
+import { validId, planeAndPointNamesFromId, getPointId } from './component/planename.js';
+import { previewContainerHover, showElement } from './component/show.js';
 
-import { trigger, timecodeStart, timecodeEnd } from './trigger.js';
+import trigger from './trigger.js';
 import { switchControllerTo } from './cpu_controller.class.js';
 import buildInterface from './build_interface.js';
 import { cuechange_event } from './build_chapters.js';
@@ -25,46 +27,9 @@ const acceptableHideAtttributes = ['poster', 'actions', 'timeline', 'chapters', 
 // should be put in CPU-controller ?
 const previewClassname = 'with-preview';
 export const activecueClassname = 'active-cue';
-const hidingClassname = 'no';
 
 const planeNameBorders = '_borders';
 
-// Regex used to validate planes, points and injected css names
-// NOTE : [\w-] === [a-zA-Z0-9_\-]
-const validId = /^[\w-]+$/;
-
-
-/**
- * @summary    Highlight the playable positions when hovering a marked link
- *
- * @param      {Object}  event   An hover event
- */
-function previewContainerHover({target}) {
-	if (!target.id) {
-		target = target.closest('[id]');
-	}
-	if (!target) {
-		return;
-	}
-
-	const {planeName, pointName} = planeAndPointNamesFromId(target.id);
-	findCPU(target).highlightPoint(planeName, pointName);
-}
-
-
-/**
- * @summary Show or hide an element
- *
- * @param      {Element} element  	The element to show or hide
- * @param      {boolean} show 		Show if true, hide if false
- */
-function showElement({classList}, show) {
-	if (show) {
-		classList.remove(hidingClassname);
-	} else {
-		classList.add(hidingClassname);
-	}
-}
 
 /**
  * @summary Clean up DOM elements of any annotations, before rebuild them
