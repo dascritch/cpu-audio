@@ -2,7 +2,7 @@ import { oncePassiveEvent, passiveEvent } from './primitives/events.js';
 import {__, prefered_language} from './primitives/i18n.js';
 import {trigger} from './trigger.js';
 import {normalizeSeekTime} from './media_element_extension.js';
-import {translateVTT} from './translate_vtt.js';
+import translateVTT from './primitives/translate_vtt.js';
 import {activecueClassname} from './element_cpu.js';
 
 const plane_chapters = '_chapters';

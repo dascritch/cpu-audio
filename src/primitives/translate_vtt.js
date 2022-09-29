@@ -1,4 +1,4 @@
-import { escapeHtml } from './primitives/filters.js';
+import { escapeHtml } from './filters.js';
 
 const acceptables_tags_normal = {
 	i     : 'i',
@@ -97,3 +97,5 @@ export function translateVTT(vtt_taged, normal = true) {
 
 	return normal ? out.replace(vtt_cr, '<br/>') : out.replace(vtt_br, '\n');
 }
+
+export default translateVTT;

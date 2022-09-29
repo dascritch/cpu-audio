@@ -6,7 +6,7 @@ import { error } from './primitives/console.js';
 import __ from './primitives/i18n.js';
 import defaultDataset from './bydefault/dataset.js';
 import { secondsInColonTime, secondsInTime, durationIso } from './primitives/convert.js';
-import {translateVTT} from './translate_vtt.js';
+import translateVTT from './primitives/translate_vtt.js';
 import {trigger, timecodeStart, timecodeEnd} from './trigger.js';
 import {isAudiotagStreamed, audiotagDuration, uncertainDuration, addIdToAudiotag, audiotagPreloadMetadata} from './media_element_extension.js';
 import {switchControllerTo} from './cpu_controller.class.js';
