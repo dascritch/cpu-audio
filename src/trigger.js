@@ -39,7 +39,8 @@ export let lastPlayError = false;
 function removeTimecodeOutOfBorders(at) {
 	if (
 		(at < timecodeStart)
-		|| ((timecodeEnd !== false) && (at > timecodeEnd)) ) {
+		|| ((timecodeEnd !== false) && (at > timecodeEnd)) 
+		) {
 		timecodeStart = 0;
 		timecodeEnd = false;
 	}

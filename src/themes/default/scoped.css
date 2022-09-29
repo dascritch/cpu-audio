@@ -422,10 +422,10 @@ summary {
 	list-style-type: revert;
 	top : var(--cpu-height);
 	box-shadow: var(--cpu-inner-shadow); /* this repetition is needed for kedeping shadow aspect on sticky scrolling  */
+	padding : 4px;
 }
 
 summary::marker { /* do not use standard triangle icon, as it may be mismatch with the play button ! */
-	font-size : smaller;
 	content: '[+]\u00A0';
 }
 
@@ -453,7 +453,7 @@ summary::marker { /* do not use standard triangle icon, as it may be mismatch wi
 	display : none;
 }
 
-aside a, summary, .cue time /*, aside.ticker **/
+aside a, .cue time /*, aside.ticker **/
 {
 	font-size : var(--cpu-font-small-size);
 }
