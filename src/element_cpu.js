@@ -1,3 +1,7 @@
+// DOING
+import constructor from './component_cpu/constructor.js'
+
+
 import { findCPU, selectorAudioInComponent, querySelectorDo } from './primitives/utils.js';
 import { passiveEvent } from './primitives/events.js';
 import { absolutizeUrl, escapeHtml, removeHtml } from './primitives/filters.js';
@@ -21,14 +25,15 @@ import { switchControllerTo } from './cpu_controller.class.js';
 import buildInterface from './build_interface.js';
 import { cuechange_event } from './build_chapters.js';
 
-// Acceptables attributes values for hide="" parameter on webcomponent
-const acceptableHideAtttributes = ['poster', 'actions', 'timeline', 'chapters', 'panels', 'panels-title', 'panels-except-play'];
 
 // should be put in CPU-controller ?
 const previewClassname = 'with-preview';
 export const activecueClassname = 'active-cue';
 
 const planeNameBorders = '_borders';
+
+// Acceptables attributes values for hide="" parameter on webcomponent
+export const acceptableHideAtttributes = ['poster', 'actions', 'timeline', 'chapters', 'panels', 'panels-title', 'panels-except-play'];
 
 
 /**
@@ -101,6 +106,7 @@ export class CPU_element_api {
 		this.attributesChanges();
 	}
 
+	// migrated
 	attributesChanges() {
 		// mode="" attribute, on general aspect. may be coma separated
 		let mode = null;
@@ -123,6 +129,7 @@ export class CPU_element_api {
 		// TODO : waveform, poster, title, mirroring it to audiotag
 	}
 
+	// migrated
 	/**
 	 * @summary Check if the actual <cpu-audio> is mirrored in <cpu-controller>. False if no cpu-controller
 	 * @private but next time public ?
@@ -134,7 +141,7 @@ export class CPU_element_api {
 		return (globalController) && (this.audiotag.isEqualNode(globalController.audiotag));
 	}
 
-
+	// migrated
 	/**
 	 * @summary Passthru there only for testing purposes.
 	 * @private but needed in tests
@@ -146,6 +153,7 @@ export class CPU_element_api {
 		return translateVTT(vtt_taged, normal);
 	}
 
+	// migrated
 	/**
 	 * @summary Passthru there only for testing purposes. Perhaps may be on document.CPU as public method ?
 	 * @public
@@ -154,6 +162,7 @@ export class CPU_element_api {
 		return planeAndPointNamesFromId(element_id);
 	}
 
+	// migrated
 	/**
 	 * @summary    create and fire custom events for the global document.
 	 * @private
@@ -180,6 +189,8 @@ export class CPU_element_api {
 		return this.shadow.getElementById(id);
 	}  
 
+
+	// migrated
 	/**
 	 * @summary Used for `mode=""` attribute.
 	 * @public
@@ -191,11 +202,12 @@ export class CPU_element_api {
 		if (this.mode_was === mode) {
 			return;
 		}
-		const classes = this.container.classList;
-		classes.remove(`mode-${this.mode_was}`);
-		classes.add(`mode-${mode}`);
+		const { classList } = this.container;
+		classList.remove(`mode-${this.mode_was}`);
+		classList.add(`mode-${mode}`);
 		this.mode_was = mode;
 	}
+	// migrated
 	/**
 	 * @summary Change the presentation style reflecting the media tag status
 	 * @public
@@ -235,6 +247,7 @@ export class CPU_element_api {
 	 * @param      {Array<string>}  hide_elements  Array of strings, may contains
 	 *                                        'actions' or 'chapters'
 	 */
+	 // migrated
 	setHide(hide_elements) {
 		const container_class = this.container.classList;
 
@@ -571,7 +584,7 @@ export class CPU_element_api {
 			}
 		}
 	}
-
+/* MIGRATED */
 	/**
 	 * @summary Shows the interface
 	 *
@@ -624,6 +637,7 @@ export class CPU_element_api {
 		this.container.classList.toggle('show-handheld-nav');
 		event?.preventDefault();
 	}
+
 
 	/**
 	 * @summary Inject a <style> into the shadowDom.
@@ -709,7 +723,7 @@ export class CPU_element_api {
 		// throw simplified event
 		trigger.update({target : audiotag});
 	}
-
+/* MIGRATED */
 	/**
 	 * @summary Gets an array of whole planes
 	 * @private
