@@ -1,3 +1,7 @@
+import { isAudiotagStreamed, audiotagDuration, uncertainDuration } from '../mediatag/time.js';
+
+import { previewContainerHover, showElement } from '../component/show.js';
+
 export const show = {
 	/**
 	 * @summary Shows the interface
@@ -17,7 +21,7 @@ export const show = {
 			classList.add('media-streamed');
 		}
 		classList.add(`show-${mode}`);
-	}
+	},
 
 	/**
 	 * @summary Shows the sharing panel
@@ -26,7 +30,7 @@ export const show = {
 	showActions: function(/* event */) {
 		this.show('share');
 		this.updateLinks();
-	}
+	},
 
 	/**
 	 * @summary Shows the main interface
@@ -35,7 +39,7 @@ export const show = {
 	showMain: function(/* event */) {
 		showElement(this.container, true);
 		this.show('main');
-	}
+	},
 
 	/**
      * @summary Shows the handheld fine navigation

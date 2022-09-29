@@ -5,6 +5,8 @@ import { template } from '../tmp/insert_template.js';
 import { CPU_element_api } from './element_cpu.js';
 import { removeOfPlaylists, buildPlaylist, rePointsPlaylist } from './build_playlist.js';
 
+import constructor from './component_cpu/constructor.js';
+
 /**
  * @summary When a <cpu-audio> plays, attach it to the eventual <cpu-controller>
  * @private
@@ -112,7 +114,8 @@ export class CpuControllerElement extends HTMLElement {
 			return;
 		}
 
-		new CPU_element_api(this);
+		//new CPU_element_api(this);
+		new constructor(this);
 
 		this.observer = new MutationObserver(modifiedController);
 		this.observer.observe(this, {

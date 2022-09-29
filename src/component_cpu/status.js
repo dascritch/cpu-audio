@@ -1,3 +1,15 @@
+import defaultDataset from '../bydefault/dataset.js';
+
+import { error } from '../primitives/console.js';
+import __ from '../primitives/i18n.js';
+
+import { addIdToAudiotag, audiotagPreloadMetadata } from '../mediatag/extension.js';
+
+import { validId, planeAndPointNamesFromId, getPointId } from '../component/planename.js';
+
+import trigger from '../trigger.js';
+
+
 // Acceptables attributes values for hide="" parameter on webcomponent
 export const acceptableHideAtttributes = ['poster', 'actions', 'timeline', 'chapters', 'panels', 'panels-title', 'panels-except-play'];
 

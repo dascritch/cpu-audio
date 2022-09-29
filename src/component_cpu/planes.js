@@ -1,3 +1,44 @@
+import { passiveEvent } from '../primitives/events.js';
+import { absolutizeUrl, escapeHtml, removeHtml } from '../primitives/filters.js';
+import { secondsInColonTime, secondsInTime, durationIso } from '../primitives/convert.js';
+import { findCPU, selectorAudioInComponent, querySelectorDo } from '../primitives/utils.js';
+
+import { isAudiotagStreamed, audiotagDuration, uncertainDuration } from '../mediatag/time.js';
+
+import relative_focus from '../component/relative_focus.js';
+import { validId, planeAndPointNamesFromId, getPointId } from '../component/planename.js';
+import { previewContainerHover, showElement } from '../component/show.js';
+
+import { cuechange_event } from '../build_chapters.js';
+
+
+// should be put in CPU-controller ?
+const previewClassname = 'with-preview';
+export const activecueClassname = 'active-cue';
+
+
+/**
+ * @summary Check acceptance of a pointData for insertion
+ *
+ * @param      {Object} pointData  	normalized pointData to check
+ * @return     boolean 				true is ok
+ */
+function checkPointData({start, end}) {
+	return (((start == null) || (start >= 0)) && ((end == null) || (end >= start)));
+}
+
+
+/**
+ * @summary Clean up DOM elements of any annotations, before rebuild them
+ * @private
+ *
+ * @param      {Element} container  The webcontainer to clean-up
+ */
+function undrawAllPlanes(container) {
+	querySelectorDo('aside, details.panel', (element) => { element.remove(); }, container);
+}
+
+
 export const planes = {
 		/**
 	 * @summary Gets an array of whole planes
