@@ -1,5 +1,4 @@
-import { findCPU } from './primitives/utils.js';
-import {trigger} from './trigger.js';
+import trigger from './trigger.js';
 
 // Repeated event allocation
 let pressing = null;
@@ -53,17 +52,3 @@ export const pressManager = {
 	}
 };
 
-export const timeBarManager = {
-	ev : null,
-	down : function ({target}) {
-		timeBarManager.ev = setTimeout(timeBarManager.do, document.CPU.alternateDelay, findCPU(target));
-	},
-	do : function (elCPU) {
-		elCPU.showHandheldNav();
-		timeBarManager.ev = null;
-	},
-	up : function () {
-		clearTimeout(timeBarManager.ev);
-		timeBarManager.ev = null;
-	}
-};
