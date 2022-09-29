@@ -1,32 +1,16 @@
-import { findCPU, selectorAudioInComponent } from './primitives/utils.js';
+import { findCPU } from './primitives/utils.js';
 import { adjacentKey } from './primitives/operators.js';
-import { oncePassiveEvent } from './primitives/events.js';
-import { warn } from './primitives/console.js';
-import { convert, timeInSeconds } from './primitives/convert.js';
-import { isAudiotagStreamed, uncertainPosition, normalizeSeekTime } from './mediatag/time.js';
+import convert from './primitives/convert.js';
+import head_parameters from './primitives/head_parameters.js';
+
 import DefaultParametersDocumentCPU from './bydefault/parameters.js';
 import defaultDataset from './bydefault/dataset.js';
-import trigger from './trigger.js';
 
-/**
- * @private
- * @summary Get the global parameters stored in the <head> of the host document, else returns {}
- *
- * @return     {object}  The content of the stored content, else an empty object
- */
-function UserParametersDocumentCPU() {
-	const selector = 'script[data-cpu-audio]';
-	const tag = document.head.querySelector(selector);
-	if (!tag) {
-		return {};
-	}
-	try {
-		return JSON.parse(tag.innerHTML);
-	} catch {
-		warn(`invalid ${selector} parameter tag`);
-		return {};
-	}
-}
+import { isAudiotagPlaying } from './mediatag/status.js';
+import jumpIdAt from './mediatag/jump.js';
+import seekElementAt from './mediatag/seek.js';
+
+import trigger from './trigger.js';
 
 
 export const DocumentCPU = {
@@ -35,7 +19,7 @@ export const DocumentCPU = {
 	// public, parameters
 	...DefaultParametersDocumentCPU,
 	// overrided parameters by integrator
-	...UserParametersDocumentCPU(),
+	...head_parameters(),
 
 	// public, actual active elements
 	// @public
@@ -80,10 +64,7 @@ export const DocumentCPU = {
 	 * @param      {HTMLAudioElement}   audiotag  The audiotag
 	 * @return     {boolean}  True if audiotag playing, False otherwise.
 	 */
-	isAudiotagPlaying : function(audiotag) {
-		const currentAudiotagPlaying = document.CPU.currentAudiotagPlaying;
-		return (currentAudiotagPlaying) && (audiotag.isEqualNode(currentAudiotagPlaying));
-	},
+	isAudiotagPlaying,
 	/**
 	 * @public
 	 * @summary Determines if audiotag is displayed in <cpu-controller>
@@ -105,51 +86,7 @@ export const DocumentCPU = {
 	 * @param      {string}   timecode     The timecode,
 	 * @param      {Function|null|undefined}   callback_fx  Function to be called afterwards, for ending tests
 	 */
-	jumpIdAt : async function(hash, timecode, callback_fx=undefined) {
-
-		/**
-		 * @param 	{Object}	event 	triggered event, or mockup
-		 */
-		function doNeedleMove({target:audiotag}) {
-			// maybe we should add `timecode` in argument (timecode, event), and bind it to the event listener, moving the function upper
-			const secs = timeInSeconds(timecode);
-			document.CPU.seekElementAt(audiotag, secs);
-
-			const mocked_event = {target : audiotag};
-			if (audiotag.readyState >= audiotag.HAVE_FUTURE_DATA) {
-				doElementPlay(mocked_event);
-			} else {
-				audiotag.addEventListener('canplay', doElementPlay, oncePassiveEvent);
-			}
-			trigger.update(mocked_event);
-		}
-
-		/**
-		 * @param 	{Object}	event 	triggered event, or mockup
-		 */
-		function doElementPlay(event) {
-			trigger.play(null, event.target);
-			callback_fx?.();
-		}
-
-		const audiotag = /** @type {HTMLAudioElement} */ ( (hash !== '') ? document.getElementById(hash)  :  document.querySelector(selectorAudioInComponent) );
-
-		if ( ( audiotag?.currentTime ?? null ) == null ) {
-			warn(`Unknow audiotag ${hash}`);
-			return;
-		}
-
-		const mocked_event = {target : audiotag};
-		if (audiotag.readyState < audiotag.HAVE_CURRENT_DATA) {
-			// WHHYYYY ??????
-			audiotag.addEventListener('loadedmetadata', doNeedleMove , oncePassiveEvent);
-			audiotag.load();
-			trigger.update(mocked_event);
-		} else {
-			doNeedleMove(mocked_event);
-		}
-		// No problems
-	},
+	jumpIdAt,
 
 	/**
 	 * @summary Position a <audio> element to a time position
@@ -159,44 +96,7 @@ export const DocumentCPU = {
 	 * @param      {number}  seconds   	Wanted position, in seconds
 	 *
 	 */
-	seekElementAt : function (audiotag, seconds) {
-		if ((uncertainPosition(seconds)) || // may happens, if the audio track is not loaded/loadable
-			(isAudiotagStreamed(audiotag))) { // never try to set a position on a streamed media
-			return;
-		}
-		seconds = normalizeSeekTime(audiotag, seconds);
-
-		if (audiotag.fastSeek) {
-			// HTMLAudioElement.fastSeek() is an experimental but really fast function. Firefox only, alas
-			// Note that since the writing of this part, Safari aslo knows fastSeek(). It may be the root cause of some of my issues, as #149
-			audiotag.fastSeek(seconds);
-		} else {
-			try {
-				const settime = () => {audiotag.currentTime = seconds;} ;
-				// Browsers may not have fastSeek but can set currentTime
-				if (audiotag.readyState >= audiotag.HAVE_CURRENT_DATA) {
-					// Chrome, Edge, and any other webkit-like except Safari on iPhone
-					settime();
-				} else {
-					// Safari on iPhone is totally incumbent on media throbbing
-					// See https://github.com/dascritch/cpu-audio/issues/138#issuecomment-816526902
-					// and https://stackoverflow.com/questions/18266437/html5-video-currenttime-not-setting-properly-on-iphone
-					audiotag.load();
-				    settime();
-				    if (audiotag.currentTime < seconds){
-				        audiotag.addEventListener("loadedmetadata", settime, { once: true });
-				    }
-				}
-			} catch(e) {
-				// except sometimes, so you must use standard media fragment
-				audiotag.src = `${audiotag.currentSrc.split('#')[0]}#t=${seconds}`;
-			}
-		}
-
-		// it may be still constructing it, so be precautionous
-		findCPU(audiotag)?.updateLoading?.(seconds);
-	},
-
+	seekElementAt,
 
 	/**
 	 * @summary Return the current playing playlist array
