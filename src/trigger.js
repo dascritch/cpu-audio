@@ -2,12 +2,14 @@ import { findCPU } from './primitives/utils.js';
 import { adjacentArrayValue } from './primitives/operators.js';
 import { oncePassiveEvent } from './primitives/events.js';
 import { warn } from './primitives/console.js';
-import { isAudiotagStreamed, audiotagDuration, uncertainDuration, normalizeSeekTime } from './mediatag/time.js';
-import { updateAudiotag } from './mediatag/extension.js';
-import { audiotagPreloadMetadata } from './mediatag/extension.js';
 import { timeInSeconds } from './primitives/convert.js';
-import { buildPlaylist } from './build_playlist.js';
+
+import { isAudiotagStreamed, audiotagDuration, uncertainDuration, normalizeSeekTime } from './mediatag/time.js';
+import { updateAudiotag, audiotagPreloadMetadata } from './mediatag/extension.js';
+
 import { planeAndPointNamesFromId } from './component/planename.js';
+
+import { buildPlaylist } from './build_playlist.js';
 import { switchControllerTo } from './cpu_controller.class.js';
 
 const KEY_LEFT_ARROW = 37;

@@ -1,8 +1,11 @@
 import { oncePassiveEvent, passiveEvent } from './primitives/events.js';
-import { __, prefered_language } from './primitives/i18n.js';
-import trigger from './trigger.js';
-import { normalizeSeekTime } from './mediatag/time.js';
+import __ from './primitives/i18n.js';
 import translateVTT from './primitives/translate_vtt.js';
+
+import { normalizeSeekTime } from './mediatag/time.js';
+import { get_chapter_tracks } from './mediatag/tracks.js';
+
+import trigger from './trigger.js';
 import { activecueClassname } from './element_cpu.js';
 
 const plane_chapters = '_chapters';
@@ -16,45 +19,15 @@ const plane_chapters = '_chapters';
 export function buildChaptersLoader(elCPU) {
 	const this_build_chapters = () => { build_chapters(elCPU); };
 	this_build_chapters();
-	let audiotag = elCPU.audiotag;
+	const { audiotag } = elCPU;
 
 	// sometimes, we MAY have loose loading
 	audiotag.addEventListener('loadedmetadata', this_build_chapters, oncePassiveEvent);
 
-	let track_element = audiotag.querySelector('track[kind="chapters"]');
+	const track_element = audiotag.querySelector('track[kind="chapters"]');
 	if ((track_element) && (!track_element._CPU_load_ev)) {
 		track_element._CPU_load_ev = track_element.addEventListener('load', this_build_chapters, passiveEvent);
 	}
-}
-
-/**
- * @summary Extract usable chapter tracks from audiotag
- * @private
- *
- * @param      {HTMLAudioElement} 	audiotag	The <audio> supposed to have a chapter tracj
- * @return     {TextTrack|null}  				The TextTrack, or null if not applicable
- */
-function get_chapter_tracks(audiotag) {
-	if (!audiotag) {
-		return null;
-	}
-
-	let chapter_track = null;
-	if (audiotag.textTracks?.length > 0) {
-		for (const tracks of audiotag.textTracks) {
-			if (
-					(tracks.kind.toLowerCase() === 'chapters') &&
-					(tracks.cues) &&  // linked to default="" attribute, only one per set !
-					(
-						(!chapter_track) /* still no active track */
-						|| (tracks.language.toLowerCase() === prefered_language) /* correspond to <html lang> */
-					)
-				) {
-				chapter_track = tracks;
-			}
-		}
-	}
-	return chapter_track;
 }
 
 /**
