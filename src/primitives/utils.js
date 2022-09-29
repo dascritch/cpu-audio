@@ -25,12 +25,6 @@ export const oncePassiveEvent = {passive: true, once: true};
 // @private
 export const dynamicallyAllocatedIdPrefix = 'CPU-Audio-tag-';
 
-// Determines if the hosting browser can use webcomponents.
-export const browserIsDecent = window.customElements !== undefined;
-// Checks if we are in a screen context, and not a vocal or braille interface
-export const notScreenContext = !window.matchMedia('screen').matches;
-
-
 /**
  * @summary Process a function on each matched CSS selector found in a DOM tree
  *

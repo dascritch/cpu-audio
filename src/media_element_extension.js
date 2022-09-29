@@ -1,4 +1,5 @@
-import { dynamicallyAllocatedIdPrefix, browserIsDecent, findCPU, passiveEvent, oncePassiveEvent } from './primitives/utils.js';
+import { dynamicallyAllocatedIdPrefix, findCPU, passiveEvent, oncePassiveEvent } from './primitives/utils.js';
+import { browserIsDecent } from './primitives/checkers.js';
 import {trigger, lastPlayError} from './trigger.js';
 import {addToPlaylist} from './build_playlist.js';
 
