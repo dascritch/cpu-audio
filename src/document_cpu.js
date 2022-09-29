@@ -1,4 +1,5 @@
-import { adjacentKey, findCPU, selectorAudioInComponent } from './primitives/utils.js';
+import { findCPU, selectorAudioInComponent } from './primitives/utils.js';
+import { adjacentKey } from './primitives/operators.js';
 import { oncePassiveEvent } from './primitives/events.js';
 import { warn } from './primitives/console.js';
 import {DefaultParametersDocumentCPU} from './default_document_cpu_parameters.js';
