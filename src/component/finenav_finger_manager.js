@@ -1,4 +1,4 @@
-import trigger from './trigger.js';
+import trigger from '../trigger.js';
 
 // Repeated event allocation
 let pressing = null;
@@ -6,7 +6,7 @@ export const acceptable_press_actions = ['fastreward', 'reward', 'foward', 'fast
 
 // Handheld navigation button process
 // @private
-export const pressManager = {
+export const finenav_finger_manager = {
 	/*
 	 * @summary Start handheld navigation button press
 	 * @private
@@ -24,7 +24,7 @@ export const pressManager = {
 		if (pressing) {
 			window.clearTimeout(pressing);
 		}
-		pressing = window.setTimeout(pressManager.repeat, document.CPU.repeatDelay, event);
+		pressing = window.setTimeout(finenav_finger_manager.repeat, document.CPU.repeatDelay, event);
 		event.preventDefault();
 	},
 	/*
@@ -36,7 +36,7 @@ export const pressManager = {
 	repeat : function (event) {
 		trigger[event.target.id](event);
 		// next call : repetition are closest
-		pressing = window.setTimeout(pressManager.repeat, document.CPU.repeatFactor, event);
+		pressing = window.setTimeout(finenav_finger_manager.repeat, document.CPU.repeatFactor, event);
 		event.preventDefault?.();
 	},
 	/*
@@ -52,3 +52,4 @@ export const pressManager = {
 	}
 };
 
+export default finenav_finger_manager;

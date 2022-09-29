@@ -1,11 +1,11 @@
 import { findCPU } from './primitives/utils.js';
 import { passiveEvent, oncePassiveEvent, preventLinkOnSamePage } from './primitives/events.js';
-import {trigger} from './trigger.js';
 import { audiotagPreloadMetadata } from './mediatag/extension.js';
 
 import timebar_finger_manager from './component/timebar_finger_manager.js';
+import { acceptable_press_actions, finenav_finger_manager } from './component/finenav_finger_manager.js';
 
-import {acceptable_press_actions, pressManager} from './finger_manager.js';
+import trigger from './trigger.js';
 import {buildChaptersLoader} from './build_chapters.js';
 import {buildPlaylist} from './build_playlist.js';
 
@@ -70,9 +70,9 @@ export function buildInterface(elCPU) {
 	//  *ward : handheld nav to allow long press to repeat action
 	for (const elementId of acceptable_press_actions) {
 		const button_element = elCPU.shadowId(elementId);
-		button_element?.addEventListener('pointerdown', pressManager.press);
-		button_element?.addEventListener('pointerout', pressManager.release);
-		button_element?.addEventListener('pointerup', pressManager.release);
+		button_element?.addEventListener('pointerdown', finenav_finger_manager.press);
+		button_element?.addEventListener('pointerout', finenav_finger_manager.release);
+		button_element?.addEventListener('pointerup', finenav_finger_manager.release);
 	}
 
 	// keyboard management
