@@ -1,5 +1,4 @@
 import { findCPU, selectorAudioInComponent, querySelectorDo } from './primitives/utils.js';
-import { adjacentArrayValue } from './primitives/operators.js';
 import { passiveEvent } from './primitives/events.js';
 import { absolutizeUrl, escapeHtml, removeHtml } from './primitives/filters.js';
 import { error } from './primitives/console.js';
@@ -10,6 +9,8 @@ import translateVTT from './primitives/translate_vtt.js';
 import { trigger, timecodeStart, timecodeEnd } from './trigger.js';
 import { isAudiotagStreamed, audiotagDuration, uncertainDuration } from './mediatag/time.js';
 import { addIdToAudiotag, audiotagPreloadMetadata } from './mediatag/extension.js';
+import relativeFocus from './component/relativeFocus.js';
+import { planeAndPointNamesFromId, getPointId } from './component/planename.js';
 import { switchControllerTo } from './cpu_controller.class.js';
 import { buildInterface } from './build_interface.js';
 import { cuechange_event } from './build_chapters.js';
@@ -28,28 +29,6 @@ const planeNameBorders = '_borders';
 // NOTE : [\w-] === [a-zA-Z0-9_\-]
 const validId = /^[\w-]+$/;
 
-// Regex for extracting plane and point names from an id
-const planePointNamesFromId = /^[\w-]+_«([\w-]+)(»_.*_«([\w-]+))?»$/;
-
-/**
- * @summary Gets the plane point names from an id on a ShadowDOM element.
- * @package
-
- * repeated in the class for testing purposes
- *
- * @param      {string}  element_id  	The element identifier
- * @return     {Object}    				An object with two strings : planeName and pointName
- */
-export function planeAndPointNamesFromId(element_id) {
-	let  planeName, pointName;
-	if (typeof element_id == 'string') {
-		[, planeName, , pointName] = element_id?.match(planePointNamesFromId) || [];
-	}
-	return {
-		planeName : planeName??'',
-		pointName : pointName??''
-	};
-}
 
 /**
  * @summary    Highlight the playable positions when hovering a marked link
@@ -68,17 +47,6 @@ function previewContainerHover({target}) {
 	findCPU(target).highlightPoint(planeName, pointName);
 }
 
-/**
- * @summary Gets the point track identifier
- *
- * @param      {string}  planeName  The plane name
- * @param      {string}  pointName  The point name
- * @param      {boolean} panel       Is panel (true) or track (false)
- * @return     {string}  The point track identifier.
- */
-function getPointId(planeName, pointName, panel) {
-	return `${ panel?'panel':'track' }_«${planeName}»_point_«${pointName}»`;
-}
 
 /**
  * @summary Show or hide an element
@@ -1509,61 +1477,3 @@ export class CPU_element_api {
 	}
 
 }
-
-/**
- * @summary relatively browse up or down with focus
- * @private
- */
-function relativeFocus(self, go_foward) {
-	const planeNames = self.planeNames();
-	if (planeNames.length == 0) {
-		return;
-	}
-
-	const validPlane = (id) => {
-		const {track, panel, points} = self.plane(id);
-		return (((track !== false) || (panel !== false))
-				&& ((self.planePanel(id)?.clientHeight > 0) || (self.planeTrack(id)?.clientHeight > 0))
-				&& (points)
-				&& (Object.keys(points).length > 0));
-	};
-	const scanToPrevPlane = (fromPlane) => {
-		for(let id = planeNames.indexOf(fromPlane) -1; id >= 0 ; id--) {
-			const out = planeNames[id];
-			if (validPlane(out)) {
-				return out;
-			}
-		}
-	};
-	const scanToNextPlane = (fromPlane) => {
-		for(let id = planeNames.indexOf(fromPlane) +1; id < planeNames.length ; id++) {
-			const out = planeNames[id];
-			if (validPlane(out)) {
-				return out;
-			}
-		}
-	};
-
-	let planeName, pointName, planePointNames;
-	let wasFocused = self.focused();
-	if (wasFocused) {
-		if (!wasFocused.id) {
-			wasFocused = wasFocused.closest('[id]');
-		}
-		({planeName, pointName} = planeAndPointNamesFromId(wasFocused.id));
-	}
-	if (pointName != '') {  // NOTE : loosy comparison is important
-		planePointNames = self.planePointNames(planeName);
-		pointName = adjacentArrayValue(planePointNames, pointName, go_foward ? 1 : -1);
-	}
-	if (!pointName) {
-		planeName = go_foward ? scanToNextPlane(planeName) : scanToPrevPlane(planeName);
-		if (!planeName) {
-			return;
-		}
-		const points = self.planePointNames(planeName);
-		pointName = points[go_foward ? 0 : (points.length - 1)];
-	}
-	self.focusPoint(planeName, pointName);
-}
-

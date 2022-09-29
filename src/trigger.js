@@ -7,7 +7,7 @@ import { updateAudiotag } from './mediatag/extension.js';
 import { audiotagPreloadMetadata } from './mediatag/extension.js';
 import { timeInSeconds } from './primitives/convert.js';
 import { buildPlaylist } from './build_playlist.js';
-import { planeAndPointNamesFromId } from './element_cpu.js';
+import { planeAndPointNamesFromId } from './component/planename.js';
 import { switchControllerTo } from './cpu_controller.class.js';
 
 const KEY_LEFT_ARROW = 37;
