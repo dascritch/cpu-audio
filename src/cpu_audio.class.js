@@ -1,6 +1,6 @@
 import { selectorAcceptable, findCPU } from './primitives/utils.js';
 import {CpuControllerElement} from './cpu_controller.class.js';
-import {connectAudiotag} from './media_element_extension.js';
+import { connectAudiotag } from './mediatag/extension.js';
 import { timeInSeconds } from './primitives/convert.js';
 import {build_chapters} from './build_chapters.js';
 import {removeOfPlaylists, rePointsPlaylist} from './build_playlist.js';

@@ -5,7 +5,7 @@ import { warn } from './primitives/console.js';
 
 import {CpuAudioElement} from './cpu_audio.class.js';
 import {CpuControllerElement} from './cpu_controller.class.js';
-import {attach_events_audiotag} from './media_element_extension.js';
+import { attach_events_audiotag } from './mediatag/extension.js';
 import {DocumentCPU} from './document_cpu.js';
 import {insert_style} from '../tmp/insert_template.js';
 import {trigger} from './trigger.js';

@@ -2,11 +2,13 @@ import { findCPU } from './primitives/utils.js';
 import { adjacentArrayValue } from './primitives/operators.js';
 import { oncePassiveEvent } from './primitives/events.js';
 import { warn } from './primitives/console.js';
-import {isAudiotagStreamed, audiotagPreloadMetadata, audiotagDuration, uncertainDuration, normalizeSeekTime, updateAudiotag} from './media_element_extension.js';
+import { isAudiotagStreamed, audiotagDuration, uncertainDuration, normalizeSeekTime } from './mediatag/time.js';
+import { updateAudiotag } from './mediatag/extension.js';
+import { audiotagPreloadMetadata } from './mediatag/extension.js';
 import { timeInSeconds } from './primitives/convert.js';
-import {buildPlaylist} from './build_playlist.js';
-import {planeAndPointNamesFromId} from './element_cpu.js';
-import {switchControllerTo} from './cpu_controller.class.js';
+import { buildPlaylist } from './build_playlist.js';
+import { planeAndPointNamesFromId } from './element_cpu.js';
+import { switchControllerTo } from './cpu_controller.class.js';
 
 const KEY_LEFT_ARROW = 37;
 const KEY_RIGHT_ARROW = 39;
@@ -53,6 +55,84 @@ function playOnceUnlock(event, audiotag) {
 	if (document.CPU.autoplay) {
 		trigger.play(event, audiotag);
 	}
+}
+
+
+/**
+ * @summary Common code for trigger.prevcue and trigger.nextcue
+ *
+ * @param      {HTMLAudioElement}  	audiotag  	The audiotag we're leaving
+ * @param      {Number}			  	offset  	The offset to apply on the index
+ */
+function playRelativeCueInPlayer(container, offset) {
+	const audiotag = container.audiotag;
+	const points = container.planePoints('_chapters');
+	if (!points) {
+		return;
+	}
+	const {pointName} = planeAndPointNamesFromId( body_className_playing_cue );
+	let go = adjacentArrayValue(points, pointName, offset);
+	let pointList = Object.values(points);
+	if (offset < 0) {
+		pointList = pointList.reverse();
+	}
+	const {currentTime} = audiotag;
+	if (!go) {
+		for (let cue of pointList) {
+			if ( (!go) && (
+				((offset < 0) && (cue.end <= currentTime))  || 
+				(((offset > 0) && (cue.start >= currentTime)) )
+			) ) {
+				go = cue;
+			}
+		}
+	}
+	if (go) {
+		document.CPU.jumpIdAt(audiotag.id, go.start);
+	}
+}
+
+/**
+ * @summary Common code for trigger.prevtrack and trigger.nexttrack
+ *
+ * @param      {HTMLAudioElement}  	audiotag  	The audiotag we're leaving
+ * @param      {Number}			  	offset  	The offset to apply on the index
+ */
+function playRelativeTrackInPlaylist(audiotag, offset) {
+	const {id} = audiotag;
+
+	const playlist_name = audiotag.dataset.playlist;
+	if (!playlist_name) {
+		// should I test strict ? We may have a funnily 'undefined' named playlist ;)
+		return;
+	}
+
+	// and is in a declarated playlist
+	const playlist = document.CPU.playlists[playlist_name];
+	if (!playlist) { 
+		warn(`Named playlist ${playlist_name} not created. WTF ?`);
+		return;
+	}
+	const playlist_index = playlist.indexOf(id);
+	if (playlist_index < 0) {
+		warn(`Audiotag ${id} not in playlist ${playlist_name}. WTF ?`);
+		return;
+	}
+
+	const next_id = playlist[playlist_index + offset];
+	if (!next_id) {
+		// out of playlist
+		return;
+	}
+
+	const next_audiotag = /** @type {HTMLAudioElement} */ (document.getElementById(next_id));
+	if (!next_audiotag) {
+		warn(`Audiotag #${next_id} doesn't exists. WTF ?`);
+		return;
+	}
+	// Play the next media in playlist, starting at zero
+	document.CPU.seekElementAt(next_audiotag, 0);
+	trigger.play(null, next_audiotag);
 }
 
 export const trigger = {
@@ -513,81 +593,4 @@ export const trigger = {
 };
 
 
-
-/**
- * @summary Common code for trigger.prevcue and trigger.nextcue
- *
- * @param      {HTMLAudioElement}  	audiotag  	The audiotag we're leaving
- * @param      {Number}			  	offset  	The offset to apply on the index
- */
-function playRelativeCueInPlayer(container, offset) {
-	const audiotag = container.audiotag;
-	const points = container.planePoints('_chapters');
-	if (!points) {
-		return;
-	}
-	const {pointName} = planeAndPointNamesFromId( body_className_playing_cue );
-	let go = adjacentArrayValue(points, pointName, offset);
-	let pointList = Object.values(points);
-	if (offset < 0) {
-		pointList = pointList.reverse();
-	}
-	const {currentTime} = audiotag;
-	if (!go) {
-		for (let cue of pointList) {
-			if ( (!go) && (
-				((offset < 0) && (cue.end <= currentTime))  || 
-				(((offset > 0) && (cue.start >= currentTime)) )
-			) ) {
-				go = cue;
-			}
-		}
-	}
-	if (go) {
-		document.CPU.jumpIdAt(audiotag.id, go.start);
-	}
-}
-
-/**
- * @summary Common code for trigger.prevtrack and trigger.nexttrack
- *
- * @param      {HTMLAudioElement}  	audiotag  	The audiotag we're leaving
- * @param      {Number}			  	offset  	The offset to apply on the index
- */
-function playRelativeTrackInPlaylist(audiotag, offset) {
-	const {id} = audiotag;
-
-	const playlist_name = audiotag.dataset.playlist;
-	if (!playlist_name) {
-		// should I test strict ? We may have a funnily 'undefined' named playlist ;)
-		return;
-	}
-
-	// and is in a declarated playlist
-	const playlist = document.CPU.playlists[playlist_name];
-	if (!playlist) { 
-		warn(`Named playlist ${playlist_name} not created. WTF ?`);
-		return;
-	}
-	const playlist_index = playlist.indexOf(id);
-	if (playlist_index < 0) {
-		warn(`Audiotag ${id} not in playlist ${playlist_name}. WTF ?`);
-		return;
-	}
-
-	const next_id = playlist[playlist_index + offset];
-	if (!next_id) {
-		// out of playlist
-		return;
-	}
-
-	const next_audiotag = /** @type {HTMLAudioElement} */ (document.getElementById(next_id));
-	if (!next_audiotag) {
-		warn(`Audiotag #${next_id} doesn't exists. WTF ?`);
-		return;
-	}
-	// Play the next media in playlist, starting at zero
-	document.CPU.seekElementAt(next_audiotag, 0);
-	trigger.play(null, next_audiotag);
-}
-
+export default trigger;

@@ -1,7 +1,7 @@
 import { findCPU } from './primitives/utils.js';
 import { passiveEvent, oncePassiveEvent, preventLinkOnSamePage } from './primitives/events.js';
 import {trigger} from './trigger.js';
-import {audiotagPreloadMetadata} from './media_element_extension.js';
+import { audiotagPreloadMetadata } from './mediatag/extension.js';
 import {acceptable_press_actions, pressManager, timeBarManager} from './finger_manager.js';
 import {buildChaptersLoader} from './build_chapters.js';
 import {buildPlaylist} from './build_playlist.js';

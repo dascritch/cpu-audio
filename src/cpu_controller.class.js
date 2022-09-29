@@ -1,9 +1,9 @@
 import { CpuAudioTagName, CpuControllerTagName, selectorAcceptable, findCPU } from './primitives/utils.js';
 import { notScreenContext } from './primitives/checkers.js';
 import { warn, info } from './primitives/console.js';
-import {template} from '../tmp/insert_template.js';
-import {CPU_element_api} from './element_cpu.js';
-import {removeOfPlaylists, buildPlaylist, rePointsPlaylist} from './build_playlist.js';
+import { template } from '../tmp/insert_template.js';
+import { CPU_element_api } from './element_cpu.js';
+import { removeOfPlaylists, buildPlaylist, rePointsPlaylist } from './build_playlist.js';
 
 /**
  * @summary When a <cpu-audio> plays, attach it to the eventual <cpu-controller>

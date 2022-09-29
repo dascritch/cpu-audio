@@ -2,11 +2,11 @@ import { findCPU, selectorAudioInComponent } from './primitives/utils.js';
 import { adjacentKey } from './primitives/operators.js';
 import { oncePassiveEvent } from './primitives/events.js';
 import { warn } from './primitives/console.js';
+import { convert, timeInSeconds } from './primitives/convert.js';
+import { isAudiotagStreamed, uncertainPosition, normalizeSeekTime } from './mediatag/time.js';
 import DefaultParametersDocumentCPU from './bydefault/parameters.js';
 import defaultDataset from './bydefault/dataset.js';
-import { convert, timeInSeconds } from './primitives/convert.js';
-import {trigger} from './trigger.js';
-import {isAudiotagStreamed, uncertainPosition, normalizeSeekTime} from './media_element_extension.js';
+import trigger from './trigger.js';
 
 /**
  * @private
