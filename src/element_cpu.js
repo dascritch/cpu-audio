@@ -3,7 +3,7 @@ import { passiveEvent } from './primitives/events.js';
 import { absolutizeUrl, escapeHtml, removeHtml } from './primitives/filters.js';
 import { error } from './primitives/console.js';
 import {__} from './i18n.js';
-import {defaultDataset} from './default_dataset.js';
+import defaultDataset from './bydefault/dataset.js';
 import { secondsInColonTime, secondsInTime, durationIso } from './primitives/convert.js';
 import {translateVTT} from './translate_vtt.js';
 import {trigger, timecodeStart, timecodeEnd} from './trigger.js';

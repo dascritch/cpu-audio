@@ -39,3 +39,5 @@ export const defaultDataset = {
 	duration : null,
 	download : null
 };
+
+export default defaultDataset;
