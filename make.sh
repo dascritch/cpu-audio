@@ -26,8 +26,8 @@ Optimal options for release :
 HELP
 )
 
-# Needed for Node versions > 16
-export NODE_OPTIONS=--openssl-legacy-provider
+# Needed for Node versions > 16  . check your version number before validate it 
+# export NODE_OPTIONS=--openssl-legacy-provider
 
 PROJECT_DIR=$(readlink -f $(dirname ${0}))
 
