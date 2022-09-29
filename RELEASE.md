@@ -16,6 +16,12 @@ Corrections
 * Application chapters_builder should stop zero-ing time input in some situations
 * Hash parameters are now case insensitive
 
+Back-end
+--------
+
+* Node 18 support for build
+* Locales are modularized : each language has its own file, in `src/locales` ([#189](#189))
+
 
 RELEASE NOTES version 7.0.3
 ===========================
