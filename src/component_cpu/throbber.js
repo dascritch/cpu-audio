@@ -3,7 +3,7 @@ import { secondsInColonTime, secondsInTime } from '../primitives/convert.js';
 import { isAudiotagStreamed, uncertainDuration } from '../mediatag/time.js';
 import { audiotagPreloadMetadata } from '../mediatag/extension.js';
 
-import trigger from '../trigger/trigger.js';
+import { hover } from '../trigger/throbber.js';
 
 const hideThrobber_delay = 1000;
 
@@ -54,7 +54,7 @@ export const throbber = {
 			// as we navigate on the timeline, we wish to know its total duration
 			// yes, this is twice calling, as of trigger.throbble()
   			audiotag.setAttribute('preload', 'metadata');
-			audiotagPreloadMetadata(audiotag, trigger.hover, event);
+			audiotagPreloadMetadata(audiotag, hover, event);
 		}
 
 		const phylactere = this.shadowId('popup');

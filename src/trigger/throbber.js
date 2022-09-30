@@ -47,7 +47,7 @@ export function throbble(event) {
  *
  * @param      {Object}  event   The calling event
  */
-function hover(event) {
+export function hover(event) {
 	const {target, clientX, targetTouches} = event;
 	if (!target) {
 		// pointerenter event may be fired without target. Strange for a pointer
@@ -70,19 +70,19 @@ function hover(event) {
 	container.showThrobberAt(normalizeSeekTime(audiotag, ratio * duration));
 }
 
+/**
+ * @summary Hide the throbber when leaving the timeline interface
+ *
+ * @param      {Object}  event   The calling event
+ */
+function out({target}) {
+	findCPU(target).hideThrobber();
+}
+
 export const throbber = {
 	throbble,
 	hover,
-
-	/**
-	 * @summary Hide the throbber when leaving the timeline interface
-	 *
-	 * @param      {Object}  event   The calling event
-	 */
-	out : function({target}) {
-		findCPU(target).hideThrobber();
-	},
-
+	out
 };
 
 export default throbber;

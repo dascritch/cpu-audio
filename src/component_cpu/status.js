@@ -5,7 +5,7 @@ import { addIdToAudiotag } from '../mediatag/extension.js';
 
 import { validId } from '../component/planename.js';
 
-import trigger from '../trigger/trigger.js';
+import { update } from '../trigger/update.js';
 
 
 // Acceptables attributes values for hide="" parameter on webcomponent
@@ -133,7 +133,7 @@ export const status = {
 		this.completeTemplate();
 
 		// throw simplified event
-		trigger.update({target : audiotag});
+		update({target : audiotag});
 	},
 
 		/**
