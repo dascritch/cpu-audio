@@ -226,7 +226,7 @@ export const updates = {
 			email    : `mailto:?subject=${title}&body=${_url}`,
 			link
 		};
-		for (let key in links) {
+		for (const key in links) {
 			const element = this.shadowId(key);
 			if (element) {
 				element.href = links[key];

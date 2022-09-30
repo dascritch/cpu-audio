@@ -35,7 +35,7 @@ export function removeOfPlaylists({id}) {
 	const currentPlaylistID = document.CPU.currentPlaylistID();
 	let redraw = false;
 	// remove reference in playlists
-	for (let index in playlists) {
+	for (const index in playlists) {
 		const previous_length = playlists[index].length;
 		const out = playlists[index].filter(entry_id => ((entry_id !== id) && (document.getElementById(entry_id)) ));
 		if ( (previous_length !== out.length) && (index === currentPlaylistID)) {
@@ -71,7 +71,7 @@ export function rePointsPlaylist() {
 		return;
 	}
 
-	for (let audiotag_id of current_playlist) {
+	for (const audiotag_id of current_playlist) {
 		pointDataGroup[audiotag_id] = {
 			text : document.getElementById(audiotag_id)?.dataset.title, // TODO "untitled"
 			link : `#${audiotag_id}&t=0`

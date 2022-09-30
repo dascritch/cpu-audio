@@ -90,7 +90,7 @@ export function attach_events_audiotag(audiotag) {
 	audiotag.addEventListener('canplay', recallStoredPlay, passiveEvent);
 
 	// see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events for list of events
-	for (let on of [
+	for (const on of [
 		'ready', 'load', 'loadeddata', 'canplay', 'abort',
 		'error', 'emptied',
 		'play', 'playing', 'pause', 'ended',
@@ -101,7 +101,7 @@ export function attach_events_audiotag(audiotag) {
 
 	if (!browserIsDecent) {
 		// in case we are in legacy mode
-		for (let on of ['pause', 'ended']) {
+		for (const on of ['pause', 'ended']) {
 			audiotag.addEventListener(on, trigger.pause, passiveEvent);
 		}
 	}

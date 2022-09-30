@@ -51,7 +51,7 @@ export class CpuAudioElement extends CpuControllerElement {
 			return ;
 		}
 		// copying personalized data to audio tag for persistence
-		for (let key in document.CPU.defaultDataset) {
+		for (const key in document.CPU.defaultDataset) {
 			if (this.hasAttribute(key)) {
 				const value = this.getAttribute(key);
 				this.audiotag.dataset[key] = (key !== 'duration') ? value : timeInSeconds(value);

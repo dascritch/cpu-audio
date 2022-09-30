@@ -64,7 +64,7 @@ export const subunittimeInSeconds = (givenTime) => {
  */
 export const colontimeInSeconds = (givenTime) => {
 	let seconds = 0;
-	let atoms = givenTime.split(':');
+	const atoms = givenTime.split(':');
 	for (let pos = 0 ; pos < atoms.length ; pos++) {
 		seconds += Number(atoms[pos]) * scale[((atoms.length-1) - pos)];
 	}
@@ -85,7 +85,7 @@ export const secondsInTime = (givenSeconds) => {
 	}
 	let converted = '';
 	let inned = false;
-	for (let key in units_scale) {
+	for (const key in units_scale) {
 		if (units_scale.hasOwnProperty(key)) {
 			let multiply = units_scale[key];
 			if ((givenSeconds >= multiply) || (inned)) {

@@ -72,7 +72,7 @@ export const status = {
 	setHide : function(hide_elements) {
 		const container_class = this.container.classList;
 
-		for (let hide_this of acceptableHideAtttributes) {
+		for (const hide_this of acceptableHideAtttributes) {
 			container_class.remove(`hide-${hide_this}`);
 		}
 

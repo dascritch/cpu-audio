@@ -239,7 +239,7 @@ export const planes = {
 			return;
 		}
 		let previous_element, element;
-		for (let pointName of this.planePointNames(planeName)) {
+		for (const pointName of this.planePointNames(planeName)) {
 			element = this.pointPanel(planeName, pointName);
 			previous_element?.insertAdjacentElement('afterend', element);
 			previous_element = element;
@@ -441,7 +441,7 @@ export const planes = {
 			return false;
 		}
 
-		for (let pointName of Object.keys(plane.points)) {
+		for (const pointName of Object.keys(plane.points)) {
 			this.removePoint(planeName, pointName);
 		}
 		// need to repass in case of badly removed / malformed entries

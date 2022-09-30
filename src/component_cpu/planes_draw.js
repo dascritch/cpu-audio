@@ -20,7 +20,7 @@ export const activecueClassname = 'active-cue';
  * @param      {Element} container  The webcontainer to clean-up
  */
 function undrawAllPlanes(container) {
-	querySelectorDo('aside, details.panel', (element) => { element.remove(); }, container);
+	querySelectorDo('aside, details.panel', (element) => element.remove(), container);
 }
 
 export const planes_draw = {
@@ -199,7 +199,7 @@ export const planes_draw = {
 	removeHighlightsPoints: function(planeName, className=previewClassname, mirror=true) {
 		querySelectorDo(
 			`#track_«${planeName}» .${className}, #panel_«${planeName}» .${className}`,
-			(element) => { element.classList.remove(className); },
+			(element) => element.classList.remove(className),
 			this.container);
 		if ( (mirror) && (this.mirroredInController()) ) {
 			const globalController = document.CPU.globalController;

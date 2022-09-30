@@ -39,7 +39,7 @@ function playRelativeCueInPlayer(container, offset) {
 	}
 	const {currentTime} = audiotag;
 	if (!go) {
-		for (let cue of pointList) {
+		for (const cue of pointList) {
 			if ( (!go) && (
 				((offset < 0) && (cue.end <= currentTime))  || 
 				(((offset > 0) && (cue.start >= currentTime)) )

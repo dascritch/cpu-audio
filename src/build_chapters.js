@@ -124,11 +124,11 @@ export function cuechange_event(elCPU, event = null) {
 	const activeCues = event ? event.target.activeCues : get_chapter_tracks(elCPU.audiotag)?.activeCues;
 	
 	let cue;
-	// Chrome may put more than one activeCue. That's a stupid regression from them, but alas... I have to do with
-	let currentTime = elCPU.audiotag.currentTime;
+	// Chrome may put more than one activeCue. That's a stupid regression from them, but alas… I have to deal with it
+	const currentTime = elCPU.audiotag.currentTime;
 	
 	if (activeCues?.length > 0) {
-		for (let cue_line of activeCues) {
+		for (const cue_line of activeCues) {
 			if ((cue_line.startTime <= currentTime) && (currentTime < cue_line.endTime)) {
 				cue = cue_line;
 			}
