@@ -13,6 +13,12 @@ export const defaultParametersDocumentCPU = {
 	// @type boolean
 	autoplay : false,
 
+	// interface building
+
+	// @public
+	// @type boolean
+	globalCss : true,
+
 	// playlist interactions
 
 	// @public

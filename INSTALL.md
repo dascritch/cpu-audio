@@ -334,15 +334,16 @@ Here are those parameters, usage and default values :
 
 name (case sensitive)    | default value | usage
 -------------------------|---------------|----------
+`playStopOthers`         | `true`        | When a `<cpu-audio>` starts to play, any other instances in the same page are paused.
 `scrollTo`               | `false`       | On any link to a time-stamp in the page, will scroll the viewport to display the playing interface.
 `autoplay`               | `false`       | Will try to play at the start of the page if a temporal url is given or the audio was previously exited. This may be prevented by your browser.
+`globalCss`	             | `true`        | Insert in the `<head>` of the host document a specific `<style>` with all needed css variables for the player.
+`advanceInPlaylist`      | `true`        | When an audio is ended in a playlist, starts immediatly the next one.
 `keymove`                | `5`           | Number of seconds skipped in the timeline when <kbd>←</kbd> or <kbd>→</kbd> keys are pressed in an interface
-`playStopOthers`         | `true`        | When a `<cpu-audio>` starts to play, any other instances in the same page are paused.
 `alternateDelay`         | `1000`        | Delay for a long press on time-line (in milliseconds) to switch to the handheld alternate browsing interface. Not recommended to modify.
 `fastFactor`             | `4`           | Amplification ratio between <kbd>▸︎▸︎</kbd> and <kbd>▸︎▸︎▸︎</kbd> in handheld alternate browsing interface
 `repeatDelay`            | `400`         | First repetition delay when clicking a button in handheld alternate browsing interface
 `repeatFactor`           | `100`         | Next repetitions delay when clicking a button in handheld alternate browsing interface
-`advanceInPlaylist`      | `true`        | When an audio is ended in a playlist, starts immediatly the next one.
 
 Those parameters may also be changed via javascript, see the [API.md](API.md) page, *document.CPU* chapter
 

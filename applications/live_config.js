@@ -144,7 +144,12 @@ function configurator_css(event) {
 }
 
 function configurator_paramtag(event) {
-	let attrs_values = ['scrollTo', 'autoplay', 'keymove', 'playStopOthers', 'alternateDelay', 'fastFactor', 'repeatDelay', 'repeatFactor', 'advanceInPlaylist'];
+	const attrs_values = [
+		'playStopOthers', 'scrollTo', 'autoplay',
+		'globalCss',
+		'keymove',
+		'alternateDelay', 'fastFactor', 'repeatDelay', 'repeatFactor', 'advanceInPlaylist'
+	];
 	let out = {};
 	let mutated = false;
 	for (const attr of attrs_values) {

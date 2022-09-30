@@ -6,7 +6,7 @@ import { warn } from './primitives/console.js';
 import {CpuAudioElement} from './cpu_audio.class.js';
 import {CpuControllerElement} from './cpu_controller.class.js';
 import { attach_events_audiotag } from './mediatag/extension.js';
-import {DocumentCPU} from './document_cpu.js';
+import { DocumentCPU } from './document_cpu.js';
 import {insert_style} from '../tmp/insert_template.js';
 import {trigger} from './trigger.js';
 
@@ -24,8 +24,10 @@ async function main() {
 		querySelectorDo(selectorAcceptable, attach_events_audiotag);
 		global_class_indicator = 'without-webcomponents';
 	} else {
-		// TO DO : do not run it if not permited #181
-		insert_style();
+		if (DocumentCPU.globalCss) {
+			insert_style();
+		}
+
 		global_class_indicator = 'with-webcomponents';
 		window.customElements.define(CpuAudioTagName.toLowerCase(), CpuAudioElement);
 		window.customElements.define(CpuControllerTagName.toLowerCase(), CpuControllerElement);
@@ -42,7 +44,6 @@ if ((document.CPU) || (window.customElements.get(CpuAudioTagName.toLowerCase()))
 	HTMLDocument.prototype.CPU = DocumentCPU;
 
 	document.addEventListener('DOMContentLoaded', main, passiveEvent);
-//	if (document.body) {
 	if ( document.readyState !== 'loading' ) {
 		// document may already be loaded and DOMContentLoaded fired.
 		main();
