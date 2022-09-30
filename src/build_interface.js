@@ -2,7 +2,7 @@ import { findCPU } from './primitives/utils.js';
 import { passiveEvent, oncePassiveEvent, preventLinkOnSamePage } from './primitives/events.js';
 import { audiotagPreloadMetadata } from './mediatag/extension.js';
 
-import timebar_finger_manager from './component/timebar_finger_manager.js';
+import { down, up } from './component/timebar_finger_manager.js';
 import { acceptable_press_actions, finenav_finger_manager } from './component/finenav_finger_manager.js';
 
 import trigger from './trigger/trigger.js';
@@ -83,8 +83,8 @@ export function buildInterface(elCPU) {
 	timeline_element?.addEventListener('pointerenter', trigger.hover, passiveEvent);
 	timeline_element?.addEventListener('pointermove', trigger.hover, passiveEvent);
 	timeline_element?.addEventListener('pointerout', trigger.out, passiveEvent);
-	timeline_element?.addEventListener('pointerdown', timebar_finger_manager.down, passiveEvent);
-	timeline_element?.addEventListener('pointerup', timebar_finger_manager.up, passiveEvent);
+	timeline_element?.addEventListener('pointerdown', down, passiveEvent);
+	timeline_element?.addEventListener('pointerup', up, passiveEvent);
 
 	if (navigator.share) {
 		classList.add('hasnativeshare');
