@@ -1,6 +1,6 @@
-import { isAudiotagStreamed, audiotagDuration, uncertainDuration } from '../mediatag/time.js';
+import { isAudiotagStreamed } from '../mediatag/time.js';
 
-import { previewContainerHover, showElement } from '../component/show.js';
+import { showElement } from '../component/show.js';
 
 export const show = {
 	/**

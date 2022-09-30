@@ -1,8 +1,8 @@
 import translateVTT from '../primitives/translate_vtt.js';
-import { findCPU, selectorAudioInComponent, querySelectorDo } from '../primitives/utils.js';
+import { selectorAudioInComponent } from '../primitives/utils.js';
 
 import { planeAndPointNamesFromId } from '../component/planename.js';
-import { addIdToAudiotag, audiotagPreloadMetadata } from '../mediatag/extension.js';
+import { audiotagPreloadMetadata } from '../mediatag/extension.js';
 
 import { switchControllerTo } from '../cpu_controller.class.js';
 import buildInterface from '../build_interface.js';
@@ -12,6 +12,7 @@ import updates from './updates.js';
 import throbber from './throbber.js';
 import show from './show.js';
 import planes from './planes.js';
+import planes_focus from './planes_focus.js';
 
 
 /**
@@ -25,7 +26,7 @@ export function	constructor(element) {
 
 	const { audiotag, shadowRoot } = element;
 
-	let self = {
+	const self = {
 		element,
 		shadow : shadowRoot,
 		audiotag,
@@ -37,18 +38,18 @@ export function	constructor(element) {
 		act_was : null,
 		isController : false,
 
-		//
+		// integration of segments per features
 		...status,
 		...updates,
 		...throbber,
 		...show,
 		...planes,
+		...planes_focus,
 
-		//
-
-		translateVTT, // Passthru there only for testing purposes.
-		planeAndPointNamesFromId, // Passthru there only for testing purposes.
-	}
+		// Passthru there only for testing purposes.
+		translateVTT, 
+		planeAndPointNamesFromId, 
+	};
 
 	self.container = self.shadowId('interface');
 
