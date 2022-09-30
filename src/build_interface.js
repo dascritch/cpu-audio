@@ -6,8 +6,9 @@ import { down, up } from './component/timebar_finger_manager.js';
 import { acceptable_press_actions, press, release } from './component/finenav_finger_manager.js';
 
 import trigger from './trigger/trigger.js';
-import {buildChaptersLoader} from './build_chapters.js';
-import {buildPlaylist} from './build_playlist.js';
+import { buildChaptersLoader } from './build_chapters.js';
+import { buildPlaylist } from './build_playlist.js';
+
 
 /**
  * @summary Interprets `navigator.share` native API
@@ -24,9 +25,8 @@ function nativeShare(event) {
 	event.preventDefault();
 }
 
-
 /**
- * @private, because at start
+ * @private, because called at start
  *
  * @param      {Object}  			elCPU  <cpu-audio>.CPU
  *
@@ -51,9 +51,9 @@ export function buildInterface(elCPU) {
 		pause      : trigger.pause,
 		play       : trigger.play,
 		time       : trigger.throbble,
-		actions    : () => {elCPU.showActions();},
+		actions    : () => elCPU.showActions(),
 		back       : (event) => {elCPU.showMain(); event.preventDefault();},
-		poster     : () => {elCPU.showMain();},
+		poster     : () => elCPU.showMain(),
 		restart    : trigger.restart,
 		toggleplay : trigger.toggleplay,
 		prevcue    : trigger.prevcue,
@@ -70,9 +70,11 @@ export function buildInterface(elCPU) {
 	//  *ward : handheld nav to allow long press to repeat action
 	for (const elementId of acceptable_press_actions) {
 		const button_element = elCPU.shadowId(elementId);
-		button_element?.addEventListener('pointerdown', press);
-		button_element?.addEventListener('pointerout', release);
-		button_element?.addEventListener('pointerup', release);
+		if (button_element) {
+			button_element.addEventListener('pointerdown', press);
+			button_element.addEventListener('pointerout', release);
+			button_element.addEventListener('pointerup', release);
+		}
 	}
 
 	// keyboard management
@@ -80,11 +82,13 @@ export function buildInterface(elCPU) {
 
 	// throbber management
 	const timeline_element = elCPU.shadowId('time');
-	timeline_element?.addEventListener('pointerenter', trigger.hover, passiveEvent);
-	timeline_element?.addEventListener('pointermove', trigger.hover, passiveEvent);
-	timeline_element?.addEventListener('pointerout', trigger.out, passiveEvent);
-	timeline_element?.addEventListener('pointerdown', down, passiveEvent);
-	timeline_element?.addEventListener('pointerup', up, passiveEvent);
+	if (timeline_element) {
+		timeline_element.addEventListener('pointerenter', trigger.hover, passiveEvent);
+		timeline_element.addEventListener('pointermove', trigger.hover, passiveEvent);
+		timeline_element.addEventListener('pointerout', trigger.out, passiveEvent);
+		timeline_element.addEventListener('pointerdown', down, passiveEvent);
+		timeline_element.addEventListener('pointerup', up, passiveEvent);
+	}
 
 	if (navigator.share) {
 		classList.add('hasnativeshare');
@@ -101,11 +105,9 @@ export function buildInterface(elCPU) {
 		return;
 	}
 
-	elCPU.container.addEventListener('pointerenter', () => { 
-		audiotagPreloadMetadata(elCPU.audiotag);
-	}, oncePassiveEvent);
+	elCPU.container.addEventListener('pointerenter', () => audiotagPreloadMetadata(elCPU.audiotag), oncePassiveEvent);
 
-	elCPU.audiotag.addEventListener('durationchange', () => {elCPU.repositionTracks(); }, passiveEvent);
+	elCPU.audiotag.addEventListener('durationchange', () => elCPU.repositionTracks(), passiveEvent);
 
 	buildChaptersLoader(elCPU);
 	buildPlaylist();

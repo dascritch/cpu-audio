@@ -49,8 +49,6 @@ export function removeOfPlaylists({id}) {
 	}
 }
 
-
-
 /**
  * @private
  */
@@ -96,7 +94,7 @@ export function buildPlaylist(wasFocusedId) {
 		return;
 	}
 
-	let previous_playlist = globalController.current_playlist;
+	const previous_playlist = globalController.current_playlist;
 	globalController.current_playlist = document.CPU.currentPlaylist();
 
 	if (! globalController.plane(plane_playlist)) {
