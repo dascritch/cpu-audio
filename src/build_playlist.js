@@ -14,8 +14,6 @@ export function addToPlaylist(audiotag) {
 		if (!(playlist_name in document.CPU.playlists)) {
 			document.CPU.playlists[playlist_name] = [];
 		}
-		// TODO do not rerecord id if already in this playlist. Remove from other playlists
-		// TODO LATER, remove id when cpu-audio or audiotag removed
 		document.CPU.playlists[playlist_name].push(audiotag.id);
 
 		// refresh controller playlist if any
