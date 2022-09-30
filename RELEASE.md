@@ -7,6 +7,7 @@ New features
 
 * You can set some global parameters via a `<script data-cpu-audio>` tag in the `<head>` of the host page ([#185](#185))
 * Can scroll the viewport of the page on the player when clicking on a temporal link. Parametrable setting ([#60](#60))
+* Being able to not include global.css on host page ([#181](#181))
 
 Corrections
 -----------
