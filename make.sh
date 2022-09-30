@@ -23,11 +23,11 @@ Needed utilities :
 
 Optimal options for release :
 ./make.sh --clean --test --index --all-themes
+
+Note : For Node versions upper than 16, you must add a Node parameter to still validate very old ssl cyphers :
+NODE_OPTIONS=--openssl-legacy-provider ./make.sh --clean --test --index --all-themes
 HELP
 )
-
-# Needed for Node versions > 16  . check your version number before validate it 
-# export NODE_OPTIONS=--openssl-legacy-provider
 
 PROJECT_DIR=$(readlink -f $(dirname ${0}))
 

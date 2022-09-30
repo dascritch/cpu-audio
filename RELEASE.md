@@ -16,7 +16,7 @@ Corrections
 * Hash parameters are now case insensitive
 * Instanciation may be missed during the page lifecyle. Better way to check if host page DOM is really ready or not
 * Application chapters_builder should stop zero-ing time input in some situations
-* better style on focused `<summary>`
+* Better style on focused `<summary>`
 * Do not insert global `<style>` in page if webcomponent is not supported by the browser (I know, this is a late situation)
 
 Back-end
