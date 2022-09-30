@@ -426,11 +426,11 @@ summary {
 }
 
 summary::marker { /* do not use standard triangle icon, as it may be mismatch with the play button ! */
-	content: '[+]\u00A0';
+	content: '⍓\u00A0';
 }
 
 [open] > summary::marker {
-	content: '[-]\u00A0';
+	content: '⍌\u00A0';
 }
 
 .cue {
