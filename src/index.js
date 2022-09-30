@@ -20,15 +20,14 @@ async function main() {
 
 	let global_class_indicator;
 	if (!browserIsDecent) {
+		global_class_indicator = 'without-webcomponents';
 		warn(`WebComponent may NOT behave correctly on this browser. Only timecode hash links are activated.\nSee https://github.com/dascritch/cpu-audio/ for details`);
 		querySelectorDo(selectorAcceptable, attach_events_audiotag);
-		global_class_indicator = 'without-webcomponents';
 	} else {
+		global_class_indicator = 'with-webcomponents';
 		if (DocumentCPU.globalCss) {
 			insert_style();
 		}
-
-		global_class_indicator = 'with-webcomponents';
 		window.customElements.define(CpuAudioTagName.toLowerCase(), CpuAudioElement);
 		window.customElements.define(CpuControllerTagName.toLowerCase(), CpuControllerElement);
 	}
