@@ -1,11 +1,15 @@
 import { CpuAudioTagName, CpuControllerTagName, selectorAcceptable, findCPU } from './primitives/utils.js';
 import { notScreenContext } from './primitives/checkers.js';
 import { warn, info } from './primitives/console.js';
+
+// generated during ./make.sh for each theme
 import { template } from '../tmp/insert_template.js';
-// import { CPU_element_api } from './element_cpu.js';
+
 import { removeOfPlaylists, buildPlaylist, rePointsPlaylist } from './build_playlist.js';
 
 import constructor from './component_cpu/constructor.js';
+
+const media_tagname = 'audio';
 
 /**
  * @summary When a <cpu-audio> plays, attach it to the eventual <cpu-controller>
@@ -21,7 +25,7 @@ export function switchControllerTo(audiotag) {
 
 	if (!audiotag.isEqualNode(globalController.audiotag)) {
 		// remove previous orphan audio tag
-		const previous_audiotag = document.CPU.globalController.element.querySelector('audio');
+		const previous_audiotag = document.CPU.globalController.element.querySelector(media_tagname);
 		if (previous_audiotag) {
 			removeOfPlaylists(previous_audiotag);
 			previous_audiotag.remove();
@@ -45,7 +49,6 @@ export function switchControllerTo(audiotag) {
 function modifiedController([{target}]) {
 	const elCPU = findCPU(target);
 	const component = elCPU.element;
-	const media_tagname = 'audio';
 	const audio_element = component.querySelector(media_tagname);
 	const globalController = document.CPU.globalController;
 	if ((!audio_element) && (component.tagName !== CpuControllerTagName)) {
@@ -88,7 +91,7 @@ export class CpuControllerElement extends HTMLElement {
 		if (this.tagName === CpuAudioTagName) {
 			if (!this.querySelector(selectorAcceptable)) {
 				// Graceful degradation : do not start if no media element OR no native controls
-				warn(`Tag <${CpuAudioTagName}> without <audio controls>.\nSee https://github.com/dascritch/cpu-audio/blob/master/INSTALL.md for a correct installation.`);
+				warn(`<${CpuAudioTagName}> tag without <audio controls>.\nRead the manual first: https://github.com/dascritch/cpu-audio/blob/master/INSTALL.md`);
 				this.remove();
 				return;
 			}
@@ -96,7 +99,7 @@ export class CpuControllerElement extends HTMLElement {
 
 		if ((this.tagName === CpuControllerTagName) && (document.CPU.globalController)) {
 			// called twice ????
-			warn(`<${CpuControllerTagName}> tag instancied twice.`);
+			warn(`<${CpuControllerTagName}> tag instancied twice`);
 			this.remove();
 			return ;
 		}
@@ -114,7 +117,6 @@ export class CpuControllerElement extends HTMLElement {
 			return;
 		}
 
-		//new CPU_element_api(this);
 		new constructor(this);
 
 		this.observer = new MutationObserver(modifiedController);
