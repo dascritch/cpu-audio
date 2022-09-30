@@ -1,4 +1,4 @@
-import { dynamicallyAllocatedIdPrefix, findCPU } from '../primitives/utils.js';
+import { findCPU } from '../primitives/utils.js';
 import { passiveEvent, oncePassiveEvent } from '../primitives/events.js';
 import { browserIsDecent } from '../primitives/checkers.js';
 
@@ -44,7 +44,7 @@ let	count_element = 0;
  * @private
  */
 export function	addIdToAudiotag(audiotag) {
-	audiotag.id = audiotag.id || `${dynamicallyAllocatedIdPrefix}${count_element++}`;
+	audiotag.id = audiotag.id || `${document.CPU.IDPrefix}${count_element++}`;
 }
 
 /**

@@ -16,10 +16,6 @@ export const selectorAcceptable = 'audio[controls]';
 export const selectorAudioInComponent = `${CpuAudioTagName} audio`; // should be 'audio[controls]' but PHRACK APPLE !
 
 
-// private,to add attributes for unnamed <audio> , will be superseeded with #186 
-// @private
-export const dynamicallyAllocatedIdPrefix = 'CPU-Audio-tag-';
-
 /**
  * @summary Process a function on each matched CSS selector found in a DOM tree
  *

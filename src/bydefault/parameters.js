@@ -12,6 +12,9 @@ export const defaultParametersDocumentCPU = {
 	// @public
 	// @type boolean
 	autoplay : false,
+	// @public
+	// @type string
+	IDPrefix: 'CPU-Audio-tag-',
 
 	// interface building
 
