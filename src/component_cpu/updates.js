@@ -1,11 +1,11 @@
 import __ from '../primitives/i18n.js';
-import { absolutizeUrl, escapeHtml, removeHtml } from '../primitives/filters.js';
-import { secondsInColonTime, secondsInTime, durationIso } from '../primitives/convert.js';
+import { absolutizeUrl } from '../primitives/filters.js';
+import { secondsInColonTime } from '../primitives/convert.js';
 
 import { isAudiotagStreamed, audiotagDuration, uncertainDuration } from '../mediatag/time.js';
 import { timecodeStart, timecodeEnd } from '../mediatag/actions.js';
 
-import { previewContainerHover, showElement } from '../component/show.js';
+import { showElement } from '../component/show.js';
 
 const planeNameBorders = '_borders';
 
@@ -248,6 +248,6 @@ export const updates = {
 		}
 	}
 
-}
+};
 
 export default updates;

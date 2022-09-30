@@ -3,9 +3,9 @@ import defaultDataset from '../bydefault/dataset.js';
 import { error } from '../primitives/console.js';
 import __ from '../primitives/i18n.js';
 
-import { addIdToAudiotag, audiotagPreloadMetadata } from '../mediatag/extension.js';
+import { addIdToAudiotag } from '../mediatag/extension.js';
 
-import { validId, planeAndPointNamesFromId, getPointId } from '../component/planename.js';
+import { validId } from '../component/planename.js';
 
 import trigger from '../trigger.js';
 
@@ -83,7 +83,7 @@ export const status = {
 	},
 
 	shadowId: function(id) {
-		return this.shadow.getElementById(id)
+		return this.shadow.getElementById(id);
 	},
 
 	/**

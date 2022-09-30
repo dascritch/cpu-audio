@@ -76,6 +76,8 @@ export function	constructor(element) {
 		audiotagPreloadMetadata(self.audiotag);
 	}
 
+	// From there, always use self.audiotag.
+
 	buildInterface(self);
 	self.attachAudiotagToInterface(self.audiotag);
 	self.attributesChanges();

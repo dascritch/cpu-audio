@@ -2,7 +2,7 @@ import { CpuAudioTagName, CpuControllerTagName, selectorAcceptable, findCPU } fr
 import { notScreenContext } from './primitives/checkers.js';
 import { warn, info } from './primitives/console.js';
 import { template } from '../tmp/insert_template.js';
-import { CPU_element_api } from './element_cpu.js';
+// import { CPU_element_api } from './element_cpu.js';
 import { removeOfPlaylists, buildPlaylist, rePointsPlaylist } from './build_playlist.js';
 
 import constructor from './component_cpu/constructor.js';
