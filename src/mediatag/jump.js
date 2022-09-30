@@ -43,7 +43,7 @@ export const jumpIdAt = async function(hash, timecode, callback_fx=undefined) {
 	const audiotag = /** @type {HTMLAudioElement} */ ( (hash !== '') ? document.getElementById(hash)  :  document.querySelector(selectorAudioInComponent) );
 
 	if ( ( audiotag?.currentTime ?? null ) == null ) {
-		warn(`Unknow audiotag ${hash}`);
+		warn(`Unknow audiotag #${hash}`);
 		return;
 	}
 
@@ -53,9 +53,11 @@ export const jumpIdAt = async function(hash, timecode, callback_fx=undefined) {
 		audiotag.addEventListener('loadedmetadata', doNeedleMove , oncePassiveEvent);
 		audiotag.load();
 		trigger.update(mocked_event);
-	} else {
-		doNeedleMove(mocked_event);
+
+		return;
 	}
+
+	doNeedleMove(mocked_event);
 	// No problems
 };
 

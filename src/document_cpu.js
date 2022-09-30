@@ -132,7 +132,7 @@ export const DocumentCPU = {
 			return [];
 		}
 
-		for (let playlist_name of Object.keys(this.playlists)) {
+		for (const playlist_name of Object.keys(this.playlists)) {
 			if (this.playlists[playlist_name].includes(current_audiotag.id)) {
 				return playlist_name;
 			}
