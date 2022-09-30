@@ -145,7 +145,7 @@ function configurator_css(event) {
 
 function configurator_paramtag(event) {
 	const attrs_values = [
-		'playStopOthers', 'scrollTo', 'autoplay',
+		'playStopOthers', 'scrollTo', 'autoplay', 'IDPrefix',
 		'globalCss',
 		'keymove',
 		'alternateDelay', 'fastFactor', 'repeatDelay', 'repeatFactor', 'advanceInPlaylist'
