@@ -8,7 +8,7 @@ import {CpuControllerElement} from './cpu_controller.class.js';
 import { attach_events_audiotag } from './mediatag/extension.js';
 import { DocumentCPU } from './document_cpu.js';
 import {insert_style} from '../tmp/insert_template.js';
-import trigger from './trigger/trigger.js';
+import { hashOrder } from './trigger/hash_order.js';
 
 /**
  * Entry point
@@ -32,8 +32,8 @@ async function main() {
 		window.customElements.define(CpuControllerTagName.toLowerCase(), CpuControllerElement);
 	}
 	document.body.classList.add(`cpu-audio-${global_class_indicator}`);
-	window.addEventListener('hashchange', trigger.hashOrder, passiveEvent);
-	trigger.hashOrder({ at_start : true });
+	window.addEventListener('hashchange', hashOrder, passiveEvent);
+	hashOrder({ at_start : true });
 }
 
 if ((document.CPU) || (window.customElements.get(CpuAudioTagName.toLowerCase()))) {

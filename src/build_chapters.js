@@ -5,7 +5,7 @@ import translateVTT from './primitives/translate_vtt.js';
 import { normalizeSeekTime } from './mediatag/time.js';
 import { get_chapter_tracks } from './mediatag/tracks.js';
 
-import trigger from './trigger/trigger.js';
+import { cuechange } from './trigger/cue.js';
 import { activecueClassname } from './component_cpu/planes_draw.js';
 
 const plane_chapters = '_chapters';
@@ -101,7 +101,7 @@ export async function build_chapters(elCPU) {
 	/*
 	if ((active_cue) && (id_in_hash(this.audiotag.id)) ) {
 		// shoud be set ONLY if audiotag is alone in page or if audiotag.id named in hash
-		trigger.cuechange(active_cue, this.audiotag);
+		cuechange(active_cue, this.audiotag);
 		this.emitEvent('chapterChanged', {
 			cue : active_cue
 		});
@@ -143,7 +143,7 @@ export function cuechange_event(elCPU, event = null) {
 	elCPU._activecue_id = cue?.id;
 
 	if (cue) {
-		trigger.cuechange(cue, elCPU.audiotag);
+		cuechange(cue, elCPU.audiotag);
 		elCPU.emitEvent('chapterChanged', { cue });
 		elCPU.highlightPoint(plane_chapters, cue.id, activecueClassname);
 	}

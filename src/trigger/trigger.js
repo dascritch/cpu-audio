@@ -1,5 +1,3 @@
-import { isAudiotagStreamed } from '../mediatag/time.js';
-import { updateAudiotag } from '../mediatag/extension.js';
 import { pause, playOnce, play, toggleplay, timecodeEnd } from '../mediatag/actions.js';
 
 import fine_nav from './fine_nav.js';
@@ -8,6 +6,7 @@ import throbber  from './throbber.js';
 import trigger_key from './key.js';
 import cue from './cue.js';
 import track from './track.js';
+import trigger_update from './update.js';
 
 
 export const trigger = {
@@ -15,6 +14,7 @@ export const trigger = {
 	...fine_nav,
 	...throbber,
 	...trigger_key,
+	...trigger_update,
 	...cue,
 	...track,
 	pause,
@@ -24,23 +24,6 @@ export const trigger = {
 
 	// @private   Needed for tests
 	_end : () => timecodeEnd,
-
-
-	/**
-	 * @summary Updatting time position. Pause the playing element if a end position was defined
-	 *
-	 * @param      {Object}  event   The event
-	 */
-	update : function({target:audiotag}) {
-		if ((timecodeEnd !== false) && (audiotag.currentTime > timecodeEnd)) {
-			trigger.pause(undefined, audiotag);
-		}
-
-		updateAudiotag(audiotag);
-		if ((!audiotag.paused) && (!isAudiotagStreamed(audiotag))) {
-			window.localStorage.setItem(audiotag.currentSrc, String(audiotag.currentTime));
-		}
-	},
 
 };
 

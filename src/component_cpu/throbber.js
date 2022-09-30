@@ -5,6 +5,8 @@ import { audiotagPreloadMetadata } from '../mediatag/extension.js';
 
 import trigger from '../trigger/trigger.js';
 
+const hideThrobber_delay = 1000;
+
 export const throbber = {
 
 	/**
@@ -77,7 +79,6 @@ export const throbber = {
 	 * @public
 	 */
 	hideThrobberLater: function() {
-		const hideThrobber_delay = 1000;
 		const phylactere = this.shadowId('popup');
 		if (phylactere._hider) {
 			window.clearTimeout(phylactere._hider);

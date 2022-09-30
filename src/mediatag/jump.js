@@ -3,7 +3,9 @@ import { selectorAudioInComponent } from '../primitives/utils.js';
 import { oncePassiveEvent } from '../primitives/events.js';
 import { warn } from '../primitives/console.js';
 
-import trigger from '../trigger/trigger.js';
+import { play } from './actions.js';
+
+import { update } from '../trigger/update.js';
 
 /**
  * @public
@@ -29,14 +31,14 @@ export const jumpIdAt = async function(hash, timecode, callback_fx=undefined) {
 		} else {
 			audiotag.addEventListener('canplay', doElementPlay, oncePassiveEvent);
 		}
-		trigger.update(mocked_event);
+		update(mocked_event);
 	}
 
 	/**
 	 * @param 	{Object}	event 	triggered event, or mockup
 	 */
 	function doElementPlay(event) {
-		trigger.play(null, event.target);
+		play(null, event.target);
 		callback_fx?.();
 	}
 
@@ -52,7 +54,7 @@ export const jumpIdAt = async function(hash, timecode, callback_fx=undefined) {
 		// WHHYYYY ??????
 		audiotag.addEventListener('loadedmetadata', doNeedleMove , oncePassiveEvent);
 		audiotag.load();
-		trigger.update(mocked_event);
+		update(mocked_event);
 
 		return;
 	}

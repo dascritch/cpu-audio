@@ -42,7 +42,27 @@ function playRelativeCueInPlayer(container, offset) {
 	}
 }
 
+/**
+ * @summary Refresh document body when changing chapter
+ *
+ * @param      {Object}   active_cue         		The TextTrack actived
+ * @param      {HTMLAudioElement}   audiotag        Audiotag relative to TextTrack
+ *
+ * To not warns on classList.remove()
+ * @suppress {checkTypes}
+ */
+export function cuechange(active_cue, audiotag) {
+	const { classList } = document.body;
+	classList.remove(body_className_playing_cue);
+	// giving a class to document.body, with a syntax according to https://www.w3.org/TR/CSS21/syndata.html#characters
+	body_className_playing_cue = `cpu_playing_tag_«${audiotag.id}»_cue_«${active_cue.id}»`;
+	classList.add(body_className_playing_cue);
+}
+
 export const cue = {
+
+	cuechange,
+
 	/**
 	 * @summary Pressing prevcue button
 	 *
@@ -61,22 +81,7 @@ export const cue = {
 		playRelativeCueInPlayer(findCPU(target), 1);
 	},
 
-	/**
-	 * @summary Refresh document body when changing chapter
-	 *
-	 * @param      {Object}   active_cue         		The TextTrack actived
-	 * @param      {HTMLAudioElement}   audiotag        Audiotag relative to TextTrack
-	 *
-	 * To not warns on classList.remove()
-	 * @suppress {checkTypes}
-	 */
-	cuechange : function(active_cue, audiotag) {
-		const { classList } = document.body;
-		classList.remove(body_className_playing_cue);
-		// giving a class to document.body, with a syntax according to https://www.w3.org/TR/CSS21/syndata.html#characters
-		body_className_playing_cue = `cpu_playing_tag_«${audiotag.id}»_cue_«${active_cue.id}»`;
-		classList.add(body_className_playing_cue);
-	},
+
 };
 
 export default cue;
