@@ -68,6 +68,7 @@ export const throbber = {
 	 */
 	hideThrobber: function() {
 		// we use opacity instead of a class change to permits opacity smooth transition via `--cpu-background-transitions`
+		// well, in fact, i can use a class, and change opacity from the css.... facepalm.
 		this.shadowId('popup').style.opacity = 0;
 	},
 

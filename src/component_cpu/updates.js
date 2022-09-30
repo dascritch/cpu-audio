@@ -11,7 +11,6 @@ const planeNameBorders = '_borders';
 
 export const updates = {
 
-
 	/**
 	 * @public
 	 * @summary update play/pause button according to media status

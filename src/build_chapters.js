@@ -6,7 +6,7 @@ import { normalizeSeekTime } from './mediatag/time.js';
 import { get_chapter_tracks } from './mediatag/tracks.js';
 
 import trigger from './trigger.js';
-import { activecueClassname } from './component_cpu/planes.js';
+import { activecueClassname } from './component_cpu/planes_draw.js';
 
 const plane_chapters = '_chapters';
 

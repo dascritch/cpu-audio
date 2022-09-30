@@ -7,11 +7,13 @@ import { audiotagPreloadMetadata } from '../mediatag/extension.js';
 import { switchControllerTo } from '../cpu_controller.class.js';
 import buildInterface from '../build_interface.js';
 
+import utils from './utils.js';
 import status from './status.js';
 import updates from './updates.js';
 import throbber from './throbber.js';
 import show from './show.js';
 import planes from './planes.js';
+import planes_draw from './planes_draw.js';
 import planes_focus from './planes_focus.js';
 
 
@@ -39,11 +41,13 @@ export function	constructor(element) {
 		isController : false,
 
 		// integration of segments per features
+		...utils,
 		...status,
 		...updates,
 		...throbber,
 		...show,
 		...planes,
+		...planes_draw,
 		...planes_focus,
 
 		// Passthru there only for testing purposes.

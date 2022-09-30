@@ -1,6 +1,6 @@
 import __ from './primitives/i18n.js';
 import { planeAndPointNamesFromId } from './component/planename.js';
-import { activecueClassname } from './component_cpu/planes.js';
+import { activecueClassname } from './component_cpu/planes_draw.js';
 
 // plane for _playlist. Only used in <CPU-Controller>
 export const plane_playlist = '_playlist';
