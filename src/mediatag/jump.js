@@ -3,7 +3,7 @@ import { selectorAudioInComponent } from '../primitives/utils.js';
 import { oncePassiveEvent } from '../primitives/events.js';
 import { warn } from '../primitives/console.js';
 
-import trigger from '../trigger.js';
+import trigger from '../trigger/trigger.js';
 
 /**
  * @public

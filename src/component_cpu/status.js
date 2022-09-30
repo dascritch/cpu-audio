@@ -5,7 +5,7 @@ import { addIdToAudiotag } from '../mediatag/extension.js';
 
 import { validId } from '../component/planename.js';
 
-import trigger from '../trigger.js';
+import trigger from '../trigger/trigger.js';
 
 
 // Acceptables attributes values for hide="" parameter on webcomponent

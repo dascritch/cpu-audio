@@ -5,7 +5,7 @@ import { browserIsDecent } from '../primitives/checkers.js';
 import { isAudiotagStreamed } from './time.js';
 import { lastPlayError } from './actions.js';
 
-import trigger from '../trigger.js';
+import trigger from '../trigger/trigger.js';
 import { addToPlaylist } from '../build_playlist.js';
 
 // Indicate if media element was already played, and so is prone to re-autoplay later

@@ -8,7 +8,7 @@ import {CpuControllerElement} from './cpu_controller.class.js';
 import { attach_events_audiotag } from './mediatag/extension.js';
 import { DocumentCPU } from './document_cpu.js';
 import {insert_style} from '../tmp/insert_template.js';
-import {trigger} from './trigger.js';
+import trigger from './trigger/trigger.js';
 
 /**
  * Entry point

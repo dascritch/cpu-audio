@@ -10,7 +10,7 @@ import { isAudiotagPlaying } from './mediatag/status.js';
 import jumpIdAt from './mediatag/jump.js';
 import seekElementAt from './mediatag/seek.js';
 
-import trigger from './trigger.js';
+import trigger from './trigger/trigger.js';
 
 
 export const DocumentCPU = {

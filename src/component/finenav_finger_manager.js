@@ -1,4 +1,4 @@
-import trigger from '../trigger.js';
+import trigger from '../trigger/trigger.js';
 
 // Repeated event allocation
 let pressing = null;

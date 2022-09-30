@@ -3,7 +3,7 @@ import { secondsInColonTime, secondsInTime } from '../primitives/convert.js';
 import { isAudiotagStreamed, uncertainDuration } from '../mediatag/time.js';
 import { audiotagPreloadMetadata } from '../mediatag/extension.js';
 
-import trigger from '../trigger.js';
+import trigger from '../trigger/trigger.js';
 
 export const throbber = {
 

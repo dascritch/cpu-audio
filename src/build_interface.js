@@ -5,7 +5,7 @@ import { audiotagPreloadMetadata } from './mediatag/extension.js';
 import timebar_finger_manager from './component/timebar_finger_manager.js';
 import { acceptable_press_actions, finenav_finger_manager } from './component/finenav_finger_manager.js';
 
-import trigger from './trigger.js';
+import trigger from './trigger/trigger.js';
 import {buildChaptersLoader} from './build_chapters.js';
 import {buildPlaylist} from './build_playlist.js';
 
