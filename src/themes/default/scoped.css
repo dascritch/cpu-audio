@@ -73,9 +73,6 @@ a, button {
 button {
 	background : transparent;
 }
-a:focus,  button:focus {
-	outline : none;
-}
 
 svg {
 	fill : currentColor;
@@ -507,12 +504,13 @@ aside a, .cue time /*, aside.ticker **/
 	flex : 0 0 auto;
 }
 
-a:hover, button:hover, a:focus, button:focus, 
+a:hover, button:hover, a:focus, button:focus, summary:focus,
 #pageshare div:hover ,
 .active-cue, /* can now ride off its !important on color */
 .with-preview /* !important still needed to simplify css */ {
 	background: var(--cpu-focus-background, var(--cpu-color)) !important;
 	color : var(--cpu-focus-color, var(--cpu-background)) !important;
+	outline : none;
 }
 
 @media (max-width: 640px) /* , @element #interface and (max-width: 640px) */{
