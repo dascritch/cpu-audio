@@ -1,5 +1,34 @@
+RELEASE NOTES version 7.1
+=========================
+
+
+New features
+------------
+
+* You can set some global parameters via a `<script data-cpu-audio>` tag in the `<head>` of the host page ([#185](#185))
+* Can scroll the viewport of the page on the player when clicking on a temporal link. Parametrable setting ([#60](#60))
+* Being able to not include global.css on host page ([#181](#181))
+* Automated ID prefix for not identified `<audio>` is now parametrable ([#186](#186))
+
+Corrections
+-----------
+
+* Hash parameters are now case insensitive
+* Instanciation may be missed during the page lifecyle. Better way to check if host page DOM is really ready or not
+* Application chapters_builder should stop zero-ing time input in some situations
+* Better style on focused `<summary>`
+* Do not insert global `<style>` in page if webcomponent is not supported by the browser (I know, this is a late situation)
+
+Back-end
+--------
+
+* Node 18 support for build (incomplete)
+* Locales are modularized : each language has its own file, in `src/locales` ([#189](#189))
+* Some libs moved in `./src` sub-directories, big sources were splitted in functionnality segments.
+
+
 RELEASE NOTES version 7.0.3
-======================
+===========================
 
 New features
 ------------

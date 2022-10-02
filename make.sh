@@ -8,6 +8,7 @@ Build the cpu-audio webcomponent source.
 
 Projet repo
   → http://github.com/dascritch/cpu-audio
+Please read CONTRIBUTING.md first
 
 Options:
   -h, --help            Display this message
@@ -22,6 +23,9 @@ Needed utilities :
 
 Optimal options for release :
 ./make.sh --clean --test --index --all-themes
+
+Note : For Node versions upper than 16, you must add a Node parameter to still validate very old ssl cyphers :
+NODE_OPTIONS=--openssl-legacy-provider ./make.sh --clean --test --index --all-themes
 HELP
 )
 
@@ -43,7 +47,7 @@ SRC_SCOPED="${PROJECT_DIR}/src/themes/default/scoped.css"
 mkdir -p ${PROJECT_DIR}/tmp
 
 while [ '-' == "${1:0:1}" ] ; do
-	case "${1}" in
+	case "${1,,}" in
 		-h|--help)
 			echo "${HELP}"
 			exit 0
@@ -154,7 +158,7 @@ function _build_template() {
 	content_template_html=$(cat "${filename_template_html}")
 
 	echo "// auto-generated source, done via make.sh
-			import {__} from '../src/i18n.js';
+			import {__} from '../src/primitives/i18n.js';
 			/** @summary insert styles into host document */
 			export function insert_style() {
 				const style = document.createElement('style');
@@ -180,8 +184,8 @@ function _build_component_js_webpack() {
 }
 
 function _tests() {
-	# watchout to NOT inclue "browser", which is only a browsder comptability test, and Chrome fails it
-	for chapter in minimal api interface controller; do
+	# watchout to NOT inclue "browser", which is only a browser comptability test, and Chrome fails it
+	for chapter in minimal parameters api interface controller; do
     	npx node-qunit-puppeteer "tests/tests-${chapter}.html" 150000 "--allow-file-access-from-files --no-sandbox --autoplay-policy=no-user-gesture-required --user-agent=puppeteer"
 	done
 }

@@ -1,5 +1,6 @@
-import {__} from './i18n.js';
-import {activecueClassname, planeAndPointNamesFromId} from './element_cpu.js';
+import __ from './primitives/i18n.js';
+import { planeAndPointNamesFromId } from './component/planename.js';
+import { activecueClassname } from './component_cpu/planes_draw.js';
 
 // plane for _playlist. Only used in <CPU-Controller>
 export const plane_playlist = '_playlist';
@@ -13,8 +14,6 @@ export function addToPlaylist(audiotag) {
 		if (!(playlist_name in document.CPU.playlists)) {
 			document.CPU.playlists[playlist_name] = [];
 		}
-		// TODO do not rerecord id if already in this playlist. Remove from other playlists
-		// TODO LATER, remove id when cpu-audio or audiotag removed
 		document.CPU.playlists[playlist_name].push(audiotag.id);
 
 		// refresh controller playlist if any
@@ -34,7 +33,7 @@ export function removeOfPlaylists({id}) {
 	const currentPlaylistID = document.CPU.currentPlaylistID();
 	let redraw = false;
 	// remove reference in playlists
-	for (let index in playlists) {
+	for (const index in playlists) {
 		const previous_length = playlists[index].length;
 		const out = playlists[index].filter(entry_id => ((entry_id !== id) && (document.getElementById(entry_id)) ));
 		if ( (previous_length !== out.length) && (index === currentPlaylistID)) {
@@ -49,8 +48,6 @@ export function removeOfPlaylists({id}) {
 		buildPlaylist();
 	}
 }
-
-
 
 /**
  * @private
@@ -70,7 +67,7 @@ export function rePointsPlaylist() {
 		return;
 	}
 
-	for (let audiotag_id of current_playlist) {
+	for (const audiotag_id of current_playlist) {
 		pointDataGroup[audiotag_id] = {
 			text : document.getElementById(audiotag_id)?.dataset.title, // TODO "untitled"
 			link : `#${audiotag_id}&t=0`
@@ -97,7 +94,7 @@ export function buildPlaylist(wasFocusedId) {
 		return;
 	}
 
-	let previous_playlist = globalController.current_playlist;
+	const previous_playlist = globalController.current_playlist;
 	globalController.current_playlist = document.CPU.currentPlaylist();
 
 	if (! globalController.plane(plane_playlist)) {

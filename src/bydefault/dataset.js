@@ -1,4 +1,4 @@
-let head = document.head;
+const head = document.head;
 
 export const defaultDataset = {
 	get title() {
@@ -39,3 +39,5 @@ export const defaultDataset = {
 	duration : null,
 	download : null
 };
+
+export default defaultDataset;

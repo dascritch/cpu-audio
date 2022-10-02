@@ -5,14 +5,14 @@ How to dive into `cpu-audio.js` :
 
  - `cpu-audio.js` can be fine-tuned with HTML attributes and CSS variables,
  - its layout and embedded css can be completed or recreated in `src/themes` via themes-built,
- - javascript-savvy developers can use API features to get more precise controls or extend possibilities, as we do in our <a href="https://dascritch.github.io/cpu-audio/applications/chapters_editor.html">chapters editor</a>,
+ - javascript-savvy developers can use API features to get more precise controls or extend possibilities, as we do in our [chapters editor](https://dascritch.github.io/cpu-audio/applications/chapters_editor.html),
  - theme builders may later easily ([#132](#132)) include their specific code into their custom build librairy.
 
 This is the reference page for public accessible methods and properties. You can read some test cases in the `examples` sub-directory of this project.
 
-Some informations can be also found in the [INTERNALS.md](INTERNALS.md) page. Some of them are usefull to create a brand new theme, as we are describing elemnt ID and class names usages.
+Some informations can be also found in the [INTERNALS.md](INTERNALS.md) page. Some of them are helpful to create a brand new theme, as we describe elements' ID and class-names usage.
 
-Important : Undocumented feature uses is at your risks, we won't check naming, parameters, actions and outputs continuity. We only test methods and properties continuity on those listed below. And seriously, keep our webcomponent up to date on the stable version.
+Important : Undocumented feature use is at your risks, we won't check naming, parameters, actions and outputs continuity. We only test methods and properties continuity on those listed below. And seriously, keep our webcomponent up to date on the stable version.
 
 
 document.CPU
@@ -22,35 +22,30 @@ This object is a global configuration interface.
 
 Properties :
 
+Some of them are not listed below, as they may be overloaded at start via a `<script type="application/json" data-cpu-audio>` tag, see [INSTALL.md](INSTALL.md) documentation, chapter *«
+	Setting global application parameters via a tag »*.
+
 name                     | default value | usage
 -------------------------|---------------|----------
-keymove                  | `5`           | Number of seconds skipped in the timeline when <kbd>←</kbd> or <kbd>→</kbd> keys are pressed in an interface
-alternateDelay           | `1000`        | Delay for a long press on time-line (in milliseconds) to switch to the handheld alternate browsing interface
-fastFactor               | `4`           | Amplification ratio between <kbd>▸︎▸︎</kbd> and <kbd>▸︎▸︎▸︎</kbd> in handheld alternate browsing interface
-repeatDelay              | `400`         | First repetition delay when clicking a button in handheld alternate browsing interface
-repeatFactor             | `100`         | Next repetitions delay when clicking a button in handheld alternate browsing interface
-playStopOthers   | `true`        | When a cpu-audio starts to play, any other instances in the same page are paused.
 currentAudiotagPlaying   | `null`        | Reference to the playing `<audio>` element, `null` if none
 globalController         | `null`        | Reference to the `<cpu-controller>` in the page if any, `null` elsewhere
 playlists                | `{}`          | Collection of audio tag by playlists (named by the `<cpu-audio playlist="">` attribute). [See playlist feature](https://dascritch.github.io/cpu-audio/FEATURES#playlists).
-advanceInPlaylist        | `true`        | When an audio is ended in a playlist, starts immediatly the next one.
-autoplay                 | `false`       | Will try to play at the start of the page if a temporal url is given or the audio was previously exited
 
-Some properties are still not documented, for internal usage, as they may evolve.
+Some properties for internal usage are still not documented, as they may evolve. Avoid to use them, we may change their name, values and usage.
 
 
 Methods :
 
-name                             | returns                      	| usage
+name                             | returns                          | usage
 ---------------------------------|----------------------------------|-----------------
-isAudiotagPlaying(audiotag)      | boolean                       	| Indicate if this `<audio>` element is playing and correctly cpu-audio started
-isAudiotagGlobal(audiotag)       | boolean                       	| Indicate if this `<audio>` element is displayed by `<cpu-controller>` if installed
-jumpIdAt(hash, timecode)         | 	                             	| will jump the `<audio id="hash">` to timecode (any convertable format in seconds, colon-coded or human coded)
-seekElementAt(audiotag, seconds) |                               	| will jump the `<audio>` to a position in seconds (number only)
-findCPU(child)             		 | CpuAudioElement.`CPU` or `null`	| For any `<audio>` tag or its child tag, will returns the element `CPU` API
-currentPlaylist()                | array                       		| Returns an array of the current playing playlist
-currentPlaylistID()				 | string or `null`					| Returns the name of the current playing playlist
-adjacentKey(object, key, offset) | string or `null`					| Returns the adjacent key of a key in an object (offset -1 for previous, +1 for next)
+isAudiotagPlaying(audiotag)      | boolean                          | Indicate if this `<audio>` element is playing and correctly cpu-audio started
+isAudiotagGlobal(audiotag)       | boolean                          | Indicate if this `<audio>` element is displayed by `<cpu-controller>` if installed
+jumpIdAt(hash, timecode)         |                                  | will jump the `<audio id="hash">` to timecode (any convertable format in seconds, colon-coded or human coded)
+seekElementAt(audiotag, seconds) |                                  | will jump the `<audio>` to a position in seconds (number only)
+findCPU(child)                   | CpuAudioElement.`CPU` or `null`  | For any `<audio>` tag or its child tag, will returns the element `CPU` API
+currentPlaylist()                | array                            | Returns an array of `<audio>` tags IDs of the current playing playlist
+currentPlaylistID()              | string or `null`                 | Returns the name of the current playing playlist
+adjacentKey(object, key, offset) | string or `null`                 | Returns the adjacent key of a key in an object (offset -1 for previous, +1 for next)
 
 Some methods are still not documented, for internal usage, as they may evolve.
 
@@ -96,29 +91,29 @@ audiotag    | `<audio>`     | Media DOM element
 
 Methods :
 
-name                                                     | returns | usage
----------------------------------------------------------|---------|------
-setMode(string)                                 		 |         | Change the presentation mode, [used for `mode=""` attribute](INSTALL.md#user-content-attributes-references)
-setAct(string)			                                 |         | Change the presentation style between `'loading'`, `'glow'`, `'pause'` or `'play'`, reflecting the media tag status
-setHide(array)											 |         | Array of strings, may contains `'actions'` or `'chapters'`, [used for `hide=""` attribute](INSTALL.md#user-content-attributes-references)
-showThrobberAt(number)                                   |         | Display the throbber on the timeline at a given time in seconds.
-hideThrobber()                                           |         | Hide immediately the throbber
-hideThrobberLater()                                      |         | Hide the throbber later (waiting 1 seconds). A newer call will delay the hiding later.
-show(string)                                    		 |         | Switch between `'main'`, `'share'` or `'error'` interfaces.
-addPlane(planeName, planeData)                    		 | boolean | Create an annotation plane (¹)(²)(³)
-removePlane(planeName)                                   | boolean | Remove an annotation plane (¹)(²)
-addPoint(planeName, pointName, pointData)                | boolean | Add an annotation point to a plane at a timecode (¹)(²)(⁴)
-point(planeName, pointName) 			                 | object  | Return data for a point (³)
-editPoint(planeName, pointName, pointData)               |         | Modify data for a point (³). Only existing keys from point() are updated
-focusPoint(planeName, pointName)                         | boolean | Give focus on a point on a plane, else on the track
-focusedId()												 | string  | Give focused Id (element or parent), or null/undefined
-removePoint(planeName, pointName)                        | boolean | Remove an annotation point (¹)(²)
-clearPlane(planeName)                                    |         | Remove any points from an annotation plane (¹)(²)
-redrawAllPlanes()                                        |         | Redraw any annotation planes and points
-highlightPoint(planeName, pointName, className, mirror)  |         | Highlight a perticuliar annotation point, className is `'with-preview'` by default (²)
-removeHighlightsPoints(planeName, className, mirror)     |         | Remove highlights on a plane, className is `'with-preview'` by default (²)
-injectCss(styleName, css)					             |		   | Inject a `<style>` tag into the shadowDom of the component. (²)
-removeCss(styleName)						             |		   | Remove an inject `<style>` from the shadowDom. (²)
+name                                                       | returns | usage
+-----------------------------------------------------------|---------|------------------------------------------------------
+setMode(string)                                            |         | Change the presentation mode, [used for `mode=""` attribute](INSTALL.md#user-content-attributes-references)
+setAct(string)                                             |         | Change the presentation style between `'loading'`, `'glow'`, `'pause'` or `'play'`, reflecting the media tag status
+setHide(array)                                             |         | Array of strings, may contains `'actions'` or `'chapters'`, [used for `hide=""` attribute](INSTALL.md#user-content-attributes-references)
+showThrobberAt(number)                                     |         | Display the throbber on the timeline at a given time in seconds.
+hideThrobber()                                             |         | Hide immediately the throbber.
+hideThrobberLater()                                        |         | Hide the throbber later (waiting 1 seconds). A newer call will delay the hidding later.
+show(string)                                               |         | Switch between `'main'`, `'share'` or `'error'` interfaces.
+addPlane(planeName, planeData)                             | boolean | Create an annotation plane (¹)(²)(³)
+removePlane(planeName)                                     | boolean | Remove an annotation plane (¹)(²)
+addPoint(planeName, pointName, pointData)                  | boolean | Add an annotation point to a plane at a timecode (¹)(²)(⁴)
+point(planeName, pointName)                                | object  | Return data for a point (³)
+editPoint(planeName, pointName, pointData)                 |         | Modify data for a point (³). Only existing keys from point() are updated
+focusPoint(planeName, pointName)                           | boolean | Give focus on a point on a plane, else on the track
+focusedId()                                                | string  | Give focused Id (element or parent), or `null`/`undefined`
+removePoint(planeName, pointName)                          | boolean | Remove an annotation point (¹)(²)
+clearPlane(planeName)                                      |         | Remove any points from an annotation plane (¹)(²)
+redrawAllPlanes()                                          |         | Redraw any annotation planes and points.
+highlightPoint(planeName, pointName, className, _private_) |         | Highlight a perticuliar annotation point, className is `'with-preview'` by default (²)
+removeHighlightsPoints(planeName, className, _private_)    |         | Remove highlights on a plane, className is `'with-preview'` by default (²)
+injectCss(styleName, css)                                  |         | Inject a `<style>` tag into the shadowDom of the component. (²)
+removeCss(styleName)                                       |         | Remove an inject `<style>` from the shadowDom. (²)
 
 (¹) Only available via `CpuAudioElement.CPU`
 
@@ -128,11 +123,11 @@ removeCss(styleName)						             |		   | Remove an inject `<style>` from t
 
 key         | type              | default value | usage
 ------------|-------------------|---------------|-------
-title 		| 					| `''`			| Title displayed on the panel
-track       | boolean or string | `true`        | Create a track in the time line, string to precise the kind (`chapters`, `borders`, same naming convention than upper (²)), or presentation restriction (`nosmall`, `nosmaller`, `nosmallest`), space separated
+title       |                   | `''`          | Title displayed on the panel
+track       | boolean or string | `true`        | Create a track in the time-line, string to precise the kind (`chapters`, `borders`, same naming convention than upper (²)), or presentation restriction (`nosmall`, `nosmaller`, `nosmallest`), space separated
 panel       | boolean or string | `true`        | Create a panel under the player, or precise presentation restriction (`nosmall`, `nosmaller`, `nosmallest`, `nocuetime`) space separated
 highlight   | boolean           | `true`        | Points of this annotation plane can be highlighted with the mouse
-_comp		| boolean			| `false`		| Private use only. Data stored on the component instead of audio element
+_comp       | boolean           | `false`       | Private use only. Data stored on the component instead of audio element
 
 (⁴) `pointData` is an object, with detailled keys for points :
 
@@ -150,16 +145,16 @@ Events
 
 `<CPU-audio>` and `<CPU-controller>` elements fire events about their interface. For disambiguation, events created by our webcomponent are `CPU_` prefixed
 
-event_name          | description                                          | detail, see next table (⁵)
---------------------|------------------------------------------------------|------------------------------------------
-CPU_ready	        | The DOM component and its interface are ready        |
-CPU_addPoint        | During `addPoint` method, even private ones          | planeName, pointName, pointData
-CPU_drawPoint       | A point is drawn or redrawn                          | planeName, pointName, pointData, elementPointTrack, elementPointPanel
-CPU_editPoint       | During `editPoint` method                            | planeName, pointName, pointData
-CPU_bulkPoints      | During `bulkPoints` method                           | planeName, pointDataGroup
-CPU_removePoint     | During `removePoint` method, even private ones       | planeName, pointName
-CPU_chapterChanged  | A cue event defined in WebVTT occured                | cue
-CPU_removed  		| A `<cpu-audio>` or a `<cpu-controller>` vanished     | 
+event_name          | description                                                    | detail, see next table (⁵)
+--------------------|----------------------------------------------------------------|------------------------------------------
+CPU_ready           | The DOM component and its interface are ready                  |
+CPU_addPoint        | During `addPoint` method, even private ones                    | planeName, pointName, pointData
+CPU_drawPoint       | A point is drawn or redrawn                                    | planeName, pointName, pointData, elementPointTrack, elementPointPanel
+CPU_editPoint       | During `editPoint` method                                      | planeName, pointName, pointData
+CPU_bulkPoints      | During `bulkPoints` method                                     | planeName, pointDataGroup
+CPU_removePoint     | During `removePoint` method, even private ones                 | planeName, pointName
+CPU_chapterChanged  | A cue event defined in WebVTT occured                          | cue
+CPU_removed         | A `<cpu-audio>` or a `<cpu-controller>` component vanished     | 
 
 (⁵) Returned object informations usually have a `detail` object, it may contains :
 
@@ -176,8 +171,8 @@ elementPointPanel  | Element | The created or existing point in the panel
 As the `event.target` is the `<cpu-audio>` element, you can reach its API with `event.target.CPU`. Here is a way to do it for asynchronous build :
 ```js
 function CPU_ready(event) {
-	let CPU = event.target.CPU;
-	CPU.addPlane("hello_world", { title : "Now, we can play !" });
+    let CPU = event.target.CPU;
+    CPU.addPlane("hello_world", { title : "Now, we can play !" });
 }
 
 document.addEventListener('CPU_ready', CPU_ready);
@@ -192,4 +187,4 @@ Note : events aren't impacted by `.preventDefault()`, yet.
 Console messages
 ----------------
 
-Any technical messages for cpu-audio.js will begin with “*CPU-AUDIO:* ”. All messages are in English, we won't provide translations in console messages.
+Any technical messages for cpu-audio.js in the browser console starts with “*CPU-AUDIO:* ”. All messages are in English, we won't provide translations in console messages.

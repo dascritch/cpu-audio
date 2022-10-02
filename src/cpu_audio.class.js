@@ -1,7 +1,7 @@
-import {selectorAcceptable, findCPU} from './utils.js';
+import { selectorAcceptable, findCPU } from './primitives/utils.js';
 import {CpuControllerElement} from './cpu_controller.class.js';
-import {connectAudiotag} from './media_element_extension.js';
-import {timeInSeconds} from './convert.js';
+import { connectAudiotag } from './mediatag/extension.js';
+import { timeInSeconds } from './primitives/convert.js';
 import {build_chapters} from './build_chapters.js';
 import {removeOfPlaylists, rePointsPlaylist} from './build_playlist.js';
 
@@ -51,7 +51,7 @@ export class CpuAudioElement extends CpuControllerElement {
 			return ;
 		}
 		// copying personalized data to audio tag for persistence
-		for (let key in document.CPU.defaultDataset) {
+		for (const key in document.CPU.defaultDataset) {
 			if (this.hasAttribute(key)) {
 				const value = this.getAttribute(key);
 				this.audiotag.dataset[key] = (key !== 'duration') ? value : timeInSeconds(value);

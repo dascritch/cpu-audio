@@ -16,13 +16,13 @@ In fact, the basis of cpu-audio.js are back from 2010, from my previous radio sh
 Why using URL ?
 ---------------
 
-**Because URL is a standard**, actually mesestimated. But it's universal, accessible, portable, for both local and internet usage. I wish people will start pointing some moment in an audio content of a webpage by giving a standard URL with a timecode in it.
+**Because URL is a standard**, actually mesestimated. But it's universal, accessible, portable, for both local and internet usage. And there is [a W3C standard for pointing geometric or timestamp position : Media Fragments](https://www.w3.org/TR/media-frags/). I wish people will start pointing some moment in an audio content of a webpage by giving a standard URL with a timecode in it.
 
 
 Why have you done (x) choice ?
 ------------------------------
 
-May be [I've written about it on my blog.](https://www.w3.org/TR/media-frags/) But It's in French. What is really fun with the web is the ability to remix webpages contents, so you can use any translator on it.
+May be [I've written about it on my blog.](https://dascritch.net/post/2018/11/06/Reconstruire-son-lecteur-audio-pour-le-web) But It's in French. What is really fun with the web is the ability to remix webpages contents, so you can use any translator on it.
 
 May be I didn't explained what is interesting you. Write me, I'll respond.
 
@@ -32,15 +32,15 @@ Is it GDPR compliant ?
 
 **Yes.** 
 
-cpu-audio is storing curently playing audio source and position, in order to set the same playing audio at the exact same position later. But that data is stored only in the client browser, is not nominative and never transmitted to a third-part service.
+cpu-audio is storing currently playing audio source and position, in order to set the same playing audio at the exact same position later. But that data is stored only in the client browser, is not nominative and never transmitted to a third-part service.
 
-As I was involved to GDPR compliance in my day job and co-hosting some cryptoparties, It is an important point for me.
+As I was involved to GDPR compliance in my day job and co-hosting some cryptoparties, this is an important point for me.
 
 
 The player is ugly
 ------------------
 
-Yes ! It is only a proof of concept and I'm only a coder. **That why version 7 sports a theme system.** I'm sure someone will do a very better looking one than mine !
+I agree. It is only a proof of concept and I'm only a coder. **That why version 7 sports a theme system.** I'm sure someone will do a very better looking one than mine !
 
 If you wish to participate to this project, please have a look to [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -50,11 +50,11 @@ You're talking about SoundCloud in some code comments and tickets
 
 **It's true.**
 
-I'm piss of that musicians, benevolent radio producers and community reporters are using SoundCloud or (even worst) MixCloud. Why don't they are opening their websites with their graphical universe and without profiling web habits from their fans ?
+I'm piss of that musicians, benevolent radio producers and community reporters are using SoundCloud or (even worst) MixCloud. Why don't they are opening their websites with their graphical universe and without tracking web habits from their fans ?
 
 The main issue was commenting on some time points to engage their community. At this moment, Mastodon didn't start but we already have its decentralized system, and there also was a W3C standard written for comments in a webpage.
 
-At the beginning of version 3, we were also thinking about a really decentralized playlist system : The user should have a WebExtension companion, and can select some sounds among surfing.
+At the beginning of version 3, we were also thinking about a really decentralized playlist system : The user may have a WebExtension companion, and can select some sounds among surfing.
 
 **It's up to you** to make those projects alive ! See ([#8](#8)), ([#10](#10)), and ([#76](#76))
 

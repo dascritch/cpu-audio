@@ -31,3 +31,4 @@
  * [tests/tests-controller.html](tests/tests-controller.html)
  * [tests/tests-interface.html](tests/tests-interface.html)
  * [tests/tests-minimal.html](tests/tests-minimal.html)
+ * [tests/tests-parameters.html](tests/tests-parameters.html)

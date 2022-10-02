@@ -4,7 +4,7 @@ const units_scale = {
 	m : 60,
 	s : 1
 };
-let scale = [1, 60, 3600, 86400];
+const scale = [1, 60, 3600, 86400]; 
 
 const _is_only_numeric = /^\d+$/;
 const _any_not_numeric = /\D*/g;
@@ -20,7 +20,7 @@ const Infinity_representation = '?';
  * @param      {string}  givenTime  The given time
  * @return     {number}  time in seconds
  */
-export const timeInSeconds = function(givenTime) {
+export const timeInSeconds = (givenTime) => {
 	let seconds = 0;
 	if (givenTime !== '') {
 		if (_is_only_numeric.test(givenTime)) {
@@ -42,7 +42,7 @@ export const timeInSeconds = function(givenTime) {
  * @param      {string}  givenTime  The given time
  * @return     {number}  seconds
  */
-export const subunittimeInSeconds = function(givenTime) {
+export const subunittimeInSeconds = (givenTime) => {
 	let seconds = 0;
 	let atom;
 	for(let key in units_scale) {
@@ -62,9 +62,9 @@ export const subunittimeInSeconds = function(givenTime) {
  * @param      {string}  givenTime  The given time
  * @return     {number}  Time in seconds
  */
-export const colontimeInSeconds = function(givenTime) {
+export const colontimeInSeconds = (givenTime) => {
 	let seconds = 0;
-	let atoms = givenTime.split(':');
+	const atoms = givenTime.split(':');
 	for (let pos = 0 ; pos < atoms.length ; pos++) {
 		seconds += Number(atoms[pos]) * scale[((atoms.length-1) - pos)];
 	}
@@ -79,13 +79,13 @@ export const colontimeInSeconds = function(givenTime) {
  * @param      {number}   givenSeconds  The given seconds
  * @return     {string}   Converted time
  */
-export const secondsInTime = function(givenSeconds) {
+export const secondsInTime = (givenSeconds) => {
 	if (givenSeconds === Infinity) {
 		return Infinity_representation;
 	}
 	let converted = '';
 	let inned = false;
-	for (let key in units_scale) {
+	for (const key in units_scale) {
 		if (units_scale.hasOwnProperty(key)) {
 			let multiply = units_scale[key];
 			if ((givenSeconds >= multiply) || (inned)) {
@@ -107,7 +107,7 @@ export const secondsInTime = function(givenSeconds) {
  * @param      {number}          givenSeconds  The given seconds
  * @return     {string}  Converted time
  */
-export const secondsInColonTime = function(givenSeconds) {
+export const secondsInColonTime = (givenSeconds) => {
 	if (givenSeconds === Infinity) {
 		return Infinity_representation;
 	}
@@ -147,7 +147,7 @@ export const secondsInColonTime = function(givenSeconds) {
  * @param      {number}  givenSeconds  The given seconds
  * @return     {string}  Converted time
  */
-export const secondsInPaddledColonTime = function(givenSeconds) {
+export const secondsInPaddledColonTime = (givenSeconds) => {
 	if (givenSeconds === Infinity) {
 		return Infinity_representation;
 	}
@@ -165,7 +165,7 @@ export const secondsInPaddledColonTime = function(givenSeconds) {
  * @param      {number}  givenSeconds  Duration, in seconds
  * @return     {string}  Converted duration
  */
-export const durationIso = function(givenSeconds) {
+export const durationIso = (givenSeconds) => {
 	return `P${convert.secondsInTime(givenSeconds).toUpperCase()}`;
 };
 
@@ -178,3 +178,6 @@ export const convert = {
 	secondsInPaddledColonTime,
 	durationIso
 };
+
+export default convert;
+

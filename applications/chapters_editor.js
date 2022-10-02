@@ -3,7 +3,7 @@
 let sound_element, component_element, list_element, edit_source_audio_element, edit_source_webvtt_element;
 let sound_CPU;
 let line_number = 1;
-let convert = document.CPU;
+let convert = null;
 
 const point_canvas = {
             text : '',
@@ -32,6 +32,9 @@ let timecode_input, text_input;
 function normalize_time(currentTime) {
     if ((currentTime === '') || (!currentTime)) {
         return null;
+    }
+    if (typeof currentTime === 'string') {
+    	currentTime = convert.timeInSeconds(currentTime);
     }
     return Math.abs(Math.floor(Number(currentTime)));
 }
@@ -67,8 +70,8 @@ function histogram() {
     let source = audioCtx.createMediaElementSource(sound_element);
     let analyser = audioCtx.createAnalyser();
     analyser.fftSize = 32;
-    let WIDTH = 2000;
-    let HEIGHT = 32;
+    const WIDTH = 2000;
+    const HEIGHT = 32;
     let canvas = document.createElement('canvas');
     canvas.width = WIDTH;
     canvas.height = HEIGHT;

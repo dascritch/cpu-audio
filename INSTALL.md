@@ -43,7 +43,7 @@ A more elaborated example :
 
 * Put one and only one `<audio>` tag into `<cpu-audio>`, or you may have unexpected issues.
 * **We recommend to set an `id` attribute** to the `<audio>` tag for the anchoring feature, elsewhere cpu-audio.js will autoset an `id`, that may cause later some problems for deep-linking sound into your page or your web-app. Please set an ID to the `<audio>` tag by yourself.
-* You **must** put a `controls` attribute to the included `<audio>` tag ; this is a good practice for having a functional fallback in case of malfunction, we wish you to comply. Please also add this rule in your css, even if our included css will put it :
+* You **must** put a `controls` attribute to the included `<audio>` tag ; this is a good practice for having a functional fallback in case of malfunction ; we wish you to comply. Please also add this rule in your css, even if our included css will put it :
 
 ```css
 audio[controls] {
@@ -200,6 +200,7 @@ Here is the `<source data-downloadable>` method. It is recommended for dynamic s
 
 Note that we have [a code snippet extending this attribute for displaying multiple choices to the visitor](examples/API_insert_downloadables_panel.html)
 
+
 Special case for live streamed media
 ------------------------------------
 
@@ -265,6 +266,7 @@ Some color/background values are not recommended, as `currentColor` and `transpa
 
 In case you need to create some specific breakpoints, the best way is to create a theme and make your own version. See [API.md](https://github.com/dascritch/cpu-audio/blob/master/API.md) and [CONTRIBUTING.md](https://github.com/dascritch/cpu-audio/blob/master/CONTRIBUTING.md).
 
+
 Using classes on host page
 --------------------------
 
@@ -312,6 +314,39 @@ The `<audio id="audiotag_id">` has its `<track kind="chapters">` decoded and dis
 The `<audio id="audiotag_id">` is actually playing the `cue_id` chapter. The `cue_id` is the cue (chapter) name described in the .VTT file in its `<track kind="chapters">` . 
 
 This function was meant to build effects as in [BBC Computer Literacy archive](https://computer-literacy-project.pilots.bbcconnectedstudio.co.uk/) : During a play of a show, each chapter was highlighting its text resumee.
+
+
+Setting global application parameters via a tag
+-----------------------------------------------
+
+Some global parameters for CPU-Audio may be set via a tag, avoiding to write javascript code for the same result. Those prameters must be set in a JSON form (non-nested object), into a `<script type="application/json" data-cpu-audio>` tag set statically in the `<head>` of the document. Beware to set this tag _before_ then `<script>` calling (or including) cpu-audio.js . Here is an example, modifying the playing stoping others players behaviour :
+
+```html
+<head>
+[…]
+	<script type="application/json" data-cpu-audio>
+		{ "playStopOthers" : false }
+	</script>
+	<script src="cpu-audio.js" async></script>
+```
+
+Here are those parameters, usage and default values :
+
+name (case sensitive)    | default value      | usage
+-------------------------|--------------------|----------
+`playStopOthers`         | `true`             | When a `<cpu-audio>` starts to play, any other instances in the same page are paused.
+`scrollTo`               | `false`            | On any link to a time-stamp in the page, will scroll the viewport to display the playing interface.
+`autoplay`               | `false`            | Will try to play at the start of the page if a temporal url is given or the audio was previously exited. This may be prevented by your browser.
+`IDPrefix`               | `"CPU-Audio-tag-"` | Prefix for auto-attributed ID to `<audio>` element without `id=` attribute.
+`globalCss`	             | `true`             | Insert in the `<head>` of the host document a specific `<style>` with all needed css variables for the player.
+`advanceInPlaylist`      | `true`             | When an audio is ended in a playlist, starts immediatly the next one.
+`keymove`                | `5`                | Number of seconds skipped in the timeline when <kbd>←</kbd> or <kbd>→</kbd> keys are pressed in an interface
+`alternateDelay`         | `1000`             | Delay for a long press on time-line (in milliseconds) to switch to the handheld alternate browsing interface. Not recommended to modify.
+`fastFactor`             | `4`                | Amplification ratio between <kbd>▸︎▸︎</kbd> and <kbd>▸︎▸︎▸︎</kbd> in handheld alternate browsing interface
+`repeatDelay`            | `400`              | First repetition delay when clicking a button in handheld alternate browsing interface
+`repeatFactor`           | `100`              | Next repetitions delay when clicking a button in handheld alternate browsing interface
+
+Those parameters may also be changed via javascript, see the [API.md](API.md) page, *document.CPU* chapter
 
 
 Using javascript API

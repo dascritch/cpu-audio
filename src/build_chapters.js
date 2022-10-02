@@ -1,9 +1,12 @@
-import {oncePassiveEvent, passiveEvent} from './utils.js';
-import {__, prefered_language} from './i18n.js';
-import {trigger} from './trigger.js';
-import {normalizeSeekTime} from './media_element_extension.js';
-import {translateVTT} from './translate_vtt.js';
-import {activecueClassname} from './element_cpu.js';
+import { oncePassiveEvent, passiveEvent } from './primitives/events.js';
+import __ from './primitives/i18n.js';
+import translateVTT from './primitives/translate_vtt.js';
+
+import { normalizeSeekTime } from './mediatag/time.js';
+import { get_chapter_tracks } from './mediatag/tracks.js';
+
+import { cuechange } from './trigger/cue.js';
+import { activecueClassname } from './component_cpu/planes_draw.js';
 
 const plane_chapters = '_chapters';
 
@@ -16,45 +19,15 @@ const plane_chapters = '_chapters';
 export function buildChaptersLoader(elCPU) {
 	const this_build_chapters = () => { build_chapters(elCPU); };
 	this_build_chapters();
-	let audiotag = elCPU.audiotag;
+	const { audiotag } = elCPU;
 
 	// sometimes, we MAY have loose loading
 	audiotag.addEventListener('loadedmetadata', this_build_chapters, oncePassiveEvent);
 
-	let track_element = audiotag.querySelector('track[kind="chapters"]');
+	const track_element = audiotag.querySelector('track[kind="chapters"]');
 	if ((track_element) && (!track_element._CPU_load_ev)) {
 		track_element._CPU_load_ev = track_element.addEventListener('load', this_build_chapters, passiveEvent);
 	}
-}
-
-/**
- * @summary Extract usable chapter tracks from audiotag
- * @private
- *
- * @param      {HTMLAudioElement} 	audiotag	The <audio> supposed to have a chapter tracj
- * @return     {TextTrack|null}  				The TextTrack, or null if not applicable
- */
-function get_chapter_tracks(audiotag) {
-	if (!audiotag) {
-		return null;
-	}
-
-	let chapter_track = null;
-	if (audiotag.textTracks?.length > 0) {
-		for (const tracks of audiotag.textTracks) {
-			if (
-					(tracks.kind.toLowerCase() === 'chapters') &&
-					(tracks.cues) &&  // linked to default="" attribute, only one per set !
-					(
-						(!chapter_track) /* still no active track */
-						|| (tracks.language.toLowerCase() === prefered_language) /* correspond to <html lang> */
-					)
-				) {
-				chapter_track = tracks;
-			}
-		}
-	}
-	return chapter_track;
 }
 
 /**
@@ -92,7 +65,7 @@ export async function build_chapters(elCPU) {
 			chapter_track.removeEventListener('cuechange', cuechange_event_this);
 			chapter_track.addEventListener('cuechange', cuechange_event_this, passiveEvent);
 
-			for (let cue of chapter_track.cues) {
+			for (const cue of chapter_track.cues) {
 				if (!elCPU.point(plane_chapters, cue.id)) {
 					pointDataGroup[cue.id] = {
 						start : normalizeSeekTime(audiotag, Math.floor(cue.startTime)),
@@ -114,8 +87,8 @@ export async function build_chapters(elCPU) {
 		}
 	}
 
-	let body_class = `cpu_tag_«${audiotag.id}»_chaptered`;
-	let body_classlist = document.body.classList;
+	const body_class = `cpu_tag_«${audiotag.id}»_chaptered`;
+	const body_classlist = document.body.classList;
 	if (has) {
 		// indicate in host page that audio tag chapters are listed
 		// see https://github.com/dascritch/cpu-audio/issues/36
@@ -128,7 +101,7 @@ export async function build_chapters(elCPU) {
 	/*
 	if ((active_cue) && (id_in_hash(this.audiotag.id)) ) {
 		// shoud be set ONLY if audiotag is alone in page or if audiotag.id named in hash
-		trigger.cuechange(active_cue, this.audiotag);
+		cuechange(active_cue, this.audiotag);
 		this.emitEvent('chapterChanged', {
 			cue : active_cue
 		});
@@ -151,11 +124,11 @@ export function cuechange_event(elCPU, event = null) {
 	const activeCues = event ? event.target.activeCues : get_chapter_tracks(elCPU.audiotag)?.activeCues;
 	
 	let cue;
-	// Chrome may put more than one activeCue. That's a stupid regression from them, but alas... I have to do with
-	let currentTime = elCPU.audiotag.currentTime;
+	// Chrome may put more than one activeCue. That's a stupid regression from them, but alas… I have to deal with it
+	const currentTime = elCPU.audiotag.currentTime;
 	
 	if (activeCues?.length > 0) {
-		for (let cue_line of activeCues) {
+		for (const cue_line of activeCues) {
 			if ((cue_line.startTime <= currentTime) && (currentTime < cue_line.endTime)) {
 				cue = cue_line;
 			}
@@ -170,7 +143,7 @@ export function cuechange_event(elCPU, event = null) {
 	elCPU._activecue_id = cue?.id;
 
 	if (cue) {
-		trigger.cuechange(cue, elCPU.audiotag);
+		cuechange(cue, elCPU.audiotag);
 		elCPU.emitEvent('chapterChanged', { cue });
 		elCPU.highlightPoint(plane_chapters, cue.id, activecueClassname);
 	}
