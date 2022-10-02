@@ -1,5 +1,5 @@
-Dev 7.1pre
-===========================
+RELEASE NOTES version 7.1
+=========================
 
 
 New features
