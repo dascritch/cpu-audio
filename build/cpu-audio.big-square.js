@@ -1,7 +1,7 @@
 (()=>{"use strict";
 /** @license
 Cpu-Audio: an extension to the hash system to address timecode into audio/video elements and a player WebComponent
-Version 7.1pre
+Version 7.1
 Copyright (C) 2014-2022 Xavier "dascritch" Mouton-Dubosc & contributors.
 License LGPL 3
 
