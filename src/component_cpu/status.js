@@ -94,12 +94,12 @@ export const status = {
 		const element_canonical = this.shadowId('canonical');
 		if (element_canonical) {
 			element_canonical.href = dataset.canonical;
-			let classlist = element_canonical.classList;
+			let { classList } = element_canonical;
 			if (!title) {
-				classlist.add('untitled');
+				classList.add('untitled');
 				title = __.untitled;
 			} else {
-				classlist.remove('untitled');
+				classList.remove('untitled');
 			}
 			element_canonical.innerText = title;
 		}
