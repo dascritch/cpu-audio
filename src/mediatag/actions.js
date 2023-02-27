@@ -103,7 +103,7 @@ export function play(event=null, audiotag=null) {
 						document.addEventListener('click', unlock, oncePassiveEvent);
 
 						if (audiotag._CPU_played != null) {
-							let CPU_api = findCPU(audiotag);
+							const CPU_api = findCPU(audiotag);
 							CPU_api.glowBeforePlay = true;
 							CPU_api.setAct('glow');
 						}

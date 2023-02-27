@@ -14,7 +14,7 @@ Corrections
 -----------
 
 * Hash parameters are now case insensitive
-* Instanciation may be missed during the page lifecyle. Better way to check if host page DOM is really ready or not
+* Instantiation may be missed during the page lifecycle. Better way to check if host page DOM is really ready or not
 * Application chapters_builder should stop zero-ing time input in some situations
 * Better style on focused `<summary>`
 * Do not insert global `<style>` in page if webcomponent is not supported by the browser (I know, this is a late situation)
@@ -24,7 +24,7 @@ Back-end
 
 * Node 18 support for build (incomplete)
 * Locales are modularized : each language has its own file, in `src/locales` ([#189](#189))
-* Some libs moved in `./src` sub-directories, big sources were splitted in functionnality segments.
+* Some libs moved in `./src` sub-directories, big sources were split in functionality segments.
 
 
 RELEASE NOTES version 7.0.3

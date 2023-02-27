@@ -13,7 +13,7 @@ if (!document.hasFocus()) {
 
 
 
-var audiotag = document.getElementById('track');
+const audiotag = document.getElementById('track');
 
 QUnit.test( "Checking browser abilities for WebComponents", function( assert ) {
 	assert.ok( window.customElements !== undefined, "window.customElements" );
