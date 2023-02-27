@@ -45,7 +45,7 @@ export const timeInSeconds = (givenTime) => {
 export const subunittimeInSeconds = (givenTime) => {
 	let seconds = 0;
 	let atom;
-	for(let key in units_scale) {
+	for(const key in units_scale) {
 		if ( (units_scale.hasOwnProperty(key)) && (givenTime.includes(key)) ) {
 			[atom, givenTime] = givenTime.split(key);
 			seconds += Number(atom.replace(_any_not_numeric,'' )) * units_scale[key];
@@ -87,10 +87,10 @@ export const secondsInTime = (givenSeconds) => {
 	let inned = false;
 	for (const key in units_scale) {
 		if (units_scale.hasOwnProperty(key)) {
-			let multiply = units_scale[key];
+			const multiply = units_scale[key];
 			if ((givenSeconds >= multiply) || (inned)) {
 				inned = true;
-				let digits = Math.floor(givenSeconds / multiply);
+				const digits = Math.floor(givenSeconds / multiply);
 				converted += digits + key;
 				givenSeconds -= digits * multiply;
 			}
@@ -113,12 +113,12 @@ export const secondsInColonTime = (givenSeconds) => {
 	}
 	let converted = '';
 	let inned = false;
-	for (let key in units_scale) {
+	for (const key in units_scale) {
 		if (units_scale.hasOwnProperty(key)) {
-			let multiply = units_scale[key];
+			const multiply = units_scale[key];
 			if ((givenSeconds >= multiply) || (inned)) {
 				inned = true;
-				let digits = Math.floor(givenSeconds / multiply);
+				const digits = Math.floor(givenSeconds / multiply);
 				converted += (converted === '' ? '' : ':');
 				converted += ( ((digits<10) && (converted !== '')) ? '0' : '') + digits ;
 				givenSeconds -= digits * multiply;
@@ -152,7 +152,7 @@ export const secondsInPaddledColonTime = (givenSeconds) => {
 		return Infinity_representation;
 	}
 	// principaly needed by <input type="time"> whom needs a really precise HH:MM:SS format
-	let colon_time = convert.secondsInColonTime(givenSeconds);
+	const colon_time = convert.secondsInColonTime(givenSeconds);
 	return '00:00:00'.substr(0, 8 - colon_time.length ) + colon_time;
 };
 

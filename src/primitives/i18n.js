@@ -34,6 +34,6 @@ function guess_preferable_language() {
 	return 'en';
 }
 
-export let prefered_language = guess_preferable_language();
+export const prefered_language = guess_preferable_language();
 export const __ = sources_i18n[prefered_language];
 export default __;

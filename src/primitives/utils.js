@@ -41,7 +41,7 @@ export function findCPU(child) {
 		return child.CPU;
 	}
 
-	let closest_cpuaudio = child.closest(CpuAudioTagName) ?? child.closest(CpuControllerTagName);
+	const closest_cpuaudio = child.closest(CpuAudioTagName) ?? child.closest(CpuControllerTagName);
 	if (closest_cpuaudio) {
 		return closest_cpuaudio.CPU;
 	}

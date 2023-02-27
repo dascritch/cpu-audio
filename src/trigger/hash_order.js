@@ -86,7 +86,7 @@ export async function hashOrder(hashcode, callback_fx = null) {
 
 	// we may have a begin,end notation
 	const [timecode_start, timecode_end] = timecode.split(',');
-	let _timecodeStart = timeInSeconds(timecode_start);
+	const _timecodeStart = timeInSeconds(timecode_start);
 	let _timecodeEnd = timecode_end !== undefined ? timeInSeconds(timecode_end) : false;
 	if (_timecodeEnd !== false) {
 		_timecodeEnd = (_timecodeEnd > _timecodeStart) ?

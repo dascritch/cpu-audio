@@ -24,7 +24,7 @@ HTMLAudioElement.prototype._CPU_planes = null;
  * @param      {Object}  event   The event
  */
 function recallStoredPlay(event) {
-	let audiotag = event.target;
+	const audiotag = event.target;
 	if ((document.CPU.currentAudiotagPlaying !== null) || (isAudiotagStreamed(audiotag))) {
 		return;
 	}
