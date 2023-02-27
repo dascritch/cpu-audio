@@ -80,12 +80,12 @@ When the interface got the focus, you can use those keys :
 
 * <kbd>Space</kbd> : play/pause audio
 * <kbd>Enter</kbd> : play/pause audio (only on play/pause button)
-* <kbd>←</kbd> : -5 seconds
-* <kbd>→</kbd> : +5 seconds
-* <kbd>↖</kbd> : back to start
+* <kbd title="left arrow">←</kbd> : -5 seconds
+* <kbd title="right arrow">→</kbd> : +5 seconds
+* <kbd title="begin">↖</kbd> : back to start
 * <kbd>End</kbd> : to the end, finish playing, ev. skip to the sound in playlist
 * <kbd>Escape</kbd> : back to start, stop playing
-* <kbd>↑</kbd> and <kbd>↓</kbd> : move focus between entries in panels (<kbd>Enter</kbd> to select)
+* <kbd title="up arrow">↑</kbd> and <kbd  title="down arrow">↓</kbd> : move focus between entries in panels (<kbd>Enter</kbd> to select)
 
 For handheld users, a long press on the timeline will show you another interface for a more precise navigation (Desktop users can try it via a right click on it).
 
