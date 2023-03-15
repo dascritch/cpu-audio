@@ -49,8 +49,11 @@ Perhaps you wish to put a non-solid background to the player&nbsp;? Simply defin
         --cpu-focus-color : white;
         --cpu-focus-background : black;
         /* We also want a “plain-er” playing background */
-        --cpu-playing-background : linear-gradient(124deg, #f20a, #e11a, #eb7a, #ee1a, #1e4a, #1dea, #21ea, #d0fa, #d0fa);
-    
+        --cpu-playing-background : linear-gradient(124deg, #f20a, #e11a, #eb7a, #ee1a, #1e4a, #1dea, #21ea, #d0fa, #d0fa); 
+    }
+    #example1 cpu-audio {
+        /* Add a blurry effect if a parent element got a graphical background with sharpy details */
+        backdrop-filter: blur(5px);
     }
     /* This <style> tag is editable, try it ! */
     </style>
