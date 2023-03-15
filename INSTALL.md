@@ -147,7 +147,7 @@ Here is the code you can put into the `<audio controls>` tag :
 <track kind="chapters" src="chapters.vtt" default />
 ```
 
-Note that `default` attribute **is really needed**. In case you've got more than one `<track kind="chapters" default />` declared in a `<audio>` tag, only the very first one will be interpreted by the browser (blocking us to catch the one according to its `srclang=""` [see #69](#69) ).
+Note that `default` attribute **is really needed**. In case you've got more than one `<track kind="chapters" default />` declared in a `<audio>` tag, only the very first one will be interpreted by the browser (blocking us to catch the one according to its `srclang=""` [see #69](https://github.com/dascritch/cpu-audio/issues/69) ).
 
 You can create VTT files with [our online editor](https://dascritch.github.io/cpu-audio/applications/chapters_editor.html).
 

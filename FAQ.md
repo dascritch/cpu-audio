@@ -56,7 +56,7 @@ The main issue was commenting on some time points to engage their community. At 
 
 At the beginning of version 3, we were also thinking about a really decentralized playlist system : The user may have a WebExtension companion, and can select some sounds among surfing.
 
-**It's up to you** to make those projects alive ! See ([#8](#8)), ([#10](#10)), and ([#76](#76))
+**It's up to you** to make those projects alive ! See ([#8](https://github.com/dascritch/cpu-audio/issues/8)), ([#10](https://github.com/dascritch/cpu-audio/issues/10)), and ([#76](https://github.com/dascritch/cpu-audio/issues/76))
 
 
 I want to use it in my (professionnal) service, but i'm needing help. Will you ?
